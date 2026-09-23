@@ -1,0 +1,6 @@
+{
+    "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_srs/SRS_Chunk_Proposal_Daemon_Resiliency_And_Parser_Hardening_Architectural_Review.md",
+    "agent_name": "cochem-coder",
+    "prompt": "IMPLEMENTATION TASK 1.5:\nImplement and execute the comprehensive physical verification test suite `test_daemon_resiliency_and_parser.py` validating path hardening, table parsing, zero ghost task injection, and daemon error isolation.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
+    "task_id": "20260919_151927_SRS_Chunk_Proposal_Daemon_Resiliency_And_Parser_Hardening_Architectural_Review_1.5"
+}

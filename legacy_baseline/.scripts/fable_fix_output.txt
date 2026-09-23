@@ -1,0 +1,428 @@
+Warning: no stdin data received in 3s, proceeding without it. If piping from a slow command, redirect stdin explicitly: < /dev/null to skip, or wait longer.
+FILE: d:\__CoChem\__agentic\.scripts\task_work_loop.py
+FIND:
+`
+#   COCHEM_HW_POLL_INTERVAL          ΓÇö seconds between hardware polls (default 30)
+
+_HW_CEIL = int(os.environ.get("COCHEM_MAX_CONCURRENT_PROCESSES", "60"))
+_HW_FLOOR = int(os.environ.get("COCHEM_MIN_CONCURRENT_PROCESSES", "1"))
+_HW_POLL_INTERVAL = int(os.environ.get("COCHEM_HW_POLL_INTERVAL", "30"))
+`
+REPLACE:
+`
+#   COCHEM_HW_POLL_INTERVAL          ΓÇö seconds between hardware polls (default 30)
+#   COCHEM_RAMP_STEP                 ΓÇö workers added per ramp step (default 5)
+
+_HW_CEIL = int(os.environ.get("COCHEM_MAX_CONCURRENT_PROCESSES", "60"))
+_HW_FLOOR = int(os.environ.get("COCHEM_MIN_CONCURRENT_PROCESSES", "1"))
+_HW_POLL_INTERVAL = int(os.environ.get("COCHEM_HW_POLL_INTERVAL", "30"))
+_RAMP_STEP = max(1, int(os.environ.get("COCHEM_RAMP_STEP", "5")))
+`
+
+FILE: d:\__CoChem\__agentic\.scripts\task_work_loop.py
+FIND:
+`
+    if _PSUTIL_AVAILABLE:
+        cpu = _psutil.cpu_percent(interval=0.5)
+        vm = _psutil.virtual_memory()
+        ram_free_gb = vm.available / (1024 ** 3)
+`
+REPLACE:
+`
+    if _PSUTIL_AVAILABLE:
+        # 2.0s window captures the full startup burst of freshly spawned claude.exe/Node procs
+        cpu = _psutil.cpu_percent(interval=2.0)
+        vm = _psutil.virtual_memory()
+
+        # Count RAM already consumed by running claude.exe processes so headroom is not
+        # double-counted between polls (psutil.available lags behind spawn bursts).
+        try:
+            claude_procs = [p for p in _psutil.process_iter(['name', 'memory_info'])
+                            if p.info['name'] and 'claude' in p.info['name'].lower()]
+            claude_ram_gb = sum(p.info['memory_info'].rss for p in claude_procs) / (1024 ** 3)
+        except Exception:
+            claude_ram_gb = 0.0
+        # Subtract already-consumed Claude RAM from available headroom
+        ram_free_gb = max(0, vm.available / (1024 ** 3) - claude_ram_gb)
+`
+
+FILE: d:\__CoChem\__agentic\.scripts\task_work_loop.py
+FIND:
+`
+# Global asyncio.Semaphore ΓÇö dynamically replaced as hardware changes
+_worker_semaphore: asyncio.Semaphore | None = None
+_current_worker_limit: int = 0
+`
+REPLACE:
+`
+# Global asyncio.Semaphore ΓÇö dynamically replaced as hardware changes
+_worker_semaphore: asyncio.Semaphore | None = None
+_current_worker_limit: int = 0
+# Number of workers currently holding a semaphore slot (ramp-up bookkeeping)
+_active_worker_count: int = 0
+`
+
+FILE: d:\__CoChem\__agentic\.scripts\task_work_loop.py
+FIND:
+`
+    sem = _worker_semaphore if _worker_semaphore is not None else asyncio.Semaphore(1)
+    async with sem:
+        return await process_task(task_file, state)
+`
+REPLACE:
+`
+    global _active_worker_count
+    sem = _worker_semaphore if _worker_semaphore is not None else asyncio.Semaphore(1)
+    async with sem:
+        _active_worker_count += 1
+        try:
+            return await process_task(task_file, state)
+        finally:
+            _active_worker_count -= 1
+`
+
+FILE: d:\__CoChem\__agentic\.scripts\task_work_loop.py
+FIND:
+`
+        if pending:
+            tasks_processed = True
+            # Launch up to _current_worker_limit tasks concurrently (same pattern as old agy slots)
+            batch = pending[:_current_worker_limit]
+            for task_file, task_id in batch:
+                state["active_task"] = task_id
+                save_state(state)
+
+            results = await asyncio.gather(
+                *[_run_with_hw_semaphore(tf, state) for tf, _ in batch],
+                return_exceptions=True,
+            )
+
+            for (task_file, task_id), result in zip(batch, results):
+                if isinstance(result, Exception):
+`
+REPLACE:
+`
+        if pending:
+            tasks_processed = True
+            # Graduated ramp-up: launch _RAMP_STEP tasks per step, then wait half a poll
+            # interval and re-poll hardware so psutil sees the load from the claude.exe
+            # processes that were just spawned before any more are added.
+            # Ceiling is still hardware-derived (<= COCHEM_MAX_CONCURRENT_PROCESSES).
+            queue = list(pending)
+            running: list = []
+            meta: dict = {}
+            while queue:
+                in_flight = max(_active_worker_count, sum(1 for t in running if not t.done()))
+                slots = min(_RAMP_STEP, len(queue), _current_worker_limit - in_flight)
+                for _ in range(max(0, slots)):
+                    task_file, task_id = queue.pop(0)
+                    state["active_task"] = task_id
+                    save_state(state)
+                    t = asyncio.create_task(_run_with_hw_semaphore(task_file, state))
+                    running.append(t)
+                    meta[t] = (task_file, task_id)
+                if slots > 0:
+                    logger.info(
+                        f"[RAMP] +{slots} workers "
+                        f"(in-flightΓëê{in_flight + slots}/{_current_worker_limit}, queued={len(queue)})"
+                    )
+                # Wait half a poll interval so new processes register on CPU/RAM
+                await asyncio.sleep(_HW_POLL_INTERVAL / 2)
+                _refresh_worker_semaphore()
+                _last_hw_poll = time.monotonic()
+                if _active_worker_count >= _current_worker_limit:
+                    # At ceiling ΓÇö wait for a slot to free before adding more
+                    await asyncio.sleep(5)
+
+            results = await asyncio.gather(*running, return_exceptions=True)
+
+            for t, result in zip(running, results):
+                task_file, task_id = meta[t]
+                if isinstance(result, Exception):
+`
+
+FILE: d:\__CoChem\__agentic\llm_router.py
+FIND:
+`
+    "cochem-coder": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-4-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-audit": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-4-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-debug": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-4-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-peer-reviewer": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-4-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+`
+REPLACE:
+`
+    "cochem-coder": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-audit": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    # Moderate diagnostic reasoning ΓåÆ Opus 5 (Fable reserved for code/security)
+    "cochem-debug": {
+        "provider": "claude-subscription", "model": "claude-opus-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-peer-reviewer": {
+        "provider": "claude-subscription", "model": "claude-fable-5-1",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+`
+
+FILE: d:\__CoChem\__agentic\llm_router.py
+FIND:
+`
+    # ΓöÇΓöÇ Balanced quality / cost ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    # Primary: Claude Sonnet via subscription (strong, cheaper than Fable)
+    "cochem-scribe": {
+        "provider": "claude-subscription", "model": "claude-sonnet-4-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-tester": {
+        "provider": "claude-subscription", "model": "claude-sonnet-4-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-author": {
+        "provider": "claude-subscription", "model": "claude-sonnet-4-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-improve": {
+        "provider": "claude-subscription", "model": "claude-sonnet-4-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-academic-editor": {
+        "provider": "claude-subscription", "model": "claude-sonnet-4-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+`
+REPLACE:
+`
+    # ΓöÇΓöÇ High-volume / repetitive ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    # Primary: Claude Sonnet 5 via subscription (fast, cheaper than Opus/Fable)
+    "cochem-scribe": {
+        "provider": "claude-subscription", "model": "claude-sonnet-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-helper": {
+        "provider": "claude-subscription", "model": "claude-sonnet-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.8-flash"),
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-tester": {
+        "provider": "claude-subscription", "model": "claude-sonnet-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-author": {
+        "provider": "claude-subscription", "model": "claude-sonnet-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    # ΓöÇΓöÇ Moderate reasoning ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    # Architectural review ΓåÆ Opus 5 (moderate), Sonnet 5 as same-plan fallback
+    "cochem-improve": {
+        "provider": "claude-subscription", "model": "claude-opus-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("claude-subscription", "claude-sonnet-5"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+    "cochem-academic-editor": {
+        "provider": "claude-subscription", "model": "claude-sonnet-5",
+        "fallbacks": [
+            ("gemini", "gemini-3.1-pro-preview"),
+            ("gemini", "gemini-3.8-flash"),
+            ("ollama", "qwen3.5:9b"),
+        ],
+    },
+`
+
+FILE: d:\__CoChem\__agentic\llm_router.py
+FIND:
+`
+    def __init__(self) -> None:
+        self._disabled: set = set()  # tracks (provider, model) pairs that hit quota this session
+`
+REPLACE:
+`
+    _DISABLED_TTL_S = 90  # seconds before a quota-disabled cloud key is retried
+
+    def __init__(self) -> None:
+        self._disabled: set = set()  # tracks (provider, model) pairs that hit quota this session
+        self._disabled_at: dict = {}  # key -> monotonic timestamp of when disabled
+`
+
+FILE: d:\__CoChem\__agentic\llm_router.py
+FIND:
+`
+        last_exc: Optional[Exception] = None
+        for provider_name, model in chain:
+            key = (provider_name, model)
+            if key in self._disabled:
+                logger.warning(f"  [QUOTA-ROUTER] Skipping {provider_name}/{model} (quota disabled this session)")
+                continue
+`
+REPLACE:
+`
+        import time as _time
+
+        last_exc: Optional[Exception] = None
+        for provider_name, model in chain:
+            key = (provider_name, model)
+            if key in self._disabled:
+                age = _time.monotonic() - self._disabled_at.get(key, 0)
+                # Ollama stays permanently disabled within a session (it signals pipeline pause)
+                if provider_name != 'ollama' and age > self._DISABLED_TTL_S:
+                    logger.info(
+                        f'  [QUOTA-ROUTER] {provider_name}/{model} window recovered '
+                        f'after {age:.0f}s ΓÇö retrying.'
+                    )
+                    self._disabled.discard(key)
+                    self._disabled_at.pop(key, None)
+                    # fall through to try this provider
+                else:
+                    logger.warning(
+                        f'  [QUOTA-ROUTER] Skipping {provider_name}/{model} '
+                        f'(disabled {age:.0f}s ago, TTL={self._DISABLED_TTL_S}s)'
+                    )
+                    continue
+`
+
+FILE: d:\__CoChem\__agentic\llm_router.py
+FIND:
+`
+                    self._disabled.add(key)
+                    last_exc = exc
+                    continue
+                raise  # non-quota errors propagate immediately
+`
+REPLACE:
+`
+                    self._disabled.add(key)
+                    self._disabled_at[key] = _time.monotonic()
+                    last_exc = exc
+                    continue
+                raise  # non-quota errors propagate immediately
+`
+
+VERIFICATION
+
+1. `python -m py_compile d:\__CoChem\__agentic\llm_router.py && echo PASS`
+   Expected: `PASS`
+
+2. `python -m py_compile d:\__CoChem\__agentic\.scripts\task_work_loop.py && echo PASS`
+   Expected: `PASS`
+
+3. `Select-String -Path d:\__CoChem\__agentic\llm_router.py -Pattern 'claude-sonnet-4-5' | Measure-Object | Select-Object Count`
+   Expected:
+   ```
+   Count
+   -----
+       0
+   ```
+
+4. `Select-String -Path d:\__CoChem\__agentic\.scripts\task_work_loop.py -Pattern 'RAMP_STEP|_active_worker_count' | Measure-Object | Select-Object Count`
+   Expected:
+   ```
+   Count
+   -----
+      12
+   ```
+   (must be > 0; exact count ΓëÑ 10 ΓÇö matches on env comment, `_RAMP_STEP` def, `_active_worker_count` def, global/inc/dec in `_run_with_hw_semaphore`, and uses in the ramp loop)
+
+Report:
+```
+{
+  "status": "PASS",
+  "files_modified": [
+    "d:\\__CoChem\\__agentic\\.scripts\\task_work_loop.py",
+    "d:\\__CoChem\\__agentic\\llm_router.py"
+  ],
+  "checks": {
+    "syntax_llm_router": "PASS",
+    "syntax_task_work_loop": "PASS",
+    "no_sonnet_4_5": "PASS",
+    "ramp_present": "PASS"
+  },
+  "summary": "task_work_loop.py: added COCHEM_RAMP_STEP (_RAMP_STEP, default 5) and module-level _active_worker_count; _run_with_hw_semaphore now increments/decrements the count inside the slot; main() batch gather replaced with a graduated ramp loop that launches min(RAMP_STEP, queued, limit-in_flight) tasks per step, sleeps _HW_POLL_INTERVAL/2, re-polls hardware, and waits 5s when at ceiling; _compute_max_workers uses cpu_percent(interval=2.0) and subtracts RSS of running claude.exe processes from available RAM. Ceiling remains COCHEM_MAX_CONCURRENT_PROCESSES (no hardcoded number). llm_router.py: QuotaFallbackRouter gains _disabled_at with 90s TTL recovery for non-Ollama keys (Ollama stays disabled for session); MODEL_REGISTRY re-tiered ΓÇö debug/improve ΓåÆ claude-opus-5, scribe/tester/author/academic-editor/new cochem-helper ΓåÆ claude-sonnet-5, coder/audit/peer-reviewer keep claude-fable-5-1 with claude-sonnet-5 fallback; Gemini-primary agents untouched; zero remaining claude-sonnet-4-5 references. DEFAULT_MODEL already claude-sonnet-5 ΓÇö no change needed. pivot-architect left at claude-fable-5-1 (not in the explicit change list)."
+}
+```

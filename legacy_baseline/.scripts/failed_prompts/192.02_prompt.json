@@ -1,0 +1,6 @@
+{
+  "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_code/SRS_Chunk_BSOD_0x00000050_Architectural_Review.md",
+  "agent_name": "cochem-coder",
+  "prompt": "IMPLEMENTATION TASK 2.02:\nArchive Legacy Concurrency Module   - **Action:** Move `CoChem-Concurrency.psm1` to `__agentic/.agent_backup/` to prevent accidental loading.   - **Verification:** `Test-Path 'D:\\__CoChem\\__agentic\\.scripts\\CoChem-Concurrency.psm1'` returns `False`.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
+  "task_id": "192.02"
+}

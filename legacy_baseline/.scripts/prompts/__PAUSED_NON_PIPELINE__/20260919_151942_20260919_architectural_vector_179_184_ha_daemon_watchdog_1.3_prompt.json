@@ -1,0 +1,6 @@
+{
+    "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_srs/20260919_architectural_vector_179_184_ha_daemon_watchdog.md",
+    "agent_name": "cochem-coder",
+    "prompt": "IMPLEMENTATION TASK 1.3:\nConfigure the Watchdog to dispatch an @elevation report whenever a core daemon is resuscitated.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
+    "task_id": "20260919_151942_20260919_architectural_vector_179_184_ha_daemon_watchdog_1.3"
+}

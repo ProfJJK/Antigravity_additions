@@ -1,0 +1,6 @@
+{
+    "kanban_source": "C:/Users/ansac/Gdrive/__agentic/dropzones/inbox_code",
+    "agent_name": "cochem-publisher",
+    "prompt": "Execute publishing pipeline on data at C:\\Users\\ansac\\Gdrive\\__agentic\\dropzones\\inbox_code. Draft full manuscript sections, compile LaTeX, and produce the final output. CRITICAL: Use physical file tools. DO NOT use placeholders.",
+    "task_id": null
+}

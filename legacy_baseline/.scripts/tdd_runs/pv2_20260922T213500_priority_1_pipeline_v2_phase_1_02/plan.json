@@ -1,0 +1,62 @@
+{
+  "goal": "Author the offline test execution harness in __agentic/v2/tests/conftest.py to enforce zero-network testing with an in-process socket connection trap in pytest_sessionstart intercepting socket.socket.connect with RuntimeError('Network access forbidden in offline test harness'), and enforce sandbox isolation using pytest tmp_path fixtures for all temporary SQLite database and filesystem artifacts to strictly prevent triggering the repository-root physics wall sandbox guard or mutating production systems.",
+  "acceptance_criteria": [
+    {
+      "id": "AC1",
+      "statement": "AC-24: Test module imports no top-level network client libraries (docker, requests, httpx, aiohttp, urllib.request); session socket guard intercepts network connect calls and raises RuntimeError('Network access forbidden in offline test harness').",
+      "verifiable_by": "T1"
+    },
+    {
+      "id": "AC2",
+      "statement": "AC-36: Deliberate positive socket guard test: calling socket.socket().connect(('1.1.1.1', 80)) explicitly raises RuntimeError('Network access forbidden in offline test harness'), verifying socket connection trap is actively intercepting outbound connections.",
+      "verifiable_by": "T2"
+    },
+    {
+      "id": "AC3",
+      "statement": "AC-39: Test suite executes exclusively within isolated tmp_path fixtures for SQLite and filesystem artifacts, strictly preventing any trigger of the repository-root [HARD ABORT: PHYSICS WALL] sandbox guard and preventing mutation of production assets.",
+      "verifiable_by": "T3"
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "T1",
+      "name": "test_no_network_no_daemon",
+      "asserts": "Statically inspects test modules via AST parsing to verify no top-level network libraries (docker, requests, httpx, aiohttp, urllib.request) are imported, ensuring zero network dependencies in test definitions.",
+      "criteria_ids": [
+        "AC1"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "test_socket_guard_active",
+      "asserts": "Directly attempts socket.socket().connect(('1.1.1.1', 80)) and asserts that RuntimeError is raised with message 'Network access forbidden in offline test harness', confirming socket guard interception is active.",
+      "criteria_ids": [
+        "AC2"
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "test_sandbox_isolation_preflight",
+      "asserts": "Asserts that test execution and filesystem artifacts are strictly confined to tmp_path fixtures without accessing or mutating repository root production files (cochem_kanban.db or .scripts), preventing trigger of the repository root sandbox guard.",
+      "criteria_ids": [
+        "AC3"
+      ]
+    }
+  ],
+  "file_targets": [
+    "__agentic/v2/tests/conftest.py"
+  ],
+  "out_of_scope": [
+    "Modification of legacy v1 production files (D:\\__CoChem\\cochem_kanban.db, D:\\__CoChem\\.scripts)",
+    "Implementation of Phase 2 runtime application daemons (task_work_loop_v2.py, cochem_kanban_mcp_v2.py, watchdog_v2.py)",
+    "Live Docker container builds, Docker Compose execution, or requirement of an active Docker daemon",
+    "Outbound network access, live remote LLM inference, or remote PyPI downloads",
+    "Authoring or modifying Phase 1 deliverables outside conftest.py (Dockerfile, docker-compose.yml, schema_v2.sql, init_db.py)"
+  ],
+  "risks": [
+    "In-process socket connection trap blocking stdlib internal loopback connections required by test runner plugins unless loopback is properly handled",
+    "Pytest conftest hook pytest_sessionstart execution order: ensuring socket patch is installed before any test module or fixture imports trigger socket operations",
+    "Accidental file creation or database connection outside tmp_path triggering repository root sandbox guard or physics wall abort"
+  ],
+  "mutating": true
+}

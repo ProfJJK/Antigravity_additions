@@ -1,0 +1,6 @@
+{
+    "kanban_source": "d:/Gdrive/_CU Teaching/CU quick reference and scripts/CUSyllabusTemplate.tex",
+    "agent_name": "g-coder",
+    "prompt": "Execute Architectural Review on target codebase at d:\\Gdrive\\_CU Teaching\\CU quick reference and scripts\\CUSyllabusTemplate.tex. You are EXEMPT from physical codebase mutation mandates. Your job is strictly to write markdown improvement vectors. Analyze the codebase and save a structured Markdown chunk proposal directly to the dropzone directory: D:/__CoChem/__agentic/dropzones/inbox_srs CRITICAL: You must use the `write_to_file` tool to save the markdown file directly to the disk so the kanban watcher can pick it up. Do NOT just output the text in chat, or you will fail the physical audit. DO NOT USE MCP TOOLS to trigger further workflows.",
+    "task_id": null
+}

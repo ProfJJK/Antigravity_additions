@@ -1,0 +1,6 @@
+{
+    "kanban_source": "D:/Gdrive/_CU Teaching/2026FA CHEM311L Organic Chemistry/Syllabus/CHEM311L Syllabus.tex",
+    "agent_name": "g-coder",
+    "prompt": "Migrate the syllabus at D:/Gdrive/_CU Teaching/2026FA CHEM311L Organic Chemistry/Syllabus/CHEM311L Syllabus.tex to the new Cumberland University template format. The template is located at D:/Gdrive/__agentic/.sources/CU_sources/CUSyllabusTemplate.tex. Use the `cu-syllabus` MCP server to fetch important dates and cross-reference the course shell to ensure dynamic schedule and Title II/ADA compliance. Rewrite the file in place with the updated LaTeX content.",
+    "task_id": null
+}

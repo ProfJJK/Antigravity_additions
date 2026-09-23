@@ -1,0 +1,6 @@
+{
+    "kanban_source": "D:/Gdrive/_Research/vdw_topics",
+    "agent_name": "cochem-scribe",
+    "prompt": "You are given an approved Improvement Chunk at D:\\Gdrive\\_Research\\vdw_topics. Please read it and generate a formal, highly detailed Software Requirements Specification (SRS) for this improvement. CRITICAL: You must save the final SRS markdown file directly to D:/__CoChem/__agentic/dropzones/inbox_code so the kanban watcher can pick it up for the next phase. Do NOT use MCP tools. Output physical files only.",
+    "task_id": null
+}

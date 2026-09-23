@@ -1,0 +1,6 @@
+{
+    "kanban_source": "D:/Gdrive/__agentic/.sources/r_exams/CHEM311/McMurray_10e_Topic_Map.md",
+    "agent_name": "g-coder",
+    "prompt": "Generate a databank of exactly 10 Multiple Choice Questions (MCQs) for Chapter 2, Section 2.6 Drawing Resonance Forms.\\nThe questions must cover the following topics explicitly:\\n- Radical\\n\\nREQUIREMENTS:\\n1. Generate exactly 10 questions.\\n2. Distribute them across a Bloom's Taxonomy pyramid (e.g., Remember, Understand, Apply, Analyze, Evaluate).\\n3. Format the questions for use with r/exams and OCR.\\n4. Include metadata for each question specifying the Section, Topic, and Bloom's Taxonomy level.\\n5. Save the output directly as a physical file to: D:/Gdrive/__agentic/.sources/r_exams/CHEM311/question_bank/Chapter_2/2_6_Drawing_Resonance_Forms.md\\n\\nCRITICAL: Use the write_to_file tool. Do not just output text in chat.",
+    "task_id": null
+}

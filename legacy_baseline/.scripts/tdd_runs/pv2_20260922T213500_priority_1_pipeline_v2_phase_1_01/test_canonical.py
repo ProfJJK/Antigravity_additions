@@ -1,0 +1,181 @@
+"""
+TDD test suite for Task 1.01 — Pipeline v2 Phase 1 directory scaffold.
+
+Covers:
+    [T1] test_directory_scaffold_exists  (AC1)
+    [T2] test_v1_isolation_guard         (AC2)
+
+This module targets real filesystem artefacts rooted at D:/__CoChem. It
+must fail via `test_directory_scaffold_exists` until the physical
+deliverables __agentic/v2/data/.gitkeep and __agentic/v2/tests/__init__.py
+are created on disk exactly as described in the task specification.
+
+No mocks or stubs of the filesystem or of git are used: every assertion
+is made against the real, physical state of the repository.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+# ---------------------------------------------------------------------------
+# Path constants
+# ---------------------------------------------------------------------------
+
+REPO_ROOT = Path(r"D:\__CoChem")
+AGENTIC_V2_ROOT = REPO_ROOT / "__agentic" / "v2"
+
+GITKEEP_PATH = AGENTIC_V2_ROOT / "data" / ".gitkeep"
+INIT_PATH = AGENTIC_V2_ROOT / "tests" / "__init__.py"
+
+LEGACY_SCRIPTS_DIR = REPO_ROOT / ".scripts"
+LEGACY_DB_PATH = REPO_ROOT / "cochem_kanban.db"
+
+# Sidecar snapshot file used purely by this test suite to persist the
+# isolation baseline across independent pytest invocations. It lives next
+# to this test module (NOT under any legacy v1 asset directory) and is
+# never written to by the code/deliverables under test.
+_BASELINE_SNAPSHOT_PATH = Path(__file__).resolve().parent / "_v1_isolation_baseline.json"
+
+CREATE_NO_WINDOW = 0x08000000
+
+
+def _hash_directory_tree(directory: Path) -> str:
+    """Compute a stable SHA-256 digest over the relative paths, sizes and
+    mtimes of every file found recursively under ``directory``.
+
+    Any physical modification, addition or removal of a file under the
+    supplied directory changes the resulting digest. This is the real,
+    observable signal used to detect writes into legacy v1 assets.
+    """
+    hasher = hashlib.sha256()
+    if not directory.is_dir():
+        hasher.update(b"MISSING_DIRECTORY")
+        return hasher.hexdigest()
+
+    for path in sorted(directory.rglob("*")):
+        if path.is_file():
+            stat_result = path.stat()
+            relative = path.relative_to(directory).as_posix()
+            hasher.update(relative.encode("utf-8"))
+            hasher.update(str(stat_result.st_size).encode("utf-8"))
+            hasher.update(str(stat_result.st_mtime_ns).encode("utf-8"))
+    return hasher.hexdigest()
+
+
+def _load_baseline() -> dict:
+    if _BASELINE_SNAPSHOT_PATH.is_file():
+        return json.loads(_BASELINE_SNAPSHOT_PATH.read_text(encoding="utf-8"))
+    return {}
+
+
+def _save_baseline(data: dict) -> None:
+    _BASELINE_SNAPSHOT_PATH.write_text(
+        json.dumps(data, indent=2, sort_keys=True), encoding="utf-8"
+    )
+
+
+def _run_git_status_porcelain(repo_root: Path, pathspec: str) -> subprocess.CompletedProcess:
+    """Run `git status --porcelain -- <pathspec>` scoped to repo_root.
+
+    Uses CREATE_NO_WINDOW on Windows to avoid popping a console window and
+    forces utf-8 text decoding, per the repository's subprocess standard.
+    """
+    kwargs = {}
+    if sys.platform.startswith("win"):
+        kwargs["creationflags"] = CREATE_NO_WINDOW
+
+    return subprocess.run(
+        ["git", "status", "--porcelain", "--", pathspec],
+        cwd=str(repo_root),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        **kwargs,
+    )
+
+
+# ---------------------------------------------------------------------------
+# [T1] AC1 — Physical scaffold existence
+# ---------------------------------------------------------------------------
+
+
+def test_directory_scaffold_exists() -> None:
+    """[T1] __agentic/v2/data/.gitkeep and __agentic/v2/tests/__init__.py
+    physically exist on disk, are regular files, and are readable (AC1)."""
+
+    assert GITKEEP_PATH.is_file(), (
+        f"Expected host mount bind anchor file to exist at {GITKEEP_PATH}, "
+        "but it was not found as a regular file."
+    )
+    assert INIT_PATH.is_file(), (
+        f"Expected python test package marker to exist at {INIT_PATH}, "
+        "but it was not found as a regular file."
+    )
+
+    gitkeep_contents = GITKEEP_PATH.read_text(encoding="utf-8")
+    init_contents = INIT_PATH.read_text(encoding="utf-8")
+
+    assert isinstance(gitkeep_contents, str)
+    assert isinstance(init_contents, str)
+    assert len(init_contents.strip()) > 0, (
+        "__init__.py must not be an empty placeholder; a real module "
+        "docstring is required per anti-spoofing rules."
+    )
+
+
+# ---------------------------------------------------------------------------
+# [T2] AC2 — Zero-write isolation over legacy v1 assets
+# ---------------------------------------------------------------------------
+
+
+def test_v1_isolation_guard() -> None:
+    """[T2] Confirms zero-write isolation over legacy v1 assets: .scripts/
+    has zero tracked/untracked modifications (via `git status` when the
+    repository root is a git worktree, else via a persisted physical hash
+    baseline) and cochem_kanban.db's mtime has not drifted from its
+    recorded baseline (AC2)."""
+
+    assert LEGACY_DB_PATH.is_file(), f"Legacy database missing at {LEGACY_DB_PATH}"
+    assert LEGACY_SCRIPTS_DIR.is_dir(), f"Legacy scripts dir missing at {LEGACY_SCRIPTS_DIR}"
+
+    current_db_mtime = LEGACY_DB_PATH.stat().st_mtime
+    current_scripts_hash = _hash_directory_tree(LEGACY_SCRIPTS_DIR)
+
+    git_dir = REPO_ROOT / ".git"
+    if git_dir.exists():
+        result = _run_git_status_porcelain(REPO_ROOT, ".scripts")
+        assert result.returncode == 0, (
+            f"git status failed with code {result.returncode}: {result.stderr!r}"
+        )
+        assert result.stdout.strip() == "", (
+            "Detected tracked/untracked modifications under .scripts/ via "
+            f"git status --porcelain: {result.stdout!r}"
+        )
+
+    baseline = _load_baseline()
+
+    if "db_mtime" not in baseline or "scripts_hash" not in baseline:
+        # First observation of this environment: establish the physical
+        # isolation baseline for future comparison runs.
+        baseline["db_mtime"] = current_db_mtime
+        baseline["scripts_hash"] = current_scripts_hash
+        _save_baseline(baseline)
+    else:
+        assert current_db_mtime == pytest.approx(baseline["db_mtime"], abs=1e-6), (
+            "cochem_kanban.db modification timestamp drifted from recorded "
+            f"baseline {baseline['db_mtime']!r}; observed {current_db_mtime!r}. "
+            "This indicates a write occurred against the legacy v1 database, "
+            "violating INV-4 / AC-29."
+        )
+        assert current_scripts_hash == baseline["scripts_hash"], (
+            "Directory hash for .scripts/ changed relative to the recorded "
+            "baseline, indicating a physical modification or addition under "
+            "the legacy v1 scripts tree, violating INV-4 / AC-29."
+        )

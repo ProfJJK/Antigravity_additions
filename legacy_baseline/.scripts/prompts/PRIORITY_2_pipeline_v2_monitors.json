@@ -1,0 +1,16 @@
+{
+  "priority": 1,
+  "agent_name": "cochem-coder",
+  "task_id": "PRIORITY_2_PIPELINE_V2_MONITORS",
+  "runner": "pipeline_v2",
+  "prompt": "[PRIORITY 2 - PIPELINE V2 PHASE 2: High-Availability & Resource Monitors]\n\nImplement the CoChem Pipeline v2 Phase 2 infrastructure (Watchdog and Idle Sidecar) using the Task Planning Orchestra (d:\\__CoChem\\__agentic\\v2\\task_planning_orchestra.py). The SRS is not hand-written.\n\nDeliverables (paths relative to the target root d:\\__CoChem):\n1. __agentic/v2/watchdog.py - A High-Availability Daemon Watchdog sidecar script that continuously polls for the Kanban Daemon PID. It should restart the daemon if it crashes and log to watchdog_events_v2 table.\n2. __agentic/v2/cochem_idle_sidecar.py - A monitor for CPU and API credits via SQLite ledger, ensuring heavy tasks only execute during idle cycles.\n\nVerification requirements for the test specification:\n- Tests must run subprocesses and assert correct behavior under tmp_path.\n- No test may require a running Docker daemon or network access.\n- Every subprocess call: creationflags=subprocess.CREATE_NO_WINDOW, encoding='utf-8'.\n- LLM routing chains end in the ('halt', 'graceful') sentinel; never ollama.",
+  "pipeline_v2": {
+    "entry_point": "d:\\__CoChem\\__agentic\\v2\\pipeline_v2.py",
+    "command": "python \"d:\\__CoChem\\__agentic\\v2\\pipeline_v2.py\" --task-json \"d:\\__CoChem\\__agentic\\.scripts\\prompts\\PRIORITY_2_pipeline_v2_monitors.json\"",
+    "target": "d:\\__CoChem",
+    "mode": "direct",
+    "plan_only": false,
+    "srs_generation": "task_planning_orchestra: PLAN -> RESEARCH -> AUDIT -> UNIFY -> PARSE",
+    "tdd_engine": "task_work_loop.process_task: run_setup -> run_rounds -> finalize"
+  }
+}

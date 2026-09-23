@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="0.241" timestamp="2026-09-23T05:48:29.539975-05:00" hostname="JJDesktop"><testcase classname="tests.tdd.test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01" name="test_package_init_markers_exist_and_empty" time="0.078" /><testcase classname="tests.tdd.test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01" name="test_package_init_markers_importable" time="0.004" /><testcase classname="tests.tdd.test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01" name="test_ac20_scope_purity" time="0.031"><failure message="AssertionError: git status --porcelain -uall failed with return code 128. stderr='fatal: not a git repository (or any of the parent directories): .git\n'&#10;assert 128 == 0&#10; +  where 128 = CompletedProcess(args=['git', 'status', '--porcelain', '-uall'], returncode=128, stdout='', stderr='fatal: not a git repository (or any of the parent directories): .git\n').returncode">def test_ac20_scope_purity():
+        """AC3: git status is confined to closed scope; brief_card_1_1.md is untouched."""
+        status_proc = _run_git(["status", "--porcelain", "-uall"])
+&gt;       assert status_proc.returncode == 0, (
+            f"git status --porcelain -uall failed with return code "
+            f"{status_proc.returncode}. stderr={status_proc.stderr!r}"
+        )
+E       AssertionError: git status --porcelain -uall failed with return code 128. stderr='fatal: not a git repository (or any of the parent directories): .git\n'
+E       assert 128 == 0
+E        +  where 128 = CompletedProcess(args=['git', 'status', '--porcelain', '-uall'], returncode=128, stdout='', stderr='fatal: not a git repository (or any of the parent directories): .git\n').returncode
+
+tests\tdd\test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01.py:144: AssertionError</failure></testcase></testsuite></testsuites>

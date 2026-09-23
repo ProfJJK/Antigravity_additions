@@ -1,0 +1,66 @@
+{
+  "goal": "Establish persistence and test package initialization markers by creating empty module marker files persistence/__init__.py and tests/card_1_1/__init__.py under D:\\__CoChem to define explicit Python package boundaries in accordance with AC-20 (Scope Purity Gate) with zero extraneous code or dependencies.",
+  "acceptance_criteria": [
+    {
+      "id": "AC1",
+      "statement": "The files persistence/__init__.py and tests/card_1_1/__init__.py exist as regular files on disk with exactly 0 bytes (empty module markers).",
+      "verifiable_by": "T1"
+    },
+    {
+      "id": "AC2",
+      "statement": "Both persistence and tests.card_1_1 can be successfully imported as valid Python packages without ImportError or SyntaxError.",
+      "verifiable_by": "T2"
+    },
+    {
+      "id": "AC3",
+      "statement": "Under git status --porcelain, modified or untracked files are strictly confined to the closed 16-file scope (specifically persistence/__init__.py, tests/card_1_1/__init__.py, and test-runner artifacts), and __agentic/v2/brief_card_1_1.md exhibits zero diff.",
+      "verifiable_by": "T3"
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "T1",
+      "name": "test_package_init_markers_exist_and_empty",
+      "asserts": "Asserts that persistence/__init__.py and tests/card_1_1/__init__.py exist on the filesystem as regular files and that their file sizes are exactly 0 bytes.",
+      "criteria_ids": [
+        "AC1"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "test_package_init_markers_importable",
+      "asserts": "Asserts that importlib.import_module('persistence') and importlib.import_module('tests.card_1_1') execute successfully and resolve to package namespaces.",
+      "criteria_ids": [
+        "AC2"
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "test_ac20_scope_purity",
+      "asserts": "Asserts that git status --porcelain contains only paths from the closed 16-file list (persistence/__init__.py and tests/card_1_1/__init__.py), and that __agentic/v2/brief_card_1_1.md has zero git diff.",
+      "criteria_ids": [
+        "AC3"
+      ]
+    }
+  ],
+  "file_targets": [
+    "persistence/__init__.py",
+    "tests/card_1_1/__init__.py"
+  ],
+  "out_of_scope": [
+    "__agentic/v2/brief_card_1_1.md (immutable document; zero diff allowed)",
+    "persistence/schema_v2.sql (allocated to Task 1.11)",
+    "persistence/init_db.py (allocated to Task 1.12)",
+    "__agentic/v2/spikes/card_1_1_host_spike.py (allocated to Task 1.02)",
+    "tests/card_1_1/host_facts.py (allocated to Task 1.03)",
+    "tests/card_1_1/conftest.py (allocated to Task 1.04)",
+    "tests/card_1_1/test_soft_harness_hygiene.py (allocated to Task 1.05)",
+    "Adding code, functions, classes, docstrings, or external imports to __init__.py files"
+  ],
+  "risks": [
+    "Accidentally populating __init__.py with placeholder logic, stubs, or imports violating zero-mock or purity constraints",
+    "Parent directory persistence/ or tests/card_1_1/ not existing prior to file creation",
+    "Untracked file contamination outside the closed 16-file scope violating AC-20"
+  ],
+  "mutating": true
+}

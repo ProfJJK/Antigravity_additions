@@ -1,0 +1,49 @@
+{
+  "goal": "Initialize the physical repository structure required for Phase 1 persistence and testing under D:/__CoChem by creating the host volume bind anchor __agentic/v2/data/.gitkeep and the test package marker __agentic/v2/tests/__init__.py while ensuring strict zero-write isolation over legacy v1 assets (.scripts/ and cochem_kanban.db).",
+  "acceptance_criteria": [
+    {
+      "id": "AC1",
+      "statement": "Physical files __agentic/v2/data/.gitkeep and __agentic/v2/tests/__init__.py exist on disk, are regular files, and are readable, establishing the Docker volume bind target and Python test package structure (AC-10, FR-2.8).",
+      "verifiable_by": "T1"
+    },
+    {
+      "id": "AC2",
+      "statement": "Zero-write isolation over legacy v1 assets is preserved, confirmed by zero git diffs or modifications under .scripts/ and unchanged modification timestamp on cochem_kanban.db (AC-29, INV-4).",
+      "verifiable_by": "T2"
+    }
+  ],
+  "test_cases": [
+    {
+      "id": "T1",
+      "name": "test_directory_scaffold_exists",
+      "asserts": "Verifies that __agentic/v2/data/.gitkeep and __agentic/v2/tests/__init__.py physically exist on disk and can be opened for reading.",
+      "criteria_ids": [
+        "AC1"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "test_v1_isolation_guard",
+      "asserts": "Verifies via git status that .scripts/ has zero tracked or untracked modifications and verifies via filesystem stat that cochem_kanban.db mtime has not been altered.",
+      "criteria_ids": [
+        "AC2"
+      ]
+    }
+  ],
+  "file_targets": [
+    "__agentic/v2/data/.gitkeep",
+    "__agentic/v2/tests/__init__.py"
+  ],
+  "out_of_scope": [
+    "Authoring Dockerfile, docker-compose.yml, schema_v2.sql, or init_db.py",
+    "Modifying any files within .scripts/ or altering cochem_kanban.db",
+    "Docker container builds, daemon operations, or external network requests",
+    "Runtime worker or orchestrator daemon implementations"
+  ],
+  "risks": [
+    "Inadvertent write access or timestamp modification to legacy cochem_kanban.db or .scripts/",
+    "Missing parent directory structures when creating .gitkeep or __init__.py files",
+    "External processes concurrently accessing or updating cochem_kanban.db causing false isolation failures"
+  ],
+  "mutating": true
+}

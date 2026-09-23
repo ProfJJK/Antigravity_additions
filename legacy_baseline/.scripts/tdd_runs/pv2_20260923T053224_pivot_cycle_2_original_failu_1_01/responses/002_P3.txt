@@ -1,0 +1,189 @@
+<<<FILE: tests/tdd/test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01.py>>>
+"""
+TDD test module for IMPLEMENTATION TASK 1.01 (pv2-p1-card-1-1-persistence-pspr).
+
+Verifies:
+  [T1] persistence/__init__.py and tests/card_1_1/__init__.py exist as regular,
+       zero-byte files.
+  [T2] Both markers resolve to importable Python packages exposing __path__.
+  [T3] AC-20 Scope Purity Gate: git status --porcelain is confined to the
+       closed-scope target files (plus harmless test-runner cache artifacts),
+       and __agentic/v2/brief_card_1_1.md exhibits zero git diff.
+
+No mocks of the code under test. All filesystem and git inspections operate
+against the real repository on disk.
+"""
+
+import importlib
+import subprocess
+import sys
+from pathlib import Path
+
+# ---------------------------------------------------------------------------
+# Workspace root resolution.
+#
+# This file lives at <root>/tests/tdd/test_....py, so the workspace root is
+# two directories up from this file's parent.
+# ---------------------------------------------------------------------------
+_THIS_FILE = Path(__file__).resolve()
+WORKSPACE_ROOT = _THIS_FILE.parents[2]
+
+if str(WORKSPACE_ROOT) not in sys.path:
+    sys.path.insert(0, str(WORKSPACE_ROOT))
+
+PERSISTENCE_INIT = WORKSPACE_ROOT / "persistence" / "__init__.py"
+TESTS_CARD_1_1_INIT = WORKSPACE_ROOT / "tests" / "card_1_1" / "__init__.py"
+
+# Windows console suppression flag; falls back to 0 (no-op) on other platforms.
+_CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+# Closed-scope allow-list for AC-20 (paths relative to WORKSPACE_ROOT, using
+# forward slashes for normalized comparison against git porcelain output).
+_ALLOWED_SCOPE_PATHS = {
+    "persistence/__init__.py",
+    "tests/card_1_1/__init__.py",
+}
+
+# Directory/file name fragments that constitute harmless test-runner
+# artifacts and are not considered scope violations under AC3.
+_ARTIFACT_MARKERS = (
+    ".pytest_cache",
+    "__pycache__",
+    ".coverage",
+    ".pytest-cache",
+)
+
+
+def _run_git(args):
+    """Run a git subprocess against the workspace root, real process only."""
+    return subprocess.run(
+        ["git"] + args,
+        cwd=str(WORKSPACE_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        creationflags=_CREATE_NO_WINDOW,
+    )
+
+
+def _is_artifact_path(path_str):
+    normalized = path_str.replace("\\", "/")
+    return any(marker in normalized for marker in _ARTIFACT_MARKERS)
+
+
+# ---------------------------------------------------------------------------
+# [T1] test_package_init_markers_exist_and_empty
+# ---------------------------------------------------------------------------
+def test_package_init_markers_exist_and_empty():
+    """AC1: both marker files exist as regular files and are exactly 0 bytes."""
+    assert PERSISTENCE_INIT.is_file(), (
+        f"Expected regular file at {PERSISTENCE_INIT}, but it does not exist "
+        f"as a file."
+    )
+    assert TESTS_CARD_1_1_INIT.is_file(), (
+        f"Expected regular file at {TESTS_CARD_1_1_INIT}, but it does not "
+        f"exist as a file."
+    )
+
+    persistence_size = PERSISTENCE_INIT.stat().st_size
+    tests_card_1_1_size = TESTS_CARD_1_1_INIT.stat().st_size
+
+    assert persistence_size == 0, (
+        f"persistence/__init__.py must be exactly 0 bytes, got "
+        f"{persistence_size} bytes."
+    )
+    assert tests_card_1_1_size == 0, (
+        f"tests/card_1_1/__init__.py must be exactly 0 bytes, got "
+        f"{tests_card_1_1_size} bytes."
+    )
+
+
+# ---------------------------------------------------------------------------
+# [T2] test_package_init_markers_importable
+# ---------------------------------------------------------------------------
+def test_package_init_markers_importable():
+    """AC2: persistence and tests.card_1_1 import cleanly as real packages."""
+    importlib.invalidate_caches()
+
+    # Ensure any stale previous import attempts from earlier test runs don't
+    # mask a fresh resolution of the package.
+    sys.modules.pop("persistence", None)
+    sys.modules.pop("tests.card_1_1", None)
+
+    mod_persistence = importlib.import_module("persistence")
+    mod_tests_card_1_1 = importlib.import_module("tests.card_1_1")
+
+    assert hasattr(mod_persistence, "__path__"), (
+        "persistence module must expose __path__ (i.e. be a package, not a "
+        "plain module)."
+    )
+    assert hasattr(mod_tests_card_1_1, "__path__"), (
+        "tests.card_1_1 module must expose __path__ (i.e. be a package, not "
+        "a plain module)."
+    )
+
+    resolved_persistence_file = Path(mod_persistence.__file__).resolve()
+    resolved_tests_card_1_1_file = Path(mod_tests_card_1_1.__file__).resolve()
+
+    assert resolved_persistence_file == PERSISTENCE_INIT.resolve(), (
+        f"persistence module __file__ resolved to "
+        f"{resolved_persistence_file}, expected {PERSISTENCE_INIT.resolve()}."
+    )
+    assert resolved_tests_card_1_1_file == TESTS_CARD_1_1_INIT.resolve(), (
+        f"tests.card_1_1 module __file__ resolved to "
+        f"{resolved_tests_card_1_1_file}, expected "
+        f"{TESTS_CARD_1_1_INIT.resolve()}."
+    )
+
+
+# ---------------------------------------------------------------------------
+# [T3] test_ac20_scope_purity
+# ---------------------------------------------------------------------------
+def test_ac20_scope_purity():
+    """AC3: git status is confined to closed scope; brief_card_1_1.md is untouched."""
+    status_proc = _run_git(["status", "--porcelain", "-uall"])
+    assert status_proc.returncode == 0, (
+        f"git status --porcelain -uall failed with return code "
+        f"{status_proc.returncode}. stderr={status_proc.stderr!r}"
+    )
+
+    violations = []
+    for raw_line in status_proc.stdout.splitlines():
+        if not raw_line.strip():
+            continue
+        # Porcelain format: XY <path>  (XY is a 2-char status code)
+        path_field = raw_line[3:].strip()
+
+        # Handle rename/copy entries formatted as "old -> new"
+        if " -> " in path_field:
+            path_field = path_field.split(" -> ", 1)[1].strip()
+
+        # Strip surrounding quotes git adds for paths with special chars.
+        if path_field.startswith('"') and path_field.endswith('"'):
+            path_field = path_field[1:-1]
+
+        normalized = path_field.replace("\\", "/")
+
+        if normalized in _ALLOWED_SCOPE_PATHS:
+            continue
+        if _is_artifact_path(normalized):
+            continue
+
+        violations.append(raw_line)
+
+    assert not violations, (
+        "AC-20 Scope Purity Gate violated. The following git status entries "
+        f"fall outside the closed 16-file scope allow-list "
+        f"{sorted(_ALLOWED_SCOPE_PATHS)}: {violations}"
+    )
+
+    diff_proc = _run_git(
+        ["diff", "--exit-code", "--", "__agentic/v2/brief_card_1_1.md"]
+    )
+    assert diff_proc.returncode == 0, (
+        "AC-20 Scope Purity Gate violated. "
+        "__agentic/v2/brief_card_1_1.md must exhibit zero diff, but "
+        f"git diff returned code {diff_proc.returncode}. "
+        f"stdout={diff_proc.stdout!r} stderr={diff_proc.stderr!r}"
+    )
+<<<END FILE>>>

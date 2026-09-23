@@ -1,0 +1,35 @@
+<<<FILE: persistence/__init__.py>>>
+<<<END FILE>>>
+
+<<<FILE: tests/card_1_1/__init__.py>>>
+<<<END FILE>>>
+
+## Summary
+
+I created two package marker files, each exactly 0 bytes, for Task 1.01. These are items 3 and 6 of the closed 16-file scope.
+
+| File | Purpose | Content |
+|---|---|---|
+| `persistence/__init__.py` | Makes `persistence` an explicit regular package, not an implicit namespace package | 0 bytes |
+| `tests/card_1_1/__init__.py` | Makes `tests.card_1_1` an explicit regular package | 0 bytes |
+
+- Both blocks are empty, with no whitespace, newline, BOM, docstring or import, so T1 (`st_size == 0`) can pass.
+- No other files were emitted. The brief, the downstream files for Tasks 1.02–1.12 and the read-only TDD test are untouched.
+- I had no filesystem tools here, so I emitted the files through the orchestrator's `<<<FILE>>>` protocol instead of `write_to_file`. The orchestrator must write them as `b""`, with no trailing newline and no UTF-8-sig encoding. Otherwise T1 will fail.
+
+### Expected test outcomes (not run; this must be confirmed independently)
+- **T1** should pass once the orchestrator writes the files as zero-length.
+- **T2** should pass. `persistence` resolves to its `__init__.py` through the `sys.path` insertion in the test. `tests.card_1_1` also resolves even though there is no `tests/__init__.py`, because `tests` imports as a namespace package.
+  - **Caveat:** if any installed distribution in site-packages ships a top-level `tests` package, it would shadow the workspace `tests` and T2 would fail. That would be an environment problem, not a defect in these files.
+- **T3 risk:** these files are within scope, but T3's allow-list only contains the two marker paths. `git status --porcelain -uall` may also report other untracked files as violations:
+  - the read-only TDD file `tests/tdd/test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01.py`
+  - the SRS in `__agentic/dropzones/inbox_code/`
+  
+  If T3 fails, the harness setup caused it, not this task's output. It should be resolved by committing or gitignoring those orchestration artifacts. Fixing it by widening the scope or special-casing the test would break Anti-Spoofing and AC-20.
+
+### Evidence to collect after the write
+- `git status --porcelain -uall`: expect `?? persistence/__init__.py` and `?? tests/card_1_1/__init__.py`.
+- `python -c "import os;print(os.path.getsize('persistence/__init__.py'), os.path.getsize('tests/card_1_1/__init__.py'))"`: expect `0 0`.
+- `git diff --exit-code -- __agentic/v2/brief_card_1_1.md`: expect exit code `0`.
+- `pytest tests/tdd/test_task_pv2_20260923T053224_pivot_cycle_2_original_failu_1_01.py -v`
+- `git diff --stat`
