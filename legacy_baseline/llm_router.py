@@ -749,7 +749,6 @@ class ClaudeSubscriptionProvider(BaseLLMProvider):
             "--print",
             "--permission-mode", "bypassPermissions",
             "--dangerously-skip-permissions",
-            "--tools", "",
             "--system-prompt-file", str(sys_prompt_file),
             "-p", "Please proceed.",
         ]

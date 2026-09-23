@@ -14,8 +14,9 @@ v2 multi-phase TDD cycle (design: v2/TDD_CYCLE_ARCHITECTURE_V2.md)
 
 Key properties
 - Test execution is a pytest subprocess (--junitxml); no LLM ever reports test results.
-- LLM file output uses the artifact protocol (<<<FILE: path>>> ... <<<END FILE>>>) and is
-  written atomically by the orchestrator; modified_files / diff_lines are computed from disk.
+- Code phases use the git-architect protocol: the agent has shell tools, works in a git repo
+  (init or existing) and delegates coding to claude.exe / Copilot; modified_files / diff_lines
+  are computed from disk (git status + workspace inventory before vs after the call).
 - Structured phases (plan, audit, adjudication) are pydantic-validated; malformed output
   fails closed (audit -> INDETERMINATE, which can never ACCEPT).
 - The progress gate is pure Python (zero tokens): ACCEPT / CONTINUE / PIVOT / ESCALATE /
@@ -671,9 +672,6 @@ MAX_ARTIFACT_BYTES = 2 * 1024 * 1024
 MAX_ARTIFACTS_PER_RESPONSE = 50
 _FORBIDDEN_PARTS = {".git", "__pycache__", ".venv", "venv", "node_modules"}
 _FORBIDDEN_NAMES = {".env", ".credentials.json"}
-# Providers whose CLI can write to disk on its own (agy --dangerously-skip-permissions).
-# ClaudeSubscriptionProvider runs with --tools "" and can only produce artifact blocks.
-_TOOL_CAPABLE_PROVIDERS = {"gemini"}
 _SNAPSHOT_SUFFIXES = {".py", ".md", ".txt", ".json", ".toml", ".yaml", ".yml", ".ini", ".cfg",
                       ".bat", ".ps1", ".sh", ".css", ".html", ".js", ".ts", ".sql", ".csv"}
 _VOLATILE_SUFFIXES = (".log", ".pid", ".db", ".sqlite", "_state.json", ".tmp")
@@ -812,6 +810,10 @@ def file_state(path: Path) -> Optional[FileState]:
         data = Path(path).read_bytes()
     except OSError:
         return None
+    return file_state_from_bytes(data)
+
+
+def file_state_from_bytes(data: bytes) -> FileState:
     text: Optional[str] = None
     if len(data) <= MAX_ARTIFACT_BYTES:
         try:
@@ -852,6 +854,80 @@ def compute_changes(pre: dict, post: dict) -> tuple[list[str], int, dict[str, in
             n = abs((b.size if b else 0) - (a.size if a else 0)) // 80
         per_file[p] = max(n, 1)
     return sorted(per_file), sum(per_file.values()), per_file
+
+
+# ── Out-of-band change detection (git status + raw workspace inventory) ──────
+
+_INVENTORY_CAP = 20000
+
+
+def _git(ws: Path, *args: str, binary: bool = False, timeout: int = 60):
+    """Run git in ws; returns stdout (str, or bytes when binary) or None on any failure."""
+    kw = {} if binary else {"text": True, "encoding": "utf-8", "errors": "replace"}
+    try:
+        proc = subprocess.run(["git", "-C", str(ws), *args], capture_output=True, timeout=timeout,
+                              creationflags=subprocess.CREATE_NO_WINDOW, **kw)
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    return proc.stdout if proc.returncode == 0 else None
+
+
+@dataclass
+class GitState:
+    toplevel: Optional[Path]        # None when ws is not inside a git work tree
+    head: Optional[str]             # None for a repo without commits
+    dirty: set[str]                 # absolute paths reported by `git status`
+
+
+def git_state(ws: Path) -> GitState:
+    top = _git(ws, "rev-parse", "--show-toplevel")
+    if not top:
+        return GitState(None, None, set())
+    toplevel = Path(top.strip()).resolve()
+    head = (_git(ws, "rev-parse", "--verify", "-q", "HEAD") or "").strip() or None
+    dirty: set[str] = set()
+    tokens = (_git(ws, "status", "--porcelain=v1", "-z", "-uall") or "").split("\0")
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        i += 1
+        if len(tok) < 4:
+            continue
+        if tok[0] in "RC":
+            i += 1          # skip the rename/copy source path
+        dirty.add(str((toplevel / tok[3:]).resolve()))
+    return GitState(toplevel, head, dirty)
+
+
+def workspace_inventory(ws: Path, exclude: tuple = ()) -> dict[str, tuple[int, int]]:
+    """Raw file inventory: absolute path -> (size, mtime_ns); skips VCS/venv/cache/volatile files."""
+    inv: dict[str, tuple[int, int]] = {}
+    excl = {str(Path(e).resolve()) for e in exclude}
+    for root, dirs, files in os.walk(ws):
+        dirs[:] = [d for d in dirs if d not in _FORBIDDEN_PARTS
+                   and str((Path(root) / d).resolve()) not in excl]
+        for name in files:
+            if name.endswith(_VOLATILE_SUFFIXES) or name.endswith(".pyc"):
+                continue
+            fp = Path(root) / name
+            with contextlib.suppress(OSError):
+                st = fp.stat()
+                inv[str(fp.resolve())] = (st.st_size, st.st_mtime_ns)
+            if len(inv) >= _INVENTORY_CAP:
+                return inv
+    return inv
+
+
+def _pre_state_from_git(g: GitState, path: str) -> Optional[FileState]:
+    """Pre-call content of a file that was clean in git before the call (read from the old HEAD)."""
+    if g.toplevel is None or g.head is None or path in g.dirty:
+        return None
+    try:
+        rel = Path(path).relative_to(g.toplevel).as_posix()
+    except ValueError:
+        return None
+    data = _git(g.toplevel, "show", f"{g.head}:{rel}", binary=True)
+    return file_state_from_bytes(data) if data is not None else None
 
 
 @dataclass
@@ -1400,18 +1476,37 @@ _COCHEM_CONSTRAINTS = """HARD CONSTRAINTS (CoChem):
 - Never hard-code expected test outputs or special-case the test harness."""
 
 
-def _artifact_protocol(ctx: "TaskContext", protected: list[str]) -> str:
+def _git_architect_protocol(ctx: "TaskContext", protected: list[str],
+                            allowed: Optional[list[str]] = None) -> str:
     prot = "\n".join(f"  - {p}" for p in protected) or "  (none)"
-    return f"""OUTPUT PROTOCOL — you have NO file-system tools; the orchestrator writes files for you.
-Emit every file you create or change as a COMPLETE file (never a diff or an excerpt), exactly:
-<<<FILE: relative/path/from/workspace.py>>>
-<entire file content>
-<<<END FILE>>>
-- Paths are relative to the workspace root: {ctx.workspace}
-- Only emit files you actually change. Blocks that are not closed are discarded.
-- Read-only (writes are rejected and reported to the auditor):
-{prot}
-After the file blocks, write a short plain-text summary of what you changed and why."""
+    scope = ("\n- You may ONLY create or modify these files (other changes are reverted and "
+             "reported):\n" + "\n".join(f"  - {a}" for a in allowed)) if allowed else ""
+    return f"""EXECUTION PROTOCOL — you are the ARCHITECT and you HAVE shell tools (Bash/PowerShell,
+file read/write). Work directly on disk; the orchestrator measures your changes from disk
+(git status + file inventory before vs after your turn). Do NOT emit <<<FILE:>>> blocks.
+
+Workspace root: {ctx.workspace}
+
+1. GIT — every change goes through git:
+   - Run `git -C "{ctx.workspace}" rev-parse --is-inside-work-tree`.
+   - NEW repo (not a work tree): `git init`, add a .gitignore (__pycache__/, *.pyc, .venv/, *.log,
+     *.db, .env), then commit the existing files as a baseline before changing anything.
+   - EXISTING repo: run `git status` first. Never discard, stash, reset or overwrite uncommitted
+     changes you did not make; never `git reset --hard`, `git clean`, force-push or rewrite history.
+     Stay on the current branch.
+   - When done, `git add` only the files you changed and commit with the message
+     "{ctx.task_id}: <phase summary>".
+2. CODING — you MUST NOT hand-write source code yourself. Delegate every code edit to a coding
+   agent run from the workspace root, then review its result:
+   - claude.exe:  claude -p "<precise instructions: files, behaviour, constraints>" --permission-mode acceptEdits
+   - or GitHub Copilot CLI:  copilot -p "<precise instructions>" --allow-all-tools
+   Give the coding agent the relevant task, plan, test expectations and HARD CONSTRAINTS verbatim.
+   Inspect `git diff` afterwards; re-delegate with corrections until the change is right.
+3. VERIFY — run `python -m pytest {ctx.test_rel} -q` from the workspace root before finishing.
+4. SCOPE — stay inside the workspace. Read-only files (changes are reverted and flagged CRITICAL):
+{prot}{scope}
+
+Finish with a short plain-text summary: files changed, `git diff --stat`, commit hash, and why."""
 
 
 def _rel(ctx: "TaskContext", path: str) -> str:
@@ -1523,56 +1618,86 @@ def _test_file_block(ctx: "TaskContext") -> str:
 async def _run_code_phase(ctx: TaskContext, phase: str, agent: str, prompt: str, *,
                           allowed: Optional[frozenset] = None,
                           protect_tests: bool = True) -> ExecutionResult:
-    """LLM call -> parse artifact blocks -> atomic writes -> disk diff -> ExecutionResult."""
+    """LLM call (agent edits disk via shell/git) -> diff git status + workspace inventory
+    before/after -> revert protected/out-of-scope edits -> ExecutionResult."""
+    exclude = (ctx.run_dir,)
     pre = snapshot(tracked_paths(ctx))
+    pre_git = await asyncio.to_thread(git_state, ctx.workspace)
+    pre_inv = await asyncio.to_thread(workspace_inventory, ctx.workspace, exclude)
+
     text, meta = await safe_chat_cli(agent, prompt, return_meta=True)
     ctx.save_response(phase, text)
-    parsed = parse_file_blocks(text)
 
-    for art in parsed.files:   # pre-state of targets that were not tracked yet
-        with contextlib.suppress(ValueError):
-            key = str(resolve_workspace_path(ctx.workspace, art.path))
-            if key not in pre:
-                pre[key] = file_state(Path(key))
-    for key, st in pre.items():
+    post_git = await asyncio.to_thread(git_state, ctx.workspace)
+    post_inv = await asyncio.to_thread(workspace_inventory, ctx.workspace, exclude)
+    candidates = {p for p in set(pre_inv) | set(post_inv) if pre_inv.get(p) != post_inv.get(p)}
+    candidates |= pre_git.dirty ^ post_git.dirty
+    candidates |= set(pre)
+    run_dir = str(ctx.run_dir.resolve())
+    candidates = {c for c in candidates if not c.startswith(run_dir)
+                  and not any(part in _FORBIDDEN_PARTS for part in Path(c).parts)}
+
+    for c in candidates - set(pre):   # pre-state of files that were not tracked
+        if c in pre_inv:
+            pre[c] = _pre_state_from_git(pre_git, c) or FileState("unknown", pre_inv[c][0], None)
+        else:
+            pre[c] = None             # created during this phase
+    post = snapshot(candidates)
+    # Line-ending-only / touch-only differences are not changes (would defeat zero-diff PIVOT).
+    for c in candidates:
+        a, b = pre.get(c), post.get(c)
+        if (a and b and a.text is not None and b.text is not None
+                and a.text.splitlines() == b.text.splitlines()):
+            pre[c] = b
+    modified, _, per_file = compute_changes({c: pre.get(c) for c in candidates}, post)
+    for key in modified:
+        st = pre.get(key)
         ctx.baseline_hashes.setdefault(key, st.sha256 if st else "new-file")
 
     test_key = str(ctx.test_file.resolve())
-    protected = frozenset({test_key}) if protect_tests else frozenset()
-    applied = apply_artifacts(ctx.workspace, parsed, protected=protected, allowed=allowed)
-    post = snapshot(set(pre) | set(applied.targets))
-    modified, _, per_file = compute_changes(pre, post)
+    rejected: list[tuple[str, str]] = []
 
-    if meta.provider not in _TOOL_CAPABLE_PROVIDERS:
-        # A tool-less provider cannot have caused out-of-band changes; ignore concurrent
-        # writes by other workers to tracked neighbour files.
-        own = set(applied.written)
-        modified = [m for m in modified if m in own]
+    def _revert(key: str) -> bool:
+        st = pre.get(key)
+        if st is not None and st.text is not None:
+            atomic_write_text(Path(key), st.text)
+            return True
+        return False
 
     # Tamper guard: the test file must stay byte-identical to the RED-verified copy.
-    if protect_tests and ctx.red_verified and test_key in modified:
-        canonical = read_text_safe(ctx.run_dir / "test_canonical.py")
+    if protect_tests and test_key in modified:
+        canonical = read_text_safe(ctx.run_dir / "test_canonical.py") if ctx.red_verified else None
         if canonical is not None:
             atomic_write_text(ctx.test_file, canonical)
+        else:
+            _revert(test_key)
         modified = [m for m in modified if m != test_key]
+        rejected.append((ctx.test_rel, "protected file (read-only for this phase); restored"))
         ctx.pending_findings.append(Finding(
             severity="CRITICAL", file=ctx.test_rel,
             issue=f"{phase} ({meta.provider}/{meta.model}) modified the protected test file; restored."))
-    for path, reason in applied.rejected:
-        ctx.pending_findings.append(Finding(
-            severity="CRITICAL" if "protected" in reason else "MEDIUM", file=path,
-            issue=f"{phase} artifact rejected: {reason}"))
+    if allowed is not None:
+        allowed_s = {str(Path(a).resolve()) for a in allowed}
+        for key in [m for m in modified if m not in allowed_s]:
+            reason = ("not an allowed output for this phase; "
+                      + ("reverted" if _revert(key) else "left on disk (no pre-state to restore)"))
+            modified.remove(key)
+            rejected.append((_rel(ctx, key), reason))
+            ctx.pending_findings.append(Finding(
+                severity="MEDIUM", file=_rel(ctx, key), issue=f"{phase} change rejected: {reason}"))
 
     diff_lines = sum(per_file[m] for m in modified)
     result = ExecutionResult(phase=phase, agent=agent, provider=meta.provider, model=meta.model,
-                             summary=parsed.prose[-3000:], modified_files=modified,
-                             diff_lines=diff_lines, rejected=[list(r) for r in applied.rejected])
+                             summary=text[-3000:], modified_files=modified,
+                             diff_lines=diff_lines, rejected=[list(r) for r in rejected])
     ctx.exec_results.append(result)
     if modified and phase != "P3":
         ctx.producer_models.add(meta.triple)
         ctx.evidence_files.update(modified)
+    head_note = (f", git HEAD {(pre_git.head or 'none')[:8]} -> {(post_git.head or 'none')[:8]}"
+                 if post_git.head != pre_git.head else "")
     ctx.log(f"{phase} {agent} via {meta.provider}/{meta.model}: {len(modified)} file(s), "
-            f"{diff_lines} diff lines, {len(applied.rejected)} rejected")
+            f"{diff_lines} diff lines, {len(rejected)} rejected{head_note}")
     ctx.save()
     return result
 
@@ -1687,15 +1812,14 @@ CONTEXT DOSSIER:
 
 {_COCHEM_CONSTRAINTS}
 {feedback}
-Emit exactly ONE file block:
-<<<FILE: {ctx.test_rel}>>>
-...complete test module...
-<<<END FILE>>>"""
+Write exactly ONE file to disk: {ctx.test_rel} (the complete test module).
+
+{_git_architect_protocol(ctx, [], allowed=[ctx.test_rel])}"""
         await _run_code_phase(ctx, "P3", "cochem-test-author", prompt, allowed=test_key,
                               protect_tests=False)
         source = read_text_safe(ctx.test_file)
         if not source:
-            feedback = f"\nPREVIOUS ATTEMPT FAILED: no file block for {ctx.test_rel} was produced.\n"
+            feedback = f"\nPREVIOUS ATTEMPT FAILED: {ctx.test_rel} was not written to disk.\n"
             ctx.log(f"P3 attempt {attempt}: no test file produced", logging.WARNING)
             continue
         try:
@@ -1780,7 +1904,7 @@ CURRENT CONTENT OF FILE TARGETS:
 
 {_COCHEM_CONSTRAINTS}
 
-{_artifact_protocol(ctx, [ctx.test_rel])}"""
+{_git_architect_protocol(ctx, [ctx.test_rel])}"""
     result = await _run_code_phase(ctx, "P4", ctx.agent_name, prompt)
     ctx.round_diff_lines += result.diff_lines
 
@@ -1990,7 +2114,7 @@ CURRENT FILES:
 
 {_COCHEM_CONSTRAINTS}
 
-{_artifact_protocol(ctx, [ctx.test_rel])}"""
+{_git_architect_protocol(ctx, [ctx.test_rel])}"""
     result = await _run_code_phase(ctx, "P7", "cochem-improve-code", prompt)
     ctx.round_diff_lines += result.diff_lines
 
@@ -2089,7 +2213,7 @@ CURRENT FILES:
 
 {_COCHEM_CONSTRAINTS}
 
-{_artifact_protocol(ctx, [ctx.test_rel])}"""
+{_git_architect_protocol(ctx, [ctx.test_rel])}"""
     result = await _run_code_phase(ctx, "P9", "cochem-coder-refine", prompt)
     ctx.round_diff_lines += result.diff_lines
 
