@@ -3,6 +3,8 @@ import os
 import subprocess
 import threading
 import time
+import uuid
+from ctypes import wintypes
 from typing import Optional, ContextManager
 import contextlib
 import psutil
@@ -13,34 +15,94 @@ _job_lock = threading.Lock()
 
 # Constants
 JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x00002000
-JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION = 0x00004000
+JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION = 0x00000400
+JOB_OBJECT_BASIC_ACCOUNTING_INFORMATION = 1
 JOB_OBJECT_EXTENDED_LIMIT_INFORMATION = 9
+INFINITE = 0xFFFFFFFF
 
 # Windows API declarations
-kernel32 = ctypes.windll.kernel32
-INVALID_HANDLE_VALUE = -1
+kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+INVALID_HANDLE_VALUE = wintypes.HANDLE(-1).value
+
+# Explicit prototypes: the ctypes default (c_int) truncates 64-bit HANDLEs.
+kernel32.CreateJobObjectW.argtypes = [wintypes.LPVOID, wintypes.LPCWSTR]
+kernel32.CreateJobObjectW.restype = wintypes.HANDLE
+kernel32.SetInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.LPVOID, wintypes.DWORD]
+kernel32.SetInformationJobObject.restype = wintypes.BOOL
+kernel32.QueryInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, wintypes.LPVOID, wintypes.DWORD, wintypes.LPDWORD]
+kernel32.QueryInformationJobObject.restype = wintypes.BOOL
+kernel32.AssignProcessToJobObject.argtypes = [wintypes.HANDLE, wintypes.HANDLE]
+kernel32.AssignProcessToJobObject.restype = wintypes.BOOL
+kernel32.TerminateJobObject.argtypes = [wintypes.HANDLE, wintypes.UINT]
+kernel32.TerminateJobObject.restype = wintypes.BOOL
+kernel32.GetCurrentProcess.argtypes = []
+kernel32.GetCurrentProcess.restype = wintypes.HANDLE
+kernel32.OpenThread.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+kernel32.OpenThread.restype = wintypes.HANDLE
+kernel32.ResumeThread.argtypes = [wintypes.HANDLE]
+kernel32.ResumeThread.restype = wintypes.DWORD
+kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
+kernel32.CloseHandle.restype = wintypes.BOOL
+kernel32.CreateSemaphoreW.argtypes = [wintypes.LPVOID, wintypes.LONG, wintypes.LONG, wintypes.LPCWSTR]
+kernel32.CreateSemaphoreW.restype = wintypes.HANDLE
+kernel32.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+kernel32.WaitForSingleObject.restype = wintypes.DWORD
+kernel32.ReleaseSemaphore.argtypes = [wintypes.HANDLE, wintypes.LONG, wintypes.LPLONG]
+kernel32.ReleaseSemaphore.restype = wintypes.BOOL
+
+class JOBOBJECT_BASIC_LIMIT_INFORMATION(ctypes.Structure):
+    _fields_ = [
+        ("PerProcessUserTimeLimit", wintypes.LARGE_INTEGER),
+        ("PerJobUserTimeLimit", wintypes.LARGE_INTEGER),
+        ("LimitFlags", wintypes.DWORD),
+        ("MinimumWorkingSetSize", ctypes.c_size_t),
+        ("MaximumWorkingSetSize", ctypes.c_size_t),
+        ("ActiveProcessLimit", wintypes.DWORD),
+        ("Affinity", ctypes.c_size_t),  # ULONG_PTR
+        ("PriorityClass", wintypes.DWORD),
+        ("SchedulingClass", wintypes.DWORD),
+    ]
+
+class IO_COUNTERS(ctypes.Structure):
+    _fields_ = [
+        ("ReadOperationCount", ctypes.c_uint64),
+        ("WriteOperationCount", ctypes.c_uint64),
+        ("OtherOperationCount", ctypes.c_uint64),
+        ("ReadTransferCount", ctypes.c_uint64),
+        ("WriteTransferCount", ctypes.c_uint64),
+        ("OtherTransferCount", ctypes.c_uint64),
+    ]
 
 class JobObjectExtendedLimitInformation(ctypes.Structure):
+    # JOBOBJECT_EXTENDED_LIMIT_INFORMATION
     _fields_ = [
-        ("BasicLimitInformation", ctypes.c_uint64 * 6),
-        ("IoInfo", ctypes.c_uint64 * 5),
+        ("BasicLimitInformation", JOBOBJECT_BASIC_LIMIT_INFORMATION),
+        ("IoInfo", IO_COUNTERS),
         ("ProcessMemoryLimit", ctypes.c_size_t),
-        ("TotalMemoryLimit", ctypes.c_size_t),
+        ("JobMemoryLimit", ctypes.c_size_t),
         ("PeakProcessMemoryUsed", ctypes.c_size_t),
-        ("TotalProcessesTime", ctypes.c_uint64),
-        ("TotalKernelTime", ctypes.c_uint64),
-        ("TotalUserTime", ctypes.c_uint64),
-        ("LastProcessId", ctypes.c_ulong),
+        ("PeakJobMemoryUsed", ctypes.c_size_t),
+    ]
+
+class JOBOBJECT_BASIC_ACCOUNTING_INFORMATION(ctypes.Structure):
+    _fields_ = [
+        ("TotalUserTime", wintypes.LARGE_INTEGER),
+        ("TotalKernelTime", wintypes.LARGE_INTEGER),
+        ("ThisPeriodTotalUserTime", wintypes.LARGE_INTEGER),
+        ("ThisPeriodTotalKernelTime", wintypes.LARGE_INTEGER),
+        ("TotalPageFaultCount", wintypes.DWORD),
+        ("TotalProcesses", wintypes.DWORD),
+        ("ActiveProcesses", wintypes.DWORD),
+        ("TotalTerminatedProcesses", wintypes.DWORD),
     ]
 
 def _create_job_object(name: str, limit_flags: int) -> int:
     job_handle = kernel32.CreateJobObjectW(None, name)
     if not job_handle or job_handle == INVALID_HANDLE_VALUE:
-        raise RuntimeError("Failed to create job object")
+        raise ctypes.WinError(ctypes.get_last_error())
 
     info = JobObjectExtendedLimitInformation()
-    info.BasicLimitInformation[0] = limit_flags
-    info.BasicLimitInformation[1] = 0x10000000  # JOB_OBJECT_LIMIT_PROCESS_TIME
+    info.BasicLimitInformation.LimitFlags = limit_flags
 
     success = kernel32.SetInformationJobObject(
         job_handle,
@@ -49,9 +111,29 @@ def _create_job_object(name: str, limit_flags: int) -> int:
         ctypes.sizeof(info)
     )
     if not success:
-        raise RuntimeError("Failed to set job object information")
+        err = ctypes.get_last_error()
+        kernel32.CloseHandle(job_handle)
+        raise ctypes.WinError(err)
 
     return job_handle
+
+def _assign_to_job(job_handle, proc: subprocess.Popen) -> None:
+    if not kernel32.AssignProcessToJobObject(job_handle, int(proc._handle)):
+        err = ctypes.get_last_error()
+        proc.kill()
+        proc.wait()
+        raise ctypes.WinError(err)
+
+def _resume_suspended(proc: subprocess.Popen) -> None:
+    threads = psutil.Process(proc.pid).threads()
+    if not threads:
+        raise RuntimeError("No threads found for process")
+    thread_id = threads[0].id
+
+    thread_handle = kernel32.OpenThread(0x00000002, False, thread_id)  # THREAD_SUSPEND_RESUME
+    if thread_handle:
+        kernel32.ResumeThread(thread_handle)
+        kernel32.CloseHandle(thread_handle)
 
 class Supervisor:
     def __init__(self, name: str, *, max_procs: int | None = None,
@@ -70,25 +152,16 @@ class Supervisor:
 
         proc = subprocess.Popen(cmd, **kw)
 
-        # Assign to job object
-        kernel32.AssignProcessToJobObject(self.job_handle, proc._handle)
-
-        # Resume the main thread
-        threads = psutil.Process(proc.pid).threads()
-        if not threads:
-            raise RuntimeError("No threads found for process")
-        thread_id = threads[0].id
-
-        thread_handle = kernel32.OpenThread(0x00000002, False, thread_id)  # THREAD_SUSPEND_RESUME
-        if thread_handle:
-            kernel32.ResumeThread(thread_handle)
-            kernel32.CloseHandle(thread_handle)
+        # Assign to job object, then resume the main thread
+        _assign_to_job(self.job_handle, proc)
+        _resume_suspended(proc)
 
         return proc
 
     def run(self, cmd, *, timeout: float, input=None, **kw) -> subprocess.CompletedProcess:
-        # Create a nested job for this specific run call
-        nested_name = f"{self.name}_nested_{int(time.time() * 1000)}"
+        # Create a nested job for this specific run call; uuid keeps names
+        # unique across concurrent calls (a clash would reopen a shared job).
+        nested_name = f"{self.name}_nested_{uuid.uuid4().hex}"
         nested_job = _create_job_object(nested_name, JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION)
         with _job_lock:
             _job_handles[nested_name] = nested_job
@@ -96,26 +169,26 @@ class Supervisor:
         try:
             creationflags = kw.get('creationflags', 0) | subprocess.CREATE_NO_WINDOW | 0x00000004  # CREATE_SUSPENDED
             kw['creationflags'] = creationflags
+            if kw.pop('capture_output', False):
+                kw['stdout'] = kw['stderr'] = subprocess.PIPE
+            if input is not None:
+                kw.setdefault('stdin', subprocess.PIPE)
 
             proc = subprocess.Popen(cmd, **kw)
 
-            kernel32.AssignProcessToJobObject(nested_job, proc._handle)
-
-            threads = psutil.Process(proc.pid).threads()
-            if not threads:
-                raise RuntimeError("No threads found for process")
-            thread_id = threads[0].id
-
-            thread_handle = kernel32.OpenThread(0x00000002, False, thread_id)
-            if thread_handle:
-                kernel32.ResumeThread(thread_handle)
-                kernel32.CloseHandle(thread_handle)
+            # Supervisor job first, then the (still empty) nested job: Windows
+            # then nests the per-run job under the Supervisor's job, so
+            # terminate_all()/active_count() cover run() children too.
+            _assign_to_job(self.job_handle, proc)
+            _assign_to_job(nested_job, proc)
+            _resume_suspended(proc)
 
             try:
                 stdout, stderr = proc.communicate(input=input, timeout=timeout)
             except subprocess.TimeoutExpired:
-                # Kill the nested job
+                # Kill the nested job, then reap the process and its pipes
                 kernel32.TerminateJobObject(nested_job, 1)
+                proc.communicate()
                 raise DeadlineExceeded("Command timed out")
 
             return subprocess.CompletedProcess(cmd, proc.returncode, stdout, stderr)
@@ -130,18 +203,11 @@ class Supervisor:
         kernel32.TerminateJobObject(self.job_handle, exit_code)
 
     def active_count(self) -> int:
-        class JOBOBJECT_BASIC_ACCOUNTING_INFORMATION(ctypes.Structure):
-            _fields_ = [
-                ("TotalProcesses", ctypes.c_ulong),
-                ("ActiveProcesses", ctypes.c_ulong),
-                ("TotalTerminatedProcesses", ctypes.c_ulong),
-            ]
-
         info = JOBOBJECT_BASIC_ACCOUNTING_INFORMATION()
         size = ctypes.sizeof(info)
         success = kernel32.QueryInformationJobObject(
             self.job_handle,
-            1,  # JobObjectBasicAccountingInformation
+            JOB_OBJECT_BASIC_ACCOUNTING_INFORMATION,
             ctypes.byref(info),
             size,
             None
@@ -193,7 +259,11 @@ def llm_slot(timeout: float | None = None) -> ContextManager:
 
     class SemaphoreContextManager:
         def __enter__(self):
-            wait_time = timeout if timeout is not None else 0xFFFFFFFF
+            # WaitForSingleObject takes milliseconds; timeout is in seconds
+            if timeout is None:
+                wait_time = INFINITE
+            else:
+                wait_time = min(max(int(timeout * 1000), 0), INFINITE - 1)
             result = kernel32.WaitForSingleObject(handle, wait_time)
             if result != 0:
                 kernel32.CloseHandle(handle)
