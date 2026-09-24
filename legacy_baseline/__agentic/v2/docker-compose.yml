@@ -66,7 +66,7 @@
       "driver_opts": {
         "type": "none",
         "o": "bind",
-        "device": "__agentic/v2/data/"
+        "device": "${COCHEM_ROOT:?set COCHEM_ROOT to the absolute CoChem root}/__agentic/v2/data/"
       }
     }
   }
