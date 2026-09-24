@@ -29,18 +29,22 @@ def open_connection(db_path: str | Path, timeout: float = 0.0) -> sqlite3.Connec
     """Open SQLite connection with WAL, foreign keys enabled, and busy_timeout=5000.
 
     The sqlite3 ``timeout`` defaults to 0.0 so the effective busy handler is the
-    one installed by ``PRAGMA busy_timeout=5000``. Raises sqlite3.OperationalError
-    (after closing the connection) if WAL journal mode could not be enabled.
+    one installed by ``PRAGMA busy_timeout=5000``. busy_timeout is installed
+    first, immediately after connecting, so every subsequent statement --
+    including the ``PRAGMA journal_mode=WAL`` switch -- honours the 5 s busy
+    handler instead of failing instantly with "database is locked". Raises
+    sqlite3.OperationalError (after closing the connection) if WAL journal mode
+    could not be enabled; the connection is closed on any failure.
     """
     conn = sqlite3.connect(str(db_path), timeout=timeout)
     try:
+        conn.execute("PRAGMA busy_timeout=5000")
         row = conn.execute("PRAGMA journal_mode=WAL").fetchone()
         mode = str(row[0]).lower() if row else ""
         if mode != "wal":
             raise sqlite3.OperationalError(
                 f"failed to enable WAL journal mode on {db_path} (got {mode!r})"
             )
-        conn.execute("PRAGMA busy_timeout=5000")
         conn.execute("PRAGMA foreign_keys=ON")
     except BaseException:
         conn.close()
