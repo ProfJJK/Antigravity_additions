@@ -55,5 +55,5 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      # Host path of __agentic/v3/data/, relative to this compose file.
-      device: ./data
+      # COCHEM_ROOT must be the absolute CoChem root; the local-driver bind requires an absolute host path.
+      device: "${COCHEM_ROOT:?set COCHEM_ROOT to the absolute CoChem root}/__agentic/v3/data"
