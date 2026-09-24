@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["python", "-c", "import time; [time.sleep(3600) for _ in iter(int, 1)]"]
+    command: ["sleep", "infinity"]
     read_only: true
     deploy:
       replicas: 3
@@ -18,7 +18,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: ["python", "-c", "import time; [time.sleep(3600) for _ in iter(int, 1)]"]
+    command: ["sleep", "infinity"]
     read_only: true
     deploy:
       resources:

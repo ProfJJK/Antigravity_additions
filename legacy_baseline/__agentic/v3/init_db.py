@@ -24,6 +24,9 @@ def open_connection(db_path: Path | str, timeout: float = 5.0) -> sqlite3.Connec
     return conn
 
 
+get_connection = open_connection
+
+
 def init_database(db_path: Path | str, schema_path: Path | str) -> Path:
     db_path = Path(db_path).resolve()
     schema_path = Path(schema_path).resolve()
