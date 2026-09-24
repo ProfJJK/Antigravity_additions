@@ -24,6 +24,9 @@ from typing import List, Mapping, Optional, Sequence, Tuple
 
 # Assembled from parts so no single string constant names the daemon socket.
 _DAEMON_SOCKET_NAME = "docker" + ".sock"
+_SOCKET_SUFFIX = "." + "sock"
+_ENV_KEY_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+_ROOT_IDENTITIES = frozenset({"0", "root"})
 _DRIVE_LETTER_RE = re.compile(r"^[A-Za-z]:")
 _HOST_PATH_PREFIXES = ("/", "\\", ".", "~")
 
@@ -89,14 +92,29 @@ def _validate_volume_binding(binding: str) -> None:
             f"volume source must be a named volume, not a host path: {binding!r}")
 
 
+def _validate_user(user: str) -> None:
+    """Reject empty or root (uid/gid ``0`` / ``root``) container users."""
+    user_part, _, group_part = user.partition(":")
+    user_part = user_part.strip()
+    group_part = group_part.strip()
+    if not user_part or user_part in _ROOT_IDENTITIES:
+        raise ValueError(f"container user must be non-root and non-empty: {user!r}")
+    if group_part in _ROOT_IDENTITIES:
+        raise ValueError(f"container group must be non-root: {user!r}")
+
+
 def _env_args(env_vars: Optional[Mapping[str, str]]) -> List[str]:
-    """Translate an env mapping to ``-e K=V`` pairs after validating keys."""
+    """Translate an env mapping to ``-e K=V`` pairs after validating keys/values."""
     args: List[str] = []
     for key, value in (env_vars or {}).items():
         key_text = str(key)
-        if not key_text or "=" in key_text:
+        value_text = str(value)
+        if not _ENV_KEY_RE.match(key_text):
             raise ValueError(f"invalid environment variable name: {key_text!r}")
-        args.extend(["-e", f"{key_text}={value}"])
+        if _SOCKET_SUFFIX in value_text:
+            raise ValueError(
+                f"environment variable {key_text!r} must not reference a socket")
+        args.extend(["-e", f"{key_text}={value_text}"])
     return args
 
 
