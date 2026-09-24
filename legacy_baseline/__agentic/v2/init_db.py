@@ -11,7 +11,7 @@ DEFAULT_DB_NAME = "cochem_kanban_v2.db"
 DEFAULT_SCHEMA_NAME = "schema_v2.sql"
 
 
-def open_connection(db_path: str | Path, timeout: float = 0.0) -> sqlite3.Connection:
+def open_connection(db_path: str | Path, timeout: float = 5.0) -> sqlite3.Connection:
     """Open SQLite connection with WAL, foreign keys enabled, and busy_timeout=5000."""
     conn = sqlite3.connect(str(db_path), timeout=timeout)
     conn.execute("PRAGMA journal_mode=WAL")
@@ -20,8 +20,8 @@ def open_connection(db_path: str | Path, timeout: float = 0.0) -> sqlite3.Connec
     return conn
 
 
-def init_db(db_path: str | Path, schema_path: str | Path | None = None) -> None:
-    """Apply schema_v2.sql to db_path in WAL mode."""
+def init_db(db_path: str | Path, schema_path: str | Path | None = None) -> Path:
+    """Apply schema_v2.sql to db_path in WAL mode and return the resolved db path."""
     target_db = Path(db_path).resolve()
     target_db.parent.mkdir(parents=True, exist_ok=True)
 
@@ -42,6 +42,12 @@ def init_db(db_path: str | Path, schema_path: str | Path | None = None) -> None:
         conn.commit()
     finally:
         conn.close()
+
+    return target_db
+
+
+get_connection = open_connection
+init_database = init_db
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -62,3 +62,8 @@ CREATE TABLE IF NOT EXISTS watchdog_events_v2 (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (task_id) REFERENCES kanban_tasks_v2(id) ON DELETE SET NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_kanban_telemetry_v2_task_id ON kanban_telemetry_v2 (task_id);
+CREATE INDEX IF NOT EXISTS idx_audit_verdicts_task_id ON audit_verdicts (task_id);
+CREATE INDEX IF NOT EXISTS idx_credit_ledger_v2_task_id ON credit_ledger_v2 (task_id);
+CREATE INDEX IF NOT EXISTS idx_watchdog_events_v2_task_id ON watchdog_events_v2 (task_id);

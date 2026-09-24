@@ -20,6 +20,10 @@ RUN mkdir -p /workspace/data /opt/cochem/healthroot \
     && echo "OK" > /opt/cochem/healthroot/healthz \
     && chown -R 1000:1000 /workspace /opt/cochem
 
+# Only writable path under read_only rootfs; declared after chown so the
+# volume is seeded with uid 1000 ownership.
+VOLUME ["/workspace/data"]
+
 WORKDIR /workspace
 
 USER 1000
