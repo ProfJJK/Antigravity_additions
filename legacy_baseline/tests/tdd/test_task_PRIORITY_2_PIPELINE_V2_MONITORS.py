@@ -5,9 +5,11 @@ Targets:
     __agentic/v2/cochem_idle_sidecar.py (IdleSidecarDB, HardwareMonitor,
                                          HeavyTaskPolicyEngine)
 
-Both modules are resolved from the workspace root first and from
-D:\\__CoChem second. Every test is fully offline: real worker subprocesses and
-real SQLite databases are created under tmp_path; no network, no Docker.
+Both modules are resolved ONLY from WORKSPACE_ROOT/__agentic/v2, where
+WORKSPACE_ROOT is two directories above this file. No other checkout or
+install location is consulted. Every test is fully offline: real worker
+subprocesses and real SQLite databases are created under tmp_path; no
+network, no Docker.
 """
 
 from __future__ import annotations
@@ -30,14 +32,9 @@ from typing import Any, Callable, Optional
 import pytest
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
-COCHEM_ROOT = Path(r"D:\__CoChem")
+V2_DIR = WORKSPACE_ROOT / "__agentic" / "v2"
 
-for _p in (
-    COCHEM_ROOT / "__agentic" / "v2",
-    COCHEM_ROOT,
-    WORKSPACE_ROOT / "__agentic" / "v2",
-    WORKSPACE_ROOT,
-):
+for _p in (WORKSPACE_ROOT, V2_DIR):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
@@ -67,16 +64,17 @@ _MODULE_CACHE: dict[str, ModuleType] = {}
 
 
 def _find_target_file(name: str) -> Path:
-    candidates = [
-        WORKSPACE_ROOT / "__agentic" / "v2" / name,
-        COCHEM_ROOT / "__agentic" / "v2" / name,
-    ]
-    for cand in candidates:
-        if cand.is_file():
-            return cand
-    raise FileNotFoundError(
-        f"{name} not found; looked in: " + ", ".join(str(c) for c in candidates)
-    )
+    cand = V2_DIR / name
+    if cand.is_file():
+        return cand
+    raise FileNotFoundError(f"{name} not found in {V2_DIR}")
+
+
+def _is_in_v2_dir(mod: ModuleType) -> bool:
+    mod_file = getattr(mod, "__file__", None)
+    if not mod_file:
+        return False
+    return Path(mod_file).resolve().parent == V2_DIR.resolve()
 
 
 def _load_module(stem: str, marker_attr: str) -> ModuleType:
@@ -87,10 +85,15 @@ def _load_module(stem: str, marker_attr: str) -> ModuleType:
 
     try:
         mod = importlib.import_module(f"__agentic.v2.{stem}")
-        if hasattr(mod, marker_attr):
+        if not _is_in_v2_dir(mod):
+            errors.append(
+                f"__agentic.v2.{stem}: resolved outside {V2_DIR} ({getattr(mod, '__file__', '?')})"
+            )
+        elif hasattr(mod, marker_attr):
             _MODULE_CACHE[stem] = mod
             return mod
-        errors.append(f"__agentic.v2.{stem}: missing {marker_attr}")
+        else:
+            errors.append(f"__agentic.v2.{stem}: missing {marker_attr}")
     except ImportError as exc:
         errors.append(f"__agentic.v2.{stem}: {exc!r}")
 
@@ -111,15 +114,6 @@ def _load_module(stem: str, marker_attr: str) -> ModuleType:
     except FileNotFoundError as exc:
         errors.append(str(exc))
 
-    try:
-        mod = importlib.import_module(stem)
-        if hasattr(mod, marker_attr):
-            _MODULE_CACHE[stem] = mod
-            return mod
-        errors.append(f"{stem} ({getattr(mod, '__file__', '?')}): missing {marker_attr}")
-    except ImportError as exc:
-        errors.append(f"{stem}: {exc!r}")
-
     raise ImportError(f"Unable to import CoChem v2 module '{stem}': " + " | ".join(errors))
 
 
@@ -132,12 +126,12 @@ def _get_idle_sidecar() -> ModuleType:
 
 
 def _module_source_path(mod: ModuleType, filename: str) -> Path:
-    try:
-        return _find_target_file(filename)
-    except FileNotFoundError:
-        mod_file = getattr(mod, "__file__", None)
-        assert mod_file, f"cannot locate source for {filename}"
-        return Path(mod_file)
+    path = _find_target_file(filename)
+    mod_file = getattr(mod, "__file__", None)
+    assert mod_file and Path(mod_file).resolve() == path.resolve(), (
+        f"loaded module {mod_file!r} is not {path}"
+    )
+    return path
 
 
 # ---------------------------------------------------------------------------
