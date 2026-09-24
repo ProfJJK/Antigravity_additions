@@ -4,6 +4,7 @@
     "kanban-worker": {
       "image": "cochem-v2:latest",
       "command": ["sleep", "infinity"],
+      "read_only": true,
       "deploy": {
         "replicas": 3,
         "resources": {
@@ -20,6 +21,7 @@
     "watchdog": {
       "image": "cochem-v2:latest",
       "command": ["sleep", "infinity"],
+      "read_only": true,
       "deploy": {
         "resources": {
           "limits": {
@@ -35,6 +37,7 @@
     "mcp-server": {
       "image": "cochem-v2:latest",
       "command": ["python", "-m", "http.server", "8787", "--directory", "/opt/cochem/healthroot"],
+      "read_only": true,
       "ports": [
         "8787:8787"
       ],
