@@ -1,339 +1,130 @@
-"""TDD contract for CoChem Pipeline v2 Phase 2 monitors.
+"""TDD contract for PRIORITY_2_PIPELINE_V2_MONITORS (watchdog + idle sidecar).
 
-Targets (loaded strictly by path from this workspace, never from site-packages
-or any other checkout):
-    __agentic/v2/watchdog.py            (DaemonWatchdog, WatchdogDB)
-    __agentic/v2/cochem_idle_sidecar.py (IdleSidecarDB, HardwareMonitor,
-                                         HeavyTaskPolicyEngine)
+Target modules (always loaded by file path from this workspace, because the
+pip package ``watchdog`` can shadow a plain import):
 
-Contract:
-    T1 / AC1  A killed daemon is detected, ``DAEMON_CRASHED`` and a restart
-              event (``DAEMON_RESTARTED`` or ``RESTART``) are logged into
-              ``watchdog_events_v2`` and a fresh worker process is running.
-    T2 / AC2  ``crash_threshold`` crashes inside ``window_seconds`` log
-              ``SPAWN_STORM_DETECTED`` and stop all respawning; crashes spaced
-              wider than the sliding window never trip the breaker.
-    T3 / AC3  Heavy tasks are allowed only if the CPU is idle (proved with a
-              real CPU load), quota is ``QUOTA_OK`` (read live from SQLite,
-              including external writers) and daily spend + cost <= budget.
-    T4 / AC4  Every subprocess call in both modules passes
-              ``creationflags=CREATE_NO_WINDOW`` and ``encoding='utf-8'``; the
-              daemon really gets a window-less console, and terminating the
-              watchdog (in-process or by killing the supervisor process)
-              leaves no orphaned worker or grandchild processes.
-    T5 / AC5  No network/Docker/LLM client imports, no ``ollama`` routing,
-              every fallback chain ends in ``('halt', 'graceful')``; a harness
-              process guarded by ``sys.addaudithook`` exercises both modules
-              and records zero network events.
+* ``__agentic/v2/watchdog.py``            - DaemonWatchdog / WatchdogDB / CLI
+* ``__agentic/v2/cochem_idle_sidecar.py`` - IdleSidecarDB / HardwareMonitor /
+  HeavyTaskPolicyEngine
 
-No mocking or monkeypatching of any kind is used: real worker processes and
-real SQLite databases are created under ``tmp_path``. Every subprocess call in
-this file (and in the generated scripts) passes ``creationflags`` and
-``encoding='utf-8'``.
+Acceptance criteria:
+
+* AC1 ``test_watchdog_detects_crash_and_restarts``
+* AC2 ``test_watchdog_spawn_storm_circuit_breaker``
+* AC3 ``test_idle_sidecar_cpu_and_credit_gating``
+* AC4 ``test_subprocess_flags_and_clean_termination``
+* AC5 ``test_offline_isolation_and_routing_sentinels``
+
+No mocks and no monkeypatching: real processes, real SQLite files under
+``tmp_path``, real CPU load, and a Python audit hook for the offline proof.
 """
 
 from __future__ import annotations
 
 import ast
-import contextlib
 import importlib.util
 import json
 import os
 import re
-import signal
 import sqlite3
 import subprocess
 import sys
 import time
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Callable, Iterable, Optional
+from typing import Any, Callable, Optional
 
-import pytest
+import psutil
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[2]
 V2_DIR = WORKSPACE_ROOT / "__agentic" / "v2"
-if str(V2_DIR) not in sys.path:
-    sys.path.append(str(V2_DIR))
+WATCHDOG_PATH = V2_DIR / "watchdog.py"
+SIDECAR_PATH = V2_DIR / "cochem_idle_sidecar.py"
+TARGET_PATHS = (WATCHDOG_PATH, SIDECAR_PATH)
 
-_NO_WINDOW = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-HALT_SENTINEL = ("halt", "graceful")
-RESTART_EVENT_TYPES = ("DAEMON_RESTARTED", "RESTART")
+_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+HALT = ("halt", "graceful")
+RESTART_EVENTS = ("DAEMON_RESTARTED", "RESTART")
 CHAIN_NAME_RE = re.compile(r"(FALLBACK|CHAIN|ROUT)", re.IGNORECASE)
-
-SUBPROCESS_FUNCS = frozenset(
-    {"Popen", "run", "call", "check_call", "check_output", "getoutput", "getstatusoutput"}
+SUBPROCESS_FUNCS = frozenset({"Popen", "run", "call", "check_call", "check_output", "getoutput", "getstatusoutput"})
+BANNED_SUBPROCESS_FUNCS = frozenset({"getoutput", "getstatusoutput"})
+FORBIDDEN_IMPORTS = (
+    "socket", "ssl", "requests", "httpx", "aiohttp", "urllib3", "urllib.request", "http.client",
+    "websockets", "docker", "grpc", "openai", "anthropic", "ollama", "google.generativeai",
+    "ftplib", "smtplib", "xmlrpc",
 )
-FORBIDDEN_OS_FUNCS = frozenset({"system", "popen"})
-FORBIDDEN_OS_PREFIXES = ("spawn", "exec")
-FORBIDDEN_ASYNC_FUNCS = frozenset({"create_subprocess_exec", "create_subprocess_shell"})
-FORBIDDEN_IMPORTS = frozenset(
-    {
-        "requests", "httpx", "aiohttp", "urllib3", "urllib.request", "http.client",
-        "socket", "ssl", "websockets", "docker", "grpc", "openai", "anthropic",
-        "ollama", "google.generativeai", "ftplib", "smtplib", "xmlrpc",
-    }
-)
-TARGET_FILES = ("watchdog.py", "cochem_idle_sidecar.py")
 
+# --------------------------------------------------------------------------- worker scripts
 
-# ---------------------------------------------------------------------------
-# Module loading (strictly by path from this workspace)
-# ---------------------------------------------------------------------------
+LONG_WORKER = """\
+import os
+import sys
+import time
 
+with open(sys.argv[1], "a", encoding="utf-8") as fh:
+    fh.write(f"{os.getpid()}\\n")
+    fh.flush()
+    os.fsync(fh.fileno())
+while True:
+    time.sleep(0.2)
+"""
 
-def _load_v2_module(stem: str) -> ModuleType:
-    """Load ``__agentic/v2/<stem>.py`` under a unique name; ImportError if absent."""
-    unique = f"_cochem_v2_{stem}"
-    cached = sys.modules.get(unique)
-    if cached is not None:
-        return cached
-    path = V2_DIR / f"{stem}.py"
-    if not path.is_file():
-        raise ImportError(f"CoChem v2 module not found: {path}")
-    spec = importlib.util.spec_from_file_location(unique, path)
-    if spec is None or spec.loader is None:
-        raise ImportError(f"cannot build an import spec for {path}")
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[unique] = module
-    try:
-        spec.loader.exec_module(module)
-    except BaseException:
-        sys.modules.pop(unique, None)
-        raise
-    return module
+CRASH_WORKER = """\
+import os
+import sys
 
+with open(sys.argv[1], "a", encoding="utf-8") as fh:
+    fh.write(f"{os.getpid()}\\n")
+    fh.flush()
+    os.fsync(fh.fileno())
+sys.exit(7)
+"""
 
-def _get_watchdog() -> ModuleType:
-    return _load_v2_module("watchdog")
-
-
-def _get_idle_sidecar() -> ModuleType:
-    return _load_v2_module("cochem_idle_sidecar")
-
-
-def _source_path(filename: str) -> Path:
-    path = V2_DIR / filename
-    if not path.is_file():
-        raise ImportError(f"CoChem v2 source not found: {path}")
-    return path
-
-
-# ---------------------------------------------------------------------------
-# Process helpers
-# ---------------------------------------------------------------------------
-
-
-def _pid_alive(pid: Optional[int]) -> bool:
-    """Return True if ``pid`` refers to a running process."""
-    if not pid or pid <= 0:
-        return False
-    if os.name == "nt":
-        import ctypes
-        from ctypes import wintypes
-
-        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-        kernel32.OpenProcess.restype = wintypes.HANDLE
-        kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
-        kernel32.GetExitCodeProcess.restype = wintypes.BOOL
-        kernel32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
-        kernel32.CloseHandle.argtypes = [wintypes.HANDLE]
-
-        process_query_limited_information = 0x1000
-        still_active = 259
-        handle = kernel32.OpenProcess(process_query_limited_information, False, int(pid))
-        if not handle:
-            return False
-        try:
-            code = wintypes.DWORD()
-            if not kernel32.GetExitCodeProcess(handle, ctypes.byref(code)):
-                return False
-            return code.value == still_active
-        finally:
-            kernel32.CloseHandle(handle)
-    try:
-        os.kill(pid, 0)
-    except ProcessLookupError:
-        return False
-    except PermissionError:
-        return True
-    return True
-
-
-def _force_kill(pid: Optional[int]) -> None:
-    """Kill ``pid`` if it is still running (TerminateProcess on Windows, SIGKILL on POSIX)."""
-    if pid is None or not _pid_alive(pid):
-        return
-    kill_signal = signal.SIGTERM if os.name == "nt" else signal.SIGKILL
-    with contextlib.suppress(OSError):
-        os.kill(int(pid), kill_signal)
-
-
-def _force_kill_all(pids: Iterable[Optional[int]]) -> None:
-    for pid in pids:
-        _force_kill(pid)
-
-
-def _wait_until(predicate: Callable[[], bool], timeout: float = 15.0, step: float = 0.05) -> bool:
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if predicate():
-            return True
-        time.sleep(step)
-    return predicate()
-
-
-# ---------------------------------------------------------------------------
-# Worker scripts
-# ---------------------------------------------------------------------------
-
-LOOPING_WORKER = '''
-"""Looping test daemon: announces itself via ready_<pid>.json, optionally spawns a grandchild."""
+TREE_WORKER = """\
 import json
 import os
 import subprocess
 import sys
 import time
-from pathlib import Path
 
-_NO_WINDOW = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
-SLEEP_LOOP = """
-import time
+grandchild = subprocess.Popen(
+    [sys.executable, "-c", "import time; time.sleep(600)"],
+    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    encoding="utf-8",
+)
+out_path = sys.argv[1]
+tmp_path = out_path + ".tmp"
+with open(tmp_path, "w", encoding="utf-8") as fh:
+    json.dump({"worker": os.getpid(), "grandchild": grandchild.pid}, fh)
+    fh.flush()
+    os.fsync(fh.fileno())
+os.replace(tmp_path, out_path)
 while True:
-    time.sleep(0.1)
+    time.sleep(0.2)
 """
 
-
-def write_json_atomic(path: Path, payload: dict) -> None:
-    tmp = path.with_name(path.name + ".tmp")
-    with open(tmp, "w", encoding="utf-8") as fh:
-        json.dump(payload, fh)
-    os.replace(tmp, path)
-
-
-def console_info() -> dict:
-    if os.name != "nt":
-        return {}
-    import ctypes
-    from ctypes import wintypes
-
-    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    kernel32.GetConsoleWindow.argtypes = []
-    kernel32.GetConsoleWindow.restype = ctypes.c_void_p
-    kernel32.GetConsoleProcessList.argtypes = [ctypes.POINTER(wintypes.DWORD), wintypes.DWORD]
-    kernel32.GetConsoleProcessList.restype = wintypes.DWORD
-    buf = (wintypes.DWORD * 16)()
-    count = kernel32.GetConsoleProcessList(buf, 16)
-    return {"hwnd": kernel32.GetConsoleWindow() or 0, "console_procs": int(count)}
-
-
-def main() -> None:
-    ready_dir = Path(sys.argv[1])
-    ready_dir.mkdir(parents=True, exist_ok=True)
-    pid = os.getpid()
-    write_json_atomic(ready_dir / f"ready_{pid}.json", {"pid": pid, **console_info()})
-    if "--grandchild" in sys.argv[2:]:
-        child = subprocess.Popen(
-            [sys.executable, "-c", SLEEP_LOOP],
-            creationflags=_NO_WINDOW,
-            encoding="utf-8",
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        write_json_atomic(ready_dir / f"grandchild_{pid}.json", {"pid": child.pid})
-    while True:
-        time.sleep(0.1)
-
-
-main()
-'''
-
-CRASHING_WORKER = '''
-"""Crash-looping test daemon: logs its PID, then exits immediately with code 42."""
-import os
+OFFLINE_HARNESS = """\
 import sys
 
-with open(sys.argv[1], "a", encoding="utf-8") as fh:
-    print(os.getpid(), file=fh)
-sys.exit(42)
-'''
+NET_EVENTS = []
 
-SLOW_CRASH_WORKER = '''
-"""Slow-crashing test daemon: logs its PID, lives 0.6 s, then exits with code 3."""
-import os
-import sys
-import time
 
-with open(sys.argv[1], "a", encoding="utf-8") as fh:
-    print(os.getpid(), file=fh)
-time.sleep(0.6)
-sys.exit(3)
-'''
+def _audit(event, args):
+    if event.startswith("socket.") or event.startswith("urllib.Request"):
+        NET_EVENTS.append(event)
 
-CPU_BURN = '''
-import time
-end = time.monotonic() + 20.0
-counter = 0
-while time.monotonic() < end:
-    counter += 1
-'''
 
-SUPERVISOR_HARNESS = '''
-"""Supervisor harness: runs DaemonWatchdog until it is signalled; always terminates it."""
+sys.addaudithook(_audit)
+
 import importlib.util
-import sys
+import json
 import time
-
-module_path, db_path, ready_dir, worker = sys.argv[1:5]
-spec = importlib.util.spec_from_file_location("_cochem_v2_watchdog_supervisor", module_path)
-module = importlib.util.module_from_spec(spec)
-sys.modules[spec.name] = module
-spec.loader.exec_module(module)
-
-wd = module.DaemonWatchdog(
-    target_cmd=[sys.executable, worker, ready_dir, "--grandchild"],
-    db_path=db_path,
-    poll_interval=0.05,
-)
-wd.spawn_daemon()
-try:
-    while wd.poll_cycle() is not False:
-        time.sleep(0.05)
-finally:
-    wd.terminate()
-'''
-
-OFFLINE_HARNESS = '''
-"""Offline harness: audit-hook guarded run of watchdog.py and cochem_idle_sidecar.py."""
-import sys
-
-NETWORK_EVENTS = frozenset({
-    "socket.connect", "socket.getaddrinfo", "socket.gethostbyname",
-    "socket.gethostbyname_ex", "socket.gethostbyaddr", "socket.sendto", "socket.sendmsg",
-})
-network_events: list = []
-popen_records: list = []
+from pathlib import Path
 
 
-def audit(event: str, args: tuple) -> None:
-    if event in NETWORK_EVENTS:
-        network_events.append([event, repr(args)])
-        raise RuntimeError(f"network access forbidden in offline harness: {event}")
-    if event == "subprocess.Popen":
-        popen_records.append(repr((args[0], args[1])))
-
-
-sys.addaudithook(audit)
-
-import importlib.util  # noqa: E402
-import json  # noqa: E402
-import os  # noqa: E402
-import time  # noqa: E402
-from pathlib import Path  # noqa: E402
-
-
-def load(name: str, path: str):
+def _load(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     sys.modules[name] = module
@@ -341,82 +132,71 @@ def load(name: str, path: str):
     return module
 
 
-def wait_until(predicate, timeout: float = 15.0, step: float = 0.05) -> bool:
-    deadline = time.monotonic() + timeout
-    while time.monotonic() < deadline:
-        if predicate():
-            return True
-        time.sleep(step)
-    return predicate()
+wd_mod = _load("cochem_v2_watchdog_offline", sys.argv[1])
+sc_mod = _load("cochem_v2_idle_sidecar_offline", sys.argv[2])
+work = Path(sys.argv[3])
+
+wdb = wd_mod.WatchdogDB(work / "offline_wd.db")
+wdb.init_schema()
+wdb.log_event("offline_daemon", "DAEMON_CRASHED", 1, "offline harness")
+events = wdb.get_events(event_type="DAEMON_CRASHED", limit=5)
+if len(events) != 1:
+    raise SystemExit(f"expected 1 DAEMON_CRASHED event, got {events!r}")
+
+wd = wd_mod.DaemonWatchdog(
+    [sys.executable, "-c", "import time; time.sleep(30)"],
+    work / "offline_wd.db",
+    crash_threshold=3,
+    window_seconds=30.0,
+    poll_interval=0.05,
+)
+try:
+    wd.spawn_daemon()
+    for _ in range(3):
+        wd.poll_cycle()
+        time.sleep(0.05)
+finally:
+    wd.terminate()
+
+sdb = sc_mod.IdleSidecarDB(work / "offline_sidecar.db", daily_budget=1.0)
+sdb.init_schema()
+sdb.set_quota_status("QUOTA_OK")
+sdb.record_spend("t", "agent", 0.01)
+engine = sc_mod.HeavyTaskPolicyEngine(sdb, sc_mod.HardwareMonitor(100.0))
+allowed = engine.can_execute_heavy(estimated_cost=0.1)
+print(json.dumps({"net_events": NET_EVENTS, "allowed": allowed}))
+sys.stdout.flush()
+"""
+
+# --------------------------------------------------------------------------- generic helpers
+
+_MODULE_CACHE: dict[str, ModuleType] = {}
 
 
-def main() -> None:
-    wd_path, side_path, work_dir, worker = sys.argv[1:5]
-    work = Path(work_dir)
-    ready_dir = work / "ready"
-    ready_dir.mkdir(parents=True, exist_ok=True)
-    probe_db = work / "offline_probe.db"
-    daemon_db = work / "offline_daemon.db"
-    side_db = work / "offline_sidecar.db"
-    results: dict = {}
+def _load_module(unique_name: str, path: Path) -> ModuleType:
+    """Import ``path`` under ``unique_name`` (never via sys.path, so pip packages cannot shadow it)."""
+    if unique_name in _MODULE_CACHE:
+        return _MODULE_CACHE[unique_name]
+    assert path.is_file(), f"target module missing: {path}"
+    spec = importlib.util.spec_from_file_location(unique_name, path)
+    assert spec is not None and spec.loader is not None, f"cannot build import spec for {path}"
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[unique_name] = module
     try:
-        wd_mod = load("_cochem_v2_watchdog_offline", wd_path)
-        side_mod = load("_cochem_v2_sidecar_offline", side_path)
-
-        wdb = wd_mod.WatchdogDB(probe_db)
-        wdb.init_schema()
-        wdb.log_event("kanban_worker", "OFFLINE_PROBE", pid=os.getpid(), details="offline")
-        results["probe_rows"] = [
-            {"event_type": r.get("event_type"), "daemon_name": r.get("daemon_name"), "pid": r.get("pid")}
-            for r in wdb.get_events(event_type="OFFLINE_PROBE")
-        ]
-
-        wd = wd_mod.DaemonWatchdog(
-            target_cmd=[sys.executable, worker, str(ready_dir)],
-            db_path=daemon_db,
-            poll_interval=0.05,
-        )
-        events_db = wd_mod.WatchdogDB(daemon_db)
-        try:
-            proc = wd.spawn_daemon()
-            results["worker_pid"] = proc.pid
-            results["worker_ready"] = wait_until(lambda: (ready_dir / f"ready_{proc.pid}.json").exists())
-            results["first_poll_ok"] = bool(wd.poll_cycle())
-            proc.kill()
-            proc.wait(timeout=15)
-
-            def crash_and_restart() -> bool:
-                wd.poll_cycle()
-                crashed = events_db.get_events(event_type="DAEMON_CRASHED")
-                restarted = [
-                    r for t in ("DAEMON_RESTARTED", "RESTART") for r in events_db.get_events(event_type=t)
-                ]
-                return bool(crashed) and bool(restarted)
-
-            results["crash_and_restart"] = wait_until(crash_and_restart, timeout=15.0, step=0.1)
-            results["crashed_pids"] = [r.get("pid") for r in events_db.get_events(event_type="DAEMON_CRASHED")]
-        finally:
-            wd.terminate()
-
-        sdb = side_mod.IdleSidecarDB(side_db, daily_budget=25.0)
-        sdb.init_schema()
-        sdb.set_quota_status("QUOTA_OK")
-        engine = side_mod.HeavyTaskPolicyEngine(sdb, side_mod.HardwareMonitor(cpu_threshold=100.0))
-        results["can_execute_heavy"] = engine.can_execute_heavy(estimated_cost=0.10)
-    finally:
-        report = {
-            "harness_pid": os.getpid(),
-            "network_events": list(network_events),
-            "popen_records": list(popen_records),
-            "results": results,
-            "db_files": [str(p) for p in (probe_db, daemon_db, side_db)],
-        }
-        with open(work / "offline_report.json", "w", encoding="utf-8") as fh:
-            json.dump(report, fh, indent=2)
+        spec.loader.exec_module(module)
+    except BaseException:
+        sys.modules.pop(unique_name, None)
+        raise
+    _MODULE_CACHE[unique_name] = module
+    return module
 
 
-main()
-'''
+def _watchdog() -> ModuleType:
+    return _load_module("cochem_v2_watchdog_ut", WATCHDOG_PATH)
+
+
+def _sidecar() -> ModuleType:
+    return _load_module("cochem_v2_idle_sidecar_ut", SIDECAR_PATH)
 
 
 def _write_script(tmp_path: Path, name: str, body: str) -> Path:
@@ -426,765 +206,695 @@ def _write_script(tmp_path: Path, name: str, body: str) -> Path:
     return path
 
 
-def _read_json(path: Path) -> Optional[dict[str, Any]]:
-    try:
-        with open(path, "r", encoding="utf-8") as fh:
-            data = json.load(fh)
-    except (OSError, json.JSONDecodeError):
+def _cmd_token(value: Any) -> str:
+    """Render one --cmd token: POSIX-style path, double-quoted only if it contains a space."""
+    text = Path(value).as_posix() if isinstance(value, Path) else str(value)
+    return f'"{text}"' if " " in text else text
+
+
+def _cmd_string(*tokens: Any) -> str:
+    return " ".join(_cmd_token(t) for t in tokens)
+
+
+def _wait_until(predicate: Callable[[], Any], timeout: float, interval: float = 0.05) -> Any:
+    """Poll ``predicate`` until it returns a truthy value or ``timeout`` elapses; return the last value."""
+    deadline = time.monotonic() + timeout
+    while True:
+        value = predicate()
+        if value or time.monotonic() >= deadline:
+            return value
+        time.sleep(interval)
+
+
+def _read_pids(path: Path) -> list[int]:
+    """Return the pids of all complete (newline-terminated) lines in a pid log."""
+    if not path.exists():
+        return []
+    with open(path, encoding="utf-8") as fh:
+        text = fh.read()
+    return [int(line) for line in text.split("\n")[:-1] if line.strip().isdigit()]
+
+
+def _read_json(path: Path) -> Optional[dict]:
+    if not path.exists():
         return None
-    return data if isinstance(data, dict) else None
-
-
-def _json_pids(directory: Path, pattern: str) -> set[int]:
-    pids: set[int] = set()
-    for path in directory.glob(pattern):
-        data = _read_json(path)
-        if data is not None and isinstance(data.get("pid"), int):
-            pids.add(data["pid"])
-    return pids
-
-
-def _ready_pids(ready_dir: Path) -> set[int]:
-    """PIDs of every worker that announced itself in ``ready_dir``."""
-    return _json_pids(ready_dir, "ready_*.json")
-
-
-def _grandchild_pids(ready_dir: Path) -> set[int]:
-    """PIDs of every grandchild reported by a worker in ``ready_dir``."""
-    return _json_pids(ready_dir, "grandchild_*.json")
-
-
-def _all_spawned_pids(ready_dir: Path) -> list[Optional[int]]:
-    if not ready_dir.is_dir():
-        return []
-    return [*_ready_pids(ready_dir), *_grandchild_pids(ready_dir)]
-
-
-def _launch_log_pids(launch_log: Path) -> list[int]:
-    if not launch_log.exists():
-        return []
-    with open(launch_log, "r", encoding="utf-8") as fh:
-        return [int(token) for token in fh.read().split()]
-
-
-# ---------------------------------------------------------------------------
-# SQLite helpers (short-lived connections)
-# ---------------------------------------------------------------------------
-
-
-def _events(db_path: Path, event_types: Optional[tuple[str, ...]] = None) -> list[dict[str, Any]]:
-    """Rows of ``watchdog_events_v2``; a missing table counts as zero rows."""
-    conn = sqlite3.connect(str(db_path), timeout=10)
-    conn.row_factory = sqlite3.Row
     try:
-        rows = [dict(r) for r in conn.execute("SELECT * FROM watchdog_events_v2").fetchall()]
-    except sqlite3.OperationalError as exc:
-        if "no such table" in str(exc):
-            return []
-        raise
-    finally:
-        conn.close()
-    if event_types is None:
-        return rows
-    return [r for r in rows if r.get("event_type") in event_types]
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return None
 
 
-def _count(db_path: Path, event_types: tuple[str, ...]) -> int:
-    return len(_events(db_path, event_types))
-
-
-def _quota_status_column(db_path: Path) -> str:
-    conn = sqlite3.connect(str(db_path), timeout=10)
+def _is_running(pid: int) -> bool:
     try:
-        columns = {row[1] for row in conn.execute("PRAGMA table_info(quota_state)").fetchall()}
-    finally:
-        conn.close()
-    for candidate in ("status", "state"):
-        if candidate in columns:
-            return candidate
-    raise AssertionError(f"quota_state has neither a status nor a state column: {sorted(columns)}")
+        return psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
+    except psutil.Error:
+        return False
 
 
-def _external_quota_write(db_path: Path, status: str) -> None:
-    """Update the quota row from a separate connection, as another process would."""
-    column = _quota_status_column(db_path)
-    conn = sqlite3.connect(str(db_path), timeout=10)
+def _create_time(pid: int) -> Optional[float]:
     try:
-        cur = conn.execute(f"UPDATE quota_state SET {column} = ? WHERE provider = 'default'", (status,))
-        conn.commit()
-        assert cur.rowcount == 1, "external writer found no quota_state row for provider 'default'"
+        return psutil.Process(pid).create_time()
+    except psutil.Error:
+        return None
+
+
+def _is_gone(pid: int, created: Optional[float]) -> bool:
+    """True if ``pid`` no longer names the process first observed at ``created`` (or is a zombie)."""
+    try:
+        proc = psutil.Process(pid)
+        if created is not None and abs(proc.create_time() - created) > 0.01:
+            return True
+        return proc.status() == psutil.STATUS_ZOMBIE
+    except psutil.Error:
+        return True
+
+
+def _kill_tree(pid: int) -> None:
+    """Kill ``pid`` and all of its descendants (children first)."""
+    try:
+        parent = psutil.Process(pid)
+    except psutil.Error:
+        return
+    try:
+        procs = parent.children(recursive=True)
+    except psutil.Error:
+        procs = []
+    procs.append(parent)
+    for proc in procs:
+        try:
+            proc.kill()
+        except psutil.Error:
+            pass
+    psutil.wait_procs(procs, timeout=5)
+
+
+def _kill_if_matches(pid: int, marker: str) -> bool:
+    """Kill the tree of ``pid`` only if its command line contains ``marker`` (guards against pid reuse)."""
+    try:
+        proc = psutil.Process(pid)
+        cmdline = " ".join(proc.cmdline())
+        if marker not in cmdline or proc.status() == psutil.STATUS_ZOMBIE:
+            return False
+    except psutil.Error:
+        return False
+    _kill_tree(pid)
+    return True
+
+
+def _db_rows(db: Path, sql: str, params: tuple = ()) -> list[tuple]:
+    conn = sqlite3.connect(str(db), timeout=5)
+    try:
+        return conn.execute(sql, params).fetchall()
     finally:
         conn.close()
 
 
-# ---------------------------------------------------------------------------
-# AST helpers
-# ---------------------------------------------------------------------------
+def _try_db_rows(db: Path, sql: str, params: tuple = ()) -> Optional[list[tuple]]:
+    """Like :func:`_db_rows` but returns None while the DB/table does not exist yet or is locked."""
+    if not db.exists():
+        return None
+    try:
+        return _db_rows(db, sql, params)
+    except sqlite3.OperationalError:
+        return None
+
+
+def _assert_utc_iso(value: Any, context: str) -> datetime:
+    assert isinstance(value, str), f"{context}: timestamp must be a str, got {value!r}"
+    parsed = datetime.fromisoformat(value)
+    assert parsed.tzinfo is not None, f"{context}: timestamp {value!r} is not timezone-aware"
+    assert parsed.utcoffset() == timedelta(0), f"{context}: timestamp {value!r} is not UTC"
+    return parsed
+
+
+class _WatchdogCli:
+    """Runs ``watchdog.py`` as a real CLI process with stdout/stderr captured to files."""
+
+    def __init__(self, tmp_path: Path, tag: str, cmd_string: str, db: Path) -> None:
+        self.out_path = tmp_path / f"{tag}_stdout.txt"
+        self.err_path = tmp_path / f"{tag}_stderr.txt"
+        self._out = open(self.out_path, "w", encoding="utf-8")
+        self._err = open(self.err_path, "w", encoding="utf-8")
+        self.proc = subprocess.Popen(
+            [sys.executable, str(WATCHDOG_PATH), "--cmd", cmd_string, "--db", str(db),
+             "--threshold", "3", "--poll", "0.1"],
+            cwd=str(tmp_path),
+            stdin=subprocess.DEVNULL,
+            stdout=self._out,
+            stderr=self._err,
+            creationflags=_NO_WINDOW,
+            encoding="utf-8",
+        )
+
+    def output(self) -> str:
+        for fh in (self._out, self._err):
+            if not fh.closed:
+                fh.flush()
+        with open(self.out_path, encoding="utf-8", errors="replace") as fh:
+            out = fh.read()
+        with open(self.err_path, encoding="utf-8", errors="replace") as fh:
+            err = fh.read()
+        return f"[watchdog rc={self.proc.poll()}]\n--- stdout ---\n{out}\n--- stderr ---\n{err}"
+
+    def exited(self) -> bool:
+        return self.proc.poll() is not None
+
+    def close(self) -> None:
+        _kill_tree(self.proc.pid)
+        try:
+            self.proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            self.proc.kill()
+            self.proc.wait(timeout=10)
+        self._out.close()
+        self._err.close()
+
+
+# --------------------------------------------------------------------------- AST helpers
 
 
 def _parse(path: Path) -> ast.Module:
-    with open(path, "r", encoding="utf-8") as fh:
+    with open(path, encoding="utf-8") as fh:
         return ast.parse(fh.read(), filename=str(path))
 
 
-def _subprocess_calls(tree: ast.Module) -> list[tuple[str, ast.Call]]:
-    """Every call to a subprocess spawning function, as (function name, node)."""
-    module_aliases: set[str] = {"subprocess"}
-    direct_names: dict[str, str] = {}
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            for alias in node.names:
-                if alias.name == "subprocess":
-                    module_aliases.add(alias.asname or "subprocess")
-        elif isinstance(node, ast.ImportFrom) and node.module == "subprocess":
-            for alias in node.names:
-                if alias.name in SUBPROCESS_FUNCS:
-                    direct_names[alias.asname or alias.name] = alias.name
-
-    calls: list[tuple[str, ast.Call]] = []
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
-        func = node.func
-        if (
-            isinstance(func, ast.Attribute)
-            and func.attr in SUBPROCESS_FUNCS
-            and isinstance(func.value, ast.Name)
-            and func.value.id in module_aliases
-        ):
-            calls.append((func.attr, node))
-        elif isinstance(func, ast.Name) and func.id in direct_names:
-            calls.append((direct_names[func.id], node))
-    return calls
-
-
-def _mentions_create_no_window(node: ast.AST) -> bool:
-    return any(
-        (isinstance(n, ast.Name) and n.id == "CREATE_NO_WINDOW")
-        or (isinstance(n, ast.Attribute) and n.attr == "CREATE_NO_WINDOW")
-        for n in ast.walk(node)
+def _is_subprocess_create_no_window(node: ast.expr) -> bool:
+    return (
+        isinstance(node, ast.Attribute)
+        and node.attr == "CREATE_NO_WINDOW"
+        and isinstance(node.value, ast.Name)
+        and node.value.id == "subprocess"
     )
 
 
-def _forbidden_process_calls(tree: ast.Module) -> list[str]:
-    """os.system/popen/spawn*/exec* and asyncio subprocess calls, as 'line: name'."""
-    os_aliases: set[str] = {"os"}
-    direct_os: dict[str, str] = {}
+def _is_os_forbidden(attr: str) -> bool:
+    return attr in {"system", "popen"} or attr.startswith(("spawn", "exec"))
+
+
+def _subprocess_violations(path: Path) -> tuple[list[str], int]:
+    """Return (violations, number of subprocess.Popen calls) for the process-spawning AST rule."""
+    tree = _parse(path)
+    module_aliases = {"subprocess"}
+    os_aliases = {"os"}
+    asyncio_aliases = {"asyncio"}
+    from_subprocess: dict[str, str] = {}
+    violations: list[str] = []
+
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name == "os":
-                    os_aliases.add(alias.asname or "os")
-        elif isinstance(node, ast.ImportFrom) and node.module == "os":
+                bound = alias.asname or alias.name
+                if alias.name == "subprocess":
+                    module_aliases.add(bound)
+                elif alias.name == "os":
+                    os_aliases.add(bound)
+                elif alias.name == "asyncio":
+                    asyncio_aliases.add(bound)
+        elif isinstance(node, ast.ImportFrom):
             for alias in node.names:
-                direct_os[alias.asname or alias.name] = alias.name
+                bound = alias.asname or alias.name
+                if node.module == "subprocess" and alias.name in SUBPROCESS_FUNCS:
+                    from_subprocess[bound] = alias.name
+                if node.module == "os" and _is_os_forbidden(alias.name):
+                    violations.append(f"line {node.lineno}: forbidden import os.{alias.name}")
+                if node.module == "asyncio" and alias.name.startswith("create_subprocess_"):
+                    violations.append(f"line {node.lineno}: forbidden import asyncio.{alias.name}")
+                if alias.name == "DETACHED_PROCESS":
+                    violations.append(f"line {node.lineno}: DETACHED_PROCESS imported")
 
-    def _is_forbidden_os(name: str) -> bool:
-        return name in FORBIDDEN_OS_FUNCS or name.startswith(FORBIDDEN_OS_PREFIXES)
-
-    hits: list[str] = []
+    popen_calls = 0
     for node in ast.walk(tree):
+        if (isinstance(node, ast.Name) and node.id == "DETACHED_PROCESS") or (
+            isinstance(node, ast.Attribute) and node.attr == "DETACHED_PROCESS"
+        ):
+            violations.append(f"line {node.lineno}: DETACHED_PROCESS referenced")
         if not isinstance(node, ast.Call):
             continue
         func = node.func
-        if isinstance(func, ast.Attribute):
-            if isinstance(func.value, ast.Name) and func.value.id in os_aliases and _is_forbidden_os(func.attr):
-                hits.append(f"{node.lineno}: os.{func.attr}")
-            if func.attr in FORBIDDEN_ASYNC_FUNCS:
-                hits.append(f"{node.lineno}: {func.attr}")
-        elif isinstance(func, ast.Name):
-            if func.id in direct_os and _is_forbidden_os(direct_os[func.id]):
-                hits.append(f"{node.lineno}: os.{direct_os[func.id]}")
-            if func.id in FORBIDDEN_ASYNC_FUNCS:
-                hits.append(f"{node.lineno}: {func.id}")
-    return hits
+        name: Optional[str] = None
+        if isinstance(func, ast.Attribute) and isinstance(func.value, ast.Name):
+            owner = func.value.id
+            if owner in module_aliases and func.attr in SUBPROCESS_FUNCS:
+                name = func.attr
+            elif owner in os_aliases and _is_os_forbidden(func.attr):
+                violations.append(f"line {node.lineno}: forbidden call os.{func.attr}")
+            elif owner in asyncio_aliases and func.attr.startswith("create_subprocess_"):
+                violations.append(f"line {node.lineno}: forbidden call asyncio.{func.attr}")
+        elif isinstance(func, ast.Name) and func.id in from_subprocess:
+            name = from_subprocess[func.id]
+        if name is None:
+            continue
+        where = f"line {node.lineno}: subprocess.{name}"
+        if name in BANNED_SUBPROCESS_FUNCS:
+            violations.append(f"{where} is forbidden outright")
+            continue
+        if name == "Popen":
+            popen_calls += 1
+        if any(kw.arg is None for kw in node.keywords):
+            violations.append(f"{where} uses a **kwargs splat")
+        keywords = {kw.arg: kw.value for kw in node.keywords if kw.arg is not None}
+        flags = keywords.get("creationflags")
+        if flags is None:
+            violations.append(f"{where} lacks creationflags=")
+        elif not _is_subprocess_create_no_window(flags):
+            violations.append(
+                f"{where} creationflags must be literally subprocess.CREATE_NO_WINDOW, got {ast.unparse(flags)}"
+            )
+        enc = keywords.get("encoding")
+        if not (isinstance(enc, ast.Constant) and isinstance(enc.value, str)
+                and enc.value.lower().replace("_", "-") in {"utf-8", "utf8"}):
+            got = ast.unparse(enc) if enc is not None else None
+            violations.append(f'{where} lacks encoding="utf-8" (got {got})')
+    return violations, popen_calls
 
 
-def _module_assignment(tree: ast.Module, name: str) -> Optional[ast.expr]:
-    for node in tree.body:
-        if isinstance(node, ast.Assign):
-            for tgt in node.targets:
-                if isinstance(tgt, ast.Name) and tgt.id == name:
-                    return node.value
-        elif isinstance(node, ast.AnnAssign):
-            if isinstance(node.target, ast.Name) and node.target.id == name and node.value is not None:
-                return node.value
-    return None
+def _docstring_ids(tree: ast.Module) -> set[int]:
+    ids: set[int] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+            body = node.body
+            if body and isinstance(body[0], ast.Expr) and isinstance(body[0].value, ast.Constant) \
+                    and isinstance(body[0].value.value, str):
+                ids.add(id(body[0].value))
+    return ids
 
 
-def _string_constants(node: ast.AST) -> list[str]:
-    return [n.value for n in ast.walk(node) if isinstance(n, ast.Constant) and isinstance(n.value, str)]
+def _module_level_assignments(tree: ast.Module) -> list[tuple[str, ast.expr, int]]:
+    """(target name, value, line) for module-level assignments, including inside top-level if/try blocks."""
+    found: list[tuple[str, ast.expr, int]] = []
+
+    def visit(stmts: list[ast.stmt]) -> None:
+        for stmt in stmts:
+            if isinstance(stmt, ast.Assign):
+                for target in stmt.targets:
+                    if isinstance(target, ast.Name):
+                        found.append((target.id, stmt.value, stmt.lineno))
+            elif isinstance(stmt, ast.AnnAssign) and isinstance(stmt.target, ast.Name) and stmt.value is not None:
+                found.append((stmt.target.id, stmt.value, stmt.lineno))
+            elif isinstance(stmt, ast.If):
+                visit(stmt.body)
+                visit(stmt.orelse)
+            elif isinstance(stmt, ast.Try):
+                visit(stmt.body)
+                visit(stmt.orelse)
+                visit(stmt.finalbody)
+                for handler in stmt.handlers:
+                    visit(handler.body)
+
+    visit(tree.body)
+    return found
 
 
-def _flatten_strings(value: Any) -> list[str]:
-    if isinstance(value, str):
-        return [value]
-    if isinstance(value, dict):
-        out: list[str] = []
-        for key, sub in value.items():
-            out.extend(_flatten_strings(key))
-            out.extend(_flatten_strings(sub))
-        return out
-    if isinstance(value, (list, tuple, set, frozenset)):
-        out = []
-        for sub in value:
-            out.extend(_flatten_strings(sub))
-        return out
-    return []
-
-
-def _is_sentinel_node(node: ast.expr) -> bool:
+def _is_halt_node(node: ast.expr) -> bool:
     if isinstance(node, ast.Name) and node.id == "HALT_SENTINEL":
         return True
-    if isinstance(node, ast.Tuple):
-        return [getattr(e, "value", None) for e in node.elts] == list(HALT_SENTINEL)
-    return False
+    return (
+        isinstance(node, ast.Tuple)
+        and len(node.elts) == 2
+        and all(isinstance(e, ast.Constant) for e in node.elts)
+        and tuple(e.value for e in node.elts) == HALT
+    )
 
 
-def _assert_chain_terminates(name: str, chain: Any) -> None:
-    """Recursively assert a runtime chain (or dict of chains) ends in HALT_SENTINEL, without ollama."""
-    if isinstance(chain, dict):
-        for key, sub in chain.items():
-            _assert_chain_terminates(f"{name}[{key!r}]", sub)
-        return
-    lowered = [s.lower() for s in _flatten_strings(chain)]
-    assert not any("ollama" in s for s in lowered), f"{name} routes to ollama: {chain!r}"
-    if isinstance(chain, (list, tuple)) and chain:
-        if tuple(chain) == HALT_SENTINEL:
-            return
-        last = chain[-1]
-        assert isinstance(last, (list, tuple)) and tuple(last) == HALT_SENTINEL, (
-            f"{name} fallback chain must end in {HALT_SENTINEL}, got {last!r}"
-        )
+def _is_forbidden_module(module: str) -> bool:
+    return any(module == f or module.startswith(f + ".") for f in FORBIDDEN_IMPORTS)
 
 
-def _forbidden_imports(tree: ast.Module) -> list[str]:
-    def _hit(name: str) -> bool:
-        return name in FORBIDDEN_IMPORTS or name.split(".")[0] in FORBIDDEN_IMPORTS
-
-    hits: list[str] = []
+def _offline_violations(path: Path) -> list[str]:
+    """Forbidden network imports, stray 'ollama' strings and fallback chains not ending in HALT_SENTINEL."""
+    tree = _parse(path)
+    violations: list[str] = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
-            hits.extend(f"{node.lineno}: {a.name}" for a in node.names if _hit(a.name))
-        elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
-            if _hit(node.module):
-                hits.append(f"{node.lineno}: {node.module}")
-            hits.extend(
-                f"{node.lineno}: {node.module}.{a.name}"
-                for a in node.names
-                if f"{node.module}.{a.name}" in FORBIDDEN_IMPORTS
-            )
-    return hits
+            violations.extend(f"line {node.lineno}: import {a.name}" for a in node.names
+                              if _is_forbidden_module(a.name))
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            if _is_forbidden_module(node.module):
+                violations.append(f"line {node.lineno}: from {node.module} import ...")
+            else:
+                violations.extend(f"line {node.lineno}: from {node.module} import {a.name}" for a in node.names
+                                  if _is_forbidden_module(f"{node.module}.{a.name}"))
+        elif isinstance(node, ast.Call) and node.args and isinstance(node.args[0], ast.Constant) \
+                and isinstance(node.args[0].value, str):
+            func = node.func
+            fname = func.id if isinstance(func, ast.Name) else (func.attr if isinstance(func, ast.Attribute) else "")
+            if fname in {"__import__", "import_module"} and _is_forbidden_module(node.args[0].value):
+                violations.append(f"line {node.lineno}: dynamic import of {node.args[0].value}")
+
+    assignments = _module_level_assignments(tree)
+    allowed = _docstring_ids(tree)
+    for name, value, _line in assignments:
+        if name == "FORBIDDEN_PROVIDERS":
+            allowed.update(id(n) for n in ast.walk(value))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Constant) and isinstance(node.value, str) and "ollama" in node.value.lower() \
+                and id(node) not in allowed:
+            violations.append(f"line {node.lineno}: 'ollama' outside FORBIDDEN_PROVIDERS: {node.value!r}")
+
+    for name, value, line in assignments:
+        if not CHAIN_NAME_RE.search(name) or not isinstance(value, (ast.List, ast.Tuple)):
+            continue
+        if not value.elts or not _is_halt_node(value.elts[-1]):
+            violations.append(f"line {line}: chain {name} does not end with HALT_SENTINEL / ('halt', 'graceful')")
+        if any(isinstance(n, ast.Constant) and isinstance(n.value, str) and "ollama" in n.value.lower()
+               for n in ast.walk(value)):
+            violations.append(f"line {line}: chain {name} mentions ollama")
+    return violations
 
 
-# ---------------------------------------------------------------------------
-# [T1] AC1 - crash detection and restart
-# ---------------------------------------------------------------------------
+# =========================================================================== AC1
 
 
 def test_watchdog_detects_crash_and_restarts(tmp_path: Path) -> None:
-    wd_mod = _get_watchdog()
-
-    worker = _write_script(tmp_path, "kanban_worker_loop.py", LOOPING_WORKER)
-    ready_dir = tmp_path / "ready"
-    ready_dir.mkdir()
-    db_path = tmp_path / "watchdog_v2.db"
-
-    wd = wd_mod.DaemonWatchdog(
-        target_cmd=[sys.executable, str(worker), str(ready_dir)],
-        db_path=db_path,
-        crash_threshold=3,
-        window_seconds=30,
-        poll_interval=0.05,
-        daemon_name="kanban_worker",
-    )
+    """AC1: a killed daemon is logged as DAEMON_CRASHED and restarted; events are UTC, WAL, indexed."""
+    worker = _write_script(tmp_path, "long_worker.py", LONG_WORKER)
+    pid_log = tmp_path / "long_pids.log"
+    db = tmp_path / "watchdog_cli.db"
+    cli = _WatchdogCli(tmp_path, "ac1", _cmd_string(Path(sys.executable), worker, pid_log), db)
+    crash_sql = "SELECT id FROM watchdog_events_v2 WHERE event_type='DAEMON_CRASHED' AND pid=?"
+    restart_sql = "SELECT id FROM watchdog_events_v2 WHERE event_type IN (?, ?) AND pid=?"
     try:
-        # 1. Spawn.
-        proc = wd.spawn_daemon()
-        assert isinstance(proc, subprocess.Popen), "spawn_daemon must return subprocess.Popen"
-        initial_pid = proc.pid
-        assert _wait_until(lambda: (ready_dir / f"ready_{initial_pid}.json").exists()), (
-            "worker never wrote its ready file"
-        )
-        assert _pid_alive(initial_pid)
+        def first_alive() -> Optional[int]:
+            pids = _read_pids(pid_log)
+            return pids[0] if pids and _is_running(pids[0]) else None
 
-        # 2. Healthy phase: no false crash detection, no respawn.
-        for _ in range(3):
-            assert wd.poll_cycle(), "poll_cycle must be truthy while the daemon is healthy"
-            time.sleep(0.05)
-        assert _count(db_path, ("DAEMON_CRASHED",)) == 0, "healthy daemon reported as crashed"
-        assert _ready_pids(ready_dir) == {initial_pid}, "watchdog spawned extra workers while healthy"
+        _wait_until(lambda: first_alive() or cli.exited(), 20)
+        first_pid = first_alive()
+        assert first_pid is not None, f"watchdog never started a live worker.\n{cli.output()}"
 
-        # 3. Crash the daemon externally.
-        proc.kill()
-        proc.wait(timeout=15)
+        psutil.Process(first_pid).kill()
 
-        def _crash_and_restart_logged() -> bool:
-            wd.poll_cycle()
-            return _count(db_path, ("DAEMON_CRASHED",)) >= 1 and _count(db_path, RESTART_EVENT_TYPES) >= 1
+        def second_alive() -> Optional[int]:
+            return next((p for p in _read_pids(pid_log) if p != first_pid and _is_running(p)), None)
 
-        assert _wait_until(_crash_and_restart_logged, timeout=15.0, step=0.05), (
-            "watchdog did not log DAEMON_CRASHED + restart events"
-        )
+        _wait_until(lambda: second_alive() or cli.exited(), 20)
+        second_pid = second_alive()
+        assert second_pid is not None, f"worker {first_pid} was not restarted.\n{cli.output()}"
+        assert not cli.exited(), f"watchdog exited after a single crash.\n{cli.output()}"
 
-        # 4. Crash row, restart row, and a genuinely new running worker.
-        crashed = _events(db_path, ("DAEMON_CRASHED",))
-        assert any(r.get("pid") == initial_pid and r.get("daemon_name") == "kanban_worker" for r in crashed), (
-            f"no DAEMON_CRASHED row for pid {initial_pid} / kanban_worker: {crashed!r}"
-        )
-        assert _events(db_path, RESTART_EVENT_TYPES), "no DAEMON_RESTARTED/RESTART row"
+        _wait_until(lambda: _try_db_rows(db, crash_sql, (first_pid,))
+                    and _try_db_rows(db, restart_sql, (*RESTART_EVENTS, second_pid)), 10)
+        out = cli.output()
 
-        assert _wait_until(lambda: len(_ready_pids(ready_dir) - {initial_pid}) >= 1), (
-            "restarted worker never wrote its ready file"
-        )
-        new_pids = _ready_pids(ready_dir) - {initial_pid}
-        assert len(new_pids) == 1, f"expected exactly one restarted worker, got {new_pids}"
-        second_pid = next(iter(new_pids))
-        assert second_pid != initial_pid
-        assert _pid_alive(second_pid), "restarted worker is not running"
+        journal = _db_rows(db, "PRAGMA journal_mode")[0][0]
+        assert str(journal).lower() == "wal", f"journal_mode is {journal!r}, expected wal.\n{out}"
+        columns = {row[1] for row in _db_rows(db, "PRAGMA table_info(watchdog_events_v2)")}
+        required = {"id", "daemon_name", "event_type", "pid", "details", "timestamp"}
+        assert required <= columns, f"watchdog_events_v2 missing columns {sorted(required - columns)}.\n{out}"
 
-        # 5. Second crash: still below the breaker threshold.
-        os.kill(second_pid, signal.SIGTERM)
-        poll_results: list[bool] = []
+        crash_ids = [r[0] for r in _db_rows(db, crash_sql, (first_pid,))]
+        assert crash_ids, f"no DAEMON_CRASHED row for pid {first_pid}.\n{out}"
+        restart_ids = [r[0] for r in _db_rows(db, restart_sql, (*RESTART_EVENTS, second_pid))]
+        assert restart_ids, f"no DAEMON_RESTARTED/RESTART row for pid {second_pid}.\n{out}"
+        assert max(restart_ids) > min(crash_ids), f"restart row must be logged after the crash row.\n{out}"
 
-        def _second_restart() -> bool:
-            poll_results.append(bool(wd.poll_cycle()))
-            return (
-                _count(db_path, ("DAEMON_CRASHED",)) >= 2
-                and len(_ready_pids(ready_dir) - {initial_pid, second_pid}) >= 1
-            )
+        now = datetime.now(timezone.utc)
+        for row_id, ts in _db_rows(db, "SELECT id, timestamp FROM watchdog_events_v2"):
+            parsed = _assert_utc_iso(ts, f"watchdog_events_v2 row {row_id}")
+            assert abs(now - parsed) < timedelta(minutes=5), f"row {row_id} timestamp {ts!r} not recent"
 
-        assert _wait_until(_second_restart, timeout=15.0, step=0.05), (
-            "watchdog did not recover from the second crash"
-        )
-        assert all(poll_results), "poll_cycle returned falsy below the crash threshold"
-        third_pids = _ready_pids(ready_dir) - {initial_pid, second_pid}
-        assert len(third_pids) == 1, f"expected exactly one third worker, got {third_pids}"
-        third_pid = next(iter(third_pids))
-        assert _pid_alive(third_pid), "third worker is not running"
-        assert _count(db_path, ("SPAWN_STORM_DETECTED",)) == 0, "2 crashes < threshold 3 must not trip"
-        assert wd.poll_cycle(), "watchdog must keep supervising after 2 crashes"
-
-        # 6. Public API reflects the same rows.
-        api_rows = wd_mod.WatchdogDB(db_path).get_events(event_type="DAEMON_CRASHED")
-        assert isinstance(api_rows, list) and len(api_rows) >= 2
-        assert all(isinstance(r, dict) for r in api_rows)
-        assert any(r.get("pid") == initial_pid for r in api_rows)
+        index = _db_rows(db, "SELECT name FROM sqlite_master WHERE type='index' AND name='ix_watchdog_events_v2_type'")
+        assert index, f"index ix_watchdog_events_v2_type missing.\n{out}"
     finally:
-        wd.terminate()
-        _force_kill_all(_all_spawned_pids(ready_dir))
+        cli.close()
+        for pid in _read_pids(pid_log):
+            _kill_if_matches(pid, worker.name)
+
+    # b) in-process API
+    wd_mod = _watchdog()
+    api = wd_mod.WatchdogDB(tmp_path / "api.db")
+    api.init_schema()
+    api.log_event("kanban_worker", "DAEMON_CRASHED", 4242, "exit code 9")
+    for i in range(5):
+        api.log_event("kanban_worker", "DAEMON_RESTARTED", 5000 + i)
+
+    crashed = api.get_events(event_type="DAEMON_CRASHED")
+    assert len(crashed) == 1, f"expected one DAEMON_CRASHED event, got {crashed!r}"
+    event = crashed[0]
+    assert isinstance(event, dict)
+    assert event["pid"] == 4242
+    assert event["details"] == "exit code 9", f"4th positional argument must be details: {event!r}"
+    assert event["daemon_name"] == "kanban_worker"
+    assert "timestamp" in event, f"event dict lacks 'timestamp': {event!r}"
+    _assert_utc_iso(event["timestamp"], "get_events")
+
+    limited = api.get_events(limit=3)
+    assert len(limited) == 3 and all(isinstance(e, dict) for e in limited), limited
+    assert len(api.get_events(event_type="DAEMON_RESTARTED", limit=2)) == 2
 
 
-# ---------------------------------------------------------------------------
-# [T2] AC2 - spawn storm circuit breaker
-# ---------------------------------------------------------------------------
+# =========================================================================== AC2
 
 
 def test_watchdog_spawn_storm_circuit_breaker(tmp_path: Path) -> None:
-    wd_mod = _get_watchdog()
+    """AC2: 3 crashes inside the window trip the breaker; no further respawns happen."""
+    worker = _write_script(tmp_path, "crash_worker.py", CRASH_WORKER)
 
-    # Part A: rapid crash loop trips the breaker and stops respawning.
-    crashing = _write_script(tmp_path, "crashing_worker.py", CRASHING_WORKER)
-    storm_log = tmp_path / "storm_launches.log"
-    storm_db = tmp_path / "watchdog_storm.db"
-    storm_wd = wd_mod.DaemonWatchdog(
-        target_cmd=[sys.executable, str(crashing), str(storm_log)],
-        db_path=storm_db,
-        crash_threshold=3,
-        window_seconds=10,
-        poll_interval=0.01,
-        daemon_name="kanban_worker",
-    )
+    # a) CLI
+    pid_log = tmp_path / "storm_cli_pids.log"
+    db = tmp_path / "storm_cli.db"
+    cli = _WatchdogCli(tmp_path, "ac2", _cmd_string(Path(sys.executable), worker, pid_log), db)
+    storm_sql = "SELECT id FROM watchdog_events_v2 WHERE event_type='SPAWN_STORM_DETECTED' ORDER BY id"
     try:
-        assert isinstance(storm_wd.spawn_daemon(), subprocess.Popen)
-        tripped = False
-        deadline = time.monotonic() + 30.0
+        _wait_until(lambda: _try_db_rows(db, storm_sql) or cli.exited(), 30, interval=0.1)
+        storm_rows = _try_db_rows(db, storm_sql)
+        assert storm_rows, f"no SPAWN_STORM_DETECTED event recorded.\n{cli.output()}"
+
+        spawns = len(_read_pids(pid_log))
+        time.sleep(2.0)
+        spawns_after = len(_read_pids(pid_log))
+        out = cli.output()
+        assert spawns_after == spawns, f"respawned after breaker tripped ({spawns} -> {spawns_after}).\n{out}"
+        assert 3 <= spawns <= 4, f"expected 3-4 spawns before the breaker, got {spawns}.\n{out}"
+        crash_ids = [r[0] for r in _db_rows(db, "SELECT id FROM watchdog_events_v2 WHERE event_type='DAEMON_CRASHED'")]
+        assert 3 <= len(crash_ids) <= 4, f"expected 3-4 DAEMON_CRASHED rows, got {len(crash_ids)}.\n{out}"
+        assert max(crash_ids) < storm_rows[0][0], f"crash rows must precede the storm row.\n{out}"
+    finally:
+        cli.close()
+        for pid in _read_pids(pid_log):
+            _kill_if_matches(pid, worker.name)
+
+    # b) in-process
+    wd_mod = _watchdog()
+    pid_log_b = tmp_path / "storm_api_pids.log"
+    db_b = tmp_path / "storm_api.db"
+    wd = wd_mod.DaemonWatchdog([sys.executable, str(worker), str(pid_log_b)], db_b,
+                               crash_threshold=3, window_seconds=30.0, poll_interval=0.05)
+    try:
+        wd.spawn_daemon()
+        result = True
+        deadline = time.monotonic() + 20
         while time.monotonic() < deadline:
-            if storm_wd.poll_cycle() is False:
-                tripped = True
+            result = wd.poll_cycle()
+            if result is False:
                 break
-            time.sleep(0.02)
-        assert tripped, "circuit breaker never tripped on a crash-looping worker"
-
-        storm_rows = _events(storm_db, ("SPAWN_STORM_DETECTED",))
-        assert any(r.get("daemon_name") == "kanban_worker" for r in storm_rows), (
-            f"SPAWN_STORM_DETECTED not logged for kanban_worker: {storm_rows!r}"
-        )
-        crashes = _count(storm_db, ("DAEMON_CRASHED",))
-        assert 3 <= crashes <= 4, f"breaker should trip after ~3 rapid crashes, saw {crashes}"
-        launches = _launch_log_pids(storm_log)
-        assert 3 <= len(launches) <= 4, f"expected 3-4 launches before tripping, saw {len(launches)}"
-        assert len(launches) == len(set(launches)), f"launch log has duplicate PIDs: {launches}"
-
-        restarts = _count(storm_db, RESTART_EVENT_TYPES)
-        for _ in range(10):
-            assert storm_wd.poll_cycle() is False, "breaker reset itself after tripping"
-            time.sleep(0.1)
-        assert len(_launch_log_pids(storm_log)) == len(launches), "watchdog respawned after the storm"
-        assert _count(storm_db, ("DAEMON_CRASHED",)) == crashes
-        assert _count(storm_db, RESTART_EVENT_TYPES) == restarts
-        assert _wait_until(lambda: not any(_pid_alive(p) for p in launches), timeout=5.0), (
-            "a crash-loop worker is still alive after the breaker tripped"
-        )
+            time.sleep(0.05)
+        assert result is False, "poll_cycle never returned False despite a crash loop"
+        count = len(_read_pids(pid_log_b))
+        assert wd.poll_cycle() is False, "a tripped breaker must stay tripped"
+        time.sleep(0.5)
+        assert len(_read_pids(pid_log_b)) == count, "poll_cycle spawned a worker after the breaker tripped"
+        assert wd_mod.WatchdogDB(db_b).get_events(event_type="SPAWN_STORM_DETECTED"), \
+            "SPAWN_STORM_DETECTED not logged by the in-process watchdog"
     finally:
-        storm_wd.terminate()
-        _force_kill_all(list(_launch_log_pids(storm_log)))
-
-    # Part B: crashes spaced wider than the sliding window never trip the breaker.
-    slow = _write_script(tmp_path, "slow_crash_worker.py", SLOW_CRASH_WORKER)
-    slow_log = tmp_path / "slow_launches.log"
-    slow_db = tmp_path / "watchdog_window.db"
-    slow_wd = wd_mod.DaemonWatchdog(
-        target_cmd=[sys.executable, str(slow), str(slow_log)],
-        db_path=slow_db,
-        crash_threshold=3,
-        window_seconds=0.3,
-        poll_interval=0.05,
-        daemon_name="kanban_worker",
-    )
-    try:
-        slow_wd.spawn_daemon()
-        results: list[bool] = []
-
-        def _four_crashes() -> bool:
-            results.append(bool(slow_wd.poll_cycle()))
-            return _count(slow_db, ("DAEMON_CRASHED",)) >= 4
-
-        assert _wait_until(_four_crashes, timeout=20.0, step=0.05), "slow-crash worker did not crash 4 times"
-        assert all(results), "poll_cycle tripped although crashes were outside the sliding window"
-        assert _count(slow_db, ("SPAWN_STORM_DETECTED",)) == 0, "false SPAWN_STORM_DETECTED"
-    finally:
-        slow_wd.terminate()
-        _force_kill_all(list(_launch_log_pids(slow_log)))
+        wd.terminate()
+        for pid in _read_pids(pid_log_b):
+            _kill_if_matches(pid, worker.name)
 
 
-# ---------------------------------------------------------------------------
-# [T3] AC3 - CPU and credit gating
-# ---------------------------------------------------------------------------
+# =========================================================================== AC3
+
+QUOTA_DDL = (
+    "CREATE TABLE IF NOT EXISTS quota_state (provider TEXT PRIMARY KEY, status TEXT NOT NULL DEFAULT 'QUOTA_OK', "
+    "updated_at TEXT NOT NULL, details TEXT)"
+)
+LEDGER_DDL = (
+    "CREATE TABLE IF NOT EXISTS credit_ledger_v2 (id INTEGER PRIMARY KEY AUTOINCREMENT, task_id TEXT NOT NULL, "
+    "agent_name TEXT NOT NULL, cost REAL NOT NULL, timestamp TEXT NOT NULL, date TEXT NOT NULL)"
+)
 
 
 def test_idle_sidecar_cpu_and_credit_gating(tmp_path: Path) -> None:
-    side = _get_idle_sidecar()
+    """AC3: heavy tasks need idle CPU AND QUOTA_OK AND remaining daily budget (live DB reads)."""
+    sc = _sidecar()
+    ledger = tmp_path / "ledger.db"
+    now = datetime.now(timezone.utc)
+    today = now.date().isoformat()
+    yesterday_dt = now - timedelta(days=1)
+    yesterday = yesterday_dt.date().isoformat()
 
-    assert side.DEFAULT_IDLE_CPU_THRESHOLD == 25.0
-    assert side.DEFAULT_DAILY_CREDIT_BUDGET == 25.00
-    assert side.DEFAULT_HEAVY_COST_THRESHOLD == 0.05
+    # Simulate the Phase-1 init_db having created the shared tables first.
+    conn = sqlite3.connect(str(ledger), timeout=5)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute(QUOTA_DDL)
+        conn.execute(LEDGER_DDL)
+        conn.execute("INSERT INTO quota_state (provider, status, updated_at, details) VALUES (?, ?, ?, ?)",
+                     ("default", "QUOTA_EXHAUSTED", now.isoformat(), "forced 429"))
+        conn.executemany(
+            "INSERT INTO credit_ledger_v2 (task_id, agent_name, cost, timestamp, date) VALUES (?, ?, ?, ?, ?)",
+            [("task-1", "agent_a", 0.30, now.isoformat(), today),
+             ("task-2", "agent_a", 0.20, now.isoformat(), today),
+             ("task-0", "agent_a", 5.00, yesterday_dt.isoformat(), yesterday)])
+        conn.commit()
+    finally:
+        conn.close()
 
-    db_path = tmp_path / "sidecar_v2.db"
-    db = side.IdleSidecarDB(db_path, daily_budget=25.0)
+    db = sc.IdleSidecarDB(ledger, daily_budget=1.0)
     db.init_schema()
-
-    conn = sqlite3.connect(str(db_path), timeout=10)
-    try:
-        mode = conn.execute("PRAGMA journal_mode").fetchone()[0]
-        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
-    finally:
-        conn.close()
-    assert str(mode).lower() == "wal", f"expected WAL journal_mode, got {mode!r}"
-    assert {"quota_state", "credit_ledger_v2"} <= tables, f"missing tables: {tables!r}"
-
-    idle_monitor = side.HardwareMonitor(cpu_threshold=100.0)
-    idle_engine = side.HeavyTaskPolicyEngine(db, idle_monitor)
-    cpu = idle_monitor.get_cpu_percent(interval=0.05)
-    assert isinstance(cpu, float) and 0.0 <= cpu <= 100.0
-    assert idle_monitor.is_cpu_idle(interval=0.05) is True
-
-    # Quota via the public API.
-    db.set_quota_status("QUOTA_EXHAUSTED")
     assert db.get_quota_status() == "QUOTA_EXHAUSTED"
-    assert idle_engine.can_execute_heavy(estimated_cost=0.10) is False
+    assert abs(db.get_daily_spend() - 0.5) < 1e-9
+    assert abs(db.get_daily_spend(target_date=yesterday) - 5.0) < 1e-9
+    assert sc.IdleSidecarDB(ledger, daily_budget=1.0).get_quota_status() == "QUOTA_EXHAUSTED"
+
+    idle_engine = sc.HeavyTaskPolicyEngine(db, sc.HardwareMonitor(cpu_threshold=100.0))
+    assert idle_engine.can_execute_heavy(estimated_cost=0.1) is False, "exhausted quota must block heavy tasks"
+
     db.set_quota_status("QUOTA_OK")
+    assert _db_rows(ledger, "SELECT status FROM quota_state WHERE provider='default'") == [("QUOTA_OK",)]
     assert db.get_quota_status() == "QUOTA_OK"
-    assert idle_engine.can_execute_heavy(estimated_cost=0.10) is True
+    heavy_types = sc.HEAVY_WORKFLOW_TYPES
+    assert len(heavy_types) > 0 and all(isinstance(t, str) for t in heavy_types), heavy_types
+    assert idle_engine.can_execute_heavy(estimated_cost=0.1) is True
+    assert idle_engine.can_execute_heavy(estimated_cost=0.1, workflow_type=sorted(heavy_types)[0]) is True
 
-    # Quota via an external writer: the engine must read the ledger live.
-    _external_quota_write(db_path, "QUOTA_EXHAUSTED")
-    assert db.get_quota_status() == "QUOTA_EXHAUSTED"
-    assert idle_engine.can_execute_heavy(estimated_cost=0.10) is False
-    _external_quota_write(db_path, "QUOTA_OK")
-    assert db.get_quota_status() == "QUOTA_OK"
-    assert idle_engine.can_execute_heavy(estimated_cost=0.10) is True
+    db.record_spend("task-9", "agent_b", 0.1)
+    rows = _db_rows(ledger, "SELECT agent_name, cost, date FROM credit_ledger_v2 WHERE task_id='task-9'")
+    assert len(rows) == 1 and rows[0][0] == "agent_b" and abs(rows[0][1] - 0.1) < 1e-9, rows
+    assert rows[0][2] == datetime.now(timezone.utc).date().isoformat(), rows
+    assert abs(db.get_daily_spend() - 0.6) < 1e-9
+    assert idle_engine.can_execute_heavy(estimated_cost=0.5) is False, "0.6 + 0.5 exceeds the 1.0 budget"
+    assert idle_engine.can_execute_heavy(estimated_cost=0.3) is True
 
-    # Budget headroom on a fresh ledger.
-    budget_path = tmp_path / "budget.db"
-    budget_db = side.IdleSidecarDB(budget_path, daily_budget=25.0)
-    budget_db.init_schema()
-    budget_db.set_quota_status("QUOTA_OK")
-    budget_engine = side.HeavyTaskPolicyEngine(budget_db, idle_monitor)
-    assert budget_db.get_daily_spend() == pytest.approx(0.0)
-    budget_db.record_spend("task-1", "cochem-coder", 24.0)
-    assert budget_db.get_daily_spend() == pytest.approx(24.0)
-    conn = sqlite3.connect(str(budget_path), timeout=10)
-    try:
-        ledger_rows = conn.execute("SELECT COUNT(*) FROM credit_ledger_v2").fetchone()[0]
-    finally:
-        conn.close()
-    assert ledger_rows == 1, f"record_spend should persist exactly one ledger row, found {ledger_rows}"
-    assert budget_engine.can_execute_heavy(estimated_cost=0.5) is True
-    assert budget_engine.can_execute_heavy(estimated_cost=1.5) is False
-    budget_db.record_spend("task-2", "cochem-coder", 2.0)
-    assert budget_db.get_daily_spend() == pytest.approx(26.0)
-    assert budget_engine.can_execute_heavy(estimated_cost=0.10) is False
-
-    # Heavy-task classification by cost threshold.
+    assert idle_engine.is_heavy_task(estimated_cost=0.5) is True
     assert idle_engine.is_heavy_task(estimated_cost=0.0) is False
-    assert idle_engine.is_heavy_task(estimated_cost=0.01) is False
-    assert idle_engine.is_heavy_task(estimated_cost=side.DEFAULT_HEAVY_COST_THRESHOLD) is True
-    assert idle_engine.is_heavy_task(estimated_cost=1.0) is True
+    for wt in heavy_types:
+        assert idle_engine.is_heavy_task(workflow_type=wt, estimated_cost=0.0) is True, wt
+    assert idle_engine.is_heavy_task(workflow_type="lightweight_lint_zz", estimated_cost=0.0) is False
 
-    # Real CPU load: heavy work is refused while busy and allowed once idle again.
-    busy_monitor = side.HardwareMonitor(cpu_threshold=50.0)
-    busy_engine = side.HeavyTaskPolicyEngine(db, busy_monitor)
-    load: list[subprocess.Popen] = []
-
-    def _stop_load() -> None:
-        for p in load:
-            if p.poll() is None:
-                p.kill()
-        for p in load:
-            with contextlib.suppress(subprocess.TimeoutExpired):
-                p.wait(timeout=10)
-
+    # Real CPU load: quota is OK and budget remains, so only the CPU gate can block now.
+    load_procs: list[subprocess.Popen] = []
     try:
-        for _ in range(max(2, os.cpu_count() or 1)):
-            load.append(
-                subprocess.Popen(
-                    [sys.executable, "-c", CPU_BURN],
-                    creationflags=_NO_WINDOW,
-                    encoding="utf-8",
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
-            )
-        time.sleep(0.5)
-        loaded_cpu = busy_monitor.get_cpu_percent(interval=0.5)
-        assert loaded_cpu > 50.0, f"precondition: CPU load {loaded_cpu:.1f}% did not exceed 50%"
-        assert busy_monitor.is_cpu_idle(interval=0.3) is False
-        assert db.get_quota_status() == "QUOTA_OK"
-        assert busy_engine.can_execute_heavy(estimated_cost=0.10) is False, "heavy task allowed under load"
-        _stop_load()
-        assert _wait_until(lambda: busy_engine.can_execute_heavy(estimated_cost=0.10), timeout=20.0, step=0.2), (
-            "heavy task still refused after the CPU load was removed"
-        )
+        for _ in range(os.cpu_count() or 1):
+            load_procs.append(subprocess.Popen(
+                [sys.executable, "-c", "while True: pass"],
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                creationflags=_NO_WINDOW, encoding="utf-8"))
+        probe = sc.HardwareMonitor(cpu_threshold=50.0)
+        loaded = _wait_until(lambda: probe.get_cpu_percent(interval=0.5) > 50.0, 10, interval=0.0)
+        assert loaded, "could not drive system CPU above 50% with busy-loop processes"
+        busy_engine = sc.HeavyTaskPolicyEngine(db, sc.HardwareMonitor(cpu_threshold=50.0))
+        assert busy_engine.monitor.is_cpu_idle(interval=0.3) is False
+        assert busy_engine.can_execute_heavy(estimated_cost=0.1) is False, "busy CPU must block heavy tasks"
     finally:
-        _stop_load()
+        for proc in load_procs:
+            _kill_tree(proc.pid)
+            proc.wait(timeout=10)
+    assert idle_engine.can_execute_heavy(estimated_cost=0.1) is True
 
 
-# ---------------------------------------------------------------------------
-# [T4] AC4 - subprocess flags and clean termination
-# ---------------------------------------------------------------------------
+# =========================================================================== AC4
 
 
 def test_subprocess_flags_and_clean_termination(tmp_path: Path) -> None:
-    wd_mod = _get_watchdog()
-    side = _get_idle_sidecar()
+    """AC4: literal subprocess.CREATE_NO_WINDOW + utf-8 on every spawn; terminate() leaves no orphans."""
+    report: list[str] = []
+    for path in TARGET_PATHS:
+        violations, popen_calls = _subprocess_violations(path)
+        report.extend(f"{path.name} {v}" for v in violations)
+        if path == WATCHDOG_PATH and popen_calls == 0:
+            report.append("watchdog.py contains no subprocess.Popen call")
+    assert not report, "subprocess AST rule violated:\n" + "\n".join(report)
 
-    # A) Static: every subprocess call carries CREATE_NO_WINDOW and utf-8.
-    popen_in_watchdog = 0
-    for fname in TARGET_FILES:
-        tree = _parse(_source_path(fname))
-        for func_name, call in _subprocess_calls(tree):
-            where = f"{fname}:{call.lineno} subprocess.{func_name}"
-            if fname == "watchdog.py" and func_name == "Popen":
-                popen_in_watchdog += 1
-            assert all(k.arg is not None for k in call.keywords), f"{where} uses **kwargs (flags unverifiable)"
-            kw = {k.arg: k.value for k in call.keywords}
-            assert "creationflags" in kw, f"{where} missing creationflags"
-            assert _mentions_create_no_window(kw["creationflags"]), f"{where} creationflags lacks CREATE_NO_WINDOW"
-            assert "encoding" in kw, f"{where} missing encoding"
-            enc = kw["encoding"]
-            assert isinstance(enc, ast.Constant) and isinstance(enc.value, str), (
-                f"{where} encoding must be a string literal"
-            )
-            assert enc.value.lower() in ("utf-8", "utf8"), f"{where} encoding must be utf-8, got {enc.value!r}"
-        forbidden = _forbidden_process_calls(tree)
-        assert not forbidden, f"{fname} uses forbidden process APIs: {forbidden}"
-    assert popen_in_watchdog >= 1, "watchdog.py must spawn the daemon via subprocess.Popen"
-    assert wd_mod.CREATE_NO_WINDOW == 0x08000000
-    assert side.CREATE_NO_WINDOW == 0x08000000
+    worker = _write_script(tmp_path, "tree_worker.py", TREE_WORKER)
+    wd_mod = _watchdog()
 
-    worker = _write_script(tmp_path, "term_worker.py", LOOPING_WORKER)
-
-    # B) In-process: window-less console, tree terminated without orphans.
-    ready_b = tmp_path / "ready_inproc"
-    ready_b.mkdir()
-    wd = wd_mod.DaemonWatchdog(
-        target_cmd=[sys.executable, str(worker), str(ready_b), "--grandchild"],
-        db_path=tmp_path / "watchdog_term.db",
-        poll_interval=0.05,
-    )
+    # a) in-process terminate()
+    json_a = tmp_path / "tree_api.json"
+    wd = wd_mod.DaemonWatchdog([sys.executable, str(worker), str(json_a)], tmp_path / "tree_api.db",
+                               crash_threshold=3, window_seconds=30.0, poll_interval=0.05)
+    pids_a: list[int] = []
     try:
         proc = wd.spawn_daemon()
-        worker_pid = proc.pid
-        grand_file = ready_b / f"grandchild_{worker_pid}.json"
-        assert _wait_until(lambda: grand_file.exists()), "worker never reported its grandchild"
-        info = _read_json(ready_b / f"ready_{worker_pid}.json")
-        grand = _read_json(grand_file)
-        assert info is not None and grand is not None
-        grandchild_pid = int(grand["pid"])
-        assert _pid_alive(worker_pid) and _pid_alive(grandchild_pid)
-        if os.name == "nt":
-            assert info.get("hwnd") == 0, f"daemon has a console window (hwnd={info.get('hwnd')})"
-            assert info.get("console_procs") == 1, (
-                f"daemon shares a console with {info.get('console_procs')} processes; CREATE_NO_WINDOW not applied"
-            )
+        assert isinstance(proc, subprocess.Popen)
+        info = _wait_until(lambda: _read_json(json_a), 20)
+        assert info, "tree worker never reported its pids"
+        pids_a = [info["worker"], info["grandchild"]]
+        created = {pid: _create_time(pid) for pid in pids_a}
+        assert all(_is_running(pid) for pid in pids_a), f"worker/grandchild not alive: {info}"
         wd.terminate()
-        assert _wait_until(lambda: not _pid_alive(worker_pid) and not _pid_alive(grandchild_pid), timeout=15.0), (
-            "terminate() left the worker or its grandchild running (orphans)"
-        )
-        wd.terminate()
+        gone = _wait_until(lambda: all(_is_gone(p, created[p]) for p in pids_a), 10)
+        assert gone, f"terminate() left processes behind: {[p for p in pids_a if not _is_gone(p, created[p])]}"
+        wd.terminate()  # idempotent
     finally:
         wd.terminate()
-        _force_kill_all(_all_spawned_pids(ready_b))
+        for pid in pids_a:
+            _kill_if_matches(pid, worker.name)
+            _kill_if_matches(pid, "time.sleep(600)")
 
-    # C) Supervisor process signalled: its daemon tree must die with it.
-    ready_c = tmp_path / "ready_supervisor"
-    ready_c.mkdir()
-    harness = _write_script(tmp_path, "supervisor_harness.py", SUPERVISOR_HARNESS)
-    out_path = tmp_path / "supervisor_stdout.txt"
-    err_path = tmp_path / "supervisor_stderr.txt"
-    supervisor: Optional[subprocess.Popen] = None
-    with open(out_path, "w", encoding="utf-8") as out_fh, open(err_path, "w", encoding="utf-8") as err_fh:
-        try:
-            supervisor = subprocess.Popen(
-                [
-                    sys.executable, str(harness), str(_source_path("watchdog.py")),
-                    str(tmp_path / "watchdog_supervisor.db"), str(ready_c), str(worker),
-                ],
-                creationflags=_NO_WINDOW,
-                encoding="utf-8",
-                stdout=out_fh,
-                stderr=err_fh,
-            )
-            assert _wait_until(lambda: bool(_ready_pids(ready_c)) and bool(_grandchild_pids(ready_c)), timeout=20.0), (
-                "supervised worker/grandchild never became ready"
-            )
-            sup_worker = next(iter(_ready_pids(ready_c)))
-            sup_grand = next(iter(_grandchild_pids(ready_c)))
-            assert _pid_alive(sup_worker) and _pid_alive(sup_grand)
-
-            os.kill(supervisor.pid, signal.SIGTERM if os.name == "nt" else signal.SIGINT)
-            try:
-                supervisor.wait(timeout=15)
-            except subprocess.TimeoutExpired:
-                pytest.fail("supervisor harness did not exit within 15 s of being signalled")
-            assert _wait_until(lambda: not _pid_alive(sup_worker) and not _pid_alive(sup_grand), timeout=15.0), (
-                "worker/grandchild survived the supervisor's termination (orphaned processes)"
-            )
-        finally:
-            if supervisor is not None and supervisor.poll() is None:
-                supervisor.kill()
-                supervisor.wait(timeout=10)
-            _force_kill_all(_all_spawned_pids(ready_c))
+    # b) CLI: terminating the watchdog process must take the whole tree down
+    json_b = tmp_path / "tree_cli.json"
+    cli = _WatchdogCli(tmp_path, "ac4", _cmd_string(Path(sys.executable), worker, json_b), tmp_path / "tree_cli.db")
+    pids_b: list[int] = []
+    survivors: list[int] = []
+    try:
+        _wait_until(lambda: _read_json(json_b) or cli.exited(), 20)
+        info = _read_json(json_b)
+        assert info, f"watchdog CLI never started the tree worker.\n{cli.output()}"
+        pids_b = [info["worker"], info["grandchild"]]
+        created = {pid: _create_time(pid) for pid in pids_b}
+        assert all(_is_running(pid) for pid in pids_b), f"worker/grandchild not alive: {info}"
+        cli.proc.terminate()
+        _wait_until(lambda: all(_is_gone(p, created[p]) for p in pids_b), 15)
+        survivors = [p for p in pids_b if not _is_gone(p, created[p])]
+    finally:
+        cli.close()
+        for pid in pids_b:
+            _kill_if_matches(pid, worker.name)
+            _kill_if_matches(pid, "time.sleep(600)")
+    assert not survivors, f"orphans left after terminating the watchdog CLI: {survivors}"
 
 
-# ---------------------------------------------------------------------------
-# [T5] AC5 - offline isolation and routing sentinels
-# ---------------------------------------------------------------------------
+# =========================================================================== AC5
 
 
 def test_offline_isolation_and_routing_sentinels(tmp_path: Path) -> None:
-    modules = {"watchdog.py": _get_watchdog(), "cochem_idle_sidecar.py": _get_idle_sidecar()}
+    """AC5: no network imports/activity; fallback chains end in HALT_SENTINEL; ollama is forbidden."""
+    report: list[str] = []
+    for path in TARGET_PATHS:
+        report.extend(f"{path.name} {v}" for v in _offline_violations(path))
+    assert not report, "offline/routing AST rule violated:\n" + "\n".join(report)
 
-    # A) Static and runtime routing/offline checks.
-    for fname, mod in modules.items():
-        tree = _parse(_source_path(fname))
+    for module in (_watchdog(), _sidecar()):
+        name = Path(module.__file__).name
+        assert module.HALT_SENTINEL == HALT, f"{name}.HALT_SENTINEL = {module.HALT_SENTINEL!r}"
+        assert isinstance(module.FORBIDDEN_PROVIDERS, frozenset), \
+            f"{name}.FORBIDDEN_PROVIDERS must be a frozenset, got {type(module.FORBIDDEN_PROVIDERS).__name__}"
+        assert "ollama" in module.FORBIDDEN_PROVIDERS, f"{name}: ollama not forbidden"
+        for attr, value in vars(module).items():
+            if not CHAIN_NAME_RE.search(attr) or not isinstance(value, (list, tuple)) or not value:
+                continue
+            if not all(isinstance(item, tuple) for item in value):
+                continue
+            assert tuple(value[-1]) == HALT, f"{name}.{attr} must end with {HALT}, got {value!r}"
+            assert "ollama" not in repr(value).lower(), f"{name}.{attr} routes to ollama: {value!r}"
 
-        assert tuple(mod.HALT_SENTINEL) == HALT_SENTINEL, f"{fname}: HALT_SENTINEL wrong"
-        assert "ollama" in mod.FORBIDDEN_PROVIDERS, f"{fname}: FORBIDDEN_PROVIDERS lacks ollama"
-
-        halt_node = _module_assignment(tree, "HALT_SENTINEL")
-        assert halt_node is not None, f"{fname}: HALT_SENTINEL not defined at module level"
-        assert tuple(ast.literal_eval(halt_node)) == HALT_SENTINEL
-
-        forbidden_node = _module_assignment(tree, "FORBIDDEN_PROVIDERS")
-        assert forbidden_node is not None, f"{fname}: FORBIDDEN_PROVIDERS not defined at module level"
-        assert "ollama" in _string_constants(forbidden_node)
-
-        allowed = {id(n) for n in ast.walk(forbidden_node)}
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Constant) and isinstance(node.value, str):
-                assert "11434" not in node.value, f"{fname}:{node.lineno} references the ollama port 11434"
-                if id(node) not in allowed:
-                    assert "ollama" not in node.value.lower(), (
-                        f"{fname}:{node.lineno} mentions ollama outside FORBIDDEN_PROVIDERS"
-                    )
-
-        for node in tree.body:
-            targets: list[ast.expr] = []
-            value: Optional[ast.expr] = None
-            if isinstance(node, ast.Assign):
-                targets, value = list(node.targets), node.value
-            elif isinstance(node, ast.AnnAssign) and node.value is not None:
-                targets, value = [node.target], node.value
-            for tgt in targets:
-                if not (isinstance(tgt, ast.Name) and CHAIN_NAME_RE.search(tgt.id)):
-                    continue
-                if isinstance(value, (ast.List, ast.Tuple)) and value.elts:
-                    is_sentinel_itself = [getattr(e, "value", None) for e in value.elts] == list(HALT_SENTINEL)
-                    assert is_sentinel_itself or _is_sentinel_node(value.elts[-1]), (
-                        f"{fname}:{node.lineno} {tgt.id} must end in HALT_SENTINEL"
-                    )
-
-        for name, val in vars(mod).items():
-            if not name.startswith("__") and CHAIN_NAME_RE.search(name) and isinstance(val, (list, tuple, dict)):
-                _assert_chain_terminates(f"{fname}:{name}", val)
-
-        bad_imports = _forbidden_imports(tree)
-        assert not bad_imports, f"{fname} imports network/docker/LLM libraries: {bad_imports}"
-
-    # B) Runtime offline proof in an audit-hook guarded harness process.
-    worker = _write_script(tmp_path, "offline_worker.py", LOOPING_WORKER)
     harness = _write_script(tmp_path, "offline_harness.py", OFFLINE_HARNESS)
-    ready_dir = tmp_path / "ready"
     env = dict(os.environ)
-    env.update(
-        {
-            "DOCKER_HOST": "tcp://127.0.0.1:9",
-            "HTTP_PROXY": "http://127.0.0.1:9",
-            "HTTPS_PROXY": "http://127.0.0.1:9",
-        }
+    env.update({
+        "DOCKER_HOST": "tcp://127.0.0.1:9",
+        "HTTP_PROXY": "http://127.0.0.1:9",
+        "HTTPS_PROXY": "http://127.0.0.1:9",
+    })
+    result = subprocess.run(
+        [sys.executable, str(harness), str(WATCHDOG_PATH), str(SIDECAR_PATH), str(tmp_path)],
+        capture_output=True, timeout=60, cwd=str(tmp_path), env=env,
+        creationflags=_NO_WINDOW, encoding="utf-8",
     )
-    try:
-        completed = subprocess.run(
-            [
-                sys.executable, str(harness), str(_source_path("watchdog.py")),
-                str(_source_path("cochem_idle_sidecar.py")), str(tmp_path), str(worker),
-            ],
-            creationflags=_NO_WINDOW,
-            encoding="utf-8",
-            capture_output=True,
-            timeout=90,
-            env=env,
-            check=False,
-        )
-        assert completed.returncode == 0, f"offline harness failed:\n{completed.stderr}"
-        report = _read_json(tmp_path / "offline_report.json")
-        assert report is not None, "offline harness wrote no report"
-
-        assert report["network_events"] == [], f"network access attempted: {report['network_events']!r}"
-        popen_records: list[str] = report["popen_records"]
-        assert popen_records, "audit hook recorded no subprocess.Popen events"
-        for record in popen_records:
-            lowered = record.lower()
-            for banned in ("docker", "ollama", "curl", "wget"):
-                assert banned not in lowered, f"forbidden subprocess ({banned}): {record}"
-
-        results: dict[str, Any] = report["results"]
-        harness_pid = report["harness_pid"]
-        assert any(
-            r.get("event_type") == "OFFLINE_PROBE" and r.get("pid") == harness_pid for r in results["probe_rows"]
-        ), f"OFFLINE_PROBE row missing for harness pid {harness_pid}: {results['probe_rows']!r}"
-        assert results["worker_ready"] is True
-        assert results["first_poll_ok"] is True
-        assert results["crash_and_restart"] is True, "harness did not observe DAEMON_CRASHED + restart"
-        assert results["worker_pid"] in results["crashed_pids"]
-        assert results["can_execute_heavy"] is True
-
-        tmp_resolved = tmp_path.resolve()
-        for db_file in report["db_files"]:
-            db = Path(db_file)
-            assert db.exists(), f"missing db file {db}"
-            assert tmp_resolved in db.resolve().parents, f"db file outside tmp_path: {db}"
-    finally:
-        _force_kill_all(_all_spawned_pids(ready_dir))
+    assert result.returncode == 0, f"offline harness failed (rc={result.returncode}):\n{result.stderr}\n{result.stdout}"
+    lines = [line for line in result.stdout.splitlines() if line.strip()]
+    assert lines, f"offline harness printed nothing.\n{result.stderr}"
+    payload = json.loads(lines[-1])
+    assert payload["net_events"] == [], f"network activity detected: {payload['net_events']}"
+    assert payload["allowed"] is True, f"heavy task refused in offline harness: {payload}"
