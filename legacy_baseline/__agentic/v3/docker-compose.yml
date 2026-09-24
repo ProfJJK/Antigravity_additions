@@ -55,7 +55,5 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      # Must be the absolute host path of __agentic/v3/data/ (local driver bind
-      # does not resolve relative paths). Compose is run from __agentic/v3, so
-      # ${PWD}/data resolves there; override with COCHEM_V3_DATA_DIR if needed.
-      device: ${COCHEM_V3_DATA_DIR:-${PWD}/data}
+      # Host path of __agentic/v3/data/, relative to this compose file.
+      device: ./data
