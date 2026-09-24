@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libxrender1 libxext6 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir rdkit
+RUN pip install --no-cache-dir rdkit pytest mendeleev h5py numpy pyyaml
 
 RUN groupadd -g 1000 cochem && useradd -u 1000 -g cochem -m cochem
 
