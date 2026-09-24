@@ -11,22 +11,32 @@ import sqlite3
 import sys
 
 
+def open_connection(db_path: Path | str, timeout: float = 5.0) -> sqlite3.Connection:
+    """Open a connection configured for concurrent pipeline workers.
+
+    busy_timeout and foreign_keys are per-connection settings in SQLite, so every
+    consumer of the v3 database should obtain its connections through here.
+    """
+    conn = sqlite3.connect(str(db_path), timeout=timeout)
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA busy_timeout = 5000;")
+    conn.execute("PRAGMA foreign_keys = ON;")
+    return conn
+
+
 def init_database(db_path: Path | str, schema_path: Path | str) -> Path:
     db_path = Path(db_path).resolve()
     schema_path = Path(schema_path).resolve()
-
-    db_path.parent.mkdir(parents=True, exist_ok=True)
 
     if not schema_path.is_file():
         raise FileNotFoundError(f"Schema file not found at {schema_path}")
 
     schema_sql = schema_path.read_text(encoding="utf-8")
 
-    conn = sqlite3.connect(str(db_path), timeout=5.0)
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    conn = open_connection(db_path)
     try:
-        conn.execute("PRAGMA journal_mode = WAL;")
-        conn.execute("PRAGMA busy_timeout = 5000;")
-        conn.execute("PRAGMA foreign_keys = ON;")
         conn.executescript(schema_sql)
         conn.commit()
     finally:
