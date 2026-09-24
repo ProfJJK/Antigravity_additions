@@ -17,8 +17,8 @@ import importlib
 import importlib.util
 import os
 import re
+import json
 import signal
-import socket
 import sqlite3
 import subprocess
 import sys
@@ -185,7 +185,7 @@ def _force_kill(pid: Optional[int]) -> None:
         try:
             os.kill(int(pid), signal.SIGTERM)
         except OSError:
-            pass
+            return
 
 
 def _wait_until(predicate: Callable[[], bool], timeout: float = 15.0, step: float = 0.05) -> bool:
@@ -235,8 +235,8 @@ def _safe_terminate(wd: Any, extra_pids: list[Optional[int]]) -> None:
     if wd is not None:
         try:
             wd.terminate()
-        except Exception:
-            pass
+        except Exception as exc:  # cleanup must still sweep the remaining pids
+            sys.stderr.write(f"watchdog terminate() raised during cleanup: {exc!r}\n")
     for pid in extra_pids:
         _force_kill(pid)
 
@@ -262,6 +262,153 @@ while True:
 CRASHING_WORKER = """\
 import sys
 sys.exit(42)
+"""
+
+# Daemon that owns a grandchild process and reports whether it has a console window.
+TREE_WORKER = """\
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+ready_dir = Path(sys.argv[1])
+ready_dir.mkdir(parents=True, exist_ok=True)
+
+
+def _atomic_write(path, text):
+    tmp = path.with_name(path.name + ".tmp")
+    with open(tmp, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    os.replace(tmp, path)
+
+
+grandchild = subprocess.Popen(
+    [sys.executable, "-c", "import time\\nwhile True: time.sleep(0.1)"],
+    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0x08000000) if os.name == "nt" else 0,
+    encoding="utf-8",
+)
+_atomic_write(ready_dir / f"grandchild_{os.getpid()}.txt", str(grandchild.pid))
+
+if os.name == "nt":
+    import ctypes
+    console_window = int(ctypes.windll.kernel32.GetConsoleWindow() or 0)
+else:
+    console_window = 0
+_atomic_write(ready_dir / f"ready_{os.getpid()}.txt", str(console_window))
+while True:
+    time.sleep(0.1)
+"""
+
+# Offline harness executed in a fresh interpreter with a sys.addaudithook guard.
+OFFLINE_HARNESS = """\
+import importlib.util
+import json
+import os
+import sys
+import time
+from pathlib import Path
+
+NET_EVENTS = {
+    "socket.connect",
+    "socket.getaddrinfo",
+    "socket.gethostbyname",
+    "socket.gethostbyname_ex",
+    "socket.gethostbyaddr",
+    "socket.sendto",
+    "socket.sendmsg",
+}
+net_events = []
+popen_events = []
+
+
+def _hook(event, args):
+    if event in NET_EVENTS:
+        net_events.append({"event": event, "args": repr(args)[:300]})
+    elif event == "subprocess.Popen":
+        executable = args[0] if len(args) > 0 else None
+        argv = args[1] if len(args) > 1 else None
+        if isinstance(argv, (list, tuple)):
+            argv_s = [str(a) for a in argv]
+        elif argv is None:
+            argv_s = []
+        else:
+            argv_s = [str(argv)]
+        popen_events.append({
+            "executable": None if executable is None else str(executable),
+            "argv": argv_s,
+        })
+
+
+sys.addaudithook(_hook)
+
+watchdog_path, sidecar_path, work_dir, worker_path, result_path = sys.argv[1:6]
+work = Path(work_dir)
+
+
+def _load(unique, path):
+    spec = importlib.util.spec_from_file_location(unique, path)
+    if spec is None or spec.loader is None:
+        raise ImportError(f"cannot load {path}")
+    mod = importlib.util.module_from_spec(spec)
+    sys.modules[unique] = mod
+    spec.loader.exec_module(mod)
+    return mod
+
+
+wd_mod = _load("_offline_cochem_v2_watchdog", watchdog_path)
+side = _load("_offline_cochem_v2_idle_sidecar", sidecar_path)
+
+wd_db_path = work / "offline_watchdog.db"
+wdb = wd_mod.WatchdogDB(wd_db_path)
+wdb.init_schema()
+wdb.log_event("kanban_worker", "OFFLINE_PROBE", pid=os.getpid(), details="offline")
+probe_rows = wdb.get_events(event_type="OFFLINE_PROBE")
+
+daemon_db_path = work / "offline_daemon.db"
+ready_dir = work / "ready_offline"
+ready_dir.mkdir(parents=True, exist_ok=True)
+wd = wd_mod.DaemonWatchdog(
+    target_cmd=[sys.executable, worker_path, str(ready_dir)],
+    db_path=daemon_db_path,
+    poll_interval=0.05,
+)
+daemon_pid = None
+poll_result = None
+ready_seen = False
+try:
+    proc = wd.spawn_daemon()
+    daemon_pid = proc.pid
+    deadline = time.monotonic() + 15.0
+    while time.monotonic() < deadline:
+        if (ready_dir / f"ready_{daemon_pid}.txt").exists():
+            ready_seen = True
+            break
+        time.sleep(0.05)
+    poll_result = wd.poll_cycle()
+finally:
+    wd.terminate()
+
+side_db_path = work / "offline_sidecar.db"
+sdb = side.IdleSidecarDB(side_db_path, daily_budget=25.0)
+sdb.init_schema()
+sdb.set_quota_status("QUOTA_OK")
+engine = side.HeavyTaskPolicyEngine(sdb, side.HardwareMonitor(cpu_threshold=100.0))
+can_execute = engine.can_execute_heavy(estimated_cost=0.10)
+
+result = {
+    "net_events": net_events,
+    "popen_events": popen_events,
+    "probe_rows": probe_rows,
+    "harness_pid": os.getpid(),
+    "poll_result": poll_result,
+    "daemon_pid": daemon_pid,
+    "ready_seen": ready_seen,
+    "can_execute": can_execute,
+    "db_paths": [str(wd_db_path), str(daemon_db_path), str(side_db_path)],
+}
+with open(result_path, "w", encoding="utf-8") as fh:
+    json.dump(result, fh, default=str)
 """
 
 
@@ -293,6 +440,32 @@ def _all_pids(db_path: Path) -> list[Optional[int]]:
         return [r.get("pid") for r in _query_events(db_path)]
     except sqlite3.Error:
         return []
+
+
+def _journal_mode(db_path: Path) -> str:
+    conn = sqlite3.connect(str(db_path), timeout=10)
+    try:
+        return str(conn.execute("PRAGMA journal_mode").fetchone()[0]).lower()
+    finally:
+        conn.close()
+
+
+def _row_count(db_path: Path, table: str) -> int:
+    conn = sqlite3.connect(str(db_path), timeout=10)
+    try:
+        return int(conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0])
+    finally:
+        conn.close()
+
+
+def _table_names(db_path: Path) -> set[str]:
+    conn = sqlite3.connect(str(db_path), timeout=10)
+    try:
+        return {
+            r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
+        }
+    finally:
+        conn.close()
 
 
 # ---------------------------------------------------------------------------
@@ -455,11 +628,41 @@ def test_watchdog_detects_crash_and_restarts(tmp_path: Path) -> None:
         )
         assert _pid_alive(new_pid), "restarted daemon is not running"
 
+        # (a) event store runs in WAL mode.
+        assert _journal_mode(db_path) == "wal", "watchdog_events_v2 db must use WAL journal_mode"
+
+        # (b) the restart event names the new live pid.
+        assert any(r.get("pid") == new_pid for r in restarts), (
+            f"no restart row carries the new daemon pid {new_pid}: {restarts!r}"
+        )
+
+        # (c) a healthy daemon is left alone: no spurious crash/restart rows.
+        crashed_before = len(_query_events(db_path, ("DAEMON_CRASHED",)))
+        restarts_before = len(_query_events(db_path, RESTART_EVENT_TYPES))
+        for _ in range(5):
+            assert _pid_alive(new_pid), "restarted worker died during steady-state polling"
+            assert wd.poll_cycle() is True, "poll_cycle must return True while the daemon is healthy"
+            time.sleep(0.1)
+        assert len(_query_events(db_path, ("DAEMON_CRASHED",))) == crashed_before, (
+            "poll_cycle logged DAEMON_CRASHED for a healthy daemon"
+        )
+        assert len(_query_events(db_path, RESTART_EVENT_TYPES)) == restarts_before, (
+            "poll_cycle restarted a healthy daemon"
+        )
+        killed_rows = [
+            r for r in _query_events(db_path, ("DAEMON_CRASHED",)) if r.get("pid") == initial_pid
+        ]
+        assert len(killed_rows) == 1, (
+            f"expected exactly one DAEMON_CRASHED row for pid {initial_pid}, got {killed_rows!r}"
+        )
+        assert _current_pid(wd) == new_pid, "watchdog switched daemons without a crash"
+
         # WatchdogDB public API reflects the same rows.
         api_rows = wd_mod.WatchdogDB(db_path).get_events(event_type="DAEMON_CRASHED")
         assert isinstance(api_rows, list) and api_rows
         assert all(isinstance(r, dict) for r in api_rows)
         assert any(r.get("pid") == initial_pid for r in api_rows)
+        assert all(r.get("event_type") == "DAEMON_CRASHED" for r in api_rows)
     finally:
         _safe_terminate(wd, [initial_pid, new_pid, *_all_pids(db_path)])
 
@@ -521,8 +724,48 @@ def test_watchdog_spawn_storm_circuit_breaker(tmp_path: Path) -> None:
         current = _current_pid(wd)
         if current is not None:
             assert _wait_until(lambda: not _pid_alive(current), timeout=10.0)
+
+        recorded_pids = [p for p in _all_pids(db_path) if isinstance(p, int)]
+        assert recorded_pids, "no pids recorded in watchdog_events_v2"
+        assert _wait_until(
+            lambda: not any(_pid_alive(p) for p in recorded_pids), timeout=10.0
+        ), f"processes still alive after breaker trip: {[p for p in recorded_pids if _pid_alive(p)]}"
     finally:
         _safe_terminate(wd, _all_pids(db_path))
+
+    # Scenario 2: crashes spaced wider than the window never trip the breaker,
+    # proving the window slides instead of counting crashes forever.
+    slide_db = tmp_path / "watchdog_sliding.db"
+    wd2 = wd_mod.DaemonWatchdog(
+        target_cmd=[sys.executable, str(worker)],
+        db_path=slide_db,
+        crash_threshold=3,
+        window_seconds=0.3,
+        poll_interval=0.01,
+        daemon_name="kanban_worker",
+    )
+    try:
+        first2 = wd2.spawn_daemon()
+        assert isinstance(first2, subprocess.Popen)
+        for i in range(5):
+            time.sleep(0.6)
+            child = _current_pid(wd2)
+            assert child is not None, f"iteration {i}: watchdog has no current daemon"
+            assert _wait_until(lambda: not _pid_alive(child), timeout=15.0), (
+                f"iteration {i}: crashing worker {child} never exited"
+            )
+            result = wd2.poll_cycle()
+            assert result is True, f"iteration {i}: poll_cycle returned {result!r} for spaced crashes"
+            assert _is_tripped(wd2) is False, f"iteration {i}: breaker tripped on spaced crashes"
+
+        crashes2 = _query_events(slide_db, ("DAEMON_CRASHED",))
+        restarts2 = _query_events(slide_db, RESTART_EVENT_TYPES)
+        storms2 = _query_events(slide_db, ("SPAWN_STORM_DETECTED",))
+        assert len(crashes2) == 5, f"expected 5 DAEMON_CRASHED rows, got {len(crashes2)}"
+        assert len(restarts2) >= 5, f"expected >=5 restart rows, got {len(restarts2)}"
+        assert storms2 == [], f"sliding window wrongly detected a storm: {storms2!r}"
+    finally:
+        _safe_terminate(wd2, _all_pids(slide_db))
 
 
 # ---------------------------------------------------------------------------
@@ -541,25 +784,13 @@ def test_idle_sidecar_cpu_and_credit_gating(tmp_path: Path) -> None:
     db = side.IdleSidecarDB(db_path, daily_budget=25.0)
     db.init_schema()
 
-    conn = sqlite3.connect(str(db_path), timeout=10)
-    try:
-        mode = conn.execute("PRAGMA journal_mode").fetchone()[0]
-        tables = {
-            r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-        }
-    finally:
-        conn.close()
-    assert str(mode).lower() == "wal", f"expected WAL journal_mode, got {mode!r}"
+    mode = _journal_mode(db_path)
+    tables = _table_names(db_path)
+    assert mode == "wal", f"expected WAL journal_mode, got {mode!r}"
     assert {"quota_state", "credit_ledger_v2"} <= tables, f"missing tables: {tables!r}"
 
     idle_monitor = side.HardwareMonitor(cpu_threshold=100.0)
     busy_monitor = side.HardwareMonitor(cpu_threshold=0.0)
-
-    cpu = idle_monitor.get_cpu_percent(interval=0.05)
-    assert isinstance(cpu, float) and 0.0 <= cpu <= 100.0
-    assert idle_monitor.is_cpu_idle(interval=0.05) is True
-    assert busy_monitor.is_cpu_idle(interval=0.05) is False
-
     idle_engine = side.HeavyTaskPolicyEngine(db, idle_monitor)
     busy_engine = side.HeavyTaskPolicyEngine(db, busy_monitor)
     heavy_cost = 0.10
@@ -569,26 +800,71 @@ def test_idle_sidecar_cpu_and_credit_gating(tmp_path: Path) -> None:
     assert db.get_quota_status() == "QUOTA_EXHAUSTED"
     assert idle_engine.can_execute_heavy(estimated_cost=heavy_cost) is False
 
-    # Quota OK but CPU busy -> blocked.
+    # Quota OK but CPU busy under a real CPU-burning load -> blocked.
     db.set_quota_status("QUOTA_OK", details="test: ok")
     assert db.get_quota_status() == "QUOTA_OK"
-    assert busy_engine.can_execute_heavy(estimated_cost=heavy_cost) is False
+    burner = subprocess.Popen(
+        [sys.executable, "-c", "while True: pass"],
+        creationflags=CREATE_NO_WINDOW,
+        encoding="utf-8",
+    )
+    try:
+        time.sleep(0.3)
+        assert burner.poll() is None, "CPU burner exited prematurely"
+        loaded_cpu = busy_monitor.get_cpu_percent(interval=0.2)
+        assert isinstance(loaded_cpu, float) and 0.0 < loaded_cpu <= 100.0, (
+            f"CPU sample under real load must be positive, got {loaded_cpu!r}"
+        )
+        assert side.HardwareMonitor(cpu_threshold=0.0).is_cpu_idle(interval=0.2) is False
+        assert busy_engine.can_execute_heavy(estimated_cost=heavy_cost) is False
+    finally:
+        burner.kill()
+        burner.wait(timeout=15)
+    assert not _pid_alive(burner.pid), "CPU burner left running"
+
+    # Idle monitor after load removed.
+    cpu = idle_monitor.get_cpu_percent(interval=0.05)
+    assert isinstance(cpu, float) and 0.0 <= cpu <= 100.0
+    assert idle_monitor.is_cpu_idle(interval=0.05) is True
 
     # Quota OK and CPU idle, no spend -> allowed.
     assert db.get_daily_spend() == pytest.approx(0.0)
+    assert idle_engine.can_execute_heavy(estimated_cost=heavy_cost) is True
+
+    # Cross-instance freshness: quota state is read from SQLite on every decision.
+    db_other = side.IdleSidecarDB(db_path, daily_budget=25.0)
+    db_other.set_quota_status("QUOTA_EXHAUSTED")
+    assert idle_engine.can_execute_heavy(estimated_cost=heavy_cost) is False, (
+        "engine used a cached quota state instead of reading SQLite"
+    )
+    db_other.set_quota_status("QUOTA_OK")
     assert idle_engine.can_execute_heavy(estimated_cost=heavy_cost) is True
 
     # Daily budget exceeded -> blocked.
     db.record_spend("task-budget-001", "cochem-coder", 26.0)
     assert db.get_daily_spend() == pytest.approx(26.0)
     assert idle_engine.can_execute_heavy(estimated_cost=heavy_cost) is False
+    assert _row_count(db_path, "credit_ledger_v2") == 1, (
+        "record_spend did not persist exactly one row into credit_ledger_v2"
+    )
 
-    conn = sqlite3.connect(str(db_path), timeout=10)
-    try:
-        ledger_rows = conn.execute("SELECT COUNT(*) FROM credit_ledger_v2").fetchone()[0]
-    finally:
-        conn.close()
-    assert ledger_rows >= 1, "record_spend did not persist into credit_ledger_v2"
+    # Budget boundary on a fresh database: spend + cost == budget is allowed.
+    edge_path = tmp_path / "sidecar_budget_edge.db"
+    edge_db = side.IdleSidecarDB(edge_path, daily_budget=25.0)
+    edge_db.init_schema()
+    edge_db.set_quota_status("QUOTA_OK")
+    edge_engine = side.HeavyTaskPolicyEngine(edge_db, side.HardwareMonitor(cpu_threshold=100.0))
+    edge_db.record_spend("t1", "cochem-coder", 24.0)
+    assert edge_db.get_daily_spend() == pytest.approx(24.0)
+    assert edge_engine.can_execute_heavy(estimated_cost=1.0) is True, "24 + 1 == 25 must be allowed"
+    assert edge_engine.can_execute_heavy(estimated_cost=1.5) is False, "24 + 1.5 > 25 must be blocked"
+    edge_other = side.IdleSidecarDB(edge_path, daily_budget=25.0)
+    edge_other.record_spend("t2", "cochem-coder", 2.0)
+    assert edge_db.get_daily_spend() == pytest.approx(26.0)
+    assert edge_engine.can_execute_heavy(estimated_cost=0.10) is False
+    assert _row_count(edge_path, "credit_ledger_v2") == 2, (
+        "credit_ledger_v2 row count must equal the number of record_spend calls"
+    )
 
     # Heavy-task classification by cost threshold.
     assert idle_engine.is_heavy_task(estimated_cost=0.0) is False
@@ -602,7 +878,16 @@ def test_idle_sidecar_cpu_and_credit_gating(tmp_path: Path) -> None:
 # ---------------------------------------------------------------------------
 
 
-def test_subprocess_flags_and_clean_termination(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def _names_create_no_window(expr: ast.AST) -> bool:
+    for n in ast.walk(expr):
+        if isinstance(n, ast.Name) and n.id == "CREATE_NO_WINDOW":
+            return True
+        if isinstance(n, ast.Attribute) and n.attr == "CREATE_NO_WINDOW":
+            return True
+    return False
+
+
+def test_subprocess_flags_and_clean_termination(tmp_path: Path) -> None:
     wd_mod = _get_watchdog()
     side = _get_idle_sidecar()
 
@@ -620,14 +905,20 @@ def test_subprocess_flags_and_clean_termination(tmp_path: Path, monkeypatch: pyt
         for call in calls:
             kw = {k.arg: k.value for k in call.keywords if k.arg}
             assert "creationflags" in kw, (
-                f"{fname}:{call.lineno} subprocess call missing creationflags"
+                f"{fname}:{call.lineno} subprocess call missing explicit creationflags"
             )
-            assert "encoding" in kw, f"{fname}:{call.lineno} subprocess call missing encoding"
+            assert _names_create_no_window(kw["creationflags"]), (
+                f"{fname}:{call.lineno} creationflags must reference CREATE_NO_WINDOW, "
+                f"got {ast.unparse(kw['creationflags'])}"
+            )
+            assert "encoding" in kw, f"{fname}:{call.lineno} subprocess call missing explicit encoding"
             enc = kw["encoding"]
-            if isinstance(enc, ast.Constant):
-                assert str(enc.value).lower() in ("utf-8", "utf8"), (
-                    f"{fname}:{call.lineno} encoding must be utf-8, got {enc.value!r}"
-                )
+            assert isinstance(enc, ast.Constant) and isinstance(enc.value, str), (
+                f"{fname}:{call.lineno} encoding must be the literal 'utf-8', got {ast.unparse(enc)}"
+            )
+            assert enc.value.lower() in ("utf-8", "utf8"), (
+                f"{fname}:{call.lineno} encoding must be utf-8, got {enc.value!r}"
+            )
 
         for node in ast.walk(tree):
             if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
@@ -639,18 +930,8 @@ def test_subprocess_flags_and_clean_termination(tmp_path: Path, monkeypatch: pyt
 
     assert wd_mod.CREATE_NO_WINDOW == CREATE_NO_WINDOW
 
-    # Runtime spy on the stdlib (not the module under test) to capture spawn kwargs.
-    recorded: list[dict] = []
-    real_popen = subprocess.Popen
-
-    class _SpyPopen(real_popen):  # type: ignore[misc, valid-type]
-        def __init__(self, *args: Any, **kwargs: Any) -> None:
-            recorded.append(dict(kwargs))
-            super().__init__(*args, **kwargs)
-
-    monkeypatch.setattr(subprocess, "Popen", _SpyPopen)
-
-    worker = _write_worker(tmp_path, "term_worker.py", LOOPING_WORKER)
+    # Behaviour: the daemon owns a grandchild; terminate() must reap the whole tree.
+    worker = _write_worker(tmp_path, "tree_worker.py", TREE_WORKER)
     ready_dir = tmp_path / "ready"
     ready_dir.mkdir()
     db_path = tmp_path / "watchdog_term.db"
@@ -661,27 +942,43 @@ def test_subprocess_flags_and_clean_termination(tmp_path: Path, monkeypatch: pyt
         poll_interval=0.05,
     )
     pid: Optional[int] = None
+    grandchild_pid: Optional[int] = None
     try:
         proc = wd.spawn_daemon()
+        assert isinstance(proc, subprocess.Popen)
         pid = proc.pid
-        assert _wait_until(lambda: _ready_file(ready_dir, pid).exists()), "worker never became ready"
-        assert _pid_alive(pid), "daemon should be running before terminate()"
+        ready = _ready_file(ready_dir, pid)
+        gc_file = ready_dir / f"grandchild_{pid}.txt"
+        assert _wait_until(lambda: ready.exists() and gc_file.exists(), timeout=20.0), (
+            "tree worker never reported ready/grandchild"
+        )
+        with open(gc_file, "r", encoding="utf-8") as fh:
+            grandchild_pid = int(fh.read().strip())
+        with open(ready, "r", encoding="utf-8") as fh:
+            console_window = int(fh.read().strip())
 
-        if recorded:
-            kwargs = recorded[-1]
-            assert str(kwargs.get("encoding", "")).lower() in ("utf-8", "utf8")
-            if os.name == "nt":
-                assert int(kwargs.get("creationflags", 0)) & CREATE_NO_WINDOW, (
-                    "daemon spawned without CREATE_NO_WINDOW"
-                )
+        assert _pid_alive(pid), "daemon should be running before terminate()"
+        assert _pid_alive(grandchild_pid), "grandchild should be running before terminate()"
+        if os.name == "nt":
+            assert console_window == 0, (
+                f"daemon has a console window (hwnd={console_window}); CREATE_NO_WINDOW not applied"
+            )
 
         wd.terminate()
+        gc = grandchild_pid
         assert _wait_until(lambda: not _pid_alive(pid), timeout=15.0), (
-            f"daemon pid {pid} still alive after terminate() (orphaned process)"
+            f"daemon pid {pid} still alive after terminate()"
+        )
+        assert _wait_until(lambda: not _pid_alive(gc), timeout=15.0), (
+            f"grandchild pid {gc} orphaned after terminate()"
         )
         assert not _pid_alive(_current_pid(wd))
+
+        # terminate() is idempotent.
+        wd.terminate()
     finally:
         _safe_terminate(wd, [pid, *_all_pids(db_path)])
+        _force_kill(grandchild_pid)
 
 
 # ---------------------------------------------------------------------------
@@ -689,7 +986,7 @@ def test_subprocess_flags_and_clean_termination(tmp_path: Path, monkeypatch: pyt
 # ---------------------------------------------------------------------------
 
 
-def test_offline_isolation_and_routing_sentinels(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_offline_isolation_and_routing_sentinels(tmp_path: Path) -> None:
     wd_mod = _get_watchdog()
     side = _get_idle_sidecar()
 
@@ -774,53 +1071,73 @@ def test_offline_isolation_and_routing_sentinels(tmp_path: Path, monkeypatch: py
                         f"{fname}:{node.lineno} imports {mod_name}.{names & {'request', 'client'}}"
                     )
 
-    # Runtime offline execution: any socket connect/resolve attempt is recorded and refused.
-    attempts: list[str] = []
-
-    def _blocked(*args: Any, **kwargs: Any) -> Any:
-        attempts.append(repr(args[:2]))
-        raise OSError("network access is forbidden in offline tests")
-
-    monkeypatch.setattr(socket.socket, "connect", _blocked)
-    monkeypatch.setattr(socket.socket, "connect_ex", _blocked)
-    monkeypatch.setattr(socket, "create_connection", _blocked)
-    monkeypatch.setattr(socket, "getaddrinfo", _blocked)
-    monkeypatch.setenv("DOCKER_HOST", "tcp://127.0.0.1:9")
-
-    wd_db_path = tmp_path / "offline_watchdog.db"
-    wdb = wd_mod.WatchdogDB(wd_db_path)
-    wdb.init_schema()
-    wdb.log_event("kanban_worker", "OFFLINE_PROBE", pid=os.getpid(), details="offline")
-    probe = wdb.get_events(event_type="OFFLINE_PROBE")
-    assert probe and probe[0].get("event_type") == "OFFLINE_PROBE"
-    assert probe[0].get("pid") == os.getpid()
-
+    # Runtime offline execution in a fresh interpreter guarded by sys.addaudithook.
+    harness = _write_worker(tmp_path, "offline_harness.py", OFFLINE_HARNESS)
     worker = _write_worker(tmp_path, "offline_worker.py", LOOPING_WORKER)
-    ready_dir = tmp_path / "ready"
-    ready_dir.mkdir()
-    wd = wd_mod.DaemonWatchdog(
-        target_cmd=[sys.executable, str(worker), str(ready_dir)],
-        db_path=tmp_path / "offline_daemon.db",
-        poll_interval=0.05,
-    )
-    pid: Optional[int] = None
+    work_dir = tmp_path / "offline_work"
+    work_dir.mkdir()
+    result_path = tmp_path / "offline_result.json"
+
+    env = os.environ.copy()
+    env["DOCKER_HOST"] = "tcp://127.0.0.1:9"
+    env["HTTP_PROXY"] = "http://127.0.0.1:9"
+    env["HTTPS_PROXY"] = "http://127.0.0.1:9"
+
+    daemon_pid: Optional[int] = None
     try:
-        proc = wd.spawn_daemon()
-        pid = proc.pid
-        assert _wait_until(lambda: _ready_file(ready_dir, pid).exists())
-        assert wd.poll_cycle() is not False
-        assert _pid_alive(pid)
+        completed = subprocess.run(
+            [
+                sys.executable,
+                str(harness),
+                str(modules["watchdog.py"][1]),
+                str(modules["cochem_idle_sidecar.py"][1]),
+                str(work_dir),
+                str(worker),
+                str(result_path),
+            ],
+            creationflags=CREATE_NO_WINDOW,
+            encoding="utf-8",
+            capture_output=True,
+            timeout=120,
+            env=env,
+        )
+        assert completed.returncode == 0, (
+            f"offline harness failed (rc={completed.returncode})\n"
+            f"stdout:\n{completed.stdout}\nstderr:\n{completed.stderr}"
+        )
+        with open(result_path, "r", encoding="utf-8") as fh:
+            result = json.load(fh)
+        daemon_pid = result.get("daemon_pid")
+
+        assert result["net_events"] == [], f"modules attempted network access: {result['net_events']!r}"
+
+        for ev in result["popen_events"]:
+            exe = ev.get("executable")
+            argv = ev.get("argv") or []
+            names = []
+            if exe:
+                names.append(os.path.basename(exe).lower())
+            if argv:
+                names.append(os.path.basename(argv[0]).lower())
+            assert not any("docker" in n for n in names), f"docker process spawned: {ev!r}"
+
+        probe = result["probe_rows"]
+        assert probe, "OFFLINE_PROBE row not returned by get_events"
+        assert probe[0].get("event_type") == "OFFLINE_PROBE"
+        assert probe[0].get("pid") == result["harness_pid"]
+
+        assert result["ready_seen"] is True, "offline daemon never became ready"
+        assert result["poll_result"] is not False, "poll_cycle reported a trip for a healthy daemon"
+        assert isinstance(daemon_pid, int)
+        assert _wait_until(lambda: not _pid_alive(daemon_pid), timeout=15.0), (
+            f"offline daemon {daemon_pid} survived terminate()"
+        )
+        assert result["can_execute"] is True
+
+        tmp_resolved = tmp_path.resolve()
+        for db_str in result["db_paths"]:
+            db_file = Path(db_str)
+            assert db_file.exists(), f"db file missing: {db_file}"
+            assert tmp_resolved in db_file.resolve().parents, f"db escaped tmp_path: {db_file}"
     finally:
-        _safe_terminate(wd, [pid, *_all_pids(tmp_path / "offline_daemon.db")])
-    assert _wait_until(lambda: not _pid_alive(pid), timeout=15.0)
-
-    side_db_path = tmp_path / "offline_sidecar.db"
-    sdb = side.IdleSidecarDB(side_db_path, daily_budget=25.0)
-    sdb.init_schema()
-    sdb.set_quota_status("QUOTA_OK")
-    engine = side.HeavyTaskPolicyEngine(sdb, side.HardwareMonitor(cpu_threshold=100.0))
-    assert engine.can_execute_heavy(estimated_cost=0.10) is True
-
-    assert not attempts, f"modules attempted network access: {attempts!r}"
-    for db_file in (wd_db_path, tmp_path / "offline_daemon.db", side_db_path):
-        assert db_file.exists() and tmp_path in db_file.resolve().parents
+        _force_kill(daemon_pid)
