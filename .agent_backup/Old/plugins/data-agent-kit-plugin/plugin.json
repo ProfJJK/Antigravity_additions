@@ -1,0 +1,19 @@
+{
+  "name": "data-agent-kit-plugin",
+  "version": "0.6.1",
+  "description": "Specialized suite of skills for data engineers and database practitioners working on Google Cloud",
+  "author": {
+    "name": "Google LLC"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "gcp",
+    "data",
+    "bigquery",
+    "dbt",
+    "spark",
+    "spanner",
+    "alloydb",
+    "cloud-sql"
+  ]
+}

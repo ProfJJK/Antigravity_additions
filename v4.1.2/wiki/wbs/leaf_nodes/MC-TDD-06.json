@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-06",
+  "title": "Implement Bounded 10-Cycle Execute-Audit-Repair Loop",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/state_machine.py",
+  "chunk_start": 46,
+  "chunk_end": 95,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-001: Coding tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit -> Repair loop. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+  "dependencies": [
+    "MC-TDD-05",
+    "MC-TDD-01"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_001\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-06] SRS-412-05-FR-001\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-001: Coding\n# SPEC: tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit ->\n# SPEC: Repair loop. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/tdd_pivot/state_machine.py:50 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:51 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:52 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:53 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:54 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:55 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:56 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:57 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:58 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:59 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:60 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:61 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:62 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:63 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:64 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:65 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:66 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:67 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:68 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:69 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:70 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:71 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:72 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:73 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:74 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:75 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:76 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:77 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:78 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:79 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:80 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:81 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:82 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:83 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:84 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:85 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:86 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:87 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:88 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:89 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:90 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:91 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:92 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:93 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:94 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:95 [MC-TDD-06]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-001"
+    ]
+  }
+}

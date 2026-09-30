@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-13",
+  "title": "Implement Matrix 2 Zombie Lease Deadlock Detector",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 186,
+  "chunk_end": 230,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-004: Matrix 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s). Read 'more than 60 seconds (calibrated to 1860s)' as now > lease_expires_at + 60 on the 1800 s lease, i.e. a task stalled for 1860 s. Take the grace period from one constant.",
+  "dependencies": [
+    "MC-SRE-12",
+    "MC-SRE-03"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_004\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-13] SRS-412-08-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-004: Matrix\n# SPEC: 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by\n# SPEC: more than 60 seconds (calibrated to 1860s). Read 'more than 60 seconds (calibrated to 1860s)' as\n# SPEC: now > lease_expires_at + 60 on the 1800 s lease, i.e. a task stalled for 1860 s. Take the grace\n# SPEC: period from one constant.\n# src/cochem/watchdog/watchdog_sre.py:192 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:193 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:194 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:195 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:196 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:197 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:198 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:199 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:200 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:201 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:202 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:203 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:204 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:205 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:206 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:207 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:208 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:209 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:210 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:211 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:212 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:213 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:214 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:215 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:216 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:217 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:218 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:219 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:220 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:221 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:222 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:223 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:224 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:225 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:226 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:227 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:228 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:229 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:230 [MC-SRE-13]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-004"
+    ]
+  }
+}

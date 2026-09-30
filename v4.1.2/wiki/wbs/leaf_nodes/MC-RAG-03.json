@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-03",
+  "title": "Author BM25 Indexing, Incremental and Atomic Re-Index Tests",
+  "domain": "dual_wiki_rag",
+  "target_file": "tests/test_ch06_dual_wiki_rag.py",
+  "chunk_start": 121,
+  "chunk_end": 180,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_002_* for SRS-412-06-FR-002 (All knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using BM25 relevance scoring.); test_ch06_fr_008_* for SRS-412-06-FR-008 (The FTS5 indexer shall support both incremental document updates and atomic full re-indexing.); test_ch06_fts5_index_desynchronization_* for FAILURE:FTS5 Index Desynchronization (If document hash differs from indexed hash, the indexer triggers a non-blocking background re-index of the file.); test_ch06_nfr_rag_02_* for NFR-RAG-02 (FTS5 index size shall not exceed 1.5x the raw Markdown corpus size.)",
+  "dependencies": [
+    "MC-RAG-02"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-03] TESTS:indexer\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_002_*\n# SPEC: for SRS-412-06-FR-002 (All knowledge documents shall be indexed in the SQLite FTS5 database\n# SPEC: (`knowledge_index.db`) using BM25 relevance scoring.); test_ch06_fr_008_* for SRS-412-06-FR-008\n# SPEC: (The FTS5 indexer shall support both incremental document updates and atomic full re-indexing.);\n# SPEC: test_ch06_fts5_index_desynchronization_* for FAILURE:FTS5 Index Desynchronization (If document\n# SPEC: hash differs from indexed hash, the indexer triggers a non-blocking background re-index of the\n# SPEC: file.); test_ch06_nfr_rag_02_* for NFR-RAG-02 (FTS5 index size shall not exceed 1.5x the raw\n# SPEC: Markdown corpus size.)\n# tests/test_ch06_dual_wiki_rag.py:131 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:132 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:133 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:134 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:135 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:136 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:137 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:138 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:139 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:140 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:141 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:142 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:143 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:144 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:145 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:146 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:147 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:148 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:149 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:150 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:151 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:152 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:153 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:154 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:155 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:156 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:157 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:158 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:159 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:160 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:161 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:162 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:163 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:164 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:165 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:166 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:167 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:168 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:169 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:170 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:171 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:172 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:173 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:174 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:175 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:176 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:177 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:178 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:179 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:180 [MC-RAG-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-002",
+      "SRS-412-06-FR-008",
+      "FAILURE:FTS5 Index Desynchronization",
+      "NFR-RAG-02"
+    ]
+  }
+}

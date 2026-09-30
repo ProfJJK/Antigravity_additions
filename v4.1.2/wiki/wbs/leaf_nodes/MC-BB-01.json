@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-01",
+  "title": "Author WAL Schema, Read-Only and Idempotent Injection Tests",
+  "domain": "task_matrix",
+  "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+  "chunk_start": 1,
+  "chunk_end": 60,
+  "line_delta": 60,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_jobs_* for DATA_MODEL:jobs (section 7 CREATE TABLE); test_ch04_fr_001_* for SRS-412-04-FR-001 (The task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`.); test_ch04_fr_007_* for SRS-412-04-FR-007 (Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs (`file:job_board.db?mode=ro`).); test_ch04_fr_008_* for SRS-412-04-FR-008 (Task batch injection shall be completely idempotent via unique `task_id` constraints and `INSERT OR IGNORE`.); test_ch04_nfr_tm_02_* for NFR-TM-02 (The SQLite database WAL checkpointing shall not block read queries.); test_ch04_database_lock_contention_* for FAILURE:Database Lock Contention (`PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.). Section 9 obligations: Test asserts observer connection opens with `?mode=ro`.",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-01] TESTS:schema\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_jobs_* for\n# SPEC: DATA_MODEL:jobs (section 7 CREATE TABLE); test_ch04_fr_001_* for SRS-412-04-FR-001 (The task\n# SPEC: blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous\n# SPEC: = NORMAL` and `PRAGMA busy_timeout = 30000`.); test_ch04_fr_007_* for SRS-412-04-FR-007\n# SPEC: (Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs\n# SPEC: (`file:job_board.db?mode=ro`).); test_ch04_fr_008_* for SRS-412-04-FR-008 (Task batch injection\n# SPEC: shall be completely idempotent via unique `task_id` constraints and `INSERT OR IGNORE`.);\n# SPEC: test_ch04_nfr_tm_02_* for NFR-TM-02 (The SQLite database WAL checkpointing shall not block read\n# SPEC: queries.); test_ch04_database_lock_contention_* for FAILURE:Database Lock Contention (`PRAGMA\n# SPEC: busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.).\n# SPEC: Section 9 obligations: Test asserts observer connection opens with `?mode=ro`.\n# tests/test_ch04_task_matrix_blackboard.py:14 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:15 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:16 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:17 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:18 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:19 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:20 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:21 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:22 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:23 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:24 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:25 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:26 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:27 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:28 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:29 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:30 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:31 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:32 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:33 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:34 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:35 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:36 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:37 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:38 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:39 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:40 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:41 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:42 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:43 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:44 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:45 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:46 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:47 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:48 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:49 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:50 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:51 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:52 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:53 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:54 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:55 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:56 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:57 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:58 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:59 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:60 [MC-BB-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "DATA_MODEL:jobs",
+      "SRS-412-04-FR-001",
+      "SRS-412-04-FR-007",
+      "SRS-412-04-FR-008",
+      "NFR-TM-02",
+      "FAILURE:Database Lock Contention"
+    ]
+  }
+}

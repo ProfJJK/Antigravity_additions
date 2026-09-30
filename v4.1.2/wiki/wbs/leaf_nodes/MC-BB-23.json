@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-23",
+  "title": "Implement complete_task Transition",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/lifecycle.py",
+  "chunk_start": 81,
+  "chunk_end": 120,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement complete_task(db_path: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal ZD-8 invariant. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+  "dependencies": [
+    "MC-BB-22",
+    "MC-BB-03"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"complete_task\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-23] INTERFACE:complete_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement complete_task(db_path:\n# SPEC: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain\n# SPEC: Signal ZD-8 invariant. Match the section 6 reference implementation, composed from the helpers\n# SPEC: defined in earlier chunks.\n# src/cochem/blackboard/lifecycle.py:86 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:87 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:88 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:89 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:90 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:91 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:92 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:93 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:94 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:95 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:96 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:97 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:98 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:99 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:100 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:101 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:102 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:103 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:104 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:105 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:106 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:107 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:108 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:109 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:110 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:111 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:112 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:113 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:114 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:115 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:116 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:117 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:118 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:119 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:120 [MC-BB-23]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "INTERFACE:complete_task"
+    ]
+  }
+}

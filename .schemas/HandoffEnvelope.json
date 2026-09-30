@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "description": "Universal transport wrapper; ``produced_at_utc`` is epoch seconds (float).",
+  "properties": {
+    "payload": {
+      "additionalProperties": true,
+      "title": "Payload",
+      "type": "object"
+    },
+    "produced_at_utc": {
+      "title": "Produced At Utc",
+      "type": "number"
+    },
+    "producer_provider": {
+      "title": "Producer Provider",
+      "type": "string"
+    },
+    "schema_name": {
+      "title": "Schema Name",
+      "type": "string"
+    },
+    "schema_sha256": {
+      "title": "Schema Sha256",
+      "type": "string"
+    },
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_name",
+    "schema_version",
+    "schema_sha256",
+    "producer_provider",
+    "produced_at_utc",
+    "payload"
+  ],
+  "title": "HandoffEnvelope",
+  "type": "object"
+}

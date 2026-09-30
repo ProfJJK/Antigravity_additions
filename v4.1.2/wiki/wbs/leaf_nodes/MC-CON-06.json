@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-06",
+  "title": "Implement Hidden Process-Group Subprocess Spawner",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/runtime.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-03-FR-007: All Windows subprocess calls shall enforce `creationflags = 0x08000000 | 0x00000200` (`CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP`). Verified by test: test_f04_fable_invocation_enforces_create_no_window_flag.",
+  "dependencies": [
+    "MC-CON-01"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_fable_invocation_enforces_create_no_window_flag",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/runtime.py>>>\n# [MC-CON-06] SRS-412-03-FR-007\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-03-FR-007: All Windows subprocess calls shall enforce `creationflags = 0x08000000 |\n# SPEC: 0x00000200` (`CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP`). Verified by test:\n# SPEC: test_f04_fable_invocation_enforces_create_no_window_flag.\n# src/cochem/concurrency/runtime.py:6 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:7 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:8 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:9 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:10 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:11 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:12 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:13 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:14 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:15 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:16 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:17 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:18 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:19 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:20 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:21 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:22 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:23 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:24 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:25 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:26 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:27 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:28 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:29 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:30 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:31 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:32 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:33 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:34 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:35 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:36 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:37 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:38 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:39 [MC-CON-06]\n# src/cochem/concurrency/runtime.py:40 [MC-CON-06]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-007"
+    ]
+  }
+}

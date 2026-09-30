@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-05",
+  "title": "Author Urgency x Fidelity Routing Tests",
+  "domain": "task_matrix",
+  "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+  "chunk_start": 241,
+  "chunk_end": 300,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_006_* for SRS-412-04-FR-006 (The queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with capability matching.)",
+  "dependencies": [
+    "MC-BB-04"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-05] TESTS:matrix\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_006_* for SRS-412-04-FR-006 (The\n# SPEC: queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with\n# SPEC: capability matching.)\n# tests/test_ch04_task_matrix_blackboard.py:246 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:247 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:248 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:249 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:250 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:251 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:252 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:253 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:254 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:255 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:256 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:257 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:258 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:259 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:260 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:261 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:262 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:263 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:264 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:265 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:266 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:267 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:268 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:269 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:270 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:271 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:272 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:273 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:274 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:275 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:276 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:277 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:278 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:279 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:280 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:281 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:282 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:283 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:284 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:285 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:286 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:287 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:288 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:289 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:290 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:291 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:292 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:293 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:294 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:295 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:296 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:297 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:298 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:299 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:300 [MC-BB-05]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-006"
+    ]
+  }
+}

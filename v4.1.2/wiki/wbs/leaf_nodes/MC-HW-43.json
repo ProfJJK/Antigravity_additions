@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-43",
+  "title": "Implement Tier 1 Graceful Service Restart Trigger",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/restart_service.py",
+  "chunk_start": 15,
+  "chunk_end": 55,
+  "line_delta": 41,
+  "instructions": "Implement trigger_graceful_restart() sending SIGTERM via named pipe before escalation.",
+  "dependencies": [
+    "MC-HW-42"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/restart_service.py>>>\n# Code context line 15 for MC-HW-43\n# Code context line 16 for MC-HW-43\n# Code context line 17 for MC-HW-43\n# Code context line 18 for MC-HW-43\n# Code context line 19 for MC-HW-43\n# Code context line 20 for MC-HW-43\n# Code context line 21 for MC-HW-43\n# Code context line 22 for MC-HW-43\n# Code context line 23 for MC-HW-43\n# Code context line 24 for MC-HW-43\n# Code context line 25 for MC-HW-43\n# Code context line 26 for MC-HW-43\n# Code context line 27 for MC-HW-43\n# Code context line 28 for MC-HW-43\n# Code context line 29 for MC-HW-43\n# Code context line 30 for MC-HW-43\n# Code context line 31 for MC-HW-43\n# Code context line 32 for MC-HW-43\n# Code context line 33 for MC-HW-43\n# Code context line 34 for MC-HW-43\n# Code context line 35 for MC-HW-43\n# Code context line 36 for MC-HW-43\n# Code context line 37 for MC-HW-43\n# Code context line 38 for MC-HW-43\n# Code context line 39 for MC-HW-43\n# Code context line 40 for MC-HW-43\n# Code context line 41 for MC-HW-43\n# Code context line 42 for MC-HW-43\n# Code context line 43 for MC-HW-43\n# Code context line 44 for MC-HW-43\n# Code context line 45 for MC-HW-43\n# Code context line 46 for MC-HW-43\n# Code context line 47 for MC-HW-43\n# Code context line 48 for MC-HW-43\n# Code context line 49 for MC-HW-43\n# Code context line 50 for MC-HW-43\n# Code context line 51 for MC-HW-43\n# Code context line 52 for MC-HW-43\n# Code context line 53 for MC-HW-43\n# Code context line 54 for MC-HW-43\n# Code context line 55 for MC-HW-43\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

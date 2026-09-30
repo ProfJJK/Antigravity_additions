@@ -1,0 +1,7 @@
+{
+  "command": "pytest tests/tdd/test_task_CHEM311_ch2_2_11_remember_571b_srs_srs.py -q",
+  "returncode": 0,
+  "stdout": ".....                                                                    [100%]\n5 passed in 0.11s\n",
+  "stderr": "",
+  "srs_sha256": "43c826924dee2aec9d9702992549c383be1f5ad9f0532be31bc274d1ba2731a6"
+}

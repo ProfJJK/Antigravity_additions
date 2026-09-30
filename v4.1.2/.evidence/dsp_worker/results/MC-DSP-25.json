@@ -1,0 +1,55 @@
+{
+  "task_id": "MC-DSP-25",
+  "domain": "pedagogy_engine",
+  "daemon_id": "dsp-worker@AetherDesk:23816",
+  "attempt": 2,
+  "started_at": 1790733875.4987466,
+  "finished_at": 1790733875.5285702,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-DSP-25",
+    "course_id": 311,
+    "synced": true,
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "SYNC",
+        "course_id": 311,
+        "synced_count": 0,
+        "status": "PASSED"
+      },
+      {
+        "stage": "TEST_GEN",
+        "exam_id": "EXAM-311",
+        "questions": 4,
+        "compiled_paths": [
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v1.txt",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v1.pdf",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v1_key.txt",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v1_key.pdf",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v2.txt",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v2.pdf",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v2_key.txt",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_v2_key.pdf",
+          "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\exams\\EXAM-311\\exam_EXAM-311_master_key.json"
+        ],
+        "status": "PASSED"
+      },
+      {
+        "stage": "GRADING",
+        "score": 15.0,
+        "max_score": 15.0,
+        "feedback": "Strong reasoning on thermodynamics (matched concepts: enthalpy, entropy, gibbs). Strong reasoning on units (matched concepts: kelvin).",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-DSP-25",
+      "status": "COMPLETED",
+      "duration_sec": 0.029620647430419922,
+      "memory_start_mb": 112.234375,
+      "memory_end_mb": 112.23828125,
+      "memory_peak_mb": 112.23828125
+    }
+  }
+}

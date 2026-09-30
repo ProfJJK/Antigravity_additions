@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-21",
+  "title": "Implement 5-Second Self-Healing Trigger Deadline",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 526,
+  "chunk_end": 555,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-03: Self-healing trigger sequence shall initiate within 5 seconds of structural collapse confirmation. Measure from COLLAPSED confirmation to recovery Popen return with time.monotonic().",
+  "dependencies": [
+    "MC-SRE-20",
+    "MC-SRE-05"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_03\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-21] NFR-SRE-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-03: Self-healing\n# SPEC: trigger sequence shall initiate within 5 seconds of structural collapse confirmation. Measure\n# SPEC: from COLLAPSED confirmation to recovery Popen return with time.monotonic().\n# src/cochem/watchdog/watchdog_sre.py:530 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:531 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:532 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:533 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:534 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:535 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:536 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:537 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:538 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:539 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:540 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:541 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:542 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:543 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:544 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:545 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:546 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:547 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:548 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:549 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:550 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:551 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:552 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:553 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:554 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:555 [MC-SRE-21]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "NFR-SRE-03"
+    ]
+  }
+}

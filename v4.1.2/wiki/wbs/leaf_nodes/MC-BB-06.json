@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-06",
+  "title": "Implement jobs Table DDL and ensure_schema",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/schema.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the jobs CREATE TABLE statement verbatim from section 7 and an ensure_schema(conn) that executes it. Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; task_id TEXT UNIQUE NOT NULL; job_type TEXT NOT NULL; priority INTEGER DEFAULT 100; status TEXT CHECK(status IN ('PENDING', 'RUNNING', 'COMPLETED', 'FAILED', 'BLOCKED')) DEFAULT 'PENDING'; payload_json TEXT NOT NULL; lease_owner TEXT; lease_expires_at INTEGER; attempts INTEGER DEFAULT 0; error_log TEXT; created_at INTEGER DEFAULT (strftime('%s', 'now')); updated_at INTEGER DEFAULT (strftime('%s', 'now'))",
+  "dependencies": [
+    "MC-BB-01"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"jobs\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-06] DATA_MODEL:jobs\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the jobs\n# SPEC: CREATE TABLE statement verbatim from section 7 and an ensure_schema(conn) that executes it.\n# SPEC: Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; task_id TEXT UNIQUE NOT NULL; job_type TEXT NOT\n# SPEC: NULL; priority INTEGER DEFAULT 100; status TEXT CHECK(status IN ('PENDING', 'RUNNING',\n# SPEC: 'COMPLETED', 'FAILED', 'BLOCKED')) DEFAULT 'PENDING'; payload_json TEXT NOT NULL; lease_owner\n# SPEC: TEXT; lease_expires_at INTEGER; attempts INTEGER DEFAULT 0; error_log TEXT; created_at INTEGER\n# SPEC: DEFAULT (strftime('%s', 'now')); updated_at INTEGER DEFAULT (strftime('%s', 'now'))\n# src/cochem/blackboard/schema.py:9 [MC-BB-06]\n# src/cochem/blackboard/schema.py:10 [MC-BB-06]\n# src/cochem/blackboard/schema.py:11 [MC-BB-06]\n# src/cochem/blackboard/schema.py:12 [MC-BB-06]\n# src/cochem/blackboard/schema.py:13 [MC-BB-06]\n# src/cochem/blackboard/schema.py:14 [MC-BB-06]\n# src/cochem/blackboard/schema.py:15 [MC-BB-06]\n# src/cochem/blackboard/schema.py:16 [MC-BB-06]\n# src/cochem/blackboard/schema.py:17 [MC-BB-06]\n# src/cochem/blackboard/schema.py:18 [MC-BB-06]\n# src/cochem/blackboard/schema.py:19 [MC-BB-06]\n# src/cochem/blackboard/schema.py:20 [MC-BB-06]\n# src/cochem/blackboard/schema.py:21 [MC-BB-06]\n# src/cochem/blackboard/schema.py:22 [MC-BB-06]\n# src/cochem/blackboard/schema.py:23 [MC-BB-06]\n# src/cochem/blackboard/schema.py:24 [MC-BB-06]\n# src/cochem/blackboard/schema.py:25 [MC-BB-06]\n# src/cochem/blackboard/schema.py:26 [MC-BB-06]\n# src/cochem/blackboard/schema.py:27 [MC-BB-06]\n# src/cochem/blackboard/schema.py:28 [MC-BB-06]\n# src/cochem/blackboard/schema.py:29 [MC-BB-06]\n# src/cochem/blackboard/schema.py:30 [MC-BB-06]\n# src/cochem/blackboard/schema.py:31 [MC-BB-06]\n# src/cochem/blackboard/schema.py:32 [MC-BB-06]\n# src/cochem/blackboard/schema.py:33 [MC-BB-06]\n# src/cochem/blackboard/schema.py:34 [MC-BB-06]\n# src/cochem/blackboard/schema.py:35 [MC-BB-06]\n# src/cochem/blackboard/schema.py:36 [MC-BB-06]\n# src/cochem/blackboard/schema.py:37 [MC-BB-06]\n# src/cochem/blackboard/schema.py:38 [MC-BB-06]\n# src/cochem/blackboard/schema.py:39 [MC-BB-06]\n# src/cochem/blackboard/schema.py:40 [MC-BB-06]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "DATA_MODEL:jobs"
+    ]
+  }
+}

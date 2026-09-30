@@ -1,0 +1,12 @@
+{
+  "credit-limit-guardian": {
+    "enabled": true,
+    "PostInvocation": [
+      {
+        "type": "command",
+        "command": "python C:\\Users\\ansac\\.gemini\\config\\scripts\\credit_guardian.py",
+        "timeout": 15
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-12",
+  "title": "Implement fts_index FTS5 Virtual Table DDL",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/indexer.py",
+  "chunk_start": 46,
+  "chunk_end": 90,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Define the fts_index CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: USING fts5: doc_path UNINDEXED; section_title; content; tokenize = 'porter unicode61' (Gap: the live knowledge_index.db holds fts_documents(document_id, title, body, tags, filepath), which tests/test_stage6_activation_mcp.py and tests/test_cross_feature_interactions.py query.) Implement section 7 as written; do not drop or rename fts_documents here.",
+  "dependencies": [
+    "MC-RAG-11",
+    "MC-RAG-02"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fts_index\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-12] DATA_MODEL:fts_index\n# SPEC: Append after the previous chunk without editing earlier lines. Define the fts_index CREATE\n# SPEC: statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: USING fts5:\n# SPEC: doc_path UNINDEXED; section_title; content; tokenize = 'porter unicode61' (Gap: the live\n# SPEC: knowledge_index.db holds fts_documents(document_id, title, body, tags, filepath), which\n# SPEC: tests/test_stage6_activation_mcp.py and tests/test_cross_feature_interactions.py query.)\n# SPEC: Implement section 7 as written; do not drop or rename fts_documents here.\n# src/cochem/knowledge/indexer.py:53 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:54 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:55 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:56 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:57 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:58 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:59 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:60 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:61 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:62 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:63 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:64 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:65 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:66 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:67 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:68 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:69 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:70 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:71 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:72 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:73 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:74 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:75 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:76 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:77 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:78 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:79 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:80 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:81 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:82 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:83 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:84 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:85 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:86 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:87 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:88 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:89 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:90 [MC-RAG-12]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "DATA_MODEL:fts_index"
+    ]
+  }
+}

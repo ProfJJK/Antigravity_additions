@@ -1,0 +1,12 @@
+{
+  "task_id": "V2REDIRECT_a14b5ed697e08349",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733283.091956,
+  "finished_at": 1790733283.092043,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

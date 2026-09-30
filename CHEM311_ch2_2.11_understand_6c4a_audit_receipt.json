@@ -1,0 +1,16 @@
+{
+  "task_id": "CHEM311_ch2_2.11_understand_6c4a",
+  "source_rmd": "CHEM311_ch2_2.11_understand_6c4a.Rmd",
+  "source_sha256": "4b684206caea94611593c66f5716df1fece9ceea319a272eb93e03511eb90c6b",
+  "testbank_path": "D:/Gdrive/__agentic/.sources/r_exams/testbank/CHEM311_ch2_2.11_understand_6c4a.Rmd",
+  "testbank_sha256": "4b684206caea94611593c66f5716df1fece9ceea319a272eb93e03511eb90c6b",
+  "per_check_verdicts": {
+    "ac1_structure_and_metadata": true,
+    "ac2_anti_spoof_zero_mock": true,
+    "ac3_dynamic_mendeleev_mass": true,
+    "ac4_verbosity_ceiling": true,
+    "ac5_pedagogical_accuracy": true
+  },
+  "final_verdict": "APPROVED",
+  "timestamp_utc": "2026-09-25T21:25:00.000000+00:00"
+}

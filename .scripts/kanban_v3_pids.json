@@ -1,0 +1,880 @@
+{
+  "daemon": {
+    "pid": 44276,
+    "create_time": 1790366031.802,
+    "cmdline": "C:\\Python314\\python.exe .scripts\\kanban_v3_daemon.py"
+  },
+  "updated_at": 1790371763.0835817,
+  "limit": null,
+  "in_flight": null,
+  "workers": [
+    {
+      "pid": 18992,
+      "ppid": 44276,
+      "create_time": 1790371499.142,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-coder-refine --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 13680,
+      "ppid": 18992,
+      "create_time": 1790371499.148,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 10164,
+      "ppid": 18992,
+      "create_time": 1790371499.411,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 38840,
+      "ppid": 18992,
+      "create_time": 1790371499.411,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 11076,
+      "ppid": 18992,
+      "create_time": 1790371499.412,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 46384,
+      "ppid": 18992,
+      "create_time": 1790371499.446,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 32976,
+      "ppid": 18992,
+      "create_time": 1790371499.466,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 24092,
+      "ppid": 32976,
+      "create_time": 1790371499.64,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 31756,
+      "ppid": 24092,
+      "create_time": 1790371500.524,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 41864,
+      "ppid": 31756,
+      "create_time": 1790371500.547,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 25844,
+      "ppid": 46384,
+      "create_time": 1790371499.564,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpVixOvE\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 38412,
+      "ppid": 25844,
+      "create_time": 1790371499.58,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 45108,
+      "ppid": 44276,
+      "create_time": 1790371591.667,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_mdeyti22.txt --output-format json --model claude-sonnet-5"
+    },
+    {
+      "pid": 28756,
+      "ppid": 45108,
+      "create_time": 1790371591.696,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 46096,
+      "ppid": 44276,
+      "create_time": 1790371603.448,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-researcher --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 27468,
+      "ppid": 46096,
+      "create_time": 1790371603.451,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 46156,
+      "ppid": 46096,
+      "create_time": 1790371603.699,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 43316,
+      "ppid": 46096,
+      "create_time": 1790371603.699,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 36072,
+      "ppid": 46096,
+      "create_time": 1790371603.7,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 22572,
+      "ppid": 46096,
+      "create_time": 1790371603.727,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 29460,
+      "ppid": 46096,
+      "create_time": 1790371603.735,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 24572,
+      "ppid": 29460,
+      "create_time": 1790371603.836,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpnrKsBn\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 46516,
+      "ppid": 24572,
+      "create_time": 1790371603.849,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 1860,
+      "ppid": 22572,
+      "create_time": 1790371603.845,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 44696,
+      "ppid": 1860,
+      "create_time": 1790371604.788,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 46120,
+      "ppid": 44696,
+      "create_time": 1790371604.818,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 26356,
+      "ppid": 44276,
+      "create_time": 1790371608.367,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-researcher --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 33984,
+      "ppid": 26356,
+      "create_time": 1790371608.369,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 12688,
+      "ppid": 26356,
+      "create_time": 1790371608.62,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 38408,
+      "ppid": 26356,
+      "create_time": 1790371608.62,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 46840,
+      "ppid": 26356,
+      "create_time": 1790371608.62,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 29424,
+      "ppid": 26356,
+      "create_time": 1790371608.65,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 43872,
+      "ppid": 26356,
+      "create_time": 1790371608.653,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 11544,
+      "ppid": 43872,
+      "create_time": 1790371608.773,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 39444,
+      "ppid": 11544,
+      "create_time": 1790371609.72,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 43172,
+      "ppid": 39444,
+      "create_time": 1790371609.741,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 40028,
+      "ppid": 29424,
+      "create_time": 1790371608.759,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpW0GDMv\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 40204,
+      "ppid": 40028,
+      "create_time": 1790371608.773,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 47460,
+      "ppid": 44276,
+      "create_time": 1790371627.421,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-researcher --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 18648,
+      "ppid": 47460,
+      "create_time": 1790371627.425,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 23736,
+      "ppid": 47460,
+      "create_time": 1790371627.786,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 45180,
+      "ppid": 47460,
+      "create_time": 1790371627.786,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 47340,
+      "ppid": 47460,
+      "create_time": 1790371627.786,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 36328,
+      "ppid": 47460,
+      "create_time": 1790371627.862,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 31992,
+      "ppid": 47460,
+      "create_time": 1790371627.866,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 12724,
+      "ppid": 31992,
+      "create_time": 1790371628.019,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpu790Ur\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 39952,
+      "ppid": 12724,
+      "create_time": 1790371628.036,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 42296,
+      "ppid": 36328,
+      "create_time": 1790371628.015,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 21268,
+      "ppid": 42296,
+      "create_time": 1790371629.148,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 31704,
+      "ppid": 21268,
+      "create_time": 1790371629.179,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 44792,
+      "ppid": 44276,
+      "create_time": 1790371642.398,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_u4rcs9pv.txt --output-format json --model claude-sonnet-5"
+    },
+    {
+      "pid": 39328,
+      "ppid": 44276,
+      "create_time": 1790371644.351,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-sdp-manager --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 47480,
+      "ppid": 39328,
+      "create_time": 1790371644.353,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 17580,
+      "ppid": 39328,
+      "create_time": 1790371644.653,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 41744,
+      "ppid": 39328,
+      "create_time": 1790371644.653,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 44616,
+      "ppid": 39328,
+      "create_time": 1790371644.653,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 23280,
+      "ppid": 39328,
+      "create_time": 1790371644.7,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 34028,
+      "ppid": 39328,
+      "create_time": 1790371644.712,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 42752,
+      "ppid": 34028,
+      "create_time": 1790371644.886,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 30688,
+      "ppid": 42752,
+      "create_time": 1790371646.05,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 44020,
+      "ppid": 30688,
+      "create_time": 1790371646.081,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 11140,
+      "ppid": 23280,
+      "create_time": 1790371644.821,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpZG8HXd\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 36916,
+      "ppid": 11140,
+      "create_time": 1790371644.837,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 20924,
+      "ppid": 44792,
+      "create_time": 1790371642.406,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 42452,
+      "ppid": 44276,
+      "create_time": 1790371689.137,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_qxwmjrnj.txt --output-format json --model claude-sonnet-5"
+    },
+    {
+      "pid": 14960,
+      "ppid": 44276,
+      "create_time": 1790371690.115,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-planner --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 38440,
+      "ppid": 14960,
+      "create_time": 1790371690.126,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 11244,
+      "ppid": 14960,
+      "create_time": 1790371690.372,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 40920,
+      "ppid": 14960,
+      "create_time": 1790371690.372,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 33492,
+      "ppid": 14960,
+      "create_time": 1790371690.372,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 46128,
+      "ppid": 14960,
+      "create_time": 1790371690.43,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 11240,
+      "ppid": 14960,
+      "create_time": 1790371690.433,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 40452,
+      "ppid": 11240,
+      "create_time": 1790371690.723,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpf1uMvz\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 37608,
+      "ppid": 40452,
+      "create_time": 1790371690.74,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 12672,
+      "ppid": 46128,
+      "create_time": 1790371690.548,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 39660,
+      "ppid": 12672,
+      "create_time": 1790371691.529,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 45540,
+      "ppid": 39660,
+      "create_time": 1790371691.556,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 33148,
+      "ppid": 42452,
+      "create_time": 1790371689.144,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 30620,
+      "ppid": 44276,
+      "create_time": 1790371701.244,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_bhji0s73.txt --output-format json --model claude-sonnet-5"
+    },
+    {
+      "pid": 7892,
+      "ppid": 30620,
+      "create_time": 1790371701.251,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 34896,
+      "ppid": 44276,
+      "create_time": 1790371721.095,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_5psy0ivr.txt --output-format json --model claude-sonnet-5"
+    },
+    {
+      "pid": 41680,
+      "ppid": 44276,
+      "create_time": 1790371728.51,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-planner --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 47280,
+      "ppid": 44276,
+      "create_time": 1790371728.809,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-planner --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 28324,
+      "ppid": 47280,
+      "create_time": 1790371728.811,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 34728,
+      "ppid": 47280,
+      "create_time": 1790371729.075,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 30516,
+      "ppid": 47280,
+      "create_time": 1790371729.075,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 10264,
+      "ppid": 47280,
+      "create_time": 1790371729.075,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 47376,
+      "ppid": 47280,
+      "create_time": 1790371729.075,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\__agentic\\mcp\\cochem_kanban_mcp.py"
+    },
+    {
+      "pid": 29440,
+      "ppid": 47280,
+      "create_time": 1790371729.139,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 44308,
+      "ppid": 47280,
+      "create_time": 1790371729.142,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 36216,
+      "ppid": 29440,
+      "create_time": 1790371729.267,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 42972,
+      "ppid": 41680,
+      "create_time": 1790371728.513,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 39420,
+      "ppid": 41680,
+      "create_time": 1790371728.877,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 29488,
+      "ppid": 41680,
+      "create_time": 1790371728.877,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 13128,
+      "ppid": 41680,
+      "create_time": 1790371728.877,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 47552,
+      "ppid": 41680,
+      "create_time": 1790371728.925,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 39680,
+      "ppid": 41680,
+      "create_time": 1790371728.926,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 18704,
+      "ppid": 39680,
+      "create_time": 1790371729.027,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 30564,
+      "ppid": 34896,
+      "create_time": 1790371721.101,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 36800,
+      "ppid": 44308,
+      "create_time": 1790371729.392,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmperIycZ\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 35136,
+      "ppid": 36800,
+      "create_time": 1790371729.412,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 47936,
+      "ppid": 36216,
+      "create_time": 1790371730.471,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 37852,
+      "ppid": 47936,
+      "create_time": 1790371730.507,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 33188,
+      "ppid": 18704,
+      "create_time": 1790371730.431,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 21672,
+      "ppid": 33188,
+      "create_time": 1790371730.462,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 41992,
+      "ppid": 47552,
+      "create_time": 1790371729.368,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpYu4SQQ\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 47628,
+      "ppid": 41992,
+      "create_time": 1790371729.404,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 31028,
+      "ppid": 44276,
+      "create_time": 1790371753.3,
+      "name": "agy.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe --agent cochem-researcher --print-timeout 60m --dangerously-skip-permissions"
+    },
+    {
+      "pid": 13676,
+      "ppid": 44276,
+      "create_time": 1790371756.657,
+      "name": "claude.exe",
+      "cmdline": "C:\\Users\\ansac\\.local\\bin\\claude.exe --print --permission-mode bypassPermissions --dangerously-skip-permissions --tools  --system-prompt-file C:\\Users\\ansac\\AppData\\Local\\Temp\\cochem_claude_sys_q9wgxif5.txt --output-format json --model claude-opus-5-5"
+    },
+    {
+      "pid": 14952,
+      "ppid": 44276,
+      "create_time": 1790371760.272,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe -m pytest -q -p no:cacheprovider --junitxml=D:\\__CoChem\\__agentic\\.scripts\\tdd_runs\\CHEM311_ch2_2_12_remember_b756_5\\junit_P3_red_1.xml -o junit_family=xunit2 --rootdir D:\\__CoChem\\__agentic D:\\__CoChem\\__agentic\\tests\\tdd\\test_task_CHEM311_ch2_2_12_remember_b756_5.py"
+    },
+    {
+      "pid": 37220,
+      "ppid": 14952,
+      "create_time": 1790371760.276,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 47828,
+      "ppid": 13676,
+      "create_time": 1790371756.663,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 46448,
+      "ppid": 31028,
+      "create_time": 1790371753.302,
+      "name": "conhost.exe",
+      "cmdline": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4"
+    },
+    {
+      "pid": 24504,
+      "ppid": 31028,
+      "create_time": 1790371753.558,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+    },
+    {
+      "pid": 42156,
+      "ppid": 31028,
+      "create_time": 1790371753.559,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+    },
+    {
+      "pid": 39204,
+      "ppid": 31028,
+      "create_time": 1790371753.559,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\__agentic\\mcp\\cochem_kanban_mcp.py"
+    },
+    {
+      "pid": 5684,
+      "ppid": 31028,
+      "create_time": 1790371753.561,
+      "name": "python.exe",
+      "cmdline": "C:\\Python314\\python.exe D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+    },
+    {
+      "pid": 4112,
+      "ppid": 31028,
+      "create_time": 1790371753.591,
+      "name": "uv.exe",
+      "cmdline": "uv run --with mcp d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 32352,
+      "ppid": 31028,
+      "create_time": 1790371753.602,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /c npx.cmd -y @brightdata/mcp"
+    },
+    {
+      "pid": 34876,
+      "ppid": 32352,
+      "create_time": 1790371753.717,
+      "name": "node.exe",
+      "cmdline": "C:\\Program Files\\nodejs\\\\node.exe C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npx-cli.js -y @brightdata/mcp"
+    },
+    {
+      "pid": 47504,
+      "ppid": 34876,
+      "create_time": 1790371754.719,
+      "name": "cmd.exe",
+      "cmdline": "C:\\WINDOWS\\system32\\cmd.exe /d /s /c mcp"
+    },
+    {
+      "pid": 32572,
+      "ppid": 47504,
+      "create_time": 1790371754.743,
+      "name": "node.exe",
+      "cmdline": "node C:\\Users\\ansac\\AppData\\Roaming\\npm\\\\node_modules\\@brightdata\\mcp\\server.js"
+    },
+    {
+      "pid": 33424,
+      "ppid": 4112,
+      "create_time": 1790371753.691,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmphIf7dC\\Scripts\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    },
+    {
+      "pid": 10000,
+      "ppid": 33424,
+      "create_time": 1790371753.703,
+      "name": "python.exe",
+      "cmdline": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+    }
+  ]
+}

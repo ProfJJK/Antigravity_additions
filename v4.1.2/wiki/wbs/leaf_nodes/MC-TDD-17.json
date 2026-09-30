@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-17",
+  "title": "Implement Obfuscated Token and monkeypatch Detection",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/verification.py",
+  "chunk_start": 46,
+  "chunk_end": 90,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement the behaviour required by the section 9 test obligation: Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`. Decode base64 and hex string literals and concatenations before matching, so an obfuscated 'monkeypatch' or 'MagicMock' is still flagged.",
+  "dependencies": [
+    "MC-TDD-16",
+    "MC-TDD-04"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"zero_mock_checker\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-17] OBLIGATION:zero_mock_checker\n# SPEC: Append after the previous chunk without editing earlier lines. Implement the behaviour required\n# SPEC: by the section 9 test obligation: Test asserts `zero_mock_checker` flags obfuscated tokens and\n# SPEC: `monkeypatch`. Decode base64 and hex string literals and concatenations before matching, so an\n# SPEC: obfuscated 'monkeypatch' or 'MagicMock' is still flagged.\n# src/cochem/tdd_pivot/verification.py:51 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:52 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:53 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:54 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:55 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:56 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:57 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:58 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:59 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:60 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:61 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:62 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:63 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:64 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:65 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:66 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:67 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:68 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:69 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:70 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:71 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:72 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:73 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:74 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:75 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:76 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:77 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:78 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:79 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:80 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:81 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:82 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:83 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:84 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:85 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:86 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:87 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:88 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:89 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:90 [MC-TDD-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "OBLIGATION:zero_mock_checker"
+    ]
+  }
+}

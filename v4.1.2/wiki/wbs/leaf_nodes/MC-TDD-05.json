@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-05",
+  "title": "Implement tdd_cycle_state Dataclass and JSON Round-Trip",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/state_machine.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the tdd_cycle_state model from section 7 with to_json/from_json that round-trip the section 7 layout. Fields: cycle_number (e.g. 3); max_cycles (e.g. 10); consecutive_failures (e.g. 3); research_stage_triggered (e.g. true); dossier_path (e.g. \".docs/research/DOSSIER_TASK_04.md\"); meta_pivot_count (e.g. 1); max_meta_pivots (e.g. 3) The section 7 values are an example snapshot, not defaults: default every counter to 0.",
+  "dependencies": [
+    "MC-TDD-01"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"tdd_cycle_state\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-05] DATA_MODEL:tdd_cycle_state\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: tdd_cycle_state model from section 7 with to_json/from_json that round-trip the section 7\n# SPEC: layout. Fields: cycle_number (e.g. 3); max_cycles (e.g. 10); consecutive_failures (e.g. 3);\n# SPEC: research_stage_triggered (e.g. true); dossier_path (e.g. \".docs/research/DOSSIER_TASK_04.md\");\n# SPEC: meta_pivot_count (e.g. 1); max_meta_pivots (e.g. 3) The section 7 values are an example\n# SPEC: snapshot, not defaults: default every counter to 0.\n# src/cochem/tdd_pivot/state_machine.py:8 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:9 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:10 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:11 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:12 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:13 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:14 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:15 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:16 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:17 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:18 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:19 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:20 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:21 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:22 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:23 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:24 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:25 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:26 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:27 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:28 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:29 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:30 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:31 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:32 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:33 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:34 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:35 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:36 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:37 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:38 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:39 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:40 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:41 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:42 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:43 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:44 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:45 [MC-TDD-05]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "DATA_MODEL:tdd_cycle_state"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-18",
+  "title": "Implement Director V8 Heap Recycle Guard",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 156,
+  "chunk_end": 200,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'V8 Heap Warning': If Director heap approaches 3800 MB, the Director completes in-flight tasks and gracefully spawns a fresh process instance. Verified by test: test_f04_director_recycles_process_when_heap_reaches_3800mb.",
+  "dependencies": [
+    "MC-CON-17",
+    "MC-CON-03"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_director_recycles_process_when_heap_reaches_3800mb",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-18] FAILURE:V8 Heap Warning\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'V8 Heap\n# SPEC: Warning': If Director heap approaches 3800 MB, the Director completes in-flight tasks and\n# SPEC: gracefully spawns a fresh process instance. Verified by test:\n# SPEC: test_f04_director_recycles_process_when_heap_reaches_3800mb.\n# src/cochem/concurrency/layer1.py:161 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:162 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:163 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:164 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:165 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:166 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:167 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:168 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:169 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:170 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:171 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:172 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:173 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:174 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:175 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:176 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:177 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:178 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:179 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:180 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:181 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:182 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:183 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:184 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:185 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:186 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:187 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:188 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:189 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:190 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:191 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:192 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:193 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:194 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:195 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:196 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:197 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:198 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:199 [MC-CON-18]\n# src/cochem/concurrency/layer1.py:200 [MC-CON-18]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "FAILURE:V8 Heap Warning"
+    ]
+  }
+}

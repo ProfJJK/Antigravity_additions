@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-08",
+  "title": "Implement Sterile Header, Imports and Read-Only URI Opener",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-08-FR-001: The SRE Watchdog shall be completely sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`). src/cochem/watchdog/watchdog_sre.py already exists (Stage 7 daemon, ~619 lines): reconcile it chunk by chunk, never replace it whole. Allowed imports are the standard library and psutil only (no cochem.*); run it by file path so src/cochem/__init__.py never executes. Open job_board.db as file:<path>?mode=ro with uri=True. Traceability test: tests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation, written by this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).",
+  "dependencies": [
+    "MC-SRE-01"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_001\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-08] SRS-412-08-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-08-FR-001: The SRE Watchdog shall be completely sterile, importing solely the Python\n# SPEC: standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`).\n# SPEC: src/cochem/watchdog/watchdog_sre.py already exists (Stage 7 daemon, ~619 lines): reconcile it\n# SPEC: chunk by chunk, never replace it whole. Allowed imports are the standard library and psutil only\n# SPEC: (no cochem.*); run it by file path so src/cochem/__init__.py never executes. Open job_board.db\n# SPEC: as file:<path>?mode=ro with uri=True. Traceability test: tests/test_ch08_watchdog_sre.py::test_s\n# SPEC: cenario_3_multi_worker_lease_contention_and_zombie_reclamation, written by this chapter's E2E\n# SPEC: node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).\n# src/cochem/watchdog/watchdog_sre.py:11 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:12 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:13 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:14 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:15 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:16 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:17 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:18 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:19 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:20 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:21 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:22 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:23 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:24 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:25 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:26 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:27 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:28 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:29 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:30 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:31 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:32 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:33 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:34 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:35 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:36 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:37 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:38 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:39 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:40 [MC-SRE-08]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-001"
+    ]
+  }
+}

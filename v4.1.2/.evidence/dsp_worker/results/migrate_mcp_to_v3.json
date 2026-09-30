@@ -1,0 +1,12 @@
+{
+  "task_id": "migrate_mcp_to_v3",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733281.864882,
+  "finished_at": 1790733281.8649738,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-10",
+  "title": "Implement Manifest Document Catalog Sync Check",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/corpus.py",
+  "chunk_start": 181,
+  "chunk_end": 225,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-006: The knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`. v4.1.2_manifest.json does not exist yet; report its absence as a sync failure rather than writing a manifest from this chunk.",
+  "dependencies": [
+    "MC-RAG-09",
+    "MC-RAG-01"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_006\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-10] SRS-412-06-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-006: The\n# SPEC: knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`.\n# SPEC: v4.1.2_manifest.json does not exist yet; report its absence as a sync failure rather than\n# SPEC: writing a manifest from this chunk.\n# src/cochem/knowledge/corpus.py:186 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:187 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:188 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:189 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:190 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:191 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:192 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:193 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:194 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:195 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:196 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:197 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:198 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:199 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:200 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:201 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:202 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:203 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:204 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:205 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:206 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:207 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:208 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:209 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:210 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:211 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:212 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:213 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:214 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:215 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:216 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:217 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:218 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:219 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:220 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:221 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:222 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:223 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:224 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:225 [MC-RAG-10]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-006"
+    ]
+  }
+}

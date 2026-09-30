@@ -1,0 +1,690 @@
+[
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-01",
+    "title": "Author Sterile Import and Read-Only job_board.db Tests",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 1,
+    "chunk_end": 50,
+    "line_delta": 50,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_001_* for SRS-412-08-FR-001 (The SRE Watchdog shall be completely sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`).); test_ch08_nfr_sre_02_* for NFR-SRE-02 (The Watchdog shall never modify or acquire write locks on `job_board.db`.). Section 9 obligations: Test verifies out-of-band read-only connection leaves database WAL file untouched.",
+    "dependencies": [],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-01] TESTS:sterility\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock\n# SPEC: objects): test_ch08_fr_001_* for SRS-412-08-FR-001 (The SRE Watchdog shall be completely\n# SPEC: sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db`\n# SPEC: in read-only mode (`?mode=ro`).); test_ch08_nfr_sre_02_* for NFR-SRE-02 (The Watchdog shall\n# SPEC: never modify or acquire write locks on `job_board.db`.). Section 9 obligations: Test verifies\n# SPEC: out-of-band read-only connection leaves database WAL file untouched.\n# tests/test_ch08_watchdog_sre.py:9 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:10 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:11 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:12 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:13 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:14 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:15 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:16 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:17 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:18 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:19 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:20 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:21 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:22 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:23 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:24 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:25 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:26 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:27 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:28 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:29 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:30 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:31 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:32 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:33 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:34 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:35 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:36 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:37 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:38 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:39 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:40 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:41 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:42 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:43 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:44 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:45 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:46 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:47 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:48 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:49 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:50 [MC-SRE-01]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-001",
+        "NFR-SRE-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-02",
+    "title": "Author Binary Header, Process Liveness and Process Tree Tests",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 51,
+    "chunk_end": 100,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_verify_database_binary_header_* for INTERFACE:verify_database_binary_header (verify_database_binary_header(db_path: Path) -> bool.); test_ch08_check_process_liveness_* for INTERFACE:check_process_liveness (check_process_liveness(pid: int) -> bool.); test_ch08_fr_003_* for SRS-412-08-FR-003 (Matrix 1 (Process Death) shall inspect OS process trees via `psutil` to detect dead, hung, or orphaned worker processes.); test_ch08_fr_005_* for SRS-412-08-FR-005 (Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite format 3\\x00\"`.). Section 9 obligations: Unit test verifies binary header check matches `b\"SQLite format 3\\x00\"`. Test verifies process tree tracking cleanly identifies exited subprocess handles.",
+    "dependencies": [
+      "MC-SRE-01"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-02] TESTS:probes\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_verify_database_binary_header_* for INTERFACE:verify_database_binary_header\n# SPEC: (verify_database_binary_header(db_path: Path) -> bool.); test_ch08_check_process_liveness_* for\n# SPEC: INTERFACE:check_process_liveness (check_process_liveness(pid: int) -> bool.); test_ch08_fr_003_*\n# SPEC: for SRS-412-08-FR-003 (Matrix 1 (Process Death) shall inspect OS process trees via `psutil` to\n# SPEC: detect dead, hung, or orphaned worker processes.); test_ch08_fr_005_* for SRS-412-08-FR-005\n# SPEC: (Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes\n# SPEC: `b\"SQLite format 3\\x00\"`.). Section 9 obligations: Unit test verifies binary header check\n# SPEC: matches `b\"SQLite format 3\\x00\"`. Test verifies process tree tracking cleanly identifies exited\n# SPEC: subprocess handles.\n# tests/test_ch08_watchdog_sre.py:63 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:64 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:65 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:66 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:67 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:68 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:69 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:70 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:71 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:72 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:73 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:74 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:75 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:76 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:77 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:78 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:79 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:80 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:81 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:82 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:83 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:84 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:85 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:86 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:87 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:88 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:89 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:90 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:91 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:92 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:93 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:94 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:95 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:96 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:97 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:98 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:99 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:100 [MC-SRE-02]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "INTERFACE:verify_database_binary_header",
+        "INTERFACE:check_process_liveness",
+        "SRS-412-08-FR-003",
+        "SRS-412-08-FR-005"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-03",
+    "title": "Author Zombie Lease, Memory Slope and Threshold Buffer Tests",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 101,
+    "chunk_end": 150,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_004_* for SRS-412-08-FR-004 (Matrix 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s).); test_ch08_false_positive_collapse_* for FAILURE:False Positive Collapse (Threshold buffers (1860s vs 1800s lease) prevent premature resuscitation during valid long-running compiles.); test_ch08_fr_006_* for SRS-412-08-FR-006 (Matrix 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking subprocesses.)",
+    "dependencies": [
+      "MC-SRE-02"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-03] TESTS:matrices\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_fr_004_* for SRS-412-08-FR-004 (Matrix 2 (Zombie Deadlocks) shall detect frozen task\n# SPEC: leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s).);\n# SPEC: test_ch08_false_positive_collapse_* for FAILURE:False Positive Collapse (Threshold buffers\n# SPEC: (1860s vs 1800s lease) prevent premature resuscitation during valid long-running compiles.);\n# SPEC: test_ch08_fr_006_* for SRS-412-08-FR-006 (Matrix 4 (Resource Exhaustion) shall monitor memory\n# SPEC: consumption slope and trigger alarms on leaking subprocesses.)\n# tests/test_ch08_watchdog_sre.py:110 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:111 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:112 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:113 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:114 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:115 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:116 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:117 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:118 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:119 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:120 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:121 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:122 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:123 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:124 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:125 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:126 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:127 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:128 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:129 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:130 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:131 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:132 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:133 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:134 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:135 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:136 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:137 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:138 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:139 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:140 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:141 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:142 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:143 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:144 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:145 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:146 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:147 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:148 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:149 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:150 [MC-SRE-03]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-004",
+        "FAILURE:False Positive Collapse",
+        "SRS-412-08-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-04",
+    "title": "Author 30-Second Loop, 1.0s Budget and Signal ZD-8 Tests",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 151,
+    "chunk_end": 200,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_009_* for SRS-412-08-FR-009 (The Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an Evidence Bundle for resuscitation.); test_ch08_fr_002_* for SRS-412-08-FR-002 (The Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.); test_ch08_nfr_sre_01_* for NFR-SRE-01 (Watchdog monitoring loop execution time shall not exceed 1.0 second per 30-second cycle.)",
+    "dependencies": [
+      "MC-SRE-03"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-04] TESTS:loop\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_fr_009_* for SRS-412-08-FR-009 (The Watchdog shall periodically evaluate the Signal\n# SPEC: ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT\n# SPEC: NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero\n# SPEC: count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an\n# SPEC: Evidence Bundle for resuscitation.); test_ch08_fr_002_* for SRS-412-08-FR-002 (The Watchdog\n# SPEC: shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.);\n# SPEC: test_ch08_nfr_sre_01_* for NFR-SRE-01 (Watchdog monitoring loop execution time shall not exceed\n# SPEC: 1.0 second per 30-second cycle.)\n# tests/test_ch08_watchdog_sre.py:162 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:163 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:164 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:165 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:166 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:167 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:168 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:169 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:170 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:171 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:172 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:173 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:174 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:175 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:176 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:177 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:178 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:179 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:180 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:181 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:182 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:183 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:184 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:185 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:186 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:187 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:188 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:189 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:190 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:191 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:192 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:193 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:194 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:195 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:196 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:197 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:198 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:199 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:200 [MC-SRE-04]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-009",
+        "SRS-412-08-FR-002",
+        "NFR-SRE-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-05",
+    "title": "Author COLLAPSED Freeze, Evidence Bundle and Recovery Launch Tests",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 201,
+    "chunk_end": 250,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_evidence_bundle_* for DATA_MODEL:evidence_bundle (section 7 JSON fields); test_ch08_fr_007_* for SRS-412-08-FR-007 (Upon confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-contained Evidence Bundle.); test_ch08_fr_008_* for SRS-412-08-FR-008 (The Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle.); test_ch08_nfr_sre_03_* for NFR-SRE-03 (Self-healing trigger sequence shall initiate within 5 seconds of structural collapse confirmation.); test_ch08_watchdog_crash_* for FAILURE:Watchdog Crash (Monitored by the Host Warden on Windows 11; Warden restarts the Watchdog daemon if its heartbeat ceases.)",
+    "dependencies": [
+      "MC-SRE-04"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-05] TESTS:collapse\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_evidence_bundle_* for DATA_MODEL:evidence_bundle (section 7 JSON fields);\n# SPEC: test_ch08_fr_007_* for SRS-412-08-FR-007 (Upon confirming a `COLLAPSED` state, the Watchdog\n# SPEC: shall freeze active processes and assemble a self-contained Evidence Bundle.);\n# SPEC: test_ch08_fr_008_* for SRS-412-08-FR-008 (The Watchdog shall initiate self-healing by launching\n# SPEC: an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle.);\n# SPEC: test_ch08_nfr_sre_03_* for NFR-SRE-03 (Self-healing trigger sequence shall initiate within 5\n# SPEC: seconds of structural collapse confirmation.); test_ch08_watchdog_crash_* for FAILURE:Watchdog\n# SPEC: Crash (Monitored by the Host Warden on Windows 11; Warden restarts the Watchdog daemon if its\n# SPEC: heartbeat ceases.)\n# tests/test_ch08_watchdog_sre.py:213 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:214 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:215 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:216 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:217 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:218 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:219 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:220 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:221 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:222 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:223 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:224 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:225 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:226 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:227 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:228 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:229 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:230 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:231 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:232 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:233 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:234 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:235 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:236 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:237 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:238 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:239 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:240 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:241 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:242 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:243 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:244 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:245 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:246 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:247 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:248 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:249 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:250 [MC-SRE-05]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "DATA_MODEL:evidence_bundle",
+        "SRS-412-08-FR-007",
+        "SRS-412-08-FR-008",
+        "NFR-SRE-03",
+        "FAILURE:Watchdog Crash"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-06",
+    "title": "Author E2E Scenario 3: Multi-Worker Lease Contention and Zombie Reclamation",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 251,
+    "chunk_end": 330,
+    "line_delta": 80,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write the section 10 end-to-end test def test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation(tmp_path) with exactly this name. It is the traceability test for SRS-412-08-FR-001 and also exercises SRS-412-08-FR-003, SRS-412-08-FR-004, FAILURE:False Positive Collapse, SRS-412-08-FR-007, SRS-412-08-FR-008, NFR-SRE-02. Use real processes, a real SQLite file and psutil; no mock objects and no skip/xfail markers. It fails until the implementation nodes land. Build a real job_board.db in WAL mode under tmp_path with the jobs columns the watchdog reads (task_id, status, lease_owner, lease_expires_at, attempts, max_attempts) and seed 20 PENDING jobs. Launch 10 real Python worker subprocesses; each claims one job inside BEGIN IMMEDIATE, sets lease_owner to '<hostname>:<pid>' (the format parse_lease_owner_pid reads) with an 1800 s lease, then blocks. Assert 10 claims on 10 distinct task_ids (zero duplicate leases). Kill worker 5 with psutil (a real process death) and backdate its lease so now exceeds lease_expires_at by more than 60 s (stalled 1860 s or more). Backdate one live worker's lease by only 30 s to prove the grace buffer. Hash the db and -wal files (sha256 plus mtime). Run watchdog_sre.py BY FILE PATH as a subprocess under 'python -X importtime' with --db, --evidence-dir, --worker-state-dir, --once and --claude-exe pointing at a stand-in Python recovery script written in tmp_path (never the real claude.exe). Assert FR-001 sterility from the importtime stderr: every top-level module loaded is in sys.stdlib_module_names or is psutil (no cochem.*). Assert the db and -wal hashes and mtimes are unchanged (read-only, NFR-SRE-02). Assert the Evidence Bundle JSON has verdict COLLAPSED, a Matrix 1 failure naming the killed PID, a Matrix 2 failure naming the zombie task_id, stalled_task_id equal to that task, stalled_duration_sec >= 1860, and no failure naming the grace-window task. Assert the stand-in received the bundle path in argv. The stand-in, acting as the out-of-band recovery agent (the watchdog itself never writes), reclaims the zombie: status PENDING, lease_owner NULL, attempts + 1. A surviving worker then claims and completes it: final status COMPLETED, attempts == 1, 20 jobs in total. After every worker has completed its job and exited, a second watchdog --once --no-recovery pass writes no new COLLAPSED bundle. Terminate all worker processes in a finally block.",
+    "dependencies": [
+      "MC-SRE-05"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-06] E2E:test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\n# SPEC: Append after the previous chunk without editing earlier lines. Write the section 10 end-to-end\n# SPEC: test def test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation(tmp_path) with\n# SPEC: exactly this name. It is the traceability test for SRS-412-08-FR-001 and also exercises\n# SPEC: SRS-412-08-FR-003, SRS-412-08-FR-004, FAILURE:False Positive Collapse, SRS-412-08-FR-007,\n# SPEC: SRS-412-08-FR-008, NFR-SRE-02. Use real processes, a real SQLite file and psutil; no mock\n# SPEC: objects and no skip/xfail markers. It fails until the implementation nodes land. Build a real\n# SPEC: job_board.db in WAL mode under tmp_path with the jobs columns the watchdog reads (task_id,\n# SPEC: status, lease_owner, lease_expires_at, attempts, max_attempts) and seed 20 PENDING jobs. Launch\n# SPEC: 10 real Python worker subprocesses; each claims one job inside BEGIN IMMEDIATE, sets lease_owner\n# SPEC: to '<hostname>:<pid>' (the format parse_lease_owner_pid reads) with an 1800 s lease, then\n# SPEC: blocks. Assert 10 claims on 10 distinct task_ids (zero duplicate leases). Kill worker 5 with\n# SPEC: psutil (a real process death) and backdate its lease so now exceeds lease_expires_at by more\n# SPEC: than 60 s (stalled 1860 s or more). Backdate one live worker's lease by only 30 s to prove the\n# SPEC: grace buffer. Hash the db and -wal files (sha256 plus mtime). Run watchdog_sre.py BY FILE PATH\n# SPEC: as a subprocess under 'python -X importtime' with --db, --evidence-dir, --worker-state-dir,\n# SPEC: --once and --claude-exe pointing at a stand-in Python recovery script written in tmp_path (never\n# SPEC: the real claude.exe). Assert FR-001 sterility from the importtime stderr: every top-level module\n# SPEC: loaded is in sys.stdlib_module_names or is psutil (no cochem.*). Assert the db and -wal hashes\n# SPEC: and mtimes are unchanged (read-only, NFR-SRE-02). Assert the Evidence Bundle JSON has verdict\n# SPEC: COLLAPSED, a Matrix 1 failure naming the killed PID, a Matrix 2 failure naming the zombie\n# SPEC: task_id, stalled_task_id equal to that task, stalled_duration_sec >= 1860, and no failure naming\n# SPEC: the grace-window task. Assert the stand-in received the bundle path in argv. The stand-in,\n# SPEC: acting as the out-of-band recovery agent (the watchdog itself never writes), reclaims the\n# SPEC: zombie: status PENDING, lease_owner NULL, attempts + 1. A surviving worker then claims and\n# SPEC: completes it: final status COMPLETED, attempts == 1, 20 jobs in total. After every worker has\n# SPEC: completed its job and exited, a second watchdog --once --no-recovery pass writes no new\n# SPEC: COLLAPSED bundle. Terminate all worker processes in a finally block.\n# tests/test_ch08_watchdog_sre.py:279 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:280 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:281 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:282 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:283 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:284 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:285 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:286 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:287 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:288 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:289 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:290 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:291 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:292 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:293 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:294 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:295 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:296 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:297 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:298 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:299 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:300 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:301 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:302 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:303 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:304 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:305 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:306 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:307 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:308 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:309 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:310 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:311 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:312 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:313 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:314 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:315 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:316 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:317 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:318 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:319 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:320 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:321 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:322 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:323 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:324 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:325 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:326 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:327 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:328 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:329 [MC-SRE-06]\n# tests/test_ch08_watchdog_sre.py:330 [MC-SRE-06]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-001",
+        "SRS-412-08-FR-003",
+        "SRS-412-08-FR-004",
+        "FAILURE:False Positive Collapse",
+        "SRS-412-08-FR-007",
+        "SRS-412-08-FR-008",
+        "NFR-SRE-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-07",
+    "title": "Author E2E Scenario 1: Full Pipeline Bootstrap Lifecycle",
+    "domain": "watchdog_sre",
+    "target_file": "tests/test_ch08_watchdog_sre.py",
+    "chunk_start": 331,
+    "chunk_end": 410,
+    "line_delta": 80,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write the section 10 end-to-end test def test_scenario_1_full_pipeline_bootstrap_lifecycle(tmp_path) with exactly this name. It is the traceability test for SRS-412-08-FR-005 and also exercises SRS-412-08-FR-002, NFR-SRE-01, NFR-SRE-03, DATA_MODEL:evidence_bundle, FAILURE:Watchdog Crash. Use real processes, a real SQLite file and psutil; no mock objects and no skip/xfail markers. It fails until the implementation nodes land. Drive the task-queue lifecycle end to end as the watchdog sees it, entirely under tmp_path. (a) Bootstrap: create a fresh job_board.db in WAL mode and run watchdog_sre.py by file path with --db, --evidence-dir, --worker-state-dir, --once and --no-recovery. Assert the heartbeat JSON is written, the verdict is healthy, the reported cycle duration is under 1.0 s (NFR-SRE-01) and no bundle exists. (b) Run: seed 12 PENDING jobs and start 3 real worker subprocesses that claim and complete every job through BEGIN IMMEDIATE. Run the watchdog once mid-run and once after the drain. Both passes are healthy; the Matrix 3 header check passes on the db (16-byte b'SQLite format 3\\x00') and on the -wal file when present; all 12 jobs are COMPLETED. (c) Corruption: copy the drained db to a second path and overwrite its first 16 bytes. Run the watchdog against the copy with --claude-exe set to a stand-in recovery script. Assert a COLLAPSED Evidence Bundle with a Matrix 3 failure, the stand-in launched within 5 s of the bundle timestamp (NFR-SRE-03) with the bundle path in argv, and the bundle file is read-only. (d) Missing database: run against a path that does not exist and assert it is reported as a Matrix 3 failure with exit status 0 and no Python traceback on stderr. Do NOT use the seeded_job_board_db or mendeleev_resolver fixtures from tests/test_real_world_e2e_scenarios.py; they belong to a different suite.",
+    "dependencies": [
+      "MC-SRE-06"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-07] E2E:test_scenario_1_full_pipeline_bootstrap_lifecycle\n# SPEC: Append after the previous chunk without editing earlier lines. Write the section 10 end-to-end\n# SPEC: test def test_scenario_1_full_pipeline_bootstrap_lifecycle(tmp_path) with exactly this name. It\n# SPEC: is the traceability test for SRS-412-08-FR-005 and also exercises SRS-412-08-FR-002, NFR-SRE-01,\n# SPEC: NFR-SRE-03, DATA_MODEL:evidence_bundle, FAILURE:Watchdog Crash. Use real processes, a real\n# SPEC: SQLite file and psutil; no mock objects and no skip/xfail markers. It fails until the\n# SPEC: implementation nodes land. Drive the task-queue lifecycle end to end as the watchdog sees it,\n# SPEC: entirely under tmp_path. (a) Bootstrap: create a fresh job_board.db in WAL mode and run\n# SPEC: watchdog_sre.py by file path with --db, --evidence-dir, --worker-state-dir, --once and --no-\n# SPEC: recovery. Assert the heartbeat JSON is written, the verdict is healthy, the reported cycle\n# SPEC: duration is under 1.0 s (NFR-SRE-01) and no bundle exists. (b) Run: seed 12 PENDING jobs and\n# SPEC: start 3 real worker subprocesses that claim and complete every job through BEGIN IMMEDIATE. Run\n# SPEC: the watchdog once mid-run and once after the drain. Both passes are healthy; the Matrix 3 header\n# SPEC: check passes on the db (16-byte b'SQLite format 3\\x00') and on the -wal file when present; all\n# SPEC: 12 jobs are COMPLETED. (c) Corruption: copy the drained db to a second path and overwrite its\n# SPEC: first 16 bytes. Run the watchdog against the copy with --claude-exe set to a stand-in recovery\n# SPEC: script. Assert a COLLAPSED Evidence Bundle with a Matrix 3 failure, the stand-in launched within\n# SPEC: 5 s of the bundle timestamp (NFR-SRE-03) with the bundle path in argv, and the bundle file is\n# SPEC: read-only. (d) Missing database: run against a path that does not exist and assert it is\n# SPEC: reported as a Matrix 3 failure with exit status 0 and no Python traceback on stderr. Do NOT use\n# SPEC: the seeded_job_board_db or mendeleev_resolver fixtures from\n# SPEC: tests/test_real_world_e2e_scenarios.py; they belong to a different suite.\n# tests/test_ch08_watchdog_sre.py:353 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:354 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:355 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:356 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:357 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:358 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:359 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:360 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:361 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:362 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:363 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:364 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:365 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:366 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:367 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:368 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:369 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:370 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:371 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:372 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:373 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:374 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:375 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:376 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:377 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:378 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:379 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:380 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:381 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:382 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:383 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:384 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:385 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:386 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:387 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:388 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:389 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:390 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:391 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:392 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:393 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:394 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:395 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:396 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:397 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:398 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:399 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:400 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:401 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:402 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:403 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:404 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:405 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:406 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:407 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:408 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:409 [MC-SRE-07]\n# tests/test_ch08_watchdog_sre.py:410 [MC-SRE-07]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-005",
+        "SRS-412-08-FR-002",
+        "NFR-SRE-01",
+        "NFR-SRE-03",
+        "DATA_MODEL:evidence_bundle",
+        "FAILURE:Watchdog Crash"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-08",
+    "title": "Implement Sterile Header, Imports and Read-Only URI Opener",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-08-FR-001: The SRE Watchdog shall be completely sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`). src/cochem/watchdog/watchdog_sre.py already exists (Stage 7 daemon, ~619 lines): reconcile it chunk by chunk, never replace it whole. Allowed imports are the standard library and psutil only (no cochem.*); run it by file path so src/cochem/__init__.py never executes. Open job_board.db as file:<path>?mode=ro with uri=True. Traceability test: tests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation, written by this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).",
+    "dependencies": [
+      "MC-SRE-01"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-08] SRS-412-08-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-08-FR-001: The SRE Watchdog shall be completely sterile, importing solely the Python\n# SPEC: standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`).\n# SPEC: src/cochem/watchdog/watchdog_sre.py already exists (Stage 7 daemon, ~619 lines): reconcile it\n# SPEC: chunk by chunk, never replace it whole. Allowed imports are the standard library and psutil only\n# SPEC: (no cochem.*); run it by file path so src/cochem/__init__.py never executes. Open job_board.db\n# SPEC: as file:<path>?mode=ro with uri=True. Traceability test: tests/test_ch08_watchdog_sre.py::test_s\n# SPEC: cenario_3_multi_worker_lease_contention_and_zombie_reclamation, written by this chapter's E2E\n# SPEC: node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).\n# src/cochem/watchdog/watchdog_sre.py:11 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:12 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:13 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:14 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:15 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:16 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:17 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:18 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:19 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:20 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:21 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:22 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:23 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:24 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:25 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:26 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:27 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:28 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:29 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:30 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:31 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:32 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:33 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:34 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:35 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:36 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:37 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:38 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:39 [MC-SRE-08]\n# src/cochem/watchdog/watchdog_sre.py:40 [MC-SRE-08]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-09",
+    "title": "Implement query_only Guard and Write-Lock Refusal",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 41,
+    "chunk_end": 80,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-02: The Watchdog shall never modify or acquire write locks on `job_board.db`. Set PRAGMA query_only=ON on every connection and never run BEGIN IMMEDIATE/EXCLUSIVE; attempted writes must surface sqlite3.OperationalError, not be swallowed.",
+    "dependencies": [
+      "MC-SRE-08",
+      "MC-SRE-01"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_02\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-09] NFR-SRE-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-02: The Watchdog\n# SPEC: shall never modify or acquire write locks on `job_board.db`. Set PRAGMA query_only=ON on every\n# SPEC: connection and never run BEGIN IMMEDIATE/EXCLUSIVE; attempted writes must surface\n# SPEC: sqlite3.OperationalError, not be swallowed.\n# src/cochem/watchdog/watchdog_sre.py:46 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:47 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:48 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:49 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:50 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:51 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:52 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:53 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:54 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:55 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:56 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:57 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:58 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:59 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:60 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:61 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:62 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:63 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:64 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:65 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:66 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:67 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:68 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:69 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:70 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:71 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:72 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:73 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:74 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:75 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:76 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:77 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:78 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:79 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:80 [MC-SRE-09]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "NFR-SRE-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-10",
+    "title": "Implement verify_database_binary_header",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 81,
+    "chunk_end": 110,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement verify_database_binary_header(db_path: Path) -> bool. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Use the 16-byte SQLITE_MAGIC_HEADER constant from section 6.",
+    "dependencies": [
+      "MC-SRE-09",
+      "MC-SRE-02"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"verify_database_binary_header\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-10] INTERFACE:verify_database_binary_header\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: verify_database_binary_header(db_path: Path) -> bool. Match the section 6 reference\n# SPEC: implementation, composed from the helpers defined in earlier chunks. Use the 16-byte\n# SPEC: SQLITE_MAGIC_HEADER constant from section 6.\n# src/cochem/watchdog/watchdog_sre.py:86 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:87 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:88 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:89 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:90 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:91 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:92 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:93 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:94 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:95 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:96 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:97 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:98 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:99 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:100 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:101 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:102 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:103 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:104 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:105 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:106 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:107 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:108 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:109 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:110 [MC-SRE-10]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "INTERFACE:verify_database_binary_header"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-11",
+    "title": "Implement check_process_liveness",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 111,
+    "chunk_end": 140,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement check_process_liveness(pid: int) -> bool. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Treat psutil.AccessDenied as not live, exactly as section 6 does.",
+    "dependencies": [
+      "MC-SRE-10",
+      "MC-SRE-02"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"check_process_liveness\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-11] INTERFACE:check_process_liveness\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: check_process_liveness(pid: int) -> bool. Match the section 6 reference implementation, composed\n# SPEC: from the helpers defined in earlier chunks. Treat psutil.AccessDenied as not live, exactly as\n# SPEC: section 6 does.\n# src/cochem/watchdog/watchdog_sre.py:116 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:117 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:118 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:119 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:120 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:121 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:122 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:123 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:124 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:125 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:126 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:127 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:128 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:129 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:130 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:131 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:132 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:133 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:134 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:135 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:136 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:137 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:138 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:139 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:140 [MC-SRE-11]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "INTERFACE:check_process_liveness"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-12",
+    "title": "Implement Matrix 1 Process Death Tree Scan",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 141,
+    "chunk_end": 185,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-003: Matrix 1 (Process Death) shall inspect OS process trees via `psutil` to detect dead, hung, or orphaned worker processes. Map job lease_owner values to PIDs and flag three cases separately: dead PID, hung (stopped status or zero CPU time delta across a cycle) and orphaned (parent gone).",
+    "dependencies": [
+      "MC-SRE-11",
+      "MC-SRE-02"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_003\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-12] SRS-412-08-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-003: Matrix\n# SPEC: 1 (Process Death) shall inspect OS process trees via `psutil` to detect dead, hung, or orphaned\n# SPEC: worker processes. Map job lease_owner values to PIDs and flag three cases separately: dead PID,\n# SPEC: hung (stopped status or zero CPU time delta across a cycle) and orphaned (parent gone).\n# src/cochem/watchdog/watchdog_sre.py:146 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:147 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:148 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:149 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:150 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:151 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:152 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:153 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:154 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:155 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:156 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:157 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:158 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:159 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:160 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:161 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:162 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:163 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:164 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:165 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:166 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:167 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:168 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:169 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:170 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:171 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:172 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:173 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:174 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:175 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:176 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:177 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:178 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:179 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:180 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:181 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:182 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:183 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:184 [MC-SRE-12]\n# src/cochem/watchdog/watchdog_sre.py:185 [MC-SRE-12]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-003"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-13",
+    "title": "Implement Matrix 2 Zombie Lease Deadlock Detector",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 186,
+    "chunk_end": 230,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-004: Matrix 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s). Read 'more than 60 seconds (calibrated to 1860s)' as now > lease_expires_at + 60 on the 1800 s lease, i.e. a task stalled for 1860 s. Take the grace period from one constant.",
+    "dependencies": [
+      "MC-SRE-12",
+      "MC-SRE-03"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_004\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-13] SRS-412-08-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-004: Matrix\n# SPEC: 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by\n# SPEC: more than 60 seconds (calibrated to 1860s). Read 'more than 60 seconds (calibrated to 1860s)' as\n# SPEC: now > lease_expires_at + 60 on the 1800 s lease, i.e. a task stalled for 1860 s. Take the grace\n# SPEC: period from one constant.\n# src/cochem/watchdog/watchdog_sre.py:192 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:193 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:194 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:195 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:196 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:197 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:198 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:199 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:200 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:201 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:202 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:203 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:204 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:205 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:206 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:207 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:208 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:209 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:210 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:211 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:212 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:213 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:214 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:215 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:216 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:217 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:218 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:219 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:220 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:221 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:222 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:223 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:224 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:225 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:226 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:227 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:228 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:229 [MC-SRE-13]\n# src/cochem/watchdog/watchdog_sre.py:230 [MC-SRE-13]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-14",
+    "title": "Implement 1860s vs 1800s Lease Threshold Buffer",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 231,
+    "chunk_end": 260,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'False Positive Collapse': Threshold buffers (1860s vs 1800s lease) prevent premature resuscitation during valid long-running compiles. A lease inside its 60 s grace window must never produce a Matrix 2 failure or a COLLAPSED verdict.",
+    "dependencies": [
+      "MC-SRE-13",
+      "MC-SRE-03"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"false_positive_collapse\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-14] FAILURE:False Positive Collapse\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'False\n# SPEC: Positive Collapse': Threshold buffers (1860s vs 1800s lease) prevent premature resuscitation\n# SPEC: during valid long-running compiles. A lease inside its 60 s grace window must never produce a\n# SPEC: Matrix 2 failure or a COLLAPSED verdict.\n# src/cochem/watchdog/watchdog_sre.py:236 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:237 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:238 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:239 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:240 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:241 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:242 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:243 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:244 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:245 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:246 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:247 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:248 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:249 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:250 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:251 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:252 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:253 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:254 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:255 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:256 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:257 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:258 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:259 [MC-SRE-14]\n# src/cochem/watchdog/watchdog_sre.py:260 [MC-SRE-14]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "FAILURE:False Positive Collapse"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-15",
+    "title": "Implement Matrix 3 Data Corruption Header Scan",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 261,
+    "chunk_end": 295,
+    "line_delta": 35,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-005: Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite format 3\\x00\"`. Also check the -wal file when present; a missing database is a Matrix 3 failure, not a crash. Traceability test: tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle, written by this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).",
+    "dependencies": [
+      "MC-SRE-14",
+      "MC-SRE-02",
+      "MC-SRE-10"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_005\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-15] SRS-412-08-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-005: Matrix\n# SPEC: 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite\n# SPEC: format 3\\x00\"`. Also check the -wal file when present; a missing database is a Matrix 3 failure,\n# SPEC: not a crash. Traceability test:\n# SPEC: tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle, written by\n# SPEC: this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a\n# SPEC: different suite).\n# src/cochem/watchdog/watchdog_sre.py:269 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:270 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:271 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:272 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:273 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:274 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:275 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:276 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:277 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:278 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:279 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:280 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:281 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:282 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:283 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:284 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:285 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:286 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:287 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:288 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:289 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:290 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:291 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:292 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:293 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:294 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:295 [MC-SRE-15]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-005"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-16",
+    "title": "Implement Matrix 4 Memory Slope Leak Alarm",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 296,
+    "chunk_end": 340,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-006: Matrix 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking subprocesses. Keep a bounded deque of (timestamp, rss_mb) per PID and alarm on a least-squares slope above a named MB/min threshold; the chapter gives no number, so expose it as a constant.",
+    "dependencies": [
+      "MC-SRE-15",
+      "MC-SRE-03"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_006\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-16] SRS-412-08-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-006: Matrix\n# SPEC: 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking\n# SPEC: subprocesses. Keep a bounded deque of (timestamp, rss_mb) per PID and alarm on a least-squares\n# SPEC: slope above a named MB/min threshold; the chapter gives no number, so expose it as a constant.\n# src/cochem/watchdog/watchdog_sre.py:301 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:302 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:303 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:304 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:305 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:306 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:307 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:308 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:309 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:310 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:311 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:312 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:313 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:314 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:315 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:316 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:317 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:318 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:319 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:320 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:321 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:322 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:323 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:324 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:325 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:326 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:327 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:328 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:329 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:330 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:331 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:332 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:333 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:334 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:335 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:336 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:337 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:338 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:339 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:340 [MC-SRE-16]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-17",
+    "title": "Implement Signal ZD-8 Illegal State Query",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 341,
+    "chunk_end": 380,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-009: The Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an Evidence Bundle for resuscitation. Run the Signal ZD-8 statement verbatim from section 3. As specified, a single FAILED row trips COLLAPSED; do not quietly narrow the predicate.",
+    "dependencies": [
+      "MC-SRE-16",
+      "MC-SRE-04",
+      "MC-SRE-09"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_009\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-17] SRS-412-08-FR-009\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-009: The\n# SPEC: Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE\n# SPEC: (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING'\n# SPEC: AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED`\n# SPEC: state, freeze active workers, and dispatch an Evidence Bundle for resuscitation. Run the Signal\n# SPEC: ZD-8 statement verbatim from section 3. As specified, a single FAILED row trips COLLAPSED; do\n# SPEC: not quietly narrow the predicate.\n# src/cochem/watchdog/watchdog_sre.py:349 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:350 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:351 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:352 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:353 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:354 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:355 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:356 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:357 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:358 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:359 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:360 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:361 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:362 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:363 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:364 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:365 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:366 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:367 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:368 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:369 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:370 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:371 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:372 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:373 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:374 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:375 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:376 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:377 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:378 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:379 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:380 [MC-SRE-17]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-009"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-18",
+    "title": "Implement evidence_bundle Record and Validator",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 381,
+    "chunk_end": 420,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Define the evidence_bundle record exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields. Fields: verdict: str (e.g. \"COLLAPSED\"); timestamp: int (e.g. 1727575200); matrix_failures: list (e.g. [\"Matrix 2: Zombie Deadlock detected on task WBS-04-12\"]); stalled_task_id: str (e.g. \"WBS-04-12\"); stalled_duration_sec: int (e.g. 1895); system_memory_used_pct: float (e.g. 82.5); recovery_action: str (e.g. \"TRIGGER_FABLE_RESUSCITATION\"). verdict is the literal COLLAPSED, timestamp is integer epoch seconds, matrix_failures is a list of strings. Write the bundle atomically (temp file + os.replace) and mark it read-only so it is immutable.",
+    "dependencies": [
+      "MC-SRE-17",
+      "MC-SRE-05"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"evidence_bundle\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-18] DATA_MODEL:evidence_bundle\n# SPEC: Append after the previous chunk without editing earlier lines. Define the evidence_bundle record\n# SPEC: exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields.\n# SPEC: Fields: verdict: str (e.g. \"COLLAPSED\"); timestamp: int (e.g. 1727575200); matrix_failures: list\n# SPEC: (e.g. [\"Matrix 2: Zombie Deadlock detected on task WBS-04-12\"]); stalled_task_id: str (e.g.\n# SPEC: \"WBS-04-12\"); stalled_duration_sec: int (e.g. 1895); system_memory_used_pct: float (e.g. 82.5);\n# SPEC: recovery_action: str (e.g. \"TRIGGER_FABLE_RESUSCITATION\"). verdict is the literal COLLAPSED,\n# SPEC: timestamp is integer epoch seconds, matrix_failures is a list of strings. Write the bundle\n# SPEC: atomically (temp file + os.replace) and mark it read-only so it is immutable.\n# src/cochem/watchdog/watchdog_sre.py:390 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:391 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:392 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:393 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:394 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:395 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:396 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:397 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:398 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:399 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:400 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:401 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:402 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:403 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:404 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:405 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:406 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:407 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:408 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:409 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:410 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:411 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:412 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:413 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:414 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:415 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:416 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:417 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:418 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:419 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:420 [MC-SRE-18]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "DATA_MODEL:evidence_bundle"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-19",
+    "title": "Implement COLLAPSED Freeze and Evidence Bundle Assembly",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 421,
+    "chunk_end": 475,
+    "line_delta": 55,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-007: Upon confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-contained Evidence Bundle. Freeze with psutil.Process.suspend() on the worker tree and always resume in a finally block once the bundle is dispatched. Include the DB snapshot and Python stack traces.",
+    "dependencies": [
+      "MC-SRE-18",
+      "MC-SRE-05",
+      "MC-SRE-17"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_007\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-19] SRS-412-08-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-007: Upon\n# SPEC: confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-\n# SPEC: contained Evidence Bundle. Freeze with psutil.Process.suspend() on the worker tree and always\n# SPEC: resume in a finally block once the bundle is dispatched. Include the DB snapshot and Python\n# SPEC: stack traces.\n# src/cochem/watchdog/watchdog_sre.py:427 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:428 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:429 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:430 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:431 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:432 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:433 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:434 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:435 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:436 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:437 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:438 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:439 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:440 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:441 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:442 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:443 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:444 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:445 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:446 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:447 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:448 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:449 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:450 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:451 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:452 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:453 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:454 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:455 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:456 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:457 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:458 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:459 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:460 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:461 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:462 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:463 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:464 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:465 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:466 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:467 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:468 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:469 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:470 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:471 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:472 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:473 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:474 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:475 [MC-SRE-19]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-007"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-20",
+    "title": "Implement Out-of-Band Fable 5.1 Recovery Launcher",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 476,
+    "chunk_end": 525,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-008: The Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle. Build an argv list (no shell=True), launch detached, and pass the bundle path. The executable path must be configurable and recovery must be disable-able (--no-recovery). Keep the existing --claude-exe flag so tests launch a real stand-in executable instead of claude.exe.",
+    "dependencies": [
+      "MC-SRE-19",
+      "MC-SRE-05"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_008\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-20] SRS-412-08-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-008: The\n# SPEC: Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery\n# SPEC: process with the Evidence Bundle. Build an argv list (no shell=True), launch detached, and pass\n# SPEC: the bundle path. The executable path must be configurable and recovery must be disable-able\n# SPEC: (--no-recovery). Keep the existing --claude-exe flag so tests launch a real stand-in executable\n# SPEC: instead of claude.exe.\n# src/cochem/watchdog/watchdog_sre.py:483 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:484 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:485 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:486 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:487 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:488 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:489 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:490 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:491 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:492 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:493 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:494 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:495 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:496 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:497 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:498 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:499 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:500 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:501 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:502 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:503 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:504 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:505 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:506 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:507 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:508 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:509 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:510 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:511 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:512 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:513 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:514 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:515 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:516 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:517 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:518 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:519 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:520 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:521 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:522 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:523 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:524 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:525 [MC-SRE-20]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-008"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-21",
+    "title": "Implement 5-Second Self-Healing Trigger Deadline",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 526,
+    "chunk_end": 555,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-03: Self-healing trigger sequence shall initiate within 5 seconds of structural collapse confirmation. Measure from COLLAPSED confirmation to recovery Popen return with time.monotonic().",
+    "dependencies": [
+      "MC-SRE-20",
+      "MC-SRE-05"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_03\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-21] NFR-SRE-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-03: Self-healing\n# SPEC: trigger sequence shall initiate within 5 seconds of structural collapse confirmation. Measure\n# SPEC: from COLLAPSED confirmation to recovery Popen return with time.monotonic().\n# src/cochem/watchdog/watchdog_sre.py:530 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:531 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:532 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:533 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:534 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:535 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:536 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:537 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:538 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:539 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:540 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:541 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:542 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:543 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:544 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:545 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:546 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:547 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:548 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:549 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:550 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:551 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:552 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:553 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:554 [MC-SRE-21]\n# src/cochem/watchdog/watchdog_sre.py:555 [MC-SRE-21]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "NFR-SRE-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-22",
+    "title": "Implement 4-Matrix Diagnostic Engine 30-Second Loop",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 556,
+    "chunk_end": 605,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-002: The Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop. Schedule on time.monotonic() so a slow cycle does not drift the 30 s cadence; a matrix exception is recorded as that matrix's failure, not a loop crash.",
+    "dependencies": [
+      "MC-SRE-21",
+      "MC-SRE-04",
+      "MC-SRE-12",
+      "MC-SRE-13",
+      "MC-SRE-15",
+      "MC-SRE-16",
+      "MC-SRE-17"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-22] SRS-412-08-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-002: The\n# SPEC: Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.\n# SPEC: Schedule on time.monotonic() so a slow cycle does not drift the 30 s cadence; a matrix exception\n# SPEC: is recorded as that matrix's failure, not a loop crash.\n# src/cochem/watchdog/watchdog_sre.py:561 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:562 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:563 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:564 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:565 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:566 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:567 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:568 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:569 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:570 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:571 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:572 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:573 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:574 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:575 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:576 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:577 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:578 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:579 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:580 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:581 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:582 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:583 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:584 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:585 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:586 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:587 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:588 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:589 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:590 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:591 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:592 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:593 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:594 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:595 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:596 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:597 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:598 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:599 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:600 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:601 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:602 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:603 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:604 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:605 [MC-SRE-22]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "SRS-412-08-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-SRE-23",
+    "title": "Implement 1.0s Per-Cycle Execution Budget Probe",
+    "domain": "watchdog_sre",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "chunk_start": 606,
+    "chunk_end": 635,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-01: Watchdog monitoring loop execution time shall not exceed 1.0 second per 30-second cycle. Log a budget breach with the measured duration; do not skip matrices to meet it.",
+    "dependencies": [
+      "MC-SRE-22",
+      "MC-SRE-04"
+    ],
+    "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_01\"",
+    "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-23] NFR-SRE-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-01: Watchdog\n# SPEC: monitoring loop execution time shall not exceed 1.0 second per 30-second cycle. Log a budget\n# SPEC: breach with the measured duration; do not skip matrices to meet it.\n# src/cochem/watchdog/watchdog_sre.py:610 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:611 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:612 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:613 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:614 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:615 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:616 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:617 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:618 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:619 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:620 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:621 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:622 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:623 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:624 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:625 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:626 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:627 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:628 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:629 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:630 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:631 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:632 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:633 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:634 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:635 [MC-SRE-23]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-08",
+      "items": [
+        "NFR-SRE-01"
+      ]
+    }
+  }
+]

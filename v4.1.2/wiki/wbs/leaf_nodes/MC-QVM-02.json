@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-02",
+  "title": "Author sandbox_spec Model, docker run Flag and Network Drop Tests",
+  "domain": "quarantine_vm",
+  "target_file": "tests/test_ch02_quarantine_vm.py",
+  "chunk_start": 51,
+  "chunk_end": 100,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_sandbox_spec_* for DATA_MODEL:sandbox_spec (section 7 JSON fields); test_ch02_fr_003_* for SRS-412-02-FR-003 (The execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`.); test_ch02_nfr_vm_03_* for NFR-VM-03 (Network isolation shall be verifiable via physical connection drop (`Network is unreachable`).). Section 9 obligations: Test verifies container execution flags include `--network none` and `--read-only`.",
+  "dependencies": [
+    "MC-QVM-01"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-02] TESTS:sandbox_spec\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_sandbox_spec_* for DATA_MODEL:sandbox_spec (section 7\n# SPEC: JSON fields); test_ch02_fr_003_* for SRS-412-02-FR-003 (The execution plane shall spawn all\n# SPEC: agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and\n# SPEC: `--tmpfs /tmp:rw,size=2g`.); test_ch02_nfr_vm_03_* for NFR-VM-03 (Network isolation shall be\n# SPEC: verifiable via physical connection drop (`Network is unreachable`).). Section 9 obligations:\n# SPEC: Test verifies container execution flags include `--network none` and `--read-only`.\n# tests/test_ch02_quarantine_vm.py:61 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:62 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:63 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:64 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:65 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:66 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:67 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:68 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:69 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:70 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:71 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:72 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:73 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:74 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:75 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:76 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:77 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:78 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:79 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:80 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:81 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:82 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:83 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:84 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:85 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:86 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:87 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:88 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:89 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:90 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:91 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:92 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:93 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:94 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:95 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:96 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:97 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:98 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:99 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:100 [MC-QVM-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "DATA_MODEL:sandbox_spec",
+      "SRS-412-02-FR-003",
+      "NFR-VM-03"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "receipt_id": "COCHEM-RECEIPT-CLR-PROFILER-SUPPRESSION-20260913",
+  "task_id": "2.03",
+  "task_name": "CLR Profiler Suppression Environment Flags",
+  "deliverable": "dotnet_profiler_suppress",
+  "timestamp": "2026-09-14T00:27:04.311251+00:00",
+  "host_identity": "ansac",
+  "security_token": {
+    "integrity_level": "Medium Mandatory Level (UAC Filtered)",
+    "administrative_role_active": false
+  },
+  "statutory_verdict": "PARTIAL_ENVIRONMENT_BLOCK_AWAITING_ELEVATION",
+  "target_flags": {
+    "COMPlus_ProfAPI_DefaultAttachEnabled": "0",
+    "COMPlus_AttachProfiler": "0"
+  },
+  "verification_results": {
+    "subprocess_pid": 25720,
+    "subprocess_executable": "C:\\Python314\\python.exe",
+    "subprocess_env_active": true,
+    "hkcu_registry_active": true,
+    "hklm_registry_active": false,
+    "setting_change_broadcasted": true,
+    "flags_readback": {
+      "process_env": {
+        "COMPlus_ProfAPI_DefaultAttachEnabled": "0",
+        "COMPlus_AttachProfiler": "0"
+      },
+      "user_registry": {
+        "COMPlus_ProfAPI_DefaultAttachEnabled": "0",
+        "COMPlus_AttachProfiler": "0"
+      },
+      "machine_registry": null
+    }
+  },
+  "raw_subprocess_stdout": "---JSON_START---\n{\"pid\": 25720, \"executable\": \"C:\\\\Python314\\\\python.exe\", \"env_flags\": {\"COMPlus_ProfAPI_DefaultAttachEnabled\": \"0\", \"COMPlus_AttachProfiler\": \"0\"}, \"hkcu_flags\": {\"COMPlus_ProfAPI_DefaultAttachEnabled\": \"0\", \"COMPlus_AttachProfiler\": \"0\"}, \"hklm_flags\": null}\n---JSON_END---"
+}

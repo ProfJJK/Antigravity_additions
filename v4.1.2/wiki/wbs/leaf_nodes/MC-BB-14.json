@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-14",
+  "title": "Implement BEGIN IMMEDIATE Transaction Helper",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 76,
+  "chunk_end": 115,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-002: Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease expiration updates. Traceability test: test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation.",
+  "dependencies": [
+    "MC-BB-13",
+    "MC-BB-02",
+    "MC-BB-07"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_002\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-14] SRS-412-04-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-002: Worker\n# SPEC: daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease\n# SPEC: expiration updates. Traceability test:\n# SPEC: test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation.\n# src/cochem/blackboard/leases.py:81 [MC-BB-14]\n# src/cochem/blackboard/leases.py:82 [MC-BB-14]\n# src/cochem/blackboard/leases.py:83 [MC-BB-14]\n# src/cochem/blackboard/leases.py:84 [MC-BB-14]\n# src/cochem/blackboard/leases.py:85 [MC-BB-14]\n# src/cochem/blackboard/leases.py:86 [MC-BB-14]\n# src/cochem/blackboard/leases.py:87 [MC-BB-14]\n# src/cochem/blackboard/leases.py:88 [MC-BB-14]\n# src/cochem/blackboard/leases.py:89 [MC-BB-14]\n# src/cochem/blackboard/leases.py:90 [MC-BB-14]\n# src/cochem/blackboard/leases.py:91 [MC-BB-14]\n# src/cochem/blackboard/leases.py:92 [MC-BB-14]\n# src/cochem/blackboard/leases.py:93 [MC-BB-14]\n# src/cochem/blackboard/leases.py:94 [MC-BB-14]\n# src/cochem/blackboard/leases.py:95 [MC-BB-14]\n# src/cochem/blackboard/leases.py:96 [MC-BB-14]\n# src/cochem/blackboard/leases.py:97 [MC-BB-14]\n# src/cochem/blackboard/leases.py:98 [MC-BB-14]\n# src/cochem/blackboard/leases.py:99 [MC-BB-14]\n# src/cochem/blackboard/leases.py:100 [MC-BB-14]\n# src/cochem/blackboard/leases.py:101 [MC-BB-14]\n# src/cochem/blackboard/leases.py:102 [MC-BB-14]\n# src/cochem/blackboard/leases.py:103 [MC-BB-14]\n# src/cochem/blackboard/leases.py:104 [MC-BB-14]\n# src/cochem/blackboard/leases.py:105 [MC-BB-14]\n# src/cochem/blackboard/leases.py:106 [MC-BB-14]\n# src/cochem/blackboard/leases.py:107 [MC-BB-14]\n# src/cochem/blackboard/leases.py:108 [MC-BB-14]\n# src/cochem/blackboard/leases.py:109 [MC-BB-14]\n# src/cochem/blackboard/leases.py:110 [MC-BB-14]\n# src/cochem/blackboard/leases.py:111 [MC-BB-14]\n# src/cochem/blackboard/leases.py:112 [MC-BB-14]\n# src/cochem/blackboard/leases.py:113 [MC-BB-14]\n# src/cochem/blackboard/leases.py:114 [MC-BB-14]\n# src/cochem/blackboard/leases.py:115 [MC-BB-14]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-002"
+    ]
+  }
+}

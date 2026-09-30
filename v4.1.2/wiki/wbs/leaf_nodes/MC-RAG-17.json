@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-17",
+  "title": "Implement 1.5x Index-to-Corpus Size Ratio Probe",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/indexer.py",
+  "chunk_start": 271,
+  "chunk_end": 315,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-02: FTS5 index size shall not exceed 1.5x the raw Markdown corpus size.",
+  "dependencies": [
+    "MC-RAG-16",
+    "MC-RAG-03",
+    "MC-RAG-06"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_02\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-17] NFR-RAG-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-02: FTS5 index\n# SPEC: size shall not exceed 1.5x the raw Markdown corpus size.\n# src/cochem/knowledge/indexer.py:274 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:275 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:276 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:277 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:278 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:279 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:280 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:281 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:282 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:283 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:284 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:285 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:286 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:287 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:288 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:289 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:290 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:291 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:292 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:293 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:294 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:295 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:296 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:297 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:298 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:299 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:300 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:301 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:302 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:303 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:304 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:305 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:306 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:307 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:308 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:309 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:310 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:311 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:312 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:313 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:314 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:315 [MC-RAG-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "NFR-RAG-02"
+    ]
+  }
+}

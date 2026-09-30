@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-10",
+  "title": "Implement sandbox_spec Record and Validator",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the sandbox_spec record exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields. Fields: image: str (configurable general-purpose sandbox image tag; the SRS example tag is a leftover of the removed canary and must not pull scientific libraries); network: str (e.g. \"none\"); memory_mb: int (e.g. 4096); cpus: int (e.g. 2); pids_limit: int (e.g. 512); tmpfs_size: str (e.g. \"2g\"); security_opt: list (e.g. [\"no-new-privileges:true\"]); cap_drop: list (e.g. [\"ALL\"]). Frozen dataclass with from_dict()/to_dict(). network must be 'none', cap_drop must contain 'ALL', security_opt must contain 'no-new-privileges:true', and memory_mb must not exceed 4096 (FR-007 slot size).",
+  "dependencies": [
+    "MC-QVM-02"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"sandbox_spec\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-10] DATA_MODEL:sandbox_spec\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: sandbox_spec record exactly as the section 7 JSON model, with a validator that rejects missing\n# SPEC: or mistyped fields. Fields: image: str (configurable general-purpose sandbox image tag; the SRS\n# SPEC: example tag is a leftover of the removed canary and must not pull scientific libraries);\n# SPEC: network: str (e.g. \"none\"); memory_mb: int (e.g. 4096); cpus: int (e.g. 2); pids_limit: int\n# SPEC: (e.g. 512); tmpfs_size: str (e.g. \"2g\"); security_opt: list (e.g. [\"no-new-privileges:true\"]);\n# SPEC: cap_drop: list (e.g. [\"ALL\"]). Frozen dataclass with from_dict()/to_dict(). network must be\n# SPEC: 'none', cap_drop must contain 'ALL', security_opt must contain 'no-new-privileges:true', and\n# SPEC: memory_mb must not exceed 4096 (FR-007 slot size).\n# src/cochem/quarantine/sandbox.py:11 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:12 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:13 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:14 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:15 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:16 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:17 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:18 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:19 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:20 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:21 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:22 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:23 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:24 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:25 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:26 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:27 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:28 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:29 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:30 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:31 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:32 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:33 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:34 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:35 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:36 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:37 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:38 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:39 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:40 [MC-QVM-10]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "DATA_MODEL:sandbox_spec"
+    ]
+  }
+}

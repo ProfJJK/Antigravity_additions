@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-03",
+  "title": "Author Zombie Lease, Memory Slope and Threshold Buffer Tests",
+  "domain": "watchdog_sre",
+  "target_file": "tests/test_ch08_watchdog_sre.py",
+  "chunk_start": 101,
+  "chunk_end": 150,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_004_* for SRS-412-08-FR-004 (Matrix 2 (Zombie Deadlocks) shall detect frozen task leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s).); test_ch08_false_positive_collapse_* for FAILURE:False Positive Collapse (Threshold buffers (1860s vs 1800s lease) prevent premature resuscitation during valid long-running compiles.); test_ch08_fr_006_* for SRS-412-08-FR-006 (Matrix 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking subprocesses.)",
+  "dependencies": [
+    "MC-SRE-02"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-03] TESTS:matrices\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_fr_004_* for SRS-412-08-FR-004 (Matrix 2 (Zombie Deadlocks) shall detect frozen task\n# SPEC: leases where `lease_expires_at` is exceeded by more than 60 seconds (calibrated to 1860s).);\n# SPEC: test_ch08_false_positive_collapse_* for FAILURE:False Positive Collapse (Threshold buffers\n# SPEC: (1860s vs 1800s lease) prevent premature resuscitation during valid long-running compiles.);\n# SPEC: test_ch08_fr_006_* for SRS-412-08-FR-006 (Matrix 4 (Resource Exhaustion) shall monitor memory\n# SPEC: consumption slope and trigger alarms on leaking subprocesses.)\n# tests/test_ch08_watchdog_sre.py:110 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:111 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:112 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:113 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:114 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:115 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:116 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:117 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:118 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:119 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:120 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:121 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:122 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:123 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:124 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:125 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:126 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:127 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:128 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:129 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:130 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:131 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:132 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:133 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:134 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:135 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:136 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:137 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:138 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:139 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:140 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:141 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:142 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:143 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:144 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:145 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:146 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:147 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:148 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:149 [MC-SRE-03]\n# tests/test_ch08_watchdog_sre.py:150 [MC-SRE-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-004",
+      "FAILURE:False Positive Collapse",
+      "SRS-412-08-FR-006"
+    ]
+  }
+}

@@ -1,0 +1,466 @@
+{
+  "batch_id": "B09",
+  "task_count": 20,
+  "tasks": [
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-12",
+      "title": "Implement XTB GFN2 Semi-Empirical Engine",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/xtb_engine.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement run_xtb_gfn2() calculating geometry optimization and vibrational frequencies.",
+      "dependencies": [
+        "MC-DSP-11"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/xtb_engine.py>>>\n# Code context line 15 for MC-DSP-12\n# Code context line 16 for MC-DSP-12\n# Code context line 17 for MC-DSP-12\n# Code context line 18 for MC-DSP-12\n# Code context line 19 for MC-DSP-12\n# Code context line 20 for MC-DSP-12\n# Code context line 21 for MC-DSP-12\n# Code context line 22 for MC-DSP-12\n# Code context line 23 for MC-DSP-12\n# Code context line 24 for MC-DSP-12\n# Code context line 25 for MC-DSP-12\n# Code context line 26 for MC-DSP-12\n# Code context line 27 for MC-DSP-12\n# Code context line 28 for MC-DSP-12\n# Code context line 29 for MC-DSP-12\n# Code context line 30 for MC-DSP-12\n# Code context line 31 for MC-DSP-12\n# Code context line 32 for MC-DSP-12\n# Code context line 33 for MC-DSP-12\n# Code context line 34 for MC-DSP-12\n# Code context line 35 for MC-DSP-12\n# Code context line 36 for MC-DSP-12\n# Code context line 37 for MC-DSP-12\n# Code context line 38 for MC-DSP-12\n# Code context line 39 for MC-DSP-12\n# Code context line 40 for MC-DSP-12\n# Code context line 41 for MC-DSP-12\n# Code context line 42 for MC-DSP-12\n# Code context line 43 for MC-DSP-12\n# Code context line 44 for MC-DSP-12\n# Code context line 45 for MC-DSP-12\n# Code context line 46 for MC-DSP-12\n# Code context line 47 for MC-DSP-12\n# Code context line 48 for MC-DSP-12\n# Code context line 49 for MC-DSP-12\n# Code context line 50 for MC-DSP-12\n# Code context line 51 for MC-DSP-12\n# Code context line 52 for MC-DSP-12\n# Code context line 53 for MC-DSP-12\n# Code context line 54 for MC-DSP-12\n# Code context line 55 for MC-DSP-12\n# Code context line 56 for MC-DSP-12\n# Code context line 57 for MC-DSP-12\n# Code context line 58 for MC-DSP-12\n# Code context line 59 for MC-DSP-12\n# Code context line 60 for MC-DSP-12\n# Code context line 61 for MC-DSP-12\n# Code context line 62 for MC-DSP-12\n# Code context line 63 for MC-DSP-12\n# Code context line 64 for MC-DSP-12\n# Code context line 65 for MC-DSP-12\n# Code context line 66 for MC-DSP-12\n# Code context line 67 for MC-DSP-12\n# Code context line 68 for MC-DSP-12\n# Code context line 69 for MC-DSP-12\n# Code context line 70 for MC-DSP-12\n# Code context line 71 for MC-DSP-12\n# Code context line 72 for MC-DSP-12\n# Code context line 73 for MC-DSP-12\n# Code context line 74 for MC-DSP-12\n# Code context line 75 for MC-DSP-12\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-13",
+      "title": "Implement ASE EMT Physical Fallback Calculator",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/ase_engine.py",
+      "chunk_start": 15,
+      "chunk_end": 70,
+      "line_delta": 56,
+      "instructions": "Implement run_ase_emt() providing authentic thermodynamics when heavy binaries are absent.",
+      "dependencies": [
+        "MC-DSP-12"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py::test_f15_physics_canary_executes_ase_emt_calculator_energy",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/ase_engine.py>>>\n# Code context line 15 for MC-DSP-13\n# Code context line 16 for MC-DSP-13\n# Code context line 17 for MC-DSP-13\n# Code context line 18 for MC-DSP-13\n# Code context line 19 for MC-DSP-13\n# Code context line 20 for MC-DSP-13\n# Code context line 21 for MC-DSP-13\n# Code context line 22 for MC-DSP-13\n# Code context line 23 for MC-DSP-13\n# Code context line 24 for MC-DSP-13\n# Code context line 25 for MC-DSP-13\n# Code context line 26 for MC-DSP-13\n# Code context line 27 for MC-DSP-13\n# Code context line 28 for MC-DSP-13\n# Code context line 29 for MC-DSP-13\n# Code context line 30 for MC-DSP-13\n# Code context line 31 for MC-DSP-13\n# Code context line 32 for MC-DSP-13\n# Code context line 33 for MC-DSP-13\n# Code context line 34 for MC-DSP-13\n# Code context line 35 for MC-DSP-13\n# Code context line 36 for MC-DSP-13\n# Code context line 37 for MC-DSP-13\n# Code context line 38 for MC-DSP-13\n# Code context line 39 for MC-DSP-13\n# Code context line 40 for MC-DSP-13\n# Code context line 41 for MC-DSP-13\n# Code context line 42 for MC-DSP-13\n# Code context line 43 for MC-DSP-13\n# Code context line 44 for MC-DSP-13\n# Code context line 45 for MC-DSP-13\n# Code context line 46 for MC-DSP-13\n# Code context line 47 for MC-DSP-13\n# Code context line 48 for MC-DSP-13\n# Code context line 49 for MC-DSP-13\n# Code context line 50 for MC-DSP-13\n# Code context line 51 for MC-DSP-13\n# Code context line 52 for MC-DSP-13\n# Code context line 53 for MC-DSP-13\n# Code context line 54 for MC-DSP-13\n# Code context line 55 for MC-DSP-13\n# Code context line 56 for MC-DSP-13\n# Code context line 57 for MC-DSP-13\n# Code context line 58 for MC-DSP-13\n# Code context line 59 for MC-DSP-13\n# Code context line 60 for MC-DSP-13\n# Code context line 61 for MC-DSP-13\n# Code context line 62 for MC-DSP-13\n# Code context line 63 for MC-DSP-13\n# Code context line 64 for MC-DSP-13\n# Code context line 65 for MC-DSP-13\n# Code context line 66 for MC-DSP-13\n# Code context line 67 for MC-DSP-13\n# Code context line 68 for MC-DSP-13\n# Code context line 69 for MC-DSP-13\n# Code context line 70 for MC-DSP-13\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-14",
+      "title": "Implement Dynamic Mendeleev Atomic Mass Resolver",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/mendeleev_resolver.py",
+      "chunk_start": 1,
+      "chunk_end": 45,
+      "line_delta": 45,
+      "instructions": "Implement get_atomic_mass() dynamically resolving elements via mendeleev library.",
+      "dependencies": [
+        "MC-DSP-13"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py::test_f15_physics_canary_retrieves_dynamic_mendeleev_element_mass",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/mendeleev_resolver.py>>>\n# Code context line 1 for MC-DSP-14\n# Code context line 2 for MC-DSP-14\n# Code context line 3 for MC-DSP-14\n# Code context line 4 for MC-DSP-14\n# Code context line 5 for MC-DSP-14\n# Code context line 6 for MC-DSP-14\n# Code context line 7 for MC-DSP-14\n# Code context line 8 for MC-DSP-14\n# Code context line 9 for MC-DSP-14\n# Code context line 10 for MC-DSP-14\n# Code context line 11 for MC-DSP-14\n# Code context line 12 for MC-DSP-14\n# Code context line 13 for MC-DSP-14\n# Code context line 14 for MC-DSP-14\n# Code context line 15 for MC-DSP-14\n# Code context line 16 for MC-DSP-14\n# Code context line 17 for MC-DSP-14\n# Code context line 18 for MC-DSP-14\n# Code context line 19 for MC-DSP-14\n# Code context line 20 for MC-DSP-14\n# Code context line 21 for MC-DSP-14\n# Code context line 22 for MC-DSP-14\n# Code context line 23 for MC-DSP-14\n# Code context line 24 for MC-DSP-14\n# Code context line 25 for MC-DSP-14\n# Code context line 26 for MC-DSP-14\n# Code context line 27 for MC-DSP-14\n# Code context line 28 for MC-DSP-14\n# Code context line 29 for MC-DSP-14\n# Code context line 30 for MC-DSP-14\n# Code context line 31 for MC-DSP-14\n# Code context line 32 for MC-DSP-14\n# Code context line 33 for MC-DSP-14\n# Code context line 34 for MC-DSP-14\n# Code context line 35 for MC-DSP-14\n# Code context line 36 for MC-DSP-14\n# Code context line 37 for MC-DSP-14\n# Code context line 38 for MC-DSP-14\n# Code context line 39 for MC-DSP-14\n# Code context line 40 for MC-DSP-14\n# Code context line 41 for MC-DSP-14\n# Code context line 42 for MC-DSP-14\n# Code context line 43 for MC-DSP-14\n# Code context line 44 for MC-DSP-14\n# Code context line 45 for MC-DSP-14\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-15",
+      "title": "Implement Ephemeral Docker Sandbox Execution Wrapper",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/sandbox.py",
+      "chunk_start": 20,
+      "chunk_end": 85,
+      "line_delta": 66,
+      "instructions": "Implement run_in_docker_sandbox() with --network none, --read-only, and tmpfs /tmp:2G.",
+      "dependencies": [
+        "MC-DSP-14"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py::test_f14_docker_sandbox_verifies_network_none_isolation",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/sandbox.py>>>\n# Code context line 20 for MC-DSP-15\n# Code context line 21 for MC-DSP-15\n# Code context line 22 for MC-DSP-15\n# Code context line 23 for MC-DSP-15\n# Code context line 24 for MC-DSP-15\n# Code context line 25 for MC-DSP-15\n# Code context line 26 for MC-DSP-15\n# Code context line 27 for MC-DSP-15\n# Code context line 28 for MC-DSP-15\n# Code context line 29 for MC-DSP-15\n# Code context line 30 for MC-DSP-15\n# Code context line 31 for MC-DSP-15\n# Code context line 32 for MC-DSP-15\n# Code context line 33 for MC-DSP-15\n# Code context line 34 for MC-DSP-15\n# Code context line 35 for MC-DSP-15\n# Code context line 36 for MC-DSP-15\n# Code context line 37 for MC-DSP-15\n# Code context line 38 for MC-DSP-15\n# Code context line 39 for MC-DSP-15\n# Code context line 40 for MC-DSP-15\n# Code context line 41 for MC-DSP-15\n# Code context line 42 for MC-DSP-15\n# Code context line 43 for MC-DSP-15\n# Code context line 44 for MC-DSP-15\n# Code context line 45 for MC-DSP-15\n# Code context line 46 for MC-DSP-15\n# Code context line 47 for MC-DSP-15\n# Code context line 48 for MC-DSP-15\n# Code context line 49 for MC-DSP-15\n# Code context line 50 for MC-DSP-15\n# Code context line 51 for MC-DSP-15\n# Code context line 52 for MC-DSP-15\n# Code context line 53 for MC-DSP-15\n# Code context line 54 for MC-DSP-15\n# Code context line 55 for MC-DSP-15\n# Code context line 56 for MC-DSP-15\n# Code context line 57 for MC-DSP-15\n# Code context line 58 for MC-DSP-15\n# Code context line 59 for MC-DSP-15\n# Code context line 60 for MC-DSP-15\n# Code context line 61 for MC-DSP-15\n# Code context line 62 for MC-DSP-15\n# Code context line 63 for MC-DSP-15\n# Code context line 64 for MC-DSP-15\n# Code context line 65 for MC-DSP-15\n# Code context line 66 for MC-DSP-15\n# Code context line 67 for MC-DSP-15\n# Code context line 68 for MC-DSP-15\n# Code context line 69 for MC-DSP-15\n# Code context line 70 for MC-DSP-15\n# Code context line 71 for MC-DSP-15\n# Code context line 72 for MC-DSP-15\n# Code context line 73 for MC-DSP-15\n# Code context line 74 for MC-DSP-15\n# Code context line 75 for MC-DSP-15\n# Code context line 76 for MC-DSP-15\n# Code context line 77 for MC-DSP-15\n# Code context line 78 for MC-DSP-15\n# Code context line 79 for MC-DSP-15\n# Code context line 80 for MC-DSP-15\n# Code context line 81 for MC-DSP-15\n# Code context line 82 for MC-DSP-15\n# Code context line 83 for MC-DSP-15\n# Code context line 84 for MC-DSP-15\n# Code context line 85 for MC-DSP-15\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-16",
+      "title": "Implement Academic Press Pipeline Orchestrator",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/orchestrator.py",
+      "chunk_start": 20,
+      "chunk_end": 80,
+      "line_delta": 61,
+      "instructions": "Implement AcademicPressOrchestrator coordinating manuscript drafting and typesetting.",
+      "dependencies": [
+        "MC-DSP-15"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/orchestrator.py>>>\n# Code context line 20 for MC-DSP-16\n# Code context line 21 for MC-DSP-16\n# Code context line 22 for MC-DSP-16\n# Code context line 23 for MC-DSP-16\n# Code context line 24 for MC-DSP-16\n# Code context line 25 for MC-DSP-16\n# Code context line 26 for MC-DSP-16\n# Code context line 27 for MC-DSP-16\n# Code context line 28 for MC-DSP-16\n# Code context line 29 for MC-DSP-16\n# Code context line 30 for MC-DSP-16\n# Code context line 31 for MC-DSP-16\n# Code context line 32 for MC-DSP-16\n# Code context line 33 for MC-DSP-16\n# Code context line 34 for MC-DSP-16\n# Code context line 35 for MC-DSP-16\n# Code context line 36 for MC-DSP-16\n# Code context line 37 for MC-DSP-16\n# Code context line 38 for MC-DSP-16\n# Code context line 39 for MC-DSP-16\n# Code context line 40 for MC-DSP-16\n# Code context line 41 for MC-DSP-16\n# Code context line 42 for MC-DSP-16\n# Code context line 43 for MC-DSP-16\n# Code context line 44 for MC-DSP-16\n# Code context line 45 for MC-DSP-16\n# Code context line 46 for MC-DSP-16\n# Code context line 47 for MC-DSP-16\n# Code context line 48 for MC-DSP-16\n# Code context line 49 for MC-DSP-16\n# Code context line 50 for MC-DSP-16\n# Code context line 51 for MC-DSP-16\n# Code context line 52 for MC-DSP-16\n# Code context line 53 for MC-DSP-16\n# Code context line 54 for MC-DSP-16\n# Code context line 55 for MC-DSP-16\n# Code context line 56 for MC-DSP-16\n# Code context line 57 for MC-DSP-16\n# Code context line 58 for MC-DSP-16\n# Code context line 59 for MC-DSP-16\n# Code context line 60 for MC-DSP-16\n# Code context line 61 for MC-DSP-16\n# Code context line 62 for MC-DSP-16\n# Code context line 63 for MC-DSP-16\n# Code context line 64 for MC-DSP-16\n# Code context line 65 for MC-DSP-16\n# Code context line 66 for MC-DSP-16\n# Code context line 67 for MC-DSP-16\n# Code context line 68 for MC-DSP-16\n# Code context line 69 for MC-DSP-16\n# Code context line 70 for MC-DSP-16\n# Code context line 71 for MC-DSP-16\n# Code context line 72 for MC-DSP-16\n# Code context line 73 for MC-DSP-16\n# Code context line 74 for MC-DSP-16\n# Code context line 75 for MC-DSP-16\n# Code context line 76 for MC-DSP-16\n# Code context line 77 for MC-DSP-16\n# Code context line 78 for MC-DSP-16\n# Code context line 79 for MC-DSP-16\n# Code context line 80 for MC-DSP-16\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-17",
+      "title": "Implement Citation Grounding and DOI Validator",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/citations.py",
+      "chunk_start": 15,
+      "chunk_end": 70,
+      "line_delta": 56,
+      "instructions": "Implement validate_citation_dois() verifying DOI format and cross-checking references.",
+      "dependencies": [
+        "MC-DSP-16"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/citations.py>>>\n# Code context line 15 for MC-DSP-17\n# Code context line 16 for MC-DSP-17\n# Code context line 17 for MC-DSP-17\n# Code context line 18 for MC-DSP-17\n# Code context line 19 for MC-DSP-17\n# Code context line 20 for MC-DSP-17\n# Code context line 21 for MC-DSP-17\n# Code context line 22 for MC-DSP-17\n# Code context line 23 for MC-DSP-17\n# Code context line 24 for MC-DSP-17\n# Code context line 25 for MC-DSP-17\n# Code context line 26 for MC-DSP-17\n# Code context line 27 for MC-DSP-17\n# Code context line 28 for MC-DSP-17\n# Code context line 29 for MC-DSP-17\n# Code context line 30 for MC-DSP-17\n# Code context line 31 for MC-DSP-17\n# Code context line 32 for MC-DSP-17\n# Code context line 33 for MC-DSP-17\n# Code context line 34 for MC-DSP-17\n# Code context line 35 for MC-DSP-17\n# Code context line 36 for MC-DSP-17\n# Code context line 37 for MC-DSP-17\n# Code context line 38 for MC-DSP-17\n# Code context line 39 for MC-DSP-17\n# Code context line 40 for MC-DSP-17\n# Code context line 41 for MC-DSP-17\n# Code context line 42 for MC-DSP-17\n# Code context line 43 for MC-DSP-17\n# Code context line 44 for MC-DSP-17\n# Code context line 45 for MC-DSP-17\n# Code context line 46 for MC-DSP-17\n# Code context line 47 for MC-DSP-17\n# Code context line 48 for MC-DSP-17\n# Code context line 49 for MC-DSP-17\n# Code context line 50 for MC-DSP-17\n# Code context line 51 for MC-DSP-17\n# Code context line 52 for MC-DSP-17\n# Code context line 53 for MC-DSP-17\n# Code context line 54 for MC-DSP-17\n# Code context line 55 for MC-DSP-17\n# Code context line 56 for MC-DSP-17\n# Code context line 57 for MC-DSP-17\n# Code context line 58 for MC-DSP-17\n# Code context line 59 for MC-DSP-17\n# Code context line 60 for MC-DSP-17\n# Code context line 61 for MC-DSP-17\n# Code context line 62 for MC-DSP-17\n# Code context line 63 for MC-DSP-17\n# Code context line 64 for MC-DSP-17\n# Code context line 65 for MC-DSP-17\n# Code context line 66 for MC-DSP-17\n# Code context line 67 for MC-DSP-17\n# Code context line 68 for MC-DSP-17\n# Code context line 69 for MC-DSP-17\n# Code context line 70 for MC-DSP-17\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-18",
+      "title": "Implement OpenAlex and CrossRef Metadata Resolver",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/citations.py",
+      "chunk_start": 75,
+      "chunk_end": 125,
+      "line_delta": 51,
+      "instructions": "Implement resolve_doi_metadata() fetching title, authors, and year from scholarly APIs.",
+      "dependencies": [
+        "MC-DSP-17"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/citations.py>>>\n# Code context line 75 for MC-DSP-18\n# Code context line 76 for MC-DSP-18\n# Code context line 77 for MC-DSP-18\n# Code context line 78 for MC-DSP-18\n# Code context line 79 for MC-DSP-18\n# Code context line 80 for MC-DSP-18\n# Code context line 81 for MC-DSP-18\n# Code context line 82 for MC-DSP-18\n# Code context line 83 for MC-DSP-18\n# Code context line 84 for MC-DSP-18\n# Code context line 85 for MC-DSP-18\n# Code context line 86 for MC-DSP-18\n# Code context line 87 for MC-DSP-18\n# Code context line 88 for MC-DSP-18\n# Code context line 89 for MC-DSP-18\n# Code context line 90 for MC-DSP-18\n# Code context line 91 for MC-DSP-18\n# Code context line 92 for MC-DSP-18\n# Code context line 93 for MC-DSP-18\n# Code context line 94 for MC-DSP-18\n# Code context line 95 for MC-DSP-18\n# Code context line 96 for MC-DSP-18\n# Code context line 97 for MC-DSP-18\n# Code context line 98 for MC-DSP-18\n# Code context line 99 for MC-DSP-18\n# Code context line 100 for MC-DSP-18\n# Code context line 101 for MC-DSP-18\n# Code context line 102 for MC-DSP-18\n# Code context line 103 for MC-DSP-18\n# Code context line 104 for MC-DSP-18\n# Code context line 105 for MC-DSP-18\n# Code context line 106 for MC-DSP-18\n# Code context line 107 for MC-DSP-18\n# Code context line 108 for MC-DSP-18\n# Code context line 109 for MC-DSP-18\n# Code context line 110 for MC-DSP-18\n# Code context line 111 for MC-DSP-18\n# Code context line 112 for MC-DSP-18\n# Code context line 113 for MC-DSP-18\n# Code context line 114 for MC-DSP-18\n# Code context line 115 for MC-DSP-18\n# Code context line 116 for MC-DSP-18\n# Code context line 117 for MC-DSP-18\n# Code context line 118 for MC-DSP-18\n# Code context line 119 for MC-DSP-18\n# Code context line 120 for MC-DSP-18\n# Code context line 121 for MC-DSP-18\n# Code context line 122 for MC-DSP-18\n# Code context line 123 for MC-DSP-18\n# Code context line 124 for MC-DSP-18\n# Code context line 125 for MC-DSP-18\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-19",
+      "title": "Implement Publication-Grade Data Table Formatter",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/tables.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement format_publication_table() formatting pandas DataFrames to LaTeX booktabs / Typst.",
+      "dependencies": [
+        "MC-DSP-18"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/tables.py>>>\n# Code context line 15 for MC-DSP-19\n# Code context line 16 for MC-DSP-19\n# Code context line 17 for MC-DSP-19\n# Code context line 18 for MC-DSP-19\n# Code context line 19 for MC-DSP-19\n# Code context line 20 for MC-DSP-19\n# Code context line 21 for MC-DSP-19\n# Code context line 22 for MC-DSP-19\n# Code context line 23 for MC-DSP-19\n# Code context line 24 for MC-DSP-19\n# Code context line 25 for MC-DSP-19\n# Code context line 26 for MC-DSP-19\n# Code context line 27 for MC-DSP-19\n# Code context line 28 for MC-DSP-19\n# Code context line 29 for MC-DSP-19\n# Code context line 30 for MC-DSP-19\n# Code context line 31 for MC-DSP-19\n# Code context line 32 for MC-DSP-19\n# Code context line 33 for MC-DSP-19\n# Code context line 34 for MC-DSP-19\n# Code context line 35 for MC-DSP-19\n# Code context line 36 for MC-DSP-19\n# Code context line 37 for MC-DSP-19\n# Code context line 38 for MC-DSP-19\n# Code context line 39 for MC-DSP-19\n# Code context line 40 for MC-DSP-19\n# Code context line 41 for MC-DSP-19\n# Code context line 42 for MC-DSP-19\n# Code context line 43 for MC-DSP-19\n# Code context line 44 for MC-DSP-19\n# Code context line 45 for MC-DSP-19\n# Code context line 46 for MC-DSP-19\n# Code context line 47 for MC-DSP-19\n# Code context line 48 for MC-DSP-19\n# Code context line 49 for MC-DSP-19\n# Code context line 50 for MC-DSP-19\n# Code context line 51 for MC-DSP-19\n# Code context line 52 for MC-DSP-19\n# Code context line 53 for MC-DSP-19\n# Code context line 54 for MC-DSP-19\n# Code context line 55 for MC-DSP-19\n# Code context line 56 for MC-DSP-19\n# Code context line 57 for MC-DSP-19\n# Code context line 58 for MC-DSP-19\n# Code context line 59 for MC-DSP-19\n# Code context line 60 for MC-DSP-19\n# Code context line 61 for MC-DSP-19\n# Code context line 62 for MC-DSP-19\n# Code context line 63 for MC-DSP-19\n# Code context line 64 for MC-DSP-19\n# Code context line 65 for MC-DSP-19\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-20",
+      "title": "Implement ACS/Nature Vector Plot Generator",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/plots.py",
+      "chunk_start": 20,
+      "chunk_end": 85,
+      "line_delta": 66,
+      "instructions": "Implement generate_vector_plot() with 3.25in single-column width, 300dpi, and PDF output.",
+      "dependencies": [
+        "MC-DSP-19"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/plots.py>>>\n# Code context line 20 for MC-DSP-20\n# Code context line 21 for MC-DSP-20\n# Code context line 22 for MC-DSP-20\n# Code context line 23 for MC-DSP-20\n# Code context line 24 for MC-DSP-20\n# Code context line 25 for MC-DSP-20\n# Code context line 26 for MC-DSP-20\n# Code context line 27 for MC-DSP-20\n# Code context line 28 for MC-DSP-20\n# Code context line 29 for MC-DSP-20\n# Code context line 30 for MC-DSP-20\n# Code context line 31 for MC-DSP-20\n# Code context line 32 for MC-DSP-20\n# Code context line 33 for MC-DSP-20\n# Code context line 34 for MC-DSP-20\n# Code context line 35 for MC-DSP-20\n# Code context line 36 for MC-DSP-20\n# Code context line 37 for MC-DSP-20\n# Code context line 38 for MC-DSP-20\n# Code context line 39 for MC-DSP-20\n# Code context line 40 for MC-DSP-20\n# Code context line 41 for MC-DSP-20\n# Code context line 42 for MC-DSP-20\n# Code context line 43 for MC-DSP-20\n# Code context line 44 for MC-DSP-20\n# Code context line 45 for MC-DSP-20\n# Code context line 46 for MC-DSP-20\n# Code context line 47 for MC-DSP-20\n# Code context line 48 for MC-DSP-20\n# Code context line 49 for MC-DSP-20\n# Code context line 50 for MC-DSP-20\n# Code context line 51 for MC-DSP-20\n# Code context line 52 for MC-DSP-20\n# Code context line 53 for MC-DSP-20\n# Code context line 54 for MC-DSP-20\n# Code context line 55 for MC-DSP-20\n# Code context line 56 for MC-DSP-20\n# Code context line 57 for MC-DSP-20\n# Code context line 58 for MC-DSP-20\n# Code context line 59 for MC-DSP-20\n# Code context line 60 for MC-DSP-20\n# Code context line 61 for MC-DSP-20\n# Code context line 62 for MC-DSP-20\n# Code context line 63 for MC-DSP-20\n# Code context line 64 for MC-DSP-20\n# Code context line 65 for MC-DSP-20\n# Code context line 66 for MC-DSP-20\n# Code context line 67 for MC-DSP-20\n# Code context line 68 for MC-DSP-20\n# Code context line 69 for MC-DSP-20\n# Code context line 70 for MC-DSP-20\n# Code context line 71 for MC-DSP-20\n# Code context line 72 for MC-DSP-20\n# Code context line 73 for MC-DSP-20\n# Code context line 74 for MC-DSP-20\n# Code context line 75 for MC-DSP-20\n# Code context line 76 for MC-DSP-20\n# Code context line 77 for MC-DSP-20\n# Code context line 78 for MC-DSP-20\n# Code context line 79 for MC-DSP-20\n# Code context line 80 for MC-DSP-20\n# Code context line 81 for MC-DSP-20\n# Code context line 82 for MC-DSP-20\n# Code context line 83 for MC-DSP-20\n# Code context line 84 for MC-DSP-20\n# Code context line 85 for MC-DSP-20\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-21",
+      "title": "Implement Typst Document Typesetting Compiler",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/typst_compiler.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement compile_typst_manuscript() compiling .typ files to publication PDF via CLI.",
+      "dependencies": [
+        "MC-DSP-20"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/typst_compiler.py>>>\n# Code context line 15 for MC-DSP-21\n# Code context line 16 for MC-DSP-21\n# Code context line 17 for MC-DSP-21\n# Code context line 18 for MC-DSP-21\n# Code context line 19 for MC-DSP-21\n# Code context line 20 for MC-DSP-21\n# Code context line 21 for MC-DSP-21\n# Code context line 22 for MC-DSP-21\n# Code context line 23 for MC-DSP-21\n# Code context line 24 for MC-DSP-21\n# Code context line 25 for MC-DSP-21\n# Code context line 26 for MC-DSP-21\n# Code context line 27 for MC-DSP-21\n# Code context line 28 for MC-DSP-21\n# Code context line 29 for MC-DSP-21\n# Code context line 30 for MC-DSP-21\n# Code context line 31 for MC-DSP-21\n# Code context line 32 for MC-DSP-21\n# Code context line 33 for MC-DSP-21\n# Code context line 34 for MC-DSP-21\n# Code context line 35 for MC-DSP-21\n# Code context line 36 for MC-DSP-21\n# Code context line 37 for MC-DSP-21\n# Code context line 38 for MC-DSP-21\n# Code context line 39 for MC-DSP-21\n# Code context line 40 for MC-DSP-21\n# Code context line 41 for MC-DSP-21\n# Code context line 42 for MC-DSP-21\n# Code context line 43 for MC-DSP-21\n# Code context line 44 for MC-DSP-21\n# Code context line 45 for MC-DSP-21\n# Code context line 46 for MC-DSP-21\n# Code context line 47 for MC-DSP-21\n# Code context line 48 for MC-DSP-21\n# Code context line 49 for MC-DSP-21\n# Code context line 50 for MC-DSP-21\n# Code context line 51 for MC-DSP-21\n# Code context line 52 for MC-DSP-21\n# Code context line 53 for MC-DSP-21\n# Code context line 54 for MC-DSP-21\n# Code context line 55 for MC-DSP-21\n# Code context line 56 for MC-DSP-21\n# Code context line 57 for MC-DSP-21\n# Code context line 58 for MC-DSP-21\n# Code context line 59 for MC-DSP-21\n# Code context line 60 for MC-DSP-21\n# Code context line 61 for MC-DSP-21\n# Code context line 62 for MC-DSP-21\n# Code context line 63 for MC-DSP-21\n# Code context line 64 for MC-DSP-21\n# Code context line 65 for MC-DSP-21\n# Code context line 66 for MC-DSP-21\n# Code context line 67 for MC-DSP-21\n# Code context line 68 for MC-DSP-21\n# Code context line 69 for MC-DSP-21\n# Code context line 70 for MC-DSP-21\n# Code context line 71 for MC-DSP-21\n# Code context line 72 for MC-DSP-21\n# Code context line 73 for MC-DSP-21\n# Code context line 74 for MC-DSP-21\n# Code context line 75 for MC-DSP-21\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-22",
+      "title": "Implement Pandoc LaTeX and PDF Generation Runner",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/latex_runner.py",
+      "chunk_start": 15,
+      "chunk_end": 70,
+      "line_delta": 56,
+      "instructions": "Implement compile_latex_pdf() invoking pandoc with xelatex engine and biblatex.",
+      "dependencies": [
+        "MC-DSP-21"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/latex_runner.py>>>\n# Code context line 15 for MC-DSP-22\n# Code context line 16 for MC-DSP-22\n# Code context line 17 for MC-DSP-22\n# Code context line 18 for MC-DSP-22\n# Code context line 19 for MC-DSP-22\n# Code context line 20 for MC-DSP-22\n# Code context line 21 for MC-DSP-22\n# Code context line 22 for MC-DSP-22\n# Code context line 23 for MC-DSP-22\n# Code context line 24 for MC-DSP-22\n# Code context line 25 for MC-DSP-22\n# Code context line 26 for MC-DSP-22\n# Code context line 27 for MC-DSP-22\n# Code context line 28 for MC-DSP-22\n# Code context line 29 for MC-DSP-22\n# Code context line 30 for MC-DSP-22\n# Code context line 31 for MC-DSP-22\n# Code context line 32 for MC-DSP-22\n# Code context line 33 for MC-DSP-22\n# Code context line 34 for MC-DSP-22\n# Code context line 35 for MC-DSP-22\n# Code context line 36 for MC-DSP-22\n# Code context line 37 for MC-DSP-22\n# Code context line 38 for MC-DSP-22\n# Code context line 39 for MC-DSP-22\n# Code context line 40 for MC-DSP-22\n# Code context line 41 for MC-DSP-22\n# Code context line 42 for MC-DSP-22\n# Code context line 43 for MC-DSP-22\n# Code context line 44 for MC-DSP-22\n# Code context line 45 for MC-DSP-22\n# Code context line 46 for MC-DSP-22\n# Code context line 47 for MC-DSP-22\n# Code context line 48 for MC-DSP-22\n# Code context line 49 for MC-DSP-22\n# Code context line 50 for MC-DSP-22\n# Code context line 51 for MC-DSP-22\n# Code context line 52 for MC-DSP-22\n# Code context line 53 for MC-DSP-22\n# Code context line 54 for MC-DSP-22\n# Code context line 55 for MC-DSP-22\n# Code context line 56 for MC-DSP-22\n# Code context line 57 for MC-DSP-22\n# Code context line 58 for MC-DSP-22\n# Code context line 59 for MC-DSP-22\n# Code context line 60 for MC-DSP-22\n# Code context line 61 for MC-DSP-22\n# Code context line 62 for MC-DSP-22\n# Code context line 63 for MC-DSP-22\n# Code context line 64 for MC-DSP-22\n# Code context line 65 for MC-DSP-22\n# Code context line 66 for MC-DSP-22\n# Code context line 67 for MC-DSP-22\n# Code context line 68 for MC-DSP-22\n# Code context line 69 for MC-DSP-22\n# Code context line 70 for MC-DSP-22\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-23",
+      "title": "Implement Manuscript Compliance Checker",
+      "domain": "academic_press",
+      "target_file": "src/cochem/dsp/press/compliance.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement check_author_guidelines() checking word counts, section headers, and figures.",
+      "dependencies": [
+        "MC-DSP-22"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/press/compliance.py>>>\n# Code context line 15 for MC-DSP-23\n# Code context line 16 for MC-DSP-23\n# Code context line 17 for MC-DSP-23\n# Code context line 18 for MC-DSP-23\n# Code context line 19 for MC-DSP-23\n# Code context line 20 for MC-DSP-23\n# Code context line 21 for MC-DSP-23\n# Code context line 22 for MC-DSP-23\n# Code context line 23 for MC-DSP-23\n# Code context line 24 for MC-DSP-23\n# Code context line 25 for MC-DSP-23\n# Code context line 26 for MC-DSP-23\n# Code context line 27 for MC-DSP-23\n# Code context line 28 for MC-DSP-23\n# Code context line 29 for MC-DSP-23\n# Code context line 30 for MC-DSP-23\n# Code context line 31 for MC-DSP-23\n# Code context line 32 for MC-DSP-23\n# Code context line 33 for MC-DSP-23\n# Code context line 34 for MC-DSP-23\n# Code context line 35 for MC-DSP-23\n# Code context line 36 for MC-DSP-23\n# Code context line 37 for MC-DSP-23\n# Code context line 38 for MC-DSP-23\n# Code context line 39 for MC-DSP-23\n# Code context line 40 for MC-DSP-23\n# Code context line 41 for MC-DSP-23\n# Code context line 42 for MC-DSP-23\n# Code context line 43 for MC-DSP-23\n# Code context line 44 for MC-DSP-23\n# Code context line 45 for MC-DSP-23\n# Code context line 46 for MC-DSP-23\n# Code context line 47 for MC-DSP-23\n# Code context line 48 for MC-DSP-23\n# Code context line 49 for MC-DSP-23\n# Code context line 50 for MC-DSP-23\n# Code context line 51 for MC-DSP-23\n# Code context line 52 for MC-DSP-23\n# Code context line 53 for MC-DSP-23\n# Code context line 54 for MC-DSP-23\n# Code context line 55 for MC-DSP-23\n# Code context line 56 for MC-DSP-23\n# Code context line 57 for MC-DSP-23\n# Code context line 58 for MC-DSP-23\n# Code context line 59 for MC-DSP-23\n# Code context line 60 for MC-DSP-23\n# Code context line 61 for MC-DSP-23\n# Code context line 62 for MC-DSP-23\n# Code context line 63 for MC-DSP-23\n# Code context line 64 for MC-DSP-23\n# Code context line 65 for MC-DSP-23\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-24",
+      "title": "Implement Pedagogy Engine Pipeline Orchestrator",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/orchestrator.py",
+      "chunk_start": 20,
+      "chunk_end": 80,
+      "line_delta": 61,
+      "instructions": "Implement PedagogyOrchestrator managing LMS syncing, test generation, and grading.",
+      "dependencies": [
+        "MC-DSP-23"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/orchestrator.py>>>\n# Code context line 20 for MC-DSP-24\n# Code context line 21 for MC-DSP-24\n# Code context line 22 for MC-DSP-24\n# Code context line 23 for MC-DSP-24\n# Code context line 24 for MC-DSP-24\n# Code context line 25 for MC-DSP-24\n# Code context line 26 for MC-DSP-24\n# Code context line 27 for MC-DSP-24\n# Code context line 28 for MC-DSP-24\n# Code context line 29 for MC-DSP-24\n# Code context line 30 for MC-DSP-24\n# Code context line 31 for MC-DSP-24\n# Code context line 32 for MC-DSP-24\n# Code context line 33 for MC-DSP-24\n# Code context line 34 for MC-DSP-24\n# Code context line 35 for MC-DSP-24\n# Code context line 36 for MC-DSP-24\n# Code context line 37 for MC-DSP-24\n# Code context line 38 for MC-DSP-24\n# Code context line 39 for MC-DSP-24\n# Code context line 40 for MC-DSP-24\n# Code context line 41 for MC-DSP-24\n# Code context line 42 for MC-DSP-24\n# Code context line 43 for MC-DSP-24\n# Code context line 44 for MC-DSP-24\n# Code context line 45 for MC-DSP-24\n# Code context line 46 for MC-DSP-24\n# Code context line 47 for MC-DSP-24\n# Code context line 48 for MC-DSP-24\n# Code context line 49 for MC-DSP-24\n# Code context line 50 for MC-DSP-24\n# Code context line 51 for MC-DSP-24\n# Code context line 52 for MC-DSP-24\n# Code context line 53 for MC-DSP-24\n# Code context line 54 for MC-DSP-24\n# Code context line 55 for MC-DSP-24\n# Code context line 56 for MC-DSP-24\n# Code context line 57 for MC-DSP-24\n# Code context line 58 for MC-DSP-24\n# Code context line 59 for MC-DSP-24\n# Code context line 60 for MC-DSP-24\n# Code context line 61 for MC-DSP-24\n# Code context line 62 for MC-DSP-24\n# Code context line 63 for MC-DSP-24\n# Code context line 64 for MC-DSP-24\n# Code context line 65 for MC-DSP-24\n# Code context line 66 for MC-DSP-24\n# Code context line 67 for MC-DSP-24\n# Code context line 68 for MC-DSP-24\n# Code context line 69 for MC-DSP-24\n# Code context line 70 for MC-DSP-24\n# Code context line 71 for MC-DSP-24\n# Code context line 72 for MC-DSP-24\n# Code context line 73 for MC-DSP-24\n# Code context line 74 for MC-DSP-24\n# Code context line 75 for MC-DSP-24\n# Code context line 76 for MC-DSP-24\n# Code context line 77 for MC-DSP-24\n# Code context line 78 for MC-DSP-24\n# Code context line 79 for MC-DSP-24\n# Code context line 80 for MC-DSP-24\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-25",
+      "title": "Implement Canvas LMS REST API Client",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/canvas_client.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement CanvasClient managing course endpoints with OAuth2 bearer token.",
+      "dependencies": [
+        "MC-DSP-24"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/canvas_client.py>>>\n# Code context line 15 for MC-DSP-25\n# Code context line 16 for MC-DSP-25\n# Code context line 17 for MC-DSP-25\n# Code context line 18 for MC-DSP-25\n# Code context line 19 for MC-DSP-25\n# Code context line 20 for MC-DSP-25\n# Code context line 21 for MC-DSP-25\n# Code context line 22 for MC-DSP-25\n# Code context line 23 for MC-DSP-25\n# Code context line 24 for MC-DSP-25\n# Code context line 25 for MC-DSP-25\n# Code context line 26 for MC-DSP-25\n# Code context line 27 for MC-DSP-25\n# Code context line 28 for MC-DSP-25\n# Code context line 29 for MC-DSP-25\n# Code context line 30 for MC-DSP-25\n# Code context line 31 for MC-DSP-25\n# Code context line 32 for MC-DSP-25\n# Code context line 33 for MC-DSP-25\n# Code context line 34 for MC-DSP-25\n# Code context line 35 for MC-DSP-25\n# Code context line 36 for MC-DSP-25\n# Code context line 37 for MC-DSP-25\n# Code context line 38 for MC-DSP-25\n# Code context line 39 for MC-DSP-25\n# Code context line 40 for MC-DSP-25\n# Code context line 41 for MC-DSP-25\n# Code context line 42 for MC-DSP-25\n# Code context line 43 for MC-DSP-25\n# Code context line 44 for MC-DSP-25\n# Code context line 45 for MC-DSP-25\n# Code context line 46 for MC-DSP-25\n# Code context line 47 for MC-DSP-25\n# Code context line 48 for MC-DSP-25\n# Code context line 49 for MC-DSP-25\n# Code context line 50 for MC-DSP-25\n# Code context line 51 for MC-DSP-25\n# Code context line 52 for MC-DSP-25\n# Code context line 53 for MC-DSP-25\n# Code context line 54 for MC-DSP-25\n# Code context line 55 for MC-DSP-25\n# Code context line 56 for MC-DSP-25\n# Code context line 57 for MC-DSP-25\n# Code context line 58 for MC-DSP-25\n# Code context line 59 for MC-DSP-25\n# Code context line 60 for MC-DSP-25\n# Code context line 61 for MC-DSP-25\n# Code context line 62 for MC-DSP-25\n# Code context line 63 for MC-DSP-25\n# Code context line 64 for MC-DSP-25\n# Code context line 65 for MC-DSP-25\n# Code context line 66 for MC-DSP-25\n# Code context line 67 for MC-DSP-25\n# Code context line 68 for MC-DSP-25\n# Code context line 69 for MC-DSP-25\n# Code context line 70 for MC-DSP-25\n# Code context line 71 for MC-DSP-25\n# Code context line 72 for MC-DSP-25\n# Code context line 73 for MC-DSP-25\n# Code context line 74 for MC-DSP-25\n# Code context line 75 for MC-DSP-25\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-26",
+      "title": "Implement Assignment and Gradebook Synchronizer",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/canvas_sync.py",
+      "chunk_start": 15,
+      "chunk_end": 70,
+      "line_delta": 56,
+      "instructions": "Implement sync_grades() pushing student submissions and scores to Canvas gradebook.",
+      "dependencies": [
+        "MC-DSP-25"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/canvas_sync.py>>>\n# Code context line 15 for MC-DSP-26\n# Code context line 16 for MC-DSP-26\n# Code context line 17 for MC-DSP-26\n# Code context line 18 for MC-DSP-26\n# Code context line 19 for MC-DSP-26\n# Code context line 20 for MC-DSP-26\n# Code context line 21 for MC-DSP-26\n# Code context line 22 for MC-DSP-26\n# Code context line 23 for MC-DSP-26\n# Code context line 24 for MC-DSP-26\n# Code context line 25 for MC-DSP-26\n# Code context line 26 for MC-DSP-26\n# Code context line 27 for MC-DSP-26\n# Code context line 28 for MC-DSP-26\n# Code context line 29 for MC-DSP-26\n# Code context line 30 for MC-DSP-26\n# Code context line 31 for MC-DSP-26\n# Code context line 32 for MC-DSP-26\n# Code context line 33 for MC-DSP-26\n# Code context line 34 for MC-DSP-26\n# Code context line 35 for MC-DSP-26\n# Code context line 36 for MC-DSP-26\n# Code context line 37 for MC-DSP-26\n# Code context line 38 for MC-DSP-26\n# Code context line 39 for MC-DSP-26\n# Code context line 40 for MC-DSP-26\n# Code context line 41 for MC-DSP-26\n# Code context line 42 for MC-DSP-26\n# Code context line 43 for MC-DSP-26\n# Code context line 44 for MC-DSP-26\n# Code context line 45 for MC-DSP-26\n# Code context line 46 for MC-DSP-26\n# Code context line 47 for MC-DSP-26\n# Code context line 48 for MC-DSP-26\n# Code context line 49 for MC-DSP-26\n# Code context line 50 for MC-DSP-26\n# Code context line 51 for MC-DSP-26\n# Code context line 52 for MC-DSP-26\n# Code context line 53 for MC-DSP-26\n# Code context line 54 for MC-DSP-26\n# Code context line 55 for MC-DSP-26\n# Code context line 56 for MC-DSP-26\n# Code context line 57 for MC-DSP-26\n# Code context line 58 for MC-DSP-26\n# Code context line 59 for MC-DSP-26\n# Code context line 60 for MC-DSP-26\n# Code context line 61 for MC-DSP-26\n# Code context line 62 for MC-DSP-26\n# Code context line 63 for MC-DSP-26\n# Code context line 64 for MC-DSP-26\n# Code context line 65 for MC-DSP-26\n# Code context line 66 for MC-DSP-26\n# Code context line 67 for MC-DSP-26\n# Code context line 68 for MC-DSP-26\n# Code context line 69 for MC-DSP-26\n# Code context line 70 for MC-DSP-26\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-27",
+      "title": "Implement R/exams Question Generator Wrapper",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/rexams.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement generate_rexams_questions() rendering Rmd question templates with random seeds.",
+      "dependencies": [
+        "MC-DSP-26"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/rexams.py>>>\n# Code context line 15 for MC-DSP-27\n# Code context line 16 for MC-DSP-27\n# Code context line 17 for MC-DSP-27\n# Code context line 18 for MC-DSP-27\n# Code context line 19 for MC-DSP-27\n# Code context line 20 for MC-DSP-27\n# Code context line 21 for MC-DSP-27\n# Code context line 22 for MC-DSP-27\n# Code context line 23 for MC-DSP-27\n# Code context line 24 for MC-DSP-27\n# Code context line 25 for MC-DSP-27\n# Code context line 26 for MC-DSP-27\n# Code context line 27 for MC-DSP-27\n# Code context line 28 for MC-DSP-27\n# Code context line 29 for MC-DSP-27\n# Code context line 30 for MC-DSP-27\n# Code context line 31 for MC-DSP-27\n# Code context line 32 for MC-DSP-27\n# Code context line 33 for MC-DSP-27\n# Code context line 34 for MC-DSP-27\n# Code context line 35 for MC-DSP-27\n# Code context line 36 for MC-DSP-27\n# Code context line 37 for MC-DSP-27\n# Code context line 38 for MC-DSP-27\n# Code context line 39 for MC-DSP-27\n# Code context line 40 for MC-DSP-27\n# Code context line 41 for MC-DSP-27\n# Code context line 42 for MC-DSP-27\n# Code context line 43 for MC-DSP-27\n# Code context line 44 for MC-DSP-27\n# Code context line 45 for MC-DSP-27\n# Code context line 46 for MC-DSP-27\n# Code context line 47 for MC-DSP-27\n# Code context line 48 for MC-DSP-27\n# Code context line 49 for MC-DSP-27\n# Code context line 50 for MC-DSP-27\n# Code context line 51 for MC-DSP-27\n# Code context line 52 for MC-DSP-27\n# Code context line 53 for MC-DSP-27\n# Code context line 54 for MC-DSP-27\n# Code context line 55 for MC-DSP-27\n# Code context line 56 for MC-DSP-27\n# Code context line 57 for MC-DSP-27\n# Code context line 58 for MC-DSP-27\n# Code context line 59 for MC-DSP-27\n# Code context line 60 for MC-DSP-27\n# Code context line 61 for MC-DSP-27\n# Code context line 62 for MC-DSP-27\n# Code context line 63 for MC-DSP-27\n# Code context line 64 for MC-DSP-27\n# Code context line 65 for MC-DSP-27\n# Code context line 66 for MC-DSP-27\n# Code context line 67 for MC-DSP-27\n# Code context line 68 for MC-DSP-27\n# Code context line 69 for MC-DSP-27\n# Code context line 70 for MC-DSP-27\n# Code context line 71 for MC-DSP-27\n# Code context line 72 for MC-DSP-27\n# Code context line 73 for MC-DSP-27\n# Code context line 74 for MC-DSP-27\n# Code context line 75 for MC-DSP-27\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-28",
+      "title": "Implement Exam Permutation and PDF Compile Runner",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/rexams.py",
+      "chunk_start": 80,
+      "chunk_end": 130,
+      "line_delta": 51,
+      "instructions": "Implement compile_exam_permutations() compiling scrambled exams and answer keys.",
+      "dependencies": [
+        "MC-DSP-27"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/rexams.py>>>\n# Code context line 80 for MC-DSP-28\n# Code context line 81 for MC-DSP-28\n# Code context line 82 for MC-DSP-28\n# Code context line 83 for MC-DSP-28\n# Code context line 84 for MC-DSP-28\n# Code context line 85 for MC-DSP-28\n# Code context line 86 for MC-DSP-28\n# Code context line 87 for MC-DSP-28\n# Code context line 88 for MC-DSP-28\n# Code context line 89 for MC-DSP-28\n# Code context line 90 for MC-DSP-28\n# Code context line 91 for MC-DSP-28\n# Code context line 92 for MC-DSP-28\n# Code context line 93 for MC-DSP-28\n# Code context line 94 for MC-DSP-28\n# Code context line 95 for MC-DSP-28\n# Code context line 96 for MC-DSP-28\n# Code context line 97 for MC-DSP-28\n# Code context line 98 for MC-DSP-28\n# Code context line 99 for MC-DSP-28\n# Code context line 100 for MC-DSP-28\n# Code context line 101 for MC-DSP-28\n# Code context line 102 for MC-DSP-28\n# Code context line 103 for MC-DSP-28\n# Code context line 104 for MC-DSP-28\n# Code context line 105 for MC-DSP-28\n# Code context line 106 for MC-DSP-28\n# Code context line 107 for MC-DSP-28\n# Code context line 108 for MC-DSP-28\n# Code context line 109 for MC-DSP-28\n# Code context line 110 for MC-DSP-28\n# Code context line 111 for MC-DSP-28\n# Code context line 112 for MC-DSP-28\n# Code context line 113 for MC-DSP-28\n# Code context line 114 for MC-DSP-28\n# Code context line 115 for MC-DSP-28\n# Code context line 116 for MC-DSP-28\n# Code context line 117 for MC-DSP-28\n# Code context line 118 for MC-DSP-28\n# Code context line 119 for MC-DSP-28\n# Code context line 120 for MC-DSP-28\n# Code context line 121 for MC-DSP-28\n# Code context line 122 for MC-DSP-28\n# Code context line 123 for MC-DSP-28\n# Code context line 124 for MC-DSP-28\n# Code context line 125 for MC-DSP-28\n# Code context line 126 for MC-DSP-28\n# Code context line 127 for MC-DSP-28\n# Code context line 128 for MC-DSP-28\n# Code context line 129 for MC-DSP-28\n# Code context line 130 for MC-DSP-28\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-29",
+      "title": "Implement Multimodal Grading Rubric Evaluator",
+      "domain": "pedagogy_engine",
+      "target_file": "src/cochem/dsp/pedagogy/grading.py",
+      "chunk_start": 20,
+      "chunk_end": 85,
+      "line_delta": 66,
+      "instructions": "Implement evaluate_student_submission() applying OCR and didactic rubric criteria.",
+      "dependencies": [
+        "MC-DSP-28"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/grading.py>>>\n# Code context line 20 for MC-DSP-29\n# Code context line 21 for MC-DSP-29\n# Code context line 22 for MC-DSP-29\n# Code context line 23 for MC-DSP-29\n# Code context line 24 for MC-DSP-29\n# Code context line 25 for MC-DSP-29\n# Code context line 26 for MC-DSP-29\n# Code context line 27 for MC-DSP-29\n# Code context line 28 for MC-DSP-29\n# Code context line 29 for MC-DSP-29\n# Code context line 30 for MC-DSP-29\n# Code context line 31 for MC-DSP-29\n# Code context line 32 for MC-DSP-29\n# Code context line 33 for MC-DSP-29\n# Code context line 34 for MC-DSP-29\n# Code context line 35 for MC-DSP-29\n# Code context line 36 for MC-DSP-29\n# Code context line 37 for MC-DSP-29\n# Code context line 38 for MC-DSP-29\n# Code context line 39 for MC-DSP-29\n# Code context line 40 for MC-DSP-29\n# Code context line 41 for MC-DSP-29\n# Code context line 42 for MC-DSP-29\n# Code context line 43 for MC-DSP-29\n# Code context line 44 for MC-DSP-29\n# Code context line 45 for MC-DSP-29\n# Code context line 46 for MC-DSP-29\n# Code context line 47 for MC-DSP-29\n# Code context line 48 for MC-DSP-29\n# Code context line 49 for MC-DSP-29\n# Code context line 50 for MC-DSP-29\n# Code context line 51 for MC-DSP-29\n# Code context line 52 for MC-DSP-29\n# Code context line 53 for MC-DSP-29\n# Code context line 54 for MC-DSP-29\n# Code context line 55 for MC-DSP-29\n# Code context line 56 for MC-DSP-29\n# Code context line 57 for MC-DSP-29\n# Code context line 58 for MC-DSP-29\n# Code context line 59 for MC-DSP-29\n# Code context line 60 for MC-DSP-29\n# Code context line 61 for MC-DSP-29\n# Code context line 62 for MC-DSP-29\n# Code context line 63 for MC-DSP-29\n# Code context line 64 for MC-DSP-29\n# Code context line 65 for MC-DSP-29\n# Code context line 66 for MC-DSP-29\n# Code context line 67 for MC-DSP-29\n# Code context line 68 for MC-DSP-29\n# Code context line 69 for MC-DSP-29\n# Code context line 70 for MC-DSP-29\n# Code context line 71 for MC-DSP-29\n# Code context line 72 for MC-DSP-29\n# Code context line 73 for MC-DSP-29\n# Code context line 74 for MC-DSP-29\n# Code context line 75 for MC-DSP-29\n# Code context line 76 for MC-DSP-29\n# Code context line 77 for MC-DSP-29\n# Code context line 78 for MC-DSP-29\n# Code context line 79 for MC-DSP-29\n# Code context line 80 for MC-DSP-29\n# Code context line 81 for MC-DSP-29\n# Code context line 82 for MC-DSP-29\n# Code context line 83 for MC-DSP-29\n# Code context line 84 for MC-DSP-29\n# Code context line 85 for MC-DSP-29\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-30",
+      "title": "Implement DSP Template Scaffold Generator",
+      "domain": "dsp_toolkit",
+      "target_file": "src/cochem/dsp/toolkit/scaffold.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement generate_dsp_scaffold() creating standard layout for new domain pipelines.",
+      "dependencies": [
+        "MC-DSP-29"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/toolkit/scaffold.py>>>\n# Code context line 15 for MC-DSP-30\n# Code context line 16 for MC-DSP-30\n# Code context line 17 for MC-DSP-30\n# Code context line 18 for MC-DSP-30\n# Code context line 19 for MC-DSP-30\n# Code context line 20 for MC-DSP-30\n# Code context line 21 for MC-DSP-30\n# Code context line 22 for MC-DSP-30\n# Code context line 23 for MC-DSP-30\n# Code context line 24 for MC-DSP-30\n# Code context line 25 for MC-DSP-30\n# Code context line 26 for MC-DSP-30\n# Code context line 27 for MC-DSP-30\n# Code context line 28 for MC-DSP-30\n# Code context line 29 for MC-DSP-30\n# Code context line 30 for MC-DSP-30\n# Code context line 31 for MC-DSP-30\n# Code context line 32 for MC-DSP-30\n# Code context line 33 for MC-DSP-30\n# Code context line 34 for MC-DSP-30\n# Code context line 35 for MC-DSP-30\n# Code context line 36 for MC-DSP-30\n# Code context line 37 for MC-DSP-30\n# Code context line 38 for MC-DSP-30\n# Code context line 39 for MC-DSP-30\n# Code context line 40 for MC-DSP-30\n# Code context line 41 for MC-DSP-30\n# Code context line 42 for MC-DSP-30\n# Code context line 43 for MC-DSP-30\n# Code context line 44 for MC-DSP-30\n# Code context line 45 for MC-DSP-30\n# Code context line 46 for MC-DSP-30\n# Code context line 47 for MC-DSP-30\n# Code context line 48 for MC-DSP-30\n# Code context line 49 for MC-DSP-30\n# Code context line 50 for MC-DSP-30\n# Code context line 51 for MC-DSP-30\n# Code context line 52 for MC-DSP-30\n# Code context line 53 for MC-DSP-30\n# Code context line 54 for MC-DSP-30\n# Code context line 55 for MC-DSP-30\n# Code context line 56 for MC-DSP-30\n# Code context line 57 for MC-DSP-30\n# Code context line 58 for MC-DSP-30\n# Code context line 59 for MC-DSP-30\n# Code context line 60 for MC-DSP-30\n# Code context line 61 for MC-DSP-30\n# Code context line 62 for MC-DSP-30\n# Code context line 63 for MC-DSP-30\n# Code context line 64 for MC-DSP-30\n# Code context line 65 for MC-DSP-30\n# Code context line 66 for MC-DSP-30\n# Code context line 67 for MC-DSP-30\n# Code context line 68 for MC-DSP-30\n# Code context line 69 for MC-DSP-30\n# Code context line 70 for MC-DSP-30\n# Code context line 71 for MC-DSP-30\n# Code context line 72 for MC-DSP-30\n# Code context line 73 for MC-DSP-30\n# Code context line 74 for MC-DSP-30\n# Code context line 75 for MC-DSP-30\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-31",
+      "title": "Implement cochem-dsp-mcp FastMCP Server Definition",
+      "domain": "dsp_toolkit",
+      "target_file": "src/cochem/dsp/toolkit/mcp_server.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement FastMCP server 'cochem-dsp-mcp' exposing DSP management endpoints.",
+      "dependencies": [
+        "MC-DSP-30"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f20_mcp_integration_verifies_knowledge_server_tools_registered",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/toolkit/mcp_server.py>>>\n# Code context line 15 for MC-DSP-31\n# Code context line 16 for MC-DSP-31\n# Code context line 17 for MC-DSP-31\n# Code context line 18 for MC-DSP-31\n# Code context line 19 for MC-DSP-31\n# Code context line 20 for MC-DSP-31\n# Code context line 21 for MC-DSP-31\n# Code context line 22 for MC-DSP-31\n# Code context line 23 for MC-DSP-31\n# Code context line 24 for MC-DSP-31\n# Code context line 25 for MC-DSP-31\n# Code context line 26 for MC-DSP-31\n# Code context line 27 for MC-DSP-31\n# Code context line 28 for MC-DSP-31\n# Code context line 29 for MC-DSP-31\n# Code context line 30 for MC-DSP-31\n# Code context line 31 for MC-DSP-31\n# Code context line 32 for MC-DSP-31\n# Code context line 33 for MC-DSP-31\n# Code context line 34 for MC-DSP-31\n# Code context line 35 for MC-DSP-31\n# Code context line 36 for MC-DSP-31\n# Code context line 37 for MC-DSP-31\n# Code context line 38 for MC-DSP-31\n# Code context line 39 for MC-DSP-31\n# Code context line 40 for MC-DSP-31\n# Code context line 41 for MC-DSP-31\n# Code context line 42 for MC-DSP-31\n# Code context line 43 for MC-DSP-31\n# Code context line 44 for MC-DSP-31\n# Code context line 45 for MC-DSP-31\n# Code context line 46 for MC-DSP-31\n# Code context line 47 for MC-DSP-31\n# Code context line 48 for MC-DSP-31\n# Code context line 49 for MC-DSP-31\n# Code context line 50 for MC-DSP-31\n# Code context line 51 for MC-DSP-31\n# Code context line 52 for MC-DSP-31\n# Code context line 53 for MC-DSP-31\n# Code context line 54 for MC-DSP-31\n# Code context line 55 for MC-DSP-31\n# Code context line 56 for MC-DSP-31\n# Code context line 57 for MC-DSP-31\n# Code context line 58 for MC-DSP-31\n# Code context line 59 for MC-DSP-31\n# Code context line 60 for MC-DSP-31\n# Code context line 61 for MC-DSP-31\n# Code context line 62 for MC-DSP-31\n# Code context line 63 for MC-DSP-31\n# Code context line 64 for MC-DSP-31\n# Code context line 65 for MC-DSP-31\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    }
+  ],
+  "affected_files": [
+    "src/cochem/dsp/forge/ase_engine.py",
+    "src/cochem/dsp/forge/mendeleev_resolver.py",
+    "src/cochem/dsp/forge/sandbox.py",
+    "src/cochem/dsp/forge/xtb_engine.py",
+    "src/cochem/dsp/pedagogy/canvas_client.py",
+    "src/cochem/dsp/pedagogy/canvas_sync.py",
+    "src/cochem/dsp/pedagogy/grading.py",
+    "src/cochem/dsp/pedagogy/orchestrator.py",
+    "src/cochem/dsp/pedagogy/rexams.py",
+    "src/cochem/dsp/press/citations.py",
+    "src/cochem/dsp/press/compliance.py",
+    "src/cochem/dsp/press/latex_runner.py",
+    "src/cochem/dsp/press/orchestrator.py",
+    "src/cochem/dsp/press/plots.py",
+    "src/cochem/dsp/press/tables.py",
+    "src/cochem/dsp/press/typst_compiler.py",
+    "src/cochem/dsp/toolkit/mcp_server.py",
+    "src/cochem/dsp/toolkit/scaffold.py"
+  ]
+}

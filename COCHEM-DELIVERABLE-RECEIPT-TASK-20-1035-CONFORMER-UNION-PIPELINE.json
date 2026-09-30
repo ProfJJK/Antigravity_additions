@@ -1,0 +1,14 @@
+{
+  "task_id": "20.1035",
+  "task_title": "Conformer Union Pipeline Integration, Duplication Metric (R_union) & E2E Validation [M]",
+  "timestamp": "2026-09-25T19:22:53.133775+00:00",
+  "status": "COMPLETED",
+  "verification_status": "VERIFIED_ZERO_MOCK",
+  "verified_modules": {
+    "src/cochem/topos/conformer_ensemble.py": "734f809912a9c32614a6ac2fedec2b4baa3ed16e5780f9de89dd817f491ffaf2",
+    "src/cochem/topos/energy_filter.py": "ba57ebec8e8a04b68e910758864af362ed9dda42e1c5f89e2f8e401b799ba18d",
+    "src/cochem/topos/clustering.py": "fbfc36f07730c698f97090a4c4cfa1ba0700b85b5077dbd06f0d8e469ed345bf",
+    "src/cochem/topos/__init__.py": "c851f4c3ad3be2ed2bad3f7e816322ec3d44b5149498d1c22ccefc00fc03bd5f"
+  },
+  "r_union_provenance_contract": "STRICT_NATIVE_ONLY"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-01",
+  "title": "Author 10-Cycle State Machine and Diagnostic Prompt Tests",
+  "domain": "tdd_pivot",
+  "target_file": "tests/test_ch05_research_tdd_pivot.py",
+  "chunk_start": 1,
+  "chunk_end": 60,
+  "line_delta": 60,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_tdd_cycle_state_* for DATA_MODEL:tdd_cycle_state (section 7 JSON model); test_ch05_fr_001_* for SRS-412-05-FR-001 (Coding tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit -> Repair loop.); test_ch05_nfr_tdd_01_* for NFR-TDD-01 (TDD cycle execution (test run and result collection) shall complete within 30 seconds per cycle.); test_ch05_nfr_tdd_02_* for NFR-TDD-02 (Diagnostic error prompts injected into repair agents shall remain bounded below 2,000 tokens.); test_ch05_fr_002_* for SRS-412-05-FR-002 (Failed test cycles shall receive automated, real-time diagnostic error analyses synthesized by Gemini Flash 3.8.)",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-01] TESTS:state_machine\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects):\n# SPEC: test_ch05_tdd_cycle_state_* for DATA_MODEL:tdd_cycle_state (section 7 JSON model);\n# SPEC: test_ch05_fr_001_* for SRS-412-05-FR-001 (Coding tasks shall execute within a bounded 10-cycle\n# SPEC: state machine following the Execute -> Audit -> Repair loop.); test_ch05_nfr_tdd_01_* for NFR-\n# SPEC: TDD-01 (TDD cycle execution (test run and result collection) shall complete within 30 seconds\n# SPEC: per cycle.); test_ch05_nfr_tdd_02_* for NFR-TDD-02 (Diagnostic error prompts injected into\n# SPEC: repair agents shall remain bounded below 2,000 tokens.); test_ch05_fr_002_* for\n# SPEC: SRS-412-05-FR-002 (Failed test cycles shall receive automated, real-time diagnostic error\n# SPEC: analyses synthesized by Gemini Flash 3.8.)\n# tests/test_ch05_research_tdd_pivot.py:12 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:13 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:14 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:15 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:16 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:17 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:18 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:19 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:20 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:21 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:22 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:23 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:24 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:25 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:26 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:27 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:28 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:29 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:30 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:31 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:32 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:33 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:34 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:35 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:36 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:37 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:38 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:39 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:40 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:41 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:42 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:43 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:44 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:45 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:46 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:47 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:48 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:49 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:50 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:51 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:52 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:53 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:54 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:55 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:56 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:57 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:58 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:59 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:60 [MC-TDD-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "DATA_MODEL:tdd_cycle_state",
+      "SRS-412-05-FR-001",
+      "NFR-TDD-01",
+      "NFR-TDD-02",
+      "SRS-412-05-FR-002"
+    ]
+  }
+}

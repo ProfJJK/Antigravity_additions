@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-DSP-27",
+  "title": "Implement R/exams Question Generator Wrapper",
+  "domain": "pedagogy_engine",
+  "target_file": "src/cochem/dsp/pedagogy/rexams.py",
+  "chunk_start": 15,
+  "chunk_end": 75,
+  "line_delta": 61,
+  "instructions": "Implement generate_rexams_questions() rendering Rmd question templates with random seeds.",
+  "dependencies": [
+    "MC-DSP-26"
+  ],
+  "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+  "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/rexams.py>>>\n# Code context line 15 for MC-DSP-27\n# Code context line 16 for MC-DSP-27\n# Code context line 17 for MC-DSP-27\n# Code context line 18 for MC-DSP-27\n# Code context line 19 for MC-DSP-27\n# Code context line 20 for MC-DSP-27\n# Code context line 21 for MC-DSP-27\n# Code context line 22 for MC-DSP-27\n# Code context line 23 for MC-DSP-27\n# Code context line 24 for MC-DSP-27\n# Code context line 25 for MC-DSP-27\n# Code context line 26 for MC-DSP-27\n# Code context line 27 for MC-DSP-27\n# Code context line 28 for MC-DSP-27\n# Code context line 29 for MC-DSP-27\n# Code context line 30 for MC-DSP-27\n# Code context line 31 for MC-DSP-27\n# Code context line 32 for MC-DSP-27\n# Code context line 33 for MC-DSP-27\n# Code context line 34 for MC-DSP-27\n# Code context line 35 for MC-DSP-27\n# Code context line 36 for MC-DSP-27\n# Code context line 37 for MC-DSP-27\n# Code context line 38 for MC-DSP-27\n# Code context line 39 for MC-DSP-27\n# Code context line 40 for MC-DSP-27\n# Code context line 41 for MC-DSP-27\n# Code context line 42 for MC-DSP-27\n# Code context line 43 for MC-DSP-27\n# Code context line 44 for MC-DSP-27\n# Code context line 45 for MC-DSP-27\n# Code context line 46 for MC-DSP-27\n# Code context line 47 for MC-DSP-27\n# Code context line 48 for MC-DSP-27\n# Code context line 49 for MC-DSP-27\n# Code context line 50 for MC-DSP-27\n# Code context line 51 for MC-DSP-27\n# Code context line 52 for MC-DSP-27\n# Code context line 53 for MC-DSP-27\n# Code context line 54 for MC-DSP-27\n# Code context line 55 for MC-DSP-27\n# Code context line 56 for MC-DSP-27\n# Code context line 57 for MC-DSP-27\n# Code context line 58 for MC-DSP-27\n# Code context line 59 for MC-DSP-27\n# Code context line 60 for MC-DSP-27\n# Code context line 61 for MC-DSP-27\n# Code context line 62 for MC-DSP-27\n# Code context line 63 for MC-DSP-27\n# Code context line 64 for MC-DSP-27\n# Code context line 65 for MC-DSP-27\n# Code context line 66 for MC-DSP-27\n# Code context line 67 for MC-DSP-27\n# Code context line 68 for MC-DSP-27\n# Code context line 69 for MC-DSP-27\n# Code context line 70 for MC-DSP-27\n# Code context line 71 for MC-DSP-27\n# Code context line 72 for MC-DSP-27\n# Code context line 73 for MC-DSP-27\n# Code context line 74 for MC-DSP-27\n# Code context line 75 for MC-DSP-27\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

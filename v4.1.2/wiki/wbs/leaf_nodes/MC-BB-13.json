@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-13",
+  "title": "Implement Urgency x Fidelity Capability Matrix",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 26,
+  "chunk_end": 75,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-006: The queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with capability matching. The section 7 jobs table has no urgency/fidelity columns: derive both from priority and payload_json without altering the section 7 DDL.",
+  "dependencies": [
+    "MC-BB-12",
+    "MC-BB-05"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_006\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-13] SRS-412-04-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-006: The\n# SPEC: queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with\n# SPEC: capability matching. The section 7 jobs table has no urgency/fidelity columns: derive both from\n# SPEC: priority and payload_json without altering the section 7 DDL.\n# src/cochem/blackboard/leases.py:31 [MC-BB-13]\n# src/cochem/blackboard/leases.py:32 [MC-BB-13]\n# src/cochem/blackboard/leases.py:33 [MC-BB-13]\n# src/cochem/blackboard/leases.py:34 [MC-BB-13]\n# src/cochem/blackboard/leases.py:35 [MC-BB-13]\n# src/cochem/blackboard/leases.py:36 [MC-BB-13]\n# src/cochem/blackboard/leases.py:37 [MC-BB-13]\n# src/cochem/blackboard/leases.py:38 [MC-BB-13]\n# src/cochem/blackboard/leases.py:39 [MC-BB-13]\n# src/cochem/blackboard/leases.py:40 [MC-BB-13]\n# src/cochem/blackboard/leases.py:41 [MC-BB-13]\n# src/cochem/blackboard/leases.py:42 [MC-BB-13]\n# src/cochem/blackboard/leases.py:43 [MC-BB-13]\n# src/cochem/blackboard/leases.py:44 [MC-BB-13]\n# src/cochem/blackboard/leases.py:45 [MC-BB-13]\n# src/cochem/blackboard/leases.py:46 [MC-BB-13]\n# src/cochem/blackboard/leases.py:47 [MC-BB-13]\n# src/cochem/blackboard/leases.py:48 [MC-BB-13]\n# src/cochem/blackboard/leases.py:49 [MC-BB-13]\n# src/cochem/blackboard/leases.py:50 [MC-BB-13]\n# src/cochem/blackboard/leases.py:51 [MC-BB-13]\n# src/cochem/blackboard/leases.py:52 [MC-BB-13]\n# src/cochem/blackboard/leases.py:53 [MC-BB-13]\n# src/cochem/blackboard/leases.py:54 [MC-BB-13]\n# src/cochem/blackboard/leases.py:55 [MC-BB-13]\n# src/cochem/blackboard/leases.py:56 [MC-BB-13]\n# src/cochem/blackboard/leases.py:57 [MC-BB-13]\n# src/cochem/blackboard/leases.py:58 [MC-BB-13]\n# src/cochem/blackboard/leases.py:59 [MC-BB-13]\n# src/cochem/blackboard/leases.py:60 [MC-BB-13]\n# src/cochem/blackboard/leases.py:61 [MC-BB-13]\n# src/cochem/blackboard/leases.py:62 [MC-BB-13]\n# src/cochem/blackboard/leases.py:63 [MC-BB-13]\n# src/cochem/blackboard/leases.py:64 [MC-BB-13]\n# src/cochem/blackboard/leases.py:65 [MC-BB-13]\n# src/cochem/blackboard/leases.py:66 [MC-BB-13]\n# src/cochem/blackboard/leases.py:67 [MC-BB-13]\n# src/cochem/blackboard/leases.py:68 [MC-BB-13]\n# src/cochem/blackboard/leases.py:69 [MC-BB-13]\n# src/cochem/blackboard/leases.py:70 [MC-BB-13]\n# src/cochem/blackboard/leases.py:71 [MC-BB-13]\n# src/cochem/blackboard/leases.py:72 [MC-BB-13]\n# src/cochem/blackboard/leases.py:73 [MC-BB-13]\n# src/cochem/blackboard/leases.py:74 [MC-BB-13]\n# src/cochem/blackboard/leases.py:75 [MC-BB-13]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-006"
+    ]
+  }
+}

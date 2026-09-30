@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-24",
+  "title": "Implement fail_task Transition",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/lifecycle.py",
+  "chunk_start": 121,
+  "chunk_end": 160,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement fail_task(db_path: str, task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED or BLOCKED, clearing lease_owner for ZD-8 safety. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+  "dependencies": [
+    "MC-BB-23",
+    "MC-BB-03",
+    "MC-BB-22"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fail_task\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-24] INTERFACE:fail_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement fail_task(db_path: str,\n# SPEC: task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED\n# SPEC: or BLOCKED, clearing lease_owner for ZD-8 safety. Match the section 6 reference implementation,\n# SPEC: composed from the helpers defined in earlier chunks.\n# src/cochem/blackboard/lifecycle.py:126 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:127 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:128 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:129 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:130 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:131 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:132 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:133 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:134 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:135 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:136 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:137 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:138 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:139 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:140 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:141 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:142 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:143 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:144 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:145 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:146 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:147 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:148 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:149 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:150 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:151 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:152 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:153 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:154 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:155 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:156 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:157 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:158 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:159 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:160 [MC-BB-24]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "INTERFACE:fail_task"
+    ]
+  }
+}

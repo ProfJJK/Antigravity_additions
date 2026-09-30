@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-19",
+  "title": "Implement mutmut 85% Kill Score Gate",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/verification.py",
+  "chunk_start": 136,
+  "chunk_end": 180,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-008: Critical numerical routines shall achieve a mutation testing kill score of at least 85% via `mutmut`. Apply the gate to the tdd_pivot modules (cycle counters, token bound, kill score arithmetic). Parse the mutmut results summary; do not reimplement mutation testing.",
+  "dependencies": [
+    "MC-TDD-18",
+    "MC-TDD-04"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_008\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-19] SRS-412-05-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-008:\n# SPEC: Critical numerical routines shall achieve a mutation testing kill score of at least 85% via\n# SPEC: `mutmut`. Apply the gate to the tdd_pivot modules (cycle counters, token bound, kill score\n# SPEC: arithmetic). Parse the mutmut results summary; do not reimplement mutation testing.\n# src/cochem/tdd_pivot/verification.py:141 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:142 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:143 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:144 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:145 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:146 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:147 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:148 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:149 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:150 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:151 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:152 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:153 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:154 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:155 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:156 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:157 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:158 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:159 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:160 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:161 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:162 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:163 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:164 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:165 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:166 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:167 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:168 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:169 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:170 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:171 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:172 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:173 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:174 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:175 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:176 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:177 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:178 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:179 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:180 [MC-TDD-19]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-008"
+    ]
+  }
+}

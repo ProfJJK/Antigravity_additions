@@ -1,0 +1,32 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-05",
+  "title": "Author COLLAPSED Freeze, Evidence Bundle and Recovery Launch Tests",
+  "domain": "watchdog_sre",
+  "target_file": "tests/test_ch08_watchdog_sre.py",
+  "chunk_start": 201,
+  "chunk_end": 250,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_evidence_bundle_* for DATA_MODEL:evidence_bundle (section 7 JSON fields); test_ch08_fr_007_* for SRS-412-08-FR-007 (Upon confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-contained Evidence Bundle.); test_ch08_fr_008_* for SRS-412-08-FR-008 (The Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle.); test_ch08_nfr_sre_03_* for NFR-SRE-03 (Self-healing trigger sequence shall initiate within 5 seconds of structural collapse confirmation.); test_ch08_watchdog_crash_* for FAILURE:Watchdog Crash (Monitored by the Host Warden on Windows 11; Warden restarts the Watchdog daemon if its heartbeat ceases.)",
+  "dependencies": [
+    "MC-SRE-04"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-05] TESTS:collapse\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_evidence_bundle_* for DATA_MODEL:evidence_bundle (section 7 JSON fields);\n# SPEC: test_ch08_fr_007_* for SRS-412-08-FR-007 (Upon confirming a `COLLAPSED` state, the Watchdog\n# SPEC: shall freeze active processes and assemble a self-contained Evidence Bundle.);\n# SPEC: test_ch08_fr_008_* for SRS-412-08-FR-008 (The Watchdog shall initiate self-healing by launching\n# SPEC: an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle.);\n# SPEC: test_ch08_nfr_sre_03_* for NFR-SRE-03 (Self-healing trigger sequence shall initiate within 5\n# SPEC: seconds of structural collapse confirmation.); test_ch08_watchdog_crash_* for FAILURE:Watchdog\n# SPEC: Crash (Monitored by the Host Warden on Windows 11; Warden restarts the Watchdog daemon if its\n# SPEC: heartbeat ceases.)\n# tests/test_ch08_watchdog_sre.py:213 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:214 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:215 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:216 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:217 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:218 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:219 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:220 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:221 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:222 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:223 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:224 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:225 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:226 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:227 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:228 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:229 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:230 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:231 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:232 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:233 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:234 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:235 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:236 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:237 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:238 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:239 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:240 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:241 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:242 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:243 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:244 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:245 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:246 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:247 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:248 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:249 [MC-SRE-05]\n# tests/test_ch08_watchdog_sre.py:250 [MC-SRE-05]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "DATA_MODEL:evidence_bundle",
+      "SRS-412-08-FR-007",
+      "SRS-412-08-FR-008",
+      "NFR-SRE-03",
+      "FAILURE:Watchdog Crash"
+    ]
+  }
+}

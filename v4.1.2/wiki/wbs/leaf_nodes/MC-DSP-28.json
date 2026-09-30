@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-DSP-28",
+  "title": "Implement Exam Permutation and PDF Compile Runner",
+  "domain": "pedagogy_engine",
+  "target_file": "src/cochem/dsp/pedagogy/rexams.py",
+  "chunk_start": 80,
+  "chunk_end": 130,
+  "line_delta": 51,
+  "instructions": "Implement compile_exam_permutations() compiling scrambled exams and answer keys.",
+  "dependencies": [
+    "MC-DSP-27"
+  ],
+  "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+  "delimited_protocol": "<<<FILE: src/cochem/dsp/pedagogy/rexams.py>>>\n# Code context line 80 for MC-DSP-28\n# Code context line 81 for MC-DSP-28\n# Code context line 82 for MC-DSP-28\n# Code context line 83 for MC-DSP-28\n# Code context line 84 for MC-DSP-28\n# Code context line 85 for MC-DSP-28\n# Code context line 86 for MC-DSP-28\n# Code context line 87 for MC-DSP-28\n# Code context line 88 for MC-DSP-28\n# Code context line 89 for MC-DSP-28\n# Code context line 90 for MC-DSP-28\n# Code context line 91 for MC-DSP-28\n# Code context line 92 for MC-DSP-28\n# Code context line 93 for MC-DSP-28\n# Code context line 94 for MC-DSP-28\n# Code context line 95 for MC-DSP-28\n# Code context line 96 for MC-DSP-28\n# Code context line 97 for MC-DSP-28\n# Code context line 98 for MC-DSP-28\n# Code context line 99 for MC-DSP-28\n# Code context line 100 for MC-DSP-28\n# Code context line 101 for MC-DSP-28\n# Code context line 102 for MC-DSP-28\n# Code context line 103 for MC-DSP-28\n# Code context line 104 for MC-DSP-28\n# Code context line 105 for MC-DSP-28\n# Code context line 106 for MC-DSP-28\n# Code context line 107 for MC-DSP-28\n# Code context line 108 for MC-DSP-28\n# Code context line 109 for MC-DSP-28\n# Code context line 110 for MC-DSP-28\n# Code context line 111 for MC-DSP-28\n# Code context line 112 for MC-DSP-28\n# Code context line 113 for MC-DSP-28\n# Code context line 114 for MC-DSP-28\n# Code context line 115 for MC-DSP-28\n# Code context line 116 for MC-DSP-28\n# Code context line 117 for MC-DSP-28\n# Code context line 118 for MC-DSP-28\n# Code context line 119 for MC-DSP-28\n# Code context line 120 for MC-DSP-28\n# Code context line 121 for MC-DSP-28\n# Code context line 122 for MC-DSP-28\n# Code context line 123 for MC-DSP-28\n# Code context line 124 for MC-DSP-28\n# Code context line 125 for MC-DSP-28\n# Code context line 126 for MC-DSP-28\n# Code context line 127 for MC-DSP-28\n# Code context line 128 for MC-DSP-28\n# Code context line 129 for MC-DSP-28\n# Code context line 130 for MC-DSP-28\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

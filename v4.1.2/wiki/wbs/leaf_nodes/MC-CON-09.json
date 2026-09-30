@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-09",
+  "title": "Implement ConcurrencyProfile Data Model",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/runtime.py",
+  "chunk_start": 121,
+  "chunk_end": 160,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement a frozen dataclass concurrency_profile with fields and to_json()/from_json() for: {\"layer1_director_pid\": 10420, \"active_subagents\": 18, \"v8_heap_allocated_mb\": 1850, \"layer2_active_daemons\": 3, \"jit_jitter_range_ms\": [100, 500]} Verified by test: test_f04_concurrency_profile_round_trips_json.",
+  "dependencies": [
+    "MC-CON-08",
+    "MC-CON-05"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_concurrency_profile_round_trips_json",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/runtime.py>>>\n# [MC-CON-09] DATA_MODEL:concurrency_profile\n# SPEC: Append after the previous chunk without editing earlier lines. Implement a frozen dataclass\n# SPEC: concurrency_profile with fields and to_json()/from_json() for: {\"layer1_director_pid\": 10420,\n# SPEC: \"active_subagents\": 18, \"v8_heap_allocated_mb\": 1850, \"layer2_active_daemons\": 3,\n# SPEC: \"jit_jitter_range_ms\": [100, 500]} Verified by test:\n# SPEC: test_f04_concurrency_profile_round_trips_json.\n# src/cochem/concurrency/runtime.py:127 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:128 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:129 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:130 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:131 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:132 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:133 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:134 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:135 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:136 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:137 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:138 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:139 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:140 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:141 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:142 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:143 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:144 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:145 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:146 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:147 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:148 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:149 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:150 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:151 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:152 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:153 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:154 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:155 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:156 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:157 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:158 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:159 [MC-CON-09]\n# src/cochem/concurrency/runtime.py:160 [MC-CON-09]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "DATA_MODEL:concurrency_profile"
+    ]
+  }
+}

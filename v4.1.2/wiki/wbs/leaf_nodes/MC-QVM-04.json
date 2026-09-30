@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-04",
+  "title": "Author 6-Slot Scheduler, Startup Latency and OOM Isolation Tests",
+  "domain": "quarantine_vm",
+  "target_file": "tests/test_ch02_quarantine_vm.py",
+  "chunk_start": 151,
+  "chunk_end": 200,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_007_* for SRS-412-02-FR-007 (The container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32 GB VM.); test_ch02_nfr_vm_01_* for NFR-VM-01 (Container startup latency from execution request to test execution shall not exceed 1.5 seconds.); test_ch02_nfr_vm_02_* for NFR-VM-02 (Out-of-memory container terminations shall be isolated to the offending container without crashing the VM kernel.); test_ch02_container_oom_crash_* for FAILURE:Container OOM Crash (The container scheduler records an exit code of 137, captures memory slope, and quarantines the task to prevent cascading VM exhaustion.)",
+  "dependencies": [
+    "MC-QVM-03"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-04] TESTS:scheduler\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_007_* for SRS-412-02-FR-007 (The container\n# SPEC: scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32\n# SPEC: GB VM.); test_ch02_nfr_vm_01_* for NFR-VM-01 (Container startup latency from execution request\n# SPEC: to test execution shall not exceed 1.5 seconds.); test_ch02_nfr_vm_02_* for NFR-VM-02 (Out-of-\n# SPEC: memory container terminations shall be isolated to the offending container without crashing the\n# SPEC: VM kernel.); test_ch02_container_oom_crash_* for FAILURE:Container OOM Crash (The container\n# SPEC: scheduler records an exit code of 137, captures memory slope, and quarantines the task to\n# SPEC: prevent cascading VM exhaustion.)\n# tests/test_ch02_quarantine_vm.py:163 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:164 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:165 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:166 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:167 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:168 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:169 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:170 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:171 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:172 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:173 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:174 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:175 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:176 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:177 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:178 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:179 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:180 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:181 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:182 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:183 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:184 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:185 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:186 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:187 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:188 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:189 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:190 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:191 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:192 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:193 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:194 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:195 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:196 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:197 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:198 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:199 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:200 [MC-QVM-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-007",
+      "NFR-VM-01",
+      "NFR-VM-02",
+      "FAILURE:Container OOM Crash"
+    ]
+  }
+}

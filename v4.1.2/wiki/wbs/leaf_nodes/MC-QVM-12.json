@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-12",
+  "title": "Implement In-Container Network Unreachable Probe",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 86,
+  "chunk_end": 115,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-03: Network isolation shall be verifiable via physical connection drop (`Network is unreachable`). Run a real container with the FR-003 argv that attempts a TCP connect to 1.1.1.1:53 and assert the error text contains 'Network is unreachable'; a timeout does not count as proof.",
+  "dependencies": [
+    "MC-QVM-11",
+    "MC-QVM-02"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_03\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-12] NFR-VM-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-03: Network\n# SPEC: isolation shall be verifiable via physical connection drop (`Network is unreachable`). Run a\n# SPEC: real container with the FR-003 argv that attempts a TCP connect to 1.1.1.1:53 and assert the\n# SPEC: error text contains 'Network is unreachable'; a timeout does not count as proof.\n# src/cochem/quarantine/sandbox.py:91 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:92 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:93 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:94 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:95 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:96 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:97 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:98 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:99 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:100 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:101 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:102 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:103 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:104 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:105 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:106 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:107 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:108 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:109 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:110 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:111 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:112 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:113 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:114 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:115 [MC-QVM-12]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "NFR-VM-03"
+    ]
+  }
+}

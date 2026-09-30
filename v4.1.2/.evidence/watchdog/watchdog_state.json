@@ -1,0 +1,13 @@
+{
+  "frozen_pids": [],
+  "recovery_pid": null,
+  "recovery_started": 1790758348.9219859,
+  "recovery_create_time": 1790758348.9171085,
+  "last_signature": "f09509ef25a66689",
+  "last_trigger_ts": 1790758348.921875,
+  "last_bundle": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T085228Z\\evidence_bundle.json",
+  "last_recovery_outcome": "LAUNCHED",
+  "last_recovery_error": null,
+  "last_cycle_error": null,
+  "consecutive_cycle_failures": 0
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-07",
+  "title": "Implement 30 s Per-Cycle pytest Runner Timeout",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/state_machine.py",
+  "chunk_start": 96,
+  "chunk_end": 135,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-01: TDD cycle execution (test run and result collection) shall complete within 30 seconds per cycle.",
+  "dependencies": [
+    "MC-TDD-06",
+    "MC-TDD-01"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"nfr_tdd_01\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-07] NFR-TDD-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-01: TDD cycle\n# SPEC: execution (test run and result collection) shall complete within 30 seconds per cycle.\n# src/cochem/tdd_pivot/state_machine.py:99 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:100 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:101 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:102 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:103 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:104 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:105 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:106 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:107 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:108 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:109 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:110 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:111 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:112 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:113 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:114 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:115 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:116 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:117 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:118 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:119 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:120 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:121 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:122 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:123 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:124 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:125 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:126 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:127 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:128 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:129 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:130 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:131 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:132 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:133 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:134 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:135 [MC-TDD-07]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "NFR-TDD-01"
+    ]
+  }
+}

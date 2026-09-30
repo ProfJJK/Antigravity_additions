@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-16",
+  "title": "Implement Zero-Mock Library Scanner",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/verification.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy NFR-TDD-03: Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in any production test code. Scan with the ast module so imports, attribute access and aliases are all caught.",
+  "dependencies": [
+    "MC-TDD-04"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"nfr_tdd_03\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-16] NFR-TDD-03\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy NFR-\n# SPEC: TDD-03: Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in\n# SPEC: any production test code. Scan with the ast module so imports, attribute access and aliases are\n# SPEC: all caught.\n# src/cochem/tdd_pivot/verification.py:6 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:7 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:8 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:9 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:10 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:11 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:12 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:13 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:14 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:15 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:16 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:17 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:18 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:19 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:20 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:21 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:22 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:23 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:24 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:25 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:26 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:27 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:28 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:29 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:30 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:31 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:32 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:33 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:34 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:35 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:36 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:37 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:38 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:39 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:40 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:41 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:42 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:43 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:44 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:45 [MC-TDD-16]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "NFR-TDD-03"
+    ]
+  }
+}

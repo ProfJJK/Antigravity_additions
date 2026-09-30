@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-17",
+  "title": "Implement Lease Acquisition Latency Probe",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 206,
+  "chunk_end": 245,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-01: Atomic lease acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.",
+  "dependencies": [
+    "MC-BB-16",
+    "MC-BB-02"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"nfr_tm_01\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-17] NFR-TM-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-01: Atomic lease\n# SPEC: acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.\n# src/cochem/blackboard/leases.py:209 [MC-BB-17]\n# src/cochem/blackboard/leases.py:210 [MC-BB-17]\n# src/cochem/blackboard/leases.py:211 [MC-BB-17]\n# src/cochem/blackboard/leases.py:212 [MC-BB-17]\n# src/cochem/blackboard/leases.py:213 [MC-BB-17]\n# src/cochem/blackboard/leases.py:214 [MC-BB-17]\n# src/cochem/blackboard/leases.py:215 [MC-BB-17]\n# src/cochem/blackboard/leases.py:216 [MC-BB-17]\n# src/cochem/blackboard/leases.py:217 [MC-BB-17]\n# src/cochem/blackboard/leases.py:218 [MC-BB-17]\n# src/cochem/blackboard/leases.py:219 [MC-BB-17]\n# src/cochem/blackboard/leases.py:220 [MC-BB-17]\n# src/cochem/blackboard/leases.py:221 [MC-BB-17]\n# src/cochem/blackboard/leases.py:222 [MC-BB-17]\n# src/cochem/blackboard/leases.py:223 [MC-BB-17]\n# src/cochem/blackboard/leases.py:224 [MC-BB-17]\n# src/cochem/blackboard/leases.py:225 [MC-BB-17]\n# src/cochem/blackboard/leases.py:226 [MC-BB-17]\n# src/cochem/blackboard/leases.py:227 [MC-BB-17]\n# src/cochem/blackboard/leases.py:228 [MC-BB-17]\n# src/cochem/blackboard/leases.py:229 [MC-BB-17]\n# src/cochem/blackboard/leases.py:230 [MC-BB-17]\n# src/cochem/blackboard/leases.py:231 [MC-BB-17]\n# src/cochem/blackboard/leases.py:232 [MC-BB-17]\n# src/cochem/blackboard/leases.py:233 [MC-BB-17]\n# src/cochem/blackboard/leases.py:234 [MC-BB-17]\n# src/cochem/blackboard/leases.py:235 [MC-BB-17]\n# src/cochem/blackboard/leases.py:236 [MC-BB-17]\n# src/cochem/blackboard/leases.py:237 [MC-BB-17]\n# src/cochem/blackboard/leases.py:238 [MC-BB-17]\n# src/cochem/blackboard/leases.py:239 [MC-BB-17]\n# src/cochem/blackboard/leases.py:240 [MC-BB-17]\n# src/cochem/blackboard/leases.py:241 [MC-BB-17]\n# src/cochem/blackboard/leases.py:242 [MC-BB-17]\n# src/cochem/blackboard/leases.py:243 [MC-BB-17]\n# src/cochem/blackboard/leases.py:244 [MC-BB-17]\n# src/cochem/blackboard/leases.py:245 [MC-BB-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "NFR-TM-01"
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-13",
+  "title": "Implement FERPA Identifier Scrubber and Air-Gapped Launch",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 116,
+  "chunk_end": 165,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-004: Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers. Scrub student identifiers (student IDs, emails, names from the roster column list) into stable salted SHA-256 pseudonyms before any payload enters the container, and launch with the FR-003 flags plus a per-task --name and no bind mounts except the scrubbed read-only input. Keep the salt outside the container.",
+  "dependencies": [
+    "MC-QVM-12",
+    "MC-QVM-03",
+    "MC-QVM-11"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_004\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-13] SRS-412-02-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-004:\n# SPEC: Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed\n# SPEC: student identifiers. Scrub student identifiers (student IDs, emails, names from the roster\n# SPEC: column list) into stable salted SHA-256 pseudonyms before any payload enters the container, and\n# SPEC: launch with the FR-003 flags plus a per-task --name and no bind mounts except the scrubbed read-\n# SPEC: only input. Keep the salt outside the container.\n# src/cochem/quarantine/sandbox.py:123 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:124 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:125 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:126 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:127 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:128 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:129 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:130 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:131 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:132 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:133 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:134 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:135 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:136 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:137 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:138 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:139 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:140 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:141 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:142 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:143 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:144 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:145 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:146 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:147 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:148 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:149 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:150 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:151 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:152 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:153 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:154 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:155 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:156 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:157 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:158 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:159 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:160 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:161 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:162 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:163 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:164 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:165 [MC-QVM-13]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-004"
+    ]
+  }
+}

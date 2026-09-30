@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-19",
+  "title": "Implement 1740 s Process-Tree Timeout Runner",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 201,
+  "chunk_end": 250,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Subprocess Hang': Subprocess timeout is enforced at 1740 seconds, terminating hung processes cleanly before the 1800s lease expires. Verified by test: test_f04_subprocess_hang_times_out_at_1740s_without_orphan_children.",
+  "dependencies": [
+    "MC-CON-18",
+    "MC-CON-02",
+    "MC-CON-06"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_subprocess_hang_times_out_at_1740s_without_orphan_children",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-19] FAILURE:Subprocess Hang\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for\n# SPEC: 'Subprocess Hang': Subprocess timeout is enforced at 1740 seconds, terminating hung processes\n# SPEC: cleanly before the 1800s lease expires. Verified by test:\n# SPEC: test_f04_subprocess_hang_times_out_at_1740s_without_orphan_children.\n# src/cochem/concurrency/layer1.py:206 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:207 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:208 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:209 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:210 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:211 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:212 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:213 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:214 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:215 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:216 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:217 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:218 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:219 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:220 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:221 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:222 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:223 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:224 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:225 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:226 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:227 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:228 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:229 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:230 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:231 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:232 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:233 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:234 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:235 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:236 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:237 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:238 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:239 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:240 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:241 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:242 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:243 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:244 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:245 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:246 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:247 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:248 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:249 [MC-CON-19]\n# src/cochem/concurrency/layer1.py:250 [MC-CON-19]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "FAILURE:Subprocess Hang"
+    ]
+  }
+}

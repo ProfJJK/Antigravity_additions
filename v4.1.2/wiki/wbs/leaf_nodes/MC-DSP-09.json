@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-DSP-09",
+  "title": "Implement Synthetic Array and Loop Fake Detector",
+  "domain": "code_forge",
+  "target_file": "src/cochem/dsp/forge/linter.py",
+  "chunk_start": 135,
+  "chunk_end": 180,
+  "line_delta": 46,
+  "instructions": "Implement visit_Call checking for np.zeros, np.ones, and np.eye synthetic fixtures.",
+  "dependencies": [
+    "MC-DSP-08"
+  ],
+  "verification_command": "pytest tests/test_stage1_srs_dag.py::test_f07_audit_flags_synthetic_matrix_generators_np_zeros",
+  "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/linter.py>>>\n# Code context line 135 for MC-DSP-09\n# Code context line 136 for MC-DSP-09\n# Code context line 137 for MC-DSP-09\n# Code context line 138 for MC-DSP-09\n# Code context line 139 for MC-DSP-09\n# Code context line 140 for MC-DSP-09\n# Code context line 141 for MC-DSP-09\n# Code context line 142 for MC-DSP-09\n# Code context line 143 for MC-DSP-09\n# Code context line 144 for MC-DSP-09\n# Code context line 145 for MC-DSP-09\n# Code context line 146 for MC-DSP-09\n# Code context line 147 for MC-DSP-09\n# Code context line 148 for MC-DSP-09\n# Code context line 149 for MC-DSP-09\n# Code context line 150 for MC-DSP-09\n# Code context line 151 for MC-DSP-09\n# Code context line 152 for MC-DSP-09\n# Code context line 153 for MC-DSP-09\n# Code context line 154 for MC-DSP-09\n# Code context line 155 for MC-DSP-09\n# Code context line 156 for MC-DSP-09\n# Code context line 157 for MC-DSP-09\n# Code context line 158 for MC-DSP-09\n# Code context line 159 for MC-DSP-09\n# Code context line 160 for MC-DSP-09\n# Code context line 161 for MC-DSP-09\n# Code context line 162 for MC-DSP-09\n# Code context line 163 for MC-DSP-09\n# Code context line 164 for MC-DSP-09\n# Code context line 165 for MC-DSP-09\n# Code context line 166 for MC-DSP-09\n# Code context line 167 for MC-DSP-09\n# Code context line 168 for MC-DSP-09\n# Code context line 169 for MC-DSP-09\n# Code context line 170 for MC-DSP-09\n# Code context line 171 for MC-DSP-09\n# Code context line 172 for MC-DSP-09\n# Code context line 173 for MC-DSP-09\n# Code context line 174 for MC-DSP-09\n# Code context line 175 for MC-DSP-09\n# Code context line 176 for MC-DSP-09\n# Code context line 177 for MC-DSP-09\n# Code context line 178 for MC-DSP-09\n# Code context line 179 for MC-DSP-09\n# Code context line 180 for MC-DSP-09\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

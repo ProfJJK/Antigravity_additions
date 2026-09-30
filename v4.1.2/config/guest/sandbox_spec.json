@@ -1,0 +1,16 @@
+{
+  "sandbox_spec": {
+    "pids_limit": 512,
+    "cap_drop": [
+      "ALL"
+    ],
+    "cpus": 2,
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "network": "none",
+    "image": "general-sandbox:latest",
+    "tmpfs_size": "2g",
+    "memory_mb": 4096
+  }
+}

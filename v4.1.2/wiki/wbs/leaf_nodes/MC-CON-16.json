@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-16",
+  "title": "Implement 20-Slot Sub-Agent Multiplexer",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 56,
+  "chunk_end": 115,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-003: The Layer 1 Director shall multiplex up to 20 concurrent Claude Opus 5.5 / Sonnet 5.5 sub-agents within its partitioned memory runtime. Verified by test: test_f04_director_multiplexer_caps_concurrent_subagents_at_20.",
+  "dependencies": [
+    "MC-CON-15",
+    "MC-CON-03"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_director_multiplexer_caps_concurrent_subagents_at_20",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-16] SRS-412-03-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-003: The\n# SPEC: Layer 1 Director shall multiplex up to 20 concurrent Claude Opus 5.5 / Sonnet 5.5 sub-agents\n# SPEC: within its partitioned memory runtime. Verified by test:\n# SPEC: test_f04_director_multiplexer_caps_concurrent_subagents_at_20.\n# src/cochem/concurrency/layer1.py:61 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:62 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:63 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:64 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:65 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:66 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:67 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:68 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:69 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:70 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:71 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:72 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:73 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:74 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:75 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:76 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:77 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:78 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:79 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:80 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:81 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:82 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:83 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:84 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:85 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:86 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:87 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:88 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:89 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:90 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:91 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:92 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:93 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:94 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:95 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:96 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:97 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:98 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:99 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:100 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:101 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:102 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:103 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:104 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:105 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:106 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:107 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:108 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:109 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:110 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:111 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:112 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:113 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:114 [MC-CON-16]\n# src/cochem/concurrency/layer1.py:115 [MC-CON-16]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-003"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-04",
+  "title": "Author Zero-Mock Audit and Mutation Score Tests",
+  "domain": "tdd_pivot",
+  "target_file": "tests/test_ch05_research_tdd_pivot.py",
+  "chunk_start": 181,
+  "chunk_end": 240,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_nfr_tdd_03_* for NFR-TDD-03 (Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in any production test code.); test_ch05_zero_mock_checker_* for OBLIGATION:zero_mock_checker (Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`.); test_ch05_notimplementederror_* for OBLIGATION:NotImplementedError (Test asserts audit flags `raise NotImplementedError` and empty `pass` blocks.); test_ch05_fr_008_* for SRS-412-05-FR-008 (Critical numerical routines shall achieve a mutation testing kill score of at least 85% via `mutmut`.). Section 9 obligations: Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`. Test asserts audit flags `raise NotImplementedError` and empty `pass` blocks.",
+  "dependencies": [
+    "MC-TDD-03"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-04] TESTS:audit\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects):\n# SPEC: test_ch05_nfr_tdd_03_* for NFR-TDD-03 (Zero mock libraries (`unittest.mock`, `MagicMock`,\n# SPEC: `monkeypatch`) shall be present in any production test code.); test_ch05_zero_mock_checker_* for\n# SPEC: OBLIGATION:zero_mock_checker (Test asserts `zero_mock_checker` flags obfuscated tokens and\n# SPEC: `monkeypatch`.); test_ch05_notimplementederror_* for OBLIGATION:NotImplementedError (Test\n# SPEC: asserts audit flags `raise NotImplementedError` and empty `pass` blocks.); test_ch05_fr_008_*\n# SPEC: for SRS-412-05-FR-008 (Critical numerical routines shall achieve a mutation testing kill score\n# SPEC: of at least 85% via `mutmut`.). Section 9 obligations: Test asserts `zero_mock_checker` flags\n# SPEC: obfuscated tokens and `monkeypatch`. Test asserts audit flags `raise NotImplementedError` and\n# SPEC: empty `pass` blocks.\n# tests/test_ch05_research_tdd_pivot.py:193 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:194 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:195 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:196 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:197 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:198 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:199 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:200 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:201 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:202 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:203 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:204 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:205 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:206 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:207 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:208 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:209 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:210 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:211 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:212 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:213 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:214 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:215 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:216 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:217 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:218 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:219 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:220 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:221 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:222 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:223 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:224 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:225 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:226 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:227 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:228 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:229 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:230 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:231 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:232 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:233 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:234 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:235 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:236 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:237 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:238 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:239 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:240 [MC-TDD-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "NFR-TDD-03",
+      "OBLIGATION:zero_mock_checker",
+      "OBLIGATION:NotImplementedError",
+      "SRS-412-05-FR-008"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-BB-16",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.2318556,
+  "finished_at": 1790733282.2319868,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-BB-16",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-BB-16",
+        "target_file": "src/cochem/blackboard/leases.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-BB-16",
+        "target_file": "src/cochem/blackboard/leases.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-BB-16",
+        "target_file": "src/cochem/blackboard/leases.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-BB-16",
+        "target_file": "src/cochem/blackboard/leases.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-BB-16",
+      "status": "COMPLETED",
+      "duration_sec": 2.6941299438476562e-05,
+      "memory_start_mb": 111.37890625,
+      "memory_end_mb": 111.37890625,
+      "memory_peak_mb": 111.37890625
+    }
+  }
+}

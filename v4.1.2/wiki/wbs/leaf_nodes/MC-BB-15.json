@@ -1,0 +1,32 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-15",
+  "title": "Implement claim_next_task Atomic Lease",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 116,
+  "chunk_end": 165,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+  "dependencies": [
+    "MC-BB-14",
+    "MC-BB-02",
+    "MC-BB-06",
+    "MC-BB-12",
+    "MC-BB-13"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"claim_next_task\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-15] INTERFACE:claim_next_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None.\n# SPEC: Match the section 6 reference implementation, composed from the helpers defined in earlier\n# SPEC: chunks.\n# src/cochem/blackboard/leases.py:121 [MC-BB-15]\n# src/cochem/blackboard/leases.py:122 [MC-BB-15]\n# src/cochem/blackboard/leases.py:123 [MC-BB-15]\n# src/cochem/blackboard/leases.py:124 [MC-BB-15]\n# src/cochem/blackboard/leases.py:125 [MC-BB-15]\n# src/cochem/blackboard/leases.py:126 [MC-BB-15]\n# src/cochem/blackboard/leases.py:127 [MC-BB-15]\n# src/cochem/blackboard/leases.py:128 [MC-BB-15]\n# src/cochem/blackboard/leases.py:129 [MC-BB-15]\n# src/cochem/blackboard/leases.py:130 [MC-BB-15]\n# src/cochem/blackboard/leases.py:131 [MC-BB-15]\n# src/cochem/blackboard/leases.py:132 [MC-BB-15]\n# src/cochem/blackboard/leases.py:133 [MC-BB-15]\n# src/cochem/blackboard/leases.py:134 [MC-BB-15]\n# src/cochem/blackboard/leases.py:135 [MC-BB-15]\n# src/cochem/blackboard/leases.py:136 [MC-BB-15]\n# src/cochem/blackboard/leases.py:137 [MC-BB-15]\n# src/cochem/blackboard/leases.py:138 [MC-BB-15]\n# src/cochem/blackboard/leases.py:139 [MC-BB-15]\n# src/cochem/blackboard/leases.py:140 [MC-BB-15]\n# src/cochem/blackboard/leases.py:141 [MC-BB-15]\n# src/cochem/blackboard/leases.py:142 [MC-BB-15]\n# src/cochem/blackboard/leases.py:143 [MC-BB-15]\n# src/cochem/blackboard/leases.py:144 [MC-BB-15]\n# src/cochem/blackboard/leases.py:145 [MC-BB-15]\n# src/cochem/blackboard/leases.py:146 [MC-BB-15]\n# src/cochem/blackboard/leases.py:147 [MC-BB-15]\n# src/cochem/blackboard/leases.py:148 [MC-BB-15]\n# src/cochem/blackboard/leases.py:149 [MC-BB-15]\n# src/cochem/blackboard/leases.py:150 [MC-BB-15]\n# src/cochem/blackboard/leases.py:151 [MC-BB-15]\n# src/cochem/blackboard/leases.py:152 [MC-BB-15]\n# src/cochem/blackboard/leases.py:153 [MC-BB-15]\n# src/cochem/blackboard/leases.py:154 [MC-BB-15]\n# src/cochem/blackboard/leases.py:155 [MC-BB-15]\n# src/cochem/blackboard/leases.py:156 [MC-BB-15]\n# src/cochem/blackboard/leases.py:157 [MC-BB-15]\n# src/cochem/blackboard/leases.py:158 [MC-BB-15]\n# src/cochem/blackboard/leases.py:159 [MC-BB-15]\n# src/cochem/blackboard/leases.py:160 [MC-BB-15]\n# src/cochem/blackboard/leases.py:161 [MC-BB-15]\n# src/cochem/blackboard/leases.py:162 [MC-BB-15]\n# src/cochem/blackboard/leases.py:163 [MC-BB-15]\n# src/cochem/blackboard/leases.py:164 [MC-BB-15]\n# src/cochem/blackboard/leases.py:165 [MC-BB-15]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "INTERFACE:claim_next_task"
+    ]
+  }
+}

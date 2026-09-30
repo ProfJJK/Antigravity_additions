@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-CON-15",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.5008285,
+  "finished_at": 1790733282.5009604,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-CON-15",
+    "target_file": "src/cochem/concurrency/layer1.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-CON-15",
+        "target_file": "src/cochem/concurrency/layer1.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-CON-15",
+        "target_file": "src/cochem/concurrency/layer1.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-CON-15",
+        "target_file": "src/cochem/concurrency/layer1.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-CON-15",
+        "target_file": "src/cochem/concurrency/layer1.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-CON-15",
+      "status": "COMPLETED",
+      "duration_sec": 2.5510787963867188e-05,
+      "memory_start_mb": 111.40234375,
+      "memory_end_mb": 111.40234375,
+      "memory_peak_mb": 111.40234375
+    }
+  }
+}

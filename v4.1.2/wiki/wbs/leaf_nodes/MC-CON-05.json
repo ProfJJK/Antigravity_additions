@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-05",
+  "title": "Author Complexity Routing and Profile Tests",
+  "domain": "concurrency",
+  "target_file": "tests/test_ch03_concurrency_layers.py",
+  "chunk_start": 241,
+  "chunk_end": 300,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects): test_f04_complexity_router_maps_scores_to_model_tiers for SRS-412-03-FR-008 (Tasks shall be routed based on Cognitive Complexity Scores: Scores 1\u20134 to Gemini Flash, Scores 5\u20138 to Sonnet 5.5, Scores 9\u201310 to Opus 5.5.); test_f04_concurrency_profile_round_trips_json for DATA_MODEL:concurrency_profile ({\"layer1_director_pid\": 10420, \"active_subagents\": 18, \"v8_heap_allocated_mb\": 1850, \"layer2_active_daemons\": 3, \"jit_jitter_range_ms\": [100, 500]})",
+  "dependencies": [
+    "MC-CON-04"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch03_concurrency_layers.py>>>\n# [MC-CON-05] TESTS:routing\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: subprocess, real SQLite WAL, psutil; no mock objects):\n# SPEC: test_f04_complexity_router_maps_scores_to_model_tiers for SRS-412-03-FR-008 (Tasks shall be\n# SPEC: routed based on Cognitive Complexity Scores: Scores 1\u20134 to Gemini Flash, Scores 5\u20138 to Sonnet\n# SPEC: 5.5, Scores 9\u201310 to Opus 5.5.); test_f04_concurrency_profile_round_trips_json for\n# SPEC: DATA_MODEL:concurrency_profile ({\"layer1_director_pid\": 10420, \"active_subagents\": 18,\n# SPEC: \"v8_heap_allocated_mb\": 1850, \"layer2_active_daemons\": 3, \"jit_jitter_range_ms\": [100, 500]})\n# tests/test_ch03_concurrency_layers.py:249 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:250 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:251 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:252 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:253 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:254 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:255 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:256 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:257 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:258 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:259 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:260 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:261 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:262 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:263 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:264 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:265 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:266 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:267 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:268 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:269 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:270 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:271 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:272 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:273 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:274 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:275 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:276 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:277 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:278 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:279 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:280 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:281 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:282 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:283 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:284 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:285 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:286 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:287 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:288 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:289 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:290 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:291 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:292 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:293 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:294 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:295 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:296 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:297 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:298 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:299 [MC-CON-05]\n# tests/test_ch03_concurrency_layers.py:300 [MC-CON-05]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-008",
+      "DATA_MODEL:concurrency_profile"
+    ]
+  }
+}

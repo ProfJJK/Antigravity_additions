@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-15",
+  "title": "Implement Physics_Autopsy_Report.md Generation",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/research.py",
+  "chunk_start": 231,
+  "chunk_end": 275,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Physics Wall Hard Abort': When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`. The report is a Markdown summary of the tdd_cycle_state history, failed pivots and dossier path; no scientific computation is involved.",
+  "dependencies": [
+    "MC-TDD-14",
+    "MC-TDD-03"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"physics_wall_hard_abort\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-15] FAILURE:Physics Wall Hard Abort\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Physics\n# SPEC: Wall Hard Abort': When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT:\n# SPEC: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`. The report is a Markdown summary of\n# SPEC: the tdd_cycle_state history, failed pivots and dossier path; no scientific computation is\n# SPEC: involved.\n# src/cochem/tdd_pivot/research.py:237 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:238 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:239 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:240 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:241 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:242 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:243 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:244 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:245 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:246 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:247 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:248 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:249 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:250 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:251 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:252 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:253 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:254 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:255 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:256 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:257 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:258 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:259 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:260 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:261 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:262 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:263 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:264 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:265 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:266 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:267 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:268 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:269 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:270 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:271 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:272 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:273 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:274 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:275 [MC-TDD-15]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "FAILURE:Physics Wall Hard Abort"
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "MC-RAG-08": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_004\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 0.06s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-09": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_005\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 13 deselected / 2 selected\n\ntests\\test_ch06_dual_wiki_rag.py ..                                      [100%]\n\n====================== 2 passed, 13 deselected in 0.03s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-11": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"documents\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 0.03s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-12": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fts_index\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 0.03s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-16": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fts5_index_desynchronization\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 0.05s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-17": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_02\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 0.03s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-18": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"query_knowledge_index\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 1.76s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-19": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_003\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 1.94s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-20": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_01\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 1.76s =======================",
+    "stderr": ""
+  },
+  "MC-RAG-21": {
+    "command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_03\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 15 items / 14 deselected / 1 selected\n\ntests\\test_ch06_dual_wiki_rag.py .                                       [100%]\n\n====================== 1 passed, 14 deselected in 2.24s =======================",
+    "stderr": ""
+  },
+  "MC-SRE-01": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_ch08_fr_001_sre_watchdog_sterile_imports_and_readonly\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_02_readonly_leaves_wal_untouched_no_write_locks\ntests/test_ch08_watchdog_sre.py::test_ch08_verify_database_binary_header_matches_magic\ntests/test_ch08_watchdog_sre.py::test_ch08_check_process_liveness_lifecycle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_003_matrix1_process_death_detection\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_005_matrix3_data_corruption_header_scan\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_004_matrix_2_detects_zombie_deadlocks\ntests/test_ch08_watchdog_sre.py::test_ch08_false_positive_collapse_threshold_buffers\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_006_matrix_4_memory_slope_leak_alarm\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_009_signal_zd8_heuristic_triggers_collapsed\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_002_diagnostic_engine_continuous_cycle\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_01_cycle_execution_time_budget\ntests/test_ch08_watchdog_sre.py::test_ch08_evidence_bundle_fields\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_007_collapsed_freeze_bundle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_008_recovery_launch\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_03_trigger_deadline_under_5s\ntests/test_ch08_watchdog_sre.py::test_ch08_watchdog_crash_warden_restart_thaw\ntests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\ntests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n19 tests collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-02": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_ch08_fr_001_sre_watchdog_sterile_imports_and_readonly\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_02_readonly_leaves_wal_untouched_no_write_locks\ntests/test_ch08_watchdog_sre.py::test_ch08_verify_database_binary_header_matches_magic\ntests/test_ch08_watchdog_sre.py::test_ch08_check_process_liveness_lifecycle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_003_matrix1_process_death_detection\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_005_matrix3_data_corruption_header_scan\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_004_matrix_2_detects_zombie_deadlocks\ntests/test_ch08_watchdog_sre.py::test_ch08_false_positive_collapse_threshold_buffers\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_006_matrix_4_memory_slope_leak_alarm\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_009_signal_zd8_heuristic_triggers_collapsed\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_002_diagnostic_engine_continuous_cycle\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_01_cycle_execution_time_budget\ntests/test_ch08_watchdog_sre.py::test_ch08_evidence_bundle_fields\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_007_collapsed_freeze_bundle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_008_recovery_launch\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_03_trigger_deadline_under_5s\ntests/test_ch08_watchdog_sre.py::test_ch08_watchdog_crash_warden_restart_thaw\ntests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\ntests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n19 tests collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-03": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_ch08_fr_001_sre_watchdog_sterile_imports_and_readonly\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_02_readonly_leaves_wal_untouched_no_write_locks\ntests/test_ch08_watchdog_sre.py::test_ch08_verify_database_binary_header_matches_magic\ntests/test_ch08_watchdog_sre.py::test_ch08_check_process_liveness_lifecycle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_003_matrix1_process_death_detection\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_005_matrix3_data_corruption_header_scan\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_004_matrix_2_detects_zombie_deadlocks\ntests/test_ch08_watchdog_sre.py::test_ch08_false_positive_collapse_threshold_buffers\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_006_matrix_4_memory_slope_leak_alarm\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_009_signal_zd8_heuristic_triggers_collapsed\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_002_diagnostic_engine_continuous_cycle\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_01_cycle_execution_time_budget\ntests/test_ch08_watchdog_sre.py::test_ch08_evidence_bundle_fields\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_007_collapsed_freeze_bundle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_008_recovery_launch\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_03_trigger_deadline_under_5s\ntests/test_ch08_watchdog_sre.py::test_ch08_watchdog_crash_warden_restart_thaw\ntests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\ntests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n19 tests collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-04": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_ch08_fr_001_sre_watchdog_sterile_imports_and_readonly\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_02_readonly_leaves_wal_untouched_no_write_locks\ntests/test_ch08_watchdog_sre.py::test_ch08_verify_database_binary_header_matches_magic\ntests/test_ch08_watchdog_sre.py::test_ch08_check_process_liveness_lifecycle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_003_matrix1_process_death_detection\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_005_matrix3_data_corruption_header_scan\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_004_matrix_2_detects_zombie_deadlocks\ntests/test_ch08_watchdog_sre.py::test_ch08_false_positive_collapse_threshold_buffers\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_006_matrix_4_memory_slope_leak_alarm\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_009_signal_zd8_heuristic_triggers_collapsed\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_002_diagnostic_engine_continuous_cycle\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_01_cycle_execution_time_budget\ntests/test_ch08_watchdog_sre.py::test_ch08_evidence_bundle_fields\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_007_collapsed_freeze_bundle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_008_recovery_launch\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_03_trigger_deadline_under_5s\ntests/test_ch08_watchdog_sre.py::test_ch08_watchdog_crash_warden_restart_thaw\ntests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\ntests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n19 tests collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-05": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_ch08_fr_001_sre_watchdog_sterile_imports_and_readonly\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_02_readonly_leaves_wal_untouched_no_write_locks\ntests/test_ch08_watchdog_sre.py::test_ch08_verify_database_binary_header_matches_magic\ntests/test_ch08_watchdog_sre.py::test_ch08_check_process_liveness_lifecycle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_003_matrix1_process_death_detection\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_005_matrix3_data_corruption_header_scan\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_004_matrix_2_detects_zombie_deadlocks\ntests/test_ch08_watchdog_sre.py::test_ch08_false_positive_collapse_threshold_buffers\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_006_matrix_4_memory_slope_leak_alarm\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_009_signal_zd8_heuristic_triggers_collapsed\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_002_diagnostic_engine_continuous_cycle\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_01_cycle_execution_time_budget\ntests/test_ch08_watchdog_sre.py::test_ch08_evidence_bundle_fields\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_007_collapsed_freeze_bundle\ntests/test_ch08_watchdog_sre.py::test_ch08_fr_008_recovery_launch\ntests/test_ch08_watchdog_sre.py::test_ch08_nfr_sre_03_trigger_deadline_under_5s\ntests/test_ch08_watchdog_sre.py::test_ch08_watchdog_crash_warden_restart_thaw\ntests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\ntests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n19 tests collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-06": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation\n\n1 test collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-07": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle --collect-only -q",
+    "returncode": 0,
+    "stdout": "tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle\n\n1 test collected in 0.01s",
+    "stderr": ""
+  },
+  "MC-SRE-08": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_001\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 19 items / 18 deselected / 1 selected\n\ntests\\test_ch08_watchdog_sre.py .                                        [100%]\n\n====================== 1 passed, 18 deselected in 0.13s =======================",
+    "stderr": ""
+  },
+  "MC-SRE-09": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_02\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 19 items / 18 deselected / 1 selected\n\ntests\\test_ch08_watchdog_sre.py .                                        [100%]\n\n====================== 1 passed, 18 deselected in 0.04s =======================",
+    "stderr": ""
+  },
+  "MC-SRE-10": {
+    "command": "pytest tests/test_ch08_watchdog_sre.py -k \"verify_database_binary_header\"",
+    "returncode": 0,
+    "stdout": "============================= test session starts =============================\nplatform win32 -- Python 3.13.9, pytest-8.4.2, pluggy-1.5.0\nrootdir: D:\\__CoChem\\__agentic\\v4.1.2\nconfigfile: pytest.ini\nplugins: anyio-4.10.0, hydra-core-1.3.5, typeguard-4.6.0, zarr-3.3.0\ncollected 19 items / 18 deselected / 1 selected\n\ntests\\test_ch08_watchdog_sre.py .                                        [100%]\n\n====================== 1 passed, 18 deselected in 0.03s =======================",
+    "stderr": ""
+  }
+}

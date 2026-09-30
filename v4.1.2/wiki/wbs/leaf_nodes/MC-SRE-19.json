@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-19",
+  "title": "Implement COLLAPSED Freeze and Evidence Bundle Assembly",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 421,
+  "chunk_end": 475,
+  "line_delta": 55,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-007: Upon confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-contained Evidence Bundle. Freeze with psutil.Process.suspend() on the worker tree and always resume in a finally block once the bundle is dispatched. Include the DB snapshot and Python stack traces.",
+  "dependencies": [
+    "MC-SRE-18",
+    "MC-SRE-05",
+    "MC-SRE-17"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_007\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-19] SRS-412-08-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-007: Upon\n# SPEC: confirming a `COLLAPSED` state, the Watchdog shall freeze active processes and assemble a self-\n# SPEC: contained Evidence Bundle. Freeze with psutil.Process.suspend() on the worker tree and always\n# SPEC: resume in a finally block once the bundle is dispatched. Include the DB snapshot and Python\n# SPEC: stack traces.\n# src/cochem/watchdog/watchdog_sre.py:427 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:428 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:429 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:430 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:431 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:432 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:433 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:434 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:435 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:436 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:437 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:438 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:439 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:440 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:441 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:442 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:443 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:444 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:445 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:446 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:447 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:448 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:449 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:450 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:451 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:452 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:453 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:454 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:455 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:456 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:457 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:458 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:459 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:460 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:461 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:462 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:463 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:464 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:465 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:466 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:467 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:468 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:469 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:470 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:471 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:472 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:473 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:474 [MC-SRE-19]\n# src/cochem/watchdog/watchdog_sre.py:475 [MC-SRE-19]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-007"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-44",
+  "title": "Implement Tier 1 Restart Timeout and Grace Period",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/restart_service.py",
+  "chunk_start": 60,
+  "chunk_end": 95,
+  "line_delta": 36,
+  "instructions": "Implement wait_for_service_recovery() with 30-second bounded grace timer.",
+  "dependencies": [
+    "MC-HW-43"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/restart_service.py>>>\n# Code context line 60 for MC-HW-44\n# Code context line 61 for MC-HW-44\n# Code context line 62 for MC-HW-44\n# Code context line 63 for MC-HW-44\n# Code context line 64 for MC-HW-44\n# Code context line 65 for MC-HW-44\n# Code context line 66 for MC-HW-44\n# Code context line 67 for MC-HW-44\n# Code context line 68 for MC-HW-44\n# Code context line 69 for MC-HW-44\n# Code context line 70 for MC-HW-44\n# Code context line 71 for MC-HW-44\n# Code context line 72 for MC-HW-44\n# Code context line 73 for MC-HW-44\n# Code context line 74 for MC-HW-44\n# Code context line 75 for MC-HW-44\n# Code context line 76 for MC-HW-44\n# Code context line 77 for MC-HW-44\n# Code context line 78 for MC-HW-44\n# Code context line 79 for MC-HW-44\n# Code context line 80 for MC-HW-44\n# Code context line 81 for MC-HW-44\n# Code context line 82 for MC-HW-44\n# Code context line 83 for MC-HW-44\n# Code context line 84 for MC-HW-44\n# Code context line 85 for MC-HW-44\n# Code context line 86 for MC-HW-44\n# Code context line 87 for MC-HW-44\n# Code context line 88 for MC-HW-44\n# Code context line 89 for MC-HW-44\n# Code context line 90 for MC-HW-44\n# Code context line 91 for MC-HW-44\n# Code context line 92 for MC-HW-44\n# Code context line 93 for MC-HW-44\n# Code context line 94 for MC-HW-44\n# Code context line 95 for MC-HW-44\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

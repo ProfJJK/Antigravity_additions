@@ -1,0 +1,1558 @@
+{
+  "manifest_version": "4.1.2",
+  "generated_at": "2026-09-29T18:53:01.165064",
+  "system": {
+    "name": "CoChem Agentic Pipeline",
+    "version": "4.1.2",
+    "architecture": "Python 3.14 + Claude.exe + SQLite RAG",
+    "host_os": "Windows 11 Pro"
+  },
+  "srs_documents": ["wiki/srs/00_skeleton.md", "wiki/srs/ch01_host_warden.md", "wiki/srs/ch02_quarantine_vm.md", "wiki/srs/ch03_concurrency_layers.md", "wiki/srs/ch04_task_matrix_blackboard.md", "wiki/srs/ch05_research_tdd_pivot.md", "wiki/srs/ch06_dual_wiki_rag.md", "wiki/srs/ch07_dsp_domain_pipelines.md", "wiki/srs/ch08_watchdog_sre.md"], "total_microtasks": 309,
+  "micro_components": [
+    {
+      "id": "MC-CON-01",
+      "title": "Author Layer 1 Director Invocation Tests",
+      "target_file": "tests/test_ch03_concurrency_layers.py"
+    },
+    {
+      "id": "MC-CON-02",
+      "title": "Author Subprocess Timeout and Orphan Tests",
+      "target_file": "tests/test_ch03_concurrency_layers.py"
+    },
+    {
+      "id": "MC-CON-03",
+      "title": "Author Sub-Agent Multiplexer and Heap Guard Tests",
+      "target_file": "tests/test_ch03_concurrency_layers.py"
+    },
+    {
+      "id": "MC-CON-04",
+      "title": "Author Layer 2 Daemon Isolation Tests",
+      "target_file": "tests/test_ch03_concurrency_layers.py"
+    },
+    {
+      "id": "MC-CON-05",
+      "title": "Author Complexity Routing and Profile Tests",
+      "target_file": "tests/test_ch03_concurrency_layers.py"
+    },
+    {
+      "id": "MC-CON-06",
+      "title": "Implement Hidden Process-Group Subprocess Spawner",
+      "target_file": "src/cochem/concurrency/runtime.py"
+    },
+    {
+      "id": "MC-CON-07",
+      "title": "Implement JIT Startup Jitter Helper",
+      "target_file": "src/cochem/concurrency/runtime.py"
+    },
+    {
+      "id": "MC-CON-08",
+      "title": "Implement Cognitive Complexity Model Router",
+      "target_file": "src/cochem/concurrency/runtime.py"
+    },
+    {
+      "id": "MC-CON-09",
+      "title": "Implement ConcurrencyProfile Data Model",
+      "target_file": "src/cochem/concurrency/runtime.py"
+    },
+    {
+      "id": "MC-CON-10",
+      "title": "Implement Queue-Only Layer 2 Daemon Coordination",
+      "target_file": "src/cochem/concurrency/layer2.py"
+    },
+    {
+      "id": "MC-CON-11",
+      "title": "Implement Layer 2 Worker 512 MB V8 Environment",
+      "target_file": "src/cochem/concurrency/layer2.py"
+    },
+    {
+      "id": "MC-CON-12",
+      "title": "Implement Desktop Heap Budget Probe",
+      "target_file": "src/cochem/concurrency/layer2.py"
+    },
+    {
+      "id": "MC-CON-13",
+      "title": "Implement Process Handle Leak Sampler",
+      "target_file": "src/cochem/concurrency/layer2.py"
+    },
+    {
+      "id": "MC-CON-14",
+      "title": "Implement Fable Director CLI Command Builder",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-15",
+      "title": "Implement Director 4096 MB V8 Environment",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-16",
+      "title": "Implement 20-Slot Sub-Agent Multiplexer",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-17",
+      "title": "Implement Sub-Agent Message Latency Meter",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-18",
+      "title": "Implement Director V8 Heap Recycle Guard",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-19",
+      "title": "Implement 1740 s Process-Tree Timeout Runner",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-CON-20",
+      "title": "Implement launch_layer1_fable_director Entry Point",
+      "target_file": "src/cochem/concurrency/layer1.py"
+    },
+    {
+      "id": "MC-BB-07",
+      "title": "Implement WAL Connection Factory with Pragmas",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-11",
+      "title": "Implement Idempotent INSERT OR IGNORE Batch Injection",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-22",
+      "title": "Implement Poison-Pill BLOCKED Quarantine Rule",
+      "target_file": "src/cochem/blackboard/lifecycle.py"
+    },
+    {
+      "id": "MC-DSP-02",
+      "title": "Implement DSP Context and Configuration Dataclasses",
+      "target_file": "src/cochem/dsp/context.py"
+    },
+    {
+      "id": "MC-DSP-03",
+      "title": "Implement Domain Router Dispatch Engine",
+      "target_file": "src/cochem/dsp/router.py"
+    },
+    {
+      "id": "MC-DSP-04",
+      "title": "Implement Dynamic Domain Capability Registration",
+      "target_file": "src/cochem/dsp/router.py"
+    },
+    {
+      "id": "MC-DSP-05",
+      "title": "Implement Domain Execution Telemetry and Hooks",
+      "target_file": "src/cochem/dsp/telemetry.py"
+    },
+    {
+      "id": "MC-DSP-06",
+      "title": "Implement Code Forge Orchestrator State Machine",
+      "target_file": "src/cochem/dsp/forge/orchestrator.py"
+    },
+    {
+      "id": "MC-DSP-07",
+      "title": "Implement AST Anti-Spoof Linter Engine",
+      "target_file": "src/cochem/dsp/forge/linter.py"
+    },
+    {
+      "id": "MC-DSP-09",
+      "title": "Implement Synthetic Array and Loop Fake Detector",
+      "target_file": "src/cochem/dsp/forge/linter.py"
+    },
+    {
+      "id": "MC-DSP-14",
+      "title": "Implement Dynamic Mendeleev Atomic Mass Resolver",
+      "target_file": "src/cochem/dsp/forge/mendeleev_resolver.py"
+    },
+    {
+      "id": "MC-DSP-15",
+      "title": "Implement Ephemeral Docker Sandbox Execution Wrapper",
+      "target_file": "src/cochem/dsp/forge/sandbox.py"
+    },
+    {
+      "id": "MC-DSP-16",
+      "title": "Implement Academic Press Pipeline Orchestrator",
+      "target_file": "src/cochem/dsp/press/orchestrator.py"
+    },
+    {
+      "id": "MC-DSP-17",
+      "title": "Implement Citation Grounding and DOI Validator",
+      "target_file": "src/cochem/dsp/press/citations.py"
+    },
+    {
+      "id": "MC-DSP-18",
+      "title": "Implement OpenAlex and CrossRef Metadata Resolver",
+      "target_file": "src/cochem/dsp/press/citations.py"
+    },
+    {
+      "id": "MC-DSP-19",
+      "title": "Implement Publication-Grade Data Table Formatter",
+      "target_file": "src/cochem/dsp/press/tables.py"
+    },
+    {
+      "id": "MC-DSP-20",
+      "title": "Implement ACS/Nature Vector Plot Generator",
+      "target_file": "src/cochem/dsp/press/plots.py"
+    },
+    {
+      "id": "MC-DSP-21",
+      "title": "Implement Typst Document Typesetting Compiler",
+      "target_file": "src/cochem/dsp/press/typst_compiler.py"
+    },
+    {
+      "id": "MC-DSP-22",
+      "title": "Implement Pandoc LaTeX and PDF Generation Runner",
+      "target_file": "src/cochem/dsp/press/latex_runner.py"
+    },
+    {
+      "id": "MC-DSP-23",
+      "title": "Implement Manuscript Compliance Checker",
+      "target_file": "src/cochem/dsp/press/compliance.py"
+    },
+    {
+      "id": "MC-DSP-24",
+      "title": "Implement Pedagogy Engine Pipeline Orchestrator",
+      "target_file": "src/cochem/dsp/pedagogy/orchestrator.py"
+    },
+    {
+      "id": "MC-DSP-25",
+      "title": "Implement Canvas LMS REST API Client",
+      "target_file": "src/cochem/dsp/pedagogy/canvas_client.py"
+    },
+    {
+      "id": "MC-DSP-26",
+      "title": "Implement Assignment and Gradebook Synchronizer",
+      "target_file": "src/cochem/dsp/pedagogy/canvas_sync.py"
+    },
+    {
+      "id": "MC-DSP-27",
+      "title": "Implement R/exams Question Generator Wrapper",
+      "target_file": "src/cochem/dsp/pedagogy/rexams.py"
+    },
+    {
+      "id": "MC-DSP-28",
+      "title": "Implement Exam Permutation and PDF Compile Runner",
+      "target_file": "src/cochem/dsp/pedagogy/rexams.py"
+    },
+    {
+      "id": "MC-DSP-29",
+      "title": "Implement Multimodal Grading Rubric Evaluator",
+      "target_file": "src/cochem/dsp/pedagogy/grading.py"
+    },
+    {
+      "id": "MC-DSP-30",
+      "title": "Implement DSP Template Scaffold Generator",
+      "target_file": "src/cochem/dsp/toolkit/scaffold.py"
+    },
+    {
+      "id": "MC-DSP-31",
+      "title": "Implement cochem-dsp-mcp FastMCP Server Definition",
+      "target_file": "src/cochem/dsp/toolkit/mcp_server.py"
+    },
+    {
+      "id": "MC-DSP-32",
+      "title": "Implement FastMCP Tools for DSP Lifecycle",
+      "target_file": "src/cochem/dsp/toolkit/mcp_server.py"
+    },
+    {
+      "id": "MC-DSP-33",
+      "title": "Implement Antigravity Skill Manifest Generator",
+      "target_file": "src/cochem/dsp/toolkit/skill_gen.py"
+    },
+    {
+      "id": "MC-DSP-34",
+      "title": "Implement DSP Packaging and Ecosystem Validation Suite",
+      "target_file": "src/cochem/dsp/toolkit/package.py"
+    },
+    {
+      "id": "MC-HW-42",
+      "title": "Implement SRE Health Check Polling Loop",
+      "target_file": "src/cochem/warden/health.py"
+    },
+    {
+      "id": "MC-HW-43",
+      "title": "Implement Tier 1 Graceful Service Restart Trigger",
+      "target_file": "src/cochem/warden/restart_service.py"
+    },
+    {
+      "id": "MC-HW-44",
+      "title": "Implement Tier 1 Restart Timeout and Grace Period",
+      "target_file": "src/cochem/warden/restart_service.py"
+    },
+    {
+      "id": "MC-HW-45",
+      "title": "Implement Tier 2 Hard VM Reboot via PowerShell Bridge",
+      "target_file": "src/cochem/warden/vm_control.py"
+    },
+    {
+      "id": "MC-HW-46",
+      "title": "Implement Hyper-V VM State Inspection Query",
+      "target_file": "src/cochem/warden/vm_control.py"
+    },
+    {
+      "id": "MC-HW-47",
+      "title": "Implement Tier 3 Golden Checkpoint Rollback Engine",
+      "target_file": "src/cochem/warden/rollback.py"
+    },
+    {
+      "id": "MC-HW-48",
+      "title": "Implement Differencing VHDX Disk Verification",
+      "target_file": "src/cochem/warden/rollback.py"
+    },
+    {
+      "id": "MC-HW-49",
+      "title": "Implement Checkpoint Tree Validation and Pruning",
+      "target_file": "src/cochem/warden/rollback.py"
+    },
+    {
+      "id": "MC-HW-50",
+      "title": "Implement Named-Pipe Telemetry Listener",
+      "target_file": "src/cochem/warden/ipc.py"
+    },
+    {
+      "id": "MC-HW-51",
+      "title": "Implement AF_HYPERV Socket Fallback Channel",
+      "target_file": "src/cochem/warden/ipc.py"
+    },
+    {
+      "id": "MC-HW-52",
+      "title": "Implement Crash Envelope JSONL Serializer",
+      "target_file": "src/cochem/warden/telemetry.py"
+    },
+    {
+      "id": "MC-HW-53",
+      "title": "Implement PEP 657 Fine-Grained Traceback Parser",
+      "target_file": "src/cochem/warden/telemetry.py"
+    },
+    {
+      "id": "MC-HW-54",
+      "title": "Implement Health Recovery Escalation Ladder FSM",
+      "target_file": "src/cochem/warden/ladder.py"
+    },
+    {
+      "id": "MC-HW-55",
+      "title": "Implement Recovery Event Telemetry Notification Sink",
+      "target_file": "src/cochem/warden/ladder.py"
+    },
+    {
+      "id": "MC-HW-56",
+      "title": "Implement FastMCP Server Scaffolding for Warden",
+      "target_file": "src/cochem/warden/mcp_server.py"
+    },
+    {
+      "id": "MC-HW-57",
+      "title": "Implement FastMCP Tool get_vm_health_status",
+      "target_file": "src/cochem/warden/mcp_server.py"
+    },
+    {
+      "id": "MC-HW-58",
+      "title": "Implement FastMCP Tool trigger_vm_resuscitation",
+      "target_file": "src/cochem/warden/mcp_server.py"
+    },
+    {
+      "id": "MC-HW-59",
+      "title": "Implement FastMCP Tool get_crash_envelopes",
+      "target_file": "src/cochem/warden/mcp_server.py"
+    },
+    {
+      "id": "MC-HW-60",
+      "title": "Implement FastMCP Error Handling and Input Validation",
+      "target_file": "src/cochem/warden/mcp_server.py"
+    },
+    {
+      "id": "MC-HW-61",
+      "title": "Author Pester Test Suite for E-Core Affinity",
+      "target_file": "tests/pester/Affinity.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-62",
+      "title": "Author Pester Test Suite for BelowNormal Priority Class",
+      "target_file": "tests/pester/Priority.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-63",
+      "title": "Author Pester Test Suite for 32GB RAM Static VM Cap",
+      "target_file": "tests/pester/MemoryCap.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-64",
+      "title": "Author Pester Test Suite for Named Pipe Security",
+      "target_file": "tests/pester/Pipe.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-65",
+      "title": "Implement Windows Scheduled Task XML Generator",
+      "target_file": "provisioning/Create-WardenTask.ps1"
+    },
+    {
+      "id": "MC-HW-66",
+      "title": "Implement Auto-Ignition Registration Script",
+      "target_file": "provisioning/Register-Startup.ps1"
+    },
+    {
+      "id": "MC-HW-67",
+      "title": "Implement Service Recovery Failure Action Script",
+      "target_file": "provisioning/Configure-Recovery.ps1"
+    },
+    {
+      "id": "MC-HW-68",
+      "title": "Implement Host Warden Health Ping Script",
+      "target_file": "provisioning/Ping-Warden.ps1"
+    },
+    {
+      "id": "MC-HW-69",
+      "title": "Implement Installation Manifest and Integrity Verifier",
+      "target_file": "provisioning/Verify-Installation.ps1"
+    },
+    {
+      "id": "MC-RAG-06",
+      "title": "Implement .sources/ and wiki/ Dual Root Discovery",
+      "target_file": "src/cochem/knowledge/corpus.py"
+    },
+    {
+      "id": "MC-RAG-07",
+      "title": "Implement Lossless UTF-8 Read and Section Splitter",
+      "target_file": "src/cochem/knowledge/corpus.py"
+    },
+    {
+      "id": "MC-RAG-08",
+      "title": "Implement Relative Markdown Link Validator",
+      "target_file": "src/cochem/knowledge/corpus.py"
+    },
+    {
+      "id": "MC-RAG-09",
+      "title": "Implement 400-Line Chapter Length Gate",
+      "target_file": "src/cochem/knowledge/corpus.py"
+    },
+    {
+      "id": "MC-RAG-11",
+      "title": "Implement documents Table DDL and ensure_schema",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-12",
+      "title": "Implement fts_index FTS5 Virtual Table DDL",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-16",
+      "title": "Implement Hash-Drift Background Re-Index",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-17",
+      "title": "Implement 1.5x Index-to-Corpus Size Ratio Probe",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-18",
+      "title": "Implement query_knowledge_index Read-Only BM25 Search",
+      "target_file": "src/cochem/knowledge/server.py"
+    },
+    {
+      "id": "MC-RAG-19",
+      "title": "Implement cochem-knowledge-mcp FastMCP Search Tool",
+      "target_file": "src/cochem/knowledge/server.py"
+    },
+    {
+      "id": "MC-RAG-20",
+      "title": "Implement 10k-Section Query Latency Probe",
+      "target_file": "src/cochem/knowledge/server.py"
+    },
+    {
+      "id": "MC-RAG-21",
+      "title": "Implement 64 MB Daemon Memory Ceiling Probe",
+      "target_file": "src/cochem/knowledge/server.py"
+    },
+    {
+      "id": "MC-TDD-05",
+      "title": "Implement tdd_cycle_state Dataclass and JSON Round-Trip",
+      "target_file": "src/cochem/tdd_pivot/state_machine.py"
+    },
+    {
+      "id": "MC-TDD-06",
+      "title": "Implement Bounded 10-Cycle Execute-Audit-Repair Loop",
+      "target_file": "src/cochem/tdd_pivot/state_machine.py"
+    },
+    {
+      "id": "MC-TDD-07",
+      "title": "Implement 30 s Per-Cycle pytest Runner Timeout",
+      "target_file": "src/cochem/tdd_pivot/state_machine.py"
+    },
+    {
+      "id": "MC-TDD-08",
+      "title": "Implement 2,000-Token Diagnostic Prompt Bound",
+      "target_file": "src/cochem/tdd_pivot/state_machine.py"
+    },
+    {
+      "id": "MC-TDD-09",
+      "title": "Implement Gemini Flash Diagnostic Analysis Hook",
+      "target_file": "src/cochem/tdd_pivot/state_machine.py"
+    },
+    {
+      "id": "MC-TDD-10",
+      "title": "Implement 3-Strike Code Generation Freeze",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-12",
+      "title": "Implement Fable Root Cause Triage Classifier",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-13",
+      "title": "Implement Contract Ambiguity Escalation for Human Review",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-14",
+      "title": "Implement MAX_META_PIVOT Counter and Hard Abort Trigger",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-15",
+      "title": "Implement Physics_Autopsy_Report.md Generation",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-18",
+      "title": "Implement Stub Auditor for NotImplementedError and Empty pass",
+      "target_file": "src/cochem/tdd_pivot/verification.py"
+    },
+    {
+      "id": "MC-TDD-19",
+      "title": "Implement mutmut 85% Kill Score Gate",
+      "target_file": "src/cochem/tdd_pivot/verification.py"
+    },
+    {
+      "id": "MC-QVM-01",
+      "title": "Author Static 32 GB Memory and 12 vCPU 70% Cap Profile Tests",
+      "target_file": "tests/test_ch02_quarantine_vm.py"
+    },
+    {
+      "id": "MC-QVM-02",
+      "title": "Author sandbox_spec Model, docker run Flag and Network Drop Tests",
+      "target_file": "tests/test_ch02_quarantine_vm.py"
+    },
+    {
+      "id": "MC-QVM-03",
+      "title": "Author FERPA Air-Gapped Container and Identifier Scrub Tests",
+      "target_file": "tests/test_ch02_quarantine_vm.py"
+    },
+    {
+      "id": "MC-QVM-04",
+      "title": "Author 6-Slot Scheduler, Startup Latency and OOM Isolation Tests",
+      "target_file": "tests/test_ch02_quarantine_vm.py"
+    },
+    {
+      "id": "MC-QVM-05",
+      "title": "Author Exit Purge and 60-Second Orphan Scratch Sweep Tests",
+      "target_file": "tests/test_ch02_quarantine_vm.py"
+    },
+    {
+      "id": "MC-QVM-06",
+      "title": "Implement Static 32 GB Set-VMMemory Command Builder",
+      "target_file": "src/cochem/quarantine/vm_profile.py"
+    },
+    {
+      "id": "MC-QVM-07",
+      "title": "Implement Dynamic Memory Disabled Verification Probe",
+      "target_file": "src/cochem/quarantine/vm_profile.py"
+    },
+    {
+      "id": "MC-QVM-08",
+      "title": "Implement 12 vCPU 70% Cap Set-VMProcessor Command Builder",
+      "target_file": "src/cochem/quarantine/vm_profile.py"
+    },
+    {
+      "id": "MC-QVM-09",
+      "title": "Implement Processor Count and Maximum Cap Verification Probe",
+      "target_file": "src/cochem/quarantine/vm_profile.py"
+    },
+    {
+      "id": "MC-QVM-10",
+      "title": "Implement sandbox_spec Record and Validator",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-11",
+      "title": "Implement Ephemeral docker run Argument Builder",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-12",
+      "title": "Implement In-Container Network Unreachable Probe",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-13",
+      "title": "Implement FERPA Identifier Scrubber and Air-Gapped Launch",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-14",
+      "title": "Implement 1.5 s Container Startup Latency Probe",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-15",
+      "title": "Implement 6-Slot 4 GB Container Scheduler",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-16",
+      "title": "Implement Per-Container OOM Containment Limits",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-17",
+      "title": "Implement Exit 137 Capture, Memory Slope and Task Quarantine",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-18",
+      "title": "Implement Scratch, tmpfs and Layer Purge on Container Exit",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-QVM-19",
+      "title": "Implement 60-Second Orphan Scratch Namespace Sweeper",
+      "target_file": "src/cochem/quarantine/sandbox.py"
+    },
+    {
+      "id": "MC-SRE-01",
+      "title": "Author Sterile Import and Read-Only job_board.db Tests",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-02",
+      "title": "Author Binary Header, Process Liveness and Process Tree Tests",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-03",
+      "title": "Author Zombie Lease, Memory Slope and Threshold Buffer Tests",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-04",
+      "title": "Author 30-Second Loop, 1.0s Budget and Signal ZD-8 Tests",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-05",
+      "title": "Author COLLAPSED Freeze, Evidence Bundle and Recovery Launch Tests",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-06",
+      "title": "Author E2E Scenario 3: Multi-Worker Lease Contention and Zombie Reclamation",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-07",
+      "title": "Author E2E Scenario 1: Full Pipeline Bootstrap Lifecycle",
+      "target_file": "tests/test_ch08_watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-08",
+      "title": "Implement Sterile Header, Imports and Read-Only URI Opener",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-09",
+      "title": "Implement query_only Guard and Write-Lock Refusal",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-10",
+      "title": "Implement verify_database_binary_header",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-11",
+      "title": "Implement check_process_liveness",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-12",
+      "title": "Implement Matrix 1 Process Death Tree Scan",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-13",
+      "title": "Implement Matrix 2 Zombie Lease Deadlock Detector",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-14",
+      "title": "Implement 1860s vs 1800s Lease Threshold Buffer",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-15",
+      "title": "Implement Matrix 3 Data Corruption Header Scan",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-16",
+      "title": "Implement Matrix 4 Memory Slope Leak Alarm",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-17",
+      "title": "Implement Signal ZD-8 Illegal State Query",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-18",
+      "title": "Implement evidence_bundle Record and Validator",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-19",
+      "title": "Implement COLLAPSED Freeze and Evidence Bundle Assembly",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-20",
+      "title": "Implement Out-of-Band Fable 5.1 Recovery Launcher",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-21",
+      "title": "Implement 5-Second Self-Healing Trigger Deadline",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-22",
+      "title": "Implement 4-Matrix Diagnostic Engine 30-Second Loop",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-SRE-23",
+      "title": "Implement 1.0s Per-Cycle Execution Budget Probe",
+      "target_file": "src/cochem/watchdog/watchdog_sre.py"
+    },
+    {
+      "id": "MC-BB-01",
+      "title": "Author WAL Schema, Read-Only and Idempotent Injection Tests",
+      "target_file": "tests/test_ch04_task_matrix_blackboard.py"
+    },
+    {
+      "id": "MC-BB-02",
+      "title": "Author Atomic Lease Claim and Contention Tests",
+      "target_file": "tests/test_ch04_task_matrix_blackboard.py"
+    },
+    {
+      "id": "MC-BB-03",
+      "title": "Author Terminal Transition and Poison-Pill Tests",
+      "target_file": "tests/test_ch04_task_matrix_blackboard.py"
+    },
+    {
+      "id": "MC-BB-04",
+      "title": "Author Heartbeat and Expired Lease Reclamation Tests",
+      "target_file": "tests/test_ch04_task_matrix_blackboard.py"
+    },
+    {
+      "id": "MC-BB-05",
+      "title": "Author Urgency x Fidelity Routing Tests",
+      "target_file": "tests/test_ch04_task_matrix_blackboard.py"
+    },
+    {
+      "id": "MC-BB-06",
+      "title": "Implement jobs Table DDL and ensure_schema",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-08",
+      "title": "Implement Busy-Timeout Lock Contention Handling",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-09",
+      "title": "Implement Read-Only Observer Connection",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-10",
+      "title": "Implement Non-Blocking PASSIVE WAL Checkpoint",
+      "target_file": "src/cochem/blackboard/schema.py"
+    },
+    {
+      "id": "MC-BB-12",
+      "title": "Implement 1800 s Default Lease Constant",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-13",
+      "title": "Implement Urgency x Fidelity Capability Matrix",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-14",
+      "title": "Implement BEGIN IMMEDIATE Transaction Helper",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-15",
+      "title": "Implement claim_next_task Atomic Lease",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-16",
+      "title": "Implement Duplicate Claim Detector",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-17",
+      "title": "Implement Lease Acquisition Latency Probe",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-18",
+      "title": "Implement heartbeat_lease Refresh",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-19",
+      "title": "Implement 5 s Heartbeat Loop",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-20",
+      "title": "Implement Expired Lease Reclamation",
+      "target_file": "src/cochem/blackboard/leases.py"
+    },
+    {
+      "id": "MC-BB-21",
+      "title": "Implement ZD-8 Lease-Clearing Transition Helper",
+      "target_file": "src/cochem/blackboard/lifecycle.py"
+    },
+    {
+      "id": "MC-BB-23",
+      "title": "Implement complete_task Transition",
+      "target_file": "src/cochem/blackboard/lifecycle.py"
+    },
+    {
+      "id": "MC-BB-24",
+      "title": "Implement fail_task Transition",
+      "target_file": "src/cochem/blackboard/lifecycle.py"
+    },
+    {
+      "id": "MC-HW-01",
+      "title": "Directory scaffold and base ACLs",
+      "target_file": "C:\\__CoChem\\provisioning\\Initialize-CoChemTree.ps1"
+    },
+    {
+      "id": "MC-HW-02",
+      "title": "Default config file and JSON schema",
+      "target_file": "C:\\__CoChem\\config\\warden.config.json"
+    },
+    {
+      "id": "MC-HW-03",
+      "title": "Config loader Import-WardenConfig",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Config\\CoChem.Config.psm1"
+    },
+    {
+      "id": "MC-HW-04",
+      "title": "JSONL logger core",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Logging\\CoChem.Logging.psm1"
+    },
+    {
+      "id": "MC-HW-05",
+      "title": "Log rotation and retention",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Logging\\CoChem.Logging.psm1"
+    },
+    {
+      "id": "MC-HW-06",
+      "title": "Compliance event logger with PII guard",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Logging\\CoChem.Logging.psm1"
+    },
+    {
+      "id": "MC-HW-07",
+      "title": "Test harness skeleton",
+      "target_file": "C:\\__CoChem\\tests\\TestHelpers.psm1"
+    },
+    {
+      "id": "MC-HW-08",
+      "title": "CPU topology P/Invoke and Get-CpuTopology",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Affinity\\CoChem.Affinity.psm1"
+    },
+    {
+      "id": "MC-HW-09",
+      "title": "E-core mask computation with override",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Affinity\\CoChem.Affinity.psm1"
+    },
+    {
+      "id": "MC-HW-10",
+      "title": "Pin and verify Warden affinity",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Affinity\\CoChem.Affinity.psm1"
+    },
+    {
+      "id": "MC-HW-11",
+      "title": "Affinity Pester tests",
+      "target_file": "C:\\__CoChem\\tests\\Affinity.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-12",
+      "title": "VM creation: Gen 2, Secure Boot, no vNIC",
+      "target_file": "C:\\__CoChem\\provisioning\\New-CoChemVM.ps1"
+    },
+    {
+      "id": "MC-HW-13",
+      "title": "VM memory, processor and checkpoint configuration",
+      "target_file": "C:\\__CoChem\\provisioning\\New-CoChemVM.ps1"
+    },
+    {
+      "id": "MC-HW-14",
+      "title": "Disk layout: differencing OS disk and data disk",
+      "target_file": "C:\\__CoChem\\provisioning\\New-CoChemVM.ps1"
+    },
+    {
+      "id": "MC-HW-15",
+      "title": "Integration services policy and balloon driver check",
+      "target_file": "C:\\__CoChem\\provisioning\\New-CoChemVM.ps1"
+    },
+    {
+      "id": "MC-HW-16",
+      "title": "Golden image checksum manifest and write protection",
+      "target_file": "C:\\__CoChem\\provisioning\\Protect-GoldenImage.ps1"
+    },
+    {
+      "id": "MC-HW-17",
+      "title": "Guest system configuration installer",
+      "target_file": "C:\\__CoChem\\provisioning\\guest\\install_guest.py"
+    },
+    {
+      "id": "MC-HW-18",
+      "title": "Guest LUKS data disk setup",
+      "target_file": "C:\\__CoChem\\provisioning\\guest\\setup_data_disk.py"
+    },
+    {
+      "id": "MC-HW-19",
+      "title": "Get-VmSnapshotState",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-20",
+      "title": "Memory compliance test and repair",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-21",
+      "title": "Air-gap check and network disablement",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-22",
+      "title": "Integration services policy check",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-23",
+      "title": "Start-ExecVm with pre-start compliance gate",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-24",
+      "title": "Stop-ExecVm graceful then forced",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-25",
+      "title": "Stop-VmWorkerProcess last resort",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.HyperV\\CoChem.HyperV.psm1"
+    },
+    {
+      "id": "MC-HW-26",
+      "title": "Hyper-V module Pester tests",
+      "target_file": "C:\\__CoChem\\tests\\HyperV.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-27",
+      "title": "Host memory probe and pressure tracker",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Health\\CoChem.Health.psm1"
+    },
+    {
+      "id": "MC-HW-28",
+      "title": "Guest heartbeat state reader",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Health\\CoChem.Health.psm1"
+    },
+    {
+      "id": "MC-HW-29",
+      "title": "Hyper-V crash event probe",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Health\\CoChem.Health.psm1"
+    },
+    {
+      "id": "MC-HW-30",
+      "title": "Verdict engine Get-HealthVerdict",
+      "target_file": "C:\\__CoChem\\daemons\\modules\\CoChem.Health\\CoChem.Health.psm1"
+    },
+    {
+      "id": "MC-HW-31",
+      "title": "Health module Pester tests",
+      "target_file": "C:\\__CoChem\\tests\\Health.Tests.ps1"
+    },
+    {
+      "id": "MC-HW-32",
+      "title": "Heartbeat dataclass and strict frame parser",
+      "target_file": "C:\\__CoChem\\daemons\\vm_monitor.py"
+    },
+    {
+      "id": "MC-HW-33",
+      "title": "HeartbeatListener over AF_HYPERV",
+      "target_file": "C:\\__CoChem\\daemons\\vm_monitor.py"
+    },
+    {
+      "id": "MC-HW-34",
+      "title": "StateWriter atomic health file",
+      "target_file": "C:\\__CoChem\\daemons\\vm_monitor.py"
+    },
+    {
+      "id": "MC-HW-35",
+      "title": "vm_monitor affinity check and main entry point",
+      "target_file": "C:\\__CoChem\\daemons\\vm_monitor.py"
+    },
+    {
+      "id": "MC-HW-36",
+      "title": "vm_monitor pytest suite",
+      "target_file": "C:\\__CoChem\\tests\\test_vm_monitor.py"
+    },
+    {
+      "id": "MC-HW-37",
+      "title": "GuestProbe memory and disk",
+      "target_file": "/opt/cochem/agent/guest_agent.py"
+    },
+    {
+      "id": "MC-HW-38",
+      "title": "GuestProbe container compliance and snapshot",
+      "target_file": "/opt/cochem/agent/guest_agent.py"
+    },
+    {
+      "id": "MC-HW-39",
+      "title": "HeartbeatSender and guest agent entry point",
+      "target_file": "/opt/cochem/agent/guest_agent.py"
+    },
+    {
+      "id": "MC-HW-40",
+      "title": "Guest agent pytest suite",
+      "target_file": "C:\\__CoChem\\tests\\test_guest_agent.py"
+    },
+    {
+      "id": "MC-HW-41",
+      "title": "Container policy: mandatory flag builder",
+      "target_file": "/opt/cochem/agent/container_policy.py"
+    },
+    {
+      "id": "MC-RAG-01",
+      "title": "Author Dual Wiki Corpus, Link and 400-Line Limit Tests",
+      "target_file": "tests/test_ch06_dual_wiki_rag.py"
+    },
+    {
+      "id": "MC-RAG-02",
+      "title": "Author documents/fts_index DDL and Corruption Recovery Tests",
+      "target_file": "tests/test_ch06_dual_wiki_rag.py"
+    },
+    {
+      "id": "MC-RAG-03",
+      "title": "Author BM25 Indexing, Incremental and Atomic Re-Index Tests",
+      "target_file": "tests/test_ch06_dual_wiki_rag.py"
+    },
+    {
+      "id": "MC-RAG-04",
+      "title": "Author query_knowledge_index and 10k-Section Latency Tests",
+      "target_file": "tests/test_ch06_dual_wiki_rag.py"
+    },
+    {
+      "id": "MC-RAG-05",
+      "title": "Author cochem-knowledge-mcp Tool and Memory Ceiling Tests",
+      "target_file": "tests/test_ch06_dual_wiki_rag.py"
+    },
+    {
+      "id": "MC-RAG-10",
+      "title": "Implement Manifest Document Catalog Sync Check",
+      "target_file": "src/cochem/knowledge/corpus.py"
+    },
+    {
+      "id": "MC-RAG-13",
+      "title": "Implement BM25 Section Indexing of a Document",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-14",
+      "title": "Implement Incremental Update and Atomic Full Re-Index",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-RAG-15",
+      "title": "Implement SQLite Header Check and Rebuild",
+      "target_file": "src/cochem/knowledge/indexer.py"
+    },
+    {
+      "id": "MC-TDD-01",
+      "title": "Author 10-Cycle State Machine and Diagnostic Prompt Tests",
+      "target_file": "tests/test_ch05_research_tdd_pivot.py"
+    },
+    {
+      "id": "MC-TDD-02",
+      "title": "Author 3-Strike Freeze and Research Dossier Tests",
+      "target_file": "tests/test_ch05_research_tdd_pivot.py"
+    },
+    {
+      "id": "MC-TDD-03",
+      "title": "Author Root Cause Triage and Physics Wall Abort Tests",
+      "target_file": "tests/test_ch05_research_tdd_pivot.py"
+    },
+    {
+      "id": "MC-TDD-04",
+      "title": "Author Zero-Mock Audit and Mutation Score Tests",
+      "target_file": "tests/test_ch05_research_tdd_pivot.py"
+    },
+    {
+      "id": "MC-TDD-11",
+      "title": "Implement Multi-Database Research Dossier Assembly",
+      "target_file": "src/cochem/tdd_pivot/research.py"
+    },
+    {
+      "id": "MC-TDD-16",
+      "title": "Implement Zero-Mock Library Scanner",
+      "target_file": "src/cochem/tdd_pivot/verification.py"
+    },
+    {
+      "id": "MC-TDD-17",
+      "title": "Implement Obfuscated Token and monkeypatch Detection",
+      "target_file": "src/cochem/tdd_pivot/verification.py"
+    },
+    {
+      "id": "MC-TQ-01",
+      "title": "Package scaffold and core error types",
+      "target_file": "src/pipe/__init__.py"
+    },
+    {
+      "id": "MC-TQ-02",
+      "title": "Matrix enums, RoutingCell and MATRIX table",
+      "target_file": "src/pipe/core/matrix.py"
+    },
+    {
+      "id": "MC-TQ-03",
+      "title": "cell_for and validate_mutation",
+      "target_file": "src/pipe/core/matrix.py"
+    },
+    {
+      "id": "MC-TQ-04",
+      "title": "Configuration YAML files",
+      "target_file": "config/model_registry.yaml"
+    },
+    {
+      "id": "MC-TQ-05",
+      "title": "ModelRegistry loader and RoutingConfig",
+      "target_file": "src/pipe/core/model_registry.py"
+    },
+    {
+      "id": "MC-TQ-06",
+      "title": "ModelRegistry lane and pool resolution helpers",
+      "target_file": "src/pipe/core/model_registry.py"
+    },
+    {
+      "id": "MC-TQ-07",
+      "title": "Migration 0001 part A: schema_version, workers, quota_pools",
+      "target_file": "src/pipe/db/migrations/0001_matrix_queue.sql"
+    },
+    {
+      "id": "MC-TQ-08",
+      "title": "Migration 0001 part B: tasks table and indexes",
+      "target_file": "src/pipe/db/migrations/0001_matrix_queue.sql"
+    },
+    {
+      "id": "MC-TQ-09",
+      "title": "Migration 0001 part C: tasks immutability and lease hard-lock triggers",
+      "target_file": "src/pipe/db/migrations/0001_matrix_queue.sql"
+    },
+    {
+      "id": "MC-TQ-10",
+      "title": "Migration 0001 part D: attempt_log, receipts, quota_ledger, events",
+      "target_file": "src/pipe/db/migrations/0001_matrix_queue.sql"
+    },
+    {
+      "id": "MC-TQ-11",
+      "title": "WAL connection factory and immediate() context",
+      "target_file": "src/pipe/db/connection.py"
+    },
+    {
+      "id": "MC-TQ-12",
+      "title": "Migration runner and quota pool seeding",
+      "target_file": "src/pipe/db/migrate.py"
+    },
+    {
+      "id": "MC-TQ-13",
+      "title": "Pytest harness: temp DB fixtures and multi-process helpers",
+      "target_file": "tests/queue/conftest.py"
+    },
+    {
+      "id": "MC-TQ-14",
+      "title": "Protected paths: glob-to-regex, literal prefix, normalize",
+      "target_file": "src/pipe/core/protected_paths.py"
+    },
+    {
+      "id": "MC-TQ-15",
+      "title": "ProtectedPathPolicy class and hash-pinned loader",
+      "target_file": "src/pipe/core/protected_paths.py"
+    },
+    {
+      "id": "MC-TQ-16",
+      "title": "Protected path table tests and hypothesis fuzzing",
+      "target_file": "tests/core/test_protected_paths.py"
+    },
+    {
+      "id": "MC-TQ-17",
+      "title": "Hard-lock trigger and CHECK constraint tests",
+      "target_file": "tests/queue/test_hardlock_triggers.py"
+    },
+    {
+      "id": "MC-TQ-18",
+      "title": "TaskQueue dataclasses, constructor and logging helpers",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-19",
+      "title": "TaskQueue.submit with touches_core computation",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-20",
+      "title": "Worker registration and worker liveness",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-21",
+      "title": "Ghost-lease reclamation",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-22",
+      "title": "Atomic lease with matrix ordering and quota filter",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-23",
+      "title": "Claim interlock and policy drift handling",
+      "target_file": "src/pipe/orchestrator/claim.py"
+    },
+    {
+      "id": "MC-TQ-24",
+      "title": "Fenced heartbeat and begin_verify",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-25",
+      "title": "TaskQueue.complete with receipt enforcement",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-26",
+      "title": "TaskQueue.fail with retry and terminal handling",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-27",
+      "title": "TaskQueue.stats matrix counts",
+      "target_file": "src/pipe/orchestrator/task_queue.py"
+    },
+    {
+      "id": "MC-TQ-28",
+      "title": "Lease heartbeat thread",
+      "target_file": "src/pipe/orchestrator/lease_heartbeat.py"
+    },
+    {
+      "id": "MC-TQ-29",
+      "title": "Lease atomicity and latency test",
+      "target_file": "tests/queue/test_lease_atomicity.py"
+    },
+    {
+      "id": "MC-TQ-30",
+      "title": "Queue lifecycle and fencing tests",
+      "target_file": "tests/queue/test_queue_lifecycle.py"
+    },
+    {
+      "id": "MC-TQ-31",
+      "title": "Router and fallback ladder",
+      "target_file": "src/pipe/orchestrator/router.py"
+    },
+    {
+      "id": "MC-TQ-32",
+      "title": "Patch gate: changed_paths",
+      "target_file": "src/pipe/gates/paths.py"
+    },
+    {
+      "id": "MC-TQ-33",
+      "title": "Patch gate: check_scope",
+      "target_file": "src/pipe/gates/paths.py"
+    },
+    {
+      "id": "MC-TQ-34",
+      "title": "Patch gate tests",
+      "target_file": "tests/gates/test_paths_gate.py"
+    },
+    {
+      "id": "MC-TQ-35",
+      "title": "Sparse worktree factory for LOW tier",
+      "target_file": "src/pipe/orchestrator/worktree.py"
+    },
+    {
+      "id": "MC-TQ-36",
+      "title": "Guest receipt verification",
+      "target_file": "src/pipe/gates/receipts.py"
+    },
+    {
+      "id": "MC-TQ-37",
+      "title": "verify_commit_receipts hook for gitmaster",
+      "target_file": "src/pipe/gates/receipts.py"
+    },
+    {
+      "id": "MC-TQ-38",
+      "title": "Receipt gate tests",
+      "target_file": "tests/gates/test_receipts.py"
+    },
+    {
+      "id": "MC-TQ-39",
+      "title": "Frame codec shared by host and guest",
+      "target_file": "C:/__CoChem/daemons/model_gateway/frames.py"
+    },
+    {
+      "id": "MC-TQ-40",
+      "title": "Host broker config loader",
+      "target_file": "C:/__CoChem/daemons/model_gateway/broker_config.py"
+    },
+    {
+      "id": "MC-TQ-41",
+      "title": "ClaudeCliLock host-wide mutex",
+      "target_file": "C:/__CoChem/daemons/model_gateway/claude_cli_lock.py"
+    },
+    {
+      "id": "MC-TQ-42",
+      "title": "ClaudeCliLock multi-process tests",
+      "target_file": "C:/__CoChem/tests/test_claude_cli_lock.py"
+    },
+    {
+      "id": "MC-TQ-43",
+      "title": "win_job.py: Win32 constants, structures and prototypes",
+      "target_file": "C:/__CoChem/daemons/model_gateway/win_job.py"
+    },
+    {
+      "id": "MC-TQ-44",
+      "title": "KillOnCloseJob: suspended spawn, assign, terminate",
+      "target_file": "C:/__CoChem/daemons/model_gateway/win_job.py"
+    },
+    {
+      "id": "MC-TQ-45",
+      "title": "Job Object tests",
+      "target_file": "C:/__CoChem/tests/test_win_job.py"
+    },
+    {
+      "id": "MC-TQ-46",
+      "title": "Host receipt signing",
+      "target_file": "C:/__CoChem/daemons/model_gateway/receipts.py"
+    },
+    {
+      "id": "MC-TQ-47",
+      "title": "Persona lint",
+      "target_file": "C:/__CoChem/daemons/model_gateway/persona_lint.py"
+    },
+    {
+      "id": "MC-TQ-48",
+      "title": "Storm guard",
+      "target_file": "C:/__CoChem/daemons/model_gateway/storm_guard.py"
+    },
+    {
+      "id": "MC-TQ-49",
+      "title": "ClaudeInvoker: types, constructor, env sanitization, version pin",
+      "target_file": "C:/__CoChem/daemons/model_gateway/gateway_types.py"
+    },
+    {
+      "id": "MC-TQ-50",
+      "title": "ClaudeInvoker.invoke: lock, sandbox, stdin delivery, timeout",
+      "target_file": "C:/__CoChem/daemons/model_gateway/claude_invoker.py"
+    },
+    {
+      "id": "MC-TQ-51",
+      "title": "ClaudeInvoker._classify and parse_reset_ms",
+      "target_file": "C:/__CoChem/daemons/model_gateway/claude_invoker.py"
+    },
+    {
+      "id": "MC-TQ-52",
+      "title": "CLI fixtures and invoker tests",
+      "target_file": "C:/__CoChem/tests/test_claude_invoker.py"
+    },
+    {
+      "id": "MC-TQ-53",
+      "title": "Host-side Fable weekly cap tracker",
+      "target_file": "C:/__CoChem/daemons/model_gateway/fable_cap.py"
+    },
+    {
+      "id": "MC-TQ-54",
+      "title": "Lane base and ClaudeLane priority executor",
+      "target_file": "C:/__CoChem/daemons/model_gateway/lanes.py"
+    },
+    {
+      "id": "MC-TQ-55",
+      "title": "AgyLane adapter",
+      "target_file": "C:/__CoChem/daemons/model_gateway/lanes.py"
+    },
+    {
+      "id": "MC-TQ-56",
+      "title": "OllamaLane adapter",
+      "target_file": "C:/__CoChem/daemons/model_gateway/lanes.py"
+    },
+    {
+      "id": "MC-TQ-57",
+      "title": "Gateway server: AF_HYPERV listener and connection handling",
+      "target_file": "C:/__CoChem/daemons/model_gateway/gateway_server.py"
+    },
+    {
+      "id": "MC-TQ-58",
+      "title": "Gateway dispatcher: validation, authorization, status, logging",
+      "target_file": "C:/__CoChem/daemons/model_gateway/dispatcher.py"
+    },
+    {
+      "id": "MC-TQ-59",
+      "title": "Gateway installer script",
+      "target_file": "C:/__CoChem/daemons/model_gateway/install_gateway.ps1"
+    },
+    {
+      "id": "MC-TQ-60",
+      "title": "VM gateway client",
+      "target_file": "src/pipe/orchestrator/gateway_client.py"
+    },
+    {
+      "id": "MC-TQ-61",
+      "title": "Gateway client and server loopback tests",
+      "target_file": "tests/queue/test_gateway_client.py"
+    },
+    {
+      "id": "MC-TQ-62",
+      "title": "Quota config loader and ledger recording",
+      "target_file": "src/pipe/sentinel/quota_ledger.py"
+    },
+    {
+      "id": "MC-TQ-63",
+      "title": "Rolling-window utilization",
+      "target_file": "src/pipe/sentinel/quota_ledger.py"
+    },
+    {
+      "id": "MC-TQ-64",
+      "title": "QuotaSentinel: constructor, backoff, state function, evaluate_pool",
+      "target_file": "src/pipe/sentinel/quota_sentinel.py"
+    },
+    {
+      "id": "MC-TQ-65",
+      "title": "QuotaSentinel.on_rate_limit with attempt preservation",
+      "target_file": "src/pipe/sentinel/quota_sentinel.py"
+    },
+    {
+      "id": "MC-TQ-66",
+      "title": "QuotaSentinel.tick: transitions, throttle pause, resume",
+      "target_file": "src/pipe/sentinel/quota_sentinel.py"
+    },
+    {
+      "id": "MC-TQ-67",
+      "title": "Fable cap check and sentinel daemon loop",
+      "target_file": "src/pipe/sentinel/quota_sentinel.py"
+    },
+    {
+      "id": "MC-TQ-68",
+      "title": "Quota state machine tests",
+      "target_file": "tests/queue/test_quota_states.py"
+    },
+    {
+      "id": "MC-TQ-69",
+      "title": "Attempt preservation tests",
+      "target_file": "tests/queue/test_attempt_preservation.py"
+    },
+    {
+      "id": "MC-TQ-70",
+      "title": "Worker daemon: bootstrap, registration and main loop",
+      "target_file": "src/pipe/orchestrator/worker_loop.py"
+    },
+    {
+      "id": "MC-TQ-71",
+      "title": "Worker daemon: invoke step and outcome handling",
+      "target_file": "src/pipe/orchestrator/worker_loop.py"
+    },
+    {
+      "id": "MC-TQ-72",
+      "title": "Worker daemon: apply patch, scope gate, verify and close",
+      "target_file": "src/pipe/orchestrator/worker_loop.py"
+    },
+    {
+      "id": "MC-TQ-73",
+      "title": "End-to-end happy path per matrix cell",
+      "target_file": "tests/e2e/test_matrix_cells.py"
+    },
+    {
+      "id": "MC-TQ-74",
+      "title": "MCP schemas",
+      "target_file": "src/pipe/mcp/schemas.py"
+    },
+    {
+      "id": "MC-TQ-75",
+      "title": "MCP server: task read tools",
+      "target_file": "src/pipe/mcp/queue_mcp_server.py"
+    },
+    {
+      "id": "MC-TQ-76",
+      "title": "MCP server: quota and gateway status tools",
+      "target_file": "src/pipe/mcp/queue_mcp_server.py"
+    },
+    {
+      "id": "MC-TQ-77",
+      "title": "MCP server: queue_submit and operator tools with token auth",
+      "target_file": "src/pipe/mcp/queue_mcp_server.py"
+    },
+    {
+      "id": "MC-TQ-78",
+      "title": "MCP server tests",
+      "target_file": "tests/mcp/test_queue_mcp_server.py"
+    },
+    {
+      "id": "MC-TQ-79",
+      "title": "Fault injection suite",
+      "target_file": "tests/fault/test_fault_injection.py"
+    },
+    {
+      "id": "MC-TQ-80",
+      "title": "72 h subprocess-storm soak harness",
+      "target_file": "C:/__CoChem/tests/soak/soak_runner.py"
+    },
+    {
+      "id": "MC-DSP-01",
+      "title": "Implement DSPPluginBase Abstract Interface (SRS section 6) alongside IDomainPipeline",
+      "target_file": "src/cochem/dsp/base.py"
+    },
+    {
+      "id": "MC-DSP-08",
+      "title": "Implement Forbidden Token and Mock Import Detectors",
+      "target_file": "src/cochem/dsp/forge/linter.py"
+    },
+    {
+      "id": "MC-DSP-10",
+      "title": "Implement Quantum Chemistry Runner Base",
+      "target_file": "src/cochem/dsp/forge/qc_runner.py"
+    },
+    {
+      "id": "MC-DSP-11",
+      "title": "Implement PySCF RHF Ab-Initio Execution Engine",
+      "target_file": "src/cochem/dsp/forge/pyscf_engine.py"
+    },
+    {
+      "id": "MC-DSP-12",
+      "title": "Implement XTB GFN2 Semi-Empirical Engine",
+      "target_file": "src/cochem/dsp/forge/xtb_engine.py"
+    },
+    {
+      "id": "MC-DSP-13",
+      "title": "Implement ASE EMT Physical Fallback Calculator",
+      "target_file": "src/cochem/dsp/forge/ase_engine.py"
+    }
+  ]
+}

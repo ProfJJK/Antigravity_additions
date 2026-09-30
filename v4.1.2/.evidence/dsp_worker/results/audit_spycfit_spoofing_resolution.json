@@ -1,0 +1,12 @@
+{
+  "task_id": "audit_spycfit_spoofing_resolution",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733281.6674097,
+  "finished_at": 1790733281.6674926,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

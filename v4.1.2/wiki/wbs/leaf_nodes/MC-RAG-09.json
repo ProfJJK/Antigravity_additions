@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-09",
+  "title": "Implement 400-Line Chapter Length Gate",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/corpus.py",
+  "chunk_start": 136,
+  "chunk_end": 180,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-005: Every SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines. Traceability test: test_f05_srs_chapters_strictly_less_than_400_lines (tests/test_stage1_srs_dag.py).",
+  "dependencies": [
+    "MC-RAG-08",
+    "MC-RAG-01"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_005\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-09] SRS-412-06-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-005: Every\n# SPEC: SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines.\n# SPEC: Traceability test: test_f05_srs_chapters_strictly_less_than_400_lines\n# SPEC: (tests/test_stage1_srs_dag.py).\n# src/cochem/knowledge/corpus.py:141 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:142 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:143 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:144 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:145 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:146 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:147 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:148 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:149 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:150 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:151 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:152 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:153 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:154 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:155 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:156 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:157 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:158 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:159 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:160 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:161 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:162 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:163 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:164 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:165 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:166 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:167 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:168 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:169 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:170 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:171 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:172 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:173 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:174 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:175 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:176 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:177 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:178 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:179 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:180 [MC-RAG-09]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-005"
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-02",
+  "title": "Author Binary Header, Process Liveness and Process Tree Tests",
+  "domain": "watchdog_sre",
+  "target_file": "tests/test_ch08_watchdog_sre.py",
+  "chunk_start": 51,
+  "chunk_end": 100,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_verify_database_binary_header_* for INTERFACE:verify_database_binary_header (verify_database_binary_header(db_path: Path) -> bool.); test_ch08_check_process_liveness_* for INTERFACE:check_process_liveness (check_process_liveness(pid: int) -> bool.); test_ch08_fr_003_* for SRS-412-08-FR-003 (Matrix 1 (Process Death) shall inspect OS process trees via `psutil` to detect dead, hung, or orphaned worker processes.); test_ch08_fr_005_* for SRS-412-08-FR-005 (Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite format 3\\x00\"`.). Section 9 obligations: Unit test verifies binary header check matches `b\"SQLite format 3\\x00\"`. Test verifies process tree tracking cleanly identifies exited subprocess handles.",
+  "dependencies": [
+    "MC-SRE-01"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-02] TESTS:probes\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_verify_database_binary_header_* for INTERFACE:verify_database_binary_header\n# SPEC: (verify_database_binary_header(db_path: Path) -> bool.); test_ch08_check_process_liveness_* for\n# SPEC: INTERFACE:check_process_liveness (check_process_liveness(pid: int) -> bool.); test_ch08_fr_003_*\n# SPEC: for SRS-412-08-FR-003 (Matrix 1 (Process Death) shall inspect OS process trees via `psutil` to\n# SPEC: detect dead, hung, or orphaned worker processes.); test_ch08_fr_005_* for SRS-412-08-FR-005\n# SPEC: (Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes\n# SPEC: `b\"SQLite format 3\\x00\"`.). Section 9 obligations: Unit test verifies binary header check\n# SPEC: matches `b\"SQLite format 3\\x00\"`. Test verifies process tree tracking cleanly identifies exited\n# SPEC: subprocess handles.\n# tests/test_ch08_watchdog_sre.py:63 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:64 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:65 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:66 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:67 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:68 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:69 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:70 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:71 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:72 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:73 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:74 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:75 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:76 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:77 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:78 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:79 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:80 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:81 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:82 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:83 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:84 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:85 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:86 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:87 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:88 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:89 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:90 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:91 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:92 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:93 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:94 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:95 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:96 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:97 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:98 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:99 [MC-SRE-02]\n# tests/test_ch08_watchdog_sre.py:100 [MC-SRE-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "INTERFACE:verify_database_binary_header",
+      "INTERFACE:check_process_liveness",
+      "SRS-412-08-FR-003",
+      "SRS-412-08-FR-005"
+    ]
+  }
+}

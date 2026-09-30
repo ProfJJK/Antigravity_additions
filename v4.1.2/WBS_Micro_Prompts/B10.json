@@ -1,0 +1,77 @@
+{
+  "batch_id": "B10",
+  "task_count": 3,
+  "tasks": [
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-32",
+      "title": "Implement FastMCP Tools for DSP Lifecycle",
+      "domain": "dsp_toolkit",
+      "target_file": "src/cochem/dsp/toolkit/mcp_server.py",
+      "chunk_start": 70,
+      "chunk_end": 120,
+      "line_delta": 51,
+      "instructions": "Implement trigger_dsp_pipeline, get_dsp_status, and list_dsp_pipelines tools.",
+      "dependencies": [
+        "MC-DSP-31"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/toolkit/mcp_server.py>>>\n# Code context line 70 for MC-DSP-32\n# Code context line 71 for MC-DSP-32\n# Code context line 72 for MC-DSP-32\n# Code context line 73 for MC-DSP-32\n# Code context line 74 for MC-DSP-32\n# Code context line 75 for MC-DSP-32\n# Code context line 76 for MC-DSP-32\n# Code context line 77 for MC-DSP-32\n# Code context line 78 for MC-DSP-32\n# Code context line 79 for MC-DSP-32\n# Code context line 80 for MC-DSP-32\n# Code context line 81 for MC-DSP-32\n# Code context line 82 for MC-DSP-32\n# Code context line 83 for MC-DSP-32\n# Code context line 84 for MC-DSP-32\n# Code context line 85 for MC-DSP-32\n# Code context line 86 for MC-DSP-32\n# Code context line 87 for MC-DSP-32\n# Code context line 88 for MC-DSP-32\n# Code context line 89 for MC-DSP-32\n# Code context line 90 for MC-DSP-32\n# Code context line 91 for MC-DSP-32\n# Code context line 92 for MC-DSP-32\n# Code context line 93 for MC-DSP-32\n# Code context line 94 for MC-DSP-32\n# Code context line 95 for MC-DSP-32\n# Code context line 96 for MC-DSP-32\n# Code context line 97 for MC-DSP-32\n# Code context line 98 for MC-DSP-32\n# Code context line 99 for MC-DSP-32\n# Code context line 100 for MC-DSP-32\n# Code context line 101 for MC-DSP-32\n# Code context line 102 for MC-DSP-32\n# Code context line 103 for MC-DSP-32\n# Code context line 104 for MC-DSP-32\n# Code context line 105 for MC-DSP-32\n# Code context line 106 for MC-DSP-32\n# Code context line 107 for MC-DSP-32\n# Code context line 108 for MC-DSP-32\n# Code context line 109 for MC-DSP-32\n# Code context line 110 for MC-DSP-32\n# Code context line 111 for MC-DSP-32\n# Code context line 112 for MC-DSP-32\n# Code context line 113 for MC-DSP-32\n# Code context line 114 for MC-DSP-32\n# Code context line 115 for MC-DSP-32\n# Code context line 116 for MC-DSP-32\n# Code context line 117 for MC-DSP-32\n# Code context line 118 for MC-DSP-32\n# Code context line 119 for MC-DSP-32\n# Code context line 120 for MC-DSP-32\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-33",
+      "title": "Implement Antigravity Skill Manifest Generator",
+      "domain": "dsp_toolkit",
+      "target_file": "src/cochem/dsp/toolkit/skill_gen.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement generate_skill_manifest() outputting standard SKILL.md with YAML frontmatter.",
+      "dependencies": [
+        "MC-DSP-32"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f20_mcp_integration_verifies_agent_skill_manifest_bindings",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/toolkit/skill_gen.py>>>\n# Code context line 15 for MC-DSP-33\n# Code context line 16 for MC-DSP-33\n# Code context line 17 for MC-DSP-33\n# Code context line 18 for MC-DSP-33\n# Code context line 19 for MC-DSP-33\n# Code context line 20 for MC-DSP-33\n# Code context line 21 for MC-DSP-33\n# Code context line 22 for MC-DSP-33\n# Code context line 23 for MC-DSP-33\n# Code context line 24 for MC-DSP-33\n# Code context line 25 for MC-DSP-33\n# Code context line 26 for MC-DSP-33\n# Code context line 27 for MC-DSP-33\n# Code context line 28 for MC-DSP-33\n# Code context line 29 for MC-DSP-33\n# Code context line 30 for MC-DSP-33\n# Code context line 31 for MC-DSP-33\n# Code context line 32 for MC-DSP-33\n# Code context line 33 for MC-DSP-33\n# Code context line 34 for MC-DSP-33\n# Code context line 35 for MC-DSP-33\n# Code context line 36 for MC-DSP-33\n# Code context line 37 for MC-DSP-33\n# Code context line 38 for MC-DSP-33\n# Code context line 39 for MC-DSP-33\n# Code context line 40 for MC-DSP-33\n# Code context line 41 for MC-DSP-33\n# Code context line 42 for MC-DSP-33\n# Code context line 43 for MC-DSP-33\n# Code context line 44 for MC-DSP-33\n# Code context line 45 for MC-DSP-33\n# Code context line 46 for MC-DSP-33\n# Code context line 47 for MC-DSP-33\n# Code context line 48 for MC-DSP-33\n# Code context line 49 for MC-DSP-33\n# Code context line 50 for MC-DSP-33\n# Code context line 51 for MC-DSP-33\n# Code context line 52 for MC-DSP-33\n# Code context line 53 for MC-DSP-33\n# Code context line 54 for MC-DSP-33\n# Code context line 55 for MC-DSP-33\n# Code context line 56 for MC-DSP-33\n# Code context line 57 for MC-DSP-33\n# Code context line 58 for MC-DSP-33\n# Code context line 59 for MC-DSP-33\n# Code context line 60 for MC-DSP-33\n# Code context line 61 for MC-DSP-33\n# Code context line 62 for MC-DSP-33\n# Code context line 63 for MC-DSP-33\n# Code context line 64 for MC-DSP-33\n# Code context line 65 for MC-DSP-33\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-34",
+      "title": "Implement DSP Packaging and Ecosystem Validation Suite",
+      "domain": "dsp_toolkit",
+      "target_file": "src/cochem/dsp/toolkit/package.py",
+      "chunk_start": 20,
+      "chunk_end": 80,
+      "line_delta": 61,
+      "instructions": "Implement validate_dsp_package() checking interfaces, schemas, and test obligations.",
+      "dependencies": [
+        "MC-DSP-33"
+      ],
+      "verification_command": "pytest tests/test_victory_audit.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/toolkit/package.py>>>\n# Code context line 20 for MC-DSP-34\n# Code context line 21 for MC-DSP-34\n# Code context line 22 for MC-DSP-34\n# Code context line 23 for MC-DSP-34\n# Code context line 24 for MC-DSP-34\n# Code context line 25 for MC-DSP-34\n# Code context line 26 for MC-DSP-34\n# Code context line 27 for MC-DSP-34\n# Code context line 28 for MC-DSP-34\n# Code context line 29 for MC-DSP-34\n# Code context line 30 for MC-DSP-34\n# Code context line 31 for MC-DSP-34\n# Code context line 32 for MC-DSP-34\n# Code context line 33 for MC-DSP-34\n# Code context line 34 for MC-DSP-34\n# Code context line 35 for MC-DSP-34\n# Code context line 36 for MC-DSP-34\n# Code context line 37 for MC-DSP-34\n# Code context line 38 for MC-DSP-34\n# Code context line 39 for MC-DSP-34\n# Code context line 40 for MC-DSP-34\n# Code context line 41 for MC-DSP-34\n# Code context line 42 for MC-DSP-34\n# Code context line 43 for MC-DSP-34\n# Code context line 44 for MC-DSP-34\n# Code context line 45 for MC-DSP-34\n# Code context line 46 for MC-DSP-34\n# Code context line 47 for MC-DSP-34\n# Code context line 48 for MC-DSP-34\n# Code context line 49 for MC-DSP-34\n# Code context line 50 for MC-DSP-34\n# Code context line 51 for MC-DSP-34\n# Code context line 52 for MC-DSP-34\n# Code context line 53 for MC-DSP-34\n# Code context line 54 for MC-DSP-34\n# Code context line 55 for MC-DSP-34\n# Code context line 56 for MC-DSP-34\n# Code context line 57 for MC-DSP-34\n# Code context line 58 for MC-DSP-34\n# Code context line 59 for MC-DSP-34\n# Code context line 60 for MC-DSP-34\n# Code context line 61 for MC-DSP-34\n# Code context line 62 for MC-DSP-34\n# Code context line 63 for MC-DSP-34\n# Code context line 64 for MC-DSP-34\n# Code context line 65 for MC-DSP-34\n# Code context line 66 for MC-DSP-34\n# Code context line 67 for MC-DSP-34\n# Code context line 68 for MC-DSP-34\n# Code context line 69 for MC-DSP-34\n# Code context line 70 for MC-DSP-34\n# Code context line 71 for MC-DSP-34\n# Code context line 72 for MC-DSP-34\n# Code context line 73 for MC-DSP-34\n# Code context line 74 for MC-DSP-34\n# Code context line 75 for MC-DSP-34\n# Code context line 76 for MC-DSP-34\n# Code context line 77 for MC-DSP-34\n# Code context line 78 for MC-DSP-34\n# Code context line 79 for MC-DSP-34\n# Code context line 80 for MC-DSP-34\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    }
+  ],
+  "affected_files": [
+    "src/cochem/dsp/toolkit/mcp_server.py",
+    "src/cochem/dsp/toolkit/package.py",
+    "src/cochem/dsp/toolkit/skill_gen.py"
+  ]
+}

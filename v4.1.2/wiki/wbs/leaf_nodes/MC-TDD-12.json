@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-12",
+  "title": "Implement Fable Root Cause Triage Classifier",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/research.py",
+  "chunk_start": 101,
+  "chunk_end": 150,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-005: Claude Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and Library Deficiencies.",
+  "dependencies": [
+    "MC-TDD-11",
+    "MC-TDD-03"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_005\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-12] SRS-412-05-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-005: Claude\n# SPEC: Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and\n# SPEC: Library Deficiencies.\n# src/cochem/tdd_pivot/research.py:105 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:106 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:107 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:108 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:109 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:110 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:111 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:112 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:113 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:114 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:115 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:116 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:117 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:118 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:119 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:120 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:121 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:122 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:123 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:124 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:125 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:126 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:127 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:128 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:129 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:130 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:131 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:132 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:133 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:134 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:135 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:136 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:137 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:138 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:139 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:140 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:141 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:142 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:143 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:144 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:145 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:146 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:147 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:148 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:149 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:150 [MC-TDD-12]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-005"
+    ]
+  }
+}

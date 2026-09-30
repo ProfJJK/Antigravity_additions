@@ -1,0 +1,56 @@
+{
+  "id": "1b3b8c48-415f-4307-90db-31f70c1f41ff",
+  "name": "Educator",
+  "projectResources": {
+    "resources": [
+      {
+        "folderUri": "file:///d%3A/Gdrive/_CU%20Teaching"
+      },
+      {
+        "folderUri": "file:///d%3A/Gdrive/_APSU%20Teaching"
+      },
+      {
+        "folderUri": "file:///d%3A/Gdrive/_Research"
+      },
+      {
+        "folderUri": "file:///d%3A/Gdrive/_CV"
+      },
+      {
+        "folderUri": "file:///c%3A/Users/ansac/Videos"
+      },
+      {
+        "folderUri": "file:///c%3A/Users/ansac/OneDrive/Pictures"
+      }
+    ]
+  },
+  "permissionGrants": {
+    "permissionGrants": {
+      "allow": [
+        "read_url(https://www.cumberland.edu/master-of-science-in-nursing-psychiatric-mental-health-nurse-practitioner/?utm_source=google&utm_medium=cpc&utm_campaign=22869633099&utm_id=22869633099&utm_content=768402107039&utm_term=cumberland%20university&utm_adgroupid=178814075890&utm_matchtype=b&utm_network=g&utm_device=c&utm_targetid=kwd-44345081&gad_source=1&gad_campaignid=22869633099&gbraid=0AAAAAC2AyaB61HgUY3Qj0mi43NPz71P2X&gclid=Cj0KCQjwp9vTBhCWARIsANaUrjsmjEOxO_pkAok1P5mlSIM4XLChdlPQCa0Htp5RL-4m6FX7izAPLJ0aAgZAEALw_wcB)",
+        "read_url(https://www.google.com/)",
+        "read_url(https://www.youtube.com/)",
+        "read_url(https://www.youtube.com/@ProfessorKlaassen)",
+        "read_url(https://www.youtube.com/playlist?list=PLD0D5F297744AD515)",
+        "read_url(https://www.youtube.com/watch?v=2KoLnIwoZKU&list=PLD0D5F297744AD515)",
+        "read_url(https://www.nasa.gov/multimedia/)",
+        "write_file(D:\\Gdrive\\_CU Teaching)",
+        "write_file(D:\\Gdrive\\_APSU Teaching)",
+        "read_file(D:\\Gdrive\\__Books)",
+        "read_file(D:\\Gdrive\\_APSU Teaching)",
+        "read_file(D:\\Gdrive\\_CU Teaching)",
+        "read_file(D:\\Gdrive\\_Manuals CU)",
+        "read_file(D:\\Gdrive\\_Publications\\LLM Accessed)",
+        "read_file(D:\\Gdrive\\Read)",
+        "read_file(D:\\Gdrive\\_LLM)"
+      ]
+    }
+  },
+  "settings": {
+    "fileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
+    "sandboxMode": false,
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO"
+  },
+  "updatedAt": "2026-08-14T14:50:55.740134800Z",
+  "isWorkspaceOnly": false
+}

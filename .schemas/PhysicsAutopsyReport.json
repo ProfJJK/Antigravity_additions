@@ -1,0 +1,37 @@
+{
+  "additionalProperties": false,
+  "description": "Auditor -> Debugger: localized failure diagnosis.",
+  "properties": {
+    "failing_file_line": {
+      "pattern": "^.+:\\d+$",
+      "title": "Failing File Line",
+      "type": "string"
+    },
+    "failure_stage": {
+      "enum": [
+        "SYNTAX",
+        "RUNTIME",
+        "TEST_FAIL",
+        "SPOOFING"
+      ],
+      "title": "Failure Stage",
+      "type": "string"
+    },
+    "fix_vector": {
+      "title": "Fix Vector",
+      "type": "string"
+    },
+    "hypothesis": {
+      "title": "Hypothesis",
+      "type": "string"
+    }
+  },
+  "required": [
+    "failure_stage",
+    "failing_file_line",
+    "hypothesis",
+    "fix_vector"
+  ],
+  "title": "PhysicsAutopsyReport",
+  "type": "object"
+}

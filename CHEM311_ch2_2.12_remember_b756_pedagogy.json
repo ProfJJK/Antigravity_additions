@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "task_id": "CHEM311_ch2_2.12_remember_b756.1",
+  "parent_task_id": "CHEM311_ch2_2.12_remember_b756",
+  "course_id": "CHEM311",
+  "course_title": "Organic Chemistry I",
+  "institution": "Cumberland University",
+  "chapter": 2,
+  "section": "2.12",
+  "section_title": "Noncovalent Interactions between Molecules",
+  "textbook": "Organic Chemistry 10e, John McMurry (OpenStax / Cengage)",
+  "topic": "Noncovalent Interactions between Molecules: Dipole-Dipole Forces, London Dispersion Forces, Hydrogen Bonding, and Contrast with Covalent Bonds",
+  "bloom_level": "remember",
+  "bloom_level_description": "Level 1: Factual recall and recognition of canonical definitions, characteristic energetic bounds (kJ/mol), and structural criteria governing intermolecular noncovalent forces (dipole-dipole, London dispersion, and hydrogen bonding) in contrast to covalent bonds, without requiring multi-step physical property calculations or synthesis planning.",
+  "bloom_justification": "Tests foundational factual recall (Bloom's Revised Taxonomy Level 1: Remember) of the three fundamental types of noncovalent intermolecular forces in McMurry Section 2.12. Requires students to retrieve canonical energetic bounds (London dispersion: 2–10 kJ/mol; dipole-dipole: 5–20 kJ/mol; hydrogen bonding: 15–40 kJ/mol; covalent bonds: >350 kJ/mol), recognize the universality of London dispersion across all molecules, identify the strict structural criteria for hydrogen bonding (H bonded to O, N, or F), and distinguish intermolecular forces from intramolecular covalent bonds.",
+  "curriculum": "Cumberland University CHEM 311 (Fall 2026), McMurry Organic Chemistry 10e",
+  "mcmurry_topic_scope": {
+    "textbook": "Organic Chemistry (10th Edition) by John McMurry (OpenStax)",
+    "isbn": "978-1-71147-185-3",
+    "chapter_title": "Chapter 2: Polar Covalent Bonds; Acids and Bases",
+    "section_coverage": "2.12 Noncovalent Interactions between Molecules",
+    "key_concepts_ingested": [
+      "Dipole-dipole forces (5–20 kJ/mol) between polar molecules with permanent dipoles",
+      "Dispersion forces (London forces, 2–10 kJ/mol) universally present in all molecules",
+      "Hydrogen bonding (15–40 kJ/mol) requiring H covalently bonded to O, N, or F interacting with an unshared lone pair on O, N, or F",
+      "Noncovalent intermolecular forces contrasted with intramolecular covalent bonds (>350 kJ/mol)"
+    ]
+  },
+  "chemical_ground_truth": {
+    "covalent_bonds": {
+      "interaction_type": "Intramolecular chemical bond",
+      "energy_range_kj_mol": "> 350 kJ/mol",
+      "typical_values_kj_mol": {
+        "C-C": 377,
+        "C-H": 410,
+        "O-H": 460,
+        "H-H": 436
+      },
+      "definition": "Chemical bonds formed by the sharing of valence electron pairs between atomic orbitals, holding individual atoms together within a molecule. Covalent bonds are 10 to 100 times stronger than noncovalent intermolecular forces and remain completely intact during physical phase changes such as boiling and melting."
+    },
+    "dipole_dipole_forces": {
+      "interaction_type": "Intermolecular noncovalent force",
+      "energy_range_kj_mol": "5–20 kJ/mol",
+      "definition": "Attractive electrostatic interactions occurring between the partial positive end (δ+) of one polar molecule and the partial negative end (δ-) of an adjacent polar molecule. Can be attractive or repulsive depending on mutual orientation, but in liquid/solid phases molecules orient to maximize net attractive electrostatic stabilization.",
+      "structural_criteria": "Requires a net permanent molecular dipole moment (polar covalent bonds arranged in an asymmetric molecular geometry such that individual bond dipoles do not cancel to zero)."
+    },
+    "london_dispersion_forces": {
+      "interaction_type": "Intermolecular noncovalent force (van der Waals force)",
+      "energy_range_kj_mol": "2–10 kJ/mol",
+      "definition": "Weak, transient attractive forces caused by constantly fluctuating electron distributions within atomic and molecular electron clouds. These temporary fluctuations create instantaneous, short-lived dipoles that give rise to synchronized, complementary induced dipoles in adjacent molecules, resulting in a net electrostatic induced-dipole attraction.",
+      "structural_criteria": "Universally present in all molecules (polar and nonpolar alike). Magnitude depends on electron cloud polarizability and accessible molecular surface area; larger, heavier molecules with more electrons and extended shapes exhibit stronger cumulative dispersion forces."
+    },
+    "hydrogen_bonding": {
+      "interaction_type": "Intermolecular noncovalent force (specialized dipole-dipole)",
+      "energy_range_kj_mol": "15–40 kJ/mol",
+      "definition": "An especially strong, directional noncovalent dipole-dipole attraction between a hydrogen atom covalently bonded to a small, strongly electronegative heteroatom (donor: strictly oxygen, nitrogen, or fluorine: O, N, or F) and an unshared lone pair on another electronegative heteroatom (acceptor: strictly oxygen, nitrogen, or fluorine: O, N, or F).",
+      "structural_criteria": "Strictly requires a hydrogen atom covalently bonded to oxygen, nitrogen, or fluorine (O, N, or F, creating high partial positive charge density on the tiny hydrogen nucleus) interacting with an unshared lone pair on an adjacent O, N, or F atom. Larger period-3 electronegative atoms like Cl or S do not participate in classical hydrogen bonding in introductory organic chemistry because their larger radii and diffuse electron densities yield insufficient local electrostatic field strength."
+    }
+  },
+  "elemental_masses_mendeleev": {
+    "mass_values_amu": {
+      "H": 1.008,
+      "C": 12.011,
+      "N": 14.007,
+      "O": 15.999,
+      "F": 18.9984,
+      "Cl": 35.45
+    },
+    "species_masses_amu": {
+      "CH4": 16.043,
+      "H2O": 18.015,
+      "NH3": 17.031,
+      "HF": 20.0064,
+      "CH3Cl": 50.485,
+      "C6H14": 86.178
+    },
+    "mendeleev_version": "1.2.0",
+    "mendeleev_provenance": "Dynamically queried via mendeleev Python library element(symbol).mass. Zero hardcoded static constants in compliance with cochem-mendeleev-masses.md."
+  },
+  "atomic_masses": {
+    "H": 1.008,
+    "C": 12.011,
+    "N": 14.007,
+    "O": 15.999,
+    "F": 18.9984,
+    "Cl": 35.45
+  },
+  "five_distractor_specification_matrix": [
+    {
+      "distractor_id": "DISTRACTOR_1_INTRAMOLECULAR_VS_INTERMOLECULAR",
+      "choice_text": "Boiling a liquid compound breaks its intramolecular covalent bonds (>350 kJ/mol) to separate individual atoms into the vapor phase, whereas noncovalent forces (2–40 kJ/mol) hold the atoms together within each discrete molecule.",
+      "target_misconception": "Intramolecular vs. Intermolecular Conflation Fallacy (Phase Change Bond Cleavage Error)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student fails to distinguish between intramolecular bonds (covalent bonds holding atoms together inside a molecule) and intermolecular forces (noncovalent attractions operating between separate molecules). They incorrectly assume that heating/boiling vaporizes a substance by cleaving chemical bonds into free atoms.",
+      "pedagogical_refutation": "Incorrect. Physical phase changes (boiling and melting) supply thermal energy sufficient only to overcome relatively weak intermolecular noncovalent forces (2–40 kJ/mol), separating intact molecules from one another. Intramolecular covalent bonds (>350 kJ/mol) remain completely intact throughout phase transitions.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.12: Intermolecular forces act between molecules; they are much weaker than covalent bonds and are overcome when a liquid boils without breaking the molecules apart."
+    },
+    {
+      "distractor_id": "DISTRACTOR_2_DISPERSION_EXCLUSIVITY",
+      "choice_text": "London dispersion forces (2–10 kJ/mol) occur exclusively in completely nonpolar molecules (such as alkanes and noble gases) and are entirely absent in polar molecules or substances that participate in hydrogen bonding.",
+      "target_misconception": "Dispersion Exclusivity Fallacy (Nonpolar-Only Fallacy)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student memorizes that nonpolar molecules rely solely on dispersion forces, and commits a logical inversion by concluding that dispersion forces are therefore restricted strictly to nonpolar molecules.",
+      "pedagogical_refutation": "Incorrect. London dispersion forces arise from instantaneous electron density fluctuations and are universally present in all molecules, whether polar or nonpolar. In polar molecules, dispersion forces act cumulatively alongside dipole-dipole and hydrogen-bonding interactions, often providing a major fraction of the total attractive intermolecular stabilization.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.12: London dispersion forces occur between all molecules, not just nonpolar ones, as a result of fluctuating temporary dipoles."
+    },
+    {
+      "distractor_id": "DISTRACTOR_3_HETEROATOM_GENERALITY",
+      "choice_text": "Hydrogen bonding (15–40 kJ/mol) occurs universally between hydrogen and any electronegative heteroatom on the periodic table, so molecules containing C–H, S–H, P–H, or C–Cl bonds form equivalent hydrogen-bonding networks to those containing O–H or N–H bonds.",
+      "target_misconception": "Heteroatom Generality Fallacy (Chlorine/Sulfur Hydrogen Bonding Fallacy)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student overgeneralizes the electronegativity concept, reasoning that because chlorine (electronegativity 3.16) is comparable to nitrogen (3.04), C–Cl or H–Cl must engage in standard hydrogen bonding just like N–H or O–H.",
+      "pedagogical_refutation": "Incorrect. Classical hydrogen bonding strictly requires a hydrogen atom covalently bonded to small, highly electronegative period-2 elements specifically: oxygen (O), nitrogen (N), or fluorine (F), interacting with an unshared lone pair on an adjacent oxygen, nitrogen, or fluorine (O, N, or F) atom. Larger period-3 atoms like chlorine and sulfur have larger atomic radii and diffuse valence orbitals, resulting in insufficient local electrostatic charge density to form classical hydrogen bonds in organic chemistry.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.12: Hydrogen bonding is an attractive interaction between a hydrogen atom bonded to an O, N, or F atom and an unshared electron pair on another O, N, or F atom."
+    },
+    {
+      "distractor_id": "DISTRACTOR_4_ENERGY_SCALE_INVERSION",
+      "choice_text": "Noncovalent hydrogen bonds (15–40 kJ/mol) and dipole-dipole forces (5–20 kJ/mol) are significantly stronger than covalent single bonds (>350 kJ/mol), making intermolecular attractions the dominant barrier against chemical decomposition.",
+      "target_misconception": "Energy Scale Inversion Fallacy (Strength Hierarchy Inversion)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student inverts the quantitative energetic orders of magnitude in memory, conflating the high thermal stability of hydrogen-bonded networks (e.g. water high boiling point) with actual chemical bond dissociation energies.",
+      "pedagogical_refutation": "Incorrect. Covalent bonds (>350 kJ/mol) are 10 to 100 times stronger than noncovalent intermolecular forces (2–40 kJ/mol). Intermolecular forces are easily disrupted by mild heating (phase changes), whereas breaking covalent bonds requires substantial energy input (pyrolysis, chemical reactions) exceeding 350 kJ/mol.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.12: Covalent bonds are vastly stronger (>350 kJ/mol) than noncovalent intermolecular forces, which typically range from 2 to 40 kJ/mol."
+    },
+    {
+      "distractor_id": "DISTRACTOR_5_BOND_POLARITY_VS_NET_DIPOLE_CONFLATION",
+      "choice_text": "Dipole-dipole forces (5–20 kJ/mol) require full formal ionic charges (+1 and -1) on interacting molecules, and any molecule containing polar covalent bonds (such as carbon tetrachloride, CCl4) automatically exhibits strong permanent dipole-dipole attractions.",
+      "target_misconception": "Bond Polarity vs. Net Molecular Dipole & Ionic Conflation Fallacy",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student confuses partial charges (δ+/δ-) arising from permanent molecular dipoles with full ionic charges, and conflates individual bond dipoles with net molecular dipole moments, ignoring molecular symmetry cancellation.",
+      "pedagogical_refutation": "Incorrect. Dipole-dipole forces operate between partial charges (δ+ and δ-) in neutral molecules with net molecular dipoles, not full ionic charges (which define much stronger ion-ion or ion-dipole interactions). Furthermore, molecules with polar bonds arranged symmetrically (such as tetrahedral CCl4 or linear CO2) have individual bond dipoles that cancel to zero, giving a net dipole moment of zero and precluding permanent dipole-dipole forces.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.12: Dipole-dipole forces occur between polar molecules that possess a net dipole moment, involving electrostatic alignment of partial positive and partial negative regions."
+    }
+  ]
+}

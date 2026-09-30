@@ -1,0 +1,436 @@
+{
+  "batch_id": "B07",
+  "task_count": 19,
+  "tasks": [
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-42",
+      "title": "Implement SRE Health Check Polling Loop",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/health.py",
+      "chunk_start": 20,
+      "chunk_end": 65,
+      "line_delta": 46,
+      "instructions": "Implement poll_guest_health() loop with psutil process sampling and named pipe probe.",
+      "dependencies": [
+        "MC-HW-41"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_detects_and_recovers_stale_warden_pid",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/health.py>>>\n# Code context line 20 for MC-HW-42\n# Code context line 21 for MC-HW-42\n# Code context line 22 for MC-HW-42\n# Code context line 23 for MC-HW-42\n# Code context line 24 for MC-HW-42\n# Code context line 25 for MC-HW-42\n# Code context line 26 for MC-HW-42\n# Code context line 27 for MC-HW-42\n# Code context line 28 for MC-HW-42\n# Code context line 29 for MC-HW-42\n# Code context line 30 for MC-HW-42\n# Code context line 31 for MC-HW-42\n# Code context line 32 for MC-HW-42\n# Code context line 33 for MC-HW-42\n# Code context line 34 for MC-HW-42\n# Code context line 35 for MC-HW-42\n# Code context line 36 for MC-HW-42\n# Code context line 37 for MC-HW-42\n# Code context line 38 for MC-HW-42\n# Code context line 39 for MC-HW-42\n# Code context line 40 for MC-HW-42\n# Code context line 41 for MC-HW-42\n# Code context line 42 for MC-HW-42\n# Code context line 43 for MC-HW-42\n# Code context line 44 for MC-HW-42\n# Code context line 45 for MC-HW-42\n# Code context line 46 for MC-HW-42\n# Code context line 47 for MC-HW-42\n# Code context line 48 for MC-HW-42\n# Code context line 49 for MC-HW-42\n# Code context line 50 for MC-HW-42\n# Code context line 51 for MC-HW-42\n# Code context line 52 for MC-HW-42\n# Code context line 53 for MC-HW-42\n# Code context line 54 for MC-HW-42\n# Code context line 55 for MC-HW-42\n# Code context line 56 for MC-HW-42\n# Code context line 57 for MC-HW-42\n# Code context line 58 for MC-HW-42\n# Code context line 59 for MC-HW-42\n# Code context line 60 for MC-HW-42\n# Code context line 61 for MC-HW-42\n# Code context line 62 for MC-HW-42\n# Code context line 63 for MC-HW-42\n# Code context line 64 for MC-HW-42\n# Code context line 65 for MC-HW-42\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-43",
+      "title": "Implement Tier 1 Graceful Service Restart Trigger",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/restart_service.py",
+      "chunk_start": 15,
+      "chunk_end": 55,
+      "line_delta": 41,
+      "instructions": "Implement trigger_graceful_restart() sending SIGTERM via named pipe before escalation.",
+      "dependencies": [
+        "MC-HW-42"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/restart_service.py>>>\n# Code context line 15 for MC-HW-43\n# Code context line 16 for MC-HW-43\n# Code context line 17 for MC-HW-43\n# Code context line 18 for MC-HW-43\n# Code context line 19 for MC-HW-43\n# Code context line 20 for MC-HW-43\n# Code context line 21 for MC-HW-43\n# Code context line 22 for MC-HW-43\n# Code context line 23 for MC-HW-43\n# Code context line 24 for MC-HW-43\n# Code context line 25 for MC-HW-43\n# Code context line 26 for MC-HW-43\n# Code context line 27 for MC-HW-43\n# Code context line 28 for MC-HW-43\n# Code context line 29 for MC-HW-43\n# Code context line 30 for MC-HW-43\n# Code context line 31 for MC-HW-43\n# Code context line 32 for MC-HW-43\n# Code context line 33 for MC-HW-43\n# Code context line 34 for MC-HW-43\n# Code context line 35 for MC-HW-43\n# Code context line 36 for MC-HW-43\n# Code context line 37 for MC-HW-43\n# Code context line 38 for MC-HW-43\n# Code context line 39 for MC-HW-43\n# Code context line 40 for MC-HW-43\n# Code context line 41 for MC-HW-43\n# Code context line 42 for MC-HW-43\n# Code context line 43 for MC-HW-43\n# Code context line 44 for MC-HW-43\n# Code context line 45 for MC-HW-43\n# Code context line 46 for MC-HW-43\n# Code context line 47 for MC-HW-43\n# Code context line 48 for MC-HW-43\n# Code context line 49 for MC-HW-43\n# Code context line 50 for MC-HW-43\n# Code context line 51 for MC-HW-43\n# Code context line 52 for MC-HW-43\n# Code context line 53 for MC-HW-43\n# Code context line 54 for MC-HW-43\n# Code context line 55 for MC-HW-43\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-44",
+      "title": "Implement Tier 1 Restart Timeout and Grace Period",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/restart_service.py",
+      "chunk_start": 60,
+      "chunk_end": 95,
+      "line_delta": 36,
+      "instructions": "Implement wait_for_service_recovery() with 30-second bounded grace timer.",
+      "dependencies": [
+        "MC-HW-43"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/restart_service.py>>>\n# Code context line 60 for MC-HW-44\n# Code context line 61 for MC-HW-44\n# Code context line 62 for MC-HW-44\n# Code context line 63 for MC-HW-44\n# Code context line 64 for MC-HW-44\n# Code context line 65 for MC-HW-44\n# Code context line 66 for MC-HW-44\n# Code context line 67 for MC-HW-44\n# Code context line 68 for MC-HW-44\n# Code context line 69 for MC-HW-44\n# Code context line 70 for MC-HW-44\n# Code context line 71 for MC-HW-44\n# Code context line 72 for MC-HW-44\n# Code context line 73 for MC-HW-44\n# Code context line 74 for MC-HW-44\n# Code context line 75 for MC-HW-44\n# Code context line 76 for MC-HW-44\n# Code context line 77 for MC-HW-44\n# Code context line 78 for MC-HW-44\n# Code context line 79 for MC-HW-44\n# Code context line 80 for MC-HW-44\n# Code context line 81 for MC-HW-44\n# Code context line 82 for MC-HW-44\n# Code context line 83 for MC-HW-44\n# Code context line 84 for MC-HW-44\n# Code context line 85 for MC-HW-44\n# Code context line 86 for MC-HW-44\n# Code context line 87 for MC-HW-44\n# Code context line 88 for MC-HW-44\n# Code context line 89 for MC-HW-44\n# Code context line 90 for MC-HW-44\n# Code context line 91 for MC-HW-44\n# Code context line 92 for MC-HW-44\n# Code context line 93 for MC-HW-44\n# Code context line 94 for MC-HW-44\n# Code context line 95 for MC-HW-44\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-45",
+      "title": "Implement Tier 2 Hard VM Reboot via PowerShell Bridge",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/vm_control.py",
+      "chunk_start": 20,
+      "chunk_end": 75,
+      "line_delta": 56,
+      "instructions": "Implement reboot_quarantine_vm() executing Restart-VM with CREATE_NO_WINDOW.",
+      "dependencies": [
+        "MC-HW-44"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_checks_hyperv_socket_configuration",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/vm_control.py>>>\n# Code context line 20 for MC-HW-45\n# Code context line 21 for MC-HW-45\n# Code context line 22 for MC-HW-45\n# Code context line 23 for MC-HW-45\n# Code context line 24 for MC-HW-45\n# Code context line 25 for MC-HW-45\n# Code context line 26 for MC-HW-45\n# Code context line 27 for MC-HW-45\n# Code context line 28 for MC-HW-45\n# Code context line 29 for MC-HW-45\n# Code context line 30 for MC-HW-45\n# Code context line 31 for MC-HW-45\n# Code context line 32 for MC-HW-45\n# Code context line 33 for MC-HW-45\n# Code context line 34 for MC-HW-45\n# Code context line 35 for MC-HW-45\n# Code context line 36 for MC-HW-45\n# Code context line 37 for MC-HW-45\n# Code context line 38 for MC-HW-45\n# Code context line 39 for MC-HW-45\n# Code context line 40 for MC-HW-45\n# Code context line 41 for MC-HW-45\n# Code context line 42 for MC-HW-45\n# Code context line 43 for MC-HW-45\n# Code context line 44 for MC-HW-45\n# Code context line 45 for MC-HW-45\n# Code context line 46 for MC-HW-45\n# Code context line 47 for MC-HW-45\n# Code context line 48 for MC-HW-45\n# Code context line 49 for MC-HW-45\n# Code context line 50 for MC-HW-45\n# Code context line 51 for MC-HW-45\n# Code context line 52 for MC-HW-45\n# Code context line 53 for MC-HW-45\n# Code context line 54 for MC-HW-45\n# Code context line 55 for MC-HW-45\n# Code context line 56 for MC-HW-45\n# Code context line 57 for MC-HW-45\n# Code context line 58 for MC-HW-45\n# Code context line 59 for MC-HW-45\n# Code context line 60 for MC-HW-45\n# Code context line 61 for MC-HW-45\n# Code context line 62 for MC-HW-45\n# Code context line 63 for MC-HW-45\n# Code context line 64 for MC-HW-45\n# Code context line 65 for MC-HW-45\n# Code context line 66 for MC-HW-45\n# Code context line 67 for MC-HW-45\n# Code context line 68 for MC-HW-45\n# Code context line 69 for MC-HW-45\n# Code context line 70 for MC-HW-45\n# Code context line 71 for MC-HW-45\n# Code context line 72 for MC-HW-45\n# Code context line 73 for MC-HW-45\n# Code context line 74 for MC-HW-45\n# Code context line 75 for MC-HW-45\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-46",
+      "title": "Implement Hyper-V VM State Inspection Query",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/vm_control.py",
+      "chunk_start": 80,
+      "chunk_end": 120,
+      "line_delta": 41,
+      "instructions": "Implement get_vm_state() querying Msvm_ComputerSystem WMI status.",
+      "dependencies": [
+        "MC-HW-45"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/vm_control.py>>>\n# Code context line 80 for MC-HW-46\n# Code context line 81 for MC-HW-46\n# Code context line 82 for MC-HW-46\n# Code context line 83 for MC-HW-46\n# Code context line 84 for MC-HW-46\n# Code context line 85 for MC-HW-46\n# Code context line 86 for MC-HW-46\n# Code context line 87 for MC-HW-46\n# Code context line 88 for MC-HW-46\n# Code context line 89 for MC-HW-46\n# Code context line 90 for MC-HW-46\n# Code context line 91 for MC-HW-46\n# Code context line 92 for MC-HW-46\n# Code context line 93 for MC-HW-46\n# Code context line 94 for MC-HW-46\n# Code context line 95 for MC-HW-46\n# Code context line 96 for MC-HW-46\n# Code context line 97 for MC-HW-46\n# Code context line 98 for MC-HW-46\n# Code context line 99 for MC-HW-46\n# Code context line 100 for MC-HW-46\n# Code context line 101 for MC-HW-46\n# Code context line 102 for MC-HW-46\n# Code context line 103 for MC-HW-46\n# Code context line 104 for MC-HW-46\n# Code context line 105 for MC-HW-46\n# Code context line 106 for MC-HW-46\n# Code context line 107 for MC-HW-46\n# Code context line 108 for MC-HW-46\n# Code context line 109 for MC-HW-46\n# Code context line 110 for MC-HW-46\n# Code context line 111 for MC-HW-46\n# Code context line 112 for MC-HW-46\n# Code context line 113 for MC-HW-46\n# Code context line 114 for MC-HW-46\n# Code context line 115 for MC-HW-46\n# Code context line 116 for MC-HW-46\n# Code context line 117 for MC-HW-46\n# Code context line 118 for MC-HW-46\n# Code context line 119 for MC-HW-46\n# Code context line 120 for MC-HW-46\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-47",
+      "title": "Implement Tier 3 Golden Checkpoint Rollback Engine",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/rollback.py",
+      "chunk_start": 15,
+      "chunk_end": 70,
+      "line_delta": 56,
+      "instructions": "Implement restore_golden_checkpoint() invoking Restore-VMSnapshot for VM state recovery.",
+      "dependencies": [
+        "MC-HW-46"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/rollback.py>>>\n# Code context line 15 for MC-HW-47\n# Code context line 16 for MC-HW-47\n# Code context line 17 for MC-HW-47\n# Code context line 18 for MC-HW-47\n# Code context line 19 for MC-HW-47\n# Code context line 20 for MC-HW-47\n# Code context line 21 for MC-HW-47\n# Code context line 22 for MC-HW-47\n# Code context line 23 for MC-HW-47\n# Code context line 24 for MC-HW-47\n# Code context line 25 for MC-HW-47\n# Code context line 26 for MC-HW-47\n# Code context line 27 for MC-HW-47\n# Code context line 28 for MC-HW-47\n# Code context line 29 for MC-HW-47\n# Code context line 30 for MC-HW-47\n# Code context line 31 for MC-HW-47\n# Code context line 32 for MC-HW-47\n# Code context line 33 for MC-HW-47\n# Code context line 34 for MC-HW-47\n# Code context line 35 for MC-HW-47\n# Code context line 36 for MC-HW-47\n# Code context line 37 for MC-HW-47\n# Code context line 38 for MC-HW-47\n# Code context line 39 for MC-HW-47\n# Code context line 40 for MC-HW-47\n# Code context line 41 for MC-HW-47\n# Code context line 42 for MC-HW-47\n# Code context line 43 for MC-HW-47\n# Code context line 44 for MC-HW-47\n# Code context line 45 for MC-HW-47\n# Code context line 46 for MC-HW-47\n# Code context line 47 for MC-HW-47\n# Code context line 48 for MC-HW-47\n# Code context line 49 for MC-HW-47\n# Code context line 50 for MC-HW-47\n# Code context line 51 for MC-HW-47\n# Code context line 52 for MC-HW-47\n# Code context line 53 for MC-HW-47\n# Code context line 54 for MC-HW-47\n# Code context line 55 for MC-HW-47\n# Code context line 56 for MC-HW-47\n# Code context line 57 for MC-HW-47\n# Code context line 58 for MC-HW-47\n# Code context line 59 for MC-HW-47\n# Code context line 60 for MC-HW-47\n# Code context line 61 for MC-HW-47\n# Code context line 62 for MC-HW-47\n# Code context line 63 for MC-HW-47\n# Code context line 64 for MC-HW-47\n# Code context line 65 for MC-HW-47\n# Code context line 66 for MC-HW-47\n# Code context line 67 for MC-HW-47\n# Code context line 68 for MC-HW-47\n# Code context line 69 for MC-HW-47\n# Code context line 70 for MC-HW-47\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-48",
+      "title": "Implement Differencing VHDX Disk Verification",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/rollback.py",
+      "chunk_start": 75,
+      "chunk_end": 115,
+      "line_delta": 41,
+      "instructions": "Implement verify_differencing_vhdx() verifying parent-child GUID integrity.",
+      "dependencies": [
+        "MC-HW-47"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/rollback.py>>>\n# Code context line 75 for MC-HW-48\n# Code context line 76 for MC-HW-48\n# Code context line 77 for MC-HW-48\n# Code context line 78 for MC-HW-48\n# Code context line 79 for MC-HW-48\n# Code context line 80 for MC-HW-48\n# Code context line 81 for MC-HW-48\n# Code context line 82 for MC-HW-48\n# Code context line 83 for MC-HW-48\n# Code context line 84 for MC-HW-48\n# Code context line 85 for MC-HW-48\n# Code context line 86 for MC-HW-48\n# Code context line 87 for MC-HW-48\n# Code context line 88 for MC-HW-48\n# Code context line 89 for MC-HW-48\n# Code context line 90 for MC-HW-48\n# Code context line 91 for MC-HW-48\n# Code context line 92 for MC-HW-48\n# Code context line 93 for MC-HW-48\n# Code context line 94 for MC-HW-48\n# Code context line 95 for MC-HW-48\n# Code context line 96 for MC-HW-48\n# Code context line 97 for MC-HW-48\n# Code context line 98 for MC-HW-48\n# Code context line 99 for MC-HW-48\n# Code context line 100 for MC-HW-48\n# Code context line 101 for MC-HW-48\n# Code context line 102 for MC-HW-48\n# Code context line 103 for MC-HW-48\n# Code context line 104 for MC-HW-48\n# Code context line 105 for MC-HW-48\n# Code context line 106 for MC-HW-48\n# Code context line 107 for MC-HW-48\n# Code context line 108 for MC-HW-48\n# Code context line 109 for MC-HW-48\n# Code context line 110 for MC-HW-48\n# Code context line 111 for MC-HW-48\n# Code context line 112 for MC-HW-48\n# Code context line 113 for MC-HW-48\n# Code context line 114 for MC-HW-48\n# Code context line 115 for MC-HW-48\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-49",
+      "title": "Implement Checkpoint Tree Validation and Pruning",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/rollback.py",
+      "chunk_start": 120,
+      "chunk_end": 160,
+      "line_delta": 41,
+      "instructions": "Implement prune_stale_checkpoints() retaining only gold and latest checkpoint.",
+      "dependencies": [
+        "MC-HW-48"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/rollback.py>>>\n# Code context line 120 for MC-HW-49\n# Code context line 121 for MC-HW-49\n# Code context line 122 for MC-HW-49\n# Code context line 123 for MC-HW-49\n# Code context line 124 for MC-HW-49\n# Code context line 125 for MC-HW-49\n# Code context line 126 for MC-HW-49\n# Code context line 127 for MC-HW-49\n# Code context line 128 for MC-HW-49\n# Code context line 129 for MC-HW-49\n# Code context line 130 for MC-HW-49\n# Code context line 131 for MC-HW-49\n# Code context line 132 for MC-HW-49\n# Code context line 133 for MC-HW-49\n# Code context line 134 for MC-HW-49\n# Code context line 135 for MC-HW-49\n# Code context line 136 for MC-HW-49\n# Code context line 137 for MC-HW-49\n# Code context line 138 for MC-HW-49\n# Code context line 139 for MC-HW-49\n# Code context line 140 for MC-HW-49\n# Code context line 141 for MC-HW-49\n# Code context line 142 for MC-HW-49\n# Code context line 143 for MC-HW-49\n# Code context line 144 for MC-HW-49\n# Code context line 145 for MC-HW-49\n# Code context line 146 for MC-HW-49\n# Code context line 147 for MC-HW-49\n# Code context line 148 for MC-HW-49\n# Code context line 149 for MC-HW-49\n# Code context line 150 for MC-HW-49\n# Code context line 151 for MC-HW-49\n# Code context line 152 for MC-HW-49\n# Code context line 153 for MC-HW-49\n# Code context line 154 for MC-HW-49\n# Code context line 155 for MC-HW-49\n# Code context line 156 for MC-HW-49\n# Code context line 157 for MC-HW-49\n# Code context line 158 for MC-HW-49\n# Code context line 159 for MC-HW-49\n# Code context line 160 for MC-HW-49\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-50",
+      "title": "Implement Named-Pipe Telemetry Listener",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/ipc.py",
+      "chunk_start": 20,
+      "chunk_end": 75,
+      "line_delta": 56,
+      "instructions": "Implement listen_warden_pipe() reading JSONL heartbeat packets from \\\\.\\pipe\\cochem_warden_vm.",
+      "dependencies": [
+        "MC-HW-42"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/ipc.py>>>\n# Code context line 20 for MC-HW-50\n# Code context line 21 for MC-HW-50\n# Code context line 22 for MC-HW-50\n# Code context line 23 for MC-HW-50\n# Code context line 24 for MC-HW-50\n# Code context line 25 for MC-HW-50\n# Code context line 26 for MC-HW-50\n# Code context line 27 for MC-HW-50\n# Code context line 28 for MC-HW-50\n# Code context line 29 for MC-HW-50\n# Code context line 30 for MC-HW-50\n# Code context line 31 for MC-HW-50\n# Code context line 32 for MC-HW-50\n# Code context line 33 for MC-HW-50\n# Code context line 34 for MC-HW-50\n# Code context line 35 for MC-HW-50\n# Code context line 36 for MC-HW-50\n# Code context line 37 for MC-HW-50\n# Code context line 38 for MC-HW-50\n# Code context line 39 for MC-HW-50\n# Code context line 40 for MC-HW-50\n# Code context line 41 for MC-HW-50\n# Code context line 42 for MC-HW-50\n# Code context line 43 for MC-HW-50\n# Code context line 44 for MC-HW-50\n# Code context line 45 for MC-HW-50\n# Code context line 46 for MC-HW-50\n# Code context line 47 for MC-HW-50\n# Code context line 48 for MC-HW-50\n# Code context line 49 for MC-HW-50\n# Code context line 50 for MC-HW-50\n# Code context line 51 for MC-HW-50\n# Code context line 52 for MC-HW-50\n# Code context line 53 for MC-HW-50\n# Code context line 54 for MC-HW-50\n# Code context line 55 for MC-HW-50\n# Code context line 56 for MC-HW-50\n# Code context line 57 for MC-HW-50\n# Code context line 58 for MC-HW-50\n# Code context line 59 for MC-HW-50\n# Code context line 60 for MC-HW-50\n# Code context line 61 for MC-HW-50\n# Code context line 62 for MC-HW-50\n# Code context line 63 for MC-HW-50\n# Code context line 64 for MC-HW-50\n# Code context line 65 for MC-HW-50\n# Code context line 66 for MC-HW-50\n# Code context line 67 for MC-HW-50\n# Code context line 68 for MC-HW-50\n# Code context line 69 for MC-HW-50\n# Code context line 70 for MC-HW-50\n# Code context line 71 for MC-HW-50\n# Code context line 72 for MC-HW-50\n# Code context line 73 for MC-HW-50\n# Code context line 74 for MC-HW-50\n# Code context line 75 for MC-HW-50\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-51",
+      "title": "Implement AF_HYPERV Socket Fallback Channel",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/ipc.py",
+      "chunk_start": 80,
+      "chunk_end": 135,
+      "line_delta": 56,
+      "instructions": "Implement connect_hv_socket() fallback connection over Hyper-V socket GUID.",
+      "dependencies": [
+        "MC-HW-50"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_checks_hyperv_socket_configuration",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/ipc.py>>>\n# Code context line 80 for MC-HW-51\n# Code context line 81 for MC-HW-51\n# Code context line 82 for MC-HW-51\n# Code context line 83 for MC-HW-51\n# Code context line 84 for MC-HW-51\n# Code context line 85 for MC-HW-51\n# Code context line 86 for MC-HW-51\n# Code context line 87 for MC-HW-51\n# Code context line 88 for MC-HW-51\n# Code context line 89 for MC-HW-51\n# Code context line 90 for MC-HW-51\n# Code context line 91 for MC-HW-51\n# Code context line 92 for MC-HW-51\n# Code context line 93 for MC-HW-51\n# Code context line 94 for MC-HW-51\n# Code context line 95 for MC-HW-51\n# Code context line 96 for MC-HW-51\n# Code context line 97 for MC-HW-51\n# Code context line 98 for MC-HW-51\n# Code context line 99 for MC-HW-51\n# Code context line 100 for MC-HW-51\n# Code context line 101 for MC-HW-51\n# Code context line 102 for MC-HW-51\n# Code context line 103 for MC-HW-51\n# Code context line 104 for MC-HW-51\n# Code context line 105 for MC-HW-51\n# Code context line 106 for MC-HW-51\n# Code context line 107 for MC-HW-51\n# Code context line 108 for MC-HW-51\n# Code context line 109 for MC-HW-51\n# Code context line 110 for MC-HW-51\n# Code context line 111 for MC-HW-51\n# Code context line 112 for MC-HW-51\n# Code context line 113 for MC-HW-51\n# Code context line 114 for MC-HW-51\n# Code context line 115 for MC-HW-51\n# Code context line 116 for MC-HW-51\n# Code context line 117 for MC-HW-51\n# Code context line 118 for MC-HW-51\n# Code context line 119 for MC-HW-51\n# Code context line 120 for MC-HW-51\n# Code context line 121 for MC-HW-51\n# Code context line 122 for MC-HW-51\n# Code context line 123 for MC-HW-51\n# Code context line 124 for MC-HW-51\n# Code context line 125 for MC-HW-51\n# Code context line 126 for MC-HW-51\n# Code context line 127 for MC-HW-51\n# Code context line 128 for MC-HW-51\n# Code context line 129 for MC-HW-51\n# Code context line 130 for MC-HW-51\n# Code context line 131 for MC-HW-51\n# Code context line 132 for MC-HW-51\n# Code context line 133 for MC-HW-51\n# Code context line 134 for MC-HW-51\n# Code context line 135 for MC-HW-51\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-52",
+      "title": "Implement Crash Envelope JSONL Serializer",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/telemetry.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement record_crash_envelope() saving diagnostic JSONL packet to .evidence/crashes/.",
+      "dependencies": [
+        "MC-HW-50"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/telemetry.py>>>\n# Code context line 15 for MC-HW-52\n# Code context line 16 for MC-HW-52\n# Code context line 17 for MC-HW-52\n# Code context line 18 for MC-HW-52\n# Code context line 19 for MC-HW-52\n# Code context line 20 for MC-HW-52\n# Code context line 21 for MC-HW-52\n# Code context line 22 for MC-HW-52\n# Code context line 23 for MC-HW-52\n# Code context line 24 for MC-HW-52\n# Code context line 25 for MC-HW-52\n# Code context line 26 for MC-HW-52\n# Code context line 27 for MC-HW-52\n# Code context line 28 for MC-HW-52\n# Code context line 29 for MC-HW-52\n# Code context line 30 for MC-HW-52\n# Code context line 31 for MC-HW-52\n# Code context line 32 for MC-HW-52\n# Code context line 33 for MC-HW-52\n# Code context line 34 for MC-HW-52\n# Code context line 35 for MC-HW-52\n# Code context line 36 for MC-HW-52\n# Code context line 37 for MC-HW-52\n# Code context line 38 for MC-HW-52\n# Code context line 39 for MC-HW-52\n# Code context line 40 for MC-HW-52\n# Code context line 41 for MC-HW-52\n# Code context line 42 for MC-HW-52\n# Code context line 43 for MC-HW-52\n# Code context line 44 for MC-HW-52\n# Code context line 45 for MC-HW-52\n# Code context line 46 for MC-HW-52\n# Code context line 47 for MC-HW-52\n# Code context line 48 for MC-HW-52\n# Code context line 49 for MC-HW-52\n# Code context line 50 for MC-HW-52\n# Code context line 51 for MC-HW-52\n# Code context line 52 for MC-HW-52\n# Code context line 53 for MC-HW-52\n# Code context line 54 for MC-HW-52\n# Code context line 55 for MC-HW-52\n# Code context line 56 for MC-HW-52\n# Code context line 57 for MC-HW-52\n# Code context line 58 for MC-HW-52\n# Code context line 59 for MC-HW-52\n# Code context line 60 for MC-HW-52\n# Code context line 61 for MC-HW-52\n# Code context line 62 for MC-HW-52\n# Code context line 63 for MC-HW-52\n# Code context line 64 for MC-HW-52\n# Code context line 65 for MC-HW-52\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-53",
+      "title": "Implement PEP 657 Fine-Grained Traceback Parser",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/telemetry.py",
+      "chunk_start": 70,
+      "chunk_end": 115,
+      "line_delta": 46,
+      "instructions": "Implement parse_pep657_traceback() extracting exact column and expression offsets.",
+      "dependencies": [
+        "MC-HW-52"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/telemetry.py>>>\n# Code context line 70 for MC-HW-53\n# Code context line 71 for MC-HW-53\n# Code context line 72 for MC-HW-53\n# Code context line 73 for MC-HW-53\n# Code context line 74 for MC-HW-53\n# Code context line 75 for MC-HW-53\n# Code context line 76 for MC-HW-53\n# Code context line 77 for MC-HW-53\n# Code context line 78 for MC-HW-53\n# Code context line 79 for MC-HW-53\n# Code context line 80 for MC-HW-53\n# Code context line 81 for MC-HW-53\n# Code context line 82 for MC-HW-53\n# Code context line 83 for MC-HW-53\n# Code context line 84 for MC-HW-53\n# Code context line 85 for MC-HW-53\n# Code context line 86 for MC-HW-53\n# Code context line 87 for MC-HW-53\n# Code context line 88 for MC-HW-53\n# Code context line 89 for MC-HW-53\n# Code context line 90 for MC-HW-53\n# Code context line 91 for MC-HW-53\n# Code context line 92 for MC-HW-53\n# Code context line 93 for MC-HW-53\n# Code context line 94 for MC-HW-53\n# Code context line 95 for MC-HW-53\n# Code context line 96 for MC-HW-53\n# Code context line 97 for MC-HW-53\n# Code context line 98 for MC-HW-53\n# Code context line 99 for MC-HW-53\n# Code context line 100 for MC-HW-53\n# Code context line 101 for MC-HW-53\n# Code context line 102 for MC-HW-53\n# Code context line 103 for MC-HW-53\n# Code context line 104 for MC-HW-53\n# Code context line 105 for MC-HW-53\n# Code context line 106 for MC-HW-53\n# Code context line 107 for MC-HW-53\n# Code context line 108 for MC-HW-53\n# Code context line 109 for MC-HW-53\n# Code context line 110 for MC-HW-53\n# Code context line 111 for MC-HW-53\n# Code context line 112 for MC-HW-53\n# Code context line 113 for MC-HW-53\n# Code context line 114 for MC-HW-53\n# Code context line 115 for MC-HW-53\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-54",
+      "title": "Implement Health Recovery Escalation Ladder FSM",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/ladder.py",
+      "chunk_start": 20,
+      "chunk_end": 85,
+      "line_delta": 66,
+      "instructions": "Implement HealthEscalationLadder FSM executing Tier 1 -> Tier 2 -> Tier 3 sequence.",
+      "dependencies": [
+        "MC-HW-43",
+        "MC-HW-45",
+        "MC-HW-47"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/ladder.py>>>\n# Code context line 20 for MC-HW-54\n# Code context line 21 for MC-HW-54\n# Code context line 22 for MC-HW-54\n# Code context line 23 for MC-HW-54\n# Code context line 24 for MC-HW-54\n# Code context line 25 for MC-HW-54\n# Code context line 26 for MC-HW-54\n# Code context line 27 for MC-HW-54\n# Code context line 28 for MC-HW-54\n# Code context line 29 for MC-HW-54\n# Code context line 30 for MC-HW-54\n# Code context line 31 for MC-HW-54\n# Code context line 32 for MC-HW-54\n# Code context line 33 for MC-HW-54\n# Code context line 34 for MC-HW-54\n# Code context line 35 for MC-HW-54\n# Code context line 36 for MC-HW-54\n# Code context line 37 for MC-HW-54\n# Code context line 38 for MC-HW-54\n# Code context line 39 for MC-HW-54\n# Code context line 40 for MC-HW-54\n# Code context line 41 for MC-HW-54\n# Code context line 42 for MC-HW-54\n# Code context line 43 for MC-HW-54\n# Code context line 44 for MC-HW-54\n# Code context line 45 for MC-HW-54\n# Code context line 46 for MC-HW-54\n# Code context line 47 for MC-HW-54\n# Code context line 48 for MC-HW-54\n# Code context line 49 for MC-HW-54\n# Code context line 50 for MC-HW-54\n# Code context line 51 for MC-HW-54\n# Code context line 52 for MC-HW-54\n# Code context line 53 for MC-HW-54\n# Code context line 54 for MC-HW-54\n# Code context line 55 for MC-HW-54\n# Code context line 56 for MC-HW-54\n# Code context line 57 for MC-HW-54\n# Code context line 58 for MC-HW-54\n# Code context line 59 for MC-HW-54\n# Code context line 60 for MC-HW-54\n# Code context line 61 for MC-HW-54\n# Code context line 62 for MC-HW-54\n# Code context line 63 for MC-HW-54\n# Code context line 64 for MC-HW-54\n# Code context line 65 for MC-HW-54\n# Code context line 66 for MC-HW-54\n# Code context line 67 for MC-HW-54\n# Code context line 68 for MC-HW-54\n# Code context line 69 for MC-HW-54\n# Code context line 70 for MC-HW-54\n# Code context line 71 for MC-HW-54\n# Code context line 72 for MC-HW-54\n# Code context line 73 for MC-HW-54\n# Code context line 74 for MC-HW-54\n# Code context line 75 for MC-HW-54\n# Code context line 76 for MC-HW-54\n# Code context line 77 for MC-HW-54\n# Code context line 78 for MC-HW-54\n# Code context line 79 for MC-HW-54\n# Code context line 80 for MC-HW-54\n# Code context line 81 for MC-HW-54\n# Code context line 82 for MC-HW-54\n# Code context line 83 for MC-HW-54\n# Code context line 84 for MC-HW-54\n# Code context line 85 for MC-HW-54\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-55",
+      "title": "Implement Recovery Event Telemetry Notification Sink",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/ladder.py",
+      "chunk_start": 90,
+      "chunk_end": 130,
+      "line_delta": 41,
+      "instructions": "Implement emit_recovery_event() recording escalation audit ledger to job_board.db.",
+      "dependencies": [
+        "MC-HW-54"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/ladder.py>>>\n# Code context line 90 for MC-HW-55\n# Code context line 91 for MC-HW-55\n# Code context line 92 for MC-HW-55\n# Code context line 93 for MC-HW-55\n# Code context line 94 for MC-HW-55\n# Code context line 95 for MC-HW-55\n# Code context line 96 for MC-HW-55\n# Code context line 97 for MC-HW-55\n# Code context line 98 for MC-HW-55\n# Code context line 99 for MC-HW-55\n# Code context line 100 for MC-HW-55\n# Code context line 101 for MC-HW-55\n# Code context line 102 for MC-HW-55\n# Code context line 103 for MC-HW-55\n# Code context line 104 for MC-HW-55\n# Code context line 105 for MC-HW-55\n# Code context line 106 for MC-HW-55\n# Code context line 107 for MC-HW-55\n# Code context line 108 for MC-HW-55\n# Code context line 109 for MC-HW-55\n# Code context line 110 for MC-HW-55\n# Code context line 111 for MC-HW-55\n# Code context line 112 for MC-HW-55\n# Code context line 113 for MC-HW-55\n# Code context line 114 for MC-HW-55\n# Code context line 115 for MC-HW-55\n# Code context line 116 for MC-HW-55\n# Code context line 117 for MC-HW-55\n# Code context line 118 for MC-HW-55\n# Code context line 119 for MC-HW-55\n# Code context line 120 for MC-HW-55\n# Code context line 121 for MC-HW-55\n# Code context line 122 for MC-HW-55\n# Code context line 123 for MC-HW-55\n# Code context line 124 for MC-HW-55\n# Code context line 125 for MC-HW-55\n# Code context line 126 for MC-HW-55\n# Code context line 127 for MC-HW-55\n# Code context line 128 for MC-HW-55\n# Code context line 129 for MC-HW-55\n# Code context line 130 for MC-HW-55\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-56",
+      "title": "Implement FastMCP Server Scaffolding for Warden",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/mcp_server.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement FastMCP server 'cochem-warden-mcp' with stdio transport.",
+      "dependencies": [
+        "MC-HW-54"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f20_mcp_integration_verifies_knowledge_server_tools_registered",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 15 for MC-HW-56\n# Code context line 16 for MC-HW-56\n# Code context line 17 for MC-HW-56\n# Code context line 18 for MC-HW-56\n# Code context line 19 for MC-HW-56\n# Code context line 20 for MC-HW-56\n# Code context line 21 for MC-HW-56\n# Code context line 22 for MC-HW-56\n# Code context line 23 for MC-HW-56\n# Code context line 24 for MC-HW-56\n# Code context line 25 for MC-HW-56\n# Code context line 26 for MC-HW-56\n# Code context line 27 for MC-HW-56\n# Code context line 28 for MC-HW-56\n# Code context line 29 for MC-HW-56\n# Code context line 30 for MC-HW-56\n# Code context line 31 for MC-HW-56\n# Code context line 32 for MC-HW-56\n# Code context line 33 for MC-HW-56\n# Code context line 34 for MC-HW-56\n# Code context line 35 for MC-HW-56\n# Code context line 36 for MC-HW-56\n# Code context line 37 for MC-HW-56\n# Code context line 38 for MC-HW-56\n# Code context line 39 for MC-HW-56\n# Code context line 40 for MC-HW-56\n# Code context line 41 for MC-HW-56\n# Code context line 42 for MC-HW-56\n# Code context line 43 for MC-HW-56\n# Code context line 44 for MC-HW-56\n# Code context line 45 for MC-HW-56\n# Code context line 46 for MC-HW-56\n# Code context line 47 for MC-HW-56\n# Code context line 48 for MC-HW-56\n# Code context line 49 for MC-HW-56\n# Code context line 50 for MC-HW-56\n# Code context line 51 for MC-HW-56\n# Code context line 52 for MC-HW-56\n# Code context line 53 for MC-HW-56\n# Code context line 54 for MC-HW-56\n# Code context line 55 for MC-HW-56\n# Code context line 56 for MC-HW-56\n# Code context line 57 for MC-HW-56\n# Code context line 58 for MC-HW-56\n# Code context line 59 for MC-HW-56\n# Code context line 60 for MC-HW-56\n# Code context line 61 for MC-HW-56\n# Code context line 62 for MC-HW-56\n# Code context line 63 for MC-HW-56\n# Code context line 64 for MC-HW-56\n# Code context line 65 for MC-HW-56\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-57",
+      "title": "Implement FastMCP Tool get_vm_health_status",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/mcp_server.py",
+      "chunk_start": 70,
+      "chunk_end": 105,
+      "line_delta": 36,
+      "instructions": "Expose get_vm_health_status tool returning CPU, RAM, uptime, and IPC status.",
+      "dependencies": [
+        "MC-HW-56"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 70 for MC-HW-57\n# Code context line 71 for MC-HW-57\n# Code context line 72 for MC-HW-57\n# Code context line 73 for MC-HW-57\n# Code context line 74 for MC-HW-57\n# Code context line 75 for MC-HW-57\n# Code context line 76 for MC-HW-57\n# Code context line 77 for MC-HW-57\n# Code context line 78 for MC-HW-57\n# Code context line 79 for MC-HW-57\n# Code context line 80 for MC-HW-57\n# Code context line 81 for MC-HW-57\n# Code context line 82 for MC-HW-57\n# Code context line 83 for MC-HW-57\n# Code context line 84 for MC-HW-57\n# Code context line 85 for MC-HW-57\n# Code context line 86 for MC-HW-57\n# Code context line 87 for MC-HW-57\n# Code context line 88 for MC-HW-57\n# Code context line 89 for MC-HW-57\n# Code context line 90 for MC-HW-57\n# Code context line 91 for MC-HW-57\n# Code context line 92 for MC-HW-57\n# Code context line 93 for MC-HW-57\n# Code context line 94 for MC-HW-57\n# Code context line 95 for MC-HW-57\n# Code context line 96 for MC-HW-57\n# Code context line 97 for MC-HW-57\n# Code context line 98 for MC-HW-57\n# Code context line 99 for MC-HW-57\n# Code context line 100 for MC-HW-57\n# Code context line 101 for MC-HW-57\n# Code context line 102 for MC-HW-57\n# Code context line 103 for MC-HW-57\n# Code context line 104 for MC-HW-57\n# Code context line 105 for MC-HW-57\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-58",
+      "title": "Implement FastMCP Tool trigger_vm_resuscitation",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/mcp_server.py",
+      "chunk_start": 110,
+      "chunk_end": 150,
+      "line_delta": 41,
+      "instructions": "Expose trigger_vm_resuscitation tool dispatching escalation ladder commands.",
+      "dependencies": [
+        "MC-HW-57"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 110 for MC-HW-58\n# Code context line 111 for MC-HW-58\n# Code context line 112 for MC-HW-58\n# Code context line 113 for MC-HW-58\n# Code context line 114 for MC-HW-58\n# Code context line 115 for MC-HW-58\n# Code context line 116 for MC-HW-58\n# Code context line 117 for MC-HW-58\n# Code context line 118 for MC-HW-58\n# Code context line 119 for MC-HW-58\n# Code context line 120 for MC-HW-58\n# Code context line 121 for MC-HW-58\n# Code context line 122 for MC-HW-58\n# Code context line 123 for MC-HW-58\n# Code context line 124 for MC-HW-58\n# Code context line 125 for MC-HW-58\n# Code context line 126 for MC-HW-58\n# Code context line 127 for MC-HW-58\n# Code context line 128 for MC-HW-58\n# Code context line 129 for MC-HW-58\n# Code context line 130 for MC-HW-58\n# Code context line 131 for MC-HW-58\n# Code context line 132 for MC-HW-58\n# Code context line 133 for MC-HW-58\n# Code context line 134 for MC-HW-58\n# Code context line 135 for MC-HW-58\n# Code context line 136 for MC-HW-58\n# Code context line 137 for MC-HW-58\n# Code context line 138 for MC-HW-58\n# Code context line 139 for MC-HW-58\n# Code context line 140 for MC-HW-58\n# Code context line 141 for MC-HW-58\n# Code context line 142 for MC-HW-58\n# Code context line 143 for MC-HW-58\n# Code context line 144 for MC-HW-58\n# Code context line 145 for MC-HW-58\n# Code context line 146 for MC-HW-58\n# Code context line 147 for MC-HW-58\n# Code context line 148 for MC-HW-58\n# Code context line 149 for MC-HW-58\n# Code context line 150 for MC-HW-58\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-59",
+      "title": "Implement FastMCP Tool get_crash_envelopes",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/mcp_server.py",
+      "chunk_start": 155,
+      "chunk_end": 195,
+      "line_delta": 41,
+      "instructions": "Expose get_crash_envelopes tool querying recent telemetry packets.",
+      "dependencies": [
+        "MC-HW-58"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 155 for MC-HW-59\n# Code context line 156 for MC-HW-59\n# Code context line 157 for MC-HW-59\n# Code context line 158 for MC-HW-59\n# Code context line 159 for MC-HW-59\n# Code context line 160 for MC-HW-59\n# Code context line 161 for MC-HW-59\n# Code context line 162 for MC-HW-59\n# Code context line 163 for MC-HW-59\n# Code context line 164 for MC-HW-59\n# Code context line 165 for MC-HW-59\n# Code context line 166 for MC-HW-59\n# Code context line 167 for MC-HW-59\n# Code context line 168 for MC-HW-59\n# Code context line 169 for MC-HW-59\n# Code context line 170 for MC-HW-59\n# Code context line 171 for MC-HW-59\n# Code context line 172 for MC-HW-59\n# Code context line 173 for MC-HW-59\n# Code context line 174 for MC-HW-59\n# Code context line 175 for MC-HW-59\n# Code context line 176 for MC-HW-59\n# Code context line 177 for MC-HW-59\n# Code context line 178 for MC-HW-59\n# Code context line 179 for MC-HW-59\n# Code context line 180 for MC-HW-59\n# Code context line 181 for MC-HW-59\n# Code context line 182 for MC-HW-59\n# Code context line 183 for MC-HW-59\n# Code context line 184 for MC-HW-59\n# Code context line 185 for MC-HW-59\n# Code context line 186 for MC-HW-59\n# Code context line 187 for MC-HW-59\n# Code context line 188 for MC-HW-59\n# Code context line 189 for MC-HW-59\n# Code context line 190 for MC-HW-59\n# Code context line 191 for MC-HW-59\n# Code context line 192 for MC-HW-59\n# Code context line 193 for MC-HW-59\n# Code context line 194 for MC-HW-59\n# Code context line 195 for MC-HW-59\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-60",
+      "title": "Implement FastMCP Error Handling and Input Validation",
+      "domain": "host_warden",
+      "target_file": "src/cochem/warden/mcp_server.py",
+      "chunk_start": 200,
+      "chunk_end": 240,
+      "line_delta": 41,
+      "instructions": "Implement JSON-RPC error mapping and argument validation guards.",
+      "dependencies": [
+        "MC-HW-59"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 200 for MC-HW-60\n# Code context line 201 for MC-HW-60\n# Code context line 202 for MC-HW-60\n# Code context line 203 for MC-HW-60\n# Code context line 204 for MC-HW-60\n# Code context line 205 for MC-HW-60\n# Code context line 206 for MC-HW-60\n# Code context line 207 for MC-HW-60\n# Code context line 208 for MC-HW-60\n# Code context line 209 for MC-HW-60\n# Code context line 210 for MC-HW-60\n# Code context line 211 for MC-HW-60\n# Code context line 212 for MC-HW-60\n# Code context line 213 for MC-HW-60\n# Code context line 214 for MC-HW-60\n# Code context line 215 for MC-HW-60\n# Code context line 216 for MC-HW-60\n# Code context line 217 for MC-HW-60\n# Code context line 218 for MC-HW-60\n# Code context line 219 for MC-HW-60\n# Code context line 220 for MC-HW-60\n# Code context line 221 for MC-HW-60\n# Code context line 222 for MC-HW-60\n# Code context line 223 for MC-HW-60\n# Code context line 224 for MC-HW-60\n# Code context line 225 for MC-HW-60\n# Code context line 226 for MC-HW-60\n# Code context line 227 for MC-HW-60\n# Code context line 228 for MC-HW-60\n# Code context line 229 for MC-HW-60\n# Code context line 230 for MC-HW-60\n# Code context line 231 for MC-HW-60\n# Code context line 232 for MC-HW-60\n# Code context line 233 for MC-HW-60\n# Code context line 234 for MC-HW-60\n# Code context line 235 for MC-HW-60\n# Code context line 236 for MC-HW-60\n# Code context line 237 for MC-HW-60\n# Code context line 238 for MC-HW-60\n# Code context line 239 for MC-HW-60\n# Code context line 240 for MC-HW-60\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    }
+  ],
+  "affected_files": [
+    "src/cochem/warden/health.py",
+    "src/cochem/warden/ipc.py",
+    "src/cochem/warden/ladder.py",
+    "src/cochem/warden/mcp_server.py",
+    "src/cochem/warden/restart_service.py",
+    "src/cochem/warden/rollback.py",
+    "src/cochem/warden/telemetry.py",
+    "src/cochem/warden/vm_control.py"
+  ]
+}

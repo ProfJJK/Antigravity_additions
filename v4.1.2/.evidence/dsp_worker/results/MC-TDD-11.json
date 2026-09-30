@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-TDD-11",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.9711342,
+  "finished_at": 1790733282.9712713,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-TDD-11",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-TDD-11",
+        "target_file": "src/cochem/tdd_pivot/research.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-TDD-11",
+        "target_file": "src/cochem/tdd_pivot/research.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-TDD-11",
+        "target_file": "src/cochem/tdd_pivot/research.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-TDD-11",
+        "target_file": "src/cochem/tdd_pivot/research.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-TDD-11",
+      "status": "COMPLETED",
+      "duration_sec": 2.6226043701171875e-05,
+      "memory_start_mb": 111.4140625,
+      "memory_end_mb": 111.4140625,
+      "memory_peak_mb": 111.4140625
+    }
+  }
+}

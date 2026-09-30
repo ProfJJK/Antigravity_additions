@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-67",
+  "title": "Implement Service Recovery Failure Action Script",
+  "domain": "host_warden",
+  "target_file": "provisioning/Configure-Recovery.ps1",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Configure sc.exe failure actions with reset=86400 actions=restart/5000.",
+  "dependencies": [
+    "MC-HW-66"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: provisioning/Configure-Recovery.ps1>>>\n# Code context line 1 for MC-HW-67\n# Code context line 2 for MC-HW-67\n# Code context line 3 for MC-HW-67\n# Code context line 4 for MC-HW-67\n# Code context line 5 for MC-HW-67\n# Code context line 6 for MC-HW-67\n# Code context line 7 for MC-HW-67\n# Code context line 8 for MC-HW-67\n# Code context line 9 for MC-HW-67\n# Code context line 10 for MC-HW-67\n# Code context line 11 for MC-HW-67\n# Code context line 12 for MC-HW-67\n# Code context line 13 for MC-HW-67\n# Code context line 14 for MC-HW-67\n# Code context line 15 for MC-HW-67\n# Code context line 16 for MC-HW-67\n# Code context line 17 for MC-HW-67\n# Code context line 18 for MC-HW-67\n# Code context line 19 for MC-HW-67\n# Code context line 20 for MC-HW-67\n# Code context line 21 for MC-HW-67\n# Code context line 22 for MC-HW-67\n# Code context line 23 for MC-HW-67\n# Code context line 24 for MC-HW-67\n# Code context line 25 for MC-HW-67\n# Code context line 26 for MC-HW-67\n# Code context line 27 for MC-HW-67\n# Code context line 28 for MC-HW-67\n# Code context line 29 for MC-HW-67\n# Code context line 30 for MC-HW-67\n# Code context line 31 for MC-HW-67\n# Code context line 32 for MC-HW-67\n# Code context line 33 for MC-HW-67\n# Code context line 34 for MC-HW-67\n# Code context line 35 for MC-HW-67\n# Code context line 36 for MC-HW-67\n# Code context line 37 for MC-HW-67\n# Code context line 38 for MC-HW-67\n# Code context line 39 for MC-HW-67\n# Code context line 40 for MC-HW-67\n# Code context line 41 for MC-HW-67\n# Code context line 42 for MC-HW-67\n# Code context line 43 for MC-HW-67\n# Code context line 44 for MC-HW-67\n# Code context line 45 for MC-HW-67\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

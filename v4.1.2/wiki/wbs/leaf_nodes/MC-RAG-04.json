@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-04",
+  "title": "Author query_knowledge_index and 10k-Section Latency Tests",
+  "domain": "dual_wiki_rag",
+  "target_file": "tests/test_ch06_dual_wiki_rag.py",
+  "chunk_start": 181,
+  "chunk_end": 240,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_query_knowledge_index_* for INTERFACE:query_knowledge_index (query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]].); test_ch06_nfr_rag_01_* for NFR-RAG-01 (Average search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.)",
+  "dependencies": [
+    "MC-RAG-03"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-04] TESTS:retrieval\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects):\n# SPEC: test_ch06_query_knowledge_index_* for INTERFACE:query_knowledge_index\n# SPEC: (query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str,\n# SPEC: Any]].); test_ch06_nfr_rag_01_* for NFR-RAG-01 (Average search query execution time over 10,000\n# SPEC: indexed sections shall be less than 5 milliseconds.)\n# tests/test_ch06_dual_wiki_rag.py:188 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:189 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:190 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:191 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:192 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:193 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:194 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:195 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:196 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:197 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:198 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:199 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:200 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:201 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:202 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:203 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:204 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:205 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:206 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:207 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:208 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:209 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:210 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:211 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:212 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:213 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:214 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:215 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:216 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:217 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:218 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:219 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:220 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:221 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:222 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:223 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:224 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:225 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:226 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:227 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:228 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:229 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:230 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:231 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:232 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:233 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:234 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:235 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:236 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:237 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:238 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:239 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:240 [MC-RAG-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "INTERFACE:query_knowledge_index",
+      "NFR-RAG-01"
+    ]
+  }
+}

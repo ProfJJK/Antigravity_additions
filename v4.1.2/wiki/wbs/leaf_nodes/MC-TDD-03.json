@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-03",
+  "title": "Author Root Cause Triage and Physics Wall Abort Tests",
+  "domain": "tdd_pivot",
+  "target_file": "tests/test_ch05_research_tdd_pivot.py",
+  "chunk_start": 121,
+  "chunk_end": 180,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_005_* for SRS-412-05-FR-005 (Claude Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and Library Deficiencies.); test_ch05_fr_006_* for SRS-412-05-FR-006 (If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall trigger `[HARD_ABORT: PHYSICS WALL]`.); test_ch05_physics_wall_hard_abort_* for FAILURE:Physics Wall Hard Abort (When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`.)",
+  "dependencies": [
+    "MC-TDD-02"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-03] TESTS:pivot\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_005_*\n# SPEC: for SRS-412-05-FR-005 (Claude Fable 5.1 shall conduct Root Cause Triage across Scope\n# SPEC: Underestimation, Contract Ambiguity, and Library Deficiencies.); test_ch05_fr_006_* for\n# SPEC: SRS-412-05-FR-006 (If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`),\n# SPEC: the system shall trigger `[HARD_ABORT: PHYSICS WALL]`.); test_ch05_physics_wall_hard_abort_* for\n# SPEC: FAILURE:Physics Wall Hard Abort (When `MAX_META_PIVOT = 3` is reached, the system halts with\n# SPEC: `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`.)\n# tests/test_ch05_research_tdd_pivot.py:130 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:131 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:132 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:133 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:134 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:135 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:136 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:137 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:138 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:139 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:140 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:141 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:142 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:143 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:144 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:145 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:146 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:147 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:148 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:149 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:150 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:151 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:152 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:153 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:154 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:155 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:156 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:157 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:158 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:159 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:160 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:161 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:162 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:163 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:164 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:165 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:166 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:167 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:168 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:169 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:170 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:171 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:172 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:173 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:174 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:175 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:176 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:177 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:178 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:179 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:180 [MC-TDD-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-005",
+      "SRS-412-05-FR-006",
+      "FAILURE:Physics Wall Hard Abort"
+    ]
+  }
+}

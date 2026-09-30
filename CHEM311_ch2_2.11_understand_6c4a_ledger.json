@@ -1,0 +1,287 @@
+{
+  "task_id": "CHEM311_ch2_2.11_understand_6c4a.1",
+  "parent_task_id": "CHEM311_ch2_2.11_understand_6c4a",
+  "course_id": "CHEM311",
+  "chapter": 2,
+  "section": "2.11",
+  "section_title": "Acids and Bases: The Lewis Definition",
+  "bloom_level": "understand",
+  "mcmurry_topic_scope": {
+    "textbook": "Organic Chemistry (10th Edition) by John McMurry",
+    "chapter_title": "Chapter 2: Polar Covalent Bonds; Acids and Bases",
+    "section_coverage": "McMurry 10e Section 2.11 Acids and Bases: The Lewis Definition",
+    "key_concepts_ingested": [
+      "Lewis acid: electron-pair acceptor (electrophile) possessing a vacant low-energy orbital (unhybridized 2p in BF3, 3p in AlCl3, 1s in H+, or accessible low-energy orbitals in metal cations and halides such as Mg2+, FeCl3, TiCl4)",
+      "Lewis base: electron-pair donor (nucleophile) possessing an available nonbonding electron pair (lone pair in a filled high-energy orbital on O, N, S, P) or an accessible pi bond",
+      "Curved-arrow formalism in Lewis acid-base reactions: a curved arrow shows the movement of an electron pair from the Lewis base donor (tail at the nonbonding lone pair) to the Lewis acid acceptor (head at the vacant orbital of the electron-deficient atom)",
+      "Coordinate covalent (dative) bond formation in adducts: the new sigma bond is made from two electrons that originate entirely from the Lewis base",
+      "Formal charge redistribution upon adduct formation: the donor atom gains +1 and the acceptor atom gains -1, giving a dipolar adduct, for example (CH3)2O + BF3 -> F3B(-)-O(+)(CH3)2",
+      "Orbital hybridization and geometry reorganization: the acceptor atom rehybridizes, for example trigonal planar sp2 boron with an empty 2p orbital becomes tetrahedral sp3 boron in the adduct",
+      "Subsumption of Bronsted-Lowry theory: proton transfer is a special case of Lewis acid-base chemistry in which the electrophilic proton (H+, empty 1s) is the Lewis acid and the proton acceptor is the Lewis base"
+    ]
+  },
+  "chemical_ground_truth": {
+    "lewis_acid": {
+      "definition": "A Lewis acid is a chemical species that accepts an electron pair to form a new covalent bond.",
+      "orbital_requirement": "A Lewis acid must possess a vacant low-energy orbital, such as the empty unhybridized 2p orbital on sp2 boron in BF3, an empty 3p orbital on aluminum in AlCl3, or the empty 1s orbital of H+.",
+      "electronic_characteristics": "Electron-deficient and electrophilic, often with an incomplete valence shell (6 valence electrons in neutral group 13 compounds such as BF3 and AlCl3).",
+      "representative_examples": [
+        {
+          "formula": "BF3",
+          "name": "Boron trifluoride",
+          "vacant_orbital": "empty unhybridized 2p orbital on sp2 boron",
+          "valence_electrons": 6
+        },
+        {
+          "formula": "AlCl3",
+          "name": "Aluminum trichloride",
+          "vacant_orbital": "empty unhybridized 3p orbital on sp2 aluminum",
+          "valence_electrons": 6
+        },
+        {
+          "formula": "H+",
+          "name": "Hydron (proton)",
+          "vacant_orbital": "empty 1s orbital",
+          "valence_electrons": 0
+        }
+      ]
+    },
+    "lewis_base": {
+      "definition": "A Lewis base is a chemical species that donates an electron pair to form a new covalent bond.",
+      "orbital_requirement": "A Lewis base must possess a filled, high-energy nonbonding orbital (a lone pair) or accessible pi-bonding electron density.",
+      "electronic_characteristics": "Electron-rich and nucleophilic, typically a heteroatom (O, N, S, P) bearing unshared electron pairs, an anion, or an electron-dense pi system.",
+      "representative_examples": [
+        {
+          "formula": "(CH3)2O",
+          "name": "Dimethyl ether",
+          "donor_feature": "two nonbonding lone pairs on sp3 oxygen",
+          "charge": 0
+        },
+        {
+          "formula": "H2O",
+          "name": "Water",
+          "donor_feature": "two nonbonding lone pairs on sp3 oxygen",
+          "charge": 0
+        },
+        {
+          "formula": "NH3",
+          "name": "Ammonia",
+          "donor_feature": "one nonbonding lone pair on sp3 nitrogen",
+          "charge": 0
+        },
+        {
+          "formula": "(CH3)3N",
+          "name": "Trimethylamine",
+          "donor_feature": "one nonbonding lone pair on sp3 nitrogen",
+          "charge": 0
+        },
+        {
+          "formula": "Cl-",
+          "name": "Chloride anion",
+          "donor_feature": "four nonbonding lone pairs on anionic chlorine",
+          "charge": -1
+        }
+      ]
+    },
+    "curved_arrow_formalism_principles": {
+      "arrow_type": "A curved arrow symbolizes the movement of exactly one electron pair from a source to a sink; the two-electron arrow has a full arrowhead.",
+      "arrow_origin_tail": "The tail of the curved arrow starts at the electron-pair source: the nonbonding lone pair on the Lewis base heteroatom (or the electron density of a pi bond).",
+      "arrow_destination_head": "The head of the curved arrow points to the electron-pair sink: the vacant orbital on the electron-deficient atom of the Lewis acid.",
+      "physical_meaning": "Curved arrows track the trajectory of valence electron density, not the movement of atomic nuclei or the direction of an attack."
+    },
+    "adduct_formation_principles": {
+      "bond_type": "Coordinate covalent (dative) bond in which both bonding electrons originate exclusively from the Lewis base; the product is a Lewis acid-base adduct.",
+      "formal_charge_redistribution": "In the (CH3)2O-BF3 adduct the formal charge on boron: -1 and the formal charge on oxygen: +1. Oxygen goes from exclusive ownership of a lone pair to a half share of a bond, and boron goes from an empty orbital to a half share of a new bond.",
+      "geometry_reorganization": "The acceptor atom rehybridizes: trigonal planar sp2 boron in BF3 (120 degree angles, vacant unhybridized 2p orbital) becomes tetrahedral sp3 boron (about 109.5 degree angles) in F3B(-)-O(+)(CH3)2."
+    }
+  },
+  "authentic_reactions": [
+    {
+      "reaction_name": "Boron trifluoride-dimethyl ether adduct formation",
+      "equation": "BF3 + (CH3)2O <=> F3B--O+(CH3)2",
+      "reactant_acid": "BF3",
+      "reactant_acid_mass_amu": 67.805209489,
+      "reactant_base": "(CH3)2O",
+      "reactant_base_mass_amu": 46.069,
+      "adduct_product": "(CH3)2O-BF3 adduct, written F3B--O+(CH3)2",
+      "adduct_mass_amu": 113.874209489,
+      "formal_charges": {
+        "B": -1,
+        "O": 1,
+        "F": 0,
+        "C": 0,
+        "H": 0
+      },
+      "formal_charge_statement": "In the adduct the formal charge on boron: -1 and the formal charge on oxygen: +1.",
+      "orbital_and_geometry_changes": {
+        "boron_initial": "sp2 hybridized, trigonal planar (120 deg), unhybridized vacant 2p orbital, 6 valence electrons",
+        "boron_in_adduct": "sp3 hybridized, tetrahedral (about 109.5 deg), complete octet; rehybridization from sp2 to sp3 accompanies the geometry change from trigonal planar to tetrahedral",
+        "oxygen_initial": "sp3 hybridized, bent, 2 bonding pairs and 2 nonbonding lone pairs, formal charge 0",
+        "oxygen_in_adduct": "sp3 hybridized, 3 bonding pairs and 1 nonbonding lone pair, formal charge +1"
+      },
+      "curved_arrow_description": "The tail of the curved arrow starts at one of the nonbonding lone pairs on the oxygen of (CH3)2O (the donor) and the head ends at the vacant 2p orbital on the boron atom of BF3 (the acceptor).",
+      "bond_formed": "coordinate covalent (dative) B-O bond",
+      "pedagogical_insight": "Neutral reactants give a dipolar adduct through coordinate covalent bond formation, and boron reaches a complete octet."
+    },
+    {
+      "reaction_name": "Boron trifluoride coordination with ammonia",
+      "equation": "BF3 + NH3 <=> F3B--N+H3",
+      "reactant_acid": "BF3",
+      "reactant_acid_mass_amu": 67.805209489,
+      "reactant_base": "NH3",
+      "reactant_base_mass_amu": 17.031,
+      "adduct_product": "F3B--N+H3",
+      "adduct_mass_amu": 84.836209489,
+      "formal_charges": {
+        "B": -1,
+        "N": 1,
+        "F": 0,
+        "H": 0
+      },
+      "orbital_and_geometry_changes": {
+        "boron_initial": "sp2 hybridized, trigonal planar, vacant 2p orbital",
+        "boron_in_adduct": "sp3 hybridized, tetrahedral, complete octet",
+        "nitrogen_initial": "sp3 hybridized, trigonal pyramidal, 1 lone pair, formal charge 0",
+        "nitrogen_in_adduct": "sp3 hybridized, tetrahedral, 4 single bonds, formal charge +1"
+      },
+      "curved_arrow_description": "The tail of the curved arrow starts at the nonbonding lone pair on nitrogen of NH3 and the head points to the vacant 2p orbital of boron in BF3.",
+      "pedagogical_insight": "Nitrogen acts as the Lewis base; both boron and nitrogen become tetrahedral."
+    },
+    {
+      "reaction_name": "Aluminum trichloride coordination with chloride anion",
+      "equation": "AlCl3 + Cl- <=> [AlCl4]-",
+      "reactant_acid": "AlCl3",
+      "reactant_acid_mass_amu": 133.3315385,
+      "reactant_base": "Cl-",
+      "adduct_product": "[AlCl4]-",
+      "formal_charges": {
+        "Al": -1,
+        "Cl": 0
+      },
+      "orbital_and_geometry_changes": {
+        "aluminum_initial": "sp2 hybridized, trigonal planar, vacant 3p orbital",
+        "aluminum_in_adduct": "sp3 hybridized, tetrahedral, complete octet, formal charge -1",
+        "chlorine_initial": "chloride anion with 4 lone pairs, formal charge -1",
+        "chlorine_in_adduct": "chlorine ligand with 3 lone pairs and 1 shared Al-Cl bond, formal charge 0"
+      },
+      "curved_arrow_description": "The tail of the curved arrow starts at an unshared electron pair on Cl- and the head ends at the vacant 3p orbital of AlCl3.",
+      "pedagogical_insight": "An anionic Lewis base coordinates to a group 13 Lewis acid to give a tetrahedral anion."
+    },
+    {
+      "reaction_name": "Protonation of acetaldehyde by H+",
+      "equation": "CH3CHO + H+ <=> [CH3CH=OH]+",
+      "reactant_acid": "H+",
+      "reactant_acid_mass_amu": 1.00728,
+      "reactant_base": "CH3CHO",
+      "reactant_base_mass_amu": 44.053,
+      "adduct_product": "[CH3CH=OH]+",
+      "adduct_mass_amu": 45.06028,
+      "formal_charges": {
+        "O": 1,
+        "C": 0,
+        "H": 0
+      },
+      "orbital_and_geometry_changes": {
+        "oxygen_initial": "carbonyl oxygen with 2 lone pairs, formal charge 0",
+        "oxygen_in_adduct": "oxygen bearing a new O-H bond, formal charge +1",
+        "proton_initial": "bare H+ with empty 1s orbital"
+      },
+      "curved_arrow_description": "The tail of the curved arrow starts at a nonbonding lone pair on the carbonyl oxygen and the head points to the empty 1s orbital of H+.",
+      "pedagogical_insight": "A carbonyl oxygen acts as a Lewis base toward a proton."
+    },
+    {
+      "reaction_name": "Hydron (proton) coordination by water (hydronium formation)",
+      "equation": "H+ + H2O <=> H3O+",
+      "reactant_acid": "H+",
+      "reactant_acid_mass_amu": 1.00728,
+      "reactant_base": "H2O",
+      "reactant_base_mass_amu": 18.015,
+      "adduct_product": "H3O+",
+      "adduct_mass_amu": 19.02228,
+      "formal_charges": {
+        "O": 1,
+        "H": 0
+      },
+      "orbital_and_geometry_changes": {
+        "oxygen_initial": "sp3 hybridized, bent, 2 lone pairs, formal charge 0",
+        "oxygen_in_adduct": "sp3 hybridized, trigonal pyramidal, 1 lone pair, formal charge +1"
+      },
+      "curved_arrow_description": "The tail of the curved arrow starts at one of the lone pairs on the oxygen of H2O and the head points to the empty 1s orbital of H+.",
+      "pedagogical_insight": "Bronsted-Lowry protonation is a special case of Lewis acid-base chemistry in which H+ is the Lewis acid."
+    }
+  ],
+  "elemental_masses_mendeleev": {
+    "mass_values_amu": {
+      "H": 1.008,
+      "B": 10.81,
+      "C": 12.011,
+      "N": 14.007,
+      "O": 15.999,
+      "F": 18.998403163,
+      "Al": 26.9815385,
+      "Cl": 35.45
+    },
+    "molecular_masses_amu": {
+      "BF3": 67.805209489,
+      "(CH3)2O": 46.069,
+      "(CH3)2O-BF3 adduct": 113.874209489,
+      "AlCl3": 133.3315385,
+      "H2O": 18.015,
+      "NH3": 17.031,
+      "(CH3)3N": 59.112,
+      "CH3CHO": 44.053,
+      "H+": 1.00728,
+      "H3O+": 19.02228
+    },
+    "mass_basis_notes": "Elemental values are neutral-atom standard atomic weights. Molecular masses of neutral species are stoichiometric sums of these values. H+ is the bare proton (1.00728 amu, not the neutral-atom 1.008), and H3O+ is H2O plus that proton mass.",
+    "mendeleev_version": "1.2.0",
+    "mendeleev_provenance": "Elemental values were queried dynamically from the mendeleev Python library via float(element(symbol).mass) at ledger-generation time and then serialized into this JSON as static numbers; they are not recomputed when the file is read. The test suite re-queries mendeleev at run time and compares within 1e-4 amu (elements) and 1e-3 amu (molecules). The installed version is resolved via importlib.metadata.version('mendeleev')."
+  },
+  "five_distractor_specification_matrix": [
+    {
+      "distractor_id": "DISTRACTOR_1_ARROW_FLOW_INVERSION_MISCONCEPTION",
+      "choice_text": "The curved arrow begins at the electron-deficient boron atom of BF3 and points toward the oxygen atom of (CH3)2O, because the electrophilic acid 'attacks' the base to capture its electron density.",
+      "target_misconception": "Attack Flow Inversion Fallacy (arrow drawn from acid to base)",
+      "bloom_level": "understand",
+      "cognitive_failure_mode": "Student equates the colloquial idea of a chemical 'attack' with electron displacement and draws the arrow from the electrophile toward the nucleophile, treating the arrow as atomic motion instead of electron-pair flow.",
+      "pedagogical_refutation": "Incorrect. A curved arrow tracks the movement of an electron pair, never the movement of nuclei or the direction of an attack. The tail must start at the electron source, the nonbonding lone pair on oxygen of the Lewis base, and the head must point to the electron destination, the vacant 2p orbital on boron of the Lewis acid. An arrow drawn from boron to oxygen is invalid because boron has no lone pair to donate.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.11 (paraphrased concept): in a Lewis acid-base reaction a curved arrow shows an electron pair moving from the Lewis base to the vacant orbital of the Lewis acid."
+    },
+    {
+      "distractor_id": "DISTRACTOR_2_FORMAL_CHARGE_CONSERVATION_FALLACY",
+      "choice_text": "Because both dimethyl ether and boron trifluoride are neutral molecules before reaction, their coordination produces an adduct in which both oxygen and boron keep formal charges of zero.",
+      "target_misconception": "Net Neutrality Implies Atom Neutrality (formal charge fallacy)",
+      "bloom_level": "understand",
+      "cognitive_failure_mode": "Student conflates the net charge of a molecule with the formal charge of each atom, and does not see that coordinate covalent bond formation changes how valence electrons are counted on the donor and acceptor atoms.",
+      "pedagogical_refutation": "Incorrect. The adduct is neutral overall, but the formal charge on individual atoms changes. Oxygen gives up exclusive ownership of a lone pair and takes a half share of the new bond, so its formal charge rises from 0 to +1 (6 - 2 - 3 = +1). Boron takes a half share of two electrons it did not supply, so its formal charge falls from 0 to -1 (3 - 0 - 4 = -1).",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.11 (paraphrased concept): the (CH3)2O-BF3 adduct is dipolar, with boron negative and oxygen positive."
+    },
+    {
+      "distractor_id": "DISTRACTOR_3_OCTET_EXPANSION_HYPERVALENCE_FALLACY",
+      "choice_text": "Boron trifluoride accepts an electron pair by using vacant low-energy 3d orbitals, expanding its valence shell beyond an octet to hold 10 valence electrons in the adduct.",
+      "target_misconception": "Second-Row Octet Expansion / Hypervalence Fallacy",
+      "bloom_level": "understand",
+      "cognitive_failure_mode": "Student believes a fourth bond on boron needs an expanded octet or d-orbital participation, and misses that neutral trivalent boron has only 6 valence electrons and reaches a normal octet in the adduct.",
+      "pedagogical_refutation": "Incorrect. Boron is a second-row element with only 2s and 2p valence orbitals, and 3d orbitals are energetically inaccessible. In BF3 boron is sp2 hybridized with 6 valence electrons and an empty unhybridized 2p orbital. Accepting the electron pair from dimethyl ether fills that orbital and completes an octet of 8 electrons at a tetrahedral sp3 boron; no expansion occurs.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.11 (paraphrased concept): a Lewis acid such as BF3 has a vacant valence orbital that accepts the electron pair from the Lewis base."
+    },
+    {
+      "distractor_id": "DISTRACTOR_4_BRONSTED_HYDROLYSIS_REDUCTIONISM",
+      "choice_text": "Boron trifluoride acts as a Lewis acid only because it reacts with trace water to release hydronium ions (H3O+), which are the true acidic species.",
+      "target_misconception": "Proton Obligation / Hydrolysis Reductionism Fallacy (all acidity must come from H+)",
+      "bloom_level": "understand",
+      "cognitive_failure_mode": "Student reduces every acid to the Bronsted-Lowry proton-donor model and assumes that an acid without hydrogen must first generate a proton by hydrolysis before it can act as an acid.",
+      "pedagogical_refutation": "Incorrect. The Lewis definition is electronic. BF3 accepts an electron pair directly into its vacant 2p orbital from dimethyl ether under anhydrous conditions, with no water and no proton involved. Proton transfer is only a special case of Lewis acid-base chemistry in which H+ is the acceptor.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.11 (paraphrased concept): Lewis acids are not limited to proton donors; species without hydrogen, such as BF3 and AlCl3, are Lewis acids."
+    },
+    {
+      "distractor_id": "DISTRACTOR_5_HOMOLYTIC_RADICAL_TRANSFER",
+      "choice_text": "Dimethyl ether donates a single electron into the vacant orbital of boron by homolytic cleavage, and the reaction proceeds as a radical process shown with fishhook arrows.",
+      "target_misconception": "Single-Electron / Homolytic Radical Confusion",
+      "bloom_level": "understand",
+      "cognitive_failure_mode": "Student confuses two-electron heterolytic Lewis acid-base coordination with one-electron homolytic radical chemistry, and so misreads what the curved arrow represents.",
+      "pedagogical_refutation": "Incorrect. Lewis acid-base adduct formation moves a pair of electrons from the lone pair of the base into the vacant orbital of the acid, shown by a full-headed curved arrow. Radical reactions move single electrons and use fishhook arrows. No single electron is transferred and no radical forms in the (CH3)2O-BF3 adduct.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e Section 2.11 (paraphrased concept): the Lewis base supplies both electrons of the new bond as an electron pair."
+    }
+  ]
+}

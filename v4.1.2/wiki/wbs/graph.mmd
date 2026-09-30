@@ -1,0 +1,7 @@
+flowchart TD
+    M1_PURGE[Stage 0: Purge Rogue State] --> M2_SRS[Stage 1: Multi-Part SRS & Dependency Graph]
+    M2_SRS --> M3_WBS[Stage 2: WBS Graph Fracture]
+    M3_WBS --> M4_QUEUE[Stage 3 & 3.5: Task Queuing & Batch Manifests]
+    M4_QUEUE --> M5_TDD_MERGE[Stage 4 & 5: Concurrent TDD & Live Tree Merge]
+    M5_TDD_MERGE --> M6_ACTIVATION[Stage 6: Activation & Ecosystem Integration]
+    M6_ACTIVATION --> M7_VICTORY[Milestone 7: Victory Audit & Handoff]

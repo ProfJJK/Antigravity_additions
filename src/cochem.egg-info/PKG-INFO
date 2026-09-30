@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: cochem
+Version: 0.1.0
+Summary: Autonomous Molecular Engineering Engine and High-Throughput Quantum Chemistry Automation
+Author: CoChem Research Team
+License: Proprietary
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: h5py
+Requires-Dist: hdf5plugin
+Requires-Dist: pydantic>=2.0
+Requires-Dist: mendeleev>=0.15
+Requires-Dist: ase
+Provides-Extra: gpu
+Requires-Dist: gpu4pyscf; extra == "gpu"
+Provides-Extra: ml
+Requires-Dist: torch; extra == "ml"
+Requires-Dist: mace-torch; extra == "ml"
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: mypy; extra == "dev"

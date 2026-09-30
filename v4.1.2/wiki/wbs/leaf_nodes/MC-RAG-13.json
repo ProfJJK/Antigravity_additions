@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-13",
+  "title": "Implement BM25 Section Indexing of a Document",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/indexer.py",
+  "chunk_start": 91,
+  "chunk_end": 135,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-002: All knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using BM25 relevance scoring.",
+  "dependencies": [
+    "MC-RAG-12",
+    "MC-RAG-03",
+    "MC-RAG-07"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_002\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-13] SRS-412-06-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-002: All\n# SPEC: knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using\n# SPEC: BM25 relevance scoring.\n# src/cochem/knowledge/indexer.py:95 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:96 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:97 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:98 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:99 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:100 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:101 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:102 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:103 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:104 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:105 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:106 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:107 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:108 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:109 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:110 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:111 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:112 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:113 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:114 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:115 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:116 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:117 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:118 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:119 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:120 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:121 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:122 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:123 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:124 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:125 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:126 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:127 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:128 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:129 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:130 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:131 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:132 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:133 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:134 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:135 [MC-RAG-13]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-002"
+    ]
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "$defs": {
+    "FileImpactEntry": {
+      "additionalProperties": false,
+      "description": "One file touched by a plan and the whitelisted action applied to it.",
+      "properties": {
+        "action": {
+          "enum": [
+            "CREATE",
+            "MODIFY",
+            "DELETE"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "file_path": {
+          "title": "File Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "file_path",
+        "action"
+      ],
+      "title": "FileImpactEntry",
+      "type": "object"
+    },
+    "ResearchMappingEntry": {
+      "additionalProperties": false,
+      "description": "One research topic mapped to the citation that justifies it.",
+      "properties": {
+        "citation": {
+          "title": "Citation",
+          "type": "string"
+        },
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "citation"
+      ],
+      "title": "ResearchMappingEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Planner -> Auditor: proposed architecture with cited research and file impact.",
+  "properties": {
+    "file_impact_matrix": {
+      "items": {
+        "$ref": "#/$defs/FileImpactEntry"
+      },
+      "title": "File Impact Matrix",
+      "type": "array"
+    },
+    "proposed_architecture": {
+      "title": "Proposed Architecture",
+      "type": "string"
+    },
+    "research_mapping": {
+      "items": {
+        "$ref": "#/$defs/ResearchMappingEntry"
+      },
+      "title": "Research Mapping",
+      "type": "array"
+    }
+  },
+  "required": [
+    "proposed_architecture",
+    "research_mapping",
+    "file_impact_matrix"
+  ],
+  "title": "PlanDossier",
+  "type": "object"
+}

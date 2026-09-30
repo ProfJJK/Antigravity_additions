@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-15",
+  "title": "Implement Matrix 3 Data Corruption Header Scan",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 261,
+  "chunk_end": 295,
+  "line_delta": 35,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-005: Matrix 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite format 3\\x00\"`. Also check the -wal file when present; a missing database is a Matrix 3 failure, not a crash. Traceability test: tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle, written by this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a different suite).",
+  "dependencies": [
+    "MC-SRE-14",
+    "MC-SRE-02",
+    "MC-SRE-10"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_005\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-15] SRS-412-08-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-005: Matrix\n# SPEC: 3 (Data Corruption) shall inspect database binary headers directly for the magic bytes `b\"SQLite\n# SPEC: format 3\\x00\"`. Also check the -wal file when present; a missing database is a Matrix 3 failure,\n# SPEC: not a crash. Traceability test:\n# SPEC: tests/test_ch08_watchdog_sre.py::test_scenario_1_full_pipeline_bootstrap_lifecycle, written by\n# SPEC: this chapter's E2E node (the same-named test in tests/test_real_world_e2e_scenarios.py is a\n# SPEC: different suite).\n# src/cochem/watchdog/watchdog_sre.py:269 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:270 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:271 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:272 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:273 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:274 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:275 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:276 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:277 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:278 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:279 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:280 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:281 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:282 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:283 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:284 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:285 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:286 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:287 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:288 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:289 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:290 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:291 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:292 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:293 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:294 [MC-SRE-15]\n# src/cochem/watchdog/watchdog_sre.py:295 [MC-SRE-15]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-005"
+    ]
+  }
+}

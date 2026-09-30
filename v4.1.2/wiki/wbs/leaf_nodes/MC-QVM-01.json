@@ -1,0 +1,27 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-01",
+  "title": "Author Static 32 GB Memory and 12 vCPU 70% Cap Profile Tests",
+  "domain": "quarantine_vm",
+  "target_file": "tests/test_ch02_quarantine_vm.py",
+  "chunk_start": 1,
+  "chunk_end": 50,
+  "line_delta": 50,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_001_* for SRS-412-02-FR-001 (The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently disabled.); test_ch02_fr_002_* for SRS-412-02-FR-002 (The VM hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap.)",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-01] TESTS:vm_profile\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases with no mock objects: command builders and parsers are tested on their real return\n# SPEC: values; live cases run the real docker or powershell.exe binary and call pytest.skip only when\n# SPEC: that binary or daemon is absent on the runner: test_ch02_fr_001_* for SRS-412-02-FR-001 (The\n# SPEC: Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently\n# SPEC: disabled.); test_ch02_fr_002_* for SRS-412-02-FR-002 (The VM hypervisor configuration shall\n# SPEC: allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap.)\n# tests/test_ch02_quarantine_vm.py:9 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:10 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:11 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:12 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:13 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:14 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:15 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:16 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:17 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:18 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:19 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:20 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:21 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:22 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:23 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:24 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:25 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:26 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:27 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:28 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:29 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:30 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:31 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:32 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:33 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:34 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:35 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:36 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:37 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:38 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:39 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:40 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:41 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:42 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:43 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:44 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:45 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:46 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:47 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:48 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:49 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:50 [MC-QVM-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-001",
+      "SRS-412-02-FR-002"
+    ]
+  }
+}

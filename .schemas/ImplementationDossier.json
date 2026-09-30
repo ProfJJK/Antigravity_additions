@@ -1,0 +1,47 @@
+{
+  "additionalProperties": false,
+  "description": "Coder/Verifier -> Auditor: physical evidence of an implementation run.\n\n``raw_stdout_sha256`` is the SHA-256 of the full evidence stdout file.\n``raw_stdout`` is an unedited inline prefix of that file; when\n``stdout_truncated`` is False it must be the complete content, so its\ndigest must equal ``raw_stdout_sha256``.",
+  "properties": {
+    "fulfilled_ac_list": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Fulfilled Ac List",
+      "type": "array"
+    },
+    "git_diff_hash": {
+      "pattern": "^[0-9a-f]{7,40}$",
+      "title": "Git Diff Hash",
+      "type": "string"
+    },
+    "raw_stdout": {
+      "minLength": 1,
+      "title": "Raw Stdout",
+      "type": "string"
+    },
+    "raw_stdout_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Raw Stdout Sha256",
+      "type": "string"
+    },
+    "stdout_path": {
+      "minLength": 1,
+      "title": "Stdout Path",
+      "type": "string"
+    },
+    "stdout_truncated": {
+      "title": "Stdout Truncated",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "git_diff_hash",
+    "raw_stdout",
+    "stdout_path",
+    "stdout_truncated",
+    "raw_stdout_sha256",
+    "fulfilled_ac_list"
+  ],
+  "title": "ImplementationDossier",
+  "type": "object"
+}

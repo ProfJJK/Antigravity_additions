@@ -1,0 +1,11 @@
+{
+  "builtin":  "schedule",
+  "restart_policy":  "always",
+  "args":  [
+    "0 4 * * 5",
+    "agentapi",
+    "new-conversation",
+    "Audit the entire CoChem ecosystem:\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-TOPOS\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-TORQ\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SpycFit\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SCRIBE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BENCH\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-GEOM\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-KINETIC\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-LUMOS\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-MAGE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-NODE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-ORACLE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-PULSE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SCAN\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SHIFT\n\nIngest the \n\"D:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\\CoChem_User_Manual.md\" \n\nAssess the current state of the CoChem ecosystem. You will edit the \"D:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\\CoChem_User_Manual.md\" document to bring it to date.\nParts of the manual which are not implemented yet mark as [Not Yet Implemented]. \nUpdate the new parts, updates, upgrades, and improvements to the CoChem ecosystem. \nThis should be an expanding documentation of the CoChem ecosystem that takes heavy inspiration from the ORCA 6.1.1 manual which is the standard you are aiming to meet.\nUpdate the \"D:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\\CoChem_User_Manual.md\" document.\n\n\n\n\n\n\n\nCheck if calculation data is being passed from one job to another throughout the CoChem pipeline"
+  ],
+  "display_name":  "CoChem-Manual"
+}

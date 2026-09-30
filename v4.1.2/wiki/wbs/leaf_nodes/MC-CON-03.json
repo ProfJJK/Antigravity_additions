@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-03",
+  "title": "Author Sub-Agent Multiplexer and Heap Guard Tests",
+  "domain": "concurrency",
+  "target_file": "tests/test_ch03_concurrency_layers.py",
+  "chunk_start": 121,
+  "chunk_end": 180,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects): test_f04_director_multiplexer_caps_concurrent_subagents_at_20 for SRS-412-03-FR-003 (The Layer 1 Director shall multiplex up to 20 concurrent Claude Opus 5.5 / Sonnet 5.5 sub-agents within its partitioned memory runtime.); test_f04_subagent_message_overhead_averages_under_10ms for NFR-CON-03 (Sub-agent communication overhead within Layer 1 shall average less than 10ms per message.); test_f04_director_recycles_process_when_heap_reaches_3800mb for FAILURE:V8 Heap Warning (If Director heap approaches 3800 MB, the Director completes in-flight tasks and gracefully spawns a fresh process instance.)",
+  "dependencies": [
+    "MC-CON-02"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch03_concurrency_layers.py>>>\n# [MC-CON-03] TESTS:swarm\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: subprocess, real SQLite WAL, psutil; no mock objects):\n# SPEC: test_f04_director_multiplexer_caps_concurrent_subagents_at_20 for SRS-412-03-FR-003 (The Layer 1\n# SPEC: Director shall multiplex up to 20 concurrent Claude Opus 5.5 / Sonnet 5.5 sub-agents within its\n# SPEC: partitioned memory runtime.); test_f04_subagent_message_overhead_averages_under_10ms for NFR-\n# SPEC: CON-03 (Sub-agent communication overhead within Layer 1 shall average less than 10ms per\n# SPEC: message.); test_f04_director_recycles_process_when_heap_reaches_3800mb for FAILURE:V8 Heap\n# SPEC: Warning (If Director heap approaches 3800 MB, the Director completes in-flight tasks and\n# SPEC: gracefully spawns a fresh process instance.)\n# tests/test_ch03_concurrency_layers.py:131 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:132 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:133 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:134 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:135 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:136 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:137 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:138 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:139 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:140 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:141 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:142 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:143 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:144 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:145 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:146 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:147 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:148 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:149 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:150 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:151 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:152 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:153 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:154 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:155 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:156 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:157 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:158 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:159 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:160 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:161 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:162 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:163 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:164 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:165 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:166 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:167 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:168 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:169 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:170 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:171 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:172 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:173 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:174 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:175 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:176 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:177 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:178 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:179 [MC-CON-03]\n# tests/test_ch03_concurrency_layers.py:180 [MC-CON-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-003",
+      "NFR-CON-03",
+      "FAILURE:V8 Heap Warning"
+    ]
+  }
+}

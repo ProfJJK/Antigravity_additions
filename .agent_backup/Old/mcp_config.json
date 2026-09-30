@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "brightdata": {
+      "command": "npx.cmd",
+      "args": ["-y", "@brightdata/mcp"],
+      "env": {
+        "API_TOKEN": "991de8c7-4076-4d05-95fb-cdc2f0963b98"
+      }
+    },
+    "github-copilot": {
+      "command": "python",
+      "args": [
+        "C:\\Users\\ansac\\.gemini\\antigravity\\copilot-bridge\\mcp\\copilot_mcp_server.py"
+      ],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}

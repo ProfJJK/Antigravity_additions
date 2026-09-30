@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-13",
+  "title": "Implement Process Handle Leak Sampler",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer2.py",
+  "chunk_start": 136,
+  "chunk_end": 180,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-02: Process handle leaks shall be zero across sustained 48-hour continuous polling runs. Verified by test: test_f04_poll_loop_leaks_zero_process_handles.",
+  "dependencies": [
+    "MC-CON-12",
+    "MC-CON-04"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_poll_loop_leaks_zero_process_handles",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer2.py>>>\n# [MC-CON-13] NFR-CON-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-02: Process\n# SPEC: handle leaks shall be zero across sustained 48-hour continuous polling runs. Verified by test:\n# SPEC: test_f04_poll_loop_leaks_zero_process_handles.\n# src/cochem/concurrency/layer2.py:140 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:141 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:142 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:143 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:144 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:145 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:146 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:147 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:148 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:149 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:150 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:151 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:152 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:153 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:154 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:155 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:156 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:157 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:158 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:159 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:160 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:161 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:162 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:163 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:164 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:165 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:166 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:167 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:168 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:169 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:170 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:171 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:172 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:173 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:174 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:175 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:176 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:177 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:178 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:179 [MC-CON-13]\n# src/cochem/concurrency/layer2.py:180 [MC-CON-13]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "NFR-CON-02"
+    ]
+  }
+}

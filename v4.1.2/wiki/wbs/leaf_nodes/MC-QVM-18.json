@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-18",
+  "title": "Implement Scratch, tmpfs and Layer Purge on Container Exit",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 321,
+  "chunk_end": 360,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-008: The container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon container exit. --rm already removes the container; also remove any named volumes the task created and run docker image prune --filter label=cochem.task=<id> for intermediate layers. Purge runs in a finally block even when the container crashed.",
+  "dependencies": [
+    "MC-QVM-17",
+    "MC-QVM-05",
+    "MC-QVM-15"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_008\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-18] SRS-412-02-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-008: The\n# SPEC: container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers\n# SPEC: immediately upon container exit. --rm already removes the container; also remove any named\n# SPEC: volumes the task created and run docker image prune --filter label=cochem.task=<id> for\n# SPEC: intermediate layers. Purge runs in a finally block even when the container crashed.\n# src/cochem/quarantine/sandbox.py:327 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:328 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:329 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:330 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:331 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:332 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:333 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:334 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:335 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:336 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:337 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:338 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:339 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:340 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:341 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:342 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:343 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:344 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:345 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:346 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:347 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:348 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:349 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:350 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:351 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:352 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:353 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:354 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:355 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:356 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:357 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:358 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:359 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:360 [MC-QVM-18]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-008"
+    ]
+  }
+}

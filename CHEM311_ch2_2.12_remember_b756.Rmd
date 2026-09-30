@@ -1,0 +1,34 @@
+Question
+========
+According to McMurry Section 2.12, which statement correctly describes the noncovalent interactions (dispersion forces, dipole-dipole forces, and hydrogen bonding) that act between molecules, as compared with the covalent bonds that hold atoms together within a molecule?
+
+Answerlist
+----------
+* Dispersion forces are universal to all molecules and typically span $2-10\ \mathrm{kJ/mol}$, dipole-dipole forces between polar molecules span $5-20\ \mathrm{kJ/mol}$, and hydrogen bonds, which form only when hydrogen is bonded to $\mathrm{O}$, $\mathrm{N}$, or $\mathrm{F}$, span $15-40\ \mathrm{kJ/mol}$, all far weaker than covalent bonds of $>350\ \mathrm{kJ/mol}$.
+* When a molecular liquid boils or a molecular solid melts, the phase change breaks the covalent bonds within each molecule, so the energy absorbed equals the energy of those intramolecular bonds.
+* Dispersion forces operate only between nonpolar molecules, so polar molecules are held together solely by dipole-dipole forces and hydrogen bonding.
+* Hydrogen bonding occurs whenever hydrogen is attached to any heteroatom, so it is equally important for hydrogen bonded to $\mathrm{Cl}$, $\mathrm{S}$, or $\mathrm{P}$ as for hydrogen bonded to $\mathrm{O}$, $\mathrm{N}$, or $\mathrm{F}$.
+* Noncovalent interactions are stronger than covalent bonds, so heating a substance breaks the bonds within its molecules before it separates those molecules from one another.
+
+Solution
+========
+Noncovalent interactions are the attractive forces that act between molecules rather than within them, and each is much weaker than a covalent bond, which typically requires $>350\ \mathrm{kJ/mol}$ to break. Dispersion forces arise from momentary fluctuations in electron distribution; because every molecule has electrons, dispersion forces are universal and contribute roughly $2-10\ \mathrm{kJ/mol}$, growing with molecular size and surface area. Dipole-dipole forces occur between polar molecules whose permanent dipoles align positive end to negative end, contributing roughly $5-20\ \mathrm{kJ/mol}$. A hydrogen bond is a particularly strong dipole-dipole attraction between a hydrogen atom bonded to a small, highly electronegative $\mathrm{O}$, $\mathrm{N}$, or $\mathrm{F}$ atom and a lone pair on another such atom, contributing roughly $15-40\ \mathrm{kJ/mol}$. Because these noncovalent interactions are weak, physical changes such as melting and boiling overcome them without breaking any covalent bond.
+
+Answerlist
+----------
+* Correct. Dispersion forces act between all molecules with a typical strength of $2-10\ \mathrm{kJ/mol}$, dipole-dipole forces between polar molecules reach about $5-20\ \mathrm{kJ/mol}$, and hydrogen bonds involving hydrogen on $\mathrm{O}$, $\mathrm{N}$, or $\mathrm{F}$ reach about $15-40\ \mathrm{kJ/mol}$, all well below covalent bond strengths.
+* Incorrect. Melting and boiling separate intact molecules from one another by overcoming noncovalent interactions; the covalent bonds inside each molecule remain unbroken during a phase change.
+* Incorrect. Dispersion forces arise in every molecule, polar or nonpolar, because all molecules have polarizable electron clouds; in polar molecules dispersion acts alongside dipole-dipole forces and often contributes a large share of the total attraction.
+* Incorrect. Hydrogen bonding requires hydrogen bonded to a small, highly electronegative atom such as $\mathrm{O}$, $\mathrm{N}$, or $\mathrm{F}$; the larger and less electronegative $\mathrm{Cl}$, $\mathrm{S}$, and $\mathrm{P}$ atoms do not produce strong hydrogen bonds.
+* Incorrect. Noncovalent interactions are far weaker than covalent bonds: even the strongest of them, hydrogen bonds, have energies of only about $15-40\ \mathrm{kJ/mol}$, whereas covalent bonds typically require $>350\ \mathrm{kJ/mol}$, so heating separates molecules long before it breaks the bonds within them.
+
+Meta-information
+================
+exname: CHEM311_ch2_2.12_remember_b756
+extype: schoice
+exsolution: 10000
+exshuffle: 5
+exsection: Chapter 2/Section 2.12 Noncovalent Interactions between Molecules
+extopic: Noncovalent Interactions between Molecules
+exextra[bloom]: Remember
+exextra[course]: CHEM311

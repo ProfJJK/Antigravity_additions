@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-02",
+  "title": "Author documents/fts_index DDL and Corruption Recovery Tests",
+  "domain": "dual_wiki_rag",
+  "target_file": "tests/test_ch06_dual_wiki_rag.py",
+  "chunk_start": 61,
+  "chunk_end": 120,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_documents_* for DATA_MODEL:documents (section 7 CREATE TABLE); test_ch06_fts_index_* for DATA_MODEL:fts_index (section 7 CREATE TABLE); test_ch06_database_file_corruption_* for FAILURE:Database File Corruption (Binary header check validates `b\"SQLite format 3\\x00\"`; corrupt file is regenerated from source markdown.)",
+  "dependencies": [
+    "MC-RAG-01"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-02] TESTS:schema\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_documents_*\n# SPEC: for DATA_MODEL:documents (section 7 CREATE TABLE); test_ch06_fts_index_* for\n# SPEC: DATA_MODEL:fts_index (section 7 CREATE TABLE); test_ch06_database_file_corruption_* for\n# SPEC: FAILURE:Database File Corruption (Binary header check validates `b\"SQLite format 3\\x00\"`;\n# SPEC: corrupt file is regenerated from source markdown.)\n# tests/test_ch06_dual_wiki_rag.py:68 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:69 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:70 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:71 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:72 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:73 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:74 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:75 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:76 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:77 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:78 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:79 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:80 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:81 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:82 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:83 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:84 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:85 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:86 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:87 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:88 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:89 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:90 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:91 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:92 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:93 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:94 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:95 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:96 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:97 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:98 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:99 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:100 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:101 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:102 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:103 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:104 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:105 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:106 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:107 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:108 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:109 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:110 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:111 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:112 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:113 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:114 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:115 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:116 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:117 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:118 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:119 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:120 [MC-RAG-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "DATA_MODEL:documents",
+      "DATA_MODEL:fts_index",
+      "FAILURE:Database File Corruption"
+    ]
+  }
+}

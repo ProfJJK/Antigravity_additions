@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-RAG-02",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.574346,
+  "finished_at": 1790733282.5744798,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-RAG-02",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-RAG-02",
+        "target_file": "tests/test_ch06_dual_wiki_rag.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-RAG-02",
+        "target_file": "tests/test_ch06_dual_wiki_rag.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-RAG-02",
+        "target_file": "tests/test_ch06_dual_wiki_rag.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-RAG-02",
+        "target_file": "tests/test_ch06_dual_wiki_rag.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-RAG-02",
+      "status": "COMPLETED",
+      "duration_sec": 2.5033950805664062e-05,
+      "memory_start_mb": 111.41015625,
+      "memory_end_mb": 111.41015625,
+      "memory_peak_mb": 111.41015625
+    }
+  }
+}

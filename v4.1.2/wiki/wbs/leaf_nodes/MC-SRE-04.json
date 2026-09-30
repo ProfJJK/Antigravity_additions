@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-04",
+  "title": "Author 30-Second Loop, 1.0s Budget and Signal ZD-8 Tests",
+  "domain": "watchdog_sre",
+  "target_file": "tests/test_ch08_watchdog_sre.py",
+  "chunk_start": 151,
+  "chunk_end": 200,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_009_* for SRS-412-08-FR-009 (The Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an Evidence Bundle for resuscitation.); test_ch08_fr_002_* for SRS-412-08-FR-002 (The Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.); test_ch08_nfr_sre_01_* for NFR-SRE-01 (Watchdog monitoring loop execution time shall not exceed 1.0 second per 30-second cycle.)",
+  "dependencies": [
+    "MC-SRE-03"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-04] TESTS:loop\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite job_board.db files under tmp_path and real child processes; no mock objects):\n# SPEC: test_ch08_fr_009_* for SRS-412-08-FR-009 (The Watchdog shall periodically evaluate the Signal\n# SPEC: ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT\n# SPEC: NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero\n# SPEC: count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an\n# SPEC: Evidence Bundle for resuscitation.); test_ch08_fr_002_* for SRS-412-08-FR-002 (The Watchdog\n# SPEC: shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.);\n# SPEC: test_ch08_nfr_sre_01_* for NFR-SRE-01 (Watchdog monitoring loop execution time shall not exceed\n# SPEC: 1.0 second per 30-second cycle.)\n# tests/test_ch08_watchdog_sre.py:162 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:163 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:164 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:165 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:166 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:167 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:168 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:169 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:170 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:171 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:172 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:173 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:174 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:175 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:176 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:177 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:178 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:179 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:180 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:181 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:182 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:183 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:184 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:185 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:186 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:187 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:188 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:189 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:190 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:191 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:192 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:193 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:194 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:195 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:196 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:197 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:198 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:199 [MC-SRE-04]\n# tests/test_ch08_watchdog_sre.py:200 [MC-SRE-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-009",
+      "SRS-412-08-FR-002",
+      "NFR-SRE-01"
+    ]
+  }
+}

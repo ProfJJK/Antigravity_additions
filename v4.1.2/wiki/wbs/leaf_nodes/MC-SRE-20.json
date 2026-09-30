@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-20",
+  "title": "Implement Out-of-Band Fable 5.1 Recovery Launcher",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 476,
+  "chunk_end": 525,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-008: The Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery process with the Evidence Bundle. Build an argv list (no shell=True), launch detached, and pass the bundle path. The executable path must be configurable and recovery must be disable-able (--no-recovery). Keep the existing --claude-exe flag so tests launch a real stand-in executable instead of claude.exe.",
+  "dependencies": [
+    "MC-SRE-19",
+    "MC-SRE-05"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_008\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-20] SRS-412-08-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-008: The\n# SPEC: Watchdog shall initiate self-healing by launching an out-of-band `claude.exe` Fable 5.1 recovery\n# SPEC: process with the Evidence Bundle. Build an argv list (no shell=True), launch detached, and pass\n# SPEC: the bundle path. The executable path must be configurable and recovery must be disable-able\n# SPEC: (--no-recovery). Keep the existing --claude-exe flag so tests launch a real stand-in executable\n# SPEC: instead of claude.exe.\n# src/cochem/watchdog/watchdog_sre.py:483 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:484 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:485 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:486 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:487 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:488 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:489 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:490 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:491 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:492 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:493 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:494 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:495 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:496 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:497 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:498 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:499 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:500 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:501 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:502 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:503 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:504 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:505 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:506 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:507 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:508 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:509 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:510 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:511 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:512 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:513 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:514 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:515 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:516 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:517 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:518 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:519 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:520 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:521 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:522 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:523 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:524 [MC-SRE-20]\n# src/cochem/watchdog/watchdog_sre.py:525 [MC-SRE-20]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-008"
+    ]
+  }
+}

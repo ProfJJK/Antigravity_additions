@@ -1,0 +1,11 @@
+{
+  "pid": 31124,
+  "ts": 1790794890.5554266,
+  "cycle": 1364,
+  "verdict": "HEALTHY",
+  "cycle_duration_sec": 0.0076,
+  "last_cycle_error": null,
+  "consecutive_cycle_failures": 0,
+  "last_recovery_outcome": "LAUNCHED",
+  "last_recovery_error": null
+}

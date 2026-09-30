@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-01",
+  "title": "Author Layer 1 Director Invocation Tests",
+  "domain": "concurrency",
+  "target_file": "tests/test_ch03_concurrency_layers.py",
+  "chunk_start": 1,
+  "chunk_end": 60,
+  "line_delta": 60,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects): test_f04_fable_invocation_constructs_valid_cli_arguments for SRS-412-03-FR-001 (Layer 1 CLI-level internal swarms shall execute through a single `claude.exe` process hosting Claude Fable 5.1 Director.); test_f04_fable_invocation_injects_4096mb_v8_memory_cap for SRS-412-03-FR-002 (The Layer 1 Director process shall execute with `NODE_OPTIONS=\"--max-old-space-size=4096\"` to prevent V8 JavaScript heap exhaustion during sub-agent multiplexing.); test_f04_fable_invocation_enforces_create_no_window_flag for SRS-412-03-FR-007 (All Windows subprocess calls shall enforce `creationflags = 0x08000000 | 0x00000200` (`CREATE_NO_WINDOW | CREATE_NEW_PROCESS_GROUP`).); test_f04_fable_invocation_launch_layer1_fable_director_returns_completed_process for INTERFACE:launch_layer1_fable_director (launch_layer1_fable_director() per section 6). Section 9 obligations: Test asserts `NODE_OPTIONS` contains `--max-old-space-size=4096` for Director invocations. Test asserts CLI arguments contain valid executable, model name, and prompt file path.",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch03_concurrency_layers.py>>>\n# [MC-CON-01] TESTS:launch\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects):\n# SPEC: test_f04_fable_invocation_constructs_valid_cli_arguments for SRS-412-03-FR-001 (Layer 1 CLI-\n# SPEC: level internal swarms shall execute through a single `claude.exe` process hosting Claude Fable\n# SPEC: 5.1 Director.); test_f04_fable_invocation_injects_4096mb_v8_memory_cap for SRS-412-03-FR-002\n# SPEC: (The Layer 1 Director process shall execute with `NODE_OPTIONS=\"--max-old-space-size=4096\"` to\n# SPEC: prevent V8 JavaScript heap exhaustion during sub-agent multiplexing.);\n# SPEC: test_f04_fable_invocation_enforces_create_no_window_flag for SRS-412-03-FR-007 (All Windows\n# SPEC: subprocess calls shall enforce `creationflags = 0x08000000 | 0x00000200` (`CREATE_NO_WINDOW |\n# SPEC: CREATE_NEW_PROCESS_GROUP`).);\n# SPEC: test_f04_fable_invocation_launch_layer1_fable_director_returns_completed_process for\n# SPEC: INTERFACE:launch_layer1_fable_director (launch_layer1_fable_director() per section 6). Section 9\n# SPEC: obligations: Test asserts `NODE_OPTIONS` contains `--max-old-space-size=4096` for Director\n# SPEC: invocations. Test asserts CLI arguments contain valid executable, model name, and prompt file\n# SPEC: path.\n# tests/test_ch03_concurrency_layers.py:17 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:18 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:19 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:20 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:21 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:22 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:23 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:24 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:25 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:26 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:27 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:28 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:29 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:30 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:31 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:32 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:33 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:34 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:35 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:36 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:37 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:38 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:39 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:40 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:41 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:42 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:43 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:44 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:45 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:46 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:47 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:48 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:49 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:50 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:51 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:52 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:53 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:54 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:55 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:56 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:57 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:58 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:59 [MC-CON-01]\n# tests/test_ch03_concurrency_layers.py:60 [MC-CON-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-001",
+      "SRS-412-03-FR-002",
+      "SRS-412-03-FR-007",
+      "INTERFACE:launch_layer1_fable_director"
+    ]
+  }
+}

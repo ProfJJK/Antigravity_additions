@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-23",
+  "title": "Implement 1.0s Per-Cycle Execution Budget Probe",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 606,
+  "chunk_end": 635,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-01: Watchdog monitoring loop execution time shall not exceed 1.0 second per 30-second cycle. Log a budget breach with the measured duration; do not skip matrices to meet it.",
+  "dependencies": [
+    "MC-SRE-22",
+    "MC-SRE-04"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_01\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-23] NFR-SRE-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-01: Watchdog\n# SPEC: monitoring loop execution time shall not exceed 1.0 second per 30-second cycle. Log a budget\n# SPEC: breach with the measured duration; do not skip matrices to meet it.\n# src/cochem/watchdog/watchdog_sre.py:610 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:611 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:612 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:613 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:614 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:615 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:616 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:617 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:618 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:619 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:620 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:621 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:622 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:623 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:624 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:625 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:626 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:627 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:628 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:629 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:630 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:631 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:632 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:633 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:634 [MC-SRE-23]\n# src/cochem/watchdog/watchdog_sre.py:635 [MC-SRE-23]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "NFR-SRE-01"
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-14",
+  "title": "Implement Fable Director CLI Command Builder",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 1,
+  "chunk_end": 30,
+  "line_delta": 30,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-03-FR-001: Layer 1 CLI-level internal swarms shall execute through a single `claude.exe` process hosting Claude Fable 5.1 Director. Verified by test: test_f04_fable_invocation_constructs_valid_cli_arguments.",
+  "dependencies": [
+    "MC-CON-01"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_fable_invocation_constructs_valid_cli_arguments",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-14] SRS-412-03-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-03-FR-001: Layer 1 CLI-level internal swarms shall execute through a single `claude.exe`\n# SPEC: process hosting Claude Fable 5.1 Director. Verified by test:\n# SPEC: test_f04_fable_invocation_constructs_valid_cli_arguments.\n# src/cochem/concurrency/layer1.py:6 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:7 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:8 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:9 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:10 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:11 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:12 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:13 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:14 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:15 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:16 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:17 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:18 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:19 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:20 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:21 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:22 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:23 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:24 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:25 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:26 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:27 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:28 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:29 [MC-CON-14]\n# src/cochem/concurrency/layer1.py:30 [MC-CON-14]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-001"
+    ]
+  }
+}

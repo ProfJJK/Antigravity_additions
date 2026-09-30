@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-01",
+  "title": "Author Dual Wiki Corpus, Link and 400-Line Limit Tests",
+  "domain": "dual_wiki_rag",
+  "target_file": "tests/test_ch06_dual_wiki_rag.py",
+  "chunk_start": 1,
+  "chunk_end": 60,
+  "line_delta": 60,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_001_* for SRS-412-06-FR-001 (The system shall maintain permanent reference knowledge in `.sources/` and live ratified specifications in `wiki/`.); test_ch06_fr_007_* for SRS-412-06-FR-007 (Scientific notation, quantum formulas, and Greek characters (`Ψ(r)`, `ΔG°`, `kJ·mol⁻¹`) shall be preserved losslessly in UTF-8.); test_ch06_fr_004_* for SRS-412-06-FR-004 (All relative Markdown links across wiki chapters shall be programmatically validated with 0 broken cross-references.); test_ch06_fr_005_* for SRS-412-06-FR-005 (Every SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines.); test_ch06_fr_006_* for SRS-412-06-FR-006 (The knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`.). Section 9 obligations: Test asserts `00_skeleton.md` indexes all chapters. Test verifies all generated chapters are strictly <= 400 lines. Test asserts relative links in markdown chapters resolve to physically existing files.",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-01] TESTS:corpus\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects):\n# SPEC: test_ch06_fr_001_* for SRS-412-06-FR-001 (The system shall maintain permanent reference\n# SPEC: knowledge in `.sources/` and live ratified specifications in `wiki/`.); test_ch06_fr_007_* for\n# SPEC: SRS-412-06-FR-007 (Scientific notation, quantum formulas, and Greek characters (`Ψ(r)`, `ΔG°`,\n# SPEC: `kJ·mol⁻¹`) shall be preserved losslessly in UTF-8.); test_ch06_fr_004_* for SRS-412-06-FR-004\n# SPEC: (All relative Markdown links across wiki chapters shall be programmatically validated with 0\n# SPEC: broken cross-references.); test_ch06_fr_005_* for SRS-412-06-FR-005 (Every SRS and wiki chapter\n# SPEC: document shall strictly enforce a maximum length limit of <= 400 lines.); test_ch06_fr_006_* for\n# SPEC: SRS-412-06-FR-006 (The knowledge base structure and document catalog shall be synchronized with\n# SPEC: `v4.1.2_manifest.json`.). Section 9 obligations: Test asserts `00_skeleton.md` indexes all\n# SPEC: chapters. Test verifies all generated chapters are strictly <= 400 lines. Test asserts relative\n# SPEC: links in markdown chapters resolve to physically existing files.\n# tests/test_ch06_dual_wiki_rag.py:15 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:16 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:17 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:18 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:19 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:20 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:21 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:22 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:23 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:24 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:25 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:26 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:27 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:28 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:29 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:30 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:31 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:32 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:33 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:34 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:35 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:36 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:37 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:38 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:39 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:40 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:41 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:42 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:43 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:44 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:45 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:46 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:47 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:48 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:49 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:50 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:51 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:52 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:53 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:54 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:55 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:56 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:57 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:58 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:59 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:60 [MC-RAG-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-001",
+      "SRS-412-06-FR-007",
+      "SRS-412-06-FR-004",
+      "SRS-412-06-FR-005",
+      "SRS-412-06-FR-006"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "task_id": "audit_spycfit_physics_autopsy",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733281.7057276,
+  "finished_at": 1790733281.7058098,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

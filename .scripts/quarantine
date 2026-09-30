@@ -1,0 +1,10 @@
+{
+  "task_id": "000_V4_000_hotfix_fable_isolation",
+  "agent_name": "claude-fable-5-1",
+  "prompt": "Apply a hotfix to task_work_loop.py to restore V3 ephemeral Git workspaces into the V2 daemon. Currently, all TDD tasks mutate the root directory simultaneously, causing a filesystem deadlock. Fix: 1) In TaskContext.create_or_resume, generate a cloned git worktree (or git clone --local) in .scripts/tdd_runs/<task_id>/workspace. 2) In finalize() for ACCEPTED tasks, commit the changes locally, acquire an asyncio.Lock(), and git pull/merge the changes back to root to prevent git lock collisions. CRITICAL ANTI-SPOOFING RULE: You MUST output your code changes using the strict Fracture Manifest block format: <<<FILE: .scripts/task_work_loop.py>>> ... <<<END FILE>>>. DO NOT output partial text patches like \"Insert the following after...\". Output the complete physical chunks.",
+  "workspace": "D:\\__CoChem\\__agentic",
+  "meta": {
+      "assigned_coder": "claude-fable-5-1",
+      "assigned_auditors": ["claude-opus-5-5", "gemini-3.1-pro-preview"]
+  }
+}

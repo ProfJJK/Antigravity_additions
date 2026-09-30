@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-03",
+  "title": "Author Terminal Transition and Poison-Pill Tests",
+  "domain": "task_matrix",
+  "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+  "chunk_start": 121,
+  "chunk_end": 180,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_005_* for SRS-412-04-FR-005 (Tasks exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED` status.); test_ch04_fr_009_* for SRS-412-04-FR-009 (Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8 invariant.); test_ch04_complete_task_* for INTERFACE:complete_task (complete_task(db_path: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal ZD-8 invariant.); test_ch04_fail_task_* for INTERFACE:fail_task (fail_task(db_path: str, task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED or BLOCKED, clearing lease_owner for ZD-8 safety.). Section 9 obligations: Test verifies `attempts >= 3` transitions status to `BLOCKED`.",
+  "dependencies": [
+    "MC-BB-02"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-03] TESTS:lifecycle\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_005_* for SRS-412-04-FR-005\n# SPEC: (Tasks exceeding 3 failed execution attempts shall automatically transition to terminal\n# SPEC: `BLOCKED` status.); test_ch04_fr_009_* for SRS-412-04-FR-009 (Any state transition terminating\n# SPEC: 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner =\n# SPEC: NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8\n# SPEC: invariant.); test_ch04_complete_task_* for INTERFACE:complete_task (complete_task(db_path: str,\n# SPEC: task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal\n# SPEC: ZD-8 invariant.); test_ch04_fail_task_* for INTERFACE:fail_task (fail_task(db_path: str,\n# SPEC: task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED\n# SPEC: or BLOCKED, clearing lease_owner for ZD-8 safety.). Section 9 obligations: Test verifies\n# SPEC: `attempts >= 3` transitions status to `BLOCKED`.\n# tests/test_ch04_task_matrix_blackboard.py:134 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:135 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:136 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:137 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:138 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:139 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:140 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:141 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:142 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:143 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:144 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:145 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:146 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:147 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:148 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:149 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:150 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:151 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:152 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:153 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:154 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:155 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:156 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:157 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:158 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:159 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:160 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:161 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:162 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:163 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:164 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:165 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:166 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:167 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:168 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:169 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:170 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:171 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:172 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:173 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:174 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:175 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:176 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:177 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:178 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:179 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:180 [MC-BB-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-005",
+      "SRS-412-04-FR-009",
+      "INTERFACE:complete_task",
+      "INTERFACE:fail_task"
+    ]
+  }
+}

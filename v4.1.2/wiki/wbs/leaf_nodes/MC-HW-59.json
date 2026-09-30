@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-59",
+  "title": "Implement FastMCP Tool get_crash_envelopes",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/mcp_server.py",
+  "chunk_start": 155,
+  "chunk_end": 195,
+  "line_delta": 41,
+  "instructions": "Expose get_crash_envelopes tool querying recent telemetry packets.",
+  "dependencies": [
+    "MC-HW-58"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 155 for MC-HW-59\n# Code context line 156 for MC-HW-59\n# Code context line 157 for MC-HW-59\n# Code context line 158 for MC-HW-59\n# Code context line 159 for MC-HW-59\n# Code context line 160 for MC-HW-59\n# Code context line 161 for MC-HW-59\n# Code context line 162 for MC-HW-59\n# Code context line 163 for MC-HW-59\n# Code context line 164 for MC-HW-59\n# Code context line 165 for MC-HW-59\n# Code context line 166 for MC-HW-59\n# Code context line 167 for MC-HW-59\n# Code context line 168 for MC-HW-59\n# Code context line 169 for MC-HW-59\n# Code context line 170 for MC-HW-59\n# Code context line 171 for MC-HW-59\n# Code context line 172 for MC-HW-59\n# Code context line 173 for MC-HW-59\n# Code context line 174 for MC-HW-59\n# Code context line 175 for MC-HW-59\n# Code context line 176 for MC-HW-59\n# Code context line 177 for MC-HW-59\n# Code context line 178 for MC-HW-59\n# Code context line 179 for MC-HW-59\n# Code context line 180 for MC-HW-59\n# Code context line 181 for MC-HW-59\n# Code context line 182 for MC-HW-59\n# Code context line 183 for MC-HW-59\n# Code context line 184 for MC-HW-59\n# Code context line 185 for MC-HW-59\n# Code context line 186 for MC-HW-59\n# Code context line 187 for MC-HW-59\n# Code context line 188 for MC-HW-59\n# Code context line 189 for MC-HW-59\n# Code context line 190 for MC-HW-59\n# Code context line 191 for MC-HW-59\n# Code context line 192 for MC-HW-59\n# Code context line 193 for MC-HW-59\n# Code context line 194 for MC-HW-59\n# Code context line 195 for MC-HW-59\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

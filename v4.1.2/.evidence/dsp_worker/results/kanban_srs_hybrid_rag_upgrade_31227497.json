@@ -1,0 +1,12 @@
+{
+  "task_id": "kanban_srs_hybrid_rag_upgrade_31227497",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733281.822588,
+  "finished_at": 1790733281.82267,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "task_id": "MC-DSP-19",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:23816",
+  "attempt": 2,
+  "started_at": 1790733875.3780415,
+  "finished_at": 1790733875.378129,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

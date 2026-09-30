@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-16",
+  "title": "Implement Matrix 4 Memory Slope Leak Alarm",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 296,
+  "chunk_end": 340,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-006: Matrix 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking subprocesses. Keep a bounded deque of (timestamp, rss_mb) per PID and alarm on a least-squares slope above a named MB/min threshold; the chapter gives no number, so expose it as a constant.",
+  "dependencies": [
+    "MC-SRE-15",
+    "MC-SRE-03"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_006\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-16] SRS-412-08-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-006: Matrix\n# SPEC: 4 (Resource Exhaustion) shall monitor memory consumption slope and trigger alarms on leaking\n# SPEC: subprocesses. Keep a bounded deque of (timestamp, rss_mb) per PID and alarm on a least-squares\n# SPEC: slope above a named MB/min threshold; the chapter gives no number, so expose it as a constant.\n# src/cochem/watchdog/watchdog_sre.py:301 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:302 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:303 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:304 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:305 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:306 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:307 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:308 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:309 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:310 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:311 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:312 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:313 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:314 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:315 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:316 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:317 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:318 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:319 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:320 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:321 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:322 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:323 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:324 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:325 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:326 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:327 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:328 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:329 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:330 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:331 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:332 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:333 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:334 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:335 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:336 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:337 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:338 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:339 [MC-SRE-16]\n# src/cochem/watchdog/watchdog_sre.py:340 [MC-SRE-16]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-006"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-01",
+  "title": "Author Sterile Import and Read-Only job_board.db Tests",
+  "domain": "watchdog_sre",
+  "target_file": "tests/test_ch08_watchdog_sre.py",
+  "chunk_start": 1,
+  "chunk_end": 50,
+  "line_delta": 50,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock objects): test_ch08_fr_001_* for SRS-412-08-FR-001 (The SRE Watchdog shall be completely sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db` in read-only mode (`?mode=ro`).); test_ch08_nfr_sre_02_* for NFR-SRE-02 (The Watchdog shall never modify or acquire write locks on `job_board.db`.). Section 9 obligations: Test verifies out-of-band read-only connection leaves database WAL file untouched.",
+  "dependencies": [],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch08_watchdog_sre.py>>>\n# [MC-SRE-01] TESTS:sterility\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite job_board.db files under tmp_path and real child processes; no mock\n# SPEC: objects): test_ch08_fr_001_* for SRS-412-08-FR-001 (The SRE Watchdog shall be completely\n# SPEC: sterile, importing solely the Python standard library and `psutil`, and opening `job_board.db`\n# SPEC: in read-only mode (`?mode=ro`).); test_ch08_nfr_sre_02_* for NFR-SRE-02 (The Watchdog shall\n# SPEC: never modify or acquire write locks on `job_board.db`.). Section 9 obligations: Test verifies\n# SPEC: out-of-band read-only connection leaves database WAL file untouched.\n# tests/test_ch08_watchdog_sre.py:9 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:10 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:11 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:12 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:13 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:14 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:15 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:16 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:17 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:18 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:19 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:20 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:21 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:22 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:23 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:24 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:25 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:26 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:27 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:28 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:29 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:30 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:31 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:32 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:33 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:34 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:35 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:36 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:37 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:38 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:39 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:40 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:41 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:42 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:43 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:44 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:45 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:46 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:47 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:48 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:49 [MC-SRE-01]\n# tests/test_ch08_watchdog_sre.py:50 [MC-SRE-01]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-001",
+      "NFR-SRE-02"
+    ]
+  }
+}

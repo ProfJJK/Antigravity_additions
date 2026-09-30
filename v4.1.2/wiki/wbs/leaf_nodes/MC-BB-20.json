@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-20",
+  "title": "Implement Expired Lease Reclamation",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 331,
+  "chunk_end": 375,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Daemon Crash with Active Lease': Watchdog detects expired `lease_expires_at < now` and resets task to `PENDING` if `attempts < 3`. The reset to PENDING must also clear lease_owner and lease_expires_at.",
+  "dependencies": [
+    "MC-BB-19",
+    "MC-BB-04",
+    "MC-BB-22",
+    "MC-BB-21"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"daemon_crash_with_active_lease\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-20] FAILURE:Daemon Crash with Active Lease\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Daemon\n# SPEC: Crash with Active Lease': Watchdog detects expired `lease_expires_at < now` and resets task to\n# SPEC: `PENDING` if `attempts < 3`. The reset to PENDING must also clear lease_owner and\n# SPEC: lease_expires_at.\n# src/cochem/blackboard/leases.py:336 [MC-BB-20]\n# src/cochem/blackboard/leases.py:337 [MC-BB-20]\n# src/cochem/blackboard/leases.py:338 [MC-BB-20]\n# src/cochem/blackboard/leases.py:339 [MC-BB-20]\n# src/cochem/blackboard/leases.py:340 [MC-BB-20]\n# src/cochem/blackboard/leases.py:341 [MC-BB-20]\n# src/cochem/blackboard/leases.py:342 [MC-BB-20]\n# src/cochem/blackboard/leases.py:343 [MC-BB-20]\n# src/cochem/blackboard/leases.py:344 [MC-BB-20]\n# src/cochem/blackboard/leases.py:345 [MC-BB-20]\n# src/cochem/blackboard/leases.py:346 [MC-BB-20]\n# src/cochem/blackboard/leases.py:347 [MC-BB-20]\n# src/cochem/blackboard/leases.py:348 [MC-BB-20]\n# src/cochem/blackboard/leases.py:349 [MC-BB-20]\n# src/cochem/blackboard/leases.py:350 [MC-BB-20]\n# src/cochem/blackboard/leases.py:351 [MC-BB-20]\n# src/cochem/blackboard/leases.py:352 [MC-BB-20]\n# src/cochem/blackboard/leases.py:353 [MC-BB-20]\n# src/cochem/blackboard/leases.py:354 [MC-BB-20]\n# src/cochem/blackboard/leases.py:355 [MC-BB-20]\n# src/cochem/blackboard/leases.py:356 [MC-BB-20]\n# src/cochem/blackboard/leases.py:357 [MC-BB-20]\n# src/cochem/blackboard/leases.py:358 [MC-BB-20]\n# src/cochem/blackboard/leases.py:359 [MC-BB-20]\n# src/cochem/blackboard/leases.py:360 [MC-BB-20]\n# src/cochem/blackboard/leases.py:361 [MC-BB-20]\n# src/cochem/blackboard/leases.py:362 [MC-BB-20]\n# src/cochem/blackboard/leases.py:363 [MC-BB-20]\n# src/cochem/blackboard/leases.py:364 [MC-BB-20]\n# src/cochem/blackboard/leases.py:365 [MC-BB-20]\n# src/cochem/blackboard/leases.py:366 [MC-BB-20]\n# src/cochem/blackboard/leases.py:367 [MC-BB-20]\n# src/cochem/blackboard/leases.py:368 [MC-BB-20]\n# src/cochem/blackboard/leases.py:369 [MC-BB-20]\n# src/cochem/blackboard/leases.py:370 [MC-BB-20]\n# src/cochem/blackboard/leases.py:371 [MC-BB-20]\n# src/cochem/blackboard/leases.py:372 [MC-BB-20]\n# src/cochem/blackboard/leases.py:373 [MC-BB-20]\n# src/cochem/blackboard/leases.py:374 [MC-BB-20]\n# src/cochem/blackboard/leases.py:375 [MC-BB-20]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "FAILURE:Daemon Crash with Active Lease"
+    ]
+  }
+}

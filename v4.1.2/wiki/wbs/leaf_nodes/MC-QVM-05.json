@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-05",
+  "title": "Author Exit Purge and 60-Second Orphan Scratch Sweep Tests",
+  "domain": "quarantine_vm",
+  "target_file": "tests/test_ch02_quarantine_vm.py",
+  "chunk_start": 201,
+  "chunk_end": 250,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_008_* for SRS-412-02-FR-008 (The container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon container exit.); test_ch02_scratch_leak_* for FAILURE:Scratch Leak (Automated cron job inspects `/tmp` mounts every 60 seconds and unlinks unmounted orphan namespaces.)",
+  "dependencies": [
+    "MC-QVM-04"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-05] TESTS:purge\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_008_* for SRS-412-02-FR-008 (The container engine\n# SPEC: shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon\n# SPEC: container exit.); test_ch02_scratch_leak_* for FAILURE:Scratch Leak (Automated cron job inspects\n# SPEC: `/tmp` mounts every 60 seconds and unlinks unmounted orphan namespaces.)\n# tests/test_ch02_quarantine_vm.py:209 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:210 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:211 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:212 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:213 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:214 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:215 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:216 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:217 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:218 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:219 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:220 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:221 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:222 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:223 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:224 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:225 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:226 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:227 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:228 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:229 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:230 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:231 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:232 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:233 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:234 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:235 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:236 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:237 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:238 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:239 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:240 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:241 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:242 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:243 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:244 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:245 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:246 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:247 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:248 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:249 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:250 [MC-QVM-05]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-008",
+      "FAILURE:Scratch Leak"
+    ]
+  }
+}

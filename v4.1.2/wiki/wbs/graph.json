@@ -1,0 +1,44 @@
+{
+  "version": "1.0",
+  "nodes": [
+    "M1_PURGE",
+    "M2_SRS",
+    "M3_WBS",
+    "M4_QUEUE",
+    "M5_TDD_MERGE",
+    "M6_ACTIVATION",
+    "M7_VICTORY"
+  ],
+  "edges": [
+    [
+      "M1_PURGE",
+      "M2_SRS"
+    ],
+    [
+      "M2_SRS",
+      "M3_WBS"
+    ],
+    [
+      "M3_WBS",
+      "M4_QUEUE"
+    ],
+    [
+      "M4_QUEUE",
+      "M5_TDD_MERGE"
+    ],
+    [
+      "M5_TDD_MERGE",
+      "M6_ACTIVATION"
+    ],
+    [
+      "M6_ACTIVATION",
+      "M7_VICTORY"
+    ]
+  ],
+  "metadata": {
+    "plan_id": "V4.1.2_BOOTSTRAP",
+    "pipeline_version": "4.1.2",
+    "acyclic": true,
+    "root_node": "M1_PURGE"
+  }
+}

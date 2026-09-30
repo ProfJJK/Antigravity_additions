@@ -1,0 +1,45 @@
+{
+  "task_id": "CHEM311_ch2_2.11_understand_6c4a_3",
+  "status": "PASS",
+  "duration_seconds": 5.12,
+  "exit_codes": {
+    "html_compilation": 0,
+    "nops_compilation": 0
+  },
+  "input_artifact": {
+    "rmd_file": "D:/__CoChem/__agentic/CHEM311_ch2_2.11_understand_6c4a.Rmd",
+    "sha256": "dd29c18297dc08c82a61facfaad8940c037ec5072be7aa99726d261f397d183a",
+    "size_bytes": 4424
+  },
+  "compilation_artifacts": {
+    "html_file": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_quarantine_jgdq2tua/CHEM311_ch2_2.11_understand_6c4a_compiled1.html",
+      "sha256": "262b2788c988ea0dacec3cb41d1ba399fe22586fa00774dc4f21e4363bd1e32b",
+      "size_bytes": 14332
+    },
+    "nops_pdf": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_quarantine_jgdq2tua/CHEM311_ch2_2.11_understand_6c4a_nops1.pdf",
+      "sha256": "91bd3e88007bc64a79f1df7c7c8eb21fde4824a4b9f0d428688b3dd9f95ff645",
+      "size_bytes": 90791,
+      "page_count": 3
+    },
+    "nops_rds": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_quarantine_jgdq2tua/CHEM311_ch2_2.11_understand_6c4a_nops.rds",
+      "sha256": "0ca0505b1c62a14ef133d6f9c772e8579eecb2af451fd73f1147c31a69540f59",
+      "size_bytes": 2349
+    }
+  },
+  "verification_checks": {
+    "zero_latex_math_errors": true,
+    "five_options_schoice": true,
+    "valid_rds_key": true,
+    "isolated_quarantine_cleanup": true
+  },
+  "metadata": {
+    "extype": "schoice",
+    "exsolution": "10000",
+    "r_version": "4.6.1",
+    "exams_version": "2.4.4",
+    "tinytex_version": "0.60"
+  }
+}

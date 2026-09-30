@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-10",
+  "title": "Implement 3-Strike Code Generation Freeze",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/research.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-05-FR-003: Three consecutive test failures shall freeze code generation and trigger the Mandatory Literature Research Stage. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+  "dependencies": [
+    "MC-TDD-02",
+    "MC-TDD-05",
+    "MC-TDD-06"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_003\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-10] SRS-412-05-FR-003\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-05-FR-003: Three consecutive test failures shall freeze code generation and trigger the\n# SPEC: Mandatory Literature Research Stage. Traceability test:\n# SPEC: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/tdd_pivot/research.py:6 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:7 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:8 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:9 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:10 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:11 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:12 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:13 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:14 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:15 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:16 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:17 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:18 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:19 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:20 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:21 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:22 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:23 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:24 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:25 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:26 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:27 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:28 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:29 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:30 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:31 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:32 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:33 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:34 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:35 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:36 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:37 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:38 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:39 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:40 [MC-TDD-10]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-003"
+    ]
+  }
+}

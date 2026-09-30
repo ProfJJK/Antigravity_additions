@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-08",
+  "title": "Implement 12 vCPU 70% Cap Set-VMProcessor Command Builder",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/vm_profile.py",
+  "chunk_start": 81,
+  "chunk_end": 120,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap. Build Set-VMProcessor -VMName <name> -Count 12 -Maximum 70 -RelativeWeight 100 as an argv list; 70 is Hyper-V's percentage Maximum (hard cap), not Reserve. Expose VCPU_COUNT=12 and CPU_CAP_PERCENT=70 as module constants.",
+  "dependencies": [
+    "MC-QVM-07",
+    "MC-QVM-01"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_002\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-08] SRS-412-02-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM\n# SPEC: hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation\n# SPEC: cap. Build Set-VMProcessor -VMName <name> -Count 12 -Maximum 70 -RelativeWeight 100 as an argv\n# SPEC: list; 70 is Hyper-V's percentage Maximum (hard cap), not Reserve. Expose VCPU_COUNT=12 and\n# SPEC: CPU_CAP_PERCENT=70 as module constants.\n# src/cochem/quarantine/vm_profile.py:87 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:88 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:89 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:90 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:91 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:92 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:93 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:94 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:95 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:96 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:97 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:98 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:99 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:100 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:101 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:102 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:103 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:104 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:105 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:106 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:107 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:108 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:109 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:110 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:111 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:112 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:113 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:114 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:115 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:116 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:117 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:118 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:119 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:120 [MC-QVM-08]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-002"
+    ]
+  }
+}

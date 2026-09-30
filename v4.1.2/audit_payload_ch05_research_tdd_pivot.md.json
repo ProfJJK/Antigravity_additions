@@ -1,0 +1,558 @@
+[
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-01",
+    "title": "Author 10-Cycle State Machine and Diagnostic Prompt Tests",
+    "domain": "tdd_pivot",
+    "target_file": "tests/test_ch05_research_tdd_pivot.py",
+    "chunk_start": 1,
+    "chunk_end": 60,
+    "line_delta": 60,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_tdd_cycle_state_* for DATA_MODEL:tdd_cycle_state (section 7 JSON model); test_ch05_fr_001_* for SRS-412-05-FR-001 (Coding tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit -> Repair loop.); test_ch05_nfr_tdd_01_* for NFR-TDD-01 (TDD cycle execution (test run and result collection) shall complete within 30 seconds per cycle.); test_ch05_nfr_tdd_02_* for NFR-TDD-02 (Diagnostic error prompts injected into repair agents shall remain bounded below 2,000 tokens.); test_ch05_fr_002_* for SRS-412-05-FR-002 (Failed test cycles shall receive automated, real-time diagnostic error analyses synthesized by Gemini Flash 3.8.)",
+    "dependencies": [],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-01] TESTS:state_machine\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects):\n# SPEC: test_ch05_tdd_cycle_state_* for DATA_MODEL:tdd_cycle_state (section 7 JSON model);\n# SPEC: test_ch05_fr_001_* for SRS-412-05-FR-001 (Coding tasks shall execute within a bounded 10-cycle\n# SPEC: state machine following the Execute -> Audit -> Repair loop.); test_ch05_nfr_tdd_01_* for NFR-\n# SPEC: TDD-01 (TDD cycle execution (test run and result collection) shall complete within 30 seconds\n# SPEC: per cycle.); test_ch05_nfr_tdd_02_* for NFR-TDD-02 (Diagnostic error prompts injected into\n# SPEC: repair agents shall remain bounded below 2,000 tokens.); test_ch05_fr_002_* for\n# SPEC: SRS-412-05-FR-002 (Failed test cycles shall receive automated, real-time diagnostic error\n# SPEC: analyses synthesized by Gemini Flash 3.8.)\n# tests/test_ch05_research_tdd_pivot.py:12 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:13 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:14 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:15 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:16 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:17 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:18 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:19 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:20 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:21 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:22 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:23 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:24 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:25 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:26 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:27 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:28 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:29 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:30 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:31 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:32 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:33 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:34 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:35 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:36 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:37 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:38 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:39 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:40 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:41 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:42 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:43 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:44 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:45 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:46 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:47 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:48 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:49 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:50 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:51 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:52 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:53 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:54 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:55 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:56 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:57 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:58 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:59 [MC-TDD-01]\n# tests/test_ch05_research_tdd_pivot.py:60 [MC-TDD-01]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "DATA_MODEL:tdd_cycle_state",
+        "SRS-412-05-FR-001",
+        "NFR-TDD-01",
+        "NFR-TDD-02",
+        "SRS-412-05-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-02",
+    "title": "Author 3-Strike Freeze and Research Dossier Tests",
+    "domain": "tdd_pivot",
+    "target_file": "tests/test_ch05_research_tdd_pivot.py",
+    "chunk_start": 61,
+    "chunk_end": 120,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_003_* for SRS-412-05-FR-003 (Three consecutive test failures shall freeze code generation and trigger the Mandatory Literature Research Stage.); test_ch05_fr_004_* for SRS-412-05-FR-004 (The research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL) to assemble an actionable Research Dossier.); test_ch05_exhausted_research_stage_* for FAILURE:Exhausted Research Stage (If the research stage fails to find alternative literature, Fable 5.1 flags contract ambiguity for human user review.)",
+    "dependencies": [
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-02] TESTS:research\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_003_*\n# SPEC: for SRS-412-05-FR-003 (Three consecutive test failures shall freeze code generation and trigger\n# SPEC: the Mandatory Literature Research Stage.); test_ch05_fr_004_* for SRS-412-05-FR-004 (The\n# SPEC: research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL)\n# SPEC: to assemble an actionable Research Dossier.); test_ch05_exhausted_research_stage_* for\n# SPEC: FAILURE:Exhausted Research Stage (If the research stage fails to find alternative literature,\n# SPEC: Fable 5.1 flags contract ambiguity for human user review.)\n# tests/test_ch05_research_tdd_pivot.py:70 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:71 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:72 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:73 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:74 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:75 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:76 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:77 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:78 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:79 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:80 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:81 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:82 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:83 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:84 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:85 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:86 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:87 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:88 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:89 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:90 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:91 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:92 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:93 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:94 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:95 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:96 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:97 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:98 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:99 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:100 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:101 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:102 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:103 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:104 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:105 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:106 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:107 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:108 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:109 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:110 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:111 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:112 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:113 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:114 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:115 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:116 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:117 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:118 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:119 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:120 [MC-TDD-02]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-003",
+        "SRS-412-05-FR-004",
+        "FAILURE:Exhausted Research Stage"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-03",
+    "title": "Author Root Cause Triage and Physics Wall Abort Tests",
+    "domain": "tdd_pivot",
+    "target_file": "tests/test_ch05_research_tdd_pivot.py",
+    "chunk_start": 121,
+    "chunk_end": 180,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_005_* for SRS-412-05-FR-005 (Claude Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and Library Deficiencies.); test_ch05_fr_006_* for SRS-412-05-FR-006 (If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall trigger `[HARD_ABORT: PHYSICS WALL]`.); test_ch05_physics_wall_hard_abort_* for FAILURE:Physics Wall Hard Abort (When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`.)",
+    "dependencies": [
+      "MC-TDD-02"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-03] TESTS:pivot\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_005_*\n# SPEC: for SRS-412-05-FR-005 (Claude Fable 5.1 shall conduct Root Cause Triage across Scope\n# SPEC: Underestimation, Contract Ambiguity, and Library Deficiencies.); test_ch05_fr_006_* for\n# SPEC: SRS-412-05-FR-006 (If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`),\n# SPEC: the system shall trigger `[HARD_ABORT: PHYSICS WALL]`.); test_ch05_physics_wall_hard_abort_* for\n# SPEC: FAILURE:Physics Wall Hard Abort (When `MAX_META_PIVOT = 3` is reached, the system halts with\n# SPEC: `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`.)\n# tests/test_ch05_research_tdd_pivot.py:130 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:131 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:132 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:133 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:134 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:135 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:136 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:137 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:138 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:139 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:140 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:141 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:142 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:143 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:144 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:145 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:146 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:147 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:148 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:149 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:150 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:151 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:152 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:153 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:154 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:155 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:156 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:157 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:158 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:159 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:160 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:161 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:162 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:163 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:164 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:165 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:166 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:167 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:168 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:169 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:170 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:171 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:172 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:173 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:174 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:175 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:176 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:177 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:178 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:179 [MC-TDD-03]\n# tests/test_ch05_research_tdd_pivot.py:180 [MC-TDD-03]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-005",
+        "SRS-412-05-FR-006",
+        "FAILURE:Physics Wall Hard Abort"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-04",
+    "title": "Author Zero-Mock Audit and Mutation Score Tests",
+    "domain": "tdd_pivot",
+    "target_file": "tests/test_ch05_research_tdd_pivot.py",
+    "chunk_start": 181,
+    "chunk_end": 240,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_nfr_tdd_03_* for NFR-TDD-03 (Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in any production test code.); test_ch05_zero_mock_checker_* for OBLIGATION:zero_mock_checker (Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`.); test_ch05_notimplementederror_* for OBLIGATION:NotImplementedError (Test asserts audit flags `raise NotImplementedError` and empty `pass` blocks.); test_ch05_fr_008_* for SRS-412-05-FR-008 (Critical numerical routines shall achieve a mutation testing kill score of at least 85% via `mutmut`.). Section 9 obligations: Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`. Test asserts audit flags `raise NotImplementedError` and empty `pass` blocks.",
+    "dependencies": [
+      "MC-TDD-03"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-04] TESTS:audit\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects):\n# SPEC: test_ch05_nfr_tdd_03_* for NFR-TDD-03 (Zero mock libraries (`unittest.mock`, `MagicMock`,\n# SPEC: `monkeypatch`) shall be present in any production test code.); test_ch05_zero_mock_checker_* for\n# SPEC: OBLIGATION:zero_mock_checker (Test asserts `zero_mock_checker` flags obfuscated tokens and\n# SPEC: `monkeypatch`.); test_ch05_notimplementederror_* for OBLIGATION:NotImplementedError (Test\n# SPEC: asserts audit flags `raise NotImplementedError` and empty `pass` blocks.); test_ch05_fr_008_*\n# SPEC: for SRS-412-05-FR-008 (Critical numerical routines shall achieve a mutation testing kill score\n# SPEC: of at least 85% via `mutmut`.). Section 9 obligations: Test asserts `zero_mock_checker` flags\n# SPEC: obfuscated tokens and `monkeypatch`. Test asserts audit flags `raise NotImplementedError` and\n# SPEC: empty `pass` blocks.\n# tests/test_ch05_research_tdd_pivot.py:193 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:194 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:195 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:196 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:197 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:198 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:199 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:200 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:201 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:202 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:203 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:204 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:205 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:206 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:207 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:208 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:209 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:210 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:211 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:212 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:213 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:214 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:215 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:216 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:217 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:218 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:219 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:220 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:221 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:222 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:223 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:224 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:225 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:226 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:227 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:228 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:229 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:230 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:231 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:232 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:233 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:234 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:235 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:236 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:237 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:238 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:239 [MC-TDD-04]\n# tests/test_ch05_research_tdd_pivot.py:240 [MC-TDD-04]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "NFR-TDD-03",
+        "OBLIGATION:zero_mock_checker",
+        "OBLIGATION:NotImplementedError",
+        "SRS-412-05-FR-008"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-05",
+    "title": "Implement tdd_cycle_state Dataclass and JSON Round-Trip",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/state_machine.py",
+    "chunk_start": 1,
+    "chunk_end": 45,
+    "line_delta": 45,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the tdd_cycle_state model from section 7 with to_json/from_json that round-trip the section 7 layout. Fields: cycle_number (e.g. 3); max_cycles (e.g. 10); consecutive_failures (e.g. 3); research_stage_triggered (e.g. true); dossier_path (e.g. \".docs/research/DOSSIER_TASK_04.md\"); meta_pivot_count (e.g. 1); max_meta_pivots (e.g. 3) The section 7 values are an example snapshot, not defaults: default every counter to 0.",
+    "dependencies": [
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"tdd_cycle_state\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-05] DATA_MODEL:tdd_cycle_state\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: tdd_cycle_state model from section 7 with to_json/from_json that round-trip the section 7\n# SPEC: layout. Fields: cycle_number (e.g. 3); max_cycles (e.g. 10); consecutive_failures (e.g. 3);\n# SPEC: research_stage_triggered (e.g. true); dossier_path (e.g. \".docs/research/DOSSIER_TASK_04.md\");\n# SPEC: meta_pivot_count (e.g. 1); max_meta_pivots (e.g. 3) The section 7 values are an example\n# SPEC: snapshot, not defaults: default every counter to 0.\n# src/cochem/tdd_pivot/state_machine.py:8 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:9 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:10 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:11 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:12 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:13 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:14 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:15 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:16 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:17 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:18 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:19 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:20 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:21 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:22 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:23 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:24 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:25 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:26 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:27 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:28 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:29 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:30 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:31 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:32 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:33 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:34 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:35 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:36 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:37 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:38 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:39 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:40 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:41 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:42 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:43 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:44 [MC-TDD-05]\n# src/cochem/tdd_pivot/state_machine.py:45 [MC-TDD-05]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "DATA_MODEL:tdd_cycle_state"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-06",
+    "title": "Implement Bounded 10-Cycle Execute-Audit-Repair Loop",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/state_machine.py",
+    "chunk_start": 46,
+    "chunk_end": 95,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-001: Coding tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit -> Repair loop. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+    "dependencies": [
+      "MC-TDD-05",
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-06] SRS-412-05-FR-001\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-001: Coding\n# SPEC: tasks shall execute within a bounded 10-cycle state machine following the Execute -> Audit ->\n# SPEC: Repair loop. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/tdd_pivot/state_machine.py:50 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:51 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:52 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:53 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:54 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:55 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:56 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:57 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:58 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:59 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:60 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:61 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:62 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:63 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:64 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:65 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:66 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:67 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:68 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:69 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:70 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:71 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:72 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:73 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:74 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:75 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:76 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:77 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:78 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:79 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:80 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:81 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:82 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:83 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:84 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:85 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:86 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:87 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:88 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:89 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:90 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:91 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:92 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:93 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:94 [MC-TDD-06]\n# src/cochem/tdd_pivot/state_machine.py:95 [MC-TDD-06]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-07",
+    "title": "Implement 30 s Per-Cycle pytest Runner Timeout",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/state_machine.py",
+    "chunk_start": 96,
+    "chunk_end": 135,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-01: TDD cycle execution (test run and result collection) shall complete within 30 seconds per cycle.",
+    "dependencies": [
+      "MC-TDD-06",
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"nfr_tdd_01\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-07] NFR-TDD-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-01: TDD cycle\n# SPEC: execution (test run and result collection) shall complete within 30 seconds per cycle.\n# src/cochem/tdd_pivot/state_machine.py:99 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:100 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:101 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:102 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:103 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:104 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:105 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:106 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:107 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:108 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:109 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:110 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:111 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:112 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:113 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:114 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:115 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:116 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:117 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:118 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:119 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:120 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:121 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:122 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:123 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:124 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:125 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:126 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:127 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:128 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:129 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:130 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:131 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:132 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:133 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:134 [MC-TDD-07]\n# src/cochem/tdd_pivot/state_machine.py:135 [MC-TDD-07]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "NFR-TDD-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-08",
+    "title": "Implement 2,000-Token Diagnostic Prompt Bound",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/state_machine.py",
+    "chunk_start": 136,
+    "chunk_end": 175,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-02: Diagnostic error prompts injected into repair agents shall remain bounded below 2,000 tokens.",
+    "dependencies": [
+      "MC-TDD-07",
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"nfr_tdd_02\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-08] NFR-TDD-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TDD-02: Diagnostic\n# SPEC: error prompts injected into repair agents shall remain bounded below 2,000 tokens.\n# src/cochem/tdd_pivot/state_machine.py:139 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:140 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:141 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:142 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:143 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:144 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:145 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:146 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:147 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:148 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:149 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:150 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:151 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:152 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:153 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:154 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:155 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:156 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:157 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:158 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:159 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:160 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:161 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:162 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:163 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:164 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:165 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:166 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:167 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:168 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:169 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:170 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:171 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:172 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:173 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:174 [MC-TDD-08]\n# src/cochem/tdd_pivot/state_machine.py:175 [MC-TDD-08]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "NFR-TDD-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-09",
+    "title": "Implement Gemini Flash Diagnostic Analysis Hook",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/state_machine.py",
+    "chunk_start": 176,
+    "chunk_end": 220,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-002: Failed test cycles shall receive automated, real-time diagnostic error analyses synthesized by Gemini Flash 3.8. Take the Gemini Flash client as an injected callable so tests can pass a real local summariser instead of a mock (NFR-TDD-03).",
+    "dependencies": [
+      "MC-TDD-08",
+      "MC-TDD-01"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/state_machine.py>>>\n# [MC-TDD-09] SRS-412-05-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-002: Failed\n# SPEC: test cycles shall receive automated, real-time diagnostic error analyses synthesized by Gemini\n# SPEC: Flash 3.8. Take the Gemini Flash client as an injected callable so tests can pass a real local\n# SPEC: summariser instead of a mock (NFR-TDD-03).\n# src/cochem/tdd_pivot/state_machine.py:181 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:182 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:183 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:184 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:185 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:186 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:187 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:188 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:189 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:190 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:191 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:192 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:193 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:194 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:195 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:196 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:197 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:198 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:199 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:200 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:201 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:202 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:203 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:204 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:205 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:206 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:207 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:208 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:209 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:210 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:211 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:212 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:213 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:214 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:215 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:216 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:217 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:218 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:219 [MC-TDD-09]\n# src/cochem/tdd_pivot/state_machine.py:220 [MC-TDD-09]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-10",
+    "title": "Implement 3-Strike Code Generation Freeze",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-05-FR-003: Three consecutive test failures shall freeze code generation and trigger the Mandatory Literature Research Stage. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+    "dependencies": [
+      "MC-TDD-02",
+      "MC-TDD-05",
+      "MC-TDD-06"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_003\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-10] SRS-412-05-FR-003\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-05-FR-003: Three consecutive test failures shall freeze code generation and trigger the\n# SPEC: Mandatory Literature Research Stage. Traceability test:\n# SPEC: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/tdd_pivot/research.py:6 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:7 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:8 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:9 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:10 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:11 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:12 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:13 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:14 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:15 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:16 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:17 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:18 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:19 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:20 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:21 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:22 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:23 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:24 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:25 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:26 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:27 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:28 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:29 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:30 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:31 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:32 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:33 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:34 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:35 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:36 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:37 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:38 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:39 [MC-TDD-10]\n# src/cochem/tdd_pivot/research.py:40 [MC-TDD-10]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-003"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-11",
+    "title": "Implement Multi-Database Research Dossier Assembly",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 41,
+    "chunk_end": 100,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-004: The research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL) to assemble an actionable Research Dossier. Each database is a pluggable backend; tests call the real APIs and skip when the network is unavailable, never mock them. Write the dossier to dossier_path.",
+    "dependencies": [
+      "MC-TDD-10",
+      "MC-TDD-02"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_004\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-11] SRS-412-05-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-004: The\n# SPEC: research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL)\n# SPEC: to assemble an actionable Research Dossier. Each database is a pluggable backend; tests call the\n# SPEC: real APIs and skip when the network is unavailable, never mock them. Write the dossier to\n# SPEC: dossier_path.\n# src/cochem/tdd_pivot/research.py:47 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:48 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:49 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:50 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:51 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:52 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:53 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:54 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:55 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:56 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:57 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:58 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:59 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:60 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:61 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:62 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:63 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:64 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:65 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:66 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:67 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:68 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:69 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:70 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:71 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:72 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:73 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:74 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:75 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:76 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:77 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:78 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:79 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:80 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:81 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:82 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:83 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:84 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:85 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:86 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:87 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:88 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:89 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:90 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:91 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:92 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:93 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:94 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:95 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:96 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:97 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:98 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:99 [MC-TDD-11]\n# src/cochem/tdd_pivot/research.py:100 [MC-TDD-11]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-12",
+    "title": "Implement Fable Root Cause Triage Classifier",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 101,
+    "chunk_end": 150,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-005: Claude Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and Library Deficiencies.",
+    "dependencies": [
+      "MC-TDD-11",
+      "MC-TDD-03"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_005\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-12] SRS-412-05-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-005: Claude\n# SPEC: Fable 5.1 shall conduct Root Cause Triage across Scope Underestimation, Contract Ambiguity, and\n# SPEC: Library Deficiencies.\n# src/cochem/tdd_pivot/research.py:105 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:106 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:107 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:108 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:109 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:110 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:111 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:112 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:113 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:114 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:115 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:116 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:117 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:118 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:119 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:120 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:121 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:122 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:123 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:124 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:125 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:126 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:127 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:128 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:129 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:130 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:131 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:132 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:133 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:134 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:135 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:136 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:137 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:138 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:139 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:140 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:141 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:142 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:143 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:144 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:145 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:146 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:147 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:148 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:149 [MC-TDD-12]\n# src/cochem/tdd_pivot/research.py:150 [MC-TDD-12]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-005"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-13",
+    "title": "Implement Contract Ambiguity Escalation for Human Review",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 151,
+    "chunk_end": 190,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Exhausted Research Stage': If the research stage fails to find alternative literature, Fable 5.1 flags contract ambiguity for human user review.",
+    "dependencies": [
+      "MC-TDD-12",
+      "MC-TDD-02"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"exhausted_research_stage\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-13] FAILURE:Exhausted Research Stage\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Exhausted\n# SPEC: Research Stage': If the research stage fails to find alternative literature, Fable 5.1 flags\n# SPEC: contract ambiguity for human user review.\n# src/cochem/tdd_pivot/research.py:155 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:156 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:157 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:158 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:159 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:160 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:161 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:162 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:163 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:164 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:165 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:166 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:167 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:168 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:169 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:170 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:171 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:172 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:173 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:174 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:175 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:176 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:177 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:178 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:179 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:180 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:181 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:182 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:183 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:184 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:185 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:186 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:187 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:188 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:189 [MC-TDD-13]\n# src/cochem/tdd_pivot/research.py:190 [MC-TDD-13]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "FAILURE:Exhausted Research Stage"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-14",
+    "title": "Implement MAX_META_PIVOT Counter and Hard Abort Trigger",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 191,
+    "chunk_end": 230,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-006: If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall trigger `[HARD_ABORT: PHYSICS WALL]`. The abort marker is a literal status string; no scientific computation is involved.",
+    "dependencies": [
+      "MC-TDD-13",
+      "MC-TDD-03",
+      "MC-TDD-05"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_006\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-14] SRS-412-05-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-006: If 3\n# SPEC: methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall\n# SPEC: trigger `[HARD_ABORT: PHYSICS WALL]`. The abort marker is a literal status string; no scientific\n# SPEC: computation is involved.\n# src/cochem/tdd_pivot/research.py:196 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:197 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:198 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:199 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:200 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:201 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:202 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:203 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:204 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:205 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:206 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:207 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:208 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:209 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:210 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:211 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:212 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:213 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:214 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:215 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:216 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:217 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:218 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:219 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:220 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:221 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:222 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:223 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:224 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:225 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:226 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:227 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:228 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:229 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:230 [MC-TDD-14]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-15",
+    "title": "Implement Physics_Autopsy_Report.md Generation",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/research.py",
+    "chunk_start": 231,
+    "chunk_end": 275,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Physics Wall Hard Abort': When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`. The report is a Markdown summary of the tdd_cycle_state history, failed pivots and dossier path; no scientific computation is involved.",
+    "dependencies": [
+      "MC-TDD-14",
+      "MC-TDD-03"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"physics_wall_hard_abort\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-15] FAILURE:Physics Wall Hard Abort\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Physics\n# SPEC: Wall Hard Abort': When `MAX_META_PIVOT = 3` is reached, the system halts with `[HARD_ABORT:\n# SPEC: PHYSICS WALL]` and generates `Physics_Autopsy_Report.md`. The report is a Markdown summary of\n# SPEC: the tdd_cycle_state history, failed pivots and dossier path; no scientific computation is\n# SPEC: involved.\n# src/cochem/tdd_pivot/research.py:237 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:238 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:239 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:240 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:241 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:242 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:243 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:244 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:245 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:246 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:247 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:248 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:249 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:250 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:251 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:252 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:253 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:254 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:255 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:256 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:257 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:258 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:259 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:260 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:261 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:262 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:263 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:264 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:265 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:266 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:267 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:268 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:269 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:270 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:271 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:272 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:273 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:274 [MC-TDD-15]\n# src/cochem/tdd_pivot/research.py:275 [MC-TDD-15]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "FAILURE:Physics Wall Hard Abort"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-16",
+    "title": "Implement Zero-Mock Library Scanner",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/verification.py",
+    "chunk_start": 1,
+    "chunk_end": 45,
+    "line_delta": 45,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy NFR-TDD-03: Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in any production test code. Scan with the ast module so imports, attribute access and aliases are all caught.",
+    "dependencies": [
+      "MC-TDD-04"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"nfr_tdd_03\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-16] NFR-TDD-03\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy NFR-\n# SPEC: TDD-03: Zero mock libraries (`unittest.mock`, `MagicMock`, `monkeypatch`) shall be present in\n# SPEC: any production test code. Scan with the ast module so imports, attribute access and aliases are\n# SPEC: all caught.\n# src/cochem/tdd_pivot/verification.py:6 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:7 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:8 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:9 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:10 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:11 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:12 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:13 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:14 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:15 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:16 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:17 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:18 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:19 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:20 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:21 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:22 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:23 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:24 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:25 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:26 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:27 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:28 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:29 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:30 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:31 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:32 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:33 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:34 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:35 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:36 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:37 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:38 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:39 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:40 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:41 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:42 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:43 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:44 [MC-TDD-16]\n# src/cochem/tdd_pivot/verification.py:45 [MC-TDD-16]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "NFR-TDD-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-17",
+    "title": "Implement Obfuscated Token and monkeypatch Detection",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/verification.py",
+    "chunk_start": 46,
+    "chunk_end": 90,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement the behaviour required by the section 9 test obligation: Test asserts `zero_mock_checker` flags obfuscated tokens and `monkeypatch`. Decode base64 and hex string literals and concatenations before matching, so an obfuscated 'monkeypatch' or 'MagicMock' is still flagged.",
+    "dependencies": [
+      "MC-TDD-16",
+      "MC-TDD-04"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"zero_mock_checker\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-17] OBLIGATION:zero_mock_checker\n# SPEC: Append after the previous chunk without editing earlier lines. Implement the behaviour required\n# SPEC: by the section 9 test obligation: Test asserts `zero_mock_checker` flags obfuscated tokens and\n# SPEC: `monkeypatch`. Decode base64 and hex string literals and concatenations before matching, so an\n# SPEC: obfuscated 'monkeypatch' or 'MagicMock' is still flagged.\n# src/cochem/tdd_pivot/verification.py:51 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:52 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:53 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:54 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:55 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:56 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:57 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:58 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:59 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:60 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:61 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:62 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:63 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:64 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:65 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:66 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:67 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:68 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:69 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:70 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:71 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:72 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:73 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:74 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:75 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:76 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:77 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:78 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:79 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:80 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:81 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:82 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:83 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:84 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:85 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:86 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:87 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:88 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:89 [MC-TDD-17]\n# src/cochem/tdd_pivot/verification.py:90 [MC-TDD-17]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "OBLIGATION:zero_mock_checker"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-18",
+    "title": "Implement Stub Auditor for NotImplementedError and Empty pass",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/verification.py",
+    "chunk_start": 91,
+    "chunk_end": 135,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement the behaviour required by the section 9 test obligation: Test asserts audit flags `raise NotImplementedError` and empty `pass` blocks. Flag functions whose body is only `pass`, `...` or `raise NotImplementedError`; report file, line and function name.",
+    "dependencies": [
+      "MC-TDD-17",
+      "MC-TDD-04"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"notimplementederror\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-18] OBLIGATION:NotImplementedError\n# SPEC: Append after the previous chunk without editing earlier lines. Implement the behaviour required\n# SPEC: by the section 9 test obligation: Test asserts audit flags `raise NotImplementedError` and empty\n# SPEC: `pass` blocks. Flag functions whose body is only `pass`, `...` or `raise NotImplementedError`;\n# SPEC: report file, line and function name.\n# src/cochem/tdd_pivot/verification.py:96 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:97 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:98 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:99 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:100 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:101 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:102 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:103 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:104 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:105 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:106 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:107 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:108 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:109 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:110 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:111 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:112 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:113 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:114 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:115 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:116 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:117 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:118 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:119 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:120 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:121 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:122 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:123 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:124 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:125 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:126 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:127 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:128 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:129 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:130 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:131 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:132 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:133 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:134 [MC-TDD-18]\n# src/cochem/tdd_pivot/verification.py:135 [MC-TDD-18]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "OBLIGATION:NotImplementedError"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-TDD-19",
+    "title": "Implement mutmut 85% Kill Score Gate",
+    "domain": "tdd_pivot",
+    "target_file": "src/cochem/tdd_pivot/verification.py",
+    "chunk_start": 136,
+    "chunk_end": 180,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-008: Critical numerical routines shall achieve a mutation testing kill score of at least 85% via `mutmut`. Apply the gate to the tdd_pivot modules (cycle counters, token bound, kill score arithmetic). Parse the mutmut results summary; do not reimplement mutation testing.",
+    "dependencies": [
+      "MC-TDD-18",
+      "MC-TDD-04"
+    ],
+    "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_008\"",
+    "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/verification.py>>>\n# [MC-TDD-19] SRS-412-05-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-008:\n# SPEC: Critical numerical routines shall achieve a mutation testing kill score of at least 85% via\n# SPEC: `mutmut`. Apply the gate to the tdd_pivot modules (cycle counters, token bound, kill score\n# SPEC: arithmetic). Parse the mutmut results summary; do not reimplement mutation testing.\n# src/cochem/tdd_pivot/verification.py:141 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:142 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:143 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:144 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:145 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:146 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:147 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:148 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:149 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:150 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:151 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:152 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:153 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:154 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:155 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:156 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:157 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:158 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:159 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:160 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:161 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:162 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:163 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:164 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:165 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:166 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:167 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:168 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:169 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:170 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:171 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:172 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:173 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:174 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:175 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:176 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:177 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:178 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:179 [MC-TDD-19]\n# src/cochem/tdd_pivot/verification.py:180 [MC-TDD-19]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-05",
+      "items": [
+        "SRS-412-05-FR-008"
+      ]
+    }
+  }
+]

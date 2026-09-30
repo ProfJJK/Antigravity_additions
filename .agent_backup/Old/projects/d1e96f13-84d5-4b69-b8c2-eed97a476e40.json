@@ -1,0 +1,100 @@
+{
+  "id": "d1e96f13-84d5-4b69-b8c2-eed97a476e40",
+  "name": "Research",
+  "projectResources": {
+    "resources": [
+      {
+        "folderUri": "file:///d%3A/Gdrive/_Research"
+      },
+      {
+        "folderUri": "file:///d%3A/Gdrive/_Publications/LLM%20Accessed"
+      },
+      {
+        "folderUri": "file:///c%3A/Users/ansac/OneDrive/Pictures"
+      },
+      {
+        "folderUri": "file:///c%3A/Users/ansac/Videos"
+      },
+      {
+        "folderUri": "file:///d%3A/__CoChem"
+      }
+    ]
+  },
+  "permissionGrants": {
+    "permissionGrants": {
+      "allow": [
+        "write_file(D:\\Gdrive\\__CoChem)",
+        "write_file(D:\\Gdrive\\_Publications\\LLM Accessed)",
+        "write_file(D:\\Gdrive\\_Research)",
+        "read_file(D:\\Gdrive\\__Books)",
+        "read_file(D:\\Gdrive\\__CoChem)",
+        "read_file(D:\\Gdrive\\_LLM)",
+        "read_file(D:\\Gdrive\\_Manuals CU)",
+        "read_file(D:\\Gdrive\\_Publications\\LLM Accessed)",
+        "read_file(D:\\Gdrive\\_Research)",
+        "read_file(D:\\Gdrive\\Read)",
+        "read_url(http://info.ifpan.edu.pl/~kisiel/prospe.htm)",
+        "read_url(https://arxiv.org/)",
+        "read_url(https://ash.readthedocs.io/en/latest/PySCF-interface.html)",
+        "read_url(https://bookboon.com/)",
+        "read_url(https://cfour.uni-mainz.de/cfour/)",
+        "read_url(https://chem.libretexts.org/)",
+        "read_url(https://chemicalforum.webqc.org/)",
+        "read_url(https://chemistry.stackexchange.com/)",
+        "read_url(https://chemrxiv.org/)",
+        "read_url(https://classroom50.org/)",
+        "read_url(https://computchem.gal/software/)",
+        "read_url(https://crest-lab.github.io/crest-docs/)",
+        "read_url(https://doaj.org/)",
+        "read_url(https://github.com/)",
+        "read_url(https://github.com/ACEsuit)",
+        "read_url(https://github.com/ACEsuit/mace-off)",
+        "read_url(https://github.com/crest-lab/crest)",
+        "read_url(https://github.com/evaleev/libint)",
+        "read_url(https://github.com/faccts/opi)",
+        "read_url(https://github.com/faccts/orca-external-tools)",
+        "read_url(https://github.com/grimme-lab/g-xtb)",
+        "read_url(https://github.com/m-a-d-n-e-s-s/madness)",
+        "read_url(https://github.com/orgs/ProfJJK-CoChem/repositories)",
+        "read_url(https://github.com/pyscf/pyscf)",
+        "read_url(https://github.com/tblite/tblite)",
+        "read_url(https://github.com/ValeevGroup/mpqc)",
+        "read_url(https://github.com/ValeevGroup/mpqc-docs/blob/master/v4-private/dox/html/index.html)",
+        "read_url(https://github.com/ValeevGroup/tiledarray)",
+        "read_url(https://open.umn.edu/opentextbooks)",
+        "read_url(https://openstax.org/)",
+        "read_url(https://orca-manual.mpi-muelheim.mpg.de/)",
+        "read_url(https://orcaforum.kofo.mpg.de/)",
+        "read_url(https://pubchem.ncbi.nlm.nih.gov/)",
+        "read_url(https://pubs.acs.org/acscii)",
+        "read_url(https://pypi.org/project/orca-pi/)",
+        "read_url(https://pyscf.org/)",
+        "read_url(https://pyscf.org/user/gpu.html)",
+        "read_url(https://spec.jpl.nasa.gov/)",
+        "read_url(https://webbook.nist.gov/chemistry/)",
+        "read_url(https://www.acs.org/)",
+        "read_url(https://www.beilstein-journals.org/bjoc/)",
+        "read_url(https://www.chemicalforums.com/)",
+        "read_url(https://www.chemspider.com/)",
+        "read_url(https://www.faccts.de/docs/opi/2.0/docs/contents/notebooks/how_to_opi.html)",
+        "read_url(https://www.faccts.de/docs/orca/6.1/tutorials/workflows/extopt.html)",
+        "read_url(https://www.mrcc.hu/MRCC/manual/html/single/manual_sp.xhtml)",
+        "read_url(https://www.organic-chemistry.org/)",
+        "read_url(https://www.rsc.org/publishing/)",
+        "read_url(https://www.rsc.org/publishing/journals/chemical-science)",
+        "read_url(https://www.sciencemadness.org/talk/)",
+        "read_url(https://xtb-docs.readthedocs.io/en/)",
+        "read_url(https://gitlab.com/dalton/dalton)",
+        "unsandboxed(write_to_file)"
+      ]
+    }
+  },
+  "settings": {
+    "fileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
+    "sandboxMode": false,
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO"
+  },
+  "updatedAt": "2026-08-16T14:26:44.617219300Z",
+  "isWorkspaceOnly": false
+}

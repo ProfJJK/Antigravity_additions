@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-11",
+  "title": "Implement Layer 2 Worker 512 MB V8 Environment",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer2.py",
+  "chunk_start": 46,
+  "chunk_end": 90,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-005: Layer 2 worker CLI processes shall enforce `NODE_OPTIONS=\"--max-old-space-size=512\"`. Verified by test: test_f04_layer2_worker_injects_512mb_v8_memory_cap.",
+  "dependencies": [
+    "MC-CON-10",
+    "MC-CON-04"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_layer2_worker_injects_512mb_v8_memory_cap",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer2.py>>>\n# [MC-CON-11] SRS-412-03-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-005: Layer\n# SPEC: 2 worker CLI processes shall enforce `NODE_OPTIONS=\"--max-old-space-size=512\"`. Verified by\n# SPEC: test: test_f04_layer2_worker_injects_512mb_v8_memory_cap.\n# src/cochem/concurrency/layer2.py:50 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:51 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:52 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:53 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:54 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:55 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:56 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:57 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:58 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:59 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:60 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:61 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:62 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:63 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:64 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:65 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:66 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:67 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:68 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:69 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:70 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:71 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:72 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:73 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:74 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:75 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:76 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:77 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:78 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:79 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:80 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:81 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:82 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:83 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:84 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:85 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:86 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:87 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:88 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:89 [MC-CON-11]\n# src/cochem/concurrency/layer2.py:90 [MC-CON-11]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-005"
+    ]
+  }
+}

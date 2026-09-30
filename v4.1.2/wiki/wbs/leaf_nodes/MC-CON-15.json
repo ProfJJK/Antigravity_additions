@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-15",
+  "title": "Implement Director 4096 MB V8 Environment",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 31,
+  "chunk_end": 55,
+  "line_delta": 25,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-002: The Layer 1 Director process shall execute with `NODE_OPTIONS=\"--max-old-space-size=4096\"` to prevent V8 JavaScript heap exhaustion during sub-agent multiplexing. Verified by test: test_f04_fable_invocation_injects_4096mb_v8_memory_cap.",
+  "dependencies": [
+    "MC-CON-14",
+    "MC-CON-01"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_fable_invocation_injects_4096mb_v8_memory_cap",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-15] SRS-412-03-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-03-FR-002: The\n# SPEC: Layer 1 Director process shall execute with `NODE_OPTIONS=\"--max-old-space-size=4096\"` to\n# SPEC: prevent V8 JavaScript heap exhaustion during sub-agent multiplexing. Verified by test:\n# SPEC: test_f04_fable_invocation_injects_4096mb_v8_memory_cap.\n# src/cochem/concurrency/layer1.py:36 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:37 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:38 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:39 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:40 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:41 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:42 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:43 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:44 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:45 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:46 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:47 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:48 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:49 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:50 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:51 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:52 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:53 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:54 [MC-CON-15]\n# src/cochem/concurrency/layer1.py:55 [MC-CON-15]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-002"
+    ]
+  }
+}

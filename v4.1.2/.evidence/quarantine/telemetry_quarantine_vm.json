@@ -1,0 +1,14 @@
+﻿{
+    "telemetry_packet":  {
+                             "timestamp":  1790773848,
+                             "compliant":  true,
+                             "cpu_cap_percent":  70,
+                             "memory_assigned_bytes":  34359738368,
+                             "antigravity_connected":  true,
+                             "violations":  [
+
+                                            ],
+                             "vcpu_count":  12,
+                             "quarantine_vm":  "CoChem-Quarantine-VM"
+                         }
+}

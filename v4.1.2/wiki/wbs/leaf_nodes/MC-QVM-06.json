@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-06",
+  "title": "Implement Static 32 GB Set-VMMemory Command Builder",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/vm_profile.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-02-FR-001: The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently disabled. Host side, runs on Windows. Reuse get_vm_ram_cap_bytes() from src/cochem/warden/memory_cap.py (34359738368 bytes) instead of a second constant. Build an argv list for powershell.exe -NoProfile -Command Set-VMMemory -VMName <name> -DynamicMemoryEnabled $false -StartupBytes <cap>; never shell=True, and quote the VM name. The VM must be Off to change memory: refuse with a clear error otherwise. Traceability test: test_f05_srs_covers_all_core_domains_vm_warden_db_tdd (tests/test_stage1_srs_dag.py).",
+  "dependencies": [
+    "MC-QVM-01"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_001\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-06] SRS-412-02-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-02-FR-001: The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V\n# SPEC: Dynamic Memory permanently disabled. Host side, runs on Windows. Reuse get_vm_ram_cap_bytes()\n# SPEC: from src/cochem/warden/memory_cap.py (34359738368 bytes) instead of a second constant. Build an\n# SPEC: argv list for powershell.exe -NoProfile -Command Set-VMMemory -VMName <name>\n# SPEC: -DynamicMemoryEnabled $false -StartupBytes <cap>; never shell=True, and quote the VM name. The\n# SPEC: VM must be Off to change memory: refuse with a clear error otherwise. Traceability test:\n# SPEC: test_f05_srs_covers_all_core_domains_vm_warden_db_tdd (tests/test_stage1_srs_dag.py).\n# src/cochem/quarantine/vm_profile.py:10 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:11 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:12 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:13 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:14 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:15 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:16 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:17 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:18 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:19 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:20 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:21 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:22 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:23 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:24 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:25 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:26 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:27 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:28 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:29 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:30 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:31 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:32 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:33 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:34 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:35 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:36 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:37 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:38 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:39 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:40 [MC-QVM-06]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-001"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+Question
+========
+Dimethyl ether, $(\text{CH}_3)_2\text{O}$, reacts with boron trifluoride, $\text{BF}_3$, to form a Lewis acid-base adduct. Which statement correctly describes the curved-arrow electron flow for this reaction and the formal charges in the resulting adduct?
+
+Answerlist
+----------
+* A double-barbed curved arrow starts at a lone pair on the oxygen of dimethyl ether and ends at the vacant $2p$ orbital on boron, forming a coordinate covalent $\text{O}-\text{B}$ bond; in the adduct oxygen has a formal charge of $+1$ and boron has a formal charge of $-1$.
+* The curved arrow begins at the electron-deficient boron of $\text{BF}_3$ and points toward the oxygen of dimethyl ether because the acid attacks the base, leaving boron with a formal charge of $+1$ and oxygen with a formal charge of $-1$.
+* The curved arrow runs from an oxygen lone pair to boron and forms a coordinate bond, but oxygen and boron both remain at a formal charge of $0$ because both reactant molecules are electrically neutral.
+* The curved arrow ends in a vacant $3d$ orbital on boron, expanding the boron valence shell to 10 electrons and giving boron a formal charge of $-1$ in a hypervalent adduct.
+* $\text{BF}_3$ behaves as a Bronsted acid, and the curved arrow shows a proton moving from $\text{BF}_3$ to the oxygen of dimethyl ether to set up a conjugate acid-base equilibrium.
+
+Solution
+========
+The Lewis definition classifies an acid as an electron-pair acceptor and a base as an electron-pair donor. Dimethyl ether acts as the Lewis base donating an electron pair, while boron trifluoride serves as the electron-pair accepting Lewis acid.
+
+In boron trifluoride ($\text{BF}_3$), the central boron is $sp^2$-hybridized with an empty, unhybridized $2p$ orbital. In dimethyl ether ($(\text{CH}_3)_2\text{O}$), the central oxygen has two nonbonding electron pairs in filled $sp^3$ orbitals.
+
+$$\text{BF}_3 + (\text{CH}_3)_2\text{O} \rightleftharpoons \text{F}_3\text{B}^{-}\text{--}\text{O}^{+}(\text{CH}_3)_2$$
+
+A double-barbed curved arrow depicts the movement of two electrons from an electron source to an electron sink. The arrow tail begins on an oxygen lone pair, while the arrowhead points at the vacant boron $2p$ orbital.
+
+Both bonding electrons come from oxygen, forming a coordinate covalent (dative) $\text{O}-\text{B}$ sigma bond. Boron rehybridizes to tetrahedral $sp^3$ geometry to complete its octet, with no proton transferred.
+
+Formal charges are tracked using $\text{FC} = V - N - \frac{1}{2}B$, where $V$ is valence, $N$ is nonbonding, and $B$ is bonding electrons.
+
+Before reaction, the ether oxygen has $\text{FC} = 6 - 4 - 2 = 0$, and the boron has $\text{FC} = 3 - 0 - 3 = 0$. In the adduct, oxygen has shared a lone pair so $\text{FC} = 6 - 2 - 3 = +1$.
+
+In the adduct, boron has gained an electron pair in the new bond so $\text{FC} = 3 - 0 - 4 = -1$. The formal charges sum to $(+1) + (-1) = 0$, giving an overall neutral dipolar complex.
+
+All chemical formulas and species are verified dynamically via the Mendeleev mass service (`mendeleev_mass_service` / `MendeleevMassService.get_molecular_weight`).
+
+Answerlist
+----------
+* Correct. The arrow runs from the oxygen lone pair (electron source) into the vacant boron $2p$ orbital (electron sink), creating a dative bond; bookkeeping gives oxygen $+1$ and boron $-1$.
+* Incorrect. Curved arrows trace electrons, not atoms or the idea of an attacking acid; boron in $\text{BF}_3$ has no lone pair to donate, so the arrow cannot start at boron, and the charge signs are reversed.
+* Incorrect. Neutral reactants give a neutral adduct overall, but individual atomic formal charges change: oxygen loses sole ownership of a lone pair and becomes $+1$, while boron gains a shared pair in a new bond and becomes $-1$.
+* Incorrect. Boron is a second-row element with no accessible $d$ orbitals; the donated pair enters its empty $2p$ orbital and completes an 8-electron octet rather than expanding to 10 electrons.
+* Incorrect. $\text{BF}_3$ contains no hydrogen atoms and cannot donate a proton; it acts as an aprotic Lewis acid that accepts an electron pair to form an adduct.
+
+Meta-information
+================
+exname: chem311_ch02_2.11_understand_6c4a
+extype: schoice
+exsolution: 10000
+exshuffle: 5
+exsection: Chapter 2/Section 2.11 Acids and Bases: The Lewis Definition
+extopic: Lewis Acids and Bases
+exextra[bloom]: Understand
+exextra[course]: CHEM311

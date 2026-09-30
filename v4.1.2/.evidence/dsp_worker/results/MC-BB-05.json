@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-BB-05",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.0729272,
+  "finished_at": 1790733282.0730717,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-BB-05",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-BB-05",
+        "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-BB-05",
+        "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-BB-05",
+        "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-BB-05",
+        "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-BB-05",
+      "status": "COMPLETED",
+      "duration_sec": 3.24249267578125e-05,
+      "memory_start_mb": 111.37109375,
+      "memory_end_mb": 111.37109375,
+      "memory_peak_mb": 111.37109375
+    }
+  }
+}

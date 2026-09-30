@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-21",
+  "title": "Implement ZD-8 Lease-Clearing Transition Helper",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/lifecycle.py",
+  "chunk_start": 1,
+  "chunk_end": 40,
+  "line_delta": 40,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-04-FR-009: Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8 invariant.",
+  "dependencies": [
+    "MC-BB-03",
+    "MC-BB-14"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_009\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-21] SRS-412-04-FR-009\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-04-FR-009: Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED',\n# SPEC: or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the\n# SPEC: same transaction to maintain the Signal ZD-8 invariant.\n# src/cochem/blackboard/lifecycle.py:6 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:7 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:8 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:9 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:10 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:11 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:12 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:13 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:14 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:15 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:16 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:17 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:18 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:19 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:20 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:21 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:22 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:23 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:24 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:25 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:26 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:27 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:28 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:29 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:30 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:31 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:32 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:33 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:34 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:35 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:36 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:37 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:38 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:39 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:40 [MC-BB-21]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-009"
+    ]
+  }
+}

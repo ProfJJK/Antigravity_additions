@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-12",
+  "title": "Implement 1800 s Default Lease Constant",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 1,
+  "chunk_end": 25,
+  "line_delta": 25,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-04-FR-003: The default task lease duration shall be strictly 1800 seconds (30 minutes).",
+  "dependencies": [
+    "MC-BB-02"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_003\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-12] SRS-412-04-FR-003\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-04-FR-003: The default task lease duration shall be strictly 1800 seconds (30 minutes).\n# src/cochem/blackboard/leases.py:4 [MC-BB-12]\n# src/cochem/blackboard/leases.py:5 [MC-BB-12]\n# src/cochem/blackboard/leases.py:6 [MC-BB-12]\n# src/cochem/blackboard/leases.py:7 [MC-BB-12]\n# src/cochem/blackboard/leases.py:8 [MC-BB-12]\n# src/cochem/blackboard/leases.py:9 [MC-BB-12]\n# src/cochem/blackboard/leases.py:10 [MC-BB-12]\n# src/cochem/blackboard/leases.py:11 [MC-BB-12]\n# src/cochem/blackboard/leases.py:12 [MC-BB-12]\n# src/cochem/blackboard/leases.py:13 [MC-BB-12]\n# src/cochem/blackboard/leases.py:14 [MC-BB-12]\n# src/cochem/blackboard/leases.py:15 [MC-BB-12]\n# src/cochem/blackboard/leases.py:16 [MC-BB-12]\n# src/cochem/blackboard/leases.py:17 [MC-BB-12]\n# src/cochem/blackboard/leases.py:18 [MC-BB-12]\n# src/cochem/blackboard/leases.py:19 [MC-BB-12]\n# src/cochem/blackboard/leases.py:20 [MC-BB-12]\n# src/cochem/blackboard/leases.py:21 [MC-BB-12]\n# src/cochem/blackboard/leases.py:22 [MC-BB-12]\n# src/cochem/blackboard/leases.py:23 [MC-BB-12]\n# src/cochem/blackboard/leases.py:24 [MC-BB-12]\n# src/cochem/blackboard/leases.py:25 [MC-BB-12]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-003"
+    ]
+  }
+}

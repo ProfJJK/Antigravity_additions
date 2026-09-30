@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-11",
+  "title": "Implement documents Table DDL and ensure_schema",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/indexer.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the documents CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; doc_path TEXT UNIQUE NOT NULL; title TEXT NOT NULL; line_count INTEGER NOT NULL; sha256 TEXT NOT NULL; updated_at INTEGER DEFAULT (strftime('%s', 'now'))",
+  "dependencies": [
+    "MC-RAG-02"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"documents\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-11] DATA_MODEL:documents\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: documents CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it.\n# SPEC: Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; doc_path TEXT UNIQUE NOT NULL; title TEXT NOT\n# SPEC: NULL; line_count INTEGER NOT NULL; sha256 TEXT NOT NULL; updated_at INTEGER DEFAULT\n# SPEC: (strftime('%s', 'now'))\n# src/cochem/knowledge/indexer.py:7 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:8 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:9 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:10 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:11 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:12 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:13 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:14 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:15 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:16 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:17 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:18 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:19 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:20 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:21 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:22 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:23 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:24 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:25 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:26 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:27 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:28 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:29 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:30 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:31 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:32 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:33 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:34 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:35 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:36 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:37 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:38 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:39 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:40 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:41 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:42 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:43 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:44 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:45 [MC-RAG-11]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "DATA_MODEL:documents"
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-SRE-13",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.7244887,
+  "finished_at": 1790733282.724627,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-SRE-13",
+    "target_file": "src/cochem/watchdog/watchdog_sre.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-SRE-13",
+        "target_file": "src/cochem/watchdog/watchdog_sre.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-SRE-13",
+        "target_file": "src/cochem/watchdog/watchdog_sre.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-SRE-13",
+        "target_file": "src/cochem/watchdog/watchdog_sre.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-SRE-13",
+        "target_file": "src/cochem/watchdog/watchdog_sre.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-SRE-13",
+      "status": "COMPLETED",
+      "duration_sec": 3.0994415283203125e-05,
+      "memory_start_mb": 111.41796875,
+      "memory_end_mb": 111.41796875,
+      "memory_peak_mb": 111.41796875
+    }
+  }
+}

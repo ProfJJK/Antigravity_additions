@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-12",
+  "title": "Implement Desktop Heap Budget Probe",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer2.py",
+  "chunk_start": 91,
+  "chunk_end": 135,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-01: Windows Desktop Heap usage shall remain below 15% of allocation limit under full 20-agent execution. Verified by test: test_f04_desktop_heap_usage_below_15_percent_under_20_agents.",
+  "dependencies": [
+    "MC-CON-11",
+    "MC-CON-04"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_desktop_heap_usage_below_15_percent_under_20_agents",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer2.py>>>\n# [MC-CON-12] NFR-CON-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-01: Windows\n# SPEC: Desktop Heap usage shall remain below 15% of allocation limit under full 20-agent execution.\n# SPEC: Verified by test: test_f04_desktop_heap_usage_below_15_percent_under_20_agents.\n# src/cochem/concurrency/layer2.py:95 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:96 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:97 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:98 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:99 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:100 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:101 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:102 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:103 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:104 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:105 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:106 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:107 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:108 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:109 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:110 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:111 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:112 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:113 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:114 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:115 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:116 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:117 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:118 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:119 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:120 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:121 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:122 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:123 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:124 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:125 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:126 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:127 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:128 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:129 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:130 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:131 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:132 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:133 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:134 [MC-CON-12]\n# src/cochem/concurrency/layer2.py:135 [MC-CON-12]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "NFR-CON-01"
+    ]
+  }
+}

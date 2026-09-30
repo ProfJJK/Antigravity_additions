@@ -1,0 +1,60 @@
+{
+  "coordinates": {
+    "key": "coordinates_angstrom",
+    "path": "H2O.npz",
+    "sha256": "f9890e9bcdb747ed35ab8699347be0905d31cc0f416b43dd8b9530fcc2293028",
+    "units": "angstrom"
+  },
+  "file_sha256": {
+    "H2O.npz": "48649647db6907f15089b4598c5407001f0d0f8977abbe5edb0702559d323082"
+  },
+  "hessian": {
+    "key": "hessian_hartree_per_bohr2",
+    "path": "H2O.npz",
+    "sha256": "1040c8132fbff93b429e52c7d14ec615c3fccd2f0dc05d97653d593042efa364",
+    "units": "hartree/bohr^2"
+  },
+  "name": "H2O",
+  "provenance": {
+    "basis": "3-21G",
+    "basis_reference": "J.S. Binkley, J.A. Pople, W.J. Hehre, J. Am. Chem. Soc. 102, 939 (1980)",
+    "code": "cochem_geometry_fixtures RHF engine (McMurchie-Davidson integrals, DIIS SCF)",
+    "energy_eV": -2056.7987285892336,
+    "energy_evaluations": 317,
+    "energy_hartree": -75.58595974300655,
+    "generated_utc": "2026-09-25T04:40:40.838012+00:00",
+    "gradient_step_bohr": 0.001,
+    "harmonic_wavenumbers_cm-1": [
+      1799.0242280577236,
+      3812.078997985654,
+      3945.5195741525367
+    ],
+    "hessian_method": "central second differences of converged RHF energies",
+    "hessian_step_bohr": 0.005,
+    "initial_energy_hartree": -75.5855559978806,
+    "initial_geometry_source": "ase.build.molecule G2 database (MP2/6-31G* reference structure)",
+    "max_gradient_hartree_per_bohr": 5.734293040404737e-07,
+    "method": "RHF/3-21G",
+    "n_basis_functions": 13,
+    "n_primitives": 21,
+    "optimizer": "scipy.optimize.minimize BFGS with central-difference RHF gradients",
+    "optimizer_iterations": 6,
+    "platform": "Windows-11-10.0.26200-SP0",
+    "rms_gradient_hartree_per_bohr": 2.7299321719854334e-07,
+    "scf_iterations": 8,
+    "scf_max_commutator": 3.6613341437081333e-09,
+    "theory": "closed-shell restricted Hartree-Fock (ab initio)",
+    "versions": {
+      "ase": "3.29.0",
+      "mendeleev": "1.2.0",
+      "numpy": "2.4.6",
+      "scipy": "1.18.0"
+    }
+  },
+  "schema": "cochem.geometry_fixture/1",
+  "symbols": [
+    "O",
+    "H",
+    "H"
+  ]
+}

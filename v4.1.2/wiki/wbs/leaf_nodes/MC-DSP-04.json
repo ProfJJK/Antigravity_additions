@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-DSP-04",
+  "title": "Implement Dynamic Domain Capability Registration",
+  "domain": "dsp_framework",
+  "target_file": "src/cochem/dsp/router.py",
+  "chunk_start": 70,
+  "chunk_end": 110,
+  "line_delta": 41,
+  "instructions": "Implement register_pipeline() decorator supporting runtime plugin discovery.",
+  "dependencies": [
+    "MC-DSP-03"
+  ],
+  "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+  "delimited_protocol": "<<<FILE: src/cochem/dsp/router.py>>>\n# Code context line 70 for MC-DSP-04\n# Code context line 71 for MC-DSP-04\n# Code context line 72 for MC-DSP-04\n# Code context line 73 for MC-DSP-04\n# Code context line 74 for MC-DSP-04\n# Code context line 75 for MC-DSP-04\n# Code context line 76 for MC-DSP-04\n# Code context line 77 for MC-DSP-04\n# Code context line 78 for MC-DSP-04\n# Code context line 79 for MC-DSP-04\n# Code context line 80 for MC-DSP-04\n# Code context line 81 for MC-DSP-04\n# Code context line 82 for MC-DSP-04\n# Code context line 83 for MC-DSP-04\n# Code context line 84 for MC-DSP-04\n# Code context line 85 for MC-DSP-04\n# Code context line 86 for MC-DSP-04\n# Code context line 87 for MC-DSP-04\n# Code context line 88 for MC-DSP-04\n# Code context line 89 for MC-DSP-04\n# Code context line 90 for MC-DSP-04\n# Code context line 91 for MC-DSP-04\n# Code context line 92 for MC-DSP-04\n# Code context line 93 for MC-DSP-04\n# Code context line 94 for MC-DSP-04\n# Code context line 95 for MC-DSP-04\n# Code context line 96 for MC-DSP-04\n# Code context line 97 for MC-DSP-04\n# Code context line 98 for MC-DSP-04\n# Code context line 99 for MC-DSP-04\n# Code context line 100 for MC-DSP-04\n# Code context line 101 for MC-DSP-04\n# Code context line 102 for MC-DSP-04\n# Code context line 103 for MC-DSP-04\n# Code context line 104 for MC-DSP-04\n# Code context line 105 for MC-DSP-04\n# Code context line 106 for MC-DSP-04\n# Code context line 107 for MC-DSP-04\n# Code context line 108 for MC-DSP-04\n# Code context line 109 for MC-DSP-04\n# Code context line 110 for MC-DSP-04\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

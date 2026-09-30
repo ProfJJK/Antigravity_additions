@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "description": "Auditor -> Planner: scored verdict with actionable failure reasons.",
+  "properties": {
+    "missing_acceptance_criteria": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Acceptance Criteria",
+      "type": "array"
+    },
+    "score": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Score",
+      "type": "integer"
+    },
+    "verdict": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "SPOOFING_RISK"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    },
+    "violations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Violations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "score",
+    "verdict"
+  ],
+  "title": "AuditFeedback",
+  "type": "object"
+}

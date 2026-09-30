@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-15",
+  "title": "Implement 6-Slot 4 GB Container Scheduler",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 196,
+  "chunk_end": 245,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-007: The container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32 GB VM. Use a threading.BoundedSemaphore(6) so at most 6 sandboxes with memory_mb=4096 run at once (24 GB of the 32 GB VM); a seventh request blocks until a slot frees, and the slot is released in a finally block.",
+  "dependencies": [
+    "MC-QVM-14",
+    "MC-QVM-04",
+    "MC-QVM-11"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_007\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-15] SRS-412-02-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-007: The\n# SPEC: container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes\n# SPEC: inside the 32 GB VM. Use a threading.BoundedSemaphore(6) so at most 6 sandboxes with\n# SPEC: memory_mb=4096 run at once (24 GB of the 32 GB VM); a seventh request blocks until a slot frees,\n# SPEC: and the slot is released in a finally block.\n# src/cochem/quarantine/sandbox.py:202 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:203 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:204 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:205 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:206 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:207 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:208 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:209 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:210 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:211 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:212 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:213 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:214 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:215 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:216 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:217 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:218 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:219 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:220 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:221 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:222 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:223 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:224 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:225 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:226 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:227 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:228 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:229 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:230 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:231 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:232 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:233 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:234 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:235 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:236 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:237 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:238 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:239 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:240 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:241 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:242 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:243 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:244 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:245 [MC-QVM-15]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-007"
+    ]
+  }
+}

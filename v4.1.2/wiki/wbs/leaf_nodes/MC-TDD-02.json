@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-02",
+  "title": "Author 3-Strike Freeze and Research Dossier Tests",
+  "domain": "tdd_pivot",
+  "target_file": "tests/test_ch05_research_tdd_pivot.py",
+  "chunk_start": 61,
+  "chunk_end": 120,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_003_* for SRS-412-05-FR-003 (Three consecutive test failures shall freeze code generation and trigger the Mandatory Literature Research Stage.); test_ch05_fr_004_* for SRS-412-05-FR-004 (The research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL) to assemble an actionable Research Dossier.); test_ch05_exhausted_research_stage_* for FAILURE:Exhausted Research Stage (If the research stage fails to find alternative literature, Fable 5.1 flags contract ambiguity for human user review.)",
+  "dependencies": [
+    "MC-TDD-01"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch05_research_tdd_pivot.py>>>\n# [MC-TDD-02] TESTS:research\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: pytest subprocesses, real files and SQLite under tmp_path; no mock objects): test_ch05_fr_003_*\n# SPEC: for SRS-412-05-FR-003 (Three consecutive test failures shall freeze code generation and trigger\n# SPEC: the Mandatory Literature Research Stage.); test_ch05_fr_004_* for SRS-412-05-FR-004 (The\n# SPEC: research stage shall query scientific databases (Consensus, arXiv, EuropePMC, PubChem, ChEMBL)\n# SPEC: to assemble an actionable Research Dossier.); test_ch05_exhausted_research_stage_* for\n# SPEC: FAILURE:Exhausted Research Stage (If the research stage fails to find alternative literature,\n# SPEC: Fable 5.1 flags contract ambiguity for human user review.)\n# tests/test_ch05_research_tdd_pivot.py:70 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:71 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:72 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:73 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:74 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:75 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:76 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:77 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:78 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:79 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:80 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:81 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:82 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:83 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:84 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:85 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:86 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:87 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:88 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:89 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:90 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:91 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:92 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:93 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:94 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:95 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:96 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:97 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:98 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:99 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:100 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:101 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:102 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:103 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:104 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:105 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:106 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:107 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:108 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:109 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:110 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:111 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:112 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:113 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:114 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:115 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:116 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:117 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:118 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:119 [MC-TDD-02]\n# tests/test_ch05_research_tdd_pivot.py:120 [MC-TDD-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-003",
+      "SRS-412-05-FR-004",
+      "FAILURE:Exhausted Research Stage"
+    ]
+  }
+}

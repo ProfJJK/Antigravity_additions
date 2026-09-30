@@ -1,0 +1,13 @@
+{
+  "recovery_launch": {
+    "outcome": "LAUNCHED",
+    "bundle_recovery_action": "TRIGGER_FABLE_RESUSCITATION",
+    "recovery_pid": 15852,
+    "claude_exe": "C:\\Users\\ansac\\.local\\bin\\claude.exe",
+    "error": null,
+    "bundle": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T085228Z\\evidence_bundle.json",
+    "timestamp": 1790758348,
+    "trigger_latency_sec": 0.05567340000561671,
+    "deadline_met": true
+  }
+}

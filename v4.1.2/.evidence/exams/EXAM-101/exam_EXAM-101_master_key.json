@@ -1,0 +1,46 @@
+{
+  "version_1": [
+    {
+      "question_number": 1,
+      "original_pool_index": 3,
+      "answer": "127.33 kJ/mol"
+    },
+    {
+      "question_number": 2,
+      "original_pool_index": 4,
+      "answer": "-25.47 kJ/mol"
+    },
+    {
+      "question_number": 3,
+      "original_pool_index": 1,
+      "answer": "-67.00 kJ/mol"
+    },
+    {
+      "question_number": 4,
+      "original_pool_index": 2,
+      "answer": "121.03 kJ/mol"
+    }
+  ],
+  "version_2": [
+    {
+      "question_number": 1,
+      "original_pool_index": 1,
+      "answer": "-67.00 kJ/mol"
+    },
+    {
+      "question_number": 2,
+      "original_pool_index": 4,
+      "answer": "-25.47 kJ/mol"
+    },
+    {
+      "question_number": 3,
+      "original_pool_index": 2,
+      "answer": "121.03 kJ/mol"
+    },
+    {
+      "question_number": 4,
+      "original_pool_index": 3,
+      "answer": "127.33 kJ/mol"
+    }
+  ]
+}

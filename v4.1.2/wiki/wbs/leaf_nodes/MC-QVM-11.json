@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-11",
+  "title": "Implement Ephemeral docker run Argument Builder",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 41,
+  "chunk_end": 85,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-003: The execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`. Guest side, runs in the Ubuntu 24.04 VM. Return a docker run argv list that always contains --rm, --network none, --read-only, --tmpfs /tmp:rw,size=2g plus --memory, --cpus, --pids-limit, --cap-drop ALL and --security-opt from the sandbox_spec. Callers cannot remove these flags; an override that weakens one raises ValueError.",
+  "dependencies": [
+    "MC-QVM-10",
+    "MC-QVM-02"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_003\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-11] SRS-412-02-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-003: The\n# SPEC: execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with\n# SPEC: `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`. Guest side, runs in the Ubuntu\n# SPEC: 24.04 VM. Return a docker run argv list that always contains --rm, --network none, --read-only,\n# SPEC: --tmpfs /tmp:rw,size=2g plus --memory, --cpus, --pids-limit, --cap-drop ALL and --security-opt\n# SPEC: from the sandbox_spec. Callers cannot remove these flags; an override that weakens one raises\n# SPEC: ValueError.\n# src/cochem/quarantine/sandbox.py:49 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:50 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:51 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:52 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:53 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:54 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:55 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:56 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:57 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:58 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:59 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:60 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:61 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:62 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:63 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:64 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:65 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:66 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:67 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:68 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:69 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:70 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:71 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:72 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:73 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:74 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:75 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:76 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:77 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:78 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:79 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:80 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:81 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:82 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:83 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:84 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:85 [MC-QVM-11]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-003"
+    ]
+  }
+}

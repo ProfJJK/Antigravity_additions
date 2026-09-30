@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-53",
+  "title": "Implement PEP 657 Fine-Grained Traceback Parser",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/telemetry.py",
+  "chunk_start": 70,
+  "chunk_end": 115,
+  "line_delta": 46,
+  "instructions": "Implement parse_pep657_traceback() extracting exact column and expression offsets.",
+  "dependencies": [
+    "MC-HW-52"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/telemetry.py>>>\n# Code context line 70 for MC-HW-53\n# Code context line 71 for MC-HW-53\n# Code context line 72 for MC-HW-53\n# Code context line 73 for MC-HW-53\n# Code context line 74 for MC-HW-53\n# Code context line 75 for MC-HW-53\n# Code context line 76 for MC-HW-53\n# Code context line 77 for MC-HW-53\n# Code context line 78 for MC-HW-53\n# Code context line 79 for MC-HW-53\n# Code context line 80 for MC-HW-53\n# Code context line 81 for MC-HW-53\n# Code context line 82 for MC-HW-53\n# Code context line 83 for MC-HW-53\n# Code context line 84 for MC-HW-53\n# Code context line 85 for MC-HW-53\n# Code context line 86 for MC-HW-53\n# Code context line 87 for MC-HW-53\n# Code context line 88 for MC-HW-53\n# Code context line 89 for MC-HW-53\n# Code context line 90 for MC-HW-53\n# Code context line 91 for MC-HW-53\n# Code context line 92 for MC-HW-53\n# Code context line 93 for MC-HW-53\n# Code context line 94 for MC-HW-53\n# Code context line 95 for MC-HW-53\n# Code context line 96 for MC-HW-53\n# Code context line 97 for MC-HW-53\n# Code context line 98 for MC-HW-53\n# Code context line 99 for MC-HW-53\n# Code context line 100 for MC-HW-53\n# Code context line 101 for MC-HW-53\n# Code context line 102 for MC-HW-53\n# Code context line 103 for MC-HW-53\n# Code context line 104 for MC-HW-53\n# Code context line 105 for MC-HW-53\n# Code context line 106 for MC-HW-53\n# Code context line 107 for MC-HW-53\n# Code context line 108 for MC-HW-53\n# Code context line 109 for MC-HW-53\n# Code context line 110 for MC-HW-53\n# Code context line 111 for MC-HW-53\n# Code context line 112 for MC-HW-53\n# Code context line 113 for MC-HW-53\n# Code context line 114 for MC-HW-53\n# Code context line 115 for MC-HW-53\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

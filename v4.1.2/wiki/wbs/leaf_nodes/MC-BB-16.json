@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-16",
+  "title": "Implement Duplicate Claim Detector",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 166,
+  "chunk_end": 205,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-03: Zero duplicate claims shall occur under any concurrency load.",
+  "dependencies": [
+    "MC-BB-15",
+    "MC-BB-02"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"nfr_tm_03\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-16] NFR-TM-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-03: Zero duplicate\n# SPEC: claims shall occur under any concurrency load.\n# src/cochem/blackboard/leases.py:169 [MC-BB-16]\n# src/cochem/blackboard/leases.py:170 [MC-BB-16]\n# src/cochem/blackboard/leases.py:171 [MC-BB-16]\n# src/cochem/blackboard/leases.py:172 [MC-BB-16]\n# src/cochem/blackboard/leases.py:173 [MC-BB-16]\n# src/cochem/blackboard/leases.py:174 [MC-BB-16]\n# src/cochem/blackboard/leases.py:175 [MC-BB-16]\n# src/cochem/blackboard/leases.py:176 [MC-BB-16]\n# src/cochem/blackboard/leases.py:177 [MC-BB-16]\n# src/cochem/blackboard/leases.py:178 [MC-BB-16]\n# src/cochem/blackboard/leases.py:179 [MC-BB-16]\n# src/cochem/blackboard/leases.py:180 [MC-BB-16]\n# src/cochem/blackboard/leases.py:181 [MC-BB-16]\n# src/cochem/blackboard/leases.py:182 [MC-BB-16]\n# src/cochem/blackboard/leases.py:183 [MC-BB-16]\n# src/cochem/blackboard/leases.py:184 [MC-BB-16]\n# src/cochem/blackboard/leases.py:185 [MC-BB-16]\n# src/cochem/blackboard/leases.py:186 [MC-BB-16]\n# src/cochem/blackboard/leases.py:187 [MC-BB-16]\n# src/cochem/blackboard/leases.py:188 [MC-BB-16]\n# src/cochem/blackboard/leases.py:189 [MC-BB-16]\n# src/cochem/blackboard/leases.py:190 [MC-BB-16]\n# src/cochem/blackboard/leases.py:191 [MC-BB-16]\n# src/cochem/blackboard/leases.py:192 [MC-BB-16]\n# src/cochem/blackboard/leases.py:193 [MC-BB-16]\n# src/cochem/blackboard/leases.py:194 [MC-BB-16]\n# src/cochem/blackboard/leases.py:195 [MC-BB-16]\n# src/cochem/blackboard/leases.py:196 [MC-BB-16]\n# src/cochem/blackboard/leases.py:197 [MC-BB-16]\n# src/cochem/blackboard/leases.py:198 [MC-BB-16]\n# src/cochem/blackboard/leases.py:199 [MC-BB-16]\n# src/cochem/blackboard/leases.py:200 [MC-BB-16]\n# src/cochem/blackboard/leases.py:201 [MC-BB-16]\n# src/cochem/blackboard/leases.py:202 [MC-BB-16]\n# src/cochem/blackboard/leases.py:203 [MC-BB-16]\n# src/cochem/blackboard/leases.py:204 [MC-BB-16]\n# src/cochem/blackboard/leases.py:205 [MC-BB-16]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "NFR-TM-03"
+    ]
+  }
+}

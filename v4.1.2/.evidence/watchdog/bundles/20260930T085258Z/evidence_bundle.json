@@ -1,0 +1,30 @@
+{
+  "evidence_bundle": {
+    "verdict": "COLLAPSED",
+    "timestamp": 1790758378,
+    "host": "AetherDesk",
+    "matrix_failures": [
+      "Matrix 1: 1 ready PENDING job(s) and no live DSP worker for 330s"
+    ],
+    "stalled_task_id": "",
+    "stalled_duration_sec": 0,
+    "recovery_action": "TRIGGER_FABLE_RESUSCITATION",
+    "system_memory_used_pct": 33.9,
+    "frozen_worker_pids": [],
+    "stack_traces": {},
+    "watchdog_pid": 37536,
+    "job_board_snapshot": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T085258Z\\job_board_snapshot.db",
+    "job_board_snapshot_absent_reason": null,
+    "job_status_counts": {
+      "BLOCKED": 120,
+      "COMPLETED": 141,
+      "PENDING": 1
+    },
+    "signal_zd8_count": 0,
+    "job_board_path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+    "signal_zd8_rows": [],
+    "ready_pending_jobs": 1,
+    "job_board_readable": true,
+    "job_board_error": null
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-04",
+  "title": "Author Layer 2 Daemon Isolation Tests",
+  "domain": "concurrency",
+  "target_file": "tests/test_ch03_concurrency_layers.py",
+  "chunk_start": 181,
+  "chunk_end": 240,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects): test_f04_layer2_daemons_coordinate_only_through_job_board_wal for SRS-412-03-FR-004 (Layer 2 domain daemons shall operate as independent OS processes coordinated exclusively through the SQLite WAL task queue (`job_board.db`).); test_f04_layer2_worker_injects_512mb_v8_memory_cap for SRS-412-03-FR-005 (Layer 2 worker CLI processes shall enforce `NODE_OPTIONS=\"--max-old-space-size=512\"`.); test_f04_layer2_poll_jitter_stays_within_100_to_500ms for SRS-412-03-FR-006 (Layer 2 daemon poll loops shall inject randomized JIT startup jitter between 100ms and 500ms to eliminate thundering herd disk contention.); test_f04_desktop_heap_usage_below_15_percent_under_20_agents for NFR-CON-01 (Windows Desktop Heap usage shall remain below 15% of allocation limit under full 20-agent execution.); test_f04_poll_loop_leaks_zero_process_handles for NFR-CON-02 (Process handle leaks shall be zero across sustained 48-hour continuous polling runs.)",
+  "dependencies": [
+    "MC-CON-03"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch03_concurrency_layers.py>>>\n# [MC-CON-04] TESTS:layer2\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: subprocess, real SQLite WAL, psutil; no mock objects):\n# SPEC: test_f04_layer2_daemons_coordinate_only_through_job_board_wal for SRS-412-03-FR-004 (Layer 2\n# SPEC: domain daemons shall operate as independent OS processes coordinated exclusively through the\n# SPEC: SQLite WAL task queue (`job_board.db`).); test_f04_layer2_worker_injects_512mb_v8_memory_cap for\n# SPEC: SRS-412-03-FR-005 (Layer 2 worker CLI processes shall enforce `NODE_OPTIONS=\"--max-old-space-\n# SPEC: size=512\"`.); test_f04_layer2_poll_jitter_stays_within_100_to_500ms for SRS-412-03-FR-006 (Layer\n# SPEC: 2 daemon poll loops shall inject randomized JIT startup jitter between 100ms and 500ms to\n# SPEC: eliminate thundering herd disk contention.);\n# SPEC: test_f04_desktop_heap_usage_below_15_percent_under_20_agents for NFR-CON-01 (Windows Desktop\n# SPEC: Heap usage shall remain below 15% of allocation limit under full 20-agent execution.);\n# SPEC: test_f04_poll_loop_leaks_zero_process_handles for NFR-CON-02 (Process handle leaks shall be zero\n# SPEC: across sustained 48-hour continuous polling runs.)\n# tests/test_ch03_concurrency_layers.py:195 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:196 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:197 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:198 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:199 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:200 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:201 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:202 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:203 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:204 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:205 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:206 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:207 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:208 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:209 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:210 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:211 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:212 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:213 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:214 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:215 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:216 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:217 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:218 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:219 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:220 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:221 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:222 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:223 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:224 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:225 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:226 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:227 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:228 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:229 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:230 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:231 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:232 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:233 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:234 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:235 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:236 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:237 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:238 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:239 [MC-CON-04]\n# tests/test_ch03_concurrency_layers.py:240 [MC-CON-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-004",
+      "SRS-412-03-FR-005",
+      "SRS-412-03-FR-006",
+      "NFR-CON-01",
+      "NFR-CON-02"
+    ]
+  }
+}

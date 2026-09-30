@@ -1,0 +1,711 @@
+[
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-01",
+    "title": "Author WAL Schema, Read-Only and Idempotent Injection Tests",
+    "domain": "task_matrix",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "chunk_start": 1,
+    "chunk_end": 60,
+    "line_delta": 60,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_jobs_* for DATA_MODEL:jobs (section 7 CREATE TABLE); test_ch04_fr_001_* for SRS-412-04-FR-001 (The task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`.); test_ch04_fr_007_* for SRS-412-04-FR-007 (Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs (`file:job_board.db?mode=ro`).); test_ch04_fr_008_* for SRS-412-04-FR-008 (Task batch injection shall be completely idempotent via unique `task_id` constraints and `INSERT OR IGNORE`.); test_ch04_nfr_tm_02_* for NFR-TM-02 (The SQLite database WAL checkpointing shall not block read queries.); test_ch04_database_lock_contention_* for FAILURE:Database Lock Contention (`PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.). Section 9 obligations: Test asserts observer connection opens with `?mode=ro`.",
+    "dependencies": [],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-01] TESTS:schema\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_jobs_* for\n# SPEC: DATA_MODEL:jobs (section 7 CREATE TABLE); test_ch04_fr_001_* for SRS-412-04-FR-001 (The task\n# SPEC: blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous\n# SPEC: = NORMAL` and `PRAGMA busy_timeout = 30000`.); test_ch04_fr_007_* for SRS-412-04-FR-007\n# SPEC: (Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs\n# SPEC: (`file:job_board.db?mode=ro`).); test_ch04_fr_008_* for SRS-412-04-FR-008 (Task batch injection\n# SPEC: shall be completely idempotent via unique `task_id` constraints and `INSERT OR IGNORE`.);\n# SPEC: test_ch04_nfr_tm_02_* for NFR-TM-02 (The SQLite database WAL checkpointing shall not block read\n# SPEC: queries.); test_ch04_database_lock_contention_* for FAILURE:Database Lock Contention (`PRAGMA\n# SPEC: busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.).\n# SPEC: Section 9 obligations: Test asserts observer connection opens with `?mode=ro`.\n# tests/test_ch04_task_matrix_blackboard.py:14 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:15 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:16 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:17 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:18 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:19 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:20 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:21 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:22 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:23 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:24 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:25 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:26 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:27 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:28 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:29 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:30 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:31 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:32 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:33 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:34 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:35 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:36 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:37 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:38 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:39 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:40 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:41 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:42 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:43 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:44 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:45 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:46 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:47 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:48 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:49 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:50 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:51 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:52 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:53 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:54 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:55 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:56 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:57 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:58 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:59 [MC-BB-01]\n# tests/test_ch04_task_matrix_blackboard.py:60 [MC-BB-01]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "DATA_MODEL:jobs",
+        "SRS-412-04-FR-001",
+        "SRS-412-04-FR-007",
+        "SRS-412-04-FR-008",
+        "NFR-TM-02",
+        "FAILURE:Database Lock Contention"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-02",
+    "title": "Author Atomic Lease Claim and Contention Tests",
+    "domain": "task_matrix",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "chunk_start": 61,
+    "chunk_end": 120,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_002_* for SRS-412-04-FR-002 (Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease expiration updates.); test_ch04_fr_003_* for SRS-412-04-FR-003 (The default task lease duration shall be strictly 1800 seconds (30 minutes).); test_ch04_claim_next_task_* for INTERFACE:claim_next_task (claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None.); test_ch04_nfr_tm_01_* for NFR-TM-01 (Atomic lease acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.); test_ch04_nfr_tm_03_* for NFR-TM-03 (Zero duplicate claims shall occur under any concurrency load.). Section 9 obligations: Unit test verifies `BEGIN IMMEDIATE` prevents double claims across concurrent threads.",
+    "dependencies": [
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-02] TESTS:claim\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_002_* for SRS-412-04-FR-002\n# SPEC: (Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with\n# SPEC: lease expiration updates.); test_ch04_fr_003_* for SRS-412-04-FR-003 (The default task lease\n# SPEC: duration shall be strictly 1800 seconds (30 minutes).); test_ch04_claim_next_task_* for\n# SPEC: INTERFACE:claim_next_task (claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800)\n# SPEC: -> dict[str, Any] | None.); test_ch04_nfr_tm_01_* for NFR-TM-01 (Atomic lease acquisition\n# SPEC: latency shall be less than 5 milliseconds under concurrent 10-daemon contention.);\n# SPEC: test_ch04_nfr_tm_03_* for NFR-TM-03 (Zero duplicate claims shall occur under any concurrency\n# SPEC: load.). Section 9 obligations: Unit test verifies `BEGIN IMMEDIATE` prevents double claims\n# SPEC: across concurrent threads.\n# tests/test_ch04_task_matrix_blackboard.py:73 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:74 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:75 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:76 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:77 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:78 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:79 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:80 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:81 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:82 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:83 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:84 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:85 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:86 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:87 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:88 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:89 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:90 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:91 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:92 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:93 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:94 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:95 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:96 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:97 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:98 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:99 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:100 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:101 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:102 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:103 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:104 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:105 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:106 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:107 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:108 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:109 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:110 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:111 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:112 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:113 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:114 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:115 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:116 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:117 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:118 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:119 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:120 [MC-BB-02]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-002",
+        "SRS-412-04-FR-003",
+        "INTERFACE:claim_next_task",
+        "NFR-TM-01",
+        "NFR-TM-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-03",
+    "title": "Author Terminal Transition and Poison-Pill Tests",
+    "domain": "task_matrix",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "chunk_start": 121,
+    "chunk_end": 180,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_005_* for SRS-412-04-FR-005 (Tasks exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED` status.); test_ch04_fr_009_* for SRS-412-04-FR-009 (Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8 invariant.); test_ch04_complete_task_* for INTERFACE:complete_task (complete_task(db_path: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal ZD-8 invariant.); test_ch04_fail_task_* for INTERFACE:fail_task (fail_task(db_path: str, task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED or BLOCKED, clearing lease_owner for ZD-8 safety.). Section 9 obligations: Test verifies `attempts >= 3` transitions status to `BLOCKED`.",
+    "dependencies": [
+      "MC-BB-02"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-03] TESTS:lifecycle\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_005_* for SRS-412-04-FR-005\n# SPEC: (Tasks exceeding 3 failed execution attempts shall automatically transition to terminal\n# SPEC: `BLOCKED` status.); test_ch04_fr_009_* for SRS-412-04-FR-009 (Any state transition terminating\n# SPEC: 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner =\n# SPEC: NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8\n# SPEC: invariant.); test_ch04_complete_task_* for INTERFACE:complete_task (complete_task(db_path: str,\n# SPEC: task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal\n# SPEC: ZD-8 invariant.); test_ch04_fail_task_* for INTERFACE:fail_task (fail_task(db_path: str,\n# SPEC: task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED\n# SPEC: or BLOCKED, clearing lease_owner for ZD-8 safety.). Section 9 obligations: Test verifies\n# SPEC: `attempts >= 3` transitions status to `BLOCKED`.\n# tests/test_ch04_task_matrix_blackboard.py:134 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:135 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:136 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:137 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:138 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:139 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:140 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:141 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:142 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:143 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:144 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:145 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:146 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:147 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:148 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:149 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:150 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:151 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:152 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:153 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:154 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:155 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:156 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:157 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:158 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:159 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:160 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:161 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:162 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:163 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:164 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:165 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:166 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:167 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:168 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:169 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:170 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:171 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:172 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:173 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:174 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:175 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:176 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:177 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:178 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:179 [MC-BB-03]\n# tests/test_ch04_task_matrix_blackboard.py:180 [MC-BB-03]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-005",
+        "SRS-412-04-FR-009",
+        "INTERFACE:complete_task",
+        "INTERFACE:fail_task"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-04",
+    "title": "Author Heartbeat and Expired Lease Reclamation Tests",
+    "domain": "task_matrix",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "chunk_start": 181,
+    "chunk_end": 240,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_004_* for SRS-412-04-FR-004 (Active worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat updates.); test_ch04_heartbeat_lease_* for INTERFACE:heartbeat_lease (heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration timestamp for an active running task.); test_ch04_daemon_crash_with_active_lease_* for FAILURE:Daemon Crash with Active Lease (Watchdog detects expired `lease_expires_at < now` and resets task to `PENDING` if `attempts < 3`.)",
+    "dependencies": [
+      "MC-BB-03"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-04] TESTS:lease\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_004_* for SRS-412-04-FR-004\n# SPEC: (Active worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat\n# SPEC: updates.); test_ch04_heartbeat_lease_* for INTERFACE:heartbeat_lease (heartbeat_lease(db_path:\n# SPEC: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration\n# SPEC: timestamp for an active running task.); test_ch04_daemon_crash_with_active_lease_* for\n# SPEC: FAILURE:Daemon Crash with Active Lease (Watchdog detects expired `lease_expires_at < now` and\n# SPEC: resets task to `PENDING` if `attempts < 3`.)\n# tests/test_ch04_task_matrix_blackboard.py:190 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:191 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:192 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:193 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:194 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:195 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:196 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:197 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:198 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:199 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:200 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:201 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:202 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:203 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:204 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:205 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:206 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:207 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:208 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:209 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:210 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:211 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:212 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:213 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:214 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:215 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:216 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:217 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:218 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:219 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:220 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:221 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:222 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:223 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:224 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:225 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:226 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:227 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:228 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:229 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:230 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:231 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:232 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:233 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:234 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:235 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:236 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:237 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:238 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:239 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:240 [MC-BB-04]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-004",
+        "INTERFACE:heartbeat_lease",
+        "FAILURE:Daemon Crash with Active Lease"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-05",
+    "title": "Author Urgency x Fidelity Routing Tests",
+    "domain": "task_matrix",
+    "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+    "chunk_start": 241,
+    "chunk_end": 300,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_006_* for SRS-412-04-FR-006 (The queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with capability matching.)",
+    "dependencies": [
+      "MC-BB-04"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-05] TESTS:matrix\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_006_* for SRS-412-04-FR-006 (The\n# SPEC: queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with\n# SPEC: capability matching.)\n# tests/test_ch04_task_matrix_blackboard.py:246 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:247 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:248 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:249 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:250 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:251 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:252 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:253 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:254 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:255 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:256 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:257 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:258 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:259 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:260 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:261 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:262 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:263 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:264 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:265 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:266 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:267 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:268 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:269 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:270 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:271 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:272 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:273 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:274 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:275 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:276 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:277 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:278 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:279 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:280 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:281 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:282 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:283 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:284 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:285 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:286 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:287 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:288 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:289 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:290 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:291 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:292 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:293 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:294 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:295 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:296 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:297 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:298 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:299 [MC-BB-05]\n# tests/test_ch04_task_matrix_blackboard.py:300 [MC-BB-05]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-06",
+    "title": "Implement jobs Table DDL and ensure_schema",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the jobs CREATE TABLE statement verbatim from section 7 and an ensure_schema(conn) that executes it. Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; task_id TEXT UNIQUE NOT NULL; job_type TEXT NOT NULL; priority INTEGER DEFAULT 100; status TEXT CHECK(status IN ('PENDING', 'RUNNING', 'COMPLETED', 'FAILED', 'BLOCKED')) DEFAULT 'PENDING'; payload_json TEXT NOT NULL; lease_owner TEXT; lease_expires_at INTEGER; attempts INTEGER DEFAULT 0; error_log TEXT; created_at INTEGER DEFAULT (strftime('%s', 'now')); updated_at INTEGER DEFAULT (strftime('%s', 'now'))",
+    "dependencies": [
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"jobs\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-06] DATA_MODEL:jobs\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the jobs\n# SPEC: CREATE TABLE statement verbatim from section 7 and an ensure_schema(conn) that executes it.\n# SPEC: Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; task_id TEXT UNIQUE NOT NULL; job_type TEXT NOT\n# SPEC: NULL; priority INTEGER DEFAULT 100; status TEXT CHECK(status IN ('PENDING', 'RUNNING',\n# SPEC: 'COMPLETED', 'FAILED', 'BLOCKED')) DEFAULT 'PENDING'; payload_json TEXT NOT NULL; lease_owner\n# SPEC: TEXT; lease_expires_at INTEGER; attempts INTEGER DEFAULT 0; error_log TEXT; created_at INTEGER\n# SPEC: DEFAULT (strftime('%s', 'now')); updated_at INTEGER DEFAULT (strftime('%s', 'now'))\n# src/cochem/blackboard/schema.py:9 [MC-BB-06]\n# src/cochem/blackboard/schema.py:10 [MC-BB-06]\n# src/cochem/blackboard/schema.py:11 [MC-BB-06]\n# src/cochem/blackboard/schema.py:12 [MC-BB-06]\n# src/cochem/blackboard/schema.py:13 [MC-BB-06]\n# src/cochem/blackboard/schema.py:14 [MC-BB-06]\n# src/cochem/blackboard/schema.py:15 [MC-BB-06]\n# src/cochem/blackboard/schema.py:16 [MC-BB-06]\n# src/cochem/blackboard/schema.py:17 [MC-BB-06]\n# src/cochem/blackboard/schema.py:18 [MC-BB-06]\n# src/cochem/blackboard/schema.py:19 [MC-BB-06]\n# src/cochem/blackboard/schema.py:20 [MC-BB-06]\n# src/cochem/blackboard/schema.py:21 [MC-BB-06]\n# src/cochem/blackboard/schema.py:22 [MC-BB-06]\n# src/cochem/blackboard/schema.py:23 [MC-BB-06]\n# src/cochem/blackboard/schema.py:24 [MC-BB-06]\n# src/cochem/blackboard/schema.py:25 [MC-BB-06]\n# src/cochem/blackboard/schema.py:26 [MC-BB-06]\n# src/cochem/blackboard/schema.py:27 [MC-BB-06]\n# src/cochem/blackboard/schema.py:28 [MC-BB-06]\n# src/cochem/blackboard/schema.py:29 [MC-BB-06]\n# src/cochem/blackboard/schema.py:30 [MC-BB-06]\n# src/cochem/blackboard/schema.py:31 [MC-BB-06]\n# src/cochem/blackboard/schema.py:32 [MC-BB-06]\n# src/cochem/blackboard/schema.py:33 [MC-BB-06]\n# src/cochem/blackboard/schema.py:34 [MC-BB-06]\n# src/cochem/blackboard/schema.py:35 [MC-BB-06]\n# src/cochem/blackboard/schema.py:36 [MC-BB-06]\n# src/cochem/blackboard/schema.py:37 [MC-BB-06]\n# src/cochem/blackboard/schema.py:38 [MC-BB-06]\n# src/cochem/blackboard/schema.py:39 [MC-BB-06]\n# src/cochem/blackboard/schema.py:40 [MC-BB-06]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "DATA_MODEL:jobs"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-07",
+    "title": "Implement WAL Connection Factory with Pragmas",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 41,
+    "chunk_end": 80,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-001: The task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`. Traceability test: test_scenario_1_full_pipeline_bootstrap_lifecycle.",
+    "dependencies": [
+      "MC-BB-06",
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-07] SRS-412-04-FR-001\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-001: The\n# SPEC: task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA\n# SPEC: synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`. Traceability test:\n# SPEC: test_scenario_1_full_pipeline_bootstrap_lifecycle.\n# src/cochem/blackboard/schema.py:46 [MC-BB-07]\n# src/cochem/blackboard/schema.py:47 [MC-BB-07]\n# src/cochem/blackboard/schema.py:48 [MC-BB-07]\n# src/cochem/blackboard/schema.py:49 [MC-BB-07]\n# src/cochem/blackboard/schema.py:50 [MC-BB-07]\n# src/cochem/blackboard/schema.py:51 [MC-BB-07]\n# src/cochem/blackboard/schema.py:52 [MC-BB-07]\n# src/cochem/blackboard/schema.py:53 [MC-BB-07]\n# src/cochem/blackboard/schema.py:54 [MC-BB-07]\n# src/cochem/blackboard/schema.py:55 [MC-BB-07]\n# src/cochem/blackboard/schema.py:56 [MC-BB-07]\n# src/cochem/blackboard/schema.py:57 [MC-BB-07]\n# src/cochem/blackboard/schema.py:58 [MC-BB-07]\n# src/cochem/blackboard/schema.py:59 [MC-BB-07]\n# src/cochem/blackboard/schema.py:60 [MC-BB-07]\n# src/cochem/blackboard/schema.py:61 [MC-BB-07]\n# src/cochem/blackboard/schema.py:62 [MC-BB-07]\n# src/cochem/blackboard/schema.py:63 [MC-BB-07]\n# src/cochem/blackboard/schema.py:64 [MC-BB-07]\n# src/cochem/blackboard/schema.py:65 [MC-BB-07]\n# src/cochem/blackboard/schema.py:66 [MC-BB-07]\n# src/cochem/blackboard/schema.py:67 [MC-BB-07]\n# src/cochem/blackboard/schema.py:68 [MC-BB-07]\n# src/cochem/blackboard/schema.py:69 [MC-BB-07]\n# src/cochem/blackboard/schema.py:70 [MC-BB-07]\n# src/cochem/blackboard/schema.py:71 [MC-BB-07]\n# src/cochem/blackboard/schema.py:72 [MC-BB-07]\n# src/cochem/blackboard/schema.py:73 [MC-BB-07]\n# src/cochem/blackboard/schema.py:74 [MC-BB-07]\n# src/cochem/blackboard/schema.py:75 [MC-BB-07]\n# src/cochem/blackboard/schema.py:76 [MC-BB-07]\n# src/cochem/blackboard/schema.py:77 [MC-BB-07]\n# src/cochem/blackboard/schema.py:78 [MC-BB-07]\n# src/cochem/blackboard/schema.py:79 [MC-BB-07]\n# src/cochem/blackboard/schema.py:80 [MC-BB-07]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-08",
+    "title": "Implement Busy-Timeout Lock Contention Handling",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 81,
+    "chunk_end": 120,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Database Lock Contention': `PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.",
+    "dependencies": [
+      "MC-BB-07",
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"database_lock_contention\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-08] FAILURE:Database Lock Contention\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Database\n# SPEC: Lock Contention': `PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds\n# SPEC: before failing cleanly.\n# src/cochem/blackboard/schema.py:85 [MC-BB-08]\n# src/cochem/blackboard/schema.py:86 [MC-BB-08]\n# src/cochem/blackboard/schema.py:87 [MC-BB-08]\n# src/cochem/blackboard/schema.py:88 [MC-BB-08]\n# src/cochem/blackboard/schema.py:89 [MC-BB-08]\n# src/cochem/blackboard/schema.py:90 [MC-BB-08]\n# src/cochem/blackboard/schema.py:91 [MC-BB-08]\n# src/cochem/blackboard/schema.py:92 [MC-BB-08]\n# src/cochem/blackboard/schema.py:93 [MC-BB-08]\n# src/cochem/blackboard/schema.py:94 [MC-BB-08]\n# src/cochem/blackboard/schema.py:95 [MC-BB-08]\n# src/cochem/blackboard/schema.py:96 [MC-BB-08]\n# src/cochem/blackboard/schema.py:97 [MC-BB-08]\n# src/cochem/blackboard/schema.py:98 [MC-BB-08]\n# src/cochem/blackboard/schema.py:99 [MC-BB-08]\n# src/cochem/blackboard/schema.py:100 [MC-BB-08]\n# src/cochem/blackboard/schema.py:101 [MC-BB-08]\n# src/cochem/blackboard/schema.py:102 [MC-BB-08]\n# src/cochem/blackboard/schema.py:103 [MC-BB-08]\n# src/cochem/blackboard/schema.py:104 [MC-BB-08]\n# src/cochem/blackboard/schema.py:105 [MC-BB-08]\n# src/cochem/blackboard/schema.py:106 [MC-BB-08]\n# src/cochem/blackboard/schema.py:107 [MC-BB-08]\n# src/cochem/blackboard/schema.py:108 [MC-BB-08]\n# src/cochem/blackboard/schema.py:109 [MC-BB-08]\n# src/cochem/blackboard/schema.py:110 [MC-BB-08]\n# src/cochem/blackboard/schema.py:111 [MC-BB-08]\n# src/cochem/blackboard/schema.py:112 [MC-BB-08]\n# src/cochem/blackboard/schema.py:113 [MC-BB-08]\n# src/cochem/blackboard/schema.py:114 [MC-BB-08]\n# src/cochem/blackboard/schema.py:115 [MC-BB-08]\n# src/cochem/blackboard/schema.py:116 [MC-BB-08]\n# src/cochem/blackboard/schema.py:117 [MC-BB-08]\n# src/cochem/blackboard/schema.py:118 [MC-BB-08]\n# src/cochem/blackboard/schema.py:119 [MC-BB-08]\n# src/cochem/blackboard/schema.py:120 [MC-BB-08]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "FAILURE:Database Lock Contention"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-09",
+    "title": "Implement Read-Only Observer Connection",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 121,
+    "chunk_end": 160,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-007: Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs (`file:job_board.db?mode=ro`).",
+    "dependencies": [
+      "MC-BB-08",
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_007\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-09] SRS-412-04-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-007:\n# SPEC: Observers, telemetry monitors, and SRE watchdogs shall connect using read-only database URIs\n# SPEC: (`file:job_board.db?mode=ro`).\n# src/cochem/blackboard/schema.py:125 [MC-BB-09]\n# src/cochem/blackboard/schema.py:126 [MC-BB-09]\n# src/cochem/blackboard/schema.py:127 [MC-BB-09]\n# src/cochem/blackboard/schema.py:128 [MC-BB-09]\n# src/cochem/blackboard/schema.py:129 [MC-BB-09]\n# src/cochem/blackboard/schema.py:130 [MC-BB-09]\n# src/cochem/blackboard/schema.py:131 [MC-BB-09]\n# src/cochem/blackboard/schema.py:132 [MC-BB-09]\n# src/cochem/blackboard/schema.py:133 [MC-BB-09]\n# src/cochem/blackboard/schema.py:134 [MC-BB-09]\n# src/cochem/blackboard/schema.py:135 [MC-BB-09]\n# src/cochem/blackboard/schema.py:136 [MC-BB-09]\n# src/cochem/blackboard/schema.py:137 [MC-BB-09]\n# src/cochem/blackboard/schema.py:138 [MC-BB-09]\n# src/cochem/blackboard/schema.py:139 [MC-BB-09]\n# src/cochem/blackboard/schema.py:140 [MC-BB-09]\n# src/cochem/blackboard/schema.py:141 [MC-BB-09]\n# src/cochem/blackboard/schema.py:142 [MC-BB-09]\n# src/cochem/blackboard/schema.py:143 [MC-BB-09]\n# src/cochem/blackboard/schema.py:144 [MC-BB-09]\n# src/cochem/blackboard/schema.py:145 [MC-BB-09]\n# src/cochem/blackboard/schema.py:146 [MC-BB-09]\n# src/cochem/blackboard/schema.py:147 [MC-BB-09]\n# src/cochem/blackboard/schema.py:148 [MC-BB-09]\n# src/cochem/blackboard/schema.py:149 [MC-BB-09]\n# src/cochem/blackboard/schema.py:150 [MC-BB-09]\n# src/cochem/blackboard/schema.py:151 [MC-BB-09]\n# src/cochem/blackboard/schema.py:152 [MC-BB-09]\n# src/cochem/blackboard/schema.py:153 [MC-BB-09]\n# src/cochem/blackboard/schema.py:154 [MC-BB-09]\n# src/cochem/blackboard/schema.py:155 [MC-BB-09]\n# src/cochem/blackboard/schema.py:156 [MC-BB-09]\n# src/cochem/blackboard/schema.py:157 [MC-BB-09]\n# src/cochem/blackboard/schema.py:158 [MC-BB-09]\n# src/cochem/blackboard/schema.py:159 [MC-BB-09]\n# src/cochem/blackboard/schema.py:160 [MC-BB-09]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-007"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-10",
+    "title": "Implement Non-Blocking PASSIVE WAL Checkpoint",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 161,
+    "chunk_end": 200,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-02: The SQLite database WAL checkpointing shall not block read queries.",
+    "dependencies": [
+      "MC-BB-09",
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"nfr_tm_02\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-10] NFR-TM-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-02: The SQLite\n# SPEC: database WAL checkpointing shall not block read queries.\n# src/cochem/blackboard/schema.py:164 [MC-BB-10]\n# src/cochem/blackboard/schema.py:165 [MC-BB-10]\n# src/cochem/blackboard/schema.py:166 [MC-BB-10]\n# src/cochem/blackboard/schema.py:167 [MC-BB-10]\n# src/cochem/blackboard/schema.py:168 [MC-BB-10]\n# src/cochem/blackboard/schema.py:169 [MC-BB-10]\n# src/cochem/blackboard/schema.py:170 [MC-BB-10]\n# src/cochem/blackboard/schema.py:171 [MC-BB-10]\n# src/cochem/blackboard/schema.py:172 [MC-BB-10]\n# src/cochem/blackboard/schema.py:173 [MC-BB-10]\n# src/cochem/blackboard/schema.py:174 [MC-BB-10]\n# src/cochem/blackboard/schema.py:175 [MC-BB-10]\n# src/cochem/blackboard/schema.py:176 [MC-BB-10]\n# src/cochem/blackboard/schema.py:177 [MC-BB-10]\n# src/cochem/blackboard/schema.py:178 [MC-BB-10]\n# src/cochem/blackboard/schema.py:179 [MC-BB-10]\n# src/cochem/blackboard/schema.py:180 [MC-BB-10]\n# src/cochem/blackboard/schema.py:181 [MC-BB-10]\n# src/cochem/blackboard/schema.py:182 [MC-BB-10]\n# src/cochem/blackboard/schema.py:183 [MC-BB-10]\n# src/cochem/blackboard/schema.py:184 [MC-BB-10]\n# src/cochem/blackboard/schema.py:185 [MC-BB-10]\n# src/cochem/blackboard/schema.py:186 [MC-BB-10]\n# src/cochem/blackboard/schema.py:187 [MC-BB-10]\n# src/cochem/blackboard/schema.py:188 [MC-BB-10]\n# src/cochem/blackboard/schema.py:189 [MC-BB-10]\n# src/cochem/blackboard/schema.py:190 [MC-BB-10]\n# src/cochem/blackboard/schema.py:191 [MC-BB-10]\n# src/cochem/blackboard/schema.py:192 [MC-BB-10]\n# src/cochem/blackboard/schema.py:193 [MC-BB-10]\n# src/cochem/blackboard/schema.py:194 [MC-BB-10]\n# src/cochem/blackboard/schema.py:195 [MC-BB-10]\n# src/cochem/blackboard/schema.py:196 [MC-BB-10]\n# src/cochem/blackboard/schema.py:197 [MC-BB-10]\n# src/cochem/blackboard/schema.py:198 [MC-BB-10]\n# src/cochem/blackboard/schema.py:199 [MC-BB-10]\n# src/cochem/blackboard/schema.py:200 [MC-BB-10]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "NFR-TM-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-11",
+    "title": "Implement Idempotent INSERT OR IGNORE Batch Injection",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "chunk_start": 201,
+    "chunk_end": 240,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-008: Task batch injection shall be completely idempotent via unique `task_id` constraints and `INSERT OR IGNORE`.",
+    "dependencies": [
+      "MC-BB-10",
+      "MC-BB-01"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_008\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-11] SRS-412-04-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-008: Task\n# SPEC: batch injection shall be completely idempotent via unique `task_id` constraints and `INSERT OR\n# SPEC: IGNORE`.\n# src/cochem/blackboard/schema.py:205 [MC-BB-11]\n# src/cochem/blackboard/schema.py:206 [MC-BB-11]\n# src/cochem/blackboard/schema.py:207 [MC-BB-11]\n# src/cochem/blackboard/schema.py:208 [MC-BB-11]\n# src/cochem/blackboard/schema.py:209 [MC-BB-11]\n# src/cochem/blackboard/schema.py:210 [MC-BB-11]\n# src/cochem/blackboard/schema.py:211 [MC-BB-11]\n# src/cochem/blackboard/schema.py:212 [MC-BB-11]\n# src/cochem/blackboard/schema.py:213 [MC-BB-11]\n# src/cochem/blackboard/schema.py:214 [MC-BB-11]\n# src/cochem/blackboard/schema.py:215 [MC-BB-11]\n# src/cochem/blackboard/schema.py:216 [MC-BB-11]\n# src/cochem/blackboard/schema.py:217 [MC-BB-11]\n# src/cochem/blackboard/schema.py:218 [MC-BB-11]\n# src/cochem/blackboard/schema.py:219 [MC-BB-11]\n# src/cochem/blackboard/schema.py:220 [MC-BB-11]\n# src/cochem/blackboard/schema.py:221 [MC-BB-11]\n# src/cochem/blackboard/schema.py:222 [MC-BB-11]\n# src/cochem/blackboard/schema.py:223 [MC-BB-11]\n# src/cochem/blackboard/schema.py:224 [MC-BB-11]\n# src/cochem/blackboard/schema.py:225 [MC-BB-11]\n# src/cochem/blackboard/schema.py:226 [MC-BB-11]\n# src/cochem/blackboard/schema.py:227 [MC-BB-11]\n# src/cochem/blackboard/schema.py:228 [MC-BB-11]\n# src/cochem/blackboard/schema.py:229 [MC-BB-11]\n# src/cochem/blackboard/schema.py:230 [MC-BB-11]\n# src/cochem/blackboard/schema.py:231 [MC-BB-11]\n# src/cochem/blackboard/schema.py:232 [MC-BB-11]\n# src/cochem/blackboard/schema.py:233 [MC-BB-11]\n# src/cochem/blackboard/schema.py:234 [MC-BB-11]\n# src/cochem/blackboard/schema.py:235 [MC-BB-11]\n# src/cochem/blackboard/schema.py:236 [MC-BB-11]\n# src/cochem/blackboard/schema.py:237 [MC-BB-11]\n# src/cochem/blackboard/schema.py:238 [MC-BB-11]\n# src/cochem/blackboard/schema.py:239 [MC-BB-11]\n# src/cochem/blackboard/schema.py:240 [MC-BB-11]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-008"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-12",
+    "title": "Implement 1800 s Default Lease Constant",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 1,
+    "chunk_end": 25,
+    "line_delta": 25,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-04-FR-003: The default task lease duration shall be strictly 1800 seconds (30 minutes).",
+    "dependencies": [
+      "MC-BB-02"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_003\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-12] SRS-412-04-FR-003\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-04-FR-003: The default task lease duration shall be strictly 1800 seconds (30 minutes).\n# src/cochem/blackboard/leases.py:4 [MC-BB-12]\n# src/cochem/blackboard/leases.py:5 [MC-BB-12]\n# src/cochem/blackboard/leases.py:6 [MC-BB-12]\n# src/cochem/blackboard/leases.py:7 [MC-BB-12]\n# src/cochem/blackboard/leases.py:8 [MC-BB-12]\n# src/cochem/blackboard/leases.py:9 [MC-BB-12]\n# src/cochem/blackboard/leases.py:10 [MC-BB-12]\n# src/cochem/blackboard/leases.py:11 [MC-BB-12]\n# src/cochem/blackboard/leases.py:12 [MC-BB-12]\n# src/cochem/blackboard/leases.py:13 [MC-BB-12]\n# src/cochem/blackboard/leases.py:14 [MC-BB-12]\n# src/cochem/blackboard/leases.py:15 [MC-BB-12]\n# src/cochem/blackboard/leases.py:16 [MC-BB-12]\n# src/cochem/blackboard/leases.py:17 [MC-BB-12]\n# src/cochem/blackboard/leases.py:18 [MC-BB-12]\n# src/cochem/blackboard/leases.py:19 [MC-BB-12]\n# src/cochem/blackboard/leases.py:20 [MC-BB-12]\n# src/cochem/blackboard/leases.py:21 [MC-BB-12]\n# src/cochem/blackboard/leases.py:22 [MC-BB-12]\n# src/cochem/blackboard/leases.py:23 [MC-BB-12]\n# src/cochem/blackboard/leases.py:24 [MC-BB-12]\n# src/cochem/blackboard/leases.py:25 [MC-BB-12]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-003"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-13",
+    "title": "Implement Urgency x Fidelity Capability Matrix",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 26,
+    "chunk_end": 75,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-006: The queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with capability matching. The section 7 jobs table has no urgency/fidelity columns: derive both from priority and payload_json without altering the section 7 DDL.",
+    "dependencies": [
+      "MC-BB-12",
+      "MC-BB-05"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_006\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-13] SRS-412-04-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-006: The\n# SPEC: queue shall route tasks across the Urgency (High/Med/Low) x Fidelity (High/Low) matrix with\n# SPEC: capability matching. The section 7 jobs table has no urgency/fidelity columns: derive both from\n# SPEC: priority and payload_json without altering the section 7 DDL.\n# src/cochem/blackboard/leases.py:31 [MC-BB-13]\n# src/cochem/blackboard/leases.py:32 [MC-BB-13]\n# src/cochem/blackboard/leases.py:33 [MC-BB-13]\n# src/cochem/blackboard/leases.py:34 [MC-BB-13]\n# src/cochem/blackboard/leases.py:35 [MC-BB-13]\n# src/cochem/blackboard/leases.py:36 [MC-BB-13]\n# src/cochem/blackboard/leases.py:37 [MC-BB-13]\n# src/cochem/blackboard/leases.py:38 [MC-BB-13]\n# src/cochem/blackboard/leases.py:39 [MC-BB-13]\n# src/cochem/blackboard/leases.py:40 [MC-BB-13]\n# src/cochem/blackboard/leases.py:41 [MC-BB-13]\n# src/cochem/blackboard/leases.py:42 [MC-BB-13]\n# src/cochem/blackboard/leases.py:43 [MC-BB-13]\n# src/cochem/blackboard/leases.py:44 [MC-BB-13]\n# src/cochem/blackboard/leases.py:45 [MC-BB-13]\n# src/cochem/blackboard/leases.py:46 [MC-BB-13]\n# src/cochem/blackboard/leases.py:47 [MC-BB-13]\n# src/cochem/blackboard/leases.py:48 [MC-BB-13]\n# src/cochem/blackboard/leases.py:49 [MC-BB-13]\n# src/cochem/blackboard/leases.py:50 [MC-BB-13]\n# src/cochem/blackboard/leases.py:51 [MC-BB-13]\n# src/cochem/blackboard/leases.py:52 [MC-BB-13]\n# src/cochem/blackboard/leases.py:53 [MC-BB-13]\n# src/cochem/blackboard/leases.py:54 [MC-BB-13]\n# src/cochem/blackboard/leases.py:55 [MC-BB-13]\n# src/cochem/blackboard/leases.py:56 [MC-BB-13]\n# src/cochem/blackboard/leases.py:57 [MC-BB-13]\n# src/cochem/blackboard/leases.py:58 [MC-BB-13]\n# src/cochem/blackboard/leases.py:59 [MC-BB-13]\n# src/cochem/blackboard/leases.py:60 [MC-BB-13]\n# src/cochem/blackboard/leases.py:61 [MC-BB-13]\n# src/cochem/blackboard/leases.py:62 [MC-BB-13]\n# src/cochem/blackboard/leases.py:63 [MC-BB-13]\n# src/cochem/blackboard/leases.py:64 [MC-BB-13]\n# src/cochem/blackboard/leases.py:65 [MC-BB-13]\n# src/cochem/blackboard/leases.py:66 [MC-BB-13]\n# src/cochem/blackboard/leases.py:67 [MC-BB-13]\n# src/cochem/blackboard/leases.py:68 [MC-BB-13]\n# src/cochem/blackboard/leases.py:69 [MC-BB-13]\n# src/cochem/blackboard/leases.py:70 [MC-BB-13]\n# src/cochem/blackboard/leases.py:71 [MC-BB-13]\n# src/cochem/blackboard/leases.py:72 [MC-BB-13]\n# src/cochem/blackboard/leases.py:73 [MC-BB-13]\n# src/cochem/blackboard/leases.py:74 [MC-BB-13]\n# src/cochem/blackboard/leases.py:75 [MC-BB-13]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-14",
+    "title": "Implement BEGIN IMMEDIATE Transaction Helper",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 76,
+    "chunk_end": 115,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-002: Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease expiration updates. Traceability test: test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation.",
+    "dependencies": [
+      "MC-BB-13",
+      "MC-BB-02",
+      "MC-BB-07"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-14] SRS-412-04-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-002: Worker\n# SPEC: daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease\n# SPEC: expiration updates. Traceability test:\n# SPEC: test_scenario_3_multi_worker_lease_contention_and_zombie_reclamation.\n# src/cochem/blackboard/leases.py:81 [MC-BB-14]\n# src/cochem/blackboard/leases.py:82 [MC-BB-14]\n# src/cochem/blackboard/leases.py:83 [MC-BB-14]\n# src/cochem/blackboard/leases.py:84 [MC-BB-14]\n# src/cochem/blackboard/leases.py:85 [MC-BB-14]\n# src/cochem/blackboard/leases.py:86 [MC-BB-14]\n# src/cochem/blackboard/leases.py:87 [MC-BB-14]\n# src/cochem/blackboard/leases.py:88 [MC-BB-14]\n# src/cochem/blackboard/leases.py:89 [MC-BB-14]\n# src/cochem/blackboard/leases.py:90 [MC-BB-14]\n# src/cochem/blackboard/leases.py:91 [MC-BB-14]\n# src/cochem/blackboard/leases.py:92 [MC-BB-14]\n# src/cochem/blackboard/leases.py:93 [MC-BB-14]\n# src/cochem/blackboard/leases.py:94 [MC-BB-14]\n# src/cochem/blackboard/leases.py:95 [MC-BB-14]\n# src/cochem/blackboard/leases.py:96 [MC-BB-14]\n# src/cochem/blackboard/leases.py:97 [MC-BB-14]\n# src/cochem/blackboard/leases.py:98 [MC-BB-14]\n# src/cochem/blackboard/leases.py:99 [MC-BB-14]\n# src/cochem/blackboard/leases.py:100 [MC-BB-14]\n# src/cochem/blackboard/leases.py:101 [MC-BB-14]\n# src/cochem/blackboard/leases.py:102 [MC-BB-14]\n# src/cochem/blackboard/leases.py:103 [MC-BB-14]\n# src/cochem/blackboard/leases.py:104 [MC-BB-14]\n# src/cochem/blackboard/leases.py:105 [MC-BB-14]\n# src/cochem/blackboard/leases.py:106 [MC-BB-14]\n# src/cochem/blackboard/leases.py:107 [MC-BB-14]\n# src/cochem/blackboard/leases.py:108 [MC-BB-14]\n# src/cochem/blackboard/leases.py:109 [MC-BB-14]\n# src/cochem/blackboard/leases.py:110 [MC-BB-14]\n# src/cochem/blackboard/leases.py:111 [MC-BB-14]\n# src/cochem/blackboard/leases.py:112 [MC-BB-14]\n# src/cochem/blackboard/leases.py:113 [MC-BB-14]\n# src/cochem/blackboard/leases.py:114 [MC-BB-14]\n# src/cochem/blackboard/leases.py:115 [MC-BB-14]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-15",
+    "title": "Implement claim_next_task Atomic Lease",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 116,
+    "chunk_end": 165,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+    "dependencies": [
+      "MC-BB-14",
+      "MC-BB-02",
+      "MC-BB-06",
+      "MC-BB-12",
+      "MC-BB-13"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"claim_next_task\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-15] INTERFACE:claim_next_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None.\n# SPEC: Match the section 6 reference implementation, composed from the helpers defined in earlier\n# SPEC: chunks.\n# src/cochem/blackboard/leases.py:121 [MC-BB-15]\n# src/cochem/blackboard/leases.py:122 [MC-BB-15]\n# src/cochem/blackboard/leases.py:123 [MC-BB-15]\n# src/cochem/blackboard/leases.py:124 [MC-BB-15]\n# src/cochem/blackboard/leases.py:125 [MC-BB-15]\n# src/cochem/blackboard/leases.py:126 [MC-BB-15]\n# src/cochem/blackboard/leases.py:127 [MC-BB-15]\n# src/cochem/blackboard/leases.py:128 [MC-BB-15]\n# src/cochem/blackboard/leases.py:129 [MC-BB-15]\n# src/cochem/blackboard/leases.py:130 [MC-BB-15]\n# src/cochem/blackboard/leases.py:131 [MC-BB-15]\n# src/cochem/blackboard/leases.py:132 [MC-BB-15]\n# src/cochem/blackboard/leases.py:133 [MC-BB-15]\n# src/cochem/blackboard/leases.py:134 [MC-BB-15]\n# src/cochem/blackboard/leases.py:135 [MC-BB-15]\n# src/cochem/blackboard/leases.py:136 [MC-BB-15]\n# src/cochem/blackboard/leases.py:137 [MC-BB-15]\n# src/cochem/blackboard/leases.py:138 [MC-BB-15]\n# src/cochem/blackboard/leases.py:139 [MC-BB-15]\n# src/cochem/blackboard/leases.py:140 [MC-BB-15]\n# src/cochem/blackboard/leases.py:141 [MC-BB-15]\n# src/cochem/blackboard/leases.py:142 [MC-BB-15]\n# src/cochem/blackboard/leases.py:143 [MC-BB-15]\n# src/cochem/blackboard/leases.py:144 [MC-BB-15]\n# src/cochem/blackboard/leases.py:145 [MC-BB-15]\n# src/cochem/blackboard/leases.py:146 [MC-BB-15]\n# src/cochem/blackboard/leases.py:147 [MC-BB-15]\n# src/cochem/blackboard/leases.py:148 [MC-BB-15]\n# src/cochem/blackboard/leases.py:149 [MC-BB-15]\n# src/cochem/blackboard/leases.py:150 [MC-BB-15]\n# src/cochem/blackboard/leases.py:151 [MC-BB-15]\n# src/cochem/blackboard/leases.py:152 [MC-BB-15]\n# src/cochem/blackboard/leases.py:153 [MC-BB-15]\n# src/cochem/blackboard/leases.py:154 [MC-BB-15]\n# src/cochem/blackboard/leases.py:155 [MC-BB-15]\n# src/cochem/blackboard/leases.py:156 [MC-BB-15]\n# src/cochem/blackboard/leases.py:157 [MC-BB-15]\n# src/cochem/blackboard/leases.py:158 [MC-BB-15]\n# src/cochem/blackboard/leases.py:159 [MC-BB-15]\n# src/cochem/blackboard/leases.py:160 [MC-BB-15]\n# src/cochem/blackboard/leases.py:161 [MC-BB-15]\n# src/cochem/blackboard/leases.py:162 [MC-BB-15]\n# src/cochem/blackboard/leases.py:163 [MC-BB-15]\n# src/cochem/blackboard/leases.py:164 [MC-BB-15]\n# src/cochem/blackboard/leases.py:165 [MC-BB-15]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "INTERFACE:claim_next_task"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-16",
+    "title": "Implement Duplicate Claim Detector",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 166,
+    "chunk_end": 205,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-03: Zero duplicate claims shall occur under any concurrency load.",
+    "dependencies": [
+      "MC-BB-15",
+      "MC-BB-02"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"nfr_tm_03\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-16] NFR-TM-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-03: Zero duplicate\n# SPEC: claims shall occur under any concurrency load.\n# src/cochem/blackboard/leases.py:169 [MC-BB-16]\n# src/cochem/blackboard/leases.py:170 [MC-BB-16]\n# src/cochem/blackboard/leases.py:171 [MC-BB-16]\n# src/cochem/blackboard/leases.py:172 [MC-BB-16]\n# src/cochem/blackboard/leases.py:173 [MC-BB-16]\n# src/cochem/blackboard/leases.py:174 [MC-BB-16]\n# src/cochem/blackboard/leases.py:175 [MC-BB-16]\n# src/cochem/blackboard/leases.py:176 [MC-BB-16]\n# src/cochem/blackboard/leases.py:177 [MC-BB-16]\n# src/cochem/blackboard/leases.py:178 [MC-BB-16]\n# src/cochem/blackboard/leases.py:179 [MC-BB-16]\n# src/cochem/blackboard/leases.py:180 [MC-BB-16]\n# src/cochem/blackboard/leases.py:181 [MC-BB-16]\n# src/cochem/blackboard/leases.py:182 [MC-BB-16]\n# src/cochem/blackboard/leases.py:183 [MC-BB-16]\n# src/cochem/blackboard/leases.py:184 [MC-BB-16]\n# src/cochem/blackboard/leases.py:185 [MC-BB-16]\n# src/cochem/blackboard/leases.py:186 [MC-BB-16]\n# src/cochem/blackboard/leases.py:187 [MC-BB-16]\n# src/cochem/blackboard/leases.py:188 [MC-BB-16]\n# src/cochem/blackboard/leases.py:189 [MC-BB-16]\n# src/cochem/blackboard/leases.py:190 [MC-BB-16]\n# src/cochem/blackboard/leases.py:191 [MC-BB-16]\n# src/cochem/blackboard/leases.py:192 [MC-BB-16]\n# src/cochem/blackboard/leases.py:193 [MC-BB-16]\n# src/cochem/blackboard/leases.py:194 [MC-BB-16]\n# src/cochem/blackboard/leases.py:195 [MC-BB-16]\n# src/cochem/blackboard/leases.py:196 [MC-BB-16]\n# src/cochem/blackboard/leases.py:197 [MC-BB-16]\n# src/cochem/blackboard/leases.py:198 [MC-BB-16]\n# src/cochem/blackboard/leases.py:199 [MC-BB-16]\n# src/cochem/blackboard/leases.py:200 [MC-BB-16]\n# src/cochem/blackboard/leases.py:201 [MC-BB-16]\n# src/cochem/blackboard/leases.py:202 [MC-BB-16]\n# src/cochem/blackboard/leases.py:203 [MC-BB-16]\n# src/cochem/blackboard/leases.py:204 [MC-BB-16]\n# src/cochem/blackboard/leases.py:205 [MC-BB-16]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "NFR-TM-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-17",
+    "title": "Implement Lease Acquisition Latency Probe",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 206,
+    "chunk_end": 245,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-01: Atomic lease acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.",
+    "dependencies": [
+      "MC-BB-16",
+      "MC-BB-02"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"nfr_tm_01\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-17] NFR-TM-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-TM-01: Atomic lease\n# SPEC: acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.\n# src/cochem/blackboard/leases.py:209 [MC-BB-17]\n# src/cochem/blackboard/leases.py:210 [MC-BB-17]\n# src/cochem/blackboard/leases.py:211 [MC-BB-17]\n# src/cochem/blackboard/leases.py:212 [MC-BB-17]\n# src/cochem/blackboard/leases.py:213 [MC-BB-17]\n# src/cochem/blackboard/leases.py:214 [MC-BB-17]\n# src/cochem/blackboard/leases.py:215 [MC-BB-17]\n# src/cochem/blackboard/leases.py:216 [MC-BB-17]\n# src/cochem/blackboard/leases.py:217 [MC-BB-17]\n# src/cochem/blackboard/leases.py:218 [MC-BB-17]\n# src/cochem/blackboard/leases.py:219 [MC-BB-17]\n# src/cochem/blackboard/leases.py:220 [MC-BB-17]\n# src/cochem/blackboard/leases.py:221 [MC-BB-17]\n# src/cochem/blackboard/leases.py:222 [MC-BB-17]\n# src/cochem/blackboard/leases.py:223 [MC-BB-17]\n# src/cochem/blackboard/leases.py:224 [MC-BB-17]\n# src/cochem/blackboard/leases.py:225 [MC-BB-17]\n# src/cochem/blackboard/leases.py:226 [MC-BB-17]\n# src/cochem/blackboard/leases.py:227 [MC-BB-17]\n# src/cochem/blackboard/leases.py:228 [MC-BB-17]\n# src/cochem/blackboard/leases.py:229 [MC-BB-17]\n# src/cochem/blackboard/leases.py:230 [MC-BB-17]\n# src/cochem/blackboard/leases.py:231 [MC-BB-17]\n# src/cochem/blackboard/leases.py:232 [MC-BB-17]\n# src/cochem/blackboard/leases.py:233 [MC-BB-17]\n# src/cochem/blackboard/leases.py:234 [MC-BB-17]\n# src/cochem/blackboard/leases.py:235 [MC-BB-17]\n# src/cochem/blackboard/leases.py:236 [MC-BB-17]\n# src/cochem/blackboard/leases.py:237 [MC-BB-17]\n# src/cochem/blackboard/leases.py:238 [MC-BB-17]\n# src/cochem/blackboard/leases.py:239 [MC-BB-17]\n# src/cochem/blackboard/leases.py:240 [MC-BB-17]\n# src/cochem/blackboard/leases.py:241 [MC-BB-17]\n# src/cochem/blackboard/leases.py:242 [MC-BB-17]\n# src/cochem/blackboard/leases.py:243 [MC-BB-17]\n# src/cochem/blackboard/leases.py:244 [MC-BB-17]\n# src/cochem/blackboard/leases.py:245 [MC-BB-17]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "NFR-TM-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-18",
+    "title": "Implement heartbeat_lease Refresh",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 246,
+    "chunk_end": 285,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration timestamp for an active running task. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+    "dependencies": [
+      "MC-BB-17",
+      "MC-BB-04",
+      "MC-BB-14"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"heartbeat_lease\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-18] INTERFACE:heartbeat_lease\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool.\n# SPEC: Refresh lease expiration timestamp for an active running task. Match the section 6 reference\n# SPEC: implementation, composed from the helpers defined in earlier chunks.\n# src/cochem/blackboard/leases.py:251 [MC-BB-18]\n# src/cochem/blackboard/leases.py:252 [MC-BB-18]\n# src/cochem/blackboard/leases.py:253 [MC-BB-18]\n# src/cochem/blackboard/leases.py:254 [MC-BB-18]\n# src/cochem/blackboard/leases.py:255 [MC-BB-18]\n# src/cochem/blackboard/leases.py:256 [MC-BB-18]\n# src/cochem/blackboard/leases.py:257 [MC-BB-18]\n# src/cochem/blackboard/leases.py:258 [MC-BB-18]\n# src/cochem/blackboard/leases.py:259 [MC-BB-18]\n# src/cochem/blackboard/leases.py:260 [MC-BB-18]\n# src/cochem/blackboard/leases.py:261 [MC-BB-18]\n# src/cochem/blackboard/leases.py:262 [MC-BB-18]\n# src/cochem/blackboard/leases.py:263 [MC-BB-18]\n# src/cochem/blackboard/leases.py:264 [MC-BB-18]\n# src/cochem/blackboard/leases.py:265 [MC-BB-18]\n# src/cochem/blackboard/leases.py:266 [MC-BB-18]\n# src/cochem/blackboard/leases.py:267 [MC-BB-18]\n# src/cochem/blackboard/leases.py:268 [MC-BB-18]\n# src/cochem/blackboard/leases.py:269 [MC-BB-18]\n# src/cochem/blackboard/leases.py:270 [MC-BB-18]\n# src/cochem/blackboard/leases.py:271 [MC-BB-18]\n# src/cochem/blackboard/leases.py:272 [MC-BB-18]\n# src/cochem/blackboard/leases.py:273 [MC-BB-18]\n# src/cochem/blackboard/leases.py:274 [MC-BB-18]\n# src/cochem/blackboard/leases.py:275 [MC-BB-18]\n# src/cochem/blackboard/leases.py:276 [MC-BB-18]\n# src/cochem/blackboard/leases.py:277 [MC-BB-18]\n# src/cochem/blackboard/leases.py:278 [MC-BB-18]\n# src/cochem/blackboard/leases.py:279 [MC-BB-18]\n# src/cochem/blackboard/leases.py:280 [MC-BB-18]\n# src/cochem/blackboard/leases.py:281 [MC-BB-18]\n# src/cochem/blackboard/leases.py:282 [MC-BB-18]\n# src/cochem/blackboard/leases.py:283 [MC-BB-18]\n# src/cochem/blackboard/leases.py:284 [MC-BB-18]\n# src/cochem/blackboard/leases.py:285 [MC-BB-18]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "INTERFACE:heartbeat_lease"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-19",
+    "title": "Implement 5 s Heartbeat Loop",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 286,
+    "chunk_end": 330,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-004: Active worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat updates.",
+    "dependencies": [
+      "MC-BB-18",
+      "MC-BB-04"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_004\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-19] SRS-412-04-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-004: Active\n# SPEC: worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat updates.\n# src/cochem/blackboard/leases.py:289 [MC-BB-19]\n# src/cochem/blackboard/leases.py:290 [MC-BB-19]\n# src/cochem/blackboard/leases.py:291 [MC-BB-19]\n# src/cochem/blackboard/leases.py:292 [MC-BB-19]\n# src/cochem/blackboard/leases.py:293 [MC-BB-19]\n# src/cochem/blackboard/leases.py:294 [MC-BB-19]\n# src/cochem/blackboard/leases.py:295 [MC-BB-19]\n# src/cochem/blackboard/leases.py:296 [MC-BB-19]\n# src/cochem/blackboard/leases.py:297 [MC-BB-19]\n# src/cochem/blackboard/leases.py:298 [MC-BB-19]\n# src/cochem/blackboard/leases.py:299 [MC-BB-19]\n# src/cochem/blackboard/leases.py:300 [MC-BB-19]\n# src/cochem/blackboard/leases.py:301 [MC-BB-19]\n# src/cochem/blackboard/leases.py:302 [MC-BB-19]\n# src/cochem/blackboard/leases.py:303 [MC-BB-19]\n# src/cochem/blackboard/leases.py:304 [MC-BB-19]\n# src/cochem/blackboard/leases.py:305 [MC-BB-19]\n# src/cochem/blackboard/leases.py:306 [MC-BB-19]\n# src/cochem/blackboard/leases.py:307 [MC-BB-19]\n# src/cochem/blackboard/leases.py:308 [MC-BB-19]\n# src/cochem/blackboard/leases.py:309 [MC-BB-19]\n# src/cochem/blackboard/leases.py:310 [MC-BB-19]\n# src/cochem/blackboard/leases.py:311 [MC-BB-19]\n# src/cochem/blackboard/leases.py:312 [MC-BB-19]\n# src/cochem/blackboard/leases.py:313 [MC-BB-19]\n# src/cochem/blackboard/leases.py:314 [MC-BB-19]\n# src/cochem/blackboard/leases.py:315 [MC-BB-19]\n# src/cochem/blackboard/leases.py:316 [MC-BB-19]\n# src/cochem/blackboard/leases.py:317 [MC-BB-19]\n# src/cochem/blackboard/leases.py:318 [MC-BB-19]\n# src/cochem/blackboard/leases.py:319 [MC-BB-19]\n# src/cochem/blackboard/leases.py:320 [MC-BB-19]\n# src/cochem/blackboard/leases.py:321 [MC-BB-19]\n# src/cochem/blackboard/leases.py:322 [MC-BB-19]\n# src/cochem/blackboard/leases.py:323 [MC-BB-19]\n# src/cochem/blackboard/leases.py:324 [MC-BB-19]\n# src/cochem/blackboard/leases.py:325 [MC-BB-19]\n# src/cochem/blackboard/leases.py:326 [MC-BB-19]\n# src/cochem/blackboard/leases.py:327 [MC-BB-19]\n# src/cochem/blackboard/leases.py:328 [MC-BB-19]\n# src/cochem/blackboard/leases.py:329 [MC-BB-19]\n# src/cochem/blackboard/leases.py:330 [MC-BB-19]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-20",
+    "title": "Implement Expired Lease Reclamation",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/leases.py",
+    "chunk_start": 331,
+    "chunk_end": 375,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Daemon Crash with Active Lease': Watchdog detects expired `lease_expires_at < now` and resets task to `PENDING` if `attempts < 3`. The reset to PENDING must also clear lease_owner and lease_expires_at.",
+    "dependencies": [
+      "MC-BB-19",
+      "MC-BB-04",
+      "MC-BB-22",
+      "MC-BB-21"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"daemon_crash_with_active_lease\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-20] FAILURE:Daemon Crash with Active Lease\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Daemon\n# SPEC: Crash with Active Lease': Watchdog detects expired `lease_expires_at < now` and resets task to\n# SPEC: `PENDING` if `attempts < 3`. The reset to PENDING must also clear lease_owner and\n# SPEC: lease_expires_at.\n# src/cochem/blackboard/leases.py:336 [MC-BB-20]\n# src/cochem/blackboard/leases.py:337 [MC-BB-20]\n# src/cochem/blackboard/leases.py:338 [MC-BB-20]\n# src/cochem/blackboard/leases.py:339 [MC-BB-20]\n# src/cochem/blackboard/leases.py:340 [MC-BB-20]\n# src/cochem/blackboard/leases.py:341 [MC-BB-20]\n# src/cochem/blackboard/leases.py:342 [MC-BB-20]\n# src/cochem/blackboard/leases.py:343 [MC-BB-20]\n# src/cochem/blackboard/leases.py:344 [MC-BB-20]\n# src/cochem/blackboard/leases.py:345 [MC-BB-20]\n# src/cochem/blackboard/leases.py:346 [MC-BB-20]\n# src/cochem/blackboard/leases.py:347 [MC-BB-20]\n# src/cochem/blackboard/leases.py:348 [MC-BB-20]\n# src/cochem/blackboard/leases.py:349 [MC-BB-20]\n# src/cochem/blackboard/leases.py:350 [MC-BB-20]\n# src/cochem/blackboard/leases.py:351 [MC-BB-20]\n# src/cochem/blackboard/leases.py:352 [MC-BB-20]\n# src/cochem/blackboard/leases.py:353 [MC-BB-20]\n# src/cochem/blackboard/leases.py:354 [MC-BB-20]\n# src/cochem/blackboard/leases.py:355 [MC-BB-20]\n# src/cochem/blackboard/leases.py:356 [MC-BB-20]\n# src/cochem/blackboard/leases.py:357 [MC-BB-20]\n# src/cochem/blackboard/leases.py:358 [MC-BB-20]\n# src/cochem/blackboard/leases.py:359 [MC-BB-20]\n# src/cochem/blackboard/leases.py:360 [MC-BB-20]\n# src/cochem/blackboard/leases.py:361 [MC-BB-20]\n# src/cochem/blackboard/leases.py:362 [MC-BB-20]\n# src/cochem/blackboard/leases.py:363 [MC-BB-20]\n# src/cochem/blackboard/leases.py:364 [MC-BB-20]\n# src/cochem/blackboard/leases.py:365 [MC-BB-20]\n# src/cochem/blackboard/leases.py:366 [MC-BB-20]\n# src/cochem/blackboard/leases.py:367 [MC-BB-20]\n# src/cochem/blackboard/leases.py:368 [MC-BB-20]\n# src/cochem/blackboard/leases.py:369 [MC-BB-20]\n# src/cochem/blackboard/leases.py:370 [MC-BB-20]\n# src/cochem/blackboard/leases.py:371 [MC-BB-20]\n# src/cochem/blackboard/leases.py:372 [MC-BB-20]\n# src/cochem/blackboard/leases.py:373 [MC-BB-20]\n# src/cochem/blackboard/leases.py:374 [MC-BB-20]\n# src/cochem/blackboard/leases.py:375 [MC-BB-20]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "FAILURE:Daemon Crash with Active Lease"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-21",
+    "title": "Implement ZD-8 Lease-Clearing Transition Helper",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/lifecycle.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-04-FR-009: Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED', or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the same transaction to maintain the Signal ZD-8 invariant.",
+    "dependencies": [
+      "MC-BB-03",
+      "MC-BB-14"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_009\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-21] SRS-412-04-FR-009\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-04-FR-009: Any state transition terminating 'RUNNING' status (to 'COMPLETED', 'FAILED',\n# SPEC: or 'BLOCKED') shall explicitly clear `lease_owner = NULL` and `lease_expires_at = NULL` in the\n# SPEC: same transaction to maintain the Signal ZD-8 invariant.\n# src/cochem/blackboard/lifecycle.py:6 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:7 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:8 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:9 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:10 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:11 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:12 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:13 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:14 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:15 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:16 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:17 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:18 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:19 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:20 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:21 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:22 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:23 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:24 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:25 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:26 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:27 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:28 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:29 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:30 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:31 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:32 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:33 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:34 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:35 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:36 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:37 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:38 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:39 [MC-BB-21]\n# src/cochem/blackboard/lifecycle.py:40 [MC-BB-21]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-009"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-22",
+    "title": "Implement Poison-Pill BLOCKED Quarantine Rule",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/lifecycle.py",
+    "chunk_start": 41,
+    "chunk_end": 80,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-005: Tasks exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED` status. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+    "dependencies": [
+      "MC-BB-21",
+      "MC-BB-03"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_005\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-22] SRS-412-04-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-005: Tasks\n# SPEC: exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED`\n# SPEC: status. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/blackboard/lifecycle.py:45 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:46 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:47 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:48 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:49 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:50 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:51 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:52 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:53 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:54 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:55 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:56 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:57 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:58 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:59 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:60 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:61 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:62 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:63 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:64 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:65 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:66 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:67 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:68 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:69 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:70 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:71 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:72 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:73 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:74 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:75 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:76 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:77 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:78 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:79 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:80 [MC-BB-22]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "SRS-412-04-FR-005"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-23",
+    "title": "Implement complete_task Transition",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/lifecycle.py",
+    "chunk_start": 81,
+    "chunk_end": 120,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement complete_task(db_path: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain Signal ZD-8 invariant. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+    "dependencies": [
+      "MC-BB-22",
+      "MC-BB-03"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"complete_task\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-23] INTERFACE:complete_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement complete_task(db_path:\n# SPEC: str, task_id: int) -> bool. Transition task to COMPLETED and clear lease_owner to maintain\n# SPEC: Signal ZD-8 invariant. Match the section 6 reference implementation, composed from the helpers\n# SPEC: defined in earlier chunks.\n# src/cochem/blackboard/lifecycle.py:86 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:87 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:88 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:89 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:90 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:91 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:92 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:93 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:94 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:95 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:96 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:97 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:98 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:99 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:100 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:101 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:102 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:103 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:104 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:105 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:106 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:107 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:108 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:109 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:110 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:111 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:112 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:113 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:114 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:115 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:116 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:117 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:118 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:119 [MC-BB-23]\n# src/cochem/blackboard/lifecycle.py:120 [MC-BB-23]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "INTERFACE:complete_task"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-BB-24",
+    "title": "Implement fail_task Transition",
+    "domain": "task_matrix",
+    "target_file": "src/cochem/blackboard/lifecycle.py",
+    "chunk_start": 121,
+    "chunk_end": 160,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement fail_task(db_path: str, task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED or BLOCKED, clearing lease_owner for ZD-8 safety. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+    "dependencies": [
+      "MC-BB-23",
+      "MC-BB-03",
+      "MC-BB-22"
+    ],
+    "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fail_task\"",
+    "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-24] INTERFACE:fail_task\n# SPEC: Append after the previous chunk without editing earlier lines. Implement fail_task(db_path: str,\n# SPEC: task_id: int, error_log: str, max_attempts: int = 3) -> bool. Transition failed task to FAILED\n# SPEC: or BLOCKED, clearing lease_owner for ZD-8 safety. Match the section 6 reference implementation,\n# SPEC: composed from the helpers defined in earlier chunks.\n# src/cochem/blackboard/lifecycle.py:126 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:127 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:128 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:129 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:130 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:131 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:132 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:133 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:134 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:135 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:136 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:137 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:138 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:139 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:140 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:141 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:142 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:143 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:144 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:145 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:146 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:147 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:148 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:149 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:150 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:151 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:152 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:153 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:154 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:155 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:156 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:157 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:158 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:159 [MC-BB-24]\n# src/cochem/blackboard/lifecycle.py:160 [MC-BB-24]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-04",
+      "items": [
+        "INTERFACE:fail_task"
+      ]
+    }
+  }
+]

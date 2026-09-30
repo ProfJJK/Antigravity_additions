@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-22",
+  "title": "Implement Poison-Pill BLOCKED Quarantine Rule",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/lifecycle.py",
+  "chunk_start": 41,
+  "chunk_end": 80,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-005: Tasks exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED` status. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.",
+  "dependencies": [
+    "MC-BB-21",
+    "MC-BB-03"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_005\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/lifecycle.py>>>\n# [MC-BB-22] SRS-412-04-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-005: Tasks\n# SPEC: exceeding 3 failed execution attempts shall automatically transition to terminal `BLOCKED`\n# SPEC: status. Traceability test: test_scenario_2_poison_pill_quarantine_and_10_cycle_pivot.\n# src/cochem/blackboard/lifecycle.py:45 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:46 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:47 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:48 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:49 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:50 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:51 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:52 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:53 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:54 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:55 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:56 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:57 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:58 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:59 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:60 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:61 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:62 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:63 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:64 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:65 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:66 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:67 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:68 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:69 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:70 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:71 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:72 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:73 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:74 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:75 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:76 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:77 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:78 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:79 [MC-BB-22]\n# src/cochem/blackboard/lifecycle.py:80 [MC-BB-22]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-005"
+    ]
+  }
+}

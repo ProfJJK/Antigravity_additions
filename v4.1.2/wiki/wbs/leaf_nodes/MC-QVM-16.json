@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-16",
+  "title": "Implement Per-Container OOM Containment Limits",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 246,
+  "chunk_end": 275,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-02: Out-of-memory container terminations shall be isolated to the offending container without crashing the VM kernel. Set --memory and --memory-swap to the same value so a container cannot swap past its slot, and never pass --oom-kill-disable, so the kernel kills only the offending container.",
+  "dependencies": [
+    "MC-QVM-15",
+    "MC-QVM-04",
+    "MC-QVM-10"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_02\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-16] NFR-VM-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-02: Out-of-memory\n# SPEC: container terminations shall be isolated to the offending container without crashing the VM\n# SPEC: kernel. Set --memory and --memory-swap to the same value so a container cannot swap past its\n# SPEC: slot, and never pass --oom-kill-disable, so the kernel kills only the offending container.\n# src/cochem/quarantine/sandbox.py:251 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:252 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:253 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:254 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:255 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:256 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:257 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:258 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:259 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:260 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:261 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:262 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:263 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:264 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:265 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:266 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:267 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:268 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:269 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:270 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:271 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:272 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:273 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:274 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:275 [MC-QVM-16]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "NFR-VM-02"
+    ]
+  }
+}

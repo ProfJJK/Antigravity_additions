@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-10",
+  "title": "Implement Queue-Only Layer 2 Daemon Coordination",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer2.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-03-FR-004: Layer 2 domain daemons shall operate as independent OS processes coordinated exclusively through the SQLite WAL task queue (`job_board.db`). Verified by test: test_f04_layer2_daemons_coordinate_only_through_job_board_wal.",
+  "dependencies": [
+    "MC-CON-04",
+    "MC-CON-07"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_layer2_daemons_coordinate_only_through_job_board_wal",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer2.py>>>\n# [MC-CON-10] SRS-412-03-FR-004\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-03-FR-004: Layer 2 domain daemons shall operate as independent OS processes coordinated\n# SPEC: exclusively through the SQLite WAL task queue (`job_board.db`). Verified by test:\n# SPEC: test_f04_layer2_daemons_coordinate_only_through_job_board_wal.\n# src/cochem/concurrency/layer2.py:6 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:7 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:8 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:9 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:10 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:11 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:12 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:13 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:14 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:15 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:16 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:17 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:18 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:19 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:20 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:21 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:22 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:23 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:24 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:25 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:26 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:27 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:28 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:29 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:30 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:31 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:32 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:33 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:34 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:35 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:36 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:37 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:38 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:39 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:40 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:41 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:42 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:43 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:44 [MC-CON-10]\n# src/cochem/concurrency/layer2.py:45 [MC-CON-10]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "SRS-412-03-FR-004"
+    ]
+  }
+}

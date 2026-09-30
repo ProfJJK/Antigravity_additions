@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-04",
+  "title": "Author Heartbeat and Expired Lease Reclamation Tests",
+  "domain": "task_matrix",
+  "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+  "chunk_start": 181,
+  "chunk_end": 240,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_004_* for SRS-412-04-FR-004 (Active worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat updates.); test_ch04_heartbeat_lease_* for INTERFACE:heartbeat_lease (heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration timestamp for an active running task.); test_ch04_daemon_crash_with_active_lease_* for FAILURE:Daemon Crash with Active Lease (Watchdog detects expired `lease_expires_at < now` and resets task to `PENDING` if `attempts < 3`.)",
+  "dependencies": [
+    "MC-BB-03"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-04] TESTS:lease\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_004_* for SRS-412-04-FR-004\n# SPEC: (Active worker daemons shall refresh lease expiration timestamps every 5 seconds via heartbeat\n# SPEC: updates.); test_ch04_heartbeat_lease_* for INTERFACE:heartbeat_lease (heartbeat_lease(db_path:\n# SPEC: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration\n# SPEC: timestamp for an active running task.); test_ch04_daemon_crash_with_active_lease_* for\n# SPEC: FAILURE:Daemon Crash with Active Lease (Watchdog detects expired `lease_expires_at < now` and\n# SPEC: resets task to `PENDING` if `attempts < 3`.)\n# tests/test_ch04_task_matrix_blackboard.py:190 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:191 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:192 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:193 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:194 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:195 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:196 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:197 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:198 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:199 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:200 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:201 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:202 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:203 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:204 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:205 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:206 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:207 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:208 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:209 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:210 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:211 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:212 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:213 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:214 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:215 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:216 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:217 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:218 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:219 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:220 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:221 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:222 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:223 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:224 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:225 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:226 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:227 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:228 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:229 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:230 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:231 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:232 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:233 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:234 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:235 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:236 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:237 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:238 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:239 [MC-BB-04]\n# tests/test_ch04_task_matrix_blackboard.py:240 [MC-BB-04]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-004",
+      "INTERFACE:heartbeat_lease",
+      "FAILURE:Daemon Crash with Active Lease"
+    ]
+  }
+}

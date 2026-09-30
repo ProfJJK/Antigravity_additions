@@ -1,0 +1,465 @@
+{
+  "batch_id": "B08",
+  "task_count": 20,
+  "tasks": [
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-61",
+      "title": "Author Pester Test Suite for E-Core Affinity",
+      "domain": "host_warden",
+      "target_file": "tests/pester/Affinity.Tests.ps1",
+      "chunk_start": 1,
+      "chunk_end": 50,
+      "line_delta": 50,
+      "instructions": "Author Pester tests verifying process affinity mask is exactly 0x00FF0000.",
+      "dependencies": [
+        "MC-HW-55"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_verifies_e_core_affinity_mask",
+      "delimited_protocol": "<<<FILE: tests/pester/Affinity.Tests.ps1>>>\n# Code context line 1 for MC-HW-61\n# Code context line 2 for MC-HW-61\n# Code context line 3 for MC-HW-61\n# Code context line 4 for MC-HW-61\n# Code context line 5 for MC-HW-61\n# Code context line 6 for MC-HW-61\n# Code context line 7 for MC-HW-61\n# Code context line 8 for MC-HW-61\n# Code context line 9 for MC-HW-61\n# Code context line 10 for MC-HW-61\n# Code context line 11 for MC-HW-61\n# Code context line 12 for MC-HW-61\n# Code context line 13 for MC-HW-61\n# Code context line 14 for MC-HW-61\n# Code context line 15 for MC-HW-61\n# Code context line 16 for MC-HW-61\n# Code context line 17 for MC-HW-61\n# Code context line 18 for MC-HW-61\n# Code context line 19 for MC-HW-61\n# Code context line 20 for MC-HW-61\n# Code context line 21 for MC-HW-61\n# Code context line 22 for MC-HW-61\n# Code context line 23 for MC-HW-61\n# Code context line 24 for MC-HW-61\n# Code context line 25 for MC-HW-61\n# Code context line 26 for MC-HW-61\n# Code context line 27 for MC-HW-61\n# Code context line 28 for MC-HW-61\n# Code context line 29 for MC-HW-61\n# Code context line 30 for MC-HW-61\n# Code context line 31 for MC-HW-61\n# Code context line 32 for MC-HW-61\n# Code context line 33 for MC-HW-61\n# Code context line 34 for MC-HW-61\n# Code context line 35 for MC-HW-61\n# Code context line 36 for MC-HW-61\n# Code context line 37 for MC-HW-61\n# Code context line 38 for MC-HW-61\n# Code context line 39 for MC-HW-61\n# Code context line 40 for MC-HW-61\n# Code context line 41 for MC-HW-61\n# Code context line 42 for MC-HW-61\n# Code context line 43 for MC-HW-61\n# Code context line 44 for MC-HW-61\n# Code context line 45 for MC-HW-61\n# Code context line 46 for MC-HW-61\n# Code context line 47 for MC-HW-61\n# Code context line 48 for MC-HW-61\n# Code context line 49 for MC-HW-61\n# Code context line 50 for MC-HW-61\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-62",
+      "title": "Author Pester Test Suite for BelowNormal Priority Class",
+      "domain": "host_warden",
+      "target_file": "tests/pester/Priority.Tests.ps1",
+      "chunk_start": 1,
+      "chunk_end": 45,
+      "line_delta": 45,
+      "instructions": "Author Pester tests asserting PriorityClass is BelowNormal.",
+      "dependencies": [
+        "MC-HW-61"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_verifies_below_normal_priority_class",
+      "delimited_protocol": "<<<FILE: tests/pester/Priority.Tests.ps1>>>\n# Code context line 1 for MC-HW-62\n# Code context line 2 for MC-HW-62\n# Code context line 3 for MC-HW-62\n# Code context line 4 for MC-HW-62\n# Code context line 5 for MC-HW-62\n# Code context line 6 for MC-HW-62\n# Code context line 7 for MC-HW-62\n# Code context line 8 for MC-HW-62\n# Code context line 9 for MC-HW-62\n# Code context line 10 for MC-HW-62\n# Code context line 11 for MC-HW-62\n# Code context line 12 for MC-HW-62\n# Code context line 13 for MC-HW-62\n# Code context line 14 for MC-HW-62\n# Code context line 15 for MC-HW-62\n# Code context line 16 for MC-HW-62\n# Code context line 17 for MC-HW-62\n# Code context line 18 for MC-HW-62\n# Code context line 19 for MC-HW-62\n# Code context line 20 for MC-HW-62\n# Code context line 21 for MC-HW-62\n# Code context line 22 for MC-HW-62\n# Code context line 23 for MC-HW-62\n# Code context line 24 for MC-HW-62\n# Code context line 25 for MC-HW-62\n# Code context line 26 for MC-HW-62\n# Code context line 27 for MC-HW-62\n# Code context line 28 for MC-HW-62\n# Code context line 29 for MC-HW-62\n# Code context line 30 for MC-HW-62\n# Code context line 31 for MC-HW-62\n# Code context line 32 for MC-HW-62\n# Code context line 33 for MC-HW-62\n# Code context line 34 for MC-HW-62\n# Code context line 35 for MC-HW-62\n# Code context line 36 for MC-HW-62\n# Code context line 37 for MC-HW-62\n# Code context line 38 for MC-HW-62\n# Code context line 39 for MC-HW-62\n# Code context line 40 for MC-HW-62\n# Code context line 41 for MC-HW-62\n# Code context line 42 for MC-HW-62\n# Code context line 43 for MC-HW-62\n# Code context line 44 for MC-HW-62\n# Code context line 45 for MC-HW-62\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-63",
+      "title": "Author Pester Test Suite for 32GB RAM Static VM Cap",
+      "domain": "host_warden",
+      "target_file": "tests/pester/MemoryCap.Tests.ps1",
+      "chunk_start": 1,
+      "chunk_end": 45,
+      "line_delta": 45,
+      "instructions": "Author Pester tests asserting VM MemoryStartup equals 34359738368 bytes (32 GB).",
+      "dependencies": [
+        "MC-HW-62"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_verifies_guest_vm_ram_cap_32gb",
+      "delimited_protocol": "<<<FILE: tests/pester/MemoryCap.Tests.ps1>>>\n# Code context line 1 for MC-HW-63\n# Code context line 2 for MC-HW-63\n# Code context line 3 for MC-HW-63\n# Code context line 4 for MC-HW-63\n# Code context line 5 for MC-HW-63\n# Code context line 6 for MC-HW-63\n# Code context line 7 for MC-HW-63\n# Code context line 8 for MC-HW-63\n# Code context line 9 for MC-HW-63\n# Code context line 10 for MC-HW-63\n# Code context line 11 for MC-HW-63\n# Code context line 12 for MC-HW-63\n# Code context line 13 for MC-HW-63\n# Code context line 14 for MC-HW-63\n# Code context line 15 for MC-HW-63\n# Code context line 16 for MC-HW-63\n# Code context line 17 for MC-HW-63\n# Code context line 18 for MC-HW-63\n# Code context line 19 for MC-HW-63\n# Code context line 20 for MC-HW-63\n# Code context line 21 for MC-HW-63\n# Code context line 22 for MC-HW-63\n# Code context line 23 for MC-HW-63\n# Code context line 24 for MC-HW-63\n# Code context line 25 for MC-HW-63\n# Code context line 26 for MC-HW-63\n# Code context line 27 for MC-HW-63\n# Code context line 28 for MC-HW-63\n# Code context line 29 for MC-HW-63\n# Code context line 30 for MC-HW-63\n# Code context line 31 for MC-HW-63\n# Code context line 32 for MC-HW-63\n# Code context line 33 for MC-HW-63\n# Code context line 34 for MC-HW-63\n# Code context line 35 for MC-HW-63\n# Code context line 36 for MC-HW-63\n# Code context line 37 for MC-HW-63\n# Code context line 38 for MC-HW-63\n# Code context line 39 for MC-HW-63\n# Code context line 40 for MC-HW-63\n# Code context line 41 for MC-HW-63\n# Code context line 42 for MC-HW-63\n# Code context line 43 for MC-HW-63\n# Code context line 44 for MC-HW-63\n# Code context line 45 for MC-HW-63\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-64",
+      "title": "Author Pester Test Suite for Named Pipe Security",
+      "domain": "host_warden",
+      "target_file": "tests/pester/Pipe.Tests.ps1",
+      "chunk_start": 1,
+      "chunk_end": 50,
+      "line_delta": 50,
+      "instructions": "Author Pester tests validating pipe ACLs restrict access to Administrator/SYSTEM.",
+      "dependencies": [
+        "MC-HW-63"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: tests/pester/Pipe.Tests.ps1>>>\n# Code context line 1 for MC-HW-64\n# Code context line 2 for MC-HW-64\n# Code context line 3 for MC-HW-64\n# Code context line 4 for MC-HW-64\n# Code context line 5 for MC-HW-64\n# Code context line 6 for MC-HW-64\n# Code context line 7 for MC-HW-64\n# Code context line 8 for MC-HW-64\n# Code context line 9 for MC-HW-64\n# Code context line 10 for MC-HW-64\n# Code context line 11 for MC-HW-64\n# Code context line 12 for MC-HW-64\n# Code context line 13 for MC-HW-64\n# Code context line 14 for MC-HW-64\n# Code context line 15 for MC-HW-64\n# Code context line 16 for MC-HW-64\n# Code context line 17 for MC-HW-64\n# Code context line 18 for MC-HW-64\n# Code context line 19 for MC-HW-64\n# Code context line 20 for MC-HW-64\n# Code context line 21 for MC-HW-64\n# Code context line 22 for MC-HW-64\n# Code context line 23 for MC-HW-64\n# Code context line 24 for MC-HW-64\n# Code context line 25 for MC-HW-64\n# Code context line 26 for MC-HW-64\n# Code context line 27 for MC-HW-64\n# Code context line 28 for MC-HW-64\n# Code context line 29 for MC-HW-64\n# Code context line 30 for MC-HW-64\n# Code context line 31 for MC-HW-64\n# Code context line 32 for MC-HW-64\n# Code context line 33 for MC-HW-64\n# Code context line 34 for MC-HW-64\n# Code context line 35 for MC-HW-64\n# Code context line 36 for MC-HW-64\n# Code context line 37 for MC-HW-64\n# Code context line 38 for MC-HW-64\n# Code context line 39 for MC-HW-64\n# Code context line 40 for MC-HW-64\n# Code context line 41 for MC-HW-64\n# Code context line 42 for MC-HW-64\n# Code context line 43 for MC-HW-64\n# Code context line 44 for MC-HW-64\n# Code context line 45 for MC-HW-64\n# Code context line 46 for MC-HW-64\n# Code context line 47 for MC-HW-64\n# Code context line 48 for MC-HW-64\n# Code context line 49 for MC-HW-64\n# Code context line 50 for MC-HW-64\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-65",
+      "title": "Implement Windows Scheduled Task XML Generator",
+      "domain": "host_warden",
+      "target_file": "provisioning/Create-WardenTask.ps1",
+      "chunk_start": 1,
+      "chunk_end": 55,
+      "line_delta": 55,
+      "instructions": "Implement PowerShell task definition with AtStartup trigger and RunLevel Highest.",
+      "dependencies": [
+        "MC-HW-64"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_validates_windows_startup_registry_entry",
+      "delimited_protocol": "<<<FILE: provisioning/Create-WardenTask.ps1>>>\n# Code context line 1 for MC-HW-65\n# Code context line 2 for MC-HW-65\n# Code context line 3 for MC-HW-65\n# Code context line 4 for MC-HW-65\n# Code context line 5 for MC-HW-65\n# Code context line 6 for MC-HW-65\n# Code context line 7 for MC-HW-65\n# Code context line 8 for MC-HW-65\n# Code context line 9 for MC-HW-65\n# Code context line 10 for MC-HW-65\n# Code context line 11 for MC-HW-65\n# Code context line 12 for MC-HW-65\n# Code context line 13 for MC-HW-65\n# Code context line 14 for MC-HW-65\n# Code context line 15 for MC-HW-65\n# Code context line 16 for MC-HW-65\n# Code context line 17 for MC-HW-65\n# Code context line 18 for MC-HW-65\n# Code context line 19 for MC-HW-65\n# Code context line 20 for MC-HW-65\n# Code context line 21 for MC-HW-65\n# Code context line 22 for MC-HW-65\n# Code context line 23 for MC-HW-65\n# Code context line 24 for MC-HW-65\n# Code context line 25 for MC-HW-65\n# Code context line 26 for MC-HW-65\n# Code context line 27 for MC-HW-65\n# Code context line 28 for MC-HW-65\n# Code context line 29 for MC-HW-65\n# Code context line 30 for MC-HW-65\n# Code context line 31 for MC-HW-65\n# Code context line 32 for MC-HW-65\n# Code context line 33 for MC-HW-65\n# Code context line 34 for MC-HW-65\n# Code context line 35 for MC-HW-65\n# Code context line 36 for MC-HW-65\n# Code context line 37 for MC-HW-65\n# Code context line 38 for MC-HW-65\n# Code context line 39 for MC-HW-65\n# Code context line 40 for MC-HW-65\n# Code context line 41 for MC-HW-65\n# Code context line 42 for MC-HW-65\n# Code context line 43 for MC-HW-65\n# Code context line 44 for MC-HW-65\n# Code context line 45 for MC-HW-65\n# Code context line 46 for MC-HW-65\n# Code context line 47 for MC-HW-65\n# Code context line 48 for MC-HW-65\n# Code context line 49 for MC-HW-65\n# Code context line 50 for MC-HW-65\n# Code context line 51 for MC-HW-65\n# Code context line 52 for MC-HW-65\n# Code context line 53 for MC-HW-65\n# Code context line 54 for MC-HW-65\n# Code context line 55 for MC-HW-65\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-66",
+      "title": "Implement Auto-Ignition Registration Script",
+      "domain": "host_warden",
+      "target_file": "provisioning/Register-Startup.ps1",
+      "chunk_start": 1,
+      "chunk_end": 50,
+      "line_delta": 50,
+      "instructions": "Implement Register-ScheduledTask wrapper ensuring idempotent registration.",
+      "dependencies": [
+        "MC-HW-65"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py::test_f18_ecosystem_boot_handles_duplicate_startup_registration",
+      "delimited_protocol": "<<<FILE: provisioning/Register-Startup.ps1>>>\n# Code context line 1 for MC-HW-66\n# Code context line 2 for MC-HW-66\n# Code context line 3 for MC-HW-66\n# Code context line 4 for MC-HW-66\n# Code context line 5 for MC-HW-66\n# Code context line 6 for MC-HW-66\n# Code context line 7 for MC-HW-66\n# Code context line 8 for MC-HW-66\n# Code context line 9 for MC-HW-66\n# Code context line 10 for MC-HW-66\n# Code context line 11 for MC-HW-66\n# Code context line 12 for MC-HW-66\n# Code context line 13 for MC-HW-66\n# Code context line 14 for MC-HW-66\n# Code context line 15 for MC-HW-66\n# Code context line 16 for MC-HW-66\n# Code context line 17 for MC-HW-66\n# Code context line 18 for MC-HW-66\n# Code context line 19 for MC-HW-66\n# Code context line 20 for MC-HW-66\n# Code context line 21 for MC-HW-66\n# Code context line 22 for MC-HW-66\n# Code context line 23 for MC-HW-66\n# Code context line 24 for MC-HW-66\n# Code context line 25 for MC-HW-66\n# Code context line 26 for MC-HW-66\n# Code context line 27 for MC-HW-66\n# Code context line 28 for MC-HW-66\n# Code context line 29 for MC-HW-66\n# Code context line 30 for MC-HW-66\n# Code context line 31 for MC-HW-66\n# Code context line 32 for MC-HW-66\n# Code context line 33 for MC-HW-66\n# Code context line 34 for MC-HW-66\n# Code context line 35 for MC-HW-66\n# Code context line 36 for MC-HW-66\n# Code context line 37 for MC-HW-66\n# Code context line 38 for MC-HW-66\n# Code context line 39 for MC-HW-66\n# Code context line 40 for MC-HW-66\n# Code context line 41 for MC-HW-66\n# Code context line 42 for MC-HW-66\n# Code context line 43 for MC-HW-66\n# Code context line 44 for MC-HW-66\n# Code context line 45 for MC-HW-66\n# Code context line 46 for MC-HW-66\n# Code context line 47 for MC-HW-66\n# Code context line 48 for MC-HW-66\n# Code context line 49 for MC-HW-66\n# Code context line 50 for MC-HW-66\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-67",
+      "title": "Implement Service Recovery Failure Action Script",
+      "domain": "host_warden",
+      "target_file": "provisioning/Configure-Recovery.ps1",
+      "chunk_start": 1,
+      "chunk_end": 45,
+      "line_delta": 45,
+      "instructions": "Configure sc.exe failure actions with reset=86400 actions=restart/5000.",
+      "dependencies": [
+        "MC-HW-66"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: provisioning/Configure-Recovery.ps1>>>\n# Code context line 1 for MC-HW-67\n# Code context line 2 for MC-HW-67\n# Code context line 3 for MC-HW-67\n# Code context line 4 for MC-HW-67\n# Code context line 5 for MC-HW-67\n# Code context line 6 for MC-HW-67\n# Code context line 7 for MC-HW-67\n# Code context line 8 for MC-HW-67\n# Code context line 9 for MC-HW-67\n# Code context line 10 for MC-HW-67\n# Code context line 11 for MC-HW-67\n# Code context line 12 for MC-HW-67\n# Code context line 13 for MC-HW-67\n# Code context line 14 for MC-HW-67\n# Code context line 15 for MC-HW-67\n# Code context line 16 for MC-HW-67\n# Code context line 17 for MC-HW-67\n# Code context line 18 for MC-HW-67\n# Code context line 19 for MC-HW-67\n# Code context line 20 for MC-HW-67\n# Code context line 21 for MC-HW-67\n# Code context line 22 for MC-HW-67\n# Code context line 23 for MC-HW-67\n# Code context line 24 for MC-HW-67\n# Code context line 25 for MC-HW-67\n# Code context line 26 for MC-HW-67\n# Code context line 27 for MC-HW-67\n# Code context line 28 for MC-HW-67\n# Code context line 29 for MC-HW-67\n# Code context line 30 for MC-HW-67\n# Code context line 31 for MC-HW-67\n# Code context line 32 for MC-HW-67\n# Code context line 33 for MC-HW-67\n# Code context line 34 for MC-HW-67\n# Code context line 35 for MC-HW-67\n# Code context line 36 for MC-HW-67\n# Code context line 37 for MC-HW-67\n# Code context line 38 for MC-HW-67\n# Code context line 39 for MC-HW-67\n# Code context line 40 for MC-HW-67\n# Code context line 41 for MC-HW-67\n# Code context line 42 for MC-HW-67\n# Code context line 43 for MC-HW-67\n# Code context line 44 for MC-HW-67\n# Code context line 45 for MC-HW-67\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-68",
+      "title": "Implement Host Warden Health Ping Script",
+      "domain": "host_warden",
+      "target_file": "provisioning/Ping-Warden.ps1",
+      "chunk_start": 1,
+      "chunk_end": 40,
+      "line_delta": 40,
+      "instructions": "Implement lightweight PowerShell health probe checking pipe response within 2000ms.",
+      "dependencies": [
+        "MC-HW-67"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: provisioning/Ping-Warden.ps1>>>\n# Code context line 1 for MC-HW-68\n# Code context line 2 for MC-HW-68\n# Code context line 3 for MC-HW-68\n# Code context line 4 for MC-HW-68\n# Code context line 5 for MC-HW-68\n# Code context line 6 for MC-HW-68\n# Code context line 7 for MC-HW-68\n# Code context line 8 for MC-HW-68\n# Code context line 9 for MC-HW-68\n# Code context line 10 for MC-HW-68\n# Code context line 11 for MC-HW-68\n# Code context line 12 for MC-HW-68\n# Code context line 13 for MC-HW-68\n# Code context line 14 for MC-HW-68\n# Code context line 15 for MC-HW-68\n# Code context line 16 for MC-HW-68\n# Code context line 17 for MC-HW-68\n# Code context line 18 for MC-HW-68\n# Code context line 19 for MC-HW-68\n# Code context line 20 for MC-HW-68\n# Code context line 21 for MC-HW-68\n# Code context line 22 for MC-HW-68\n# Code context line 23 for MC-HW-68\n# Code context line 24 for MC-HW-68\n# Code context line 25 for MC-HW-68\n# Code context line 26 for MC-HW-68\n# Code context line 27 for MC-HW-68\n# Code context line 28 for MC-HW-68\n# Code context line 29 for MC-HW-68\n# Code context line 30 for MC-HW-68\n# Code context line 31 for MC-HW-68\n# Code context line 32 for MC-HW-68\n# Code context line 33 for MC-HW-68\n# Code context line 34 for MC-HW-68\n# Code context line 35 for MC-HW-68\n# Code context line 36 for MC-HW-68\n# Code context line 37 for MC-HW-68\n# Code context line 38 for MC-HW-68\n# Code context line 39 for MC-HW-68\n# Code context line 40 for MC-HW-68\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-HW-69",
+      "title": "Implement Installation Manifest and Integrity Verifier",
+      "domain": "host_warden",
+      "target_file": "provisioning/Verify-Installation.ps1",
+      "chunk_start": 1,
+      "chunk_end": 55,
+      "line_delta": 55,
+      "instructions": "Implement complete pre-flight verifier checking files, ACLs, and Hyper-V features.",
+      "dependencies": [
+        "MC-HW-68"
+      ],
+      "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+      "delimited_protocol": "<<<FILE: provisioning/Verify-Installation.ps1>>>\n# Code context line 1 for MC-HW-69\n# Code context line 2 for MC-HW-69\n# Code context line 3 for MC-HW-69\n# Code context line 4 for MC-HW-69\n# Code context line 5 for MC-HW-69\n# Code context line 6 for MC-HW-69\n# Code context line 7 for MC-HW-69\n# Code context line 8 for MC-HW-69\n# Code context line 9 for MC-HW-69\n# Code context line 10 for MC-HW-69\n# Code context line 11 for MC-HW-69\n# Code context line 12 for MC-HW-69\n# Code context line 13 for MC-HW-69\n# Code context line 14 for MC-HW-69\n# Code context line 15 for MC-HW-69\n# Code context line 16 for MC-HW-69\n# Code context line 17 for MC-HW-69\n# Code context line 18 for MC-HW-69\n# Code context line 19 for MC-HW-69\n# Code context line 20 for MC-HW-69\n# Code context line 21 for MC-HW-69\n# Code context line 22 for MC-HW-69\n# Code context line 23 for MC-HW-69\n# Code context line 24 for MC-HW-69\n# Code context line 25 for MC-HW-69\n# Code context line 26 for MC-HW-69\n# Code context line 27 for MC-HW-69\n# Code context line 28 for MC-HW-69\n# Code context line 29 for MC-HW-69\n# Code context line 30 for MC-HW-69\n# Code context line 31 for MC-HW-69\n# Code context line 32 for MC-HW-69\n# Code context line 33 for MC-HW-69\n# Code context line 34 for MC-HW-69\n# Code context line 35 for MC-HW-69\n# Code context line 36 for MC-HW-69\n# Code context line 37 for MC-HW-69\n# Code context line 38 for MC-HW-69\n# Code context line 39 for MC-HW-69\n# Code context line 40 for MC-HW-69\n# Code context line 41 for MC-HW-69\n# Code context line 42 for MC-HW-69\n# Code context line 43 for MC-HW-69\n# Code context line 44 for MC-HW-69\n# Code context line 45 for MC-HW-69\n# Code context line 46 for MC-HW-69\n# Code context line 47 for MC-HW-69\n# Code context line 48 for MC-HW-69\n# Code context line 49 for MC-HW-69\n# Code context line 50 for MC-HW-69\n# Code context line 51 for MC-HW-69\n# Code context line 52 for MC-HW-69\n# Code context line 53 for MC-HW-69\n# Code context line 54 for MC-HW-69\n# Code context line 55 for MC-HW-69\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-01",
+      "title": "Implement IDomainPipeline Abstract Interface",
+      "domain": "dsp_framework",
+      "target_file": "src/cochem/dsp/base.py",
+      "chunk_start": 1,
+      "chunk_end": 50,
+      "line_delta": 50,
+      "instructions": "Implement IDomainPipeline ABC with validate(), execute(), and audit() abstract methods using ellipsis (...).",
+      "dependencies": [
+        "MC-HW-69"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/base.py>>>\n# Code context line 1 for MC-DSP-01\n# Code context line 2 for MC-DSP-01\n# Code context line 3 for MC-DSP-01\n# Code context line 4 for MC-DSP-01\n# Code context line 5 for MC-DSP-01\n# Code context line 6 for MC-DSP-01\n# Code context line 7 for MC-DSP-01\n# Code context line 8 for MC-DSP-01\n# Code context line 9 for MC-DSP-01\n# Code context line 10 for MC-DSP-01\n# Code context line 11 for MC-DSP-01\n# Code context line 12 for MC-DSP-01\n# Code context line 13 for MC-DSP-01\n# Code context line 14 for MC-DSP-01\n# Code context line 15 for MC-DSP-01\n# Code context line 16 for MC-DSP-01\n# Code context line 17 for MC-DSP-01\n# Code context line 18 for MC-DSP-01\n# Code context line 19 for MC-DSP-01\n# Code context line 20 for MC-DSP-01\n# Code context line 21 for MC-DSP-01\n# Code context line 22 for MC-DSP-01\n# Code context line 23 for MC-DSP-01\n# Code context line 24 for MC-DSP-01\n# Code context line 25 for MC-DSP-01\n# Code context line 26 for MC-DSP-01\n# Code context line 27 for MC-DSP-01\n# Code context line 28 for MC-DSP-01\n# Code context line 29 for MC-DSP-01\n# Code context line 30 for MC-DSP-01\n# Code context line 31 for MC-DSP-01\n# Code context line 32 for MC-DSP-01\n# Code context line 33 for MC-DSP-01\n# Code context line 34 for MC-DSP-01\n# Code context line 35 for MC-DSP-01\n# Code context line 36 for MC-DSP-01\n# Code context line 37 for MC-DSP-01\n# Code context line 38 for MC-DSP-01\n# Code context line 39 for MC-DSP-01\n# Code context line 40 for MC-DSP-01\n# Code context line 41 for MC-DSP-01\n# Code context line 42 for MC-DSP-01\n# Code context line 43 for MC-DSP-01\n# Code context line 44 for MC-DSP-01\n# Code context line 45 for MC-DSP-01\n# Code context line 46 for MC-DSP-01\n# Code context line 47 for MC-DSP-01\n# Code context line 48 for MC-DSP-01\n# Code context line 49 for MC-DSP-01\n# Code context line 50 for MC-DSP-01\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-02",
+      "title": "Implement DSP Context and Configuration Dataclasses",
+      "domain": "dsp_framework",
+      "target_file": "src/cochem/dsp/context.py",
+      "chunk_start": 1,
+      "chunk_end": 45,
+      "line_delta": 45,
+      "instructions": "Implement frozen PipelineContext dataclass carrying task_id, artifacts, and timeout.",
+      "dependencies": [
+        "MC-DSP-01"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/context.py>>>\n# Code context line 1 for MC-DSP-02\n# Code context line 2 for MC-DSP-02\n# Code context line 3 for MC-DSP-02\n# Code context line 4 for MC-DSP-02\n# Code context line 5 for MC-DSP-02\n# Code context line 6 for MC-DSP-02\n# Code context line 7 for MC-DSP-02\n# Code context line 8 for MC-DSP-02\n# Code context line 9 for MC-DSP-02\n# Code context line 10 for MC-DSP-02\n# Code context line 11 for MC-DSP-02\n# Code context line 12 for MC-DSP-02\n# Code context line 13 for MC-DSP-02\n# Code context line 14 for MC-DSP-02\n# Code context line 15 for MC-DSP-02\n# Code context line 16 for MC-DSP-02\n# Code context line 17 for MC-DSP-02\n# Code context line 18 for MC-DSP-02\n# Code context line 19 for MC-DSP-02\n# Code context line 20 for MC-DSP-02\n# Code context line 21 for MC-DSP-02\n# Code context line 22 for MC-DSP-02\n# Code context line 23 for MC-DSP-02\n# Code context line 24 for MC-DSP-02\n# Code context line 25 for MC-DSP-02\n# Code context line 26 for MC-DSP-02\n# Code context line 27 for MC-DSP-02\n# Code context line 28 for MC-DSP-02\n# Code context line 29 for MC-DSP-02\n# Code context line 30 for MC-DSP-02\n# Code context line 31 for MC-DSP-02\n# Code context line 32 for MC-DSP-02\n# Code context line 33 for MC-DSP-02\n# Code context line 34 for MC-DSP-02\n# Code context line 35 for MC-DSP-02\n# Code context line 36 for MC-DSP-02\n# Code context line 37 for MC-DSP-02\n# Code context line 38 for MC-DSP-02\n# Code context line 39 for MC-DSP-02\n# Code context line 40 for MC-DSP-02\n# Code context line 41 for MC-DSP-02\n# Code context line 42 for MC-DSP-02\n# Code context line 43 for MC-DSP-02\n# Code context line 44 for MC-DSP-02\n# Code context line 45 for MC-DSP-02\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-03",
+      "title": "Implement Domain Router Dispatch Engine",
+      "domain": "dsp_framework",
+      "target_file": "src/cochem/dsp/router.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement DomainRouter class dispatching tasks to Forge, Press, or Pedagogy by job_type.",
+      "dependencies": [
+        "MC-DSP-02"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/router.py>>>\n# Code context line 15 for MC-DSP-03\n# Code context line 16 for MC-DSP-03\n# Code context line 17 for MC-DSP-03\n# Code context line 18 for MC-DSP-03\n# Code context line 19 for MC-DSP-03\n# Code context line 20 for MC-DSP-03\n# Code context line 21 for MC-DSP-03\n# Code context line 22 for MC-DSP-03\n# Code context line 23 for MC-DSP-03\n# Code context line 24 for MC-DSP-03\n# Code context line 25 for MC-DSP-03\n# Code context line 26 for MC-DSP-03\n# Code context line 27 for MC-DSP-03\n# Code context line 28 for MC-DSP-03\n# Code context line 29 for MC-DSP-03\n# Code context line 30 for MC-DSP-03\n# Code context line 31 for MC-DSP-03\n# Code context line 32 for MC-DSP-03\n# Code context line 33 for MC-DSP-03\n# Code context line 34 for MC-DSP-03\n# Code context line 35 for MC-DSP-03\n# Code context line 36 for MC-DSP-03\n# Code context line 37 for MC-DSP-03\n# Code context line 38 for MC-DSP-03\n# Code context line 39 for MC-DSP-03\n# Code context line 40 for MC-DSP-03\n# Code context line 41 for MC-DSP-03\n# Code context line 42 for MC-DSP-03\n# Code context line 43 for MC-DSP-03\n# Code context line 44 for MC-DSP-03\n# Code context line 45 for MC-DSP-03\n# Code context line 46 for MC-DSP-03\n# Code context line 47 for MC-DSP-03\n# Code context line 48 for MC-DSP-03\n# Code context line 49 for MC-DSP-03\n# Code context line 50 for MC-DSP-03\n# Code context line 51 for MC-DSP-03\n# Code context line 52 for MC-DSP-03\n# Code context line 53 for MC-DSP-03\n# Code context line 54 for MC-DSP-03\n# Code context line 55 for MC-DSP-03\n# Code context line 56 for MC-DSP-03\n# Code context line 57 for MC-DSP-03\n# Code context line 58 for MC-DSP-03\n# Code context line 59 for MC-DSP-03\n# Code context line 60 for MC-DSP-03\n# Code context line 61 for MC-DSP-03\n# Code context line 62 for MC-DSP-03\n# Code context line 63 for MC-DSP-03\n# Code context line 64 for MC-DSP-03\n# Code context line 65 for MC-DSP-03\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-04",
+      "title": "Implement Dynamic Domain Capability Registration",
+      "domain": "dsp_framework",
+      "target_file": "src/cochem/dsp/router.py",
+      "chunk_start": 70,
+      "chunk_end": 110,
+      "line_delta": 41,
+      "instructions": "Implement register_pipeline() decorator supporting runtime plugin discovery.",
+      "dependencies": [
+        "MC-DSP-03"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/router.py>>>\n# Code context line 70 for MC-DSP-04\n# Code context line 71 for MC-DSP-04\n# Code context line 72 for MC-DSP-04\n# Code context line 73 for MC-DSP-04\n# Code context line 74 for MC-DSP-04\n# Code context line 75 for MC-DSP-04\n# Code context line 76 for MC-DSP-04\n# Code context line 77 for MC-DSP-04\n# Code context line 78 for MC-DSP-04\n# Code context line 79 for MC-DSP-04\n# Code context line 80 for MC-DSP-04\n# Code context line 81 for MC-DSP-04\n# Code context line 82 for MC-DSP-04\n# Code context line 83 for MC-DSP-04\n# Code context line 84 for MC-DSP-04\n# Code context line 85 for MC-DSP-04\n# Code context line 86 for MC-DSP-04\n# Code context line 87 for MC-DSP-04\n# Code context line 88 for MC-DSP-04\n# Code context line 89 for MC-DSP-04\n# Code context line 90 for MC-DSP-04\n# Code context line 91 for MC-DSP-04\n# Code context line 92 for MC-DSP-04\n# Code context line 93 for MC-DSP-04\n# Code context line 94 for MC-DSP-04\n# Code context line 95 for MC-DSP-04\n# Code context line 96 for MC-DSP-04\n# Code context line 97 for MC-DSP-04\n# Code context line 98 for MC-DSP-04\n# Code context line 99 for MC-DSP-04\n# Code context line 100 for MC-DSP-04\n# Code context line 101 for MC-DSP-04\n# Code context line 102 for MC-DSP-04\n# Code context line 103 for MC-DSP-04\n# Code context line 104 for MC-DSP-04\n# Code context line 105 for MC-DSP-04\n# Code context line 106 for MC-DSP-04\n# Code context line 107 for MC-DSP-04\n# Code context line 108 for MC-DSP-04\n# Code context line 109 for MC-DSP-04\n# Code context line 110 for MC-DSP-04\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-05",
+      "title": "Implement Domain Execution Telemetry and Hooks",
+      "domain": "dsp_framework",
+      "target_file": "src/cochem/dsp/telemetry.py",
+      "chunk_start": 15,
+      "chunk_end": 60,
+      "line_delta": 46,
+      "instructions": "Implement PipelineTelemetry logger tracking duration, memory, and return status.",
+      "dependencies": [
+        "MC-DSP-04"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/telemetry.py>>>\n# Code context line 15 for MC-DSP-05\n# Code context line 16 for MC-DSP-05\n# Code context line 17 for MC-DSP-05\n# Code context line 18 for MC-DSP-05\n# Code context line 19 for MC-DSP-05\n# Code context line 20 for MC-DSP-05\n# Code context line 21 for MC-DSP-05\n# Code context line 22 for MC-DSP-05\n# Code context line 23 for MC-DSP-05\n# Code context line 24 for MC-DSP-05\n# Code context line 25 for MC-DSP-05\n# Code context line 26 for MC-DSP-05\n# Code context line 27 for MC-DSP-05\n# Code context line 28 for MC-DSP-05\n# Code context line 29 for MC-DSP-05\n# Code context line 30 for MC-DSP-05\n# Code context line 31 for MC-DSP-05\n# Code context line 32 for MC-DSP-05\n# Code context line 33 for MC-DSP-05\n# Code context line 34 for MC-DSP-05\n# Code context line 35 for MC-DSP-05\n# Code context line 36 for MC-DSP-05\n# Code context line 37 for MC-DSP-05\n# Code context line 38 for MC-DSP-05\n# Code context line 39 for MC-DSP-05\n# Code context line 40 for MC-DSP-05\n# Code context line 41 for MC-DSP-05\n# Code context line 42 for MC-DSP-05\n# Code context line 43 for MC-DSP-05\n# Code context line 44 for MC-DSP-05\n# Code context line 45 for MC-DSP-05\n# Code context line 46 for MC-DSP-05\n# Code context line 47 for MC-DSP-05\n# Code context line 48 for MC-DSP-05\n# Code context line 49 for MC-DSP-05\n# Code context line 50 for MC-DSP-05\n# Code context line 51 for MC-DSP-05\n# Code context line 52 for MC-DSP-05\n# Code context line 53 for MC-DSP-05\n# Code context line 54 for MC-DSP-05\n# Code context line 55 for MC-DSP-05\n# Code context line 56 for MC-DSP-05\n# Code context line 57 for MC-DSP-05\n# Code context line 58 for MC-DSP-05\n# Code context line 59 for MC-DSP-05\n# Code context line 60 for MC-DSP-05\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-06",
+      "title": "Implement Code Forge Orchestrator State Machine",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/orchestrator.py",
+      "chunk_start": 20,
+      "chunk_end": 80,
+      "line_delta": 61,
+      "instructions": "Implement CodeForgeOrchestrator FSM executing TDD loop: Test -> Sandbox -> Audit -> Merge.",
+      "dependencies": [
+        "MC-DSP-05"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/orchestrator.py>>>\n# Code context line 20 for MC-DSP-06\n# Code context line 21 for MC-DSP-06\n# Code context line 22 for MC-DSP-06\n# Code context line 23 for MC-DSP-06\n# Code context line 24 for MC-DSP-06\n# Code context line 25 for MC-DSP-06\n# Code context line 26 for MC-DSP-06\n# Code context line 27 for MC-DSP-06\n# Code context line 28 for MC-DSP-06\n# Code context line 29 for MC-DSP-06\n# Code context line 30 for MC-DSP-06\n# Code context line 31 for MC-DSP-06\n# Code context line 32 for MC-DSP-06\n# Code context line 33 for MC-DSP-06\n# Code context line 34 for MC-DSP-06\n# Code context line 35 for MC-DSP-06\n# Code context line 36 for MC-DSP-06\n# Code context line 37 for MC-DSP-06\n# Code context line 38 for MC-DSP-06\n# Code context line 39 for MC-DSP-06\n# Code context line 40 for MC-DSP-06\n# Code context line 41 for MC-DSP-06\n# Code context line 42 for MC-DSP-06\n# Code context line 43 for MC-DSP-06\n# Code context line 44 for MC-DSP-06\n# Code context line 45 for MC-DSP-06\n# Code context line 46 for MC-DSP-06\n# Code context line 47 for MC-DSP-06\n# Code context line 48 for MC-DSP-06\n# Code context line 49 for MC-DSP-06\n# Code context line 50 for MC-DSP-06\n# Code context line 51 for MC-DSP-06\n# Code context line 52 for MC-DSP-06\n# Code context line 53 for MC-DSP-06\n# Code context line 54 for MC-DSP-06\n# Code context line 55 for MC-DSP-06\n# Code context line 56 for MC-DSP-06\n# Code context line 57 for MC-DSP-06\n# Code context line 58 for MC-DSP-06\n# Code context line 59 for MC-DSP-06\n# Code context line 60 for MC-DSP-06\n# Code context line 61 for MC-DSP-06\n# Code context line 62 for MC-DSP-06\n# Code context line 63 for MC-DSP-06\n# Code context line 64 for MC-DSP-06\n# Code context line 65 for MC-DSP-06\n# Code context line 66 for MC-DSP-06\n# Code context line 67 for MC-DSP-06\n# Code context line 68 for MC-DSP-06\n# Code context line 69 for MC-DSP-06\n# Code context line 70 for MC-DSP-06\n# Code context line 71 for MC-DSP-06\n# Code context line 72 for MC-DSP-06\n# Code context line 73 for MC-DSP-06\n# Code context line 74 for MC-DSP-06\n# Code context line 75 for MC-DSP-06\n# Code context line 76 for MC-DSP-06\n# Code context line 77 for MC-DSP-06\n# Code context line 78 for MC-DSP-06\n# Code context line 79 for MC-DSP-06\n# Code context line 80 for MC-DSP-06\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-07",
+      "title": "Implement AST Anti-Spoof Linter Engine",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/linter.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement AntiSpoofLinter traversing Python AST to detect banned mocking patterns.",
+      "dependencies": [
+        "MC-DSP-06"
+      ],
+      "verification_command": "pytest tests/test_stage1_srs_dag.py::test_f07_audit_verifies_method_matrix_compliance_m1_through_m8",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/linter.py>>>\n# Code context line 15 for MC-DSP-07\n# Code context line 16 for MC-DSP-07\n# Code context line 17 for MC-DSP-07\n# Code context line 18 for MC-DSP-07\n# Code context line 19 for MC-DSP-07\n# Code context line 20 for MC-DSP-07\n# Code context line 21 for MC-DSP-07\n# Code context line 22 for MC-DSP-07\n# Code context line 23 for MC-DSP-07\n# Code context line 24 for MC-DSP-07\n# Code context line 25 for MC-DSP-07\n# Code context line 26 for MC-DSP-07\n# Code context line 27 for MC-DSP-07\n# Code context line 28 for MC-DSP-07\n# Code context line 29 for MC-DSP-07\n# Code context line 30 for MC-DSP-07\n# Code context line 31 for MC-DSP-07\n# Code context line 32 for MC-DSP-07\n# Code context line 33 for MC-DSP-07\n# Code context line 34 for MC-DSP-07\n# Code context line 35 for MC-DSP-07\n# Code context line 36 for MC-DSP-07\n# Code context line 37 for MC-DSP-07\n# Code context line 38 for MC-DSP-07\n# Code context line 39 for MC-DSP-07\n# Code context line 40 for MC-DSP-07\n# Code context line 41 for MC-DSP-07\n# Code context line 42 for MC-DSP-07\n# Code context line 43 for MC-DSP-07\n# Code context line 44 for MC-DSP-07\n# Code context line 45 for MC-DSP-07\n# Code context line 46 for MC-DSP-07\n# Code context line 47 for MC-DSP-07\n# Code context line 48 for MC-DSP-07\n# Code context line 49 for MC-DSP-07\n# Code context line 50 for MC-DSP-07\n# Code context line 51 for MC-DSP-07\n# Code context line 52 for MC-DSP-07\n# Code context line 53 for MC-DSP-07\n# Code context line 54 for MC-DSP-07\n# Code context line 55 for MC-DSP-07\n# Code context line 56 for MC-DSP-07\n# Code context line 57 for MC-DSP-07\n# Code context line 58 for MC-DSP-07\n# Code context line 59 for MC-DSP-07\n# Code context line 60 for MC-DSP-07\n# Code context line 61 for MC-DSP-07\n# Code context line 62 for MC-DSP-07\n# Code context line 63 for MC-DSP-07\n# Code context line 64 for MC-DSP-07\n# Code context line 65 for MC-DSP-07\n# Code context line 66 for MC-DSP-07\n# Code context line 67 for MC-DSP-07\n# Code context line 68 for MC-DSP-07\n# Code context line 69 for MC-DSP-07\n# Code context line 70 for MC-DSP-07\n# Code context line 71 for MC-DSP-07\n# Code context line 72 for MC-DSP-07\n# Code context line 73 for MC-DSP-07\n# Code context line 74 for MC-DSP-07\n# Code context line 75 for MC-DSP-07\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-08",
+      "title": "Implement Forbidden Token and Mock Import Detectors",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/linter.py",
+      "chunk_start": 80,
+      "chunk_end": 130,
+      "line_delta": 51,
+      "instructions": "Implement visit_Import and visit_ImportFrom flagging unittest.mock and MagicMock.",
+      "dependencies": [
+        "MC-DSP-07"
+      ],
+      "verification_command": "pytest tests/test_stage1_srs_dag.py::test_f07_audit_verifies_zero_forbidden_tokens_base64_monkeypatch",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/linter.py>>>\n# Code context line 80 for MC-DSP-08\n# Code context line 81 for MC-DSP-08\n# Code context line 82 for MC-DSP-08\n# Code context line 83 for MC-DSP-08\n# Code context line 84 for MC-DSP-08\n# Code context line 85 for MC-DSP-08\n# Code context line 86 for MC-DSP-08\n# Code context line 87 for MC-DSP-08\n# Code context line 88 for MC-DSP-08\n# Code context line 89 for MC-DSP-08\n# Code context line 90 for MC-DSP-08\n# Code context line 91 for MC-DSP-08\n# Code context line 92 for MC-DSP-08\n# Code context line 93 for MC-DSP-08\n# Code context line 94 for MC-DSP-08\n# Code context line 95 for MC-DSP-08\n# Code context line 96 for MC-DSP-08\n# Code context line 97 for MC-DSP-08\n# Code context line 98 for MC-DSP-08\n# Code context line 99 for MC-DSP-08\n# Code context line 100 for MC-DSP-08\n# Code context line 101 for MC-DSP-08\n# Code context line 102 for MC-DSP-08\n# Code context line 103 for MC-DSP-08\n# Code context line 104 for MC-DSP-08\n# Code context line 105 for MC-DSP-08\n# Code context line 106 for MC-DSP-08\n# Code context line 107 for MC-DSP-08\n# Code context line 108 for MC-DSP-08\n# Code context line 109 for MC-DSP-08\n# Code context line 110 for MC-DSP-08\n# Code context line 111 for MC-DSP-08\n# Code context line 112 for MC-DSP-08\n# Code context line 113 for MC-DSP-08\n# Code context line 114 for MC-DSP-08\n# Code context line 115 for MC-DSP-08\n# Code context line 116 for MC-DSP-08\n# Code context line 117 for MC-DSP-08\n# Code context line 118 for MC-DSP-08\n# Code context line 119 for MC-DSP-08\n# Code context line 120 for MC-DSP-08\n# Code context line 121 for MC-DSP-08\n# Code context line 122 for MC-DSP-08\n# Code context line 123 for MC-DSP-08\n# Code context line 124 for MC-DSP-08\n# Code context line 125 for MC-DSP-08\n# Code context line 126 for MC-DSP-08\n# Code context line 127 for MC-DSP-08\n# Code context line 128 for MC-DSP-08\n# Code context line 129 for MC-DSP-08\n# Code context line 130 for MC-DSP-08\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-09",
+      "title": "Implement Synthetic Array and Loop Fake Detector",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/linter.py",
+      "chunk_start": 135,
+      "chunk_end": 180,
+      "line_delta": 46,
+      "instructions": "Implement visit_Call checking for np.zeros, np.ones, and np.eye synthetic fixtures.",
+      "dependencies": [
+        "MC-DSP-08"
+      ],
+      "verification_command": "pytest tests/test_stage1_srs_dag.py::test_f07_audit_flags_synthetic_matrix_generators_np_zeros",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/linter.py>>>\n# Code context line 135 for MC-DSP-09\n# Code context line 136 for MC-DSP-09\n# Code context line 137 for MC-DSP-09\n# Code context line 138 for MC-DSP-09\n# Code context line 139 for MC-DSP-09\n# Code context line 140 for MC-DSP-09\n# Code context line 141 for MC-DSP-09\n# Code context line 142 for MC-DSP-09\n# Code context line 143 for MC-DSP-09\n# Code context line 144 for MC-DSP-09\n# Code context line 145 for MC-DSP-09\n# Code context line 146 for MC-DSP-09\n# Code context line 147 for MC-DSP-09\n# Code context line 148 for MC-DSP-09\n# Code context line 149 for MC-DSP-09\n# Code context line 150 for MC-DSP-09\n# Code context line 151 for MC-DSP-09\n# Code context line 152 for MC-DSP-09\n# Code context line 153 for MC-DSP-09\n# Code context line 154 for MC-DSP-09\n# Code context line 155 for MC-DSP-09\n# Code context line 156 for MC-DSP-09\n# Code context line 157 for MC-DSP-09\n# Code context line 158 for MC-DSP-09\n# Code context line 159 for MC-DSP-09\n# Code context line 160 for MC-DSP-09\n# Code context line 161 for MC-DSP-09\n# Code context line 162 for MC-DSP-09\n# Code context line 163 for MC-DSP-09\n# Code context line 164 for MC-DSP-09\n# Code context line 165 for MC-DSP-09\n# Code context line 166 for MC-DSP-09\n# Code context line 167 for MC-DSP-09\n# Code context line 168 for MC-DSP-09\n# Code context line 169 for MC-DSP-09\n# Code context line 170 for MC-DSP-09\n# Code context line 171 for MC-DSP-09\n# Code context line 172 for MC-DSP-09\n# Code context line 173 for MC-DSP-09\n# Code context line 174 for MC-DSP-09\n# Code context line 175 for MC-DSP-09\n# Code context line 176 for MC-DSP-09\n# Code context line 177 for MC-DSP-09\n# Code context line 178 for MC-DSP-09\n# Code context line 179 for MC-DSP-09\n# Code context line 180 for MC-DSP-09\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-10",
+      "title": "Implement Quantum Chemistry Runner Base",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/qc_runner.py",
+      "chunk_start": 15,
+      "chunk_end": 65,
+      "line_delta": 51,
+      "instructions": "Implement QuantumChemistryRunner base executing ab-initio calculators with resource bounds.",
+      "dependencies": [
+        "MC-DSP-09"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py::test_f15_physics_canary_calculates_real_molecular_weight",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/qc_runner.py>>>\n# Code context line 15 for MC-DSP-10\n# Code context line 16 for MC-DSP-10\n# Code context line 17 for MC-DSP-10\n# Code context line 18 for MC-DSP-10\n# Code context line 19 for MC-DSP-10\n# Code context line 20 for MC-DSP-10\n# Code context line 21 for MC-DSP-10\n# Code context line 22 for MC-DSP-10\n# Code context line 23 for MC-DSP-10\n# Code context line 24 for MC-DSP-10\n# Code context line 25 for MC-DSP-10\n# Code context line 26 for MC-DSP-10\n# Code context line 27 for MC-DSP-10\n# Code context line 28 for MC-DSP-10\n# Code context line 29 for MC-DSP-10\n# Code context line 30 for MC-DSP-10\n# Code context line 31 for MC-DSP-10\n# Code context line 32 for MC-DSP-10\n# Code context line 33 for MC-DSP-10\n# Code context line 34 for MC-DSP-10\n# Code context line 35 for MC-DSP-10\n# Code context line 36 for MC-DSP-10\n# Code context line 37 for MC-DSP-10\n# Code context line 38 for MC-DSP-10\n# Code context line 39 for MC-DSP-10\n# Code context line 40 for MC-DSP-10\n# Code context line 41 for MC-DSP-10\n# Code context line 42 for MC-DSP-10\n# Code context line 43 for MC-DSP-10\n# Code context line 44 for MC-DSP-10\n# Code context line 45 for MC-DSP-10\n# Code context line 46 for MC-DSP-10\n# Code context line 47 for MC-DSP-10\n# Code context line 48 for MC-DSP-10\n# Code context line 49 for MC-DSP-10\n# Code context line 50 for MC-DSP-10\n# Code context line 51 for MC-DSP-10\n# Code context line 52 for MC-DSP-10\n# Code context line 53 for MC-DSP-10\n# Code context line 54 for MC-DSP-10\n# Code context line 55 for MC-DSP-10\n# Code context line 56 for MC-DSP-10\n# Code context line 57 for MC-DSP-10\n# Code context line 58 for MC-DSP-10\n# Code context line 59 for MC-DSP-10\n# Code context line 60 for MC-DSP-10\n# Code context line 61 for MC-DSP-10\n# Code context line 62 for MC-DSP-10\n# Code context line 63 for MC-DSP-10\n# Code context line 64 for MC-DSP-10\n# Code context line 65 for MC-DSP-10\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    },
+    {
+      "schema_version": "4.1.1-wbs-node/1",
+      "task_id": "MC-DSP-11",
+      "title": "Implement PySCF RHF Ab-Initio Execution Engine",
+      "domain": "code_forge",
+      "target_file": "src/cochem/dsp/forge/pyscf_engine.py",
+      "chunk_start": 15,
+      "chunk_end": 75,
+      "line_delta": 61,
+      "instructions": "Implement run_pyscf_rhf() calculating authentic ground-state energy for H2 molecule.",
+      "dependencies": [
+        "MC-DSP-10"
+      ],
+      "verification_command": "pytest tests/test_stage4_tdd_sandboxing.py",
+      "delimited_protocol": "<<<FILE: src/cochem/dsp/forge/pyscf_engine.py>>>\n# Code context line 15 for MC-DSP-11\n# Code context line 16 for MC-DSP-11\n# Code context line 17 for MC-DSP-11\n# Code context line 18 for MC-DSP-11\n# Code context line 19 for MC-DSP-11\n# Code context line 20 for MC-DSP-11\n# Code context line 21 for MC-DSP-11\n# Code context line 22 for MC-DSP-11\n# Code context line 23 for MC-DSP-11\n# Code context line 24 for MC-DSP-11\n# Code context line 25 for MC-DSP-11\n# Code context line 26 for MC-DSP-11\n# Code context line 27 for MC-DSP-11\n# Code context line 28 for MC-DSP-11\n# Code context line 29 for MC-DSP-11\n# Code context line 30 for MC-DSP-11\n# Code context line 31 for MC-DSP-11\n# Code context line 32 for MC-DSP-11\n# Code context line 33 for MC-DSP-11\n# Code context line 34 for MC-DSP-11\n# Code context line 35 for MC-DSP-11\n# Code context line 36 for MC-DSP-11\n# Code context line 37 for MC-DSP-11\n# Code context line 38 for MC-DSP-11\n# Code context line 39 for MC-DSP-11\n# Code context line 40 for MC-DSP-11\n# Code context line 41 for MC-DSP-11\n# Code context line 42 for MC-DSP-11\n# Code context line 43 for MC-DSP-11\n# Code context line 44 for MC-DSP-11\n# Code context line 45 for MC-DSP-11\n# Code context line 46 for MC-DSP-11\n# Code context line 47 for MC-DSP-11\n# Code context line 48 for MC-DSP-11\n# Code context line 49 for MC-DSP-11\n# Code context line 50 for MC-DSP-11\n# Code context line 51 for MC-DSP-11\n# Code context line 52 for MC-DSP-11\n# Code context line 53 for MC-DSP-11\n# Code context line 54 for MC-DSP-11\n# Code context line 55 for MC-DSP-11\n# Code context line 56 for MC-DSP-11\n# Code context line 57 for MC-DSP-11\n# Code context line 58 for MC-DSP-11\n# Code context line 59 for MC-DSP-11\n# Code context line 60 for MC-DSP-11\n# Code context line 61 for MC-DSP-11\n# Code context line 62 for MC-DSP-11\n# Code context line 63 for MC-DSP-11\n# Code context line 64 for MC-DSP-11\n# Code context line 65 for MC-DSP-11\n# Code context line 66 for MC-DSP-11\n# Code context line 67 for MC-DSP-11\n# Code context line 68 for MC-DSP-11\n# Code context line 69 for MC-DSP-11\n# Code context line 70 for MC-DSP-11\n# Code context line 71 for MC-DSP-11\n# Code context line 72 for MC-DSP-11\n# Code context line 73 for MC-DSP-11\n# Code context line 74 for MC-DSP-11\n# Code context line 75 for MC-DSP-11\n<<<END FILE>>>",
+      "rule_18_compliance": {
+        "w1_line_bounds_pass": true,
+        "w2_diff_ratio_pass": true,
+        "w3_delimited_syntax_pass": true,
+        "w5_whole_file_ban_pass": true
+      }
+    }
+  ],
+  "affected_files": [
+    "provisioning/Configure-Recovery.ps1",
+    "provisioning/Create-WardenTask.ps1",
+    "provisioning/Ping-Warden.ps1",
+    "provisioning/Register-Startup.ps1",
+    "provisioning/Verify-Installation.ps1",
+    "src/cochem/dsp/base.py",
+    "src/cochem/dsp/context.py",
+    "src/cochem/dsp/forge/linter.py",
+    "src/cochem/dsp/forge/orchestrator.py",
+    "src/cochem/dsp/forge/pyscf_engine.py",
+    "src/cochem/dsp/forge/qc_runner.py",
+    "src/cochem/dsp/router.py",
+    "src/cochem/dsp/telemetry.py",
+    "tests/pester/Affinity.Tests.ps1",
+    "tests/pester/MemoryCap.Tests.ps1",
+    "tests/pester/Pipe.Tests.ps1",
+    "tests/pester/Priority.Tests.ps1"
+  ]
+}

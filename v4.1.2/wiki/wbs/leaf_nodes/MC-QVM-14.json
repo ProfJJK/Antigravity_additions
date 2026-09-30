@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-14",
+  "title": "Implement 1.5 s Container Startup Latency Probe",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 166,
+  "chunk_end": 195,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-01: Container startup latency from execution request to test execution shall not exceed 1.5 seconds. Measure with time.monotonic() from the execution request to the first line the container writes to stdout; record the value and flag breaches above 1.5 s without failing the task.",
+  "dependencies": [
+    "MC-QVM-13",
+    "MC-QVM-04"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_01\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-14] NFR-VM-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-01: Container\n# SPEC: startup latency from execution request to test execution shall not exceed 1.5 seconds. Measure\n# SPEC: with time.monotonic() from the execution request to the first line the container writes to\n# SPEC: stdout; record the value and flag breaches above 1.5 s without failing the task.\n# src/cochem/quarantine/sandbox.py:171 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:172 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:173 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:174 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:175 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:176 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:177 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:178 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:179 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:180 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:181 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:182 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:183 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:184 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:185 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:186 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:187 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:188 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:189 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:190 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:191 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:192 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:193 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:194 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:195 [MC-QVM-14]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "NFR-VM-01"
+    ]
+  }
+}

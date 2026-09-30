@@ -1,0 +1,39 @@
+{
+  "additionalProperties": false,
+  "description": "Dispatcher -> Coder: one executable unit of work.",
+  "properties": {
+    "acceptance_criteria": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Acceptance Criteria",
+      "type": "array"
+    },
+    "target_files": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Target Files",
+      "type": "array"
+    },
+    "task_id": {
+      "title": "Task Id",
+      "type": "number"
+    },
+    "test_spec": {
+      "additionalProperties": true,
+      "title": "Test Spec",
+      "type": "object"
+    }
+  },
+  "required": [
+    "task_id",
+    "target_files",
+    "acceptance_criteria",
+    "test_spec"
+  ],
+  "title": "ExecutionChunk",
+  "type": "object"
+}

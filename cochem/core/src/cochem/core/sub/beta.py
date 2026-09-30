@@ -1,0 +1,2 @@
+BETA = 2
+GAMMA = 3

@@ -1,0 +1,82 @@
+"""CoChem engine package.
+
+Exposes the Frozen-Monomer Protocol domain models, dynamic Mendeleev element
+lookups, BFS dimer partitioning, 6-DOF intermolecular optimization,
+decoupled counterpoise correction, and the unified FrozenMonomerEngine pipeline.
+"""
+from __future__ import annotations
+
+from .frozen_monomer import (
+    BOHR_TO_ANGSTROM,
+    HARTREE_TO_KCAL,
+    HARTREE_TO_KCAL_MOL,
+    HARTREE_TO_KJ,
+    HARTREE_TO_KJ_MOL,
+    INERTIA_CONV_MHZ_U_ANG2,
+    ROT_CONST_MHZ,
+    CounterpoiseResult,
+    FrozenMonomerEngine,
+    FrozenMonomerResult,
+    FrozenMonomerViolationError,
+    Intermolecular6DOF,
+    IntermolecularDofs,
+    IntermolecularOptimizationResult,
+    KabschResult,
+    MonomerGeometry,
+    MonomerSpec,
+    QuantumJobSpec,
+    compute_center_of_mass,
+    compute_counterpoise_correction,
+    compute_inertia_tensor,
+    compute_rotational_constants,
+    construct_euler_rotation_matrix,
+    evaluate_counterpoise_correction,
+    generate_decoupled_counterpoise_jobs,
+    get_dynamic_atomic_mass,
+    get_dynamic_covalent_radius,
+    kabsch_rigid_align,
+    optimize_intermolecular_geometry,
+    pairwise_distance_matrix,
+    partition_dimer_by_connectivity,
+    spherical_translation_vector,
+    verify_frozen_monomer_invariants,
+)
+
+__all__ = [
+    # Primary Task 20.1065 API symbols (AC1)
+    "FrozenMonomerEngine",
+    "FrozenMonomerResult",
+    "FrozenMonomerViolationError",
+    "MonomerSpec",
+    "IntermolecularDofs",
+    "IntermolecularOptimizationResult",
+    "CounterpoiseResult",
+    "partition_dimer_by_connectivity",
+    "optimize_intermolecular_geometry",
+    "compute_counterpoise_correction",
+    "verify_frozen_monomer_invariants",
+    # Task 20.1063 API symbols
+    "Intermolecular6DOF",
+    "MonomerGeometry",
+    # Task 20.1064 backwards compatibility
+    "QuantumJobSpec",
+    "evaluate_counterpoise_correction",
+    "generate_decoupled_counterpoise_jobs",
+    "HARTREE_TO_KCAL_MOL",
+    "HARTREE_TO_KJ_MOL",
+    "HARTREE_TO_KCAL",
+    "HARTREE_TO_KJ",
+    "ROT_CONST_MHZ",
+    "INERTIA_CONV_MHZ_U_ANG2",
+    "BOHR_TO_ANGSTROM",
+    "KabschResult",
+    "compute_center_of_mass",
+    "compute_inertia_tensor",
+    "compute_rotational_constants",
+    "construct_euler_rotation_matrix",
+    "spherical_translation_vector",
+    "kabsch_rigid_align",
+    "pairwise_distance_matrix",
+    "get_dynamic_atomic_mass",
+    "get_dynamic_covalent_radius",
+]

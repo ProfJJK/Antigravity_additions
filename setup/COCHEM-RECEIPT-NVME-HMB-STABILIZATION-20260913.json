@@ -1,0 +1,39 @@
+{
+  "task_id": "191.02",
+  "timestamp_utc": "2026-09-14T00:54:55.393Z",
+  "status": "FAILED_INSUFFICIENT_PRIVILEGE",
+  "target_hive": "HKLM:\\SYSTEM\\CurrentControlSet\\Control\\StorPort",
+  "property_name": "HmbAllocationPolicy",
+  "desired_value": 0,
+  "observed_value": null,
+  "autonomy_resolution": "ESCALATE_TO_ORCHESTRATOR_FOR_SERVICE_EXECUTION",
+  "disk_telemetry": [
+    {
+      "DeviceID": "\\\\.\\PHYSICALDRIVE2",
+      "Model": "SHPP41-2000GM",
+      "InterfaceType": "SCSI",
+      "MediaType": "Fixed hard disk media",
+      "SizeInBytes": 2000396321280,
+      "Partitions": 1,
+      "Status": "OK"
+    },
+    {
+      "DeviceID": "\\\\.\\PHYSICALDRIVE0",
+      "Model": "SPCC Solid State Disk",
+      "InterfaceType": "IDE",
+      "MediaType": "Fixed hard disk media",
+      "SizeInBytes": 2048407280640,
+      "Partitions": 1,
+      "Status": "OK"
+    },
+    {
+      "DeviceID": "\\\\.\\PHYSICALDRIVE1",
+      "Model": "WD_BLACK SN850X 2000GB",
+      "InterfaceType": "SCSI",
+      "MediaType": "Fixed hard disk media",
+      "SizeInBytes": 2000396321280,
+      "Partitions": 5,
+      "Status": "OK"
+    }
+  ]
+}

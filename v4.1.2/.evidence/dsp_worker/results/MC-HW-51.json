@@ -1,0 +1,23 @@
+{
+  "task_id": "MC-HW-51",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:24888",
+  "attempt": 7,
+  "started_at": 1790735389.8505201,
+  "finished_at": 1790736103.1478808,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-HW-51",
+    "target_file": "src/cochem/warden/ipc.py",
+    "state": "COMPLETED",
+    "output": "2026-09-29 21:29:50,172 [INFO] LLM QuotaFallbackRouter loaded. Per-agent dynamic routing active.\n2026-09-29 21:29:50,252 [INFO] [TDD MC-HW-51] loaded task 'MC-HW-51', prompt_sha=6e340b9cff\n2026-09-29 21:29:50,258 [INFO]   [QUOTA-ROUTER] cochem-planner \u2192 gemini/gemini-3.1-pro-preview\n2026-09-29 21:34:26,136 [INFO] [TDD MC-HW-51] P1 plan via gemini/gemini-3.1-pro-preview: 5 criteria, 5 tests, targets=['src/cochem/warden/ipc.py']\n2026-09-29 21:34:26,141 [INFO]   [QUOTA-ROUTER] cochem-researcher \u2192 gemini/gemini-3.8-flash\n2026-09-29 21:37:11,050 [INFO] [TDD MC-HW-51] P2 dossier: 10643 chars from 0 source file(s)\n2026-09-29 21:37:11,054 [INFO]   [QUOTA-ROUTER] cochem-test-author \u2192 claude-subscription/claude-sonnet-5\n2026-09-29 21:39:36,450 [INFO] [TDD MC-HW-51] P3 cochem-test-author via claude-subscription/claude-sonnet-5: 1 file(s), 278 diff lines, 0 rejected\n2026-09-29 21:39:38,100 [INFO] [TDD MC-HW-51] P3 RED gate attempt 1: total=1 passed=0 failed=0 errored=1 skipped=0 pass_rate=0.00 COLLECTION_ERROR\n2026-09-29 21:39:38,117 [INFO]   [QUOTA-ROUTER] cochem-coder \u2192 claude-subscription/claude-opus-5-5\n2026-09-29 21:40:26,883 [INFO] [TDD MC-HW-51] P4 cochem-coder via claude-subscription/claude-opus-5-5: 1 file(s), 111 diff lines, 0 rejected\n2026-09-29 21:40:28,442 [INFO] [TDD MC-HW-51] P5 pytest: total=36 passed=36 failed=0 errored=0 skipped=0 pass_rate=1.00\n2026-09-29 21:40:28,457 [INFO]   [QUOTA-ROUTER] cochem-audit \u2192 gemini/gemini-3.1-pro-preview\n2026-09-29 21:41:43,118 [INFO] [TDD MC-HW-51] P6 audit: PASS score=100 findings=0 model=('gemini', 'gemini-3.1-pro-preview') asymmetry_ok=True\n2026-09-29 21:41:43,121 [INFO] [TDD MC-HW-51] Stage B complete: pass_rate=1.00 score=100 verdict=PASS diff_lines=111\n2026-09-29 21:41:43,122 [INFO] [TDD MC-HW-51] progress gate -> ACCEPT: pass_rate=1.00, score 100 >= 85, asymmetric PASS\n2026-09-29 21:41:43,126 [INFO] [TDD MC-HW-51] final outcome: ACCEPTED (pass_rate=1.00, score 100 >= 85, asymmetric PASS)\n",
+    "telemetry": {
+      "task_id": "MC-HW-51",
+      "status": "COMPLETED",
+      "duration_sec": 713.2967836856842,
+      "memory_start_mb": 111.75,
+      "memory_end_mb": 111.76953125,
+      "memory_peak_mb": 111.76953125
+    }
+  }
+}

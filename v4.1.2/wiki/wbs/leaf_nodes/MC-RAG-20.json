@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-20",
+  "title": "Implement 10k-Section Query Latency Probe",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/server.py",
+  "chunk_start": 91,
+  "chunk_end": 135,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-01: Average search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.",
+  "dependencies": [
+    "MC-RAG-19",
+    "MC-RAG-04",
+    "MC-RAG-14"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_01\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-20] NFR-RAG-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-01: Average\n# SPEC: search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.\n# src/cochem/knowledge/server.py:94 [MC-RAG-20]\n# src/cochem/knowledge/server.py:95 [MC-RAG-20]\n# src/cochem/knowledge/server.py:96 [MC-RAG-20]\n# src/cochem/knowledge/server.py:97 [MC-RAG-20]\n# src/cochem/knowledge/server.py:98 [MC-RAG-20]\n# src/cochem/knowledge/server.py:99 [MC-RAG-20]\n# src/cochem/knowledge/server.py:100 [MC-RAG-20]\n# src/cochem/knowledge/server.py:101 [MC-RAG-20]\n# src/cochem/knowledge/server.py:102 [MC-RAG-20]\n# src/cochem/knowledge/server.py:103 [MC-RAG-20]\n# src/cochem/knowledge/server.py:104 [MC-RAG-20]\n# src/cochem/knowledge/server.py:105 [MC-RAG-20]\n# src/cochem/knowledge/server.py:106 [MC-RAG-20]\n# src/cochem/knowledge/server.py:107 [MC-RAG-20]\n# src/cochem/knowledge/server.py:108 [MC-RAG-20]\n# src/cochem/knowledge/server.py:109 [MC-RAG-20]\n# src/cochem/knowledge/server.py:110 [MC-RAG-20]\n# src/cochem/knowledge/server.py:111 [MC-RAG-20]\n# src/cochem/knowledge/server.py:112 [MC-RAG-20]\n# src/cochem/knowledge/server.py:113 [MC-RAG-20]\n# src/cochem/knowledge/server.py:114 [MC-RAG-20]\n# src/cochem/knowledge/server.py:115 [MC-RAG-20]\n# src/cochem/knowledge/server.py:116 [MC-RAG-20]\n# src/cochem/knowledge/server.py:117 [MC-RAG-20]\n# src/cochem/knowledge/server.py:118 [MC-RAG-20]\n# src/cochem/knowledge/server.py:119 [MC-RAG-20]\n# src/cochem/knowledge/server.py:120 [MC-RAG-20]\n# src/cochem/knowledge/server.py:121 [MC-RAG-20]\n# src/cochem/knowledge/server.py:122 [MC-RAG-20]\n# src/cochem/knowledge/server.py:123 [MC-RAG-20]\n# src/cochem/knowledge/server.py:124 [MC-RAG-20]\n# src/cochem/knowledge/server.py:125 [MC-RAG-20]\n# src/cochem/knowledge/server.py:126 [MC-RAG-20]\n# src/cochem/knowledge/server.py:127 [MC-RAG-20]\n# src/cochem/knowledge/server.py:128 [MC-RAG-20]\n# src/cochem/knowledge/server.py:129 [MC-RAG-20]\n# src/cochem/knowledge/server.py:130 [MC-RAG-20]\n# src/cochem/knowledge/server.py:131 [MC-RAG-20]\n# src/cochem/knowledge/server.py:132 [MC-RAG-20]\n# src/cochem/knowledge/server.py:133 [MC-RAG-20]\n# src/cochem/knowledge/server.py:134 [MC-RAG-20]\n# src/cochem/knowledge/server.py:135 [MC-RAG-20]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "NFR-RAG-01"
+    ]
+  }
+}

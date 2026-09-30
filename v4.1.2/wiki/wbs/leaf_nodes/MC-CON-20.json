@@ -1,0 +1,31 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-20",
+  "title": "Implement launch_layer1_fable_director Entry Point",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 251,
+  "chunk_end": 290,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement launch_layer1_fable_director() matching the section 6 reference: jitter, NODE_OPTIONS, claude.exe argv, stdin=DEVNULL, capture_output, text=True and the timeout runner, composed from the helpers defined in earlier chunks. Verified by test: test_f04_fable_invocation_launch_layer1_fable_director_returns_completed_process.",
+  "dependencies": [
+    "MC-CON-19",
+    "MC-CON-01",
+    "MC-CON-07",
+    "MC-CON-06"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_fable_invocation_launch_layer1_fable_director_returns_completed_process",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-20] INTERFACE:launch_layer1_fable_director\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: launch_layer1_fable_director() matching the section 6 reference: jitter, NODE_OPTIONS,\n# SPEC: claude.exe argv, stdin=DEVNULL, capture_output, text=True and the timeout runner, composed from\n# SPEC: the helpers defined in earlier chunks. Verified by test:\n# SPEC: test_f04_fable_invocation_launch_layer1_fable_director_returns_completed_process.\n# src/cochem/concurrency/layer1.py:257 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:258 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:259 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:260 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:261 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:262 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:263 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:264 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:265 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:266 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:267 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:268 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:269 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:270 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:271 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:272 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:273 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:274 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:275 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:276 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:277 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:278 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:279 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:280 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:281 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:282 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:283 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:284 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:285 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:286 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:287 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:288 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:289 [MC-CON-20]\n# src/cochem/concurrency/layer1.py:290 [MC-CON-20]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "INTERFACE:launch_layer1_fable_director"
+    ]
+  }
+}

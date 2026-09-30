@@ -1,0 +1,32 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-02",
+  "title": "Author Atomic Lease Claim and Contention Tests",
+  "domain": "task_matrix",
+  "target_file": "tests/test_ch04_task_matrix_blackboard.py",
+  "chunk_start": 61,
+  "chunk_end": 120,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite WAL files, real threads; no mock objects): test_ch04_fr_002_* for SRS-412-04-FR-002 (Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with lease expiration updates.); test_ch04_fr_003_* for SRS-412-04-FR-003 (The default task lease duration shall be strictly 1800 seconds (30 minutes).); test_ch04_claim_next_task_* for INTERFACE:claim_next_task (claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800) -> dict[str, Any] | None.); test_ch04_nfr_tm_01_* for NFR-TM-01 (Atomic lease acquisition latency shall be less than 5 milliseconds under concurrent 10-daemon contention.); test_ch04_nfr_tm_03_* for NFR-TM-03 (Zero duplicate claims shall occur under any concurrency load.). Section 9 obligations: Unit test verifies `BEGIN IMMEDIATE` prevents double claims across concurrent threads.",
+  "dependencies": [
+    "MC-BB-01"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch04_task_matrix_blackboard.py>>>\n# [MC-BB-02] TESTS:claim\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite WAL files, real threads; no mock objects): test_ch04_fr_002_* for SRS-412-04-FR-002\n# SPEC: (Worker daemons shall claim tasks exclusively using atomic `BEGIN IMMEDIATE` transactions with\n# SPEC: lease expiration updates.); test_ch04_fr_003_* for SRS-412-04-FR-003 (The default task lease\n# SPEC: duration shall be strictly 1800 seconds (30 minutes).); test_ch04_claim_next_task_* for\n# SPEC: INTERFACE:claim_next_task (claim_next_task(db_path: str, daemon_id: str, lease_sec: int = 1800)\n# SPEC: -> dict[str, Any] | None.); test_ch04_nfr_tm_01_* for NFR-TM-01 (Atomic lease acquisition\n# SPEC: latency shall be less than 5 milliseconds under concurrent 10-daemon contention.);\n# SPEC: test_ch04_nfr_tm_03_* for NFR-TM-03 (Zero duplicate claims shall occur under any concurrency\n# SPEC: load.). Section 9 obligations: Unit test verifies `BEGIN IMMEDIATE` prevents double claims\n# SPEC: across concurrent threads.\n# tests/test_ch04_task_matrix_blackboard.py:73 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:74 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:75 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:76 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:77 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:78 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:79 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:80 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:81 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:82 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:83 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:84 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:85 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:86 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:87 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:88 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:89 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:90 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:91 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:92 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:93 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:94 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:95 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:96 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:97 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:98 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:99 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:100 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:101 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:102 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:103 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:104 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:105 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:106 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:107 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:108 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:109 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:110 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:111 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:112 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:113 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:114 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:115 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:116 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:117 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:118 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:119 [MC-BB-02]\n# tests/test_ch04_task_matrix_blackboard.py:120 [MC-BB-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-002",
+      "SRS-412-04-FR-003",
+      "INTERFACE:claim_next_task",
+      "NFR-TM-01",
+      "NFR-TM-03"
+    ]
+  }
+}

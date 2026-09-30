@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-18",
+  "title": "Implement heartbeat_lease Refresh",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/leases.py",
+  "chunk_start": 246,
+  "chunk_end": 285,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool. Refresh lease expiration timestamp for an active running task. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks.",
+  "dependencies": [
+    "MC-BB-17",
+    "MC-BB-04",
+    "MC-BB-14"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"heartbeat_lease\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/leases.py>>>\n# [MC-BB-18] INTERFACE:heartbeat_lease\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: heartbeat_lease(db_path: str, task_id: int, daemon_id: str, extend_sec: int = 1800) -> bool.\n# SPEC: Refresh lease expiration timestamp for an active running task. Match the section 6 reference\n# SPEC: implementation, composed from the helpers defined in earlier chunks.\n# src/cochem/blackboard/leases.py:251 [MC-BB-18]\n# src/cochem/blackboard/leases.py:252 [MC-BB-18]\n# src/cochem/blackboard/leases.py:253 [MC-BB-18]\n# src/cochem/blackboard/leases.py:254 [MC-BB-18]\n# src/cochem/blackboard/leases.py:255 [MC-BB-18]\n# src/cochem/blackboard/leases.py:256 [MC-BB-18]\n# src/cochem/blackboard/leases.py:257 [MC-BB-18]\n# src/cochem/blackboard/leases.py:258 [MC-BB-18]\n# src/cochem/blackboard/leases.py:259 [MC-BB-18]\n# src/cochem/blackboard/leases.py:260 [MC-BB-18]\n# src/cochem/blackboard/leases.py:261 [MC-BB-18]\n# src/cochem/blackboard/leases.py:262 [MC-BB-18]\n# src/cochem/blackboard/leases.py:263 [MC-BB-18]\n# src/cochem/blackboard/leases.py:264 [MC-BB-18]\n# src/cochem/blackboard/leases.py:265 [MC-BB-18]\n# src/cochem/blackboard/leases.py:266 [MC-BB-18]\n# src/cochem/blackboard/leases.py:267 [MC-BB-18]\n# src/cochem/blackboard/leases.py:268 [MC-BB-18]\n# src/cochem/blackboard/leases.py:269 [MC-BB-18]\n# src/cochem/blackboard/leases.py:270 [MC-BB-18]\n# src/cochem/blackboard/leases.py:271 [MC-BB-18]\n# src/cochem/blackboard/leases.py:272 [MC-BB-18]\n# src/cochem/blackboard/leases.py:273 [MC-BB-18]\n# src/cochem/blackboard/leases.py:274 [MC-BB-18]\n# src/cochem/blackboard/leases.py:275 [MC-BB-18]\n# src/cochem/blackboard/leases.py:276 [MC-BB-18]\n# src/cochem/blackboard/leases.py:277 [MC-BB-18]\n# src/cochem/blackboard/leases.py:278 [MC-BB-18]\n# src/cochem/blackboard/leases.py:279 [MC-BB-18]\n# src/cochem/blackboard/leases.py:280 [MC-BB-18]\n# src/cochem/blackboard/leases.py:281 [MC-BB-18]\n# src/cochem/blackboard/leases.py:282 [MC-BB-18]\n# src/cochem/blackboard/leases.py:283 [MC-BB-18]\n# src/cochem/blackboard/leases.py:284 [MC-BB-18]\n# src/cochem/blackboard/leases.py:285 [MC-BB-18]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "INTERFACE:heartbeat_lease"
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "task_id": "task_CHEM311_ch2_2.12_remember_b756_3",
+  "item": "CHEM311_ch2_2.12_remember_b756",
+  "status": "PASS",
+  "quarantine_dir": "C:\\Users\\ansac\\AppData\\Local\\Temp\\aot_b756_test_quarantine_xjz7jrkq",
+  "exit_codes": {
+    "exams2html": 0,
+    "exams2nops": 0
+  },
+  "toolchain": {
+    "r_version": "4.6.1",
+    "exams_version": "2.4.4",
+    "tinytex_version": "0.60"
+  },
+  "artifacts": {
+    "rmd": {
+      "path": "D:/__CoChem/__agentic/CHEM311_ch2_2.12_remember_b756.Rmd",
+      "sha256": "6da6331d1680497e6fe96887168ece2c2054553bee0b67aaaf628ef7b43b4618",
+      "size_bytes": 4202
+    },
+    "html": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_b756_test_quarantine_xjz7jrkq/CHEM311_ch2_2.12_remember_b756_compiled.html",
+      "sha256": "3a9e063eabd57f1579ba7096bf4bf0c2a17113a120bbf5a4638ff842b362aa9e",
+      "size_bytes": 13887
+    },
+    "pdf": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_b756_test_quarantine_xjz7jrkq/CHEM311_ch2_2.12_remember_b756_nops.pdf",
+      "sha256": "ce2852e6d40491169cb2fd01a4c899f15daa09748bbda20b4aecb45e0f7e5f7e",
+      "size_bytes": 84984
+    },
+    "rds": {
+      "path": "C:/Users/ansac/AppData/Local/Temp/aot_b756_test_quarantine_xjz7jrkq/CHEM311_ch2_2.12_remember_b756_nops.rds",
+      "sha256": "9accfdad56abd9c67c0c85cfe5ce1c99a2fdbf230df08b8e19865e5be105023f",
+      "size_bytes": 1773
+    }
+  },
+  "provenance": {
+    "mocking_used": false,
+    "execution_mode": "Physical Headless CLI Execution via Rscript",
+    "provenance": "Rendered directly from authentic chemical coordinate specification and IUPAC taxonomy."
+  },
+  "completed_at": "2026-09-25T21:28:10.718492+00:00"
+}

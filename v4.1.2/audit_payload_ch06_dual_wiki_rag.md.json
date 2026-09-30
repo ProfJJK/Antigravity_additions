@@ -1,0 +1,617 @@
+[
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-01",
+    "title": "Author Dual Wiki Corpus, Link and 400-Line Limit Tests",
+    "domain": "dual_wiki_rag",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "chunk_start": 1,
+    "chunk_end": 60,
+    "line_delta": 60,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_001_* for SRS-412-06-FR-001 (The system shall maintain permanent reference knowledge in `.sources/` and live ratified specifications in `wiki/`.); test_ch06_fr_007_* for SRS-412-06-FR-007 (Scientific notation, quantum formulas, and Greek characters (`\u03a8(r)`, `\u0394G\u00b0`, `kJ\u00b7mol\u207b\u00b9`) shall be preserved losslessly in UTF-8.); test_ch06_fr_004_* for SRS-412-06-FR-004 (All relative Markdown links across wiki chapters shall be programmatically validated with 0 broken cross-references.); test_ch06_fr_005_* for SRS-412-06-FR-005 (Every SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines.); test_ch06_fr_006_* for SRS-412-06-FR-006 (The knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`.). Section 9 obligations: Test asserts `00_skeleton.md` indexes all chapters. Test verifies all generated chapters are strictly <= 400 lines. Test asserts relative links in markdown chapters resolve to physically existing files.",
+    "dependencies": [],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-01] TESTS:corpus\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects):\n# SPEC: test_ch06_fr_001_* for SRS-412-06-FR-001 (The system shall maintain permanent reference\n# SPEC: knowledge in `.sources/` and live ratified specifications in `wiki/`.); test_ch06_fr_007_* for\n# SPEC: SRS-412-06-FR-007 (Scientific notation, quantum formulas, and Greek characters (`\u03a8(r)`, `\u0394G\u00b0`,\n# SPEC: `kJ\u00b7mol\u207b\u00b9`) shall be preserved losslessly in UTF-8.); test_ch06_fr_004_* for SRS-412-06-FR-004\n# SPEC: (All relative Markdown links across wiki chapters shall be programmatically validated with 0\n# SPEC: broken cross-references.); test_ch06_fr_005_* for SRS-412-06-FR-005 (Every SRS and wiki chapter\n# SPEC: document shall strictly enforce a maximum length limit of <= 400 lines.); test_ch06_fr_006_* for\n# SPEC: SRS-412-06-FR-006 (The knowledge base structure and document catalog shall be synchronized with\n# SPEC: `v4.1.2_manifest.json`.). Section 9 obligations: Test asserts `00_skeleton.md` indexes all\n# SPEC: chapters. Test verifies all generated chapters are strictly <= 400 lines. Test asserts relative\n# SPEC: links in markdown chapters resolve to physically existing files.\n# tests/test_ch06_dual_wiki_rag.py:15 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:16 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:17 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:18 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:19 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:20 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:21 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:22 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:23 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:24 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:25 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:26 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:27 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:28 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:29 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:30 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:31 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:32 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:33 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:34 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:35 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:36 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:37 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:38 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:39 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:40 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:41 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:42 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:43 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:44 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:45 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:46 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:47 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:48 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:49 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:50 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:51 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:52 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:53 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:54 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:55 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:56 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:57 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:58 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:59 [MC-RAG-01]\n# tests/test_ch06_dual_wiki_rag.py:60 [MC-RAG-01]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-001",
+        "SRS-412-06-FR-007",
+        "SRS-412-06-FR-004",
+        "SRS-412-06-FR-005",
+        "SRS-412-06-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-02",
+    "title": "Author documents/fts_index DDL and Corruption Recovery Tests",
+    "domain": "dual_wiki_rag",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "chunk_start": 61,
+    "chunk_end": 120,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_documents_* for DATA_MODEL:documents (section 7 CREATE TABLE); test_ch06_fts_index_* for DATA_MODEL:fts_index (section 7 CREATE TABLE); test_ch06_database_file_corruption_* for FAILURE:Database File Corruption (Binary header check validates `b\"SQLite format 3\\x00\"`; corrupt file is regenerated from source markdown.)",
+    "dependencies": [
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-02] TESTS:schema\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_documents_*\n# SPEC: for DATA_MODEL:documents (section 7 CREATE TABLE); test_ch06_fts_index_* for\n# SPEC: DATA_MODEL:fts_index (section 7 CREATE TABLE); test_ch06_database_file_corruption_* for\n# SPEC: FAILURE:Database File Corruption (Binary header check validates `b\"SQLite format 3\\x00\"`;\n# SPEC: corrupt file is regenerated from source markdown.)\n# tests/test_ch06_dual_wiki_rag.py:68 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:69 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:70 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:71 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:72 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:73 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:74 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:75 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:76 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:77 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:78 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:79 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:80 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:81 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:82 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:83 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:84 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:85 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:86 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:87 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:88 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:89 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:90 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:91 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:92 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:93 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:94 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:95 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:96 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:97 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:98 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:99 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:100 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:101 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:102 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:103 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:104 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:105 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:106 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:107 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:108 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:109 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:110 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:111 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:112 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:113 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:114 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:115 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:116 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:117 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:118 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:119 [MC-RAG-02]\n# tests/test_ch06_dual_wiki_rag.py:120 [MC-RAG-02]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "DATA_MODEL:documents",
+        "DATA_MODEL:fts_index",
+        "FAILURE:Database File Corruption"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-03",
+    "title": "Author BM25 Indexing, Incremental and Atomic Re-Index Tests",
+    "domain": "dual_wiki_rag",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "chunk_start": 121,
+    "chunk_end": 180,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_002_* for SRS-412-06-FR-002 (All knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using BM25 relevance scoring.); test_ch06_fr_008_* for SRS-412-06-FR-008 (The FTS5 indexer shall support both incremental document updates and atomic full re-indexing.); test_ch06_fts5_index_desynchronization_* for FAILURE:FTS5 Index Desynchronization (If document hash differs from indexed hash, the indexer triggers a non-blocking background re-index of the file.); test_ch06_nfr_rag_02_* for NFR-RAG-02 (FTS5 index size shall not exceed 1.5x the raw Markdown corpus size.)",
+    "dependencies": [
+      "MC-RAG-02"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-03] TESTS:indexer\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_002_*\n# SPEC: for SRS-412-06-FR-002 (All knowledge documents shall be indexed in the SQLite FTS5 database\n# SPEC: (`knowledge_index.db`) using BM25 relevance scoring.); test_ch06_fr_008_* for SRS-412-06-FR-008\n# SPEC: (The FTS5 indexer shall support both incremental document updates and atomic full re-indexing.);\n# SPEC: test_ch06_fts5_index_desynchronization_* for FAILURE:FTS5 Index Desynchronization (If document\n# SPEC: hash differs from indexed hash, the indexer triggers a non-blocking background re-index of the\n# SPEC: file.); test_ch06_nfr_rag_02_* for NFR-RAG-02 (FTS5 index size shall not exceed 1.5x the raw\n# SPEC: Markdown corpus size.)\n# tests/test_ch06_dual_wiki_rag.py:131 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:132 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:133 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:134 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:135 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:136 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:137 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:138 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:139 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:140 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:141 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:142 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:143 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:144 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:145 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:146 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:147 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:148 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:149 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:150 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:151 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:152 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:153 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:154 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:155 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:156 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:157 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:158 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:159 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:160 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:161 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:162 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:163 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:164 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:165 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:166 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:167 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:168 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:169 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:170 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:171 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:172 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:173 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:174 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:175 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:176 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:177 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:178 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:179 [MC-RAG-03]\n# tests/test_ch06_dual_wiki_rag.py:180 [MC-RAG-03]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-002",
+        "SRS-412-06-FR-008",
+        "FAILURE:FTS5 Index Desynchronization",
+        "NFR-RAG-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-04",
+    "title": "Author query_knowledge_index and 10k-Section Latency Tests",
+    "domain": "dual_wiki_rag",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "chunk_start": 181,
+    "chunk_end": 240,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_query_knowledge_index_* for INTERFACE:query_knowledge_index (query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]].); test_ch06_nfr_rag_01_* for NFR-RAG-01 (Average search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.)",
+    "dependencies": [
+      "MC-RAG-03"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-04] TESTS:retrieval\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects):\n# SPEC: test_ch06_query_knowledge_index_* for INTERFACE:query_knowledge_index\n# SPEC: (query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str,\n# SPEC: Any]].); test_ch06_nfr_rag_01_* for NFR-RAG-01 (Average search query execution time over 10,000\n# SPEC: indexed sections shall be less than 5 milliseconds.)\n# tests/test_ch06_dual_wiki_rag.py:188 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:189 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:190 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:191 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:192 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:193 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:194 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:195 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:196 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:197 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:198 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:199 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:200 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:201 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:202 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:203 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:204 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:205 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:206 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:207 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:208 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:209 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:210 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:211 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:212 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:213 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:214 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:215 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:216 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:217 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:218 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:219 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:220 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:221 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:222 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:223 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:224 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:225 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:226 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:227 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:228 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:229 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:230 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:231 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:232 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:233 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:234 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:235 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:236 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:237 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:238 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:239 [MC-RAG-04]\n# tests/test_ch06_dual_wiki_rag.py:240 [MC-RAG-04]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "INTERFACE:query_knowledge_index",
+        "NFR-RAG-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-05",
+    "title": "Author cochem-knowledge-mcp Tool and Memory Ceiling Tests",
+    "domain": "dual_wiki_rag",
+    "target_file": "tests/test_ch06_dual_wiki_rag.py",
+    "chunk_start": 241,
+    "chunk_end": 300,
+    "line_delta": 60,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_003_* for SRS-412-06-FR-003 (The knowledge retrieval service shall provide sub-millisecond (<5ms) text searches via `cochem-knowledge-mcp`.); test_ch06_nfr_rag_03_* for NFR-RAG-03 (Memory consumption of the `cochem-knowledge-mcp` daemon shall remain below 64 MB.)",
+    "dependencies": [
+      "MC-RAG-04"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch06_dual_wiki_rag.py>>>\n# [MC-RAG-05] TESTS:server\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: SQLite FTS5 databases and Markdown files under tmp_path; no mock objects): test_ch06_fr_003_*\n# SPEC: for SRS-412-06-FR-003 (The knowledge retrieval service shall provide sub-millisecond (<5ms) text\n# SPEC: searches via `cochem-knowledge-mcp`.); test_ch06_nfr_rag_03_* for NFR-RAG-03 (Memory consumption\n# SPEC: of the `cochem-knowledge-mcp` daemon shall remain below 64 MB.)\n# tests/test_ch06_dual_wiki_rag.py:247 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:248 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:249 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:250 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:251 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:252 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:253 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:254 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:255 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:256 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:257 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:258 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:259 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:260 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:261 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:262 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:263 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:264 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:265 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:266 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:267 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:268 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:269 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:270 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:271 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:272 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:273 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:274 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:275 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:276 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:277 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:278 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:279 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:280 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:281 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:282 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:283 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:284 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:285 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:286 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:287 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:288 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:289 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:290 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:291 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:292 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:293 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:294 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:295 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:296 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:297 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:298 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:299 [MC-RAG-05]\n# tests/test_ch06_dual_wiki_rag.py:300 [MC-RAG-05]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-003",
+        "NFR-RAG-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-06",
+    "title": "Implement .sources/ and wiki/ Dual Root Discovery",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/corpus.py",
+    "chunk_start": 1,
+    "chunk_end": 45,
+    "line_delta": 45,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-06-FR-001: The system shall maintain permanent reference knowledge in `.sources/` and live ratified specifications in `wiki/`. Neither .sources/ nor v4.1.2_manifest.json exists in the v4.1.2 tree today: a missing root must raise a typed error, never be created or skipped silently.",
+    "dependencies": [
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-06] SRS-412-06-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-06-FR-001: The system shall maintain permanent reference knowledge in `.sources/` and\n# SPEC: live ratified specifications in `wiki/`. Neither .sources/ nor v4.1.2_manifest.json exists in\n# SPEC: the v4.1.2 tree today: a missing root must raise a typed error, never be created or skipped\n# SPEC: silently.\n# src/cochem/knowledge/corpus.py:7 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:8 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:9 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:10 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:11 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:12 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:13 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:14 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:15 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:16 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:17 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:18 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:19 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:20 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:21 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:22 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:23 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:24 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:25 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:26 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:27 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:28 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:29 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:30 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:31 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:32 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:33 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:34 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:35 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:36 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:37 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:38 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:39 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:40 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:41 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:42 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:43 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:44 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:45 [MC-RAG-06]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-07",
+    "title": "Implement Lossless UTF-8 Read and Section Splitter",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/corpus.py",
+    "chunk_start": 46,
+    "chunk_end": 90,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-007: Scientific notation, quantum formulas, and Greek characters (`\u03a8(r)`, `\u0394G\u00b0`, `kJ\u00b7mol\u207b\u00b9`) shall be preserved losslessly in UTF-8. Read with encoding='utf-8' (no errors='ignore'); split sections on Markdown headings. Traceability test: test_f05_srs_handles_unicode_and_scientific_formula_symbols (tests/test_stage1_srs_dag.py).",
+    "dependencies": [
+      "MC-RAG-06",
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_007\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-07] SRS-412-06-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-007:\n# SPEC: Scientific notation, quantum formulas, and Greek characters (`\u03a8(r)`, `\u0394G\u00b0`, `kJ\u00b7mol\u207b\u00b9`) shall be\n# SPEC: preserved losslessly in UTF-8. Read with encoding='utf-8' (no errors='ignore'); split sections\n# SPEC: on Markdown headings. Traceability test:\n# SPEC: test_f05_srs_handles_unicode_and_scientific_formula_symbols (tests/test_stage1_srs_dag.py).\n# src/cochem/knowledge/corpus.py:52 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:53 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:54 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:55 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:56 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:57 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:58 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:59 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:60 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:61 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:62 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:63 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:64 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:65 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:66 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:67 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:68 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:69 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:70 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:71 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:72 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:73 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:74 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:75 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:76 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:77 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:78 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:79 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:80 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:81 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:82 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:83 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:84 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:85 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:86 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:87 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:88 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:89 [MC-RAG-07]\n# src/cochem/knowledge/corpus.py:90 [MC-RAG-07]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-007"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-08",
+    "title": "Implement Relative Markdown Link Validator",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/corpus.py",
+    "chunk_start": 91,
+    "chunk_end": 135,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-004: All relative Markdown links across wiki chapters shall be programmatically validated with 0 broken cross-references. Traceability test: test_f05_srs_detects_broken_relative_links_between_chapters (tests/test_stage1_srs_dag.py).",
+    "dependencies": [
+      "MC-RAG-07",
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_004\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-08] SRS-412-06-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-004: All\n# SPEC: relative Markdown links across wiki chapters shall be programmatically validated with 0 broken\n# SPEC: cross-references. Traceability test: test_f05_srs_detects_broken_relative_links_between_chapters\n# SPEC: (tests/test_stage1_srs_dag.py).\n# src/cochem/knowledge/corpus.py:96 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:97 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:98 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:99 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:100 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:101 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:102 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:103 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:104 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:105 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:106 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:107 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:108 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:109 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:110 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:111 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:112 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:113 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:114 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:115 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:116 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:117 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:118 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:119 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:120 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:121 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:122 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:123 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:124 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:125 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:126 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:127 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:128 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:129 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:130 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:131 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:132 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:133 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:134 [MC-RAG-08]\n# src/cochem/knowledge/corpus.py:135 [MC-RAG-08]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-09",
+    "title": "Implement 400-Line Chapter Length Gate",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/corpus.py",
+    "chunk_start": 136,
+    "chunk_end": 180,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-005: Every SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines. Traceability test: test_f05_srs_chapters_strictly_less_than_400_lines (tests/test_stage1_srs_dag.py).",
+    "dependencies": [
+      "MC-RAG-08",
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_005\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-09] SRS-412-06-FR-005\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-005: Every\n# SPEC: SRS and wiki chapter document shall strictly enforce a maximum length limit of <= 400 lines.\n# SPEC: Traceability test: test_f05_srs_chapters_strictly_less_than_400_lines\n# SPEC: (tests/test_stage1_srs_dag.py).\n# src/cochem/knowledge/corpus.py:141 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:142 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:143 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:144 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:145 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:146 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:147 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:148 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:149 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:150 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:151 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:152 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:153 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:154 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:155 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:156 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:157 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:158 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:159 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:160 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:161 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:162 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:163 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:164 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:165 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:166 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:167 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:168 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:169 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:170 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:171 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:172 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:173 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:174 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:175 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:176 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:177 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:178 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:179 [MC-RAG-09]\n# src/cochem/knowledge/corpus.py:180 [MC-RAG-09]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-005"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-10",
+    "title": "Implement Manifest Document Catalog Sync Check",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/corpus.py",
+    "chunk_start": 181,
+    "chunk_end": 225,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-006: The knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`. v4.1.2_manifest.json does not exist yet; report its absence as a sync failure rather than writing a manifest from this chunk.",
+    "dependencies": [
+      "MC-RAG-09",
+      "MC-RAG-01"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_006\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-10] SRS-412-06-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-006: The\n# SPEC: knowledge base structure and document catalog shall be synchronized with `v4.1.2_manifest.json`.\n# SPEC: v4.1.2_manifest.json does not exist yet; report its absence as a sync failure rather than\n# SPEC: writing a manifest from this chunk.\n# src/cochem/knowledge/corpus.py:186 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:187 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:188 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:189 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:190 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:191 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:192 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:193 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:194 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:195 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:196 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:197 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:198 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:199 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:200 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:201 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:202 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:203 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:204 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:205 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:206 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:207 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:208 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:209 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:210 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:211 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:212 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:213 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:214 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:215 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:216 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:217 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:218 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:219 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:220 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:221 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:222 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:223 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:224 [MC-RAG-10]\n# src/cochem/knowledge/corpus.py:225 [MC-RAG-10]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-006"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-11",
+    "title": "Implement documents Table DDL and ensure_schema",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 1,
+    "chunk_end": 45,
+    "line_delta": 45,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the documents CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; doc_path TEXT UNIQUE NOT NULL; title TEXT NOT NULL; line_count INTEGER NOT NULL; sha256 TEXT NOT NULL; updated_at INTEGER DEFAULT (strftime('%s', 'now'))",
+    "dependencies": [
+      "MC-RAG-02"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"documents\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-11] DATA_MODEL:documents\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: documents CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it.\n# SPEC: Columns: id INTEGER PRIMARY KEY AUTOINCREMENT; doc_path TEXT UNIQUE NOT NULL; title TEXT NOT\n# SPEC: NULL; line_count INTEGER NOT NULL; sha256 TEXT NOT NULL; updated_at INTEGER DEFAULT\n# SPEC: (strftime('%s', 'now'))\n# src/cochem/knowledge/indexer.py:7 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:8 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:9 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:10 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:11 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:12 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:13 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:14 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:15 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:16 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:17 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:18 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:19 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:20 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:21 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:22 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:23 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:24 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:25 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:26 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:27 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:28 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:29 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:30 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:31 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:32 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:33 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:34 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:35 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:36 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:37 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:38 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:39 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:40 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:41 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:42 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:43 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:44 [MC-RAG-11]\n# src/cochem/knowledge/indexer.py:45 [MC-RAG-11]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "DATA_MODEL:documents"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-12",
+    "title": "Implement fts_index FTS5 Virtual Table DDL",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 46,
+    "chunk_end": 90,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Define the fts_index CREATE statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: USING fts5: doc_path UNINDEXED; section_title; content; tokenize = 'porter unicode61' (Gap: the live knowledge_index.db holds fts_documents(document_id, title, body, tags, filepath), which tests/test_stage6_activation_mcp.py and tests/test_cross_feature_interactions.py query.) Implement section 7 as written; do not drop or rename fts_documents here.",
+    "dependencies": [
+      "MC-RAG-11",
+      "MC-RAG-02"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fts_index\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-12] DATA_MODEL:fts_index\n# SPEC: Append after the previous chunk without editing earlier lines. Define the fts_index CREATE\n# SPEC: statement verbatim from section 7 and have ensure_schema(conn) execute it. Columns: USING fts5:\n# SPEC: doc_path UNINDEXED; section_title; content; tokenize = 'porter unicode61' (Gap: the live\n# SPEC: knowledge_index.db holds fts_documents(document_id, title, body, tags, filepath), which\n# SPEC: tests/test_stage6_activation_mcp.py and tests/test_cross_feature_interactions.py query.)\n# SPEC: Implement section 7 as written; do not drop or rename fts_documents here.\n# src/cochem/knowledge/indexer.py:53 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:54 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:55 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:56 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:57 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:58 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:59 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:60 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:61 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:62 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:63 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:64 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:65 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:66 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:67 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:68 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:69 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:70 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:71 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:72 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:73 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:74 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:75 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:76 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:77 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:78 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:79 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:80 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:81 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:82 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:83 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:84 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:85 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:86 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:87 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:88 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:89 [MC-RAG-12]\n# src/cochem/knowledge/indexer.py:90 [MC-RAG-12]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "DATA_MODEL:fts_index"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-13",
+    "title": "Implement BM25 Section Indexing of a Document",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 91,
+    "chunk_end": 135,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-002: All knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using BM25 relevance scoring.",
+    "dependencies": [
+      "MC-RAG-12",
+      "MC-RAG-03",
+      "MC-RAG-07"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-13] SRS-412-06-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-002: All\n# SPEC: knowledge documents shall be indexed in the SQLite FTS5 database (`knowledge_index.db`) using\n# SPEC: BM25 relevance scoring.\n# src/cochem/knowledge/indexer.py:95 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:96 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:97 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:98 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:99 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:100 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:101 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:102 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:103 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:104 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:105 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:106 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:107 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:108 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:109 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:110 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:111 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:112 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:113 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:114 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:115 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:116 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:117 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:118 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:119 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:120 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:121 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:122 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:123 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:124 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:125 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:126 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:127 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:128 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:129 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:130 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:131 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:132 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:133 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:134 [MC-RAG-13]\n# src/cochem/knowledge/indexer.py:135 [MC-RAG-13]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-14",
+    "title": "Implement Incremental Update and Atomic Full Re-Index",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 136,
+    "chunk_end": 180,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-008: The FTS5 indexer shall support both incremental document updates and atomic full re-indexing. Atomic full re-index builds a temporary database and os.replace()s it over knowledge_index.db so readers never observe a half-built index.",
+    "dependencies": [
+      "MC-RAG-13",
+      "MC-RAG-03",
+      "MC-RAG-06"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_008\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-14] SRS-412-06-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-008: The\n# SPEC: FTS5 indexer shall support both incremental document updates and atomic full re-indexing. Atomic\n# SPEC: full re-index builds a temporary database and os.replace()s it over knowledge_index.db so\n# SPEC: readers never observe a half-built index.\n# src/cochem/knowledge/indexer.py:141 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:142 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:143 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:144 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:145 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:146 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:147 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:148 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:149 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:150 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:151 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:152 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:153 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:154 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:155 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:156 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:157 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:158 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:159 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:160 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:161 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:162 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:163 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:164 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:165 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:166 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:167 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:168 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:169 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:170 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:171 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:172 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:173 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:174 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:175 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:176 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:177 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:178 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:179 [MC-RAG-14]\n# src/cochem/knowledge/indexer.py:180 [MC-RAG-14]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-008"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-15",
+    "title": "Implement SQLite Header Check and Rebuild",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 181,
+    "chunk_end": 225,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Database File Corruption': Binary header check validates `b\"SQLite format 3\\x00\"`; corrupt file is regenerated from source markdown. Rebuild through the FR-008 atomic full re-index path.",
+    "dependencies": [
+      "MC-RAG-14",
+      "MC-RAG-02"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"database_file_corruption\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-15] FAILURE:Database File Corruption\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Database\n# SPEC: File Corruption': Binary header check validates `b\"SQLite format 3\\x00\"`; corrupt file is\n# SPEC: regenerated from source markdown. Rebuild through the FR-008 atomic full re-index path.\n# src/cochem/knowledge/indexer.py:185 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:186 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:187 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:188 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:189 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:190 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:191 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:192 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:193 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:194 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:195 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:196 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:197 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:198 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:199 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:200 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:201 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:202 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:203 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:204 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:205 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:206 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:207 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:208 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:209 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:210 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:211 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:212 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:213 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:214 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:215 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:216 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:217 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:218 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:219 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:220 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:221 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:222 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:223 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:224 [MC-RAG-15]\n# src/cochem/knowledge/indexer.py:225 [MC-RAG-15]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "FAILURE:Database File Corruption"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-16",
+    "title": "Implement Hash-Drift Background Re-Index",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 226,
+    "chunk_end": 270,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'FTS5 Index Desynchronization': If document hash differs from indexed hash, the indexer triggers a non-blocking background re-index of the file. Compare documents.sha256 against the file on disk; re-index only drifted files.",
+    "dependencies": [
+      "MC-RAG-15",
+      "MC-RAG-03"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fts5_index_desynchronization\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-16] FAILURE:FTS5 Index Desynchronization\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'FTS5\n# SPEC: Index Desynchronization': If document hash differs from indexed hash, the indexer triggers a\n# SPEC: non-blocking background re-index of the file. Compare documents.sha256 against the file on disk;\n# SPEC: re-index only drifted files.\n# src/cochem/knowledge/indexer.py:231 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:232 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:233 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:234 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:235 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:236 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:237 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:238 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:239 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:240 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:241 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:242 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:243 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:244 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:245 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:246 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:247 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:248 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:249 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:250 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:251 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:252 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:253 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:254 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:255 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:256 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:257 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:258 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:259 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:260 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:261 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:262 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:263 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:264 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:265 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:266 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:267 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:268 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:269 [MC-RAG-16]\n# src/cochem/knowledge/indexer.py:270 [MC-RAG-16]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "FAILURE:FTS5 Index Desynchronization"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-17",
+    "title": "Implement 1.5x Index-to-Corpus Size Ratio Probe",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/indexer.py",
+    "chunk_start": 271,
+    "chunk_end": 315,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-02: FTS5 index size shall not exceed 1.5x the raw Markdown corpus size.",
+    "dependencies": [
+      "MC-RAG-16",
+      "MC-RAG-03",
+      "MC-RAG-06"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_02\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/indexer.py>>>\n# [MC-RAG-17] NFR-RAG-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-02: FTS5 index\n# SPEC: size shall not exceed 1.5x the raw Markdown corpus size.\n# src/cochem/knowledge/indexer.py:274 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:275 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:276 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:277 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:278 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:279 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:280 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:281 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:282 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:283 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:284 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:285 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:286 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:287 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:288 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:289 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:290 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:291 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:292 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:293 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:294 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:295 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:296 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:297 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:298 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:299 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:300 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:301 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:302 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:303 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:304 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:305 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:306 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:307 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:308 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:309 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:310 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:311 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:312 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:313 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:314 [MC-RAG-17]\n# src/cochem/knowledge/indexer.py:315 [MC-RAG-17]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "NFR-RAG-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-18",
+    "title": "Implement query_knowledge_index Read-Only BM25 Search",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/server.py",
+    "chunk_start": 1,
+    "chunk_end": 45,
+    "line_delta": 45,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Implement query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]]. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Close the connection on every path (contextlib.closing), which the section 6 reference omits when execute() raises.",
+    "dependencies": [
+      "MC-RAG-04",
+      "MC-RAG-12"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"query_knowledge_index\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-18] INTERFACE:query_knowledge_index\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Implement\n# SPEC: query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]].\n# SPEC: Match the section 6 reference implementation, composed from the helpers defined in earlier\n# SPEC: chunks. Close the connection on every path (contextlib.closing), which the section 6 reference\n# SPEC: omits when execute() raises.\n# src/cochem/knowledge/server.py:7 [MC-RAG-18]\n# src/cochem/knowledge/server.py:8 [MC-RAG-18]\n# src/cochem/knowledge/server.py:9 [MC-RAG-18]\n# src/cochem/knowledge/server.py:10 [MC-RAG-18]\n# src/cochem/knowledge/server.py:11 [MC-RAG-18]\n# src/cochem/knowledge/server.py:12 [MC-RAG-18]\n# src/cochem/knowledge/server.py:13 [MC-RAG-18]\n# src/cochem/knowledge/server.py:14 [MC-RAG-18]\n# src/cochem/knowledge/server.py:15 [MC-RAG-18]\n# src/cochem/knowledge/server.py:16 [MC-RAG-18]\n# src/cochem/knowledge/server.py:17 [MC-RAG-18]\n# src/cochem/knowledge/server.py:18 [MC-RAG-18]\n# src/cochem/knowledge/server.py:19 [MC-RAG-18]\n# src/cochem/knowledge/server.py:20 [MC-RAG-18]\n# src/cochem/knowledge/server.py:21 [MC-RAG-18]\n# src/cochem/knowledge/server.py:22 [MC-RAG-18]\n# src/cochem/knowledge/server.py:23 [MC-RAG-18]\n# src/cochem/knowledge/server.py:24 [MC-RAG-18]\n# src/cochem/knowledge/server.py:25 [MC-RAG-18]\n# src/cochem/knowledge/server.py:26 [MC-RAG-18]\n# src/cochem/knowledge/server.py:27 [MC-RAG-18]\n# src/cochem/knowledge/server.py:28 [MC-RAG-18]\n# src/cochem/knowledge/server.py:29 [MC-RAG-18]\n# src/cochem/knowledge/server.py:30 [MC-RAG-18]\n# src/cochem/knowledge/server.py:31 [MC-RAG-18]\n# src/cochem/knowledge/server.py:32 [MC-RAG-18]\n# src/cochem/knowledge/server.py:33 [MC-RAG-18]\n# src/cochem/knowledge/server.py:34 [MC-RAG-18]\n# src/cochem/knowledge/server.py:35 [MC-RAG-18]\n# src/cochem/knowledge/server.py:36 [MC-RAG-18]\n# src/cochem/knowledge/server.py:37 [MC-RAG-18]\n# src/cochem/knowledge/server.py:38 [MC-RAG-18]\n# src/cochem/knowledge/server.py:39 [MC-RAG-18]\n# src/cochem/knowledge/server.py:40 [MC-RAG-18]\n# src/cochem/knowledge/server.py:41 [MC-RAG-18]\n# src/cochem/knowledge/server.py:42 [MC-RAG-18]\n# src/cochem/knowledge/server.py:43 [MC-RAG-18]\n# src/cochem/knowledge/server.py:44 [MC-RAG-18]\n# src/cochem/knowledge/server.py:45 [MC-RAG-18]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "INTERFACE:query_knowledge_index"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-19",
+    "title": "Implement cochem-knowledge-mcp FastMCP Search Tool",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/server.py",
+    "chunk_start": 46,
+    "chunk_end": 90,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-003: The knowledge retrieval service shall provide sub-millisecond (<5ms) text searches via `cochem-knowledge-mcp`. FR-003 says 'sub-millisecond (<5ms)': the enforceable bound is 5 ms, consistent with NFR-RAG-01. Open the index read-only (mode=ro).",
+    "dependencies": [
+      "MC-RAG-18",
+      "MC-RAG-05"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_003\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-19] SRS-412-06-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-003: The\n# SPEC: knowledge retrieval service shall provide sub-millisecond (<5ms) text searches via `cochem-\n# SPEC: knowledge-mcp`. FR-003 says 'sub-millisecond (<5ms)': the enforceable bound is 5 ms, consistent\n# SPEC: with NFR-RAG-01. Open the index read-only (mode=ro).\n# src/cochem/knowledge/server.py:51 [MC-RAG-19]\n# src/cochem/knowledge/server.py:52 [MC-RAG-19]\n# src/cochem/knowledge/server.py:53 [MC-RAG-19]\n# src/cochem/knowledge/server.py:54 [MC-RAG-19]\n# src/cochem/knowledge/server.py:55 [MC-RAG-19]\n# src/cochem/knowledge/server.py:56 [MC-RAG-19]\n# src/cochem/knowledge/server.py:57 [MC-RAG-19]\n# src/cochem/knowledge/server.py:58 [MC-RAG-19]\n# src/cochem/knowledge/server.py:59 [MC-RAG-19]\n# src/cochem/knowledge/server.py:60 [MC-RAG-19]\n# src/cochem/knowledge/server.py:61 [MC-RAG-19]\n# src/cochem/knowledge/server.py:62 [MC-RAG-19]\n# src/cochem/knowledge/server.py:63 [MC-RAG-19]\n# src/cochem/knowledge/server.py:64 [MC-RAG-19]\n# src/cochem/knowledge/server.py:65 [MC-RAG-19]\n# src/cochem/knowledge/server.py:66 [MC-RAG-19]\n# src/cochem/knowledge/server.py:67 [MC-RAG-19]\n# src/cochem/knowledge/server.py:68 [MC-RAG-19]\n# src/cochem/knowledge/server.py:69 [MC-RAG-19]\n# src/cochem/knowledge/server.py:70 [MC-RAG-19]\n# src/cochem/knowledge/server.py:71 [MC-RAG-19]\n# src/cochem/knowledge/server.py:72 [MC-RAG-19]\n# src/cochem/knowledge/server.py:73 [MC-RAG-19]\n# src/cochem/knowledge/server.py:74 [MC-RAG-19]\n# src/cochem/knowledge/server.py:75 [MC-RAG-19]\n# src/cochem/knowledge/server.py:76 [MC-RAG-19]\n# src/cochem/knowledge/server.py:77 [MC-RAG-19]\n# src/cochem/knowledge/server.py:78 [MC-RAG-19]\n# src/cochem/knowledge/server.py:79 [MC-RAG-19]\n# src/cochem/knowledge/server.py:80 [MC-RAG-19]\n# src/cochem/knowledge/server.py:81 [MC-RAG-19]\n# src/cochem/knowledge/server.py:82 [MC-RAG-19]\n# src/cochem/knowledge/server.py:83 [MC-RAG-19]\n# src/cochem/knowledge/server.py:84 [MC-RAG-19]\n# src/cochem/knowledge/server.py:85 [MC-RAG-19]\n# src/cochem/knowledge/server.py:86 [MC-RAG-19]\n# src/cochem/knowledge/server.py:87 [MC-RAG-19]\n# src/cochem/knowledge/server.py:88 [MC-RAG-19]\n# src/cochem/knowledge/server.py:89 [MC-RAG-19]\n# src/cochem/knowledge/server.py:90 [MC-RAG-19]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "SRS-412-06-FR-003"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-20",
+    "title": "Implement 10k-Section Query Latency Probe",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/server.py",
+    "chunk_start": 91,
+    "chunk_end": 135,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-01: Average search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.",
+    "dependencies": [
+      "MC-RAG-19",
+      "MC-RAG-04",
+      "MC-RAG-14"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_01\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-20] NFR-RAG-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-01: Average\n# SPEC: search query execution time over 10,000 indexed sections shall be less than 5 milliseconds.\n# src/cochem/knowledge/server.py:94 [MC-RAG-20]\n# src/cochem/knowledge/server.py:95 [MC-RAG-20]\n# src/cochem/knowledge/server.py:96 [MC-RAG-20]\n# src/cochem/knowledge/server.py:97 [MC-RAG-20]\n# src/cochem/knowledge/server.py:98 [MC-RAG-20]\n# src/cochem/knowledge/server.py:99 [MC-RAG-20]\n# src/cochem/knowledge/server.py:100 [MC-RAG-20]\n# src/cochem/knowledge/server.py:101 [MC-RAG-20]\n# src/cochem/knowledge/server.py:102 [MC-RAG-20]\n# src/cochem/knowledge/server.py:103 [MC-RAG-20]\n# src/cochem/knowledge/server.py:104 [MC-RAG-20]\n# src/cochem/knowledge/server.py:105 [MC-RAG-20]\n# src/cochem/knowledge/server.py:106 [MC-RAG-20]\n# src/cochem/knowledge/server.py:107 [MC-RAG-20]\n# src/cochem/knowledge/server.py:108 [MC-RAG-20]\n# src/cochem/knowledge/server.py:109 [MC-RAG-20]\n# src/cochem/knowledge/server.py:110 [MC-RAG-20]\n# src/cochem/knowledge/server.py:111 [MC-RAG-20]\n# src/cochem/knowledge/server.py:112 [MC-RAG-20]\n# src/cochem/knowledge/server.py:113 [MC-RAG-20]\n# src/cochem/knowledge/server.py:114 [MC-RAG-20]\n# src/cochem/knowledge/server.py:115 [MC-RAG-20]\n# src/cochem/knowledge/server.py:116 [MC-RAG-20]\n# src/cochem/knowledge/server.py:117 [MC-RAG-20]\n# src/cochem/knowledge/server.py:118 [MC-RAG-20]\n# src/cochem/knowledge/server.py:119 [MC-RAG-20]\n# src/cochem/knowledge/server.py:120 [MC-RAG-20]\n# src/cochem/knowledge/server.py:121 [MC-RAG-20]\n# src/cochem/knowledge/server.py:122 [MC-RAG-20]\n# src/cochem/knowledge/server.py:123 [MC-RAG-20]\n# src/cochem/knowledge/server.py:124 [MC-RAG-20]\n# src/cochem/knowledge/server.py:125 [MC-RAG-20]\n# src/cochem/knowledge/server.py:126 [MC-RAG-20]\n# src/cochem/knowledge/server.py:127 [MC-RAG-20]\n# src/cochem/knowledge/server.py:128 [MC-RAG-20]\n# src/cochem/knowledge/server.py:129 [MC-RAG-20]\n# src/cochem/knowledge/server.py:130 [MC-RAG-20]\n# src/cochem/knowledge/server.py:131 [MC-RAG-20]\n# src/cochem/knowledge/server.py:132 [MC-RAG-20]\n# src/cochem/knowledge/server.py:133 [MC-RAG-20]\n# src/cochem/knowledge/server.py:134 [MC-RAG-20]\n# src/cochem/knowledge/server.py:135 [MC-RAG-20]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "NFR-RAG-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-RAG-21",
+    "title": "Implement 64 MB Daemon Memory Ceiling Probe",
+    "domain": "dual_wiki_rag",
+    "target_file": "src/cochem/knowledge/server.py",
+    "chunk_start": 136,
+    "chunk_end": 180,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-03: Memory consumption of the `cochem-knowledge-mcp` daemon shall remain below 64 MB. Measure the daemon's resident set size in a real subprocess, not the test process.",
+    "dependencies": [
+      "MC-RAG-20",
+      "MC-RAG-05"
+    ],
+    "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"nfr_rag_03\"",
+    "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-21] NFR-RAG-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-RAG-03: Memory\n# SPEC: consumption of the `cochem-knowledge-mcp` daemon shall remain below 64 MB. Measure the daemon's\n# SPEC: resident set size in a real subprocess, not the test process.\n# src/cochem/knowledge/server.py:140 [MC-RAG-21]\n# src/cochem/knowledge/server.py:141 [MC-RAG-21]\n# src/cochem/knowledge/server.py:142 [MC-RAG-21]\n# src/cochem/knowledge/server.py:143 [MC-RAG-21]\n# src/cochem/knowledge/server.py:144 [MC-RAG-21]\n# src/cochem/knowledge/server.py:145 [MC-RAG-21]\n# src/cochem/knowledge/server.py:146 [MC-RAG-21]\n# src/cochem/knowledge/server.py:147 [MC-RAG-21]\n# src/cochem/knowledge/server.py:148 [MC-RAG-21]\n# src/cochem/knowledge/server.py:149 [MC-RAG-21]\n# src/cochem/knowledge/server.py:150 [MC-RAG-21]\n# src/cochem/knowledge/server.py:151 [MC-RAG-21]\n# src/cochem/knowledge/server.py:152 [MC-RAG-21]\n# src/cochem/knowledge/server.py:153 [MC-RAG-21]\n# src/cochem/knowledge/server.py:154 [MC-RAG-21]\n# src/cochem/knowledge/server.py:155 [MC-RAG-21]\n# src/cochem/knowledge/server.py:156 [MC-RAG-21]\n# src/cochem/knowledge/server.py:157 [MC-RAG-21]\n# src/cochem/knowledge/server.py:158 [MC-RAG-21]\n# src/cochem/knowledge/server.py:159 [MC-RAG-21]\n# src/cochem/knowledge/server.py:160 [MC-RAG-21]\n# src/cochem/knowledge/server.py:161 [MC-RAG-21]\n# src/cochem/knowledge/server.py:162 [MC-RAG-21]\n# src/cochem/knowledge/server.py:163 [MC-RAG-21]\n# src/cochem/knowledge/server.py:164 [MC-RAG-21]\n# src/cochem/knowledge/server.py:165 [MC-RAG-21]\n# src/cochem/knowledge/server.py:166 [MC-RAG-21]\n# src/cochem/knowledge/server.py:167 [MC-RAG-21]\n# src/cochem/knowledge/server.py:168 [MC-RAG-21]\n# src/cochem/knowledge/server.py:169 [MC-RAG-21]\n# src/cochem/knowledge/server.py:170 [MC-RAG-21]\n# src/cochem/knowledge/server.py:171 [MC-RAG-21]\n# src/cochem/knowledge/server.py:172 [MC-RAG-21]\n# src/cochem/knowledge/server.py:173 [MC-RAG-21]\n# src/cochem/knowledge/server.py:174 [MC-RAG-21]\n# src/cochem/knowledge/server.py:175 [MC-RAG-21]\n# src/cochem/knowledge/server.py:176 [MC-RAG-21]\n# src/cochem/knowledge/server.py:177 [MC-RAG-21]\n# src/cochem/knowledge/server.py:178 [MC-RAG-21]\n# src/cochem/knowledge/server.py:179 [MC-RAG-21]\n# src/cochem/knowledge/server.py:180 [MC-RAG-21]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-06",
+      "items": [
+        "NFR-RAG-03"
+      ]
+    }
+  }
+]

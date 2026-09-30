@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-DSP-01",
+  "title": "Implement DSPPluginBase Abstract Interface (SRS section 6) alongside IDomainPipeline",
+  "domain": "dsp_framework",
+  "target_file": "src/cochem/dsp/base.py",
+  "chunk_start": 1,
+  "chunk_end": 25,
+  "line_delta": 25,
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "instructions": "SRS-412-07-FR-005 states: 'All domain pipelines shall implement the standardized `DSPPluginBase` abstract class with lifecycle hooks.' base.py currently defines only IDomainPipeline(abc.ABC) with validate/execute/audit, and no class named DSPPluginBase exists anywhere in src. Add class DSPPluginBase(abc.ABC) exactly as specified in SRS section 6: __init__(self, domain_name: str, memory_cap_mb: int = 4096) storing self.domain_name and self.memory_cap_mb (raise ValueError if domain_name is empty or memory_cap_mb <= 0), plus abstract methods validate_task_payload(self, payload: dict[str, Any]) -> bool, execute_workflow_stage(self, task_id: str, context: dict[str, Any]) -> dict[str, Any] and run_domain_audit(self, artifact_path: str) -> bool. Add concrete bridge methods validate(payload), execute(payload) and audit(result) on DSPPluginBase so DomainRouter and worker_daemon can dispatch DSPPluginBase subclasses unchanged. validate delegates to validate_task_payload; execute calls execute_workflow_stage(str(payload['task_id']), payload) and raises KeyError when task_id is missing; audit returns False unless result has a non-empty str 'artifact_path', and otherwise returns run_domain_audit(result['artifact_path']). Keep IDomainPipeline in this file with its current three abstract methods, because router.py:6, forge/press/pedagogy orchestrator.py, toolkit/scaffold.py templates and tests/test_stage7_pipeline_daemons.py:30 import it. Migrating the orchestrators onto DSPPluginBase belongs to separate tasks outside this chunk. Abstract bodies stay as docstring plus '...', which is the ABC convention; the concrete bridge methods must contain real logic, with no pass, no NotImplError and no mock objects. Verification must observe that the existing registry and worker tests still pass. No test yet covers the SRS section 9 obligation 'Unit test verifies DSPPluginBase subclasses implement required abstract methods' (instantiating an incomplete subclass must raise TypeError), so that test must be added under a separate test task.",
+  "dependencies": [
+    "MC-HW-69"
+  ],
+  "verification_command": "pytest tests/test_stage7_pipeline_daemons.py -k \"orchestrators_registered_under_canonical_dsp_names or worker_completes_job_and_clears_lease or execute_exception_requeues_with_backoff_then_blocks\"",
+  "srs_trace": {
+    "document_id": "SRS-412-07",
+    "items": [
+      "SRS-412-07-FR-005",
+      "TEST:DSPPluginBase abstract methods"
+    ]
+  },
+  "provenance": "regenerated 2026-09-29 from SRS ch07 and the physical file; supersedes the one-line payload in job_board.db, which is unchanged",
+  "delimited_protocol": "<<<FILE: src/cochem/dsp/base.py>>>\n# [MC-DSP-01] SRS-412-07-FR-005, TEST:DSPPluginBase abstract methods\n# RANGE: src/cochem/dsp/base.py:1-19\n# SPEC: SRS-412-07-FR-005 states: 'All domain pipelines shall implement the standardized `DSPPluginBase`\n# SPEC: abstract class with lifecycle hooks.' base.py currently defines only IDomainPipeline(abc.ABC)\n# SPEC: with validate/execute/audit, and no class named DSPPluginBase exists anywhere in src. Add class\n# SPEC: DSPPluginBase(abc.ABC) exactly as specified in SRS section 6: __init__(self, domain_name: str,\n# SPEC: memory_cap_mb: int = 4096) storing self.domain_name and self.memory_cap_mb (raise ValueError if\n# SPEC: domain_name is empty or memory_cap_mb <= 0), plus abstract methods validate_task_payload(self,\n# SPEC: payload: dict[str, Any]) -> bool, execute_workflow_stage(self, task_id: str, context: dict[str,\n# SPEC: Any]) -> dict[str, Any] and run_domain_audit(self, artifact_path: str) -> bool. Add concrete\n# SPEC: bridge methods validate(payload), execute(payload) and audit(result) on DSPPluginBase so\n# SPEC: DomainRouter and worker_daemon can dispatch DSPPluginBase subclasses unchanged. validate\n# SPEC: delegates to validate_task_payload; execute calls\n# SPEC: execute_workflow_stage(str(payload['task_id']), payload) and raises KeyError when task_id is\n# SPEC: missing; audit returns False unless result has a non-empty str 'artifact_path', and otherwise\n# SPEC: returns run_domain_audit(result['artifact_path']). Keep IDomainPipeline in this file with its\n# SPEC: current three abstract methods, because router.py:6, forge/press/pedagogy orchestrator.py,\n# SPEC: toolkit/scaffold.py templates and tests/test_stage7_pipeline_daemons.py:30 import it. Migrating\n# SPEC: the orchestrators onto DSPPluginBase belongs to separate tasks outside this chunk. Abstract\n# SPEC: bodies stay as docstring plus '...', which is the ABC convention; the concrete bridge methods\n# SPEC: must contain real logic, with no pass, no NotImplError and no mock objects. Verification\n# SPEC: must observe that the existing registry and worker tests still pass. No test yet covers the SRS\n# SPEC: section 9 obligation 'Unit test verifies DSPPluginBase subclasses implement required abstract\n# SPEC: methods' (instantiating an incomplete subclass must raise TypeError), so that test must be added\n# SPEC: under a separate test task.\n<<<END FILE>>>"
+}

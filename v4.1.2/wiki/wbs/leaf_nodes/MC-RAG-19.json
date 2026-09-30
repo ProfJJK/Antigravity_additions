@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-19",
+  "title": "Implement cochem-knowledge-mcp FastMCP Search Tool",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/server.py",
+  "chunk_start": 46,
+  "chunk_end": 90,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-003: The knowledge retrieval service shall provide sub-millisecond (<5ms) text searches via `cochem-knowledge-mcp`. FR-003 says 'sub-millisecond (<5ms)': the enforceable bound is 5 ms, consistent with NFR-RAG-01. Open the index read-only (mode=ro).",
+  "dependencies": [
+    "MC-RAG-18",
+    "MC-RAG-05"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_003\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-19] SRS-412-06-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-06-FR-003: The\n# SPEC: knowledge retrieval service shall provide sub-millisecond (<5ms) text searches via `cochem-\n# SPEC: knowledge-mcp`. FR-003 says 'sub-millisecond (<5ms)': the enforceable bound is 5 ms, consistent\n# SPEC: with NFR-RAG-01. Open the index read-only (mode=ro).\n# src/cochem/knowledge/server.py:51 [MC-RAG-19]\n# src/cochem/knowledge/server.py:52 [MC-RAG-19]\n# src/cochem/knowledge/server.py:53 [MC-RAG-19]\n# src/cochem/knowledge/server.py:54 [MC-RAG-19]\n# src/cochem/knowledge/server.py:55 [MC-RAG-19]\n# src/cochem/knowledge/server.py:56 [MC-RAG-19]\n# src/cochem/knowledge/server.py:57 [MC-RAG-19]\n# src/cochem/knowledge/server.py:58 [MC-RAG-19]\n# src/cochem/knowledge/server.py:59 [MC-RAG-19]\n# src/cochem/knowledge/server.py:60 [MC-RAG-19]\n# src/cochem/knowledge/server.py:61 [MC-RAG-19]\n# src/cochem/knowledge/server.py:62 [MC-RAG-19]\n# src/cochem/knowledge/server.py:63 [MC-RAG-19]\n# src/cochem/knowledge/server.py:64 [MC-RAG-19]\n# src/cochem/knowledge/server.py:65 [MC-RAG-19]\n# src/cochem/knowledge/server.py:66 [MC-RAG-19]\n# src/cochem/knowledge/server.py:67 [MC-RAG-19]\n# src/cochem/knowledge/server.py:68 [MC-RAG-19]\n# src/cochem/knowledge/server.py:69 [MC-RAG-19]\n# src/cochem/knowledge/server.py:70 [MC-RAG-19]\n# src/cochem/knowledge/server.py:71 [MC-RAG-19]\n# src/cochem/knowledge/server.py:72 [MC-RAG-19]\n# src/cochem/knowledge/server.py:73 [MC-RAG-19]\n# src/cochem/knowledge/server.py:74 [MC-RAG-19]\n# src/cochem/knowledge/server.py:75 [MC-RAG-19]\n# src/cochem/knowledge/server.py:76 [MC-RAG-19]\n# src/cochem/knowledge/server.py:77 [MC-RAG-19]\n# src/cochem/knowledge/server.py:78 [MC-RAG-19]\n# src/cochem/knowledge/server.py:79 [MC-RAG-19]\n# src/cochem/knowledge/server.py:80 [MC-RAG-19]\n# src/cochem/knowledge/server.py:81 [MC-RAG-19]\n# src/cochem/knowledge/server.py:82 [MC-RAG-19]\n# src/cochem/knowledge/server.py:83 [MC-RAG-19]\n# src/cochem/knowledge/server.py:84 [MC-RAG-19]\n# src/cochem/knowledge/server.py:85 [MC-RAG-19]\n# src/cochem/knowledge/server.py:86 [MC-RAG-19]\n# src/cochem/knowledge/server.py:87 [MC-RAG-19]\n# src/cochem/knowledge/server.py:88 [MC-RAG-19]\n# src/cochem/knowledge/server.py:89 [MC-RAG-19]\n# src/cochem/knowledge/server.py:90 [MC-RAG-19]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-003"
+    ]
+  }
+}

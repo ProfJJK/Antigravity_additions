@@ -1,0 +1,34 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-22",
+  "title": "Implement 4-Matrix Diagnostic Engine 30-Second Loop",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 556,
+  "chunk_end": 605,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-002: The Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop. Schedule on time.monotonic() so a slow cycle does not drift the 30 s cadence; a matrix exception is recorded as that matrix's failure, not a loop crash.",
+  "dependencies": [
+    "MC-SRE-21",
+    "MC-SRE-04",
+    "MC-SRE-12",
+    "MC-SRE-13",
+    "MC-SRE-15",
+    "MC-SRE-16",
+    "MC-SRE-17"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_002\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-22] SRS-412-08-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-002: The\n# SPEC: Watchdog shall execute an exhaustive 4-Matrix Diagnostic Engine on a continuous 30-second loop.\n# SPEC: Schedule on time.monotonic() so a slow cycle does not drift the 30 s cadence; a matrix exception\n# SPEC: is recorded as that matrix's failure, not a loop crash.\n# src/cochem/watchdog/watchdog_sre.py:561 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:562 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:563 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:564 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:565 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:566 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:567 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:568 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:569 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:570 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:571 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:572 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:573 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:574 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:575 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:576 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:577 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:578 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:579 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:580 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:581 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:582 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:583 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:584 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:585 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:586 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:587 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:588 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:589 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:590 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:591 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:592 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:593 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:594 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:595 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:596 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:597 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:598 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:599 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:600 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:601 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:602 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:603 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:604 [MC-SRE-22]\n# src/cochem/watchdog/watchdog_sre.py:605 [MC-SRE-22]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-002"
+    ]
+  }
+}

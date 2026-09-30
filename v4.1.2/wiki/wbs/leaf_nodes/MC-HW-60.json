@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-60",
+  "title": "Implement FastMCP Error Handling and Input Validation",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/mcp_server.py",
+  "chunk_start": 200,
+  "chunk_end": 240,
+  "line_delta": 41,
+  "instructions": "Implement JSON-RPC error mapping and argument validation guards.",
+  "dependencies": [
+    "MC-HW-59"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/mcp_server.py>>>\n# Code context line 200 for MC-HW-60\n# Code context line 201 for MC-HW-60\n# Code context line 202 for MC-HW-60\n# Code context line 203 for MC-HW-60\n# Code context line 204 for MC-HW-60\n# Code context line 205 for MC-HW-60\n# Code context line 206 for MC-HW-60\n# Code context line 207 for MC-HW-60\n# Code context line 208 for MC-HW-60\n# Code context line 209 for MC-HW-60\n# Code context line 210 for MC-HW-60\n# Code context line 211 for MC-HW-60\n# Code context line 212 for MC-HW-60\n# Code context line 213 for MC-HW-60\n# Code context line 214 for MC-HW-60\n# Code context line 215 for MC-HW-60\n# Code context line 216 for MC-HW-60\n# Code context line 217 for MC-HW-60\n# Code context line 218 for MC-HW-60\n# Code context line 219 for MC-HW-60\n# Code context line 220 for MC-HW-60\n# Code context line 221 for MC-HW-60\n# Code context line 222 for MC-HW-60\n# Code context line 223 for MC-HW-60\n# Code context line 224 for MC-HW-60\n# Code context line 225 for MC-HW-60\n# Code context line 226 for MC-HW-60\n# Code context line 227 for MC-HW-60\n# Code context line 228 for MC-HW-60\n# Code context line 229 for MC-HW-60\n# Code context line 230 for MC-HW-60\n# Code context line 231 for MC-HW-60\n# Code context line 232 for MC-HW-60\n# Code context line 233 for MC-HW-60\n# Code context line 234 for MC-HW-60\n# Code context line 235 for MC-HW-60\n# Code context line 236 for MC-HW-60\n# Code context line 237 for MC-HW-60\n# Code context line 238 for MC-HW-60\n# Code context line 239 for MC-HW-60\n# Code context line 240 for MC-HW-60\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

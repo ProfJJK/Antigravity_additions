@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-09",
+  "title": "Implement query_only Guard and Write-Lock Refusal",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 41,
+  "chunk_end": 80,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-02: The Watchdog shall never modify or acquire write locks on `job_board.db`. Set PRAGMA query_only=ON on every connection and never run BEGIN IMMEDIATE/EXCLUSIVE; attempted writes must surface sqlite3.OperationalError, not be swallowed.",
+  "dependencies": [
+    "MC-SRE-08",
+    "MC-SRE-01"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"nfr_sre_02\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-09] NFR-SRE-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-SRE-02: The Watchdog\n# SPEC: shall never modify or acquire write locks on `job_board.db`. Set PRAGMA query_only=ON on every\n# SPEC: connection and never run BEGIN IMMEDIATE/EXCLUSIVE; attempted writes must surface\n# SPEC: sqlite3.OperationalError, not be swallowed.\n# src/cochem/watchdog/watchdog_sre.py:46 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:47 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:48 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:49 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:50 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:51 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:52 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:53 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:54 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:55 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:56 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:57 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:58 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:59 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:60 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:61 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:62 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:63 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:64 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:65 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:66 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:67 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:68 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:69 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:70 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:71 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:72 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:73 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:74 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:75 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:76 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:77 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:78 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:79 [MC-SRE-09]\n# src/cochem/watchdog/watchdog_sre.py:80 [MC-SRE-09]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "NFR-SRE-02"
+    ]
+  }
+}

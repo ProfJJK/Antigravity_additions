@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-02",
+  "title": "Author Subprocess Timeout and Orphan Tests",
+  "domain": "concurrency",
+  "target_file": "tests/test_ch03_concurrency_layers.py",
+  "chunk_start": 61,
+  "chunk_end": 120,
+  "line_delta": 60,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases (real subprocess, real SQLite WAL, psutil; no mock objects): test_f04_subprocess_hang_times_out_at_1740s_without_orphan_children for FAILURE:Subprocess Hang (Subprocess timeout is enforced at 1740 seconds, terminating hung processes cleanly before the 1800s lease expires.). Section 9 obligations: Test verifies subprocess timeout raises `TimeoutExpired` cleanly without orphaned child processes.",
+  "dependencies": [
+    "MC-CON-01"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch03_concurrency_layers.py>>>\n# [MC-CON-02] TESTS:hang\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases (real\n# SPEC: subprocess, real SQLite WAL, psutil; no mock objects):\n# SPEC: test_f04_subprocess_hang_times_out_at_1740s_without_orphan_children for FAILURE:Subprocess Hang\n# SPEC: (Subprocess timeout is enforced at 1740 seconds, terminating hung processes cleanly before the\n# SPEC: 1800s lease expires.). Section 9 obligations: Test verifies subprocess timeout raises\n# SPEC: `TimeoutExpired` cleanly without orphaned child processes.\n# tests/test_ch03_concurrency_layers.py:68 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:69 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:70 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:71 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:72 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:73 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:74 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:75 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:76 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:77 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:78 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:79 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:80 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:81 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:82 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:83 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:84 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:85 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:86 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:87 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:88 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:89 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:90 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:91 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:92 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:93 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:94 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:95 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:96 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:97 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:98 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:99 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:100 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:101 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:102 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:103 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:104 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:105 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:106 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:107 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:108 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:109 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:110 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:111 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:112 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:113 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:114 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:115 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:116 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:117 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:118 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:119 [MC-CON-02]\n# tests/test_ch03_concurrency_layers.py:120 [MC-CON-02]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "FAILURE:Subprocess Hang"
+    ]
+  }
+}

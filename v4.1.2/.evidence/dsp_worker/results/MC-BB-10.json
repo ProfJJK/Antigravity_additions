@@ -1,0 +1,48 @@
+{
+  "task_id": "MC-BB-10",
+  "domain": "code_forge",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733282.1589289,
+  "finished_at": 1790733282.1590629,
+  "result": {
+    "status": "SUCCESS",
+    "task_id": "MC-BB-10",
+    "target_file": "src/cochem/blackboard/schema.py",
+    "state": "COMPLETED",
+    "stages": [
+      {
+        "stage": "TEST",
+        "task_id": "MC-BB-10",
+        "target_file": "src/cochem/blackboard/schema.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "SANDBOX",
+        "task_id": "MC-BB-10",
+        "target_file": "src/cochem/blackboard/schema.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "AUDIT",
+        "task_id": "MC-BB-10",
+        "target_file": "src/cochem/blackboard/schema.py",
+        "status": "PASSED"
+      },
+      {
+        "stage": "MERGE",
+        "task_id": "MC-BB-10",
+        "target_file": "src/cochem/blackboard/schema.py",
+        "status": "PASSED"
+      }
+    ],
+    "telemetry": {
+      "task_id": "MC-BB-10",
+      "status": "COMPLETED",
+      "duration_sec": 2.7418136596679688e-05,
+      "memory_start_mb": 111.375,
+      "memory_end_mb": 111.375,
+      "memory_peak_mb": 111.375
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "chat": {
+    "default_commands": [
+      "/browser",
+      "/teamwork-preview",
+      "/goal",
+      "/learn",
+      "/schedule",
+      "/grill-me",
+      "/literature-search-arxiv",
+      "/literature-search-openalex",
+      "/pubmed-database",
+      "/pubchem-database",
+      "/chembl-database"
+    ]
+  },
+  "plugins": {
+    "android-cli-plugin": {
+      "enabled": true
+    },
+    "chrome-devtools-plugin": {
+      "enabled": true
+    },
+    "data-agent-kit-plugin": {
+      "enabled": true
+    },
+    "firebase": {
+      "enabled": true
+    },
+    "flutter": {
+      "enabled": true
+    },
+    "gemini-api": {
+      "enabled": true
+    },
+    "google-antigravity-sdk": {
+      "enabled": true
+    },
+    "modern-web-guidance-plugin": {
+      "enabled": true
+    },
+    "science": {
+      "enabled": true
+    }
+  },
+  "sidecars": {
+    "cochem-didactic": {
+      "enabled": true,
+      "projectId": "d1e96f13-84d5-4b69-b8c2-eed97a476e40"
+    },
+    "cochem-improvements": {
+      "enabled": true,
+      "projectId": "d1e96f13-84d5-4b69-b8c2-eed97a476e40"
+    },
+    "cochem-manual": {
+      "enabled": true,
+      "projectId": "d1e96f13-84d5-4b69-b8c2-eed97a476e40"
+    },
+    "cochem-readme": {
+      "enabled": true,
+      "projectId": "d1e96f13-84d5-4b69-b8c2-eed97a476e40"
+    }
+  },
+  "userSettings": {
+    "artifactReviewMode": "ARTIFACT_REVIEW_MODE_TURBO",
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "browserJsExecutionPolicy": "BROWSER_JS_EXECUTION_POLICY_TURBO",
+    "conversationWidth": "CONVERSATION_WIDTH_WIDE",
+    "enableTerminalSandbox": false,
+    "globalPermissionGrants": {
+      "allow": [
+        "execute_url(https://docs.python.org/3.11/index.html)",
+        "execute_url(https://docs.python.org/3/index.html)",
+        "execute_url(https://docs.pytorch.org/docs/2.13/index.html)",
+        "execute_url(https://gemini.google.com/notebook/12cef3ee-d965-41fb-a999-4d39905fda9d)",
+        "execute_url(https://git-scm.com/docs)",
+        "execute_url(https://github.com/ACEsuit/mace-off)",
+        "execute_url(https://github.com/faccts/opi)",
+        "execute_url(https://github.com/faccts/opi/blob/release/2.0/docs/contents/notebooks/extopt.ipynb)",
+        "execute_url(https://github.com/tblite/tblite)",
+        "execute_url(https://jupyterlab.readthedocs.io/en/latest/)",
+        "execute_url(https://mace-docs.readthedocs.io/en/latest/)",
+        "execute_url(https://mace-docs.readthedocs.io/en/latest/guide/cuda_acceleration.html)",
+        "execute_url(https://networkx.org/documentation/stable/reference/index.html)",
+        "execute_url(https://orca-manual.mpi-muelheim.mpg.de/)",
+        "execute_url(https://psutil.readthedocs.io/stable/)",
+        "execute_url(https://pyscf.org/user/index.html)",
+        "execute_url(https://www.anaconda.com/docs/main)",
+        "execute_url(https://www.faccts.de/docs/opi/2.0/docs/contents/notebooks/extopt.html)",
+        "execute_url(https://www.google.com/)",
+        "execute_url(https://www.open-mpi.org/)",
+        "execute_url(https://xtb-python.readthedocs.io/en/latest/)",
+        "execute_url(https://pyscf.org/user/gpu.html)",
+        "read_url(antigravity.google)",
+        "read_url(https://docs.open-mpi.org/en/v5.0.x/index.html)",
+        "read_url(https://docs.pytorch.org/docs/2.12/index.html)",
+        "read_url(https://gemini.google.com/notebook/12cef3ee-d965-41fb-a999-4d39905fda9d)",
+        "read_url(https://git-scm.com/docs)",
+        "read_url(https://github.com/ACEsuit/mace-off)",
+        "read_url(https://github.com/faccts/orca-external-tools/)",
+        "read_url(https://jupyterlab.readthedocs.io/en/latest/)",
+        "read_url(https://mace-docs.readthedocs.io/en/latest/)",
+        "read_url(https://mace-docs.readthedocs.io/en/latest/guide/cuda_acceleration.html)",
+        "read_url(https://networkx.org/documentation/stable/reference/index.html)",
+        "read_url(https://psutil.readthedocs.io/stable/)",
+        "read_url(https://pyscf.org/user/gpu.html)",
+        "read_url(https://pyscf.org/user/index.html)",
+        "read_url(https://www.anaconda.com/docs/main)",
+        "read_url(https://www.faccts.de/docs/opi/2.0/docs/index.html)",
+        "read_url(https://xtb-python.readthedocs.io/en/latest/)",
+        "read_url(https://notebook.google.com/)",
+        "write_file(D:\\\\Gdrive\\\\__CoChem)",
+        "write_file(D:\\\\Gdrive\\\\_APSU Teaching)",
+        "write_file(D:\\\\Gdrive\\\\_CU Teaching)",
+        "write_file(D:\\\\Gdrive\\\\_CV)",
+        "write_file(D:\\\\Gdrive\\\\_LLM)",
+        "write_file(D:\\\\Gdrive\\\\_Research)",
+        "read_file(D:\\\\Gdrive\\\\__Books)",
+        "read_file(D:\\\\Gdrive\\\\__CoChem)",
+        "read_file(D:\\\\Gdrive\\\\_APSU Teaching)",
+        "read_file(D:\\\\Gdrive\\\\_CU Teaching)",
+        "read_file(D:\\\\Gdrive\\\\_CV)",
+        "read_file(D:\\\\Gdrive\\\\_LLM)",
+        "read_file(D:\\\\Gdrive\\\\_Manuals)",
+        "read_file(D:\\\\Gdrive\\\\_Manuals CU)",
+        "read_file(D:\\\\Gdrive\\\\_Publications\\\\Old)",
+        "read_file(D:\\\\Gdrive\\\\_Research)",
+        "read_file(D:\\\\Gdrive\\\\Read)",
+        "read_file(D:\\\\Gdrive\\\\Recipes)",
+        "mcp(github-copilot/ollama_generate)",
+        "mcp(github-copilot/ollama_models)"
+      ]
+    },
+    "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
+    "queuedMessageDeliveryStrategy": "MESSAGE_DELIVERY_STRATEGY_NEXT_INVOCATION",
+    "remoteControlHostname": "jjdesktop-plasma-zenith",
+    "themeMode": "THEME_MODE_INHERIT",
+    "useAiCredits": true
+  }
+}

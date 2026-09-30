@@ -1,0 +1,92 @@
+{
+  "task_id": "CHEM311_ch2_2.11_remember_571b.3",
+  "parent_task_id": "CHEM311_ch2_2.11_remember_571b",
+  "course_id": "CHEM311",
+  "chapter": 2,
+  "section": "2.11",
+  "bloom_level": "remember",
+  "stage": "3",
+  "action": "compile_headless_nops",
+  "assigned_agent": "cochem-tester",
+  "status": "completed",
+  "completed_at": "2026-09-25T07:07:32.041946+00:00",
+  "input_artifacts": {
+    "rmd_file": "D:\\__CoChem\\__agentic\\CHEM311_ch2_2.11_remember_571b.Rmd",
+    "sha256": "919d17815186e343443c0f7047786085c4ad1042459e015f031bc05e7305d5c3",
+    "size_bytes": 5195,
+    "sha256_scope": "Hash of the Rmd as read by the compile stage at completed_at; a later edit to the Rmd will make this value stale and it must be re-checked against the file on disk."
+  },
+  "compilation_artifacts": {
+    "html_output": {
+      "file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_compiled.html",
+      "variant_file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_compiled1.html",
+      "sha256": "deaf95ca921e25488a57cb57cbfacab3c263c878d4eec8cc2d236bd5b66e5639",
+      "size_bytes": 15455,
+      "exit_code": 0
+    },
+    "nops_pdf_output": {
+      "file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_nops.pdf",
+      "version_1_file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_nops1.pdf",
+      "version_2_file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_nops2.pdf",
+      "sha256": "6f4fda0d80f05abaf2f23cbaf55d5470d5d82e761cfc7245e73d3150c3afda8e",
+      "size_bytes": 88377,
+      "exit_code": 0,
+      "page_count": 3
+    },
+    "nops_rds_key": {
+      "file": "D:\\__CoChem\\__agentic\\staging\\quarantine_CHEM311_ch2_2.11_remember_571b\\CHEM311_ch2_2.11_remember_571b_nops.rds",
+      "sha256": "4cb4ddc4ab6f7f2570d7185078bc0d17f580605102da160d7aa9909e4023f667",
+      "size_bytes": 2730,
+      "metadata": {
+        "exam_id_1": "26092500001",
+        "exam_id_2": "26092500002",
+        "name": "chem311_ch02_2.11_lewis_acid_definition_remember_571b",
+        "extype": "schoice",
+        "solution_1": [
+          false,
+          true,
+          false,
+          false,
+          false
+        ],
+        "string_1": "chem311_ch02_2.11_lewis_acid_definition_remember_571b: b",
+        "r_output_verification": "List of 2\n $ 26092500001:List of 1\n  ..$ exercise1:List of 6\n  .. ..$ question    : chr \"According to the Lewis definition of acid-base reactivity, which of the following statements correctly defines a Lewis acid?\"\n  .. ..$ questionlist: chr [1:5] \"A chemical species that donates a proton (\\\\(\\\\text{H}^+\\\\)) via heterolytic cleavage of a polarized \\\\(\\\\text{\"| __truncated__ \"A chemical species that accepts an electron pair to form a new coordinate covalent bond using a vacant low-energy orbital.\" \"A chemical species that donates an unshared electron pair from a filled nonbonding orbital to form a coordinate covalent bond.\" \"Any chemical species bearing a net positive formal charge, such as the tetramethylammonium cation (\\\\((\\\\text{C\"| __truncated__ ...\n  .. ..$ solution    : chr [1:39] \"Under the Lewis acid-base framework (McMurry \\\\emph{Organic Chemistry}, 10th ed., Section 2.11: \\\\emph{Acids an\"| __truncated__ \"\" \"\\\\begin{enumerate}\" \"\\\\def\\\\labelenumi{\\\\arabic{enumi}.}\" ...\n  .. ..$ solutionlist: chr [1:5] \"Incorrect. Donating a proton (\\\\(\\\\text{H}^+\\\\)) defines a Br\u00f8nsted-Lowry acid. While an ejected \\\\(\\\\text{H}^+\"| __truncated__ \"Correct. A Lewis acid is defined as an electron-pair acceptor that accommodates an electron pair from a Lewis b\"| __truncated__ \"Incorrect. Donating an unshared electron pair defines a Lewis base (nucleophile), not a Lewis acid. Lewis acids\"| __truncated__ \"Incorrect. Possessing a positive charge does not ensure Lewis acidity. Cations with complete valence octets and\"| __truncated__ ...\n  .. ..$ metainfo    :List of 21\n  .. .. ..$ file      : chr \"D___CoChem___agentic_CHEM311_ch2_2.11_remember_571b\"\n  .. .. ..$ markup    : chr \"latex\"\n  .. .. ..$ type      : chr \"schoice\"\n  .. .. ..$ name      : chr \"chem311_ch02_2.11_lewis_acid_definition_remember_571b\"\n  .. .. ..$ title     : NULL\n  .. .. ..$ section   : chr \"Chapter 2/Section 2.11 Acids and Bases: The Lewis Definition\"\n  .. .. ..$ tags      : NULL\n  .. .. ..$ author    : NULL\n  .. .. ..$ version   : NULL\n  .. .. ..$ solution  : logi [1:5] FALSE TRUE FALSE FALSE FALSE\n  .. .. ..$ clozetype : NULL\n  .. .. ..$ stringtype: NULL\n  .. .. ..$ points    : NULL\n  .. .. ..$ time      : NULL\n  .. .. ..$ shuffle   : num 5\n  .. .. ..$ length    : int 5\n  .. .. ..$ string    : chr \"chem311_ch02_2.11_lewis_acid_definition_remember_571b: b\"\n  .. .. ..$ maxchars  : NULL\n  .. .. ..$ abstention: NULL\n  .. .. ..$ bloom     : chr \"Remember\"\n  .. .. ..$ course    : chr \"CHEM311\"\n  .. ..$ supplements : Named chr(0) \n  .. .. ..- attr(*, \"names\")= chr(0) \n  .. .. ..- attr(*, \"dir\")= chr \"C:/Users/ansac/AppData/Local/Temp/Rtmp2fB7ke/file7ba029746c0a/exam1/exercise1\"\n $ 26092500002:List of 1\n  ..$ exercise1:List of 6\n  .. ..$ question    : chr \"According to the Lewis definition of acid-base reactivity, which of the following statements correctly defines a Lewis acid?\"\n  .. ..$ questionlist: chr [1:5] \"A chemical species that donates an unshared electron pair from a filled nonbonding orbital to form a coordinate covalent bond.\" \"A chemical species that accepts an electron pair to form a new coordinate covalent bond using a vacant low-energy orbital.\" \"Any chemical species bearing a net positive formal charge, such as the tetramethylammonium cation (\\\\((\\\\text{C\"| __truncated__ \"A chemical species that increases the concentration of hydroxide ions (\\\\(\\\\text{OH}^-\\\\)) when dissolved in an\"| __truncated__ ...\n  .. ..$ solution    : chr [1:39] \"Under the Lewis acid-base framework (McMurry \\\\emph{Organic Chemistry}, 10th ed., Section 2.11: \\\\emph{Acids an\"| __truncated__ \"\" \"\\\\begin{enumerate}\" \"\\\\def\\\\labelenumi{\\\\arabic{enumi}.}\" ...\n  .. ..$ solutionlist: chr [1:5] \"Incorrect. Donating an unshared electron pair defines a Lewis base (nucleophile), not a Lewis acid. Lewis acids\"| __truncated__ \"Correct. A Lewis acid is defined as an electron-pair acceptor that accommodates an electron pair from a Lewis b\"| __truncated__ \"Incorrect. Possessing a positive charge does not ensure Lewis acidity. Cations with complete valence octets and\"| __truncated__ \"Incorrect. Increasing aqueous hydroxide ion (\\\\(\\\\text{OH}^-\\\\)) concentration defines an Arrhenius base. The L\"| __truncated__ ...\n  .. ..$ metainfo    :List of 21\n  .. .. ..$ file      : chr \"D___CoChem___agentic_CHEM311_ch2_2.11_remember_571b\"\n  .. .. ..$ markup    : chr \"latex\"\n  .. .. ..$ type      : chr \"schoice\"\n  .. .. ..$ name      : chr \"chem311_ch02_2.11_lewis_acid_definition_remember_571b\"\n  .. .. ..$ title     : NULL\n  .. .. ..$ section   : chr \"Chapter 2/Section 2.11 Acids and Bases: The Lewis Definition\"\n  .. .. ..$ tags      : NULL\n  .. .. ..$ author    : NULL\n  .. .. ..$ version   : NULL\n  .. .. ..$ solution  : logi [1:5] FALSE TRUE FALSE FALSE FALSE\n  .. .. ..$ clozetype : NULL\n  .. .. ..$ stringtype: NULL\n  .. .. ..$ points    : NULL\n  .. .. ..$ time      : NULL\n  .. .. ..$ shuffle   : num 5\n  .. .. ..$ length    : int 5\n  .. .. ..$ string    : chr \"chem311_ch02_2.11_lewis_acid_definition_remember_571b: b\"\n  .. .. ..$ maxchars  : NULL\n  .. .. ..$ abstention: NULL\n  .. .. ..$ bloom     : chr \"Remember\"\n  .. .. ..$ course    : chr \"CHEM311\"\n  .. ..$ supplements : Named chr(0) \n  .. .. ..- attr(*, \"names\")= chr(0) \n  .. .. ..- attr(*, \"dir\")= chr \"C:/Users/ansac/AppData/Local/Temp/Rtmp2fB7ke/file7ba029746c0a/exam2/exercise1\""
+      }
+    }
+  },
+  "optical_scannability_audit": {
+    "page_count": 3,
+    "page_1_institution_header_verified": true,
+    "page_2_replacement_sheet_verified": true,
+    "page_3_question_stem_verified": true,
+    "page_3_iupac_key_present": true,
+    "unescaped_latex_delimiters_count": 0,
+    "optical_layout_pass": true,
+    "evidence_scope": {
+      "recorded_by": "compile stage (cochem-tester) at completed_at",
+      "independently_test_verified": [
+        "page_count equals the page count of the PDF on disk",
+        "page 1 of the PDF has extractable text",
+        "the HTML output contains 'BF' and 'Lewis'",
+        "dollar-sign math delimiters in the Rmd source are balanced"
+      ],
+      "recorded_but_not_independently_test_verified": [
+        "unescaped_latex_delimiters_count",
+        "page_1_institution_header_verified",
+        "page_2_replacement_sheet_verified",
+        "page_3_question_stem_verified",
+        "page_3_iupac_key_present",
+        "clean math rendering of NH3, H2O, CH4 and CH3O-"
+      ],
+      "note": "The Rmd uses \\(...\\) inline math, as seen in r_output_verification. The flags above are compile-stage assertions; re-run the quarantine compilation and inspect the HTML and PDF text to re-confirm them."
+    }
+  },
+  "zero_mock_assertion": {
+    "r_version": "4.6.1",
+    "exams_version": "2.4.4",
+    "tinytex_version": "0.60",
+    "execution_mode": "Physical Headless CLI Execution via Rscript",
+    "mocking_used": false,
+    "provenance": "exams::exams2html() and exams::exams2nops() were run through physical Rscript invocations (R 4.6.1, exams 2.4.4, tinytex 0.60) against the input Rmd, with all outputs written to the isolated staging quarantine directory and no mocks, stubs or synthetic test doubles."
+  }
+}

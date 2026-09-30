@@ -1,0 +1,249 @@
+{
+  "task_id": "CHEM311_ch2_2.11_remember_571b.1",
+  "parent_task_id": "CHEM311_ch2_2.11_remember_571b",
+  "course_id": "CHEM311",
+  "chapter": 2,
+  "section": "2.11",
+  "section_title": "Acids and Bases: The Lewis Definition",
+  "bloom_level": "remember",
+  "mcmurry_topic_scope": {
+    "textbook": "Organic Chemistry (10th Edition) by John McMurry (OpenStax)",
+    "isbn": "978-1-71147-185-3",
+    "chapter_title": "Chapter 2: Polar Covalent Bonds; Acids and Bases",
+    "section_coverage": "2.11 Acids and Bases: The Lewis Definition",
+    "key_concepts_ingested": [
+      "Lewis acid: electron-pair acceptor (electrophiles)",
+      "Lewis base: electron-pair donor (nucleophiles)",
+      "Curved arrow formalism in Lewis acid-base reactions (heterolytic electron flow from the base lone pair to the acid vacant orbital)",
+      "Non-protic Lewis acids (species without H+ such as BF3 and AlCl3)",
+      "Coordinate covalent (dative) bond formation and formal charge shifts"
+    ]
+  },
+  "chemical_ground_truth": {
+    "lewis_acid": {
+      "definition": "A Lewis acid is an electron-pair acceptor: a chemical species that accepts an electron pair from a Lewis base to form a new covalent bond.",
+      "orbital_requirement": "A Lewis acid must possess a vacant low-energy orbital (such as an empty unhybridized 2p orbital on boron in BF3, an empty 3p orbital on aluminum in AlCl3, the empty 1s orbital of H+, low-energy d orbitals, or an accessible LUMO/antibonding orbital).",
+      "electronic_characteristics": "Electron-deficient, electrophilic, non-protic (such as neutral BF3 and AlCl3) or protic (such as H+), often possessing an incomplete valence shell (e.g., 6 valence electrons in group 13 neutral compounds) or an accessible LUMO capable of accepting an incoming electron pair.",
+      "representative_examples": [
+        {
+          "formula": "BF3",
+          "name": "Boron trifluoride",
+          "mass_amu": 67.805209489,
+          "vacant_orbital": "empty unhybridized 2p orbital on sp2 boron (the LUMO)",
+          "valence_electrons": 6
+        },
+        {
+          "formula": "AlCl3",
+          "name": "Aluminum trichloride",
+          "mass_amu": 133.3315385,
+          "vacant_orbital": "empty unhybridized 3p orbital on sp2 aluminum (the LUMO)",
+          "valence_electrons": 6
+        },
+        {
+          "formula": "H+",
+          "name": "Hydron (proton)",
+          "mass_amu": 1.00728,
+          "mass_basis": "Bare proton: the neutral hydrogen atom mass minus one electron mass. The neutral atom value is listed under elemental_masses_mendeleev.",
+          "vacant_orbital": "empty 1s orbital (the LUMO of the bare proton)",
+          "valence_electrons": 0
+        }
+      ]
+    },
+    "lewis_base": {
+      "definition": "A Lewis base is an electron-pair donor: a chemical species that donates a nonbonding electron pair (lone pair) to a Lewis acid to form a new covalent bond.",
+      "orbital_requirement": "A Lewis base must possess a filled, high-energy nonbonding orbital (lone pair) or accessible electron density in a pi bond (HOMO).",
+      "electronic_characteristics": "Electron-rich, nucleophilic, typically contains heteroatoms (O, N, S, P) with nonbonding electron pairs, as in ethers, amines, and water, or is a negatively charged anion or an electron-dense pi bond.",
+      "representative_examples": [
+        {
+          "formula": "(CH3)2O",
+          "name": "Dimethyl ether",
+          "mass_amu": 46.069,
+          "donor_feature": "two nonbonding lone pairs on sp3 oxygen",
+          "charge": 0
+        },
+        {
+          "formula": "H2O",
+          "name": "Water",
+          "mass_amu": 18.015,
+          "donor_feature": "two nonbonding lone pairs on sp3 oxygen",
+          "charge": 0
+        },
+        {
+          "formula": "(CH3)3N",
+          "name": "Trimethylamine",
+          "mass_amu": 59.112,
+          "donor_feature": "one nonbonding lone pair on sp3 nitrogen",
+          "charge": 0
+        },
+        {
+          "formula": "NH3",
+          "name": "Ammonia",
+          "mass_amu": 17.031,
+          "donor_feature": "one nonbonding lone pair on sp3 nitrogen",
+          "charge": 0
+        },
+        {
+          "formula": "OH-",
+          "name": "Hydroxide anion",
+          "donor_feature": "three nonbonding lone pairs on anionic oxygen",
+          "charge": -1
+        }
+      ]
+    },
+    "adduct_formation_principles": {
+      "bond_type": "Coordinate covalent (dative) bond in which both bonding electrons originate solely from the Lewis base; the product is a Lewis acid-base adduct.",
+      "formal_charge_distribution": "The donor atom experiences a formal charge change of +1 (losing sole ownership of the lone pair to share it), while the acceptor atom experiences a formal charge change of -1 (gaining shared ownership of the pair).",
+      "geometry_reorganization": "Acceptor atom typically reorganizes hybridization and geometry (e.g., trigonal planar sp2 boron in BF3 reorganizes to tetrahedral sp3 in the BF3-ether adduct)."
+    }
+  },
+  "authentic_reactions": [
+    {
+      "reaction_name": "Boron trifluoride coordination with dimethyl ether",
+      "equation": "BF3 + (CH3)2O <=> F3B--O+(CH3)2",
+      "reactant_acid": "BF3",
+      "reactant_acid_mass_amu": 67.805209489,
+      "reactant_base": "(CH3)2O",
+      "reactant_base_mass_amu": 46.069,
+      "adduct_product": "F3B--O+(CH3)2",
+      "adduct_mass_amu": 113.874209489,
+      "formal_charges": {
+        "B": -1,
+        "O": 1,
+        "F": 0,
+        "C": 0,
+        "H": 0
+      },
+      "pedagogical_insight": "Boron has a vacant 2p orbital; ether oxygen donates a lone pair into it to complete boron's octet, resulting in a dipolar complex."
+    },
+    {
+      "reaction_name": "Boron trifluoride coordination with ammonia",
+      "equation": "BF3 + NH3 <=> F3B--N+H3",
+      "reactant_acid": "BF3",
+      "reactant_acid_mass_amu": 67.805209489,
+      "reactant_base": "NH3",
+      "reactant_base_mass_amu": 17.031,
+      "adduct_product": "F3B--N+H3",
+      "formal_charges": {
+        "B": -1,
+        "N": 1,
+        "F": 0,
+        "H": 0
+      },
+      "pedagogical_insight": "Neutral trivalent boron accepts nitrogen's lone pair to form a stable 1:1 adduct with tetrahedral geometry at both B and N."
+    },
+    {
+      "reaction_name": "Aluminum trichloride coordination with chloride anion",
+      "equation": "AlCl3 + Cl- <=> [AlCl4]-",
+      "reactant_acid": "AlCl3",
+      "reactant_acid_mass_amu": 133.3315385,
+      "reactant_base": "Cl-",
+      "reactant_base_mass_amu": 35.45,
+      "adduct_product": "[AlCl4]-",
+      "formal_charges": {
+        "Al": -1,
+        "Cl": 0
+      },
+      "pedagogical_insight": "Trivalent aluminum expands from a 6-electron valence shell to a stable 8-electron octet by accepting a chloride lone pair."
+    },
+    {
+      "reaction_name": "Hydron (proton) hydration by water",
+      "equation": "H+ + H2O <=> H3O+",
+      "reactant_acid": "H+",
+      "reactant_acid_mass_amu": 1.00728,
+      "reactant_base": "H2O",
+      "reactant_base_mass_amu": 18.015,
+      "adduct_product": "H3O+",
+      "formal_charges": {
+        "O": 1,
+        "H": 0
+      },
+      "pedagogical_insight": "Demonstrates that Bronsted-Lowry protonation is a specific subset of Lewis acid-base chemistry where H+ is the Lewis acid."
+    }
+  ],
+  "five_distractor_specification_matrix": [
+    {
+      "distractor_id": "DISTRACTOR_1_BRONSTED_CONFLATION",
+      "choice_text": "A chemical species that donates a proton (H+) via heterolytic cleavage of a polarized X-H bond.",
+      "target_misconception": "bronsted",
+      "misconception_label": "Brønsted-Lowry Conflation Fallacy (Proton Bias)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student fails to recall the broader electronic definition of acids and defaults to the familiar high-school / general-chemistry Brønsted-Lowry proton-donor paradigm, erroneously excluding non-protic Lewis acids like BF3 and AlCl3.",
+      "pedagogical_refutation": "Incorrect. Donating a proton (H+) defines a Brønsted-Lowry acid. Although the transferred proton (H+) itself is an electron-pair acceptor (Lewis acid), the parent molecule donating it is acting specifically as a Brønsted acid. The Lewis acid definition is fundamentally electronic and encompasses neutral, non-hydrogen species possessing vacant orbitals (e.g., BF3, AlCl3).",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e §2.11: Lewis acids are electron-pair acceptors; they are not restricted to species that contain or donate protons."
+    },
+    {
+      "distractor_id": "DISTRACTOR_2_ELECTRON_ROLE_INVERSION",
+      "choice_text": "A chemical species that donates an unshared electron pair from a filled nonbonding orbital to form a coordinate covalent bond.",
+      "target_misconception": "role_inversion",
+      "misconception_label": "Electron Role Inversion Fallacy (Donor/Acceptor Swap)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student inverts the roles of donor and acceptor in memory recall, conflating the electron-pair donor (Lewis base/nucleophile) with the electron-pair acceptor (Lewis acid/electrophile).",
+      "pedagogical_refutation": "Incorrect. A chemical species that donates an electron pair is a Lewis base (nucleophile), not a Lewis acid. Lewis acids are electron-pair acceptors (electrophiles) that must possess a vacant low-energy orbital to accommodate the incoming electron pair.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e §2.11: A Lewis base is an electron-pair donor; a Lewis acid is an electron-pair acceptor."
+    },
+    {
+      "distractor_id": "DISTRACTOR_3_ARRHENIUS_HYDROXIDE_BIAS",
+      "choice_text": "A chemical species that increases the concentration of hydroxide ions (OH-) when dissolved in an aqueous solvent medium.",
+      "target_misconception": "arrhenius",
+      "misconception_label": "Arrhenius / Aqueous Dissociation Bias",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student confuses the modern general Lewis electronic definition with the historical, solvent-restricted 1884 Arrhenius definition of bases.",
+      "pedagogical_refutation": "Incorrect. Releasing hydroxide ions (OH-) in aqueous solution defines an Arrhenius base. The Lewis definition is universal across all media (gas phase, non-aqueous organic solvents, neat mixtures) and defines acid-base reactivity exclusively through electron-pair donation and acceptance.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e §2.11: The Lewis definition transcends aqueous solutions and proton transfers, focusing strictly on electron-pair sharing."
+    },
+    {
+      "distractor_id": "DISTRACTOR_4_HOMOLYTIC_RADICAL_TRANSFER",
+      "choice_text": "A chemical species that donates an electron into a vacant orbital by undergoing spontaneous homolytic radical cleavage.",
+      "target_misconception": "homolytic_radical",
+      "misconception_label": "Single-Electron / Homolytic Cleavage Confusion",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student confuses heterolytic two-electron Lewis acid-base coordination with homolytic one-electron radical fragmentation.",
+      "pedagogical_refutation": "Incorrect. Lewis acid-base chemistry is strictly a two-electron (heterolytic) process involving electron pairs and double-barbed curved arrows. Radical reactions involve single electrons (homolytic cleavage) and fishhook arrows, which are fundamentally distinct from Lewis acid-base adduct formation.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e §2.11: Lewis acid-base reactions involve curved arrows indicating the movement of a pair of electrons from a base to an acid."
+    },
+    {
+      "distractor_id": "DISTRACTOR_5_CHARGE_VALENCE_OCTET_FALLACY",
+      "choice_text": "Any chemical species bearing a net positive formal charge, such as the tetramethylammonium cation ((CH3)4N+), which attracts electron pairs regardless of octet occupancy.",
+      "target_misconception": "cation_octet",
+      "misconception_label": "Charge-Valence Octet Fallacy (Cation = Lewis Acid Fallacy)",
+      "bloom_level": "remember",
+      "cognitive_failure_mode": "Student relies on a superficial heuristic that positive charge equates to acidity, failing to check whether the central atom possesses a vacant valence orbital or a completed octet.",
+      "pedagogical_refutation": "Incorrect. While many cations are Lewis acids (e.g., H+, carbocations), a positive charge does not guarantee Lewis acidity. Tetramethylammonium ((CH3)4N+) has a complete valence octet (8 valence electrons in four N-C bonds) and nitrogen lacks accessible low-energy d orbitals; it cannot accept an electron pair without violating the octet rule.",
+      "mcmurry_10e_ground_truth_citation": "McMurry 10e §2.11: To act as a Lewis acid, a species must possess a vacant low-energy orbital capable of accommodating an incoming electron pair."
+    }
+  ],
+  "pedagogical_misconceptions": [
+    "Conflating Lewis acids with Brønsted acids (believing all acids must donate protons)",
+    "Inverting electron donor vs acceptor roles (confusing Lewis base with Lewis acid)",
+    "Restricting acid-base definitions to aqueous Arrhenius species (OH- and H3O+)",
+    "Confusing heterolytic two-electron pair donation with homolytic radical reactions",
+    "Assuming that all positively charged cations are Lewis acids regardless of octet saturation"
+  ],
+  "elemental_masses_mendeleev": {
+    "mass_values_amu": {
+      "H": 1.008,
+      "B": 10.81,
+      "C": 12.011,
+      "N": 14.007,
+      "O": 15.999,
+      "F": 18.998403163,
+      "Al": 26.9815385,
+      "Cl": 35.45,
+      "Ti": 47.867,
+      "Fe": 55.845
+    },
+    "species_masses_amu": {
+      "BF3": 67.805209489,
+      "AlCl3": 133.3315385,
+      "(CH3)2O": 46.069,
+      "H2O": 18.015,
+      "NH3": 17.031,
+      "(CH3)3N": 59.112,
+      "TiCl4": 189.667,
+      "FeCl3": 162.195
+    },
+    "species_mass_method": "Stoichiometric sum of mass_values_amu entries weighted by atom counts parsed from each formula key.",
+    "mendeleev_version": "1.2.0",
+    "mendeleev_provenance": "Element values were derived from the mendeleev Python library via float(element(symbol).mass) and recorded here; the test suite recomputes them from the library at test time and compares them within the stated tolerance. The installed package version is resolved through importlib.metadata.version('mendeleev')."
+  }
+}

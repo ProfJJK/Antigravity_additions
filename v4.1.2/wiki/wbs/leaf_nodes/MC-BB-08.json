@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-08",
+  "title": "Implement Busy-Timeout Lock Contention Handling",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/schema.py",
+  "chunk_start": 81,
+  "chunk_end": 120,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Database Lock Contention': `PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds before failing cleanly.",
+  "dependencies": [
+    "MC-BB-07",
+    "MC-BB-01"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"database_lock_contention\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-08] FAILURE:Database Lock Contention\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Database\n# SPEC: Lock Contention': `PRAGMA busy_timeout = 30000` retries automatically for up to 30 seconds\n# SPEC: before failing cleanly.\n# src/cochem/blackboard/schema.py:85 [MC-BB-08]\n# src/cochem/blackboard/schema.py:86 [MC-BB-08]\n# src/cochem/blackboard/schema.py:87 [MC-BB-08]\n# src/cochem/blackboard/schema.py:88 [MC-BB-08]\n# src/cochem/blackboard/schema.py:89 [MC-BB-08]\n# src/cochem/blackboard/schema.py:90 [MC-BB-08]\n# src/cochem/blackboard/schema.py:91 [MC-BB-08]\n# src/cochem/blackboard/schema.py:92 [MC-BB-08]\n# src/cochem/blackboard/schema.py:93 [MC-BB-08]\n# src/cochem/blackboard/schema.py:94 [MC-BB-08]\n# src/cochem/blackboard/schema.py:95 [MC-BB-08]\n# src/cochem/blackboard/schema.py:96 [MC-BB-08]\n# src/cochem/blackboard/schema.py:97 [MC-BB-08]\n# src/cochem/blackboard/schema.py:98 [MC-BB-08]\n# src/cochem/blackboard/schema.py:99 [MC-BB-08]\n# src/cochem/blackboard/schema.py:100 [MC-BB-08]\n# src/cochem/blackboard/schema.py:101 [MC-BB-08]\n# src/cochem/blackboard/schema.py:102 [MC-BB-08]\n# src/cochem/blackboard/schema.py:103 [MC-BB-08]\n# src/cochem/blackboard/schema.py:104 [MC-BB-08]\n# src/cochem/blackboard/schema.py:105 [MC-BB-08]\n# src/cochem/blackboard/schema.py:106 [MC-BB-08]\n# src/cochem/blackboard/schema.py:107 [MC-BB-08]\n# src/cochem/blackboard/schema.py:108 [MC-BB-08]\n# src/cochem/blackboard/schema.py:109 [MC-BB-08]\n# src/cochem/blackboard/schema.py:110 [MC-BB-08]\n# src/cochem/blackboard/schema.py:111 [MC-BB-08]\n# src/cochem/blackboard/schema.py:112 [MC-BB-08]\n# src/cochem/blackboard/schema.py:113 [MC-BB-08]\n# src/cochem/blackboard/schema.py:114 [MC-BB-08]\n# src/cochem/blackboard/schema.py:115 [MC-BB-08]\n# src/cochem/blackboard/schema.py:116 [MC-BB-08]\n# src/cochem/blackboard/schema.py:117 [MC-BB-08]\n# src/cochem/blackboard/schema.py:118 [MC-BB-08]\n# src/cochem/blackboard/schema.py:119 [MC-BB-08]\n# src/cochem/blackboard/schema.py:120 [MC-BB-08]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "FAILURE:Database Lock Contention"
+    ]
+  }
+}

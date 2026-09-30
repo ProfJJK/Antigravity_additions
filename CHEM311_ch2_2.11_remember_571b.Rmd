@@ -1,0 +1,49 @@
+Question
+========
+According to the Lewis definition of acid-base reactivity, which of the following statements correctly defines a Lewis acid?
+
+Answerlist
+----------
+* A chemical species that accepts an electron pair to form a new coordinate covalent bond using a vacant low-energy orbital.
+* A chemical species that donates a proton ($\text{H}^+$) via heterolytic cleavage of a polarized $\text{X}-\text{H}$ bond.
+* A chemical species that donates an unshared electron pair from a filled nonbonding orbital to form a coordinate covalent bond.
+* A chemical species that increases the concentration of hydroxide ions ($\text{OH}^-$) when dissolved in an aqueous solvent medium.
+* Any chemical species bearing a net positive formal charge, such as the tetramethylammonium cation ($(\text{CH}_3)_4\text{N}^+$), regardless of valence octet occupancy.
+
+Solution
+========
+Under the Lewis acid-base framework (McMurry *Organic Chemistry*, 10th ed., Section 2.11: *Acids and Bases: The Lewis Definition*), acid-base reactions are defined entirely by the transfer and sharing of electron pairs rather than proton transfer:
+
+1. **Lewis Acid Definition and Orbital Requirements:**
+   A **Lewis acid** is an electron-pair acceptor (electrophile). To accept an incoming pair of nonbonding electrons and form a new coordinate covalent (dative) bond, the Lewis acid must possess a vacant low-energy orbital (such as an empty unhybridized $2p$ orbital, an accessible low-energy atomic orbital, or an unoccupied low-energy molecular orbital / LUMO).
+   - *Representative Non-Protic Lewis Acids:* Boron trifluoride ($\text{BF}_3$, molar mass $67.805\ \text{g/mol}$) and aluminum trichloride ($\text{AlCl}_3$, molar mass $133.332\ \text{g/mol}$) contain group 13 central atoms with only six valence electrons ($sp^2$-hybridized) and an open, vacant $p$ orbital.
+   - *Protic Lewis Acids:* A bare proton ($\text{H}^+$, atomic mass $1.008\ \text{g/mol}$) acts as a Lewis acid because it possesses an empty $1s$ orbital capable of accommodating two electrons.
+
+2. **Lewis Bases and Coordinate Covalent Bond Formation:**
+   A **Lewis base** is an electron-pair donor (nucleophile) that possesses a filled nonbonding orbital (lone pair) or electron-rich $\pi$ bond. In a Lewis acid-base reaction, curved arrows track the heterolytic movement of two electrons from the Lewis base lone pair to the vacant orbital of the Lewis acid:
+   $$\text{BF}_3 + (\text{CH}_3)_2\text{O} \rightleftharpoons \text{F}_3\text{B}^{-}\,\text{--}\,\text{O}^{+}(\text{CH}_3)_2$$
+   - Reactant Lewis base: Dimethyl ether ($(\text{CH}_3)_2\text{O}$, molar mass $46.069\ \text{g/mol}$) donates an $sp^3$ oxygen lone pair.
+   - Adduct product: The boron-ether coordinate complex (molar mass $113.874\ \text{g/mol}$) forms with a formal charge shift ($\Delta FC = +1$ on oxygen, $\Delta FC = -1$ on boron). During adduct formation, boron reorganizes from trigonal planar ($sp^2$) to tetrahedral ($sp^3$) geometry.
+
+3. **Analysis of Misconceptions and Fallacies:**
+   - *Proton Transfer:* Donating $\text{H}^+$ defines a Brønsted-Lowry acid, which is a specialized subset of acid-base behavior. Species without any hydrogen atoms (such as $\text{BF}_3$, $\text{AlCl}_3$, $\text{FeCl}_3$, and $\text{TiCl}_4$) cannot donate protons but are powerful Lewis acids.
+   - *Charge vs. Octet Availability:* A positive formal charge does not automatically confer Lewis acidity. The tetramethylammonium ion ($(\text{CH}_3)_4\text{N}^+$, molar mass $74.147\ \text{g/mol}$) bears a positive charge but has four completed $\text{C}-\text{N}$ covalent bonds (an eight-electron octet) and no low-energy vacant orbitals; nitrogen cannot expand its valence shell, so $(\text{CH}_3)_4\text{N}^+$ cannot function as a Lewis acid.
+
+Answerlist
+----------
+* Correct. A Lewis acid is defined as an electron-pair acceptor that accommodates an electron pair from a Lewis base into a vacant, low-energy orbital to form a coordinate covalent bond.
+* Incorrect. Donating a proton ($\text{H}^+$) defines a Brønsted-Lowry acid. While an ejected $\text{H}^+$ is itself a Lewis acid, the parent molecule donating it is functioning as a Brønsted acid, and non-protic species like $\text{BF}_3$ act as Lewis acids without possessing or donating protons.
+* Incorrect. Donating an unshared electron pair defines a Lewis base (nucleophile), not a Lewis acid. Lewis acids are electron-pair acceptors (electrophiles).
+* Incorrect. Increasing aqueous hydroxide ion ($\text{OH}^-$) concentration defines an Arrhenius base. The Lewis acid-base definition is broader, solvent-independent, and focused on electron-pair sharing.
+* Incorrect. Possessing a positive charge does not ensure Lewis acidity. Cations with complete valence octets and no low-energy vacant orbitals, such as $(\text{CH}_3)_4\text{N}^+$, cannot accept an electron pair without violating the octet rule.
+
+Meta-information
+================
+exname: chem311_ch02_2.11_lewis_acid_definition_remember_571b
+extype: schoice
+exsolution: 10000
+exshuffle: 5
+exsection: Chapter 2/Section 2.11 Acids and Bases: The Lewis Definition
+extopic: Acids and Bases: The Lewis Definition
+exextra[bloom]: Remember
+exextra[course]: CHEM311

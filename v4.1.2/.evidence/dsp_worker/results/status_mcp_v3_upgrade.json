@@ -1,0 +1,12 @@
+{
+  "task_id": "status_mcp_v3_upgrade",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733283.103841,
+  "finished_at": 1790733283.1039264,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "builtin":  "schedule",
+  "restart_policy":  "always",
+  "args":  [
+    "0 4 * * 6",
+    "agentapi",
+    "new-conversation",
+    "Audit the entire CoChem ecosystem:\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-TOPOS\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-TORQ\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SpycFit\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SCRIBE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BENCH\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-GEOM\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-KINETIC\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-LUMOS\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-MAGE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-NODE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-ORACLE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-PULSE\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SCAN\nD:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-SHIFT\n\nIngest the \n\"D:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\\CoChem_User_Manual.md\" \n\nOutput GitHub \"README.md\" files in each of the repositories detailing the code uses, didactic scientific implementation and purposes, installation guide, and all other GitHub best standards. Use the \"D:\\Gdrive\\__CoChem\\GitHub-Repo\\CoChem-BASE\\CoChem_User_Manual.md\" to guide the information for the README.md documents."
+  ],
+  "display_name":  "CoChem-Readme"
+}

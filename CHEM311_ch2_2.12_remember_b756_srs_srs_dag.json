@@ -1,0 +1,72 @@
+{
+  "task_id": "CHEM311_ch2_2.12_remember_b756_srs_srs",
+  "parent_task_id": "CHEM311_ch2_2.12_remember_b756",
+  "chunks": [
+    {
+      "id": "CHEM311_ch2_2.12_remember_b756_chunk_1",
+      "title": "Pedagogy Scoping, Chemical Ground Truth Ledger & Distractor Specification",
+      "acceptance_criteria": [
+        "CHEM311_ch2_2.12_remember_b756_pedagogy.json exists, contains valid JSON with bloom_level equal to remember, and passes test_task_CHEM311_ch2_2_12_remember_b756_1.py.",
+        "CHEM311_ch2_2.12_remember_b756_ledger.json exists, contains noncovalent energetic ranges between 2 and 40 kJ/mol, and passes test_task_CHEM311_ch2_2_12_remember_b756_1.py."
+      ],
+      "file_targets": [
+        "CHEM311_ch2_2.12_remember_b756_pedagogy.json",
+        "CHEM311_ch2_2.12_remember_b756_ledger.json"
+      ],
+      "depends_on": [],
+      "timebox_minutes": 20,
+      "verifying_test": "tests/tdd/test_task_CHEM311_ch2_2_12_remember_b756_1.py"
+    },
+    {
+      "id": "CHEM311_ch2_2.12_remember_b756_chunk_2",
+      "title": "Chemistry Specification Generator & Declarative Item Construction",
+      "acceptance_criteria": [
+        "scripts/generate_CHEM311_ch2_2_12_remember_b756_chemistry.py exists and computes molecular weights dynamically from mendeleev without static constants.",
+        "CHEM311_ch2_2.12_remember_b756.Rmd exists, contains Question, Solution, and Meta-information sections, and passes test_task_CHEM311_ch2_2_12_remember_b756_2.py."
+      ],
+      "file_targets": [
+        "scripts/generate_CHEM311_ch2_2_12_remember_b756_chemistry.py",
+        "CHEM311_ch2_2.12_remember_b756.Rmd"
+      ],
+      "depends_on": [
+        "CHEM311_ch2_2.12_remember_b756_chunk_1"
+      ],
+      "timebox_minutes": 20,
+      "verifying_test": "tests/tdd/test_task_CHEM311_ch2_2_12_remember_b756_2.py"
+    },
+    {
+      "id": "CHEM311_ch2_2.12_remember_b756_chunk_3",
+      "title": "Sandboxed AOT Compilation & Receipt Proof Generation",
+      "acceptance_criteria": [
+        "scripts/compile_and_verify_b756.py executes headless Rscript in quarantine and writes aot_compilation_proof.log with COMPILATION_SUCCESS banner.",
+        "CHEM311_ch2_2.12_remember_b756_nops_receipt.json exists, contains status PASS, and passes test_task_CHEM311_ch2_2_12_remember_b756_3.py."
+      ],
+      "file_targets": [
+        "scripts/compile_and_verify_b756.py",
+        "aot_compilation_proof.log",
+        "CHEM311_ch2_2.12_remember_b756_nops_receipt.json"
+      ],
+      "depends_on": [
+        "CHEM311_ch2_2.12_remember_b756_chunk_2"
+      ],
+      "timebox_minutes": 20,
+      "verifying_test": "tests/tdd/test_task_CHEM311_ch2_2_12_remember_b756_3.py"
+    },
+    {
+      "id": "CHEM311_ch2_2.12_remember_b756_chunk_4",
+      "title": "Staging Pipeline Module & Asymmetric Verification Audit Gate",
+      "acceptance_criteria": [
+        "staging/compile_and_verify_b756.py exists, exports all required cv helper functions, and passes test_task_CHEM311_ch2_2_12_remember_b756_4.py.",
+        "staging/compile_and_verify_b756.py is validated by cochem-audit and passes all assertions in test_task_CHEM311_ch2_2_12_remember_b756_4.py."
+      ],
+      "file_targets": [
+        "staging/compile_and_verify_b756.py"
+      ],
+      "depends_on": [
+        "CHEM311_ch2_2.12_remember_b756_chunk_3"
+      ],
+      "timebox_minutes": 20,
+      "verifying_test": "tests/tdd/test_task_CHEM311_ch2_2_12_remember_b756_4.py"
+    }
+  ]
+}

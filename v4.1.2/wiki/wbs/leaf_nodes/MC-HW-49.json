@@ -1,0 +1,22 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-HW-49",
+  "title": "Implement Checkpoint Tree Validation and Pruning",
+  "domain": "host_warden",
+  "target_file": "src/cochem/warden/rollback.py",
+  "chunk_start": 120,
+  "chunk_end": 160,
+  "line_delta": 41,
+  "instructions": "Implement prune_stale_checkpoints() retaining only gold and latest checkpoint.",
+  "dependencies": [
+    "MC-HW-48"
+  ],
+  "verification_command": "pytest tests/test_stage6_activation_mcp.py",
+  "delimited_protocol": "<<<FILE: src/cochem/warden/rollback.py>>>\n# Code context line 120 for MC-HW-49\n# Code context line 121 for MC-HW-49\n# Code context line 122 for MC-HW-49\n# Code context line 123 for MC-HW-49\n# Code context line 124 for MC-HW-49\n# Code context line 125 for MC-HW-49\n# Code context line 126 for MC-HW-49\n# Code context line 127 for MC-HW-49\n# Code context line 128 for MC-HW-49\n# Code context line 129 for MC-HW-49\n# Code context line 130 for MC-HW-49\n# Code context line 131 for MC-HW-49\n# Code context line 132 for MC-HW-49\n# Code context line 133 for MC-HW-49\n# Code context line 134 for MC-HW-49\n# Code context line 135 for MC-HW-49\n# Code context line 136 for MC-HW-49\n# Code context line 137 for MC-HW-49\n# Code context line 138 for MC-HW-49\n# Code context line 139 for MC-HW-49\n# Code context line 140 for MC-HW-49\n# Code context line 141 for MC-HW-49\n# Code context line 142 for MC-HW-49\n# Code context line 143 for MC-HW-49\n# Code context line 144 for MC-HW-49\n# Code context line 145 for MC-HW-49\n# Code context line 146 for MC-HW-49\n# Code context line 147 for MC-HW-49\n# Code context line 148 for MC-HW-49\n# Code context line 149 for MC-HW-49\n# Code context line 150 for MC-HW-49\n# Code context line 151 for MC-HW-49\n# Code context line 152 for MC-HW-49\n# Code context line 153 for MC-HW-49\n# Code context line 154 for MC-HW-49\n# Code context line 155 for MC-HW-49\n# Code context line 156 for MC-HW-49\n# Code context line 157 for MC-HW-49\n# Code context line 158 for MC-HW-49\n# Code context line 159 for MC-HW-49\n# Code context line 160 for MC-HW-49\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  }
+}

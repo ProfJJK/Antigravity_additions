@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-18",
+  "title": "Implement evidence_bundle Record and Validator",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 381,
+  "chunk_end": 420,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Define the evidence_bundle record exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields. Fields: verdict: str (e.g. \"COLLAPSED\"); timestamp: int (e.g. 1727575200); matrix_failures: list (e.g. [\"Matrix 2: Zombie Deadlock detected on task WBS-04-12\"]); stalled_task_id: str (e.g. \"WBS-04-12\"); stalled_duration_sec: int (e.g. 1895); system_memory_used_pct: float (e.g. 82.5); recovery_action: str (e.g. \"TRIGGER_FABLE_RESUSCITATION\"). verdict is the literal COLLAPSED, timestamp is integer epoch seconds, matrix_failures is a list of strings. Write the bundle atomically (temp file + os.replace) and mark it read-only so it is immutable.",
+  "dependencies": [
+    "MC-SRE-17",
+    "MC-SRE-05"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"evidence_bundle\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-18] DATA_MODEL:evidence_bundle\n# SPEC: Append after the previous chunk without editing earlier lines. Define the evidence_bundle record\n# SPEC: exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields.\n# SPEC: Fields: verdict: str (e.g. \"COLLAPSED\"); timestamp: int (e.g. 1727575200); matrix_failures: list\n# SPEC: (e.g. [\"Matrix 2: Zombie Deadlock detected on task WBS-04-12\"]); stalled_task_id: str (e.g.\n# SPEC: \"WBS-04-12\"); stalled_duration_sec: int (e.g. 1895); system_memory_used_pct: float (e.g. 82.5);\n# SPEC: recovery_action: str (e.g. \"TRIGGER_FABLE_RESUSCITATION\"). verdict is the literal COLLAPSED,\n# SPEC: timestamp is integer epoch seconds, matrix_failures is a list of strings. Write the bundle\n# SPEC: atomically (temp file + os.replace) and mark it read-only so it is immutable.\n# src/cochem/watchdog/watchdog_sre.py:390 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:391 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:392 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:393 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:394 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:395 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:396 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:397 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:398 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:399 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:400 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:401 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:402 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:403 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:404 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:405 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:406 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:407 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:408 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:409 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:410 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:411 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:412 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:413 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:414 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:415 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:416 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:417 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:418 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:419 [MC-SRE-18]\n# src/cochem/watchdog/watchdog_sre.py:420 [MC-SRE-18]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "DATA_MODEL:evidence_bundle"
+    ]
+  }
+}

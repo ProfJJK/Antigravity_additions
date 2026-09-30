@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-06",
+  "title": "Implement .sources/ and wiki/ Dual Root Discovery",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/corpus.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-06-FR-001: The system shall maintain permanent reference knowledge in `.sources/` and live ratified specifications in `wiki/`. Neither .sources/ nor v4.1.2_manifest.json exists in the v4.1.2 tree today: a missing root must raise a typed error, never be created or skipped silently.",
+  "dependencies": [
+    "MC-RAG-01"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"fr_001\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/corpus.py>>>\n# [MC-RAG-06] SRS-412-06-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-06-FR-001: The system shall maintain permanent reference knowledge in `.sources/` and\n# SPEC: live ratified specifications in `wiki/`. Neither .sources/ nor v4.1.2_manifest.json exists in\n# SPEC: the v4.1.2 tree today: a missing root must raise a typed error, never be created or skipped\n# SPEC: silently.\n# src/cochem/knowledge/corpus.py:7 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:8 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:9 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:10 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:11 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:12 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:13 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:14 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:15 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:16 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:17 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:18 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:19 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:20 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:21 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:22 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:23 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:24 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:25 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:26 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:27 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:28 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:29 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:30 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:31 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:32 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:33 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:34 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:35 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:36 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:37 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:38 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:39 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:40 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:41 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:42 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:43 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:44 [MC-RAG-06]\n# src/cochem/knowledge/corpus.py:45 [MC-RAG-06]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "SRS-412-06-FR-001"
+    ]
+  }
+}

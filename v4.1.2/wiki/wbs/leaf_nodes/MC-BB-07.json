@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-BB-07",
+  "title": "Implement WAL Connection Factory with Pragmas",
+  "domain": "task_matrix",
+  "target_file": "src/cochem/blackboard/schema.py",
+  "chunk_start": 41,
+  "chunk_end": 80,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-001: The task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`. Traceability test: test_scenario_1_full_pipeline_bootstrap_lifecycle.",
+  "dependencies": [
+    "MC-BB-06",
+    "MC-BB-01"
+  ],
+  "verification_command": "pytest tests/test_ch04_task_matrix_blackboard.py -k \"fr_001\"",
+  "delimited_protocol": "<<<FILE: src/cochem/blackboard/schema.py>>>\n# [MC-BB-07] SRS-412-04-FR-001\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-04-FR-001: The\n# SPEC: task blackboard shall operate over SQLite in Write-Ahead Logging (WAL) mode with `PRAGMA\n# SPEC: synchronous = NORMAL` and `PRAGMA busy_timeout = 30000`. Traceability test:\n# SPEC: test_scenario_1_full_pipeline_bootstrap_lifecycle.\n# src/cochem/blackboard/schema.py:46 [MC-BB-07]\n# src/cochem/blackboard/schema.py:47 [MC-BB-07]\n# src/cochem/blackboard/schema.py:48 [MC-BB-07]\n# src/cochem/blackboard/schema.py:49 [MC-BB-07]\n# src/cochem/blackboard/schema.py:50 [MC-BB-07]\n# src/cochem/blackboard/schema.py:51 [MC-BB-07]\n# src/cochem/blackboard/schema.py:52 [MC-BB-07]\n# src/cochem/blackboard/schema.py:53 [MC-BB-07]\n# src/cochem/blackboard/schema.py:54 [MC-BB-07]\n# src/cochem/blackboard/schema.py:55 [MC-BB-07]\n# src/cochem/blackboard/schema.py:56 [MC-BB-07]\n# src/cochem/blackboard/schema.py:57 [MC-BB-07]\n# src/cochem/blackboard/schema.py:58 [MC-BB-07]\n# src/cochem/blackboard/schema.py:59 [MC-BB-07]\n# src/cochem/blackboard/schema.py:60 [MC-BB-07]\n# src/cochem/blackboard/schema.py:61 [MC-BB-07]\n# src/cochem/blackboard/schema.py:62 [MC-BB-07]\n# src/cochem/blackboard/schema.py:63 [MC-BB-07]\n# src/cochem/blackboard/schema.py:64 [MC-BB-07]\n# src/cochem/blackboard/schema.py:65 [MC-BB-07]\n# src/cochem/blackboard/schema.py:66 [MC-BB-07]\n# src/cochem/blackboard/schema.py:67 [MC-BB-07]\n# src/cochem/blackboard/schema.py:68 [MC-BB-07]\n# src/cochem/blackboard/schema.py:69 [MC-BB-07]\n# src/cochem/blackboard/schema.py:70 [MC-BB-07]\n# src/cochem/blackboard/schema.py:71 [MC-BB-07]\n# src/cochem/blackboard/schema.py:72 [MC-BB-07]\n# src/cochem/blackboard/schema.py:73 [MC-BB-07]\n# src/cochem/blackboard/schema.py:74 [MC-BB-07]\n# src/cochem/blackboard/schema.py:75 [MC-BB-07]\n# src/cochem/blackboard/schema.py:76 [MC-BB-07]\n# src/cochem/blackboard/schema.py:77 [MC-BB-07]\n# src/cochem/blackboard/schema.py:78 [MC-BB-07]\n# src/cochem/blackboard/schema.py:79 [MC-BB-07]\n# src/cochem/blackboard/schema.py:80 [MC-BB-07]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-04",
+    "items": [
+      "SRS-412-04-FR-001"
+    ]
+  }
+}

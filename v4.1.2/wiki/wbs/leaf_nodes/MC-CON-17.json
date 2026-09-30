@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-CON-17",
+  "title": "Implement Sub-Agent Message Latency Meter",
+  "domain": "concurrency",
+  "target_file": "src/cochem/concurrency/layer1.py",
+  "chunk_start": 116,
+  "chunk_end": 155,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-03: Sub-agent communication overhead within Layer 1 shall average less than 10ms per message. Verified by test: test_f04_subagent_message_overhead_averages_under_10ms.",
+  "dependencies": [
+    "MC-CON-16",
+    "MC-CON-03"
+  ],
+  "verification_command": "pytest tests/test_ch03_concurrency_layers.py::test_f04_subagent_message_overhead_averages_under_10ms",
+  "delimited_protocol": "<<<FILE: src/cochem/concurrency/layer1.py>>>\n# [MC-CON-17] NFR-CON-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-CON-03: Sub-agent\n# SPEC: communication overhead within Layer 1 shall average less than 10ms per message. Verified by\n# SPEC: test: test_f04_subagent_message_overhead_averages_under_10ms.\n# src/cochem/concurrency/layer1.py:120 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:121 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:122 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:123 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:124 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:125 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:126 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:127 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:128 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:129 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:130 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:131 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:132 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:133 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:134 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:135 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:136 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:137 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:138 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:139 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:140 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:141 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:142 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:143 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:144 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:145 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:146 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:147 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:148 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:149 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:150 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:151 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:152 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:153 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:154 [MC-CON-17]\n# src/cochem/concurrency/layer1.py:155 [MC-CON-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-03",
+    "items": [
+      "NFR-CON-03"
+    ]
+  }
+}

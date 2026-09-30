@@ -1,0 +1,556 @@
+[
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-01",
+    "title": "Author Static 32 GB Memory and 12 vCPU 70% Cap Profile Tests",
+    "domain": "quarantine_vm",
+    "target_file": "tests/test_ch02_quarantine_vm.py",
+    "chunk_start": 1,
+    "chunk_end": 50,
+    "line_delta": 50,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_001_* for SRS-412-02-FR-001 (The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently disabled.); test_ch02_fr_002_* for SRS-412-02-FR-002 (The VM hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap.)",
+    "dependencies": [],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-01] TESTS:vm_profile\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Write physical\n# SPEC: pytest cases with no mock objects: command builders and parsers are tested on their real return\n# SPEC: values; live cases run the real docker or powershell.exe binary and call pytest.skip only when\n# SPEC: that binary or daemon is absent on the runner: test_ch02_fr_001_* for SRS-412-02-FR-001 (The\n# SPEC: Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently\n# SPEC: disabled.); test_ch02_fr_002_* for SRS-412-02-FR-002 (The VM hypervisor configuration shall\n# SPEC: allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap.)\n# tests/test_ch02_quarantine_vm.py:9 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:10 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:11 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:12 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:13 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:14 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:15 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:16 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:17 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:18 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:19 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:20 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:21 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:22 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:23 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:24 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:25 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:26 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:27 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:28 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:29 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:30 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:31 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:32 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:33 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:34 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:35 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:36 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:37 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:38 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:39 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:40 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:41 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:42 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:43 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:44 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:45 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:46 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:47 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:48 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:49 [MC-QVM-01]\n# tests/test_ch02_quarantine_vm.py:50 [MC-QVM-01]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-001",
+        "SRS-412-02-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-02",
+    "title": "Author sandbox_spec Model, docker run Flag and Network Drop Tests",
+    "domain": "quarantine_vm",
+    "target_file": "tests/test_ch02_quarantine_vm.py",
+    "chunk_start": 51,
+    "chunk_end": 100,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_sandbox_spec_* for DATA_MODEL:sandbox_spec (section 7 JSON fields); test_ch02_fr_003_* for SRS-412-02-FR-003 (The execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`.); test_ch02_nfr_vm_03_* for NFR-VM-03 (Network isolation shall be verifiable via physical connection drop (`Network is unreachable`).). Section 9 obligations: Test verifies container execution flags include `--network none` and `--read-only`.",
+    "dependencies": [
+      "MC-QVM-01"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-02] TESTS:sandbox_spec\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_sandbox_spec_* for DATA_MODEL:sandbox_spec (section 7\n# SPEC: JSON fields); test_ch02_fr_003_* for SRS-412-02-FR-003 (The execution plane shall spawn all\n# SPEC: agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and\n# SPEC: `--tmpfs /tmp:rw,size=2g`.); test_ch02_nfr_vm_03_* for NFR-VM-03 (Network isolation shall be\n# SPEC: verifiable via physical connection drop (`Network is unreachable`).). Section 9 obligations:\n# SPEC: Test verifies container execution flags include `--network none` and `--read-only`.\n# tests/test_ch02_quarantine_vm.py:61 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:62 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:63 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:64 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:65 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:66 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:67 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:68 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:69 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:70 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:71 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:72 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:73 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:74 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:75 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:76 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:77 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:78 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:79 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:80 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:81 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:82 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:83 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:84 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:85 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:86 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:87 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:88 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:89 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:90 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:91 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:92 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:93 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:94 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:95 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:96 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:97 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:98 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:99 [MC-QVM-02]\n# tests/test_ch02_quarantine_vm.py:100 [MC-QVM-02]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "DATA_MODEL:sandbox_spec",
+        "SRS-412-02-FR-003",
+        "NFR-VM-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-03",
+    "title": "Author FERPA Air-Gapped Container and Identifier Scrub Tests",
+    "domain": "quarantine_vm",
+    "target_file": "tests/test_ch02_quarantine_vm.py",
+    "chunk_start": 101,
+    "chunk_end": 150,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_004_* for SRS-412-02-FR-004 (Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers.)",
+    "dependencies": [
+      "MC-QVM-02"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-03] TESTS:ferpa\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_004_* for SRS-412-02-FR-004 (Student pedagogy tasks\n# SPEC: shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers.)\n# tests/test_ch02_quarantine_vm.py:107 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:108 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:109 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:110 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:111 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:112 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:113 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:114 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:115 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:116 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:117 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:118 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:119 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:120 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:121 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:122 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:123 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:124 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:125 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:126 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:127 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:128 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:129 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:130 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:131 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:132 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:133 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:134 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:135 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:136 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:137 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:138 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:139 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:140 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:141 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:142 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:143 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:144 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:145 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:146 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:147 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:148 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:149 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:150 [MC-QVM-03]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-04",
+    "title": "Author 6-Slot Scheduler, Startup Latency and OOM Isolation Tests",
+    "domain": "quarantine_vm",
+    "target_file": "tests/test_ch02_quarantine_vm.py",
+    "chunk_start": 151,
+    "chunk_end": 200,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_007_* for SRS-412-02-FR-007 (The container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32 GB VM.); test_ch02_nfr_vm_01_* for NFR-VM-01 (Container startup latency from execution request to test execution shall not exceed 1.5 seconds.); test_ch02_nfr_vm_02_* for NFR-VM-02 (Out-of-memory container terminations shall be isolated to the offending container without crashing the VM kernel.); test_ch02_container_oom_crash_* for FAILURE:Container OOM Crash (The container scheduler records an exit code of 137, captures memory slope, and quarantines the task to prevent cascading VM exhaustion.)",
+    "dependencies": [
+      "MC-QVM-03"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-04] TESTS:scheduler\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_007_* for SRS-412-02-FR-007 (The container\n# SPEC: scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32\n# SPEC: GB VM.); test_ch02_nfr_vm_01_* for NFR-VM-01 (Container startup latency from execution request\n# SPEC: to test execution shall not exceed 1.5 seconds.); test_ch02_nfr_vm_02_* for NFR-VM-02 (Out-of-\n# SPEC: memory container terminations shall be isolated to the offending container without crashing the\n# SPEC: VM kernel.); test_ch02_container_oom_crash_* for FAILURE:Container OOM Crash (The container\n# SPEC: scheduler records an exit code of 137, captures memory slope, and quarantines the task to\n# SPEC: prevent cascading VM exhaustion.)\n# tests/test_ch02_quarantine_vm.py:163 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:164 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:165 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:166 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:167 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:168 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:169 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:170 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:171 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:172 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:173 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:174 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:175 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:176 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:177 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:178 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:179 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:180 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:181 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:182 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:183 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:184 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:185 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:186 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:187 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:188 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:189 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:190 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:191 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:192 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:193 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:194 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:195 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:196 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:197 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:198 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:199 [MC-QVM-04]\n# tests/test_ch02_quarantine_vm.py:200 [MC-QVM-04]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-007",
+        "NFR-VM-01",
+        "NFR-VM-02",
+        "FAILURE:Container OOM Crash"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-05",
+    "title": "Author Exit Purge and 60-Second Orphan Scratch Sweep Tests",
+    "domain": "quarantine_vm",
+    "target_file": "tests/test_ch02_quarantine_vm.py",
+    "chunk_start": 201,
+    "chunk_end": 250,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_008_* for SRS-412-02-FR-008 (The container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon container exit.); test_ch02_scratch_leak_* for FAILURE:Scratch Leak (Automated cron job inspects `/tmp` mounts every 60 seconds and unlinks unmounted orphan namespaces.)",
+    "dependencies": [
+      "MC-QVM-04"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+    "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-05] TESTS:purge\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_008_* for SRS-412-02-FR-008 (The container engine\n# SPEC: shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon\n# SPEC: container exit.); test_ch02_scratch_leak_* for FAILURE:Scratch Leak (Automated cron job inspects\n# SPEC: `/tmp` mounts every 60 seconds and unlinks unmounted orphan namespaces.)\n# tests/test_ch02_quarantine_vm.py:209 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:210 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:211 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:212 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:213 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:214 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:215 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:216 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:217 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:218 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:219 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:220 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:221 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:222 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:223 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:224 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:225 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:226 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:227 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:228 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:229 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:230 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:231 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:232 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:233 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:234 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:235 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:236 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:237 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:238 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:239 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:240 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:241 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:242 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:243 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:244 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:245 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:246 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:247 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:248 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:249 [MC-QVM-05]\n# tests/test_ch02_quarantine_vm.py:250 [MC-QVM-05]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-008",
+        "FAILURE:Scratch Leak"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-06",
+    "title": "Implement Static 32 GB Set-VMMemory Command Builder",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/vm_profile.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Satisfy SRS-412-02-FR-001: The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently disabled. Host side, runs on Windows. Reuse get_vm_ram_cap_bytes() from src/cochem/warden/memory_cap.py (34359738368 bytes) instead of a second constant. Build an argv list for powershell.exe -NoProfile -Command Set-VMMemory -VMName <name> -DynamicMemoryEnabled $false -StartupBytes <cap>; never shell=True, and quote the VM name. The VM must be Off to change memory: refuse with a clear error otherwise. Traceability test: test_f05_srs_covers_all_core_domains_vm_warden_db_tdd (tests/test_stage1_srs_dag.py).",
+    "dependencies": [
+      "MC-QVM-01"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-06] SRS-412-02-FR-001\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Satisfy\n# SPEC: SRS-412-02-FR-001: The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V\n# SPEC: Dynamic Memory permanently disabled. Host side, runs on Windows. Reuse get_vm_ram_cap_bytes()\n# SPEC: from src/cochem/warden/memory_cap.py (34359738368 bytes) instead of a second constant. Build an\n# SPEC: argv list for powershell.exe -NoProfile -Command Set-VMMemory -VMName <name>\n# SPEC: -DynamicMemoryEnabled $false -StartupBytes <cap>; never shell=True, and quote the VM name. The\n# SPEC: VM must be Off to change memory: refuse with a clear error otherwise. Traceability test:\n# SPEC: test_f05_srs_covers_all_core_domains_vm_warden_db_tdd (tests/test_stage1_srs_dag.py).\n# src/cochem/quarantine/vm_profile.py:10 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:11 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:12 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:13 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:14 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:15 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:16 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:17 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:18 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:19 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:20 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:21 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:22 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:23 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:24 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:25 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:26 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:27 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:28 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:29 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:30 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:31 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:32 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:33 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:34 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:35 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:36 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:37 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:38 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:39 [MC-QVM-06]\n# src/cochem/quarantine/vm_profile.py:40 [MC-QVM-06]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-07",
+    "title": "Implement Dynamic Memory Disabled Verification Probe",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/vm_profile.py",
+    "chunk_start": 41,
+    "chunk_end": 80,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-001: The Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently disabled. Run Get-VMMemory -VMName <name> | ConvertTo-Json and parse it: DynamicMemoryEnabled must be false and Startup must equal the cap; return a list of violations, not a bool. 'Permanently disabled' means the probe runs at every Warden boot; the ch01 MemoryCap Pester suite (MC-HW-63) checks the same cap from the host, so keep the byte value identical.",
+    "dependencies": [
+      "MC-QVM-06",
+      "MC-QVM-01"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_001\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-07] SRS-412-02-FR-001/verify\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-001: The\n# SPEC: Quarantine VM shall enforce a static 32 GB RAM ceiling with Hyper-V Dynamic Memory permanently\n# SPEC: disabled. Run Get-VMMemory -VMName <name> | ConvertTo-Json and parse it: DynamicMemoryEnabled\n# SPEC: must be false and Startup must equal the cap; return a list of violations, not a bool.\n# SPEC: 'Permanently disabled' means the probe runs at every Warden boot; the ch01 MemoryCap Pester\n# SPEC: suite (MC-HW-63) checks the same cap from the host, so keep the byte value identical.\n# src/cochem/quarantine/vm_profile.py:48 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:49 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:50 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:51 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:52 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:53 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:54 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:55 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:56 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:57 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:58 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:59 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:60 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:61 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:62 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:63 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:64 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:65 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:66 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:67 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:68 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:69 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:70 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:71 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:72 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:73 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:74 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:75 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:76 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:77 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:78 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:79 [MC-QVM-07]\n# src/cochem/quarantine/vm_profile.py:80 [MC-QVM-07]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-001"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-08",
+    "title": "Implement 12 vCPU 70% Cap Set-VMProcessor Command Builder",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/vm_profile.py",
+    "chunk_start": 81,
+    "chunk_end": 120,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap. Build Set-VMProcessor -VMName <name> -Count 12 -Maximum 70 -RelativeWeight 100 as an argv list; 70 is Hyper-V's percentage Maximum (hard cap), not Reserve. Expose VCPU_COUNT=12 and CPU_CAP_PERCENT=70 as module constants.",
+    "dependencies": [
+      "MC-QVM-07",
+      "MC-QVM-01"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-08] SRS-412-02-FR-002\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM\n# SPEC: hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation\n# SPEC: cap. Build Set-VMProcessor -VMName <name> -Count 12 -Maximum 70 -RelativeWeight 100 as an argv\n# SPEC: list; 70 is Hyper-V's percentage Maximum (hard cap), not Reserve. Expose VCPU_COUNT=12 and\n# SPEC: CPU_CAP_PERCENT=70 as module constants.\n# src/cochem/quarantine/vm_profile.py:87 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:88 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:89 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:90 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:91 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:92 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:93 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:94 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:95 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:96 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:97 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:98 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:99 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:100 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:101 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:102 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:103 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:104 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:105 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:106 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:107 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:108 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:109 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:110 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:111 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:112 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:113 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:114 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:115 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:116 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:117 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:118 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:119 [MC-QVM-08]\n# src/cochem/quarantine/vm_profile.py:120 [MC-QVM-08]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-09",
+    "title": "Implement Processor Count and Maximum Cap Verification Probe",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/vm_profile.py",
+    "chunk_start": 121,
+    "chunk_end": 160,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation cap. Parse Get-VMProcessor -VMName <name> | ConvertTo-Json: Count must be 12 and Maximum must be 70; report each mismatch as a violation string.",
+    "dependencies": [
+      "MC-QVM-08",
+      "MC-QVM-01"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_002\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/vm_profile.py>>>\n# [MC-QVM-09] SRS-412-02-FR-002/verify\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-002: The VM\n# SPEC: hypervisor configuration shall allocate 12 virtual CPUs with a hard 70% CPU resource allocation\n# SPEC: cap. Parse Get-VMProcessor -VMName <name> | ConvertTo-Json: Count must be 12 and Maximum must be\n# SPEC: 70; report each mismatch as a violation string.\n# src/cochem/quarantine/vm_profile.py:126 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:127 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:128 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:129 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:130 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:131 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:132 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:133 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:134 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:135 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:136 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:137 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:138 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:139 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:140 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:141 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:142 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:143 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:144 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:145 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:146 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:147 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:148 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:149 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:150 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:151 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:152 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:153 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:154 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:155 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:156 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:157 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:158 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:159 [MC-QVM-09]\n# src/cochem/quarantine/vm_profile.py:160 [MC-QVM-09]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-002"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-10",
+    "title": "Implement sandbox_spec Record and Validator",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 1,
+    "chunk_end": 40,
+    "line_delta": 40,
+    "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Define the sandbox_spec record exactly as the section 7 JSON model, with a validator that rejects missing or mistyped fields. Fields: image: str (configurable general-purpose sandbox image tag; the SRS example tag is a leftover of the removed canary and must not pull scientific libraries); network: str (e.g. \"none\"); memory_mb: int (e.g. 4096); cpus: int (e.g. 2); pids_limit: int (e.g. 512); tmpfs_size: str (e.g. \"2g\"); security_opt: list (e.g. [\"no-new-privileges:true\"]); cap_drop: list (e.g. [\"ALL\"]). Frozen dataclass with from_dict()/to_dict(). network must be 'none', cap_drop must contain 'ALL', security_opt must contain 'no-new-privileges:true', and memory_mb must not exceed 4096 (FR-007 slot size).",
+    "dependencies": [
+      "MC-QVM-02"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"sandbox_spec\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-10] DATA_MODEL:sandbox_spec\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Define the\n# SPEC: sandbox_spec record exactly as the section 7 JSON model, with a validator that rejects missing\n# SPEC: or mistyped fields. Fields: image: str (configurable general-purpose sandbox image tag; the SRS\n# SPEC: example tag is a leftover of the removed canary and must not pull scientific libraries);\n# SPEC: network: str (e.g. \"none\"); memory_mb: int (e.g. 4096); cpus: int (e.g. 2); pids_limit: int\n# SPEC: (e.g. 512); tmpfs_size: str (e.g. \"2g\"); security_opt: list (e.g. [\"no-new-privileges:true\"]);\n# SPEC: cap_drop: list (e.g. [\"ALL\"]). Frozen dataclass with from_dict()/to_dict(). network must be\n# SPEC: 'none', cap_drop must contain 'ALL', security_opt must contain 'no-new-privileges:true', and\n# SPEC: memory_mb must not exceed 4096 (FR-007 slot size).\n# src/cochem/quarantine/sandbox.py:11 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:12 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:13 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:14 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:15 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:16 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:17 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:18 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:19 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:20 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:21 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:22 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:23 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:24 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:25 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:26 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:27 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:28 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:29 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:30 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:31 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:32 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:33 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:34 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:35 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:36 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:37 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:38 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:39 [MC-QVM-10]\n# src/cochem/quarantine/sandbox.py:40 [MC-QVM-10]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "DATA_MODEL:sandbox_spec"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-11",
+    "title": "Implement Ephemeral docker run Argument Builder",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 41,
+    "chunk_end": 85,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-003: The execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`. Guest side, runs in the Ubuntu 24.04 VM. Return a docker run argv list that always contains --rm, --network none, --read-only, --tmpfs /tmp:rw,size=2g plus --memory, --cpus, --pids-limit, --cap-drop ALL and --security-opt from the sandbox_spec. Callers cannot remove these flags; an override that weakens one raises ValueError.",
+    "dependencies": [
+      "MC-QVM-10",
+      "MC-QVM-02"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_003\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-11] SRS-412-02-FR-003\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-003: The\n# SPEC: execution plane shall spawn all agent coding tasks inside ephemeral Docker containers with\n# SPEC: `--network none`, `--read-only`, and `--tmpfs /tmp:rw,size=2g`. Guest side, runs in the Ubuntu\n# SPEC: 24.04 VM. Return a docker run argv list that always contains --rm, --network none, --read-only,\n# SPEC: --tmpfs /tmp:rw,size=2g plus --memory, --cpus, --pids-limit, --cap-drop ALL and --security-opt\n# SPEC: from the sandbox_spec. Callers cannot remove these flags; an override that weakens one raises\n# SPEC: ValueError.\n# src/cochem/quarantine/sandbox.py:49 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:50 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:51 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:52 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:53 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:54 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:55 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:56 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:57 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:58 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:59 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:60 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:61 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:62 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:63 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:64 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:65 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:66 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:67 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:68 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:69 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:70 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:71 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:72 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:73 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:74 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:75 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:76 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:77 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:78 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:79 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:80 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:81 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:82 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:83 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:84 [MC-QVM-11]\n# src/cochem/quarantine/sandbox.py:85 [MC-QVM-11]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-003"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-12",
+    "title": "Implement In-Container Network Unreachable Probe",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 86,
+    "chunk_end": 115,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-03: Network isolation shall be verifiable via physical connection drop (`Network is unreachable`). Run a real container with the FR-003 argv that attempts a TCP connect to 1.1.1.1:53 and assert the error text contains 'Network is unreachable'; a timeout does not count as proof.",
+    "dependencies": [
+      "MC-QVM-11",
+      "MC-QVM-02"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_03\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-12] NFR-VM-03\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-03: Network\n# SPEC: isolation shall be verifiable via physical connection drop (`Network is unreachable`). Run a\n# SPEC: real container with the FR-003 argv that attempts a TCP connect to 1.1.1.1:53 and assert the\n# SPEC: error text contains 'Network is unreachable'; a timeout does not count as proof.\n# src/cochem/quarantine/sandbox.py:91 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:92 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:93 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:94 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:95 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:96 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:97 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:98 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:99 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:100 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:101 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:102 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:103 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:104 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:105 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:106 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:107 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:108 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:109 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:110 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:111 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:112 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:113 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:114 [MC-QVM-12]\n# src/cochem/quarantine/sandbox.py:115 [MC-QVM-12]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "NFR-VM-03"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-13",
+    "title": "Implement FERPA Identifier Scrubber and Air-Gapped Launch",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 116,
+    "chunk_end": 165,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-004: Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers. Scrub student identifiers (student IDs, emails, names from the roster column list) into stable salted SHA-256 pseudonyms before any payload enters the container, and launch with the FR-003 flags plus a per-task --name and no bind mounts except the scrubbed read-only input. Keep the salt outside the container.",
+    "dependencies": [
+      "MC-QVM-12",
+      "MC-QVM-03",
+      "MC-QVM-11"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_004\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-13] SRS-412-02-FR-004\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-004:\n# SPEC: Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed\n# SPEC: student identifiers. Scrub student identifiers (student IDs, emails, names from the roster\n# SPEC: column list) into stable salted SHA-256 pseudonyms before any payload enters the container, and\n# SPEC: launch with the FR-003 flags plus a per-task --name and no bind mounts except the scrubbed read-\n# SPEC: only input. Keep the salt outside the container.\n# src/cochem/quarantine/sandbox.py:123 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:124 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:125 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:126 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:127 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:128 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:129 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:130 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:131 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:132 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:133 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:134 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:135 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:136 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:137 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:138 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:139 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:140 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:141 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:142 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:143 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:144 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:145 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:146 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:147 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:148 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:149 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:150 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:151 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:152 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:153 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:154 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:155 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:156 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:157 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:158 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:159 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:160 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:161 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:162 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:163 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:164 [MC-QVM-13]\n# src/cochem/quarantine/sandbox.py:165 [MC-QVM-13]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-004"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-14",
+    "title": "Implement 1.5 s Container Startup Latency Probe",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 166,
+    "chunk_end": 195,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-01: Container startup latency from execution request to test execution shall not exceed 1.5 seconds. Measure with time.monotonic() from the execution request to the first line the container writes to stdout; record the value and flag breaches above 1.5 s without failing the task.",
+    "dependencies": [
+      "MC-QVM-13",
+      "MC-QVM-04"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_01\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-14] NFR-VM-01\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-01: Container\n# SPEC: startup latency from execution request to test execution shall not exceed 1.5 seconds. Measure\n# SPEC: with time.monotonic() from the execution request to the first line the container writes to\n# SPEC: stdout; record the value and flag breaches above 1.5 s without failing the task.\n# src/cochem/quarantine/sandbox.py:171 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:172 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:173 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:174 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:175 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:176 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:177 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:178 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:179 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:180 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:181 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:182 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:183 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:184 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:185 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:186 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:187 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:188 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:189 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:190 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:191 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:192 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:193 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:194 [MC-QVM-14]\n# src/cochem/quarantine/sandbox.py:195 [MC-QVM-14]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "NFR-VM-01"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-15",
+    "title": "Implement 6-Slot 4 GB Container Scheduler",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 196,
+    "chunk_end": 245,
+    "line_delta": 50,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-007: The container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes inside the 32 GB VM. Use a threading.BoundedSemaphore(6) so at most 6 sandboxes with memory_mb=4096 run at once (24 GB of the 32 GB VM); a seventh request blocks until a slot frees, and the slot is released in a finally block.",
+    "dependencies": [
+      "MC-QVM-14",
+      "MC-QVM-04",
+      "MC-QVM-11"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_007\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-15] SRS-412-02-FR-007\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-007: The\n# SPEC: container scheduler shall enforce a concurrency limit of at most 6 parallel 4 GB sandboxes\n# SPEC: inside the 32 GB VM. Use a threading.BoundedSemaphore(6) so at most 6 sandboxes with\n# SPEC: memory_mb=4096 run at once (24 GB of the 32 GB VM); a seventh request blocks until a slot frees,\n# SPEC: and the slot is released in a finally block.\n# src/cochem/quarantine/sandbox.py:202 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:203 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:204 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:205 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:206 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:207 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:208 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:209 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:210 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:211 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:212 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:213 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:214 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:215 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:216 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:217 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:218 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:219 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:220 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:221 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:222 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:223 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:224 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:225 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:226 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:227 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:228 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:229 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:230 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:231 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:232 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:233 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:234 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:235 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:236 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:237 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:238 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:239 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:240 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:241 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:242 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:243 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:244 [MC-QVM-15]\n# src/cochem/quarantine/sandbox.py:245 [MC-QVM-15]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-007"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-16",
+    "title": "Implement Per-Container OOM Containment Limits",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 246,
+    "chunk_end": 275,
+    "line_delta": 30,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-02: Out-of-memory container terminations shall be isolated to the offending container without crashing the VM kernel. Set --memory and --memory-swap to the same value so a container cannot swap past its slot, and never pass --oom-kill-disable, so the kernel kills only the offending container.",
+    "dependencies": [
+      "MC-QVM-15",
+      "MC-QVM-04",
+      "MC-QVM-10"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"nfr_vm_02\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-16] NFR-VM-02\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy NFR-VM-02: Out-of-memory\n# SPEC: container terminations shall be isolated to the offending container without crashing the VM\n# SPEC: kernel. Set --memory and --memory-swap to the same value so a container cannot swap past its\n# SPEC: slot, and never pass --oom-kill-disable, so the kernel kills only the offending container.\n# src/cochem/quarantine/sandbox.py:251 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:252 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:253 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:254 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:255 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:256 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:257 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:258 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:259 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:260 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:261 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:262 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:263 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:264 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:265 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:266 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:267 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:268 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:269 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:270 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:271 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:272 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:273 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:274 [MC-QVM-16]\n# src/cochem/quarantine/sandbox.py:275 [MC-QVM-16]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "NFR-VM-02"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-17",
+    "title": "Implement Exit 137 Capture, Memory Slope and Task Quarantine",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 276,
+    "chunk_end": 320,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Container OOM Crash': The container scheduler records an exit code of 137, captures memory slope, and quarantines the task to prevent cascading VM exhaustion. Read State.OOMKilled and ExitCode via docker inspect before removal; on exit 137 store the sampled docker stats memory series and its slope, and mark the task QUARANTINED so the scheduler never retries it automatically.",
+    "dependencies": [
+      "MC-QVM-16",
+      "MC-QVM-04",
+      "MC-QVM-15"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"container_oom_crash\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-17] FAILURE:Container OOM Crash\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Container\n# SPEC: OOM Crash': The container scheduler records an exit code of 137, captures memory slope, and\n# SPEC: quarantines the task to prevent cascading VM exhaustion. Read State.OOMKilled and ExitCode via\n# SPEC: docker inspect before removal; on exit 137 store the sampled docker stats memory series and its\n# SPEC: slope, and mark the task QUARANTINED so the scheduler never retries it automatically.\n# src/cochem/quarantine/sandbox.py:282 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:283 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:284 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:285 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:286 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:287 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:288 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:289 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:290 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:291 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:292 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:293 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:294 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:295 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:296 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:297 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:298 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:299 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:300 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:301 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:302 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:303 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:304 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:305 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:306 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:307 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:308 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:309 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:310 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:311 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:312 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:313 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:314 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:315 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:316 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:317 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:318 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:319 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:320 [MC-QVM-17]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "FAILURE:Container OOM Crash"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-18",
+    "title": "Implement Scratch, tmpfs and Layer Purge on Container Exit",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 321,
+    "chunk_end": 360,
+    "line_delta": 40,
+    "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-008: The container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers immediately upon container exit. --rm already removes the container; also remove any named volumes the task created and run docker image prune --filter label=cochem.task=<id> for intermediate layers. Purge runs in a finally block even when the container crashed.",
+    "dependencies": [
+      "MC-QVM-17",
+      "MC-QVM-05",
+      "MC-QVM-15"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"fr_008\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-18] SRS-412-02-FR-008\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-02-FR-008: The\n# SPEC: container engine shall purge all scratch volumes, tmpfs allocations, and intermediate layers\n# SPEC: immediately upon container exit. --rm already removes the container; also remove any named\n# SPEC: volumes the task created and run docker image prune --filter label=cochem.task=<id> for\n# SPEC: intermediate layers. Purge runs in a finally block even when the container crashed.\n# src/cochem/quarantine/sandbox.py:327 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:328 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:329 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:330 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:331 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:332 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:333 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:334 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:335 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:336 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:337 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:338 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:339 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:340 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:341 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:342 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:343 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:344 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:345 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:346 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:347 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:348 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:349 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:350 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:351 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:352 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:353 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:354 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:355 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:356 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:357 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:358 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:359 [MC-QVM-18]\n# src/cochem/quarantine/sandbox.py:360 [MC-QVM-18]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "SRS-412-02-FR-008"
+      ]
+    }
+  },
+  {
+    "schema_version": "4.1.1-wbs-node/1",
+    "task_id": "MC-QVM-19",
+    "title": "Implement 60-Second Orphan Scratch Namespace Sweeper",
+    "domain": "quarantine_vm",
+    "target_file": "src/cochem/quarantine/sandbox.py",
+    "chunk_start": 361,
+    "chunk_end": 405,
+    "line_delta": 45,
+    "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Scratch Leak': Automated cron job inspects `/tmp` mounts every 60 seconds and unlinks unmounted orphan namespaces. A daemon thread wakes every 60 s, lists cochem-labelled scratch paths under /tmp that are not in /proc/self/mountinfo, and removes them; it never touches a path that belongs to a running container.",
+    "dependencies": [
+      "MC-QVM-18",
+      "MC-QVM-05"
+    ],
+    "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"scratch_leak\"",
+    "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-19] FAILURE:Scratch Leak\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Scratch\n# SPEC: Leak': Automated cron job inspects `/tmp` mounts every 60 seconds and unlinks unmounted orphan\n# SPEC: namespaces. A daemon thread wakes every 60 s, lists cochem-labelled scratch paths under /tmp\n# SPEC: that are not in /proc/self/mountinfo, and removes them; it never touches a path that belongs to\n# SPEC: a running container.\n# src/cochem/quarantine/sandbox.py:367 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:368 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:369 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:370 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:371 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:372 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:373 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:374 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:375 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:376 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:377 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:378 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:379 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:380 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:381 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:382 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:383 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:384 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:385 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:386 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:387 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:388 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:389 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:390 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:391 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:392 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:393 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:394 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:395 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:396 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:397 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:398 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:399 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:400 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:401 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:402 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:403 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:404 [MC-QVM-19]\n# src/cochem/quarantine/sandbox.py:405 [MC-QVM-19]\n<<<END FILE>>>",
+    "rule_18_compliance": {
+      "w1_line_bounds_pass": true,
+      "w2_diff_ratio_pass": true,
+      "w3_delimited_syntax_pass": true,
+      "w5_whole_file_ban_pass": true
+    },
+    "srs_trace": {
+      "document_id": "SRS-412-02",
+      "items": [
+        "FAILURE:Scratch Leak"
+      ]
+    }
+  }
+]

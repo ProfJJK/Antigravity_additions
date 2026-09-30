@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-TDD-14",
+  "title": "Implement MAX_META_PIVOT Counter and Hard Abort Trigger",
+  "domain": "tdd_pivot",
+  "target_file": "src/cochem/tdd_pivot/research.py",
+  "chunk_start": 191,
+  "chunk_end": 230,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-006: If 3 methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall trigger `[HARD_ABORT: PHYSICS WALL]`. The abort marker is a literal status string; no scientific computation is involved.",
+  "dependencies": [
+    "MC-TDD-13",
+    "MC-TDD-03",
+    "MC-TDD-05"
+  ],
+  "verification_command": "pytest tests/test_ch05_research_tdd_pivot.py -k \"fr_006\"",
+  "delimited_protocol": "<<<FILE: src/cochem/tdd_pivot/research.py>>>\n# [MC-TDD-14] SRS-412-05-FR-006\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-05-FR-006: If 3\n# SPEC: methodological pivots fail to resolve the defect (`MAX_META_PIVOT = 3`), the system shall\n# SPEC: trigger `[HARD_ABORT: PHYSICS WALL]`. The abort marker is a literal status string; no scientific\n# SPEC: computation is involved.\n# src/cochem/tdd_pivot/research.py:196 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:197 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:198 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:199 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:200 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:201 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:202 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:203 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:204 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:205 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:206 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:207 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:208 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:209 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:210 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:211 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:212 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:213 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:214 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:215 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:216 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:217 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:218 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:219 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:220 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:221 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:222 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:223 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:224 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:225 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:226 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:227 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:228 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:229 [MC-TDD-14]\n# src/cochem/tdd_pivot/research.py:230 [MC-TDD-14]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-05",
+    "items": [
+      "SRS-412-05-FR-006"
+    ]
+  }
+}

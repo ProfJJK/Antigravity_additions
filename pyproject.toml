@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cochem"
+version = "0.1.0"
+description = "Autonomous Molecular Engineering Engine and High-Throughput Quantum Chemistry Automation"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [
+    { name = "CoChem Research Team" }
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "h5py",
+    "hdf5plugin",
+    "pydantic>=2.0",
+    "mendeleev>=0.15",
+    "ase",
+]
+
+[project.optional-dependencies]
+gpu = [
+    "gpu4pyscf",
+]
+ml = [
+    "torch",
+    "mace-torch",
+]
+dev = [
+    "pytest",
+    "mypy",
+]
+
+[project.scripts]
+cochem = "cochem.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["cochem*"]
+
+[tool.setuptools.package-data]
+cochem = ["py.typed"]
+
+[tool.mypy]
+python_version = "3.12"
+packages = ["cochem"]
+mypy_path = "src"
+strict = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = false
+disable_error_code = [
+    "arg-type",
+    "assignment",
+    "attr-defined",
+    "call-arg",
+    "call-overload",
+    "comparison-overlap",
+    "index",
+    "method-assign",
+    "misc",
+    "name-defined",
+    "no-any-return",
+    "no-redef",
+    "no-untyped-call",
+    "no-untyped-def",
+    "operator",
+    "return-value",
+    "type-arg",
+    "type-var",
+    "unused-ignore",
+    "var-annotated",
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "h5py",
+    "h5py.*",
+    "hdf5plugin",
+    "hdf5plugin.*",
+    "mendeleev",
+    "mendeleev.*",
+    "scipy",
+    "scipy.*",
+    "ase",
+    "ase.*",
+    "pyscf",
+    "pyscf.*",
+    "geometric",
+    "geometric.*",
+    "tblite",
+    "tblite.*",
+    "torch",
+    "torch.*",
+    "mace",
+    "mace.*",
+    "gpu4pyscf",
+    "gpu4pyscf.*",
+    "fcntl",
+    "jax",
+    "jax.*",
+]
+ignore_missing_imports = true

@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-17",
+  "title": "Implement Signal ZD-8 Illegal State Query",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 341,
+  "chunk_end": 380,
+  "line_delta": 40,
+  "instructions": "Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-009: The Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING' AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED` state, freeze active workers, and dispatch an Evidence Bundle for resuscitation. Run the Signal ZD-8 statement verbatim from section 3. As specified, a single FAILED row trips COLLAPSED; do not quietly narrow the predicate.",
+  "dependencies": [
+    "MC-SRE-16",
+    "MC-SRE-04",
+    "MC-SRE-09"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"fr_009\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-17] SRS-412-08-FR-009\n# SPEC: Append after the previous chunk without editing earlier lines. Satisfy SRS-412-08-FR-009: The\n# SPEC: Watchdog shall periodically evaluate the Signal ZD-8 heuristic: `SELECT COUNT(*) FROM jobs WHERE\n# SPEC: (status != 'RUNNING' AND lease_owner IS NOT NULL) OR status = 'FAILED' OR (status = 'PENDING'\n# SPEC: AND attempts >= max_attempts)`. Any non-zero count shall immediately trigger a `COLLAPSED`\n# SPEC: state, freeze active workers, and dispatch an Evidence Bundle for resuscitation. Run the Signal\n# SPEC: ZD-8 statement verbatim from section 3. As specified, a single FAILED row trips COLLAPSED; do\n# SPEC: not quietly narrow the predicate.\n# src/cochem/watchdog/watchdog_sre.py:349 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:350 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:351 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:352 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:353 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:354 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:355 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:356 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:357 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:358 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:359 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:360 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:361 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:362 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:363 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:364 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:365 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:366 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:367 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:368 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:369 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:370 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:371 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:372 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:373 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:374 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:375 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:376 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:377 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:378 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:379 [MC-SRE-17]\n# src/cochem/watchdog/watchdog_sre.py:380 [MC-SRE-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "SRS-412-08-FR-009"
+    ]
+  }
+}

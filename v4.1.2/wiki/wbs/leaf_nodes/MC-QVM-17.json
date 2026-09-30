@@ -1,0 +1,30 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-17",
+  "title": "Implement Exit 137 Capture, Memory Slope and Task Quarantine",
+  "domain": "quarantine_vm",
+  "target_file": "src/cochem/quarantine/sandbox.py",
+  "chunk_start": 276,
+  "chunk_end": 320,
+  "line_delta": 45,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement recovery for 'Container OOM Crash': The container scheduler records an exit code of 137, captures memory slope, and quarantines the task to prevent cascading VM exhaustion. Read State.OOMKilled and ExitCode via docker inspect before removal; on exit 137 store the sampled docker stats memory series and its slope, and mark the task QUARANTINED so the scheduler never retries it automatically.",
+  "dependencies": [
+    "MC-QVM-16",
+    "MC-QVM-04",
+    "MC-QVM-15"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py -k \"container_oom_crash\"",
+  "delimited_protocol": "<<<FILE: src/cochem/quarantine/sandbox.py>>>\n# [MC-QVM-17] FAILURE:Container OOM Crash\n# SPEC: Append after the previous chunk without editing earlier lines. Implement recovery for 'Container\n# SPEC: OOM Crash': The container scheduler records an exit code of 137, captures memory slope, and\n# SPEC: quarantines the task to prevent cascading VM exhaustion. Read State.OOMKilled and ExitCode via\n# SPEC: docker inspect before removal; on exit 137 store the sampled docker stats memory series and its\n# SPEC: slope, and mark the task QUARANTINED so the scheduler never retries it automatically.\n# src/cochem/quarantine/sandbox.py:282 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:283 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:284 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:285 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:286 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:287 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:288 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:289 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:290 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:291 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:292 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:293 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:294 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:295 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:296 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:297 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:298 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:299 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:300 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:301 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:302 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:303 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:304 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:305 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:306 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:307 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:308 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:309 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:310 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:311 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:312 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:313 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:314 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:315 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:316 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:317 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:318 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:319 [MC-QVM-17]\n# src/cochem/quarantine/sandbox.py:320 [MC-QVM-17]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "FAILURE:Container OOM Crash"
+    ]
+  }
+}

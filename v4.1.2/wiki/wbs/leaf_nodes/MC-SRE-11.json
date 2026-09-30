@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-11",
+  "title": "Implement check_process_liveness",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 111,
+  "chunk_end": 140,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement check_process_liveness(pid: int) -> bool. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Treat psutil.AccessDenied as not live, exactly as section 6 does.",
+  "dependencies": [
+    "MC-SRE-10",
+    "MC-SRE-02"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"check_process_liveness\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-11] INTERFACE:check_process_liveness\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: check_process_liveness(pid: int) -> bool. Match the section 6 reference implementation, composed\n# SPEC: from the helpers defined in earlier chunks. Treat psutil.AccessDenied as not live, exactly as\n# SPEC: section 6 does.\n# src/cochem/watchdog/watchdog_sre.py:116 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:117 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:118 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:119 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:120 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:121 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:122 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:123 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:124 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:125 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:126 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:127 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:128 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:129 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:130 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:131 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:132 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:133 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:134 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:135 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:136 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:137 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:138 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:139 [MC-SRE-11]\n# src/cochem/watchdog/watchdog_sre.py:140 [MC-SRE-11]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "INTERFACE:check_process_liveness"
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-SRE-10",
+  "title": "Implement verify_database_binary_header",
+  "domain": "watchdog_sre",
+  "target_file": "src/cochem/watchdog/watchdog_sre.py",
+  "chunk_start": 81,
+  "chunk_end": 110,
+  "line_delta": 30,
+  "instructions": "Append after the previous chunk without editing earlier lines. Implement verify_database_binary_header(db_path: Path) -> bool. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Use the 16-byte SQLITE_MAGIC_HEADER constant from section 6.",
+  "dependencies": [
+    "MC-SRE-09",
+    "MC-SRE-02"
+  ],
+  "verification_command": "pytest tests/test_ch08_watchdog_sre.py -k \"verify_database_binary_header\"",
+  "delimited_protocol": "<<<FILE: src/cochem/watchdog/watchdog_sre.py>>>\n# [MC-SRE-10] INTERFACE:verify_database_binary_header\n# SPEC: Append after the previous chunk without editing earlier lines. Implement\n# SPEC: verify_database_binary_header(db_path: Path) -> bool. Match the section 6 reference\n# SPEC: implementation, composed from the helpers defined in earlier chunks. Use the 16-byte\n# SPEC: SQLITE_MAGIC_HEADER constant from section 6.\n# src/cochem/watchdog/watchdog_sre.py:86 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:87 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:88 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:89 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:90 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:91 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:92 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:93 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:94 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:95 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:96 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:97 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:98 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:99 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:100 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:101 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:102 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:103 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:104 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:105 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:106 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:107 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:108 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:109 [MC-SRE-10]\n# src/cochem/watchdog/watchdog_sre.py:110 [MC-SRE-10]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-08",
+    "items": [
+      "INTERFACE:verify_database_binary_header"
+    ]
+  }
+}

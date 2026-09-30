@@ -1,0 +1,12 @@
+{
+  "task_id": "kanban_improve_BASE_Fable_Production_Ready_Phase2_14de0654",
+  "domain": "academic_press",
+  "daemon_id": "dsp-worker@AetherDesk:30412",
+  "attempt": 1,
+  "started_at": 1790733281.7856379,
+  "finished_at": 1790733281.7857263,
+  "result": {
+    "status": "SUCCESS",
+    "pdf_generated": true
+  }
+}

@@ -1,0 +1,307 @@
+{
+  "evidence_bundle": {
+    "verdict": "COLLAPSED",
+    "timestamp": 1790753998,
+    "host": "AetherDesk",
+    "matrix_failures": [
+      "Signal ZD-8: 33 illegal queue state(s) (MC-DSP-15=FAILED, MC-HW-55=FAILED, status_mcp_v3_upgrade=FAILED, audit_youtube_pipeline_v3=FAILED, implement_spycfit_gpu=FAILED)"
+    ],
+    "stalled_task_id": "",
+    "stalled_duration_sec": 0,
+    "recovery_action": "TRIGGER_FABLE_RESUSCITATION",
+    "system_memory_used_pct": 31.2,
+    "frozen_worker_pids": [],
+    "stack_traces": {
+      "zd8:MC-DSP-15": [
+        "code_forge.audit() rejected result: {\"status\": \"FAILED\", \"task_id\": \"MC-DSP-15\", \"target_file\": \"src/cochem/dsp/forge/sandbox.py\", \"state\": \"FAILED\", \"error\": \"Traceback (most recent call last):\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2563, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2557, in main\\n    asyncio.run(process_task(args.task_file))\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"C:\\"
+      ],
+      "zd8:MC-HW-55": [
+        "code_forge.audit() rejected result: {\"status\": \"FAILED\", \"task_id\": \"MC-HW-55\", \"target_file\": \"src/cochem/warden/ladder.py\", \"state\": \"FAILED\", \"error\": \"Traceback (most recent call last):\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2563, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2557, in main\\n    asyncio.run(process_task(args.task_file))\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"C:\\\\Pyth"
+      ],
+      "zd8:status_mcp_v3_upgrade": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:audit_youtube_pipeline_v3": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:implement_spycfit_gpu": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:implement_spycfit_integration": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:audit_spycfit_spoofing_resolution": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:audit_spycfit_physics_autopsy": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:kanban_improve_BASE_Student_Flawless_UI_Phase1_62388135": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:kanban_improve_BASE_Fable_Production_Ready_Phase2_14de0654": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:kanban_srs_hybrid_rag_upgrade_31227497": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:migrate_mcp_to_v3": [
+        "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      ],
+      "zd8:MC-SRE-11": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-12": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-13": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-14": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-15": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-16": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-17": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-18": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-19": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-20": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-21": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-22": [
+        "code_forge.validate() rejected payload"
+      ],
+      "zd8:MC-SRE-23": [
+        "code_forge.validate() rejected payload"
+      ]
+    },
+    "watchdog_pid": 31124,
+    "job_board_snapshot": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T073958Z_1\\job_board_snapshot.db",
+    "job_board_snapshot_absent_reason": null,
+    "job_status_counts": {
+      "BLOCKED": 88,
+      "COMPLETED": 141,
+      "FAILED": 33
+    },
+    "signal_zd8_count": 33,
+    "job_board_path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+    "signal_zd8_rows": [
+      {
+        "task_id": "MC-DSP-15",
+        "status": "FAILED",
+        "attempts": 10,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.audit() rejected result: {\"status\": \"FAILED\", \"task_id\": \"MC-DSP-15\", \"target_file\": \"src/cochem/dsp/forge/sandbox.py\", \"state\": \"FAILED\", \"error\": \"Traceback (most recent call last):\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2563, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2557, in main\\n    asyncio.run(process_task(args.task_file))\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"C:\\"
+      },
+      {
+        "task_id": "MC-HW-55",
+        "status": "FAILED",
+        "attempts": 9,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.audit() rejected result: {\"status\": \"FAILED\", \"task_id\": \"MC-HW-55\", \"target_file\": \"src/cochem/warden/ladder.py\", \"state\": \"FAILED\", \"error\": \"Traceback (most recent call last):\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2563, in <module>\\n    main()\\n    ~~~~^^\\n  File \\\"D:\\\\__CoChem\\\\__agentic\\\\.scripts\\\\task_work_loop.py\\\", line 2557, in main\\n    asyncio.run(process_task(args.task_file))\\n    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \\\"C:\\\\Pyth"
+      },
+      {
+        "task_id": "status_mcp_v3_upgrade",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "audit_youtube_pipeline_v3",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "implement_spycfit_gpu",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "implement_spycfit_integration",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "audit_spycfit_spoofing_resolution",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "audit_spycfit_physics_autopsy",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "kanban_improve_BASE_Student_Flawless_UI_Phase1_62388135",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "kanban_improve_BASE_Fable_Production_Ready_Phase2_14de0654",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "kanban_srs_hybrid_rag_upgrade_31227497",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "migrate_mcp_to_v3",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "dispatch rejected: Expecting value: line 1 column 1 (char 0)"
+      },
+      {
+        "task_id": "MC-SRE-11",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-12",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-13",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-14",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-15",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-16",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-17",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-18",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-19",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-20",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-21",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-22",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      },
+      {
+        "task_id": "MC-SRE-23",
+        "status": "FAILED",
+        "attempts": 1,
+        "max_attempts": 10,
+        "lease_owner": null,
+        "error_log": "code_forge.validate() rejected payload"
+      }
+    ],
+    "ready_pending_jobs": 0,
+    "job_board_readable": true,
+    "job_board_error": null
+  }
+}

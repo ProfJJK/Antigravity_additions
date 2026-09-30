@@ -1,0 +1,28 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-QVM-03",
+  "title": "Author FERPA Air-Gapped Container and Identifier Scrub Tests",
+  "domain": "quarantine_vm",
+  "target_file": "tests/test_ch02_quarantine_vm.py",
+  "chunk_start": 101,
+  "chunk_end": 150,
+  "line_delta": 50,
+  "instructions": "Append after the previous chunk without editing earlier lines. Write physical pytest cases with no mock objects: command builders and parsers are tested on their real return values; live cases run the real docker or powershell.exe binary and call pytest.skip only when that binary or daemon is absent on the runner: test_ch02_fr_004_* for SRS-412-02-FR-004 (Student pedagogy tasks shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers.)",
+  "dependencies": [
+    "MC-QVM-02"
+  ],
+  "verification_command": "pytest tests/test_ch02_quarantine_vm.py --collect-only -q",
+  "delimited_protocol": "<<<FILE: tests/test_ch02_quarantine_vm.py>>>\n# [MC-QVM-03] TESTS:ferpa\n# SPEC: Append after the previous chunk without editing earlier lines. Write physical pytest cases with\n# SPEC: no mock objects: command builders and parsers are tested on their real return values; live cases\n# SPEC: run the real docker or powershell.exe binary and call pytest.skip only when that binary or\n# SPEC: daemon is absent on the runner: test_ch02_fr_004_* for SRS-412-02-FR-004 (Student pedagogy tasks\n# SPEC: shall execute in isolated, air-gapped FERPA containers with scrubbed student identifiers.)\n# tests/test_ch02_quarantine_vm.py:107 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:108 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:109 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:110 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:111 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:112 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:113 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:114 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:115 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:116 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:117 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:118 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:119 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:120 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:121 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:122 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:123 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:124 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:125 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:126 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:127 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:128 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:129 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:130 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:131 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:132 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:133 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:134 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:135 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:136 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:137 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:138 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:139 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:140 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:141 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:142 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:143 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:144 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:145 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:146 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:147 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:148 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:149 [MC-QVM-03]\n# tests/test_ch02_quarantine_vm.py:150 [MC-QVM-03]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-02",
+    "items": [
+      "SRS-412-02-FR-004"
+    ]
+  }
+}

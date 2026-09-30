@@ -1,0 +1,29 @@
+{
+  "schema_version": "4.1.1-wbs-node/1",
+  "task_id": "MC-RAG-18",
+  "title": "Implement query_knowledge_index Read-Only BM25 Search",
+  "domain": "dual_wiki_rag",
+  "target_file": "src/cochem/knowledge/server.py",
+  "chunk_start": 1,
+  "chunk_end": 45,
+  "line_delta": 45,
+  "instructions": "Create the file: this chunk owns the module docstring, imports and constants. Implement query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]]. Match the section 6 reference implementation, composed from the helpers defined in earlier chunks. Close the connection on every path (contextlib.closing), which the section 6 reference omits when execute() raises.",
+  "dependencies": [
+    "MC-RAG-04",
+    "MC-RAG-12"
+  ],
+  "verification_command": "pytest tests/test_ch06_dual_wiki_rag.py -k \"query_knowledge_index\"",
+  "delimited_protocol": "<<<FILE: src/cochem/knowledge/server.py>>>\n# [MC-RAG-18] INTERFACE:query_knowledge_index\n# SPEC: Create the file: this chunk owns the module docstring, imports and constants. Implement\n# SPEC: query_knowledge_index(db_path: str, search_query: str, limit: int = 5) -> list[dict[str, Any]].\n# SPEC: Match the section 6 reference implementation, composed from the helpers defined in earlier\n# SPEC: chunks. Close the connection on every path (contextlib.closing), which the section 6 reference\n# SPEC: omits when execute() raises.\n# src/cochem/knowledge/server.py:7 [MC-RAG-18]\n# src/cochem/knowledge/server.py:8 [MC-RAG-18]\n# src/cochem/knowledge/server.py:9 [MC-RAG-18]\n# src/cochem/knowledge/server.py:10 [MC-RAG-18]\n# src/cochem/knowledge/server.py:11 [MC-RAG-18]\n# src/cochem/knowledge/server.py:12 [MC-RAG-18]\n# src/cochem/knowledge/server.py:13 [MC-RAG-18]\n# src/cochem/knowledge/server.py:14 [MC-RAG-18]\n# src/cochem/knowledge/server.py:15 [MC-RAG-18]\n# src/cochem/knowledge/server.py:16 [MC-RAG-18]\n# src/cochem/knowledge/server.py:17 [MC-RAG-18]\n# src/cochem/knowledge/server.py:18 [MC-RAG-18]\n# src/cochem/knowledge/server.py:19 [MC-RAG-18]\n# src/cochem/knowledge/server.py:20 [MC-RAG-18]\n# src/cochem/knowledge/server.py:21 [MC-RAG-18]\n# src/cochem/knowledge/server.py:22 [MC-RAG-18]\n# src/cochem/knowledge/server.py:23 [MC-RAG-18]\n# src/cochem/knowledge/server.py:24 [MC-RAG-18]\n# src/cochem/knowledge/server.py:25 [MC-RAG-18]\n# src/cochem/knowledge/server.py:26 [MC-RAG-18]\n# src/cochem/knowledge/server.py:27 [MC-RAG-18]\n# src/cochem/knowledge/server.py:28 [MC-RAG-18]\n# src/cochem/knowledge/server.py:29 [MC-RAG-18]\n# src/cochem/knowledge/server.py:30 [MC-RAG-18]\n# src/cochem/knowledge/server.py:31 [MC-RAG-18]\n# src/cochem/knowledge/server.py:32 [MC-RAG-18]\n# src/cochem/knowledge/server.py:33 [MC-RAG-18]\n# src/cochem/knowledge/server.py:34 [MC-RAG-18]\n# src/cochem/knowledge/server.py:35 [MC-RAG-18]\n# src/cochem/knowledge/server.py:36 [MC-RAG-18]\n# src/cochem/knowledge/server.py:37 [MC-RAG-18]\n# src/cochem/knowledge/server.py:38 [MC-RAG-18]\n# src/cochem/knowledge/server.py:39 [MC-RAG-18]\n# src/cochem/knowledge/server.py:40 [MC-RAG-18]\n# src/cochem/knowledge/server.py:41 [MC-RAG-18]\n# src/cochem/knowledge/server.py:42 [MC-RAG-18]\n# src/cochem/knowledge/server.py:43 [MC-RAG-18]\n# src/cochem/knowledge/server.py:44 [MC-RAG-18]\n# src/cochem/knowledge/server.py:45 [MC-RAG-18]\n<<<END FILE>>>",
+  "rule_18_compliance": {
+    "w1_line_bounds_pass": true,
+    "w2_diff_ratio_pass": true,
+    "w3_delimited_syntax_pass": true,
+    "w5_whole_file_ban_pass": true
+  },
+  "srs_trace": {
+    "document_id": "SRS-412-06",
+    "items": [
+      "INTERFACE:query_knowledge_index"
+    ]
+  }
+}
