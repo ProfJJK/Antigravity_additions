@@ -3,8 +3,9 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$true)][string]$Python,
+    [string]$Uv = "$env:ProgramFiles\uv\uv.exe",
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.4",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.5",
     [string]$DataRoot = "$env:ProgramData\CoChemPipeline422",
     [string]$TokenFile = "$env:USERPROFILE\CoChem422\controller.token",
     [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
@@ -21,6 +22,59 @@ function Invoke-Checked {
     param([string]$Executable, [string[]]$Arguments)
     & $Executable @Arguments
     if ($LASTEXITCODE -ne 0) { throw "$Executable failed with exit code $LASTEXITCODE" }
+}
+
+function Install-FrozenEnvironment {
+    $savedEnvironment = $env:UV_PROJECT_ENVIRONMENT
+    try {
+        $env:UV_PROJECT_ENVIRONMENT = Join-Path $InstallRoot '.venv'
+        Invoke-Checked -Executable $Uv -Arguments @('sync','--project',$sourceRoot,'--frozen','--no-editable','--extra','mcp','--python',$Python,'--no-python-downloads')
+    }
+    finally { $env:UV_PROJECT_ENVIRONMENT = $savedEnvironment }
+}
+
+function Assert-ReviewedExecutionPolicy {
+    param([string]$Path)
+    $reviewed = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
+    if ($null -eq $reviewed.PSObject.Properties['routing']) { throw 'The reviewed configuration must include the authoritative routing policy.' }
+    $projects = $reviewed.PSObject.Properties['coding_projects']
+    if ($null -ne $projects -and $null -ne $projects.Value -and @($projects.Value.PSObject.Properties).Count -gt 0) {
+        foreach ($key in @('hardware','execution_limits','ramdisk','docker')) {
+            if ($null -eq $reviewed.PSObject.Properties[$key]) {
+                throw "Coding requires an explicit reviewed $key configuration. Copy and review the current example."
+            }
+        }
+        if ($reviewed.ramdisk.enabled -ne $true -or $reviewed.docker.enabled -ne $true) {
+            throw 'Coding requires enabled RAM-disk and Docker policies; ordinary disk paths are not RAM provisioning.'
+        }
+    }
+}
+
+function Invoke-ExecutionProvision {
+    param([string]$ConfigPath)
+    $taskName = 'CoChem-4.2.5-Execution-Provision'
+    $script = Join-Path $InstallRoot 'execution-provision-task.ps1'
+    $log = Join-Path $InstallRoot 'execution-provision.log'
+    $values = @('-I','-m','cochem_pipeline','provision-execution','--config',$ConfigPath)
+    $quoted = ($values | ForEach-Object { "'" + $_.Replace("'","''") + "'" }) -join ','
+    $body = "`$ErrorActionPreference='Stop'`r`n& '" + $installedPython.Replace("'","''") + "' @(" + $quoted + ") *> '" + $log.Replace("'","''") + "'`r`nexit `$LASTEXITCODE`r`n"
+    [IO.File]::WriteAllText($script,$body,[Text.UTF8Encoding]::new($false))
+    Protect-InstalledTree -Path $InstallRoot
+    $action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument ('-NoProfile -NonInteractive -ExecutionPolicy Bypass -File ' + (Quote-TaskArgument $script))
+    $principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
+    $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 10) -MultipleInstances IgnoreNew
+    Register-ScheduledTask -TaskName $taskName -Action $action -Principal $principal -Settings $settings -Force | Out-Null
+    $requestedStart = Get-Date
+    Start-ScheduledTask -TaskName $taskName
+    $deadline = (Get-Date).AddMinutes(10)
+    do {
+        Start-Sleep -Milliseconds 500
+        $task = Get-ScheduledTask -TaskName $taskName
+        $info = Get-ScheduledTaskInfo -TaskName $taskName
+        if ((Get-Date) -gt $deadline) { throw "SYSTEM execution provisioning timed out. Inspect $log before retrying; do not clear uncertain mounts or process state." }
+    } while ($task.State -in @('Running','Queued') -or $info.LastRunTime -lt $requestedStart.AddSeconds(-1))
+    if ($info.LastTaskResult -ne 0) { throw "SYSTEM RAM-disk/Docker/hardware provisioning failed ($($info.LastTaskResult)). Inspect $log; daemon registration was not performed." }
+    Write-Host "Execution prerequisites verified by SYSTEM: $log"
 }
 
 function Quote-TaskArgument {
@@ -104,6 +158,7 @@ foreach ($name in @($WardenTaskName,$SupervisorTaskName)) {
 }
 $repo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $Python = (Resolve-Path -LiteralPath $Python).Path
+$Uv = (Resolve-Path -LiteralPath $Uv).Path
 $InstallRoot = [IO.Path]::GetFullPath($InstallRoot).TrimEnd('\')
 $DataRoot = [IO.Path]::GetFullPath($DataRoot).TrimEnd('\')
 $TokenFile = [IO.Path]::GetFullPath($TokenFile)
@@ -111,12 +166,21 @@ $programFilesPrefix = [IO.Path]::GetFullPath($env:ProgramFiles).TrimEnd('\') + '
 if (-not $Python.StartsWith($programFilesPrefix, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'Use a machine-wide Python 3.12+ installed beneath Program Files. SYSTEM must never import code from an agent-writable Python installation.'
 }
+if (-not $Uv.StartsWith($programFilesPrefix, [StringComparison]::OrdinalIgnoreCase)) {
+    throw 'Use a machine-protected uv.exe beneath Program Files; it must be separate from the environment it synchronizes.'
+}
+if ($Uv.StartsWith($InstallRoot+'\.venv\',[StringComparison]::OrdinalIgnoreCase)) {
+    throw 'uv.exe must be separate from the environment it synchronizes.'
+}
 if (-not $InstallRoot.StartsWith($programFilesPrefix, [StringComparison]::OrdinalIgnoreCase)) {
     throw 'InstallRoot must be a dedicated versioned directory beneath Program Files.'
 }
 Assert-ProtectedAncestors -Path (Split-Path -Parent $Python)
 foreach ($item in (Get-TreeWithoutLinks -Path (Split-Path -Parent $Python))) { Assert-ProtectedItem -Path $item.FullName }
+Assert-ProtectedAncestors -Path (Split-Path -Parent $Uv)
+Assert-ProtectedItem -Path $Uv
 Invoke-Checked -Executable $Python -Arguments @('-I','-c','import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))')
+Invoke-Checked -Executable $Uv -Arguments @('--version')
 
 $installedPython = Join-Path $InstallRoot '.venv\Scripts\python.exe'
 $sourceRoot = Join-Path $InstallRoot 'source'
@@ -128,7 +192,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
-    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,4))')
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,5))')
     Write-Host "Preserving existing protected installation: $InstallRoot"
 }
 else {
@@ -140,13 +204,13 @@ else {
     Assert-ProtectedAncestors -Path $installParent
     New-Item -ItemType Directory -Path $sourceRoot -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $repo 'src') -Destination (Join-Path $sourceRoot 'src') -Recurse
-    Copy-Item -LiteralPath (Join-Path $repo 'pyproject.toml'),(Join-Path $repo 'README.md') -Destination $sourceRoot
+    Copy-Item -LiteralPath (Join-Path $repo 'pyproject.toml'),(Join-Path $repo 'uv.lock'),(Join-Path $repo 'README.md') -Destination $sourceRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $sourceRoot | Sort-Object { $_.FullName.Length } -Descending)) {
         if ($item.Name -eq '__pycache__') { Remove-Item -LiteralPath $item.FullName -Recurse -Force }
         elseif (-not $item.PSIsContainer -and $item.Extension -eq '.pyc') { Remove-Item -LiteralPath $item.FullName -Force }
     }
     Invoke-Checked -Executable $Python -Arguments @('-I','-m','venv','--copies',(Join-Path $InstallRoot '.venv'))
-    Invoke-Checked -Executable $installedPython -Arguments @('-I','-m','pip','install',($sourceRoot + '[mcp]'))
+    Install-FrozenEnvironment
     # All code, packages and task helpers are machine protected. No editable
     # installation points the SYSTEM interpreter back into the user checkout.
     Protect-InstalledTree -Path $InstallRoot
@@ -184,6 +248,7 @@ if ($RegisterDaemon) {
     if (-not $Config) { throw '-RegisterDaemon requires a reviewed -Config JSON file with real native CLI paths and model IDs.' }
     $configSource = (Resolve-Path -LiteralPath $Config).Path
     $configTarget = Join-Path $InstallRoot 'pipeline.json'
+    Assert-ReviewedExecutionPolicy -Path $configSource
     Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$configSource)
     if (Test-Path -LiteralPath $configTarget) {
         if ((Get-FileHash -LiteralPath $configSource).Hash -ne (Get-FileHash -LiteralPath $configTarget).Hash) {
@@ -193,6 +258,7 @@ if ($RegisterDaemon) {
     else { Copy-Item -LiteralPath $configSource -Destination $configTarget }
     Protect-InstalledTree -Path $InstallRoot
     Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$configTarget)
+    Invoke-ExecutionProvision -ConfigPath $configTarget
     $daemonAction = New-ScheduledTaskAction -Execute $installedPython -Argument ('-I -m cochem_pipeline daemon --config ' + (Quote-TaskArgument $configTarget)) -WorkingDirectory $InstallRoot
     $daemonSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
     Register-ScheduledTask -TaskName $WardenTaskName -Action $daemonAction -Principal $principal -Settings $daemonSettings -Trigger (New-ScheduledTaskTrigger -AtStartup) -Force | Out-Null

@@ -33,6 +33,7 @@ _CATEGORIES = (
     )),
     ("resource", False, "Host resources or a resource admission limit prevent execution", (
         r"\b(?:out of memory|memoryerror|cannot allocate memory|no space left|disk full|free disk|free memory|insufficient memory|resource exhausted|too many open files|cpu utilization|database is locked|database is busy|quotaexceedederror)\b",
+        r"\b(?:hardware admission|thermal|temperature|vram|commit headroom|resource telemetry|disk throughput|iops|wal bloat|hardware governor)\b",
     )),
     ("compatibility", True, "A native CLI, output protocol or database version contract is incompatible", (
         r"\b(?:unknown|unrecognized|unsupported|unexpected|invalid)\b.{0,40}\b(?:arguments?|options?|flags?|protocol|output format|schema version)\b",
@@ -108,9 +109,65 @@ def _number(value) -> bool:
     return type(value) in (int, float) and math.isfinite(value)
 
 
+def _component_status(status: dict, now: float, timeout: float) -> tuple[dict, list[dict]]:
+    """Project only measured, bounded infrastructure metadata from the warden."""
+    projected, incidents = {}, []
+    components = status.get('components', {})
+    if not isinstance(components, dict):
+        return projected, incidents
+    for name in ('docker_engine', 'containers', 'gateway', 'controller'):
+        component = components.get(name)
+        if not isinstance(component, dict):
+            continue
+        state = component.get('state')
+        if state not in {'healthy', 'unavailable', 'unhealthy', 'quarantined', 'unknown', 'disabled'}:
+            state = 'unknown'
+        checked = component.get('checked_at')
+        age = max(0, now-checked) if _number(checked) and checked <= now+5 else None
+        if state != 'disabled' and (age is None or age > timeout):
+            state = 'unknown'
+        safe = {'state':state, 'required':component.get('required') is True, 'age_seconds':age}
+        for field in ('active_count','owned'):
+            value = component.get(field)
+            if type(value) is int and 0 <= value <= 100000:
+                safe[field] = value
+        if isinstance(component.get('diagnostic'), str):
+            safe['diagnostic'] = redact_diagnostic(component['diagnostic'],256)
+        projected[name] = safe
+        if safe['required'] and state != 'healthy':
+            incidents.append(_incident('configuration',False,
+                'Required infrastructure component is unavailable or unverified: '+name,
+                {'component':name, **safe}, 'component unavailable '+name))
+    return projected, incidents
+
+
+def _wal_health(root: Path, limit_mb: int) -> tuple[dict, list[dict]]:
+    path = root/'job_board.db-wal'
+    result = {'state':'absent','size_bytes':0,'limit_bytes':limit_mb*1024*1024}
+    try:
+        if path.is_symlink():
+            raise OSError('WAL metadata path must not be a symbolic link')
+        if not path.exists():
+            return result, []
+        if not path.is_file():
+            raise OSError('WAL metadata path must be a regular file')
+        result.update(size_bytes=path.stat().st_size,state='within_limit')
+        if result['size_bytes'] > result['limit_bytes']:
+            result['state']='oversized'
+            return result, [_incident('resource',False,
+                'SQLite WAL size exceeds the configured checkpoint-pressure limit',
+                {'component':'database_wal', **result},'database WAL bloat')]
+        return result, []
+    except OSError as exc:
+        result['state']='unavailable'
+        return result, [_incident('configuration',False,'SQLite WAL metadata cannot be verified',
+            {'component':'database_wal','diagnostic':redact_diagnostic(str(exc))},'database WAL metadata unavailable')]
+
+
 def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]]:
     path = root / "supervisor_status.json"
-    info = {"state": "missing", "age_seconds": None, "capacity": None, "active_count": 0}
+    info = {"state": "missing", "age_seconds": None, "capacity": None, "active_count": 0,
+            'hardware_hold':False,'hardware':{},'components':{},'execution_bounds':{}}
     if not path.exists():
         return info, [_incident("code", True, "The pipeline has not published a supervisor heartbeat",
                                {"source": "supervisor_status.json"}, "heartbeat missing")]
@@ -132,9 +189,13 @@ def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]
         if age < -5:
             raise ValueError("Heartbeat timestamp is in the future; check the host clock")
         info.update(state="fresh" if age <= timeout else "stale", age_seconds=round(max(age, 0), 3),
-                    pid=data["pid"], sequence=data["sequence"])
+                    pid=data["pid"], sequence=data["sequence"],instance_id=data['instance_id'])
         status = data["status"]
         if isinstance(status, dict):
+            bounds=status.get('execution_bounds',{})
+            if isinstance(bounds,dict):
+                info['execution_bounds']={key:value for key,value in bounds.items()
+                    if key in {'native','CODE_TEST','CODE_INTEGRATE'} and _number(value) and 0<value<=86400}
             if type(status.get("active_count")) is int and status["active_count"] >= 0:
                 info["active_count"] = status["active_count"]
             elif isinstance(status.get("active"), list):
@@ -142,10 +203,26 @@ def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]
             hardware = status.get("hardware", status)
             if isinstance(hardware, dict) and type(hardware.get("capacity")) is int and hardware["capacity"] >= 0:
                 info["capacity"] = hardware["capacity"]
+                info['hardware_hold'] = hardware['capacity'] == 0
+            if isinstance(hardware, dict):
+                state = hardware.get('state')
+                if state in {'normal','throttled','paused','critical'}:
+                    info['hardware']['state'] = state
+                    info['hardware_hold'] |= state in {'paused','critical'}
+                info['hardware']['capacity'] = info['capacity']
+                if isinstance(hardware.get('reasons'), list):
+                    info['hardware']['reasons'] = [redact_diagnostic(item,256) for item in hardware['reasons'][:8] if isinstance(item,str)]
+            info['components'], component_incidents = _component_status(status,now,timeout)
+        else:
+            component_incidents = []
         if age > timeout:
             return info, [_incident("code", True, "The pipeline heartbeat is stale",
                 {"age_seconds": round(age, 3), "timeout_seconds": timeout}, "heartbeat stale")]
-        return info, []
+        if info['hardware_hold']:
+            component_incidents.append(_incident('resource',False,
+                'The hardware governor is holding execution admission',
+                {'component':'hardware',**info['hardware']},'hardware governor admission hold'))
+        return info, component_incidents
     except (OSError, ValueError, TypeError, OverflowError) as exc:
         info["state"] = "invalid"
         category = "configuration" if isinstance(exc, OSError) or "future" in str(exc) else "compatibility"
@@ -154,7 +231,7 @@ def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]
 
 
 def read_observation(private_root: str | Path, now: float | None = None, heartbeat_timeout: float = 30,
-                     stall_timeout: float = 600, repeated_failures: int = 3) -> dict:
+                     stall_timeout: float = 600, repeated_failures: int = 3, wal_limit_mb: int = 256) -> dict:
     """Read bounded heartbeat/job metadata and return stable actionable incidents.
 
     Evidence is a snapshot, not proof of provider execution. Repeated failures
@@ -167,12 +244,23 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
             raise ValueError(f"{name} must be a finite positive number")
     if type(repeated_failures) is not int or repeated_failures < 1:
         raise ValueError("repeated_failures must be a positive integer")
+    if type(wal_limit_mb) is not int or not 1 <= wal_limit_mb <= 4096:
+        raise ValueError('wal_limit_mb must be an integer from 1 to 4096')
     root = Path(private_root).expanduser().absolute()
     heartbeat, incidents = _heartbeat(root, observed, heartbeat_timeout)
     health = {"state": "healthy", "heartbeat": heartbeat["state"], "database": "missing",
               "observed_at": observed, "heartbeat_age_seconds": heartbeat["age_seconds"],
               "hardware_capacity": heartbeat["capacity"], "job_counts": {}, "routing_waits": [],
-              "execution_cleanup_hold": None}
+              "execution_cleanup_hold": None, 'hardware':heartbeat['hardware'],
+              'components':heartbeat['components'],'heartbeat_pid':heartbeat.get('pid'),
+              'heartbeat_instance_id':heartbeat.get('instance_id'),
+              'execution_bounds':heartbeat['execution_bounds']}
+    health['database_wal'], wal_incidents = _wal_health(root,wal_limit_mb)
+    incidents.extend(wal_incidents)
+    infrastructure_hold = (heartbeat['hardware_hold'] or
+        any(item.get('required') and item.get('state')!='healthy' for item in heartbeat['components'].values()) or
+        any(incident['evidence'].get('component') for incident in incidents if not incident['repairable']))
+    health['repair_hold'] = bool(infrastructure_hold)
     database = root / "job_board.db"
     if not database.is_file() or database.is_symlink():
         incidents.append(_incident("configuration", False, "The configured pipeline job database is unavailable",
@@ -207,13 +295,19 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                 counts = conn.execute("SELECT status,count(*) FROM pipeline_jobs WHERE kind<>'MACRO_PLANNING_REQUEST' GROUP BY status").fetchall()
                 health["job_counts"] = {str(row[0]): row[1] for row in counts if row[0] in {
                     "PENDING", "PENDING_RETRY", "IN_PROGRESS", "FAILED", "BLOCKED", "COMPLETED"}}
+                completed=conn.execute("SELECT max(updated_at) FROM pipeline_jobs WHERE status='COMPLETED'").fetchone()[0]
+                health['last_completion_at']=completed if _number(completed) else None
+                health['last_completion_age_seconds']=max(0,observed-completed) if _number(completed) else None
                 has_routing = conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pipeline_routing_jobs'").fetchone() is not None
                 route_fields = ("r.state AS routing_state,r.next_eligible_at,r.expires_at,r.cycle,"
                                 "substr(r.wait_reason,1,256) AS wait_reason" if has_routing else
                                 "NULL AS routing_state,NULL AS next_eligible_at,NULL AS expires_at,NULL AS cycle,NULL AS wait_reason")
                 route_join = " LEFT JOIN pipeline_routing_jobs r ON r.job_id=j.job_id" if has_routing else ""
+                event_columns={row[1] for row in conn.execute('PRAGMA table_info(pipeline_events)')}
+                progress_field=("(SELECT max(e.timestamp) FROM pipeline_events e WHERE e.job_id=j.job_id AND e.event='CLAIMED')"
+                                if 'job_id' in event_columns else 'NULL')
                 rows = conn.execute("SELECT j.kind,j.status,j.attempts,j.updated_at,j.lease_expires_at,"
-                    "substr(j.error,1,?) AS error," + route_fields + " FROM pipeline_jobs j" + route_join +
+                    "substr(j.error,1,?) AS error," + progress_field + " AS claimed_at," + route_fields + " FROM pipeline_jobs j" + route_join +
                     " WHERE j.kind<>'MACRO_PLANNING_REQUEST' AND j.status IN ('FAILED','BLOCKED','PENDING','PENDING_RETRY','IN_PROGRESS')"
                     " ORDER BY j.updated_at DESC LIMIT ?", (_MAX_ERROR, _MAX_ROWS)).fetchall()
                 # Events provide bounded scheduler activity evidence without
@@ -228,6 +322,16 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
             for row in rows:
                 status, kind = row["status"], row["kind"]
                 age = observed - row["updated_at"] if _number(row["updated_at"]) else None
+                progress_at=row['updated_at']
+                progress_timeout=stall_timeout
+                if status=='IN_PROGRESS':
+                    # A lease heartbeat proves ownership, not useful progress.
+                    # The immutable CLAIMED event survives updated_at renewal.
+                    if _number(row['claimed_at']):
+                        progress_at=row['claimed_at']
+                        age=max(0,observed-progress_at)
+                    bound=heartbeat['execution_bounds'].get(kind,heartbeat['execution_bounds'].get('native',1800))
+                    progress_timeout=max(stall_timeout,bound)+30
                 error = row["error"]
                 classification = None
                 route_state, eligible = row["routing_state"], row["next_eligible_at"]
@@ -262,7 +366,7 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                         entry["latest_failure_at"] = max(entry["latest_failure_at"] or 0, row["updated_at"])
                     if kind in {"MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS"}:
                         entry["kinds"].add(kind)
-                if cleanup_rows:
+                if cleanup_rows or infrastructure_hold:
                     # A fenced lease may outlive its physical process tree.
                     # Until termination is proven, apparent stalled queues or
                     # leases are expected admission holds, not code repairs.
@@ -270,21 +374,24 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                 if status == "IN_PROGRESS" and _number(row["lease_expires_at"]) and row["lease_expires_at"] < observed:
                     incidents.append(_incident("code", True, "An execution lease expired without scheduler recovery",
                         {"kind": kind, "expired_seconds": round(observed - row["lease_expires_at"], 3)}, "expired execution lease"))
-                elif (age is not None and age > stall_timeout and status in {"IN_PROGRESS", "PENDING", "PENDING_RETRY"}
+                elif (age is not None and age > progress_timeout and status in {"IN_PROGRESS", "PENDING", "PENDING_RETRY"}
                       and not (classification is not None and not classification["repairable"])):
                     busy = heartbeat["active_count"] >= (heartbeat["capacity"] or 1)
                     limited = status != "IN_PROGRESS" and heartbeat["state"] == "fresh" and (heartbeat["capacity"] == 0 or busy)
                     incidents.append(_incident("resource" if limited else "code", not limited,
                         "Pending work is paused by hardware admission limits" if limited else "Pipeline work has stalled beyond its configured progress timeout",
-                        {"kind": kind, "status": status, "idle_seconds": round(age, 3), "capacity": heartbeat["capacity"], "last_progress_at": row["updated_at"]},
+                        {"kind": kind, "status": status, "idle_seconds": round(age, 3), "capacity": heartbeat["capacity"],
+                         "last_progress_at": progress_at,'progress_timeout_seconds':progress_timeout},
                         "hardware admission pause" if limited else "stalled " + status.casefold()))
             for signature, entry in groups.items():
                 classification = entry["classification"]
                 repeats = max(entry["count"], entry["attempts"])
-                repairable = classification["repairable"] and repeats >= repeated_failures and not cleanup_rows
+                repairable = classification["repairable"] and repeats >= repeated_failures and not cleanup_rows and not infrastructure_hold
                 summary = classification["summary"]
                 if classification["repairable"] and cleanup_rows:
                     summary += "; paid repair is held until native process cleanup is verified"
+                elif classification['repairable'] and infrastructure_hold:
+                    summary += '; paid repair is held until infrastructure and resource prerequisites recover'
                 elif classification["repairable"] and not repairable:
                     summary += "; waiting for repeated evidence before authorizing repair"
                 incidents.append(_incident(classification["category"], repairable, summary,
@@ -301,6 +408,7 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
     for incident in incidents:
         unique.setdefault(incident["fingerprint"], incident)
     incidents = list(unique.values())
+    health['repair_hold'] |= bool(health['execution_cleanup_hold'])
     if incidents:
         health["state"] = "degraded" if any(incident["repairable"] for incident in incidents) else "blocked"
     elif health["routing_waits"]:

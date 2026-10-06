@@ -122,22 +122,143 @@ class Supervisor:
         self._publish(recovery=result)
         return result
 
-    def _restart_once(self,incident):
+    def _capture_recovery_diagnostics(self,incident,observation=None):
+        """Persist bounded, secret-free evidence before changing component state."""
+        if observation is None:
+            observation=read_observation(self.config['pipeline_private_root'],
+                heartbeat_timeout=self.config['heartbeat_timeout'],stall_timeout=self.config['stall_timeout'],
+                repeated_failures=self.config['repeated_failures'])
+        directory=self.private/'diagnostics'
+        directory.mkdir(parents=True,exist_ok=True)
+        target=directory/(uuid.uuid4().hex+'.json')
+        write_json(target,{'captured_at':time.time(),'incident':incident,'observation':observation,
+                           'scope':'bounded heartbeat, SQLite metadata, hardware and infrastructure diagnostics'})
+        digest=hashlib.sha256(target.read_bytes()).hexdigest()
+        self.ledger.record_event('PRE_RECOVERY_DIAGNOSTICS',{'path':str(target),'sha256':digest},
+                                 fingerprint=incident['fingerprint'])
+        return {'path':str(target),'sha256':digest}
+
+    def _restart_once(self,incident,observation=None):
         if not ('heartbeat' in incident['summary'].lower() or
-                incident['evidence'].get('source')=='supervisor_status.json'):
+                'stalled beyond' in incident['summary'].lower() or
+                incident['evidence'].get('source')=='supervisor_status.json' or
+                incident['evidence'].get('component')=='controller'):
             return False
         if self.ledger.has_event('WARDEN_RESTART_REQUESTED',fingerprint=incident['fingerprint']):
             return False
-        self.ledger.record_event('WARDEN_RESTART_REQUESTED',{'reason':incident['summary']},
+        diagnostic=self._capture_recovery_diagnostics(incident,observation)
+        self.ledger.record_event('WARDEN_RESTART_REQUESTED',{'reason':incident['summary'],'diagnostic':diagnostic},
                                  fingerprint=incident['fingerprint'])
         self.stage='restarting'
         self._publish(incident=incident)
-        self._stop()
-        self._start(Path(self.releases.current()['source_root']))
-        self._probe(Path(self.releases.current()['source_root']))
+        try:
+            self._stop()
+            self._start(Path(self.releases.current()['source_root']))
+            verified=bool(self._probe(Path(self.releases.current()['source_root'])))
+        except Exception as exc:
+            self.ledger.record_event('WARDEN_RESTART_FAILED',{'health_verified':False,
+                'diagnostic':redact_diagnostic(f'{type(exc).__name__}: {exc}')},fingerprint=incident['fingerprint'])
+            raise
+        self.ledger.record_event('WARDEN_RESTART_FINISHED',{'health_verified':verified},fingerprint=incident['fingerprint'])
+        if not verified:
+            self.ledger.record_event('WARDEN_RESTART_FAILED',{'health_verified':False},fingerprint=incident['fingerprint'])
         return True
 
+    def _observe_controller(self,observation):
+        # Test drivers that explicitly do not provision an HTTP controller have
+        # no client. Production construction always supplies the real client.
+        if not hasattr(self,'client'):
+            return
+        from .monitor import _incident
+        try:
+            status=self.client.call('/health')
+            if status.get('service_identity')!='SYSTEM' or type(status.get('pid')) is not int or status['pid']<=0:
+                raise ValueError('Controller health did not attest its native service identity')
+            if (observation['health'].get('heartbeat')=='fresh' and
+                    (status['pid']!=observation['health'].get('heartbeat_pid') or
+                     status.get('instance_id')!=observation['health'].get('heartbeat_instance_id'))):
+                raise ValueError('Controller health does not match the current heartbeat process')
+            component={'state':'healthy','required':True,'checked_at':time.time()}
+        except Exception as exc:
+            diagnostic=redact_diagnostic(f'{type(exc).__name__}: {exc}',256)
+            category=classify_error(diagnostic)['category']
+            blocked_auth=category=='auth'
+            component={'state':'unavailable','required':True,'checked_at':time.time(),'diagnostic':diagnostic}
+            observation['incidents'].append(_incident('auth' if blocked_auth else 'configuration',False,
+                'The authenticated controller health endpoint is unavailable',
+                {'component':'controller_auth' if blocked_auth else 'controller','diagnostic':diagnostic},
+                'controller authentication blocked' if blocked_auth else 'controller health unavailable'))
+            observation['health']['repair_hold']=True
+            observation['health']['state']='blocked'
+        observation['health'].setdefault('components',{})['controller']=component
+
+    def _recover_components(self,observation):
+        """Recover only the diagnosed component after durable strikes/backoff."""
+        from .component_recovery import RecoveryLedger,start_docker_service
+        ledger=RecoveryLedger(self.private/'component-recovery.db')
+        incidents=observation['incidents']
+        docker=next((item for item in incidents if item['evidence'].get('component')=='docker_engine'),None)
+        warden=next((item for item in incidents if 'heartbeat' in item['summary'].lower()
+            or 'stalled beyond' in item['summary'].lower() or item['evidence'].get('component')=='controller'),None)
+        delayed=False
+        for component,incident in (('docker_engine',docker),('warden',warden)):
+            if component=='warden' and docker is not None:
+                continue  # Recover the failed engine before touching its dependent warden.
+            decision=ledger.observe(component,incident is None)
+            if incident is None:
+                continue
+            self.ledger.observe(incident['fingerprint'],incident['category'],incident)
+            if decision['state']=='waiting':
+                delayed=True
+                continue
+            if decision['state']=='exhausted':
+                if not self.ledger.has_event('COMPONENT_RECOVERY_EXHAUSTED',fingerprint=incident['fingerprint']):
+                    self.ledger.record_event('COMPONENT_RECOVERY_EXHAUSTED',decision,fingerprint=incident['fingerprint'])
+                if component=='warden' and self.ledger.has_event('WARDEN_RESTART_FAILED',fingerprint=incident['fingerprint']):
+                    observation['health']['repair_hold']=True
+                    observation['health']['state']='blocked'
+                continue
+            # A reservation survives a crash during diagnostics or the action.
+            # No subsequent tick can repeat the physical recovery automatically.
+            try:
+                if component=='docker_engine':
+                    diagnostic=self._capture_recovery_diagnostics(incident,observation)
+                    self.ledger.record_event('COMPONENT_RECOVERY_REQUESTED',
+                        {**decision,'diagnostic':diagnostic},fingerprint=incident['fingerprint'])
+                    outcome=start_docker_service()
+                else:
+                    outcome={'restart_requested':self._restart_once(incident,observation)}
+                ledger.finish(component,{'action_completed':True,**outcome})
+                self.ledger.record_event('COMPONENT_RECOVERY_FINISHED',{'component':component,**outcome},
+                                         fingerprint=incident['fingerprint'])
+            except Exception as exc:
+                result={'action_completed':False,'component':component,
+                        'diagnostic':redact_diagnostic(f'{type(exc).__name__}: {exc}')}
+                ledger.finish(component,result)
+                self.ledger.record_event('COMPONENT_RECOVERY_BLOCKED',result,fingerprint=incident['fingerprint'])
+            return True
+        return delayed
+
+    def _repair_boundary_check(self):
+        from .windows import verify_repair_docker_boundary, verify_repair_execution_limits
+        return {'resources':verify_repair_execution_limits(self.config),
+                'docker':verify_repair_docker_boundary(self.config)}
+
+    def _repair_boundary_hold(self):
+        try:
+            self._repair_boundary_check()
+        except Exception as exc:
+            details={'category':'configuration','repairable':False,
+                     'diagnostic':redact_diagnostic(f'{type(exc).__name__}: {exc}')}
+            self.ledger.record_event('REPAIR_ISOLATION_BLOCKED',details)
+            self.stage='blocked'
+            self._publish(reason='Repair-account execution isolation or resource readiness is not verified',failure=details)
+            return True
+        return False
+
     def _version_checks(self):
+        if self._repair_boundary_hold():
+            return []
         from cochem_mcp.providers import executable_prefix
         record_file=self.private/'cli-contracts.json'
         previous=json.loads(record_file.read_text(encoding='utf-8')) if record_file.exists() else {}
@@ -201,6 +322,8 @@ class Supervisor:
             return False
         if self.releases.recovery_required():
             self.recover()
+            return False
+        if self._repair_boundary_hold():
             return False
         eligible=self._eligible_providers()
         if not eligible:
@@ -316,11 +439,19 @@ class Supervisor:
             self.recover()
         observation=read_observation(self.config['pipeline_private_root'],
             heartbeat_timeout=self.config['heartbeat_timeout'],stall_timeout=self.config['stall_timeout'],
-            repeated_failures=self.config['repeated_failures'])
+            repeated_failures=self.config['repeated_failures'],wal_limit_mb=self.config.get('wal_limit_mb',256))
+        self._observe_controller(observation)
         self.stage='observing'
         self._publish(observation)
         incidents=list(observation['incidents'])
         if not ignore_startup_grace and time.time()-self.started_at<self.config['startup_grace_seconds']:
+            return observation
+        if self._recover_components(observation) or observation['health'].get('repair_hold'):
+            return observation
+        if self._repair_boundary_hold():
+            observation['health']['repair_hold']=True
+            observation['health']['state']='blocked'
+            self._publish(observation)
             return observation
         try:
             incidents.extend(self._version_checks())
@@ -347,8 +478,6 @@ class Supervisor:
             self.ledger.observe(incident['fingerprint'],incident['category'],incident)
             if not incident['repairable'] or (previous and previous['status'] in ('BLOCKED','EXHAUSTED','REPAIRING')):
                 continue
-            if self._restart_once(incident):
-                break
             if self._repair(incident):
                 break
         return observation

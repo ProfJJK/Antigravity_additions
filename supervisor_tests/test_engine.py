@@ -136,6 +136,11 @@ class LocalSupervisor(Supervisor):
         # Native repair-account ACL provisioning is outside this local fixture.
         assert Path(candidate).is_dir()
 
+    def _repair_boundary_check(self):
+        # This fixture never provisions or impersonates a native account.
+        # Real Windows Docker pipe denial is an opt-in platform test.
+        return {'enabled':False,'test_driver':'local protocol fixture; no Windows Docker assertion'}
+
     def _stop(self):
         self.lifecycle.append("stop")
         return True
@@ -247,6 +252,84 @@ def test_restart_marker_is_not_forgotten_after_display_history_rolls_over(tmp_pa
     supervisor.ledger = Ledger(supervisor.ledger.path)
     assert supervisor._restart_once(value) is False
     assert len(supervisor.lifecycle) == 3
+
+
+def test_restart_persists_private_bounded_diagnostics_before_request_event(tmp_path):
+    supervisor=LocalSupervisor(tmp_path)
+    value=incident(supervisor,heartbeat=True)
+    assert supervisor._restart_once(value)
+    history=supervisor.ledger.history(value['fingerprint'])
+    diagnostics=next(item for item in history if item['event']=='PRE_RECOVERY_DIAGNOSTICS')
+    restart=next(item for item in history if item['event']=='WARDEN_RESTART_REQUESTED')
+    assert diagnostics['id']<restart['id']
+    path=Path(diagnostics['details']['path'])
+    assert supervisor.private in path.parents and path.is_file()
+    report=json.loads(path.read_text())
+    assert report['observation']['health']['database']=='readable'
+    assert report['scope'].startswith('bounded heartbeat')
+
+
+def test_failed_restart_health_probe_is_recorded_without_claiming_recovery(tmp_path):
+    supervisor=LocalSupervisor(tmp_path)
+    supervisor.previous_probe_result=False
+    value=incident(supervisor,heartbeat=True)
+    assert supervisor._restart_once(value)
+    history=supervisor.ledger.history(value['fingerprint'])
+    finished=next(item for item in history if item['event']=='WARDEN_RESTART_FINISHED')
+    assert finished['details']['health_verified'] is False
+    assert supervisor.ledger.has_event('WARDEN_RESTART_FAILED',fingerprint=value['fingerprint'])
+
+
+@pytest.mark.parametrize('http_status',[401,503])
+def test_real_http_controller_outage_never_spends_on_model_repair(tmp_path,http_status):
+    from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
+    from cochem_supervisor.probes import ControllerClient
+    from cochem_supervisor.component_recovery import RecoveryLedger
+    supervisor=LocalSupervisor(tmp_path)
+    secret='A'*48
+    token_file=supervisor.private/'http-token'; token_file.write_text(secret)
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            assert self.headers.get('Authorization')=='Bearer '+secret
+            self.send_response(http_status); self.end_headers()
+            self.wfile.write(b'PRIVATE-CONTROLLER-ERROR-BODY token=DO-NOT-LOG')
+        def log_message(self,*args):
+            pass
+    server=ThreadingHTTPServer(('127.0.0.1',0),Handler)
+    thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
+    supervisor.client=ControllerClient(server.server_port,token_file,timeout=1)
+    if http_status==503:
+        ledger=RecoveryLedger(supervisor.private/'component-recovery.db')
+        ledger.observe('warden',False,now=time.time()-40)
+        ledger.observe('warden',False,now=time.time()-30)
+    try:
+        observed=supervisor.tick(ignore_startup_grace=True)
+        supervisor.tick(ignore_startup_grace=True)
+    finally:
+        server.shutdown(); server.server_close(); thread.join(timeout=5)
+    assert observed['health']['repair_hold'] is True
+    assert not supervisor.runner.repair_calls
+    assert len(supervisor.lifecycle)==(3 if http_status==503 else 0)
+    for diagnostic in (supervisor.private/'diagnostics').glob('*.json'):
+        assert 'PRIVATE-CONTROLLER-ERROR-BODY' not in diagnostic.read_text()
+        assert 'DO-NOT-LOG' not in diagnostic.read_text()
+
+
+def test_live_hardware_critical_hold_prevents_repair_and_cli_version_processes(tmp_path):
+    supervisor=LocalSupervisor(tmp_path)
+    pipeline=Path(supervisor.config['pipeline_private_root'])
+    Heartbeat(pipeline,'4.2.5').completed_tick({'hardware':{
+        'capacity':0,'state':'critical','reasons':['CPU temperature exceeds critical threshold']},'active_count':0})
+    # An old diagnostic that independently qualifies as code repair must not
+    # defeat the current measured infrastructure hold.
+    store=JobStore(pipeline/'job_board.db',max_attempts=1)
+    store.submit('Physical resource-hold fixture',['REQ-1'],1)
+    job=store.claim('fixture-owner')
+    store.fail(job['job_id'],job['attempt_id'],job['fencing_token'],'TypeError: fixture failure')
+    observed=supervisor.tick(ignore_startup_grace=True)
+    assert observed['health']['repair_hold']
+    assert not supervisor.runner.repair_calls and not supervisor.runner.process_calls
+    assert not supervisor.lifecycle
 
 
 def test_resolved_old_database_failure_cannot_reopen_or_spend_again(tmp_path):

@@ -17,7 +17,7 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
 from cochem.warden.ladder import emit_recovery_event
-from .hardware_guard import HardwareGuard
+from .hardware_guard import HardwareGuard, effective_execution_policy
 from .oracle import ContextEngine, Oracle, Rule
 from .store import JobStore
 from .worker import NativeRunner, WorkerCleanupError, ExecutionRevokedError
@@ -57,6 +57,22 @@ def clear_slot(path: Path) -> None:
             item.unlink()
 
 
+def startup_quarantines(slot_roots, previous_cleanup, *, ramdisk_required, ramdisk_ready):
+    """Keep all RAM-dependent slots closed until containment and RAM are verified.
+
+    This is reconstructed from current boot/containment evidence at every
+    startup, rather than persisting an extra hold that could outlive recovery.
+    """
+    result = {row['worker_slot']:row.get('reason') or 'Previous native cleanup is unverified'
+              for row in previous_cleanup if row['worker_slot'] in slot_roots}
+    if any(row['worker_slot'] not in slot_roots for row in previous_cleanup):
+        result.update({slot:'Previous native cleanup has unknown worker ownership' for slot in slot_roots})
+    if ramdisk_required and not ramdisk_ready:
+        result.update({slot:'Required RAM workspace is unavailable until native containment recovery and RAM verification complete'
+                       for slot in slot_roots})
+    return result
+
+
 class Runtime:
     def __init__(self, config):
         from .windows import WorkerIdentity, require_system, validate_layout, validate_code_path, current_boot_identity
@@ -74,9 +90,12 @@ class Runtime:
                               cleanup_boot_id=self.boot_id)
         self.store.recover_execution_quarantines_after_boot(self.boot_id)
         previous_cleanup = self.store.quarantine_unclosed_executions('Warden restarted before native cleanup was confirmed')
+        execution_policy = effective_execution_policy(getattr(config,'hardware',None),
+            config.execution_limits.memory_limit_mb,
+            config.docker.memory_mb if getattr(config,'docker',None) and config.docker.enabled else 0)
         self.guard = HardwareGuard(max_agents=len(config.workers),workspace=config.private_root,
-                                   min_free_memory_mb=config.min_free_memory_mb,
-                                   min_free_disk_mb=config.min_free_disk_mb)
+                                   policy=execution_policy,
+                                   workspaces=[config.private_root, *config.slot_roots.values()])
         rules = list(BASELINE)
         for spec in config.rules:
             rules.append(Rule(**{**spec,'patterns':tuple(spec.get('patterns',())),
@@ -86,13 +105,51 @@ class Runtime:
         oracle_dir.mkdir(exist_ok=True)
         self.oracle = Oracle(self.engine,oracle_dir/'tracking.db',self.trip)
         self.runner = NativeRunner(config)
+        self.ramdisk = None
+        self.coding = None
+        self.docker = None
+        self.components = {}
+        self._last_container_maintenance = 0.
+        self._maintenance_thread = None
+        if getattr(config, 'docker', None) is not None and config.docker.enabled:
+            from .containers import DockerRunner
+            self.docker = DockerRunner(config.docker, config.private_root / 'containers',
+                                       trusted_operator=config.operator_name,host_boot_id=self.boot_id)
+            # A Docker tree is outside the Warden Job Object. First prove its
+            # old controller stopped, then independently remove and inspect the
+            # exact registered container attempt before clearing its guard.
+            for pending in previous_cleanup:
+                old = self.store.get(pending['job_id'])
+                if (old['kind']=='CODE_TEST' and self.store.execution_owner_stopped(
+                        pending['job_id'],pending['attempt_id'],pending['fencing_token'])):
+                    proof = self.docker.confirm_attempt_cleanup(pending['attempt_id'],controller_stopped=True)
+                    if proof.get('cleanup_verified') is True:
+                        self.store.clear_execution_quarantine(pending['job_id'],pending['attempt_id'],pending['fencing_token'])
+            previous_cleanup=self.store.execution_quarantines()
+            if not previous_cleanup:
+                self.docker.preflight()
+                from .deployment import verify_docker_access_boundary
+                verify_docker_access_boundary(config.docker.endpoint, identities,
+                    trusted_operator=config.operator_name,
+                    trusted_server_executables=config.docker.pipe_server_executables)
+                self.docker.reap_orphans(active_attempt_ids=set())
+        if getattr(config, 'ramdisk', None) is not None and config.ramdisk.enabled and not previous_cleanup:
+            from .ramdisk import RamdiskManager
+            self.ramdisk = RamdiskManager(config.ramdisk, config.private_root, identities)
+            self.ramdisk.ensure()
+            self.guard = HardwareGuard(max_agents=len(config.workers),workspace=config.private_root,
+                policy=execution_policy,workspaces=[config.private_root,*config.slot_roots.values(),
+                                                  *(self.ramdisk.workspace(slot).root for slot in config.workers)])
+        from .admission import JointAdmission
+        self.admission=JointAdmission(self.store,self.docker,capacity=0)
+        if getattr(config, 'coding_projects', None) and self.ramdisk is not None and self.docker is not None:
+            from .coding import CodingCoordinator
+            self.coding = CodingCoordinator(config, self.store, self.runner, self.ramdisk,host_boot_id=self.boot_id)
         self.lock = threading.RLock()
         self.active = {}
-        self.quarantined = {row['worker_slot']:row.get('reason') or 'Previous native cleanup is unverified' for row in previous_cleanup
-                            if row['worker_slot'] in config.slot_roots}
-        if any(row['worker_slot'] not in config.slot_roots for row in previous_cleanup):
-            self.quarantined.update({slot:'Previous native cleanup has unknown worker ownership'
-                                     for slot in config.slot_roots})
+        self.quarantined = startup_quarantines(config.slot_roots,previous_cleanup,
+            ramdisk_required=bool(getattr(config,'ramdisk',None) and config.ramdisk.enabled),
+            ramdisk_ready=self.ramdisk is not None)
         self.stop_event = threading.Event()
         self.owner = 'warden-'+uuid.uuid4().hex
         self.event_cursor = 0
@@ -153,31 +210,74 @@ class Runtime:
             self.store.set_context(context['task_id'],context['xml'],context['watermark'])
             self.oracle.ack(context['task_id'],context['watermark'])
 
+    def _workspace_root(self, slot, node=None):
+        if self.ramdisk is not None:
+            return self.ramdisk.workspace(slot).root
+        return self.config.slot_roots[slot]
+
     def _execute(self,node,slot):
         job_id = node['job_id']
         observer = Observer()
         try:
             # Each attempt owns its watcher. Stop it before supervisor cleanup,
             # so cleanup events cannot trip a completed job or a later occupant.
-            observer.schedule(SlotMonitor(self.oracle,job_id),str(self.config.slot_roots[slot]),recursive=True)
-            observer.start()
+            coding = node['kind'].startswith('CODE_')
+            def native_watch_start(workspace):
+                observer.schedule(SlotMonitor(self.oracle,job_id),str(workspace),recursive=True)
+                observer.start()
+            def native_watch_end():
+                observer.stop()
+                if observer.is_alive():
+                    observer.join(timeout=10)
+                    if observer.is_alive():
+                        raise WorkerCleanupError('Native filesystem monitor did not stop before controller staging')
+            if not coding:
+                if self.ramdisk is not None:
+                    descriptor=self.ramdisk.workspace(slot)
+                    descriptor.validate(identity=descriptor.identity)
+                native_watch_start(self._workspace_root(slot,node))
             context = self._context(node)
             def heartbeat():
                 with self.lock:
-                    if self.active[job_id].get('tripped') or self.stop_event.is_set():
+                    if (self.active[job_id].get('tripped') or self.active[job_id].get('resource_tripped')
+                            or self.active[job_id].get('cancel_event',threading.Event()).is_set() or self.stop_event.is_set()):
                         return False
                 return self.store.heartbeat(job_id,node['attempt_id'],node['fencing_token'],self.config.lease_seconds)
             def launched(pid):
                 with self.lock:
                     self.active[job_id]['pid'] = pid
-            output,receipt = self.runner.run(node,slot,context,heartbeat,launched)
+            coding = node['kind'].startswith('CODE_')
+            if coding:
+                if self.coding is None:
+                    raise ProviderFailure('configuration')
+                output,receipt,evidence,files = self.coding.run(node,slot,context,heartbeat,launched,
+                    self.active[job_id]['cancel_event'],on_native_start=native_watch_start,on_native_end=native_watch_end,
+                    container_reservation=self.active[job_id].get('container_reservation'))
+            elif self.ramdisk is not None:
+                descriptor = self.ramdisk.workspace(slot)
+                output,receipt = self.runner.run(node,slot,context,heartbeat,launched,
+                                                 workspace=descriptor.root,ramdisk_workspace=descriptor)
+            else:
+                output,receipt = self.runner.run(node,slot,context,heartbeat,launched)
             with self.lock:
                 self.store.clear_execution_quarantine(job_id,node['attempt_id'],node['fencing_token'])
                 self.active[job_id]['process_cleanup_verified'] = True
-                if self.active[job_id].get('tripped') or job_id in self.oracle.tripped_tasks:
+                if (self.active[job_id].get('tripped') or self.active[job_id].get('resource_tripped')
+                        or self.active[job_id].get('cancel_event',threading.Event()).is_set() or job_id in self.oracle.tripped_tasks):
                     raise ExecutionRevokedError('Breaker revoked this attempt')
-                self.store.complete(job_id,node['attempt_id'],node['fencing_token'],output,receipt)
+                if coding:
+                    self.store.complete_coding(job_id,node['attempt_id'],node['fencing_token'],output,receipt,
+                                               evidence=evidence,files=files)
+                else:
+                    self.store.complete(job_id,node['attempt_id'],node['fencing_token'],output,receipt)
         except Exception as exc:
+            if node['kind']=='CODE_TEST' and self.docker is not None and not isinstance(exc,WorkerCleanupError):
+                try:
+                    proof=self.docker.confirm_attempt_cleanup(node['attempt_id'],controller_stopped=True)
+                    if proof.get('cleanup_verified') is not True:
+                        exc=WorkerCleanupError('Prebound Docker attempt cleanup could not be verified')
+                except Exception:
+                    exc=WorkerCleanupError('Prebound Docker attempt cleanup could not be inspected')
             self._record_failure(node,slot,exc)
         finally:
             try:
@@ -187,8 +287,11 @@ class Runtime:
                     if observer.is_alive():
                         raise OSError('Filesystem observer did not stop; workspace quarantined')
                 if slot not in self.quarantined:
-                    clear_slot(self.config.slot_roots[slot])
-            except OSError as exc:
+                    if self.ramdisk is not None:
+                        descriptor=self.ramdisk.workspace(slot)
+                        descriptor.validate(identity=descriptor.identity,require_capacity=False)
+                    clear_slot(self._workspace_root(slot,node))
+            except Exception as exc:
                 self.quarantined[slot] = str(exc)
                 LOG.error('Slot %s quarantined after cleanup failure: %s',slot,exc)
             with self.lock:
@@ -205,6 +308,9 @@ class Runtime:
 
     def _record_failure(self,node,slot,exc):
         """Report one finished dispatch; durable scheduling owns all retry budgets."""
+        from .ramdisk import RamdiskError
+        from .resource_limits import ResourcePolicyError
+        from .windows import WindowsIsolationError
         job_id = node['job_id']
         with self.lock:
             active = self.active.get(job_id,{})
@@ -221,9 +327,16 @@ class Runtime:
                 active['process_cleanup_verified'] = True
             retry = not (self.stop_event.is_set() or active.get('tripped',False)
                          or slot in self.quarantined or isinstance(exc,ExecutionRevokedError))
-        category = exc.category if isinstance(exc,ProviderFailure) else 'code'
-        retry_after = exc.retry_after_seconds if isinstance(exc,ProviderFailure) else None
-        hold_scope = exc.hold_scope if isinstance(exc,ProviderFailure) else None
+        readiness_error = isinstance(exc,(RamdiskError,ResourcePolicyError,WindowsIsolationError))
+        category = ('resource' if active.get('resource_tripped') else
+                    getattr(exc,'category','configuration') if readiness_error else
+                    exc.category if isinstance(exc,ProviderFailure) else 'code')
+        if (category=='resource' and slot not in self.quarantined and not self.stop_event.is_set()
+                and not active.get('tripped',False)
+                and (not isinstance(exc,ExecutionRevokedError) or active.get('resource_tripped'))):
+            retry = True
+        retry_after = exc.retry_after_seconds if isinstance(exc,ProviderFailure) else 30 if readiness_error and category=='resource' else None
+        hold_scope = 'job' if readiness_error and category!='resource' else exc.hold_scope if isinstance(exc,ProviderFailure) else None
         accepted = self.store.fail(job_id,node['attempt_id'],node['fencing_token'],
                                    f'{type(exc).__name__}: {exc}',retry=retry,
                                    category=category,retry_after_seconds=retry_after,hold_scope=hold_scope)
@@ -231,9 +344,8 @@ class Runtime:
         # another dispatch. Its stale failure is not a fresh recovery incident.
         if accepted:
             emit_recovery_event(self.config.job_db,{
-                'tier':1,'action':('routing_hold' if category in ('configuration','compatibility')
-                    else 'provider_unavailable' if isinstance(exc,ProviderFailure)
-                    and category in ('quota','auth','busy','context','provider','backlog') else 'worker_failure'),
+                'tier':1,'action':('routing_hold' if hold_scope=='job' or category in ('configuration','compatibility')
+                    else 'provider_unavailable' if category in ('quota','auth','busy','context','provider','backlog','resource') else 'worker_failure'),
                 'job_id':job_id,'attempt_id':node['attempt_id'],'category':category,
                 'reason':str(exc),'retry_requested':retry,'retry_after_seconds':retry_after,
                 'hold_scope':hold_scope})
@@ -249,6 +361,10 @@ class Runtime:
             if (current['status'] != 'IN_PROGRESS' or current['attempt_id'] != previous['attempt_id']
                     or current['fencing_token'] != previous['fencing_token']
                     or current['lease_expires_at'] is None or current['lease_expires_at'] <= time.time()):
+                with self.lock:
+                    current_active = self.active.get(previous['job_id'])
+                    if current_active is not None:
+                        current_active.get('cancel_event',threading.Event()).set()
                 self.runner.terminate(previous['job_id'])
 
     def tick(self):
@@ -266,7 +382,24 @@ class Runtime:
                 self.runner.terminate(node['job_id'])
         for node in self.store.reap_expired():
             emit_recovery_event(self.config.job_db,{'tier':1,'action':'lease_reaper','job_id':node['job_id']})
-        ceiling = self.guard.capacity()
+        decision = self.guard.evaluate() if hasattr(self.guard,'evaluate') else {'capacity':self.guard.capacity()}
+        ceiling = decision['capacity']
+        self.store.set_transition_telemetry(decision)
+        if decision.get('action') == 'terminate_active':
+            with self.lock:
+                pressured = list(self.active.items())
+                for _, active in pressured:
+                    active['resource_tripped'] = True
+                    active['cancel_event'].set()
+            for job_id, active in pressured:
+                current=active['node']
+                self.store.fail(job_id,current['attempt_id'],current['fencing_token'],
+                    'Hardware governor revoked this attempt after critical pressure',retry=True,
+                    category='resource',retry_after_seconds=30)
+                self.runner.terminate(job_id)
+        if hasattr(self,'admission'):
+            self.admission.update_capacity(ceiling)
+        self._container_maintenance(ceiling)
         self.last_capacity = ceiling
         if ceiling<=0:
             return
@@ -276,26 +409,89 @@ class Runtime:
             for slot in available:
                 if len(self.active)>=ceiling:
                     break
-                node = self.store.claim(self.owner,self.config.lease_seconds,max_workers=ceiling,
-                                        exclude_job_ids=tuple(self.active),worker_slot=slot,
-                                        requires_cleanup=True,cleanup_boot_id=self.boot_id,
-                                        containment_id=self.containment_id)
+                reservation=None
+                if hasattr(self,'admission'):
+                    admitted=self.admission.claim(self.owner,self.config.lease_seconds,
+                        exclude_job_ids=tuple(self.active),worker_slot=slot,requires_cleanup=True,
+                        cleanup_boot_id=self.boot_id,containment_id=self.containment_id)
+                    node,reservation=admitted if admitted is not None else (None,None)
+                else:
+                    node = self.store.claim(self.owner,self.config.lease_seconds,max_workers=ceiling,
+                                            exclude_job_ids=tuple(self.active),worker_slot=slot,
+                                            requires_cleanup=True,cleanup_boot_id=self.boot_id,
+                                            containment_id=self.containment_id)
                 if node is None:
                     continue
                 self.active[node['job_id']] = {'node':node,'slot':slot,'pid':None,'tripped':False,
                                               'cleaned':threading.Event(),'cleanup_verified':False,
-                                              'process_cleanup_verified':False}
+                                              'process_cleanup_verified':False,'cancel_event':threading.Event(),'container_reservation':reservation}
                 self.pool.submit(self._execute,node,slot)
+
+    def _container_maintenance(self, capacity):
+        if getattr(self,'docker',None) is None:
+            return
+        urgent=self.admission.maintenance_requested.is_set() if hasattr(self,'admission') else capacity==0
+        if not urgent and time.monotonic()-self._last_container_maintenance<30:
+            return
+        if self._maintenance_thread is not None and self._maintenance_thread.is_alive():
+            return
+        self._last_container_maintenance = time.monotonic()
+        def maintain():
+            try:
+                if hasattr(self,'admission'):
+                    self.admission.maintenance()
+                if hasattr(self.docker,'health'):
+                    measured=self.docker.health()
+                    if 'docker_engine' in measured:
+                        self.components.update(measured)
+                    else:
+                        census=measured.get('census',{})
+                        self.components['docker_engine']={'required':True,'state':measured.get('engine','unavailable'),
+                            'checked_at':measured.get('checked_at'),'diagnostic':measured.get('diagnostic')}
+                        self.components['containers']={'required':True,'state':'quarantined' if census.get('quarantined',0) else 'healthy',
+                            'checked_at':measured.get('checked_at'),'active_count':census.get('active',0),'owned':census.get('owned',0),
+                            'warm':census.get('warm',0),'preparing':census.get('preparing',0),'quarantined':census.get('quarantined',0)}
+            except Exception as exc:
+                self.components['docker_engine']={'required':True,'state':'unavailable',
+                    'checked_at':time.time(),'diagnostic':type(exc).__name__}
+                LOG.error('Independent Docker maintenance failed: %s',exc)
+        self._maintenance_thread=threading.Thread(target=maintain,name='docker-maintenance',daemon=True)
+        self._maintenance_thread.start()
+
+    def execution_bounds(self):
+        native=min(86400,int(self.config.timeout_seconds)+300)
+        docker=180
+        for job in self.store.active_jobs():
+            if job['kind']=='CODE_TEST':
+                commands=self.store.coding_state(job['workflow_id'])['docker']['commands']
+                docker=max(docker,sum(command['timeout_seconds'] for command in commands)+180)
+        return {'native':native,'CODE_TEST':min(86400,docker),'CODE_INTEGRATE':1200}
+
+    def submit_coding(self, project_id, objective, requirements, workflow_id=None):
+        if self.coding is None:
+            raise ValueError('Coding is unavailable until verified RAM and Docker deployment prerequisites pass')
+        return self.coding.submit(project_id,objective,requirements,workflow_id)
+
+    def coding_workflow(self, workflow_id):
+        return self.store.coding_workflow(workflow_id)
+
+    def cancel_coding(self, workflow_id):
+        self.store.coding_state(workflow_id)
+        self.cancel(workflow_id)
+        return self.store.coding_workflow(workflow_id)
+
+    def resume_coding(self, workflow_id, reason):
+        return self.store.resume_coding(workflow_id,reason)
 
     def status(self):
         with self.lock:
             active = [{'job_id':key,'slot':value['slot'],'pid':value['pid'],
                        'route':value['node'].get('route')} for key,value in self.active.items()]
-        return {'version':__version__,'service_identity':'SYSTEM','hardware':self.guard.snapshot(),
+        return {'version':__version__,'service_identity':'SYSTEM','hardware':self.guard.latest_snapshot() if hasattr(self.guard,'latest_snapshot') else self.guard.snapshot(),
                 'active':active,'quarantined_slots':dict(self.quarantined),
                 'trip_errors':self.oracle.trip_errors,'pid':os.getpid(),
                 'instance_id':self.heartbeat.instance_id,'process_started_at':self.heartbeat.started_at,
-                'routing':self.store.routing_status(),
+                'routing':self.store.routing_status(),'components':dict(self.components),'execution_bounds':self.execution_bounds(),
                 'source_root':str(Path(__file__).resolve().parents[2])}
 
     def cancel(self,workflow_id):
@@ -305,6 +501,7 @@ class Runtime:
             for job_id,active in self.active.items():
                 if active['node']['workflow_id']==workflow_id:
                     active['tripped'] = True
+                    active.get('cancel_event',threading.Event()).set()
                     ids.add(job_id)
         for job_id in ids:
             self.runner.terminate(job_id)
@@ -316,13 +513,20 @@ class Runtime:
                 self.tick()
                 self.heartbeat.completed_tick({'capacity':self.last_capacity,
                                                'active_count':len(self.active),
-                                               'quarantined_count':len(self.quarantined)})
+                                               'quarantined_count':len(self.quarantined),
+                                               'hardware':self.guard.latest_snapshot() if hasattr(self.guard,'latest_snapshot') else self.guard.snapshot(),'components':dict(self.components),'execution_bounds':self.execution_bounds()})
                 self.stop_event.wait(.1)
         finally:
             self.stop_event.set()
             with self.lock:
                 ids = list(self.active)
+                for active in self.active.values():
+                    active.get('cancel_event',threading.Event()).set()
             for job_id in ids:
                 self.runner.terminate(job_id)
             self.pool.shutdown(wait=True)
+            if self._maintenance_thread is not None:
+                self._maintenance_thread.join(timeout=120)
+            if self.docker is not None:
+                self.docker.reap_orphans(active_attempt_ids=set(),include_warm=True)
             self.oracle.close()

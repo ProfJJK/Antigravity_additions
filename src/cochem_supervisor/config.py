@@ -4,17 +4,28 @@ import json
 from copy import deepcopy
 from pathlib import Path
 import re
+from cochem_pipeline.resource_limits import ResourceLimits
 
 DEFAULT_ALLOWED = ['src/cochem_pipeline/','src/cochem_mcp/','src/cochem/warden/ladder.py']
 PATH_FIELDS = ('private_root','repair_workspace','release_root','baseline_source','acceptance_root',
                'pipeline_python','pipeline_config','pointer_file','test_python')
 DEFAULTS = {'poll_seconds':10,'startup_grace_seconds':120,'heartbeat_timeout':30,'stall_timeout':600,
+            'repair_execution_limits':ResourceLimits().as_dict(),
             'repeated_failures':3,'max_per_incident':2,'max_per_day':4,'cooldown_seconds':1800,
             'repair_timeout_seconds':900,'test_timeout_seconds':600,'smoke_timeout_seconds':600,
             'version_probe_seconds':3600,'max_log_bytes':16777216,'minimum_passed_tests':200,
             'maximum_skipped_tests':64,'auto_deploy':True,'warden_task':'CoChem-4.2.2-Warden',
             'supervisor_task':'CoChem-4.2.3-Supervisor','allowed_paths':DEFAULT_ALLOWED,
             'test_targets':['pipeline_tests/test_config.py','pipeline_tests/test_hardware_guard.py',
+                            'pipeline_tests/test_resource_telemetry.py','pipeline_tests/test_resource_limits.py',
+                            'pipeline_tests/test_ramdisk.py','pipeline_tests/test_deployment.py',
+                            'pipeline_tests/test_container_policy.py','pipeline_tests/test_containers.py',
+                            'pipeline_tests/test_coding_git.py','pipeline_tests/test_git_deadline.py',
+                            'pipeline_tests/test_coding_plan.py',
+                            'pipeline_tests/test_coding_workflow.py','pipeline_tests/test_coding_boundaries.py',
+                            'pipeline_tests/test_coding_acceptance.py','pipeline_tests/test_diagnostics.py',
+                            'pipeline_tests/test_execution_integration.py','pipeline_tests/test_runtime_storage_holds.py',
+                            'pipeline_tests/test_inference_policy.py','pipeline_tests/test_worker_inference_policy.py',
                             'pipeline_tests/test_oracle.py','pipeline_tests/test_recovery_telemetry.py',
                             'pipeline_tests/test_runtime_monitor.py','pipeline_tests/test_service.py',
                             'pipeline_tests/test_routing_policy.py','pipeline_tests/test_routing_store.py',
@@ -31,6 +42,7 @@ def load_config(filename: str | Path) -> dict:
     if not isinstance(raw,dict):
         raise ValueError('Supervisor configuration must be an object')
     result={**deepcopy(DEFAULTS),**raw}
+    result['repair_execution_limits']=ResourceLimits.from_dict(result['repair_execution_limits']).as_dict()
     for key in PATH_FIELDS:
         value=result.get(key)
         if not isinstance(value,str) or '\x00' in value or not Path(value).is_absolute():

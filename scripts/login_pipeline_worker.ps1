@@ -5,7 +5,7 @@ param(
     [Parameter(Mandatory=$true)][ValidatePattern('^slot([1-9]|[1-5][0-9]|6[0-4])$')][string]$Slot,
     [Parameter(Mandatory=$true)][ValidateSet('codex','claude')][string]$Provider,
     [Parameter(Mandatory=$true)][string]$Executable,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.4"
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.5"
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -19,7 +19,7 @@ New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
 $id = [Guid]::NewGuid().ToString('N')
 $logPath = Join-Path $logDirectory "$Provider-$Slot-$id.log"
 $taskName = "CoChem-4.2.2-Login-$Slot-$id"
-$values = @('-m','cochem_pipeline.windows','login','--layout',$layoutPath,'--slot',$Slot,
+$values = @('-I','-m','cochem_pipeline.windows','login','--layout',$layoutPath,'--slot',$Slot,
     '--provider',$Provider,'--executable',$Executable,'--log-path',$logPath)
 $quoted = foreach ($value in $values) {
     if ($value.Contains('"') -or $value.Contains("`n") -or $value.Contains("`r")) { throw 'Invalid task argument.' }

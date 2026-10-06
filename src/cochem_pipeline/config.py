@@ -3,11 +3,16 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import json
 import math
+import os
 import re
 from pathlib import Path
 from typing import Any
 
 from .routing import RoutingPolicy, SYNTHESIS_MODEL, load_routing_policy
+from .hardware_guard import HardwarePolicy
+from .resource_limits import ResourceLimits
+from .ramdisk import RamdiskConfig
+from .container_policy import DockerPolicy
 
 
 def validate_subscription_probe(spec: Any) -> None:
@@ -63,6 +68,12 @@ class PipelineConfig:
     min_free_memory_mb: int = 1024
     min_free_disk_mb: int = 512
     routing: RoutingPolicy = field(default_factory=RoutingPolicy)
+    hardware: HardwarePolicy = field(default_factory=HardwarePolicy)
+    execution_limits: ResourceLimits = field(default_factory=ResourceLimits)
+    ramdisk: RamdiskConfig = field(default_factory=RamdiskConfig)
+    docker: DockerPolicy = field(default_factory=DockerPolicy)
+    coding_projects: dict[str, Any] = field(default_factory=dict)
+    git_executable: str = field(default_factory=lambda: r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
 
     @property
     def job_db(self) -> Path:
@@ -110,6 +121,12 @@ def load_config(filename: str) -> PipelineConfig:
     if gemini.get('protocol') not in ('gemini-json', 'terminal-json'):
         raise ValueError('Select a supported Gemini native result protocol: gemini-json or terminal-json')
     validate_subscription_probe(gemini.get('subscription_probe'))
+    from .inference_policy import gemini_inference_arguments
+    inference_args = gemini_inference_arguments(gemini)
+    if inference_args.count('{model}') != 1 or any(
+            re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}')
+            for arg in inference_args):
+        raise ValueError('Gemini inference-only arguments require exactly one separate {model} entry and supported placeholders')
     # This is required by the architecture, not an inferred alias/provider swap.
     if gemini['model'] != SYNTHESIS_MODEL:
         raise ValueError(f'The SRS synthesis route requires exact native model {SYNTHESIS_MODEL}; aliases are not remapped')
@@ -147,5 +164,38 @@ def load_config(filename: str) -> PipelineConfig:
         except (TypeError,ValueError) as exc:
             raise ValueError(f'Invalid rule configuration: {exc}') from exc
     routing = load_routing_policy(raw.get('routing'))
+    hardware = HardwarePolicy.from_dict(raw.get('hardware'))
+    execution_limits = ResourceLimits.from_dict(raw.get('execution_limits'))
+    ramdisk = RamdiskConfig.from_dict(raw.get('ramdisk'))
+    docker = DockerPolicy.from_dict(raw.get('docker'))
+    git_executable = raw.get('git_executable',r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
+    if (not isinstance(git_executable,str) or not git_executable.strip() or '\x00' in git_executable
+            or (os.name=='nt' and not Path(git_executable).is_absolute())):
+        raise ValueError('git_executable must be one explicit absolute executable on Windows')
+    projects = raw.get('coding_projects',{})
+    if not isinstance(projects,dict):
+        raise ValueError('coding_projects must be an operator-owned project registry')
+    if projects:
+        if not ramdisk.enabled or not docker.enabled:
+            raise ValueError('Coding projects require verified RAM workspaces and enabled Docker testing')
+        from .coding import validate_coding_projects
+        projects = validate_coding_projects(projects)
+        # The source registry cannot turn protected control state or another
+        # worker's scratch into material provided to a coding model.
+        protected = [private.resolve(), token.resolve(), *(root.resolve() for root in roots.values())]
+        if ramdisk.enabled:
+            protected.append(Path(ramdisk.mount_root).resolve())
+        for project in projects.values():
+            repository = project.repository.resolve()
+            if any(repository == path or repository in path.parents or path in repository.parents
+                   for path in protected):
+                raise ValueError('Coding repositories must be disjoint from control state, tokens and execution workspaces')
+    if ramdisk.enabled:
+        mount = Path(ramdisk.mount_root).resolve()
+        durable = [private.resolve(), token.resolve(), *(root.resolve() for root in roots.values())]
+        if any(mount == path or mount in path.parents or path in mount.parents for path in durable):
+            raise ValueError('RAM storage must be disjoint from persistent control state, tokens and identity roots')
     return PipelineConfig(private.resolve(), {k:v.resolve() for k,v in roots.items()}, workers,
-                          providers, rules, token, operator, reserved_fraction=fraction, routing=routing, **values)
+                          providers, rules, token, operator, reserved_fraction=fraction, routing=routing,
+                          hardware=hardware,execution_limits=execution_limits,ramdisk=ramdisk,
+                          docker=docker,coding_projects=projects,git_executable=git_executable, **values)

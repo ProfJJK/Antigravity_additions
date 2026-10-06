@@ -18,6 +18,7 @@ from typing import Any, Iterable, Iterator
 import uuid
 
 from . import routing_store as routes
+from .coding_store import CodingStoreMixin, CODING_KINDS, CONTROLLER_KINDS, SCHEMA as CODING_SCHEMA
 
 
 def canonical_json(value: Any) -> str:
@@ -38,7 +39,7 @@ CREATE TABLE IF NOT EXISTS pipeline_jobs (
     job_id TEXT PRIMARY KEY,
     workflow_id TEXT NOT NULL REFERENCES pipeline_jobs(job_id),
     parent_job_id TEXT REFERENCES pipeline_jobs(job_id),
-    kind TEXT NOT NULL CHECK(kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS')),
+    kind TEXT NOT NULL CHECK(kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','CODE_REQUEST','CODE_PLAN','CODE_PLAN_REVIEW','CODE_TEST_AUTHOR','CODE_EDIT','CODE_TEST','CODE_REVIEW','CODE_RESEARCH','CODE_INTEGRATE')),
     status TEXT NOT NULL CHECK(status IN ('BLOCKED','PENDING','IN_PROGRESS','COMPLETED','FAILED','PENDING_RETRY')),
     chapter_id TEXT,
     payload_json TEXT NOT NULL CHECK(json_valid(payload_json)),
@@ -54,7 +55,7 @@ CREATE TABLE IF NOT EXISTS pipeline_jobs (
     CHECK((kind = 'CHAPTER_DRAFT' AND chapter_id IS NOT NULL) OR (kind <> 'CHAPTER_DRAFT' AND chapter_id IS NULL))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_chapter ON pipeline_jobs(workflow_id,chapter_id) WHERE kind='CHAPTER_DRAFT';
-CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_stage ON pipeline_jobs(workflow_id,kind) WHERE kind<>'CHAPTER_DRAFT';
+CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_stage ON pipeline_jobs(workflow_id,kind) WHERE kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','SYNTHESIS','CODE_REQUEST');
 CREATE INDEX IF NOT EXISTS pipeline_claimable ON pipeline_jobs(status,created_at);
 CREATE TABLE IF NOT EXISTS pipeline_outputs (
     job_id TEXT PRIMARY KEY REFERENCES pipeline_jobs(job_id),
@@ -119,7 +120,7 @@ BEGIN
         SELECT 1 FROM pipeline_jobs j WHERE j.job_id=NEW.job_id AND j.status='IN_PROGRESS'
         AND j.attempt_id=NEW.attempt_id AND j.fencing_token=NEW.fencing_token
         AND j.lease_expires_at > (julianday('now')-2440587.5)*86400.0
-        AND j.kind<>'MACRO_PLANNING_REQUEST'
+        AND j.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
     ) THEN RAISE(ABORT,'stale or unowned attempt') END;
     SELECT CASE WHEN NEW.chapter_id IS NOT (SELECT chapter_id FROM pipeline_jobs WHERE job_id=NEW.job_id)
         THEN RAISE(ABORT,'chapter ownership mismatch') END;
@@ -148,12 +149,17 @@ BEGIN SELECT RAISE(ABORT,'job ownership is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS pipeline_completed_output BEFORE UPDATE OF status ON pipeline_jobs
 WHEN NEW.status='COMPLETED' AND OLD.status<>'COMPLETED'
 BEGIN
-    SELECT CASE WHEN NEW.kind<>'MACRO_PLANNING_REQUEST'
+    SELECT CASE WHEN NEW.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
         AND NOT EXISTS(SELECT 1 FROM pipeline_outputs WHERE job_id=NEW.job_id)
         THEN RAISE(ABORT,'completion requires an accepted output') END;
     SELECT CASE WHEN NEW.kind='MACRO_PLANNING_REQUEST'
         AND NOT EXISTS(SELECT 1 FROM pipeline_jobs WHERE workflow_id=NEW.workflow_id AND kind='SYNTHESIS' AND status='COMPLETED')
         THEN RAISE(ABORT,'root completion requires synthesis') END;
+    SELECT CASE WHEN NEW.kind='CODE_REQUEST'
+        AND NOT EXISTS(SELECT 1 FROM pipeline_jobs j JOIN pipeline_outputs o USING(job_id)
+          WHERE j.workflow_id=NEW.workflow_id AND j.kind='CODE_INTEGRATE' AND j.status='COMPLETED'
+          AND json_extract(o.output_json,'$.status')='INTEGRATED')
+        THEN RAISE(ABORT,'coding root completion requires verified integration') END;
 END;
 """
 
@@ -172,12 +178,13 @@ def _identifier(value: Any, label: str) -> str:
     return value
 
 
-class JobStore:
+class JobStore(CodingStoreMixin):
     def __init__(self, path: str | Path, max_attempts: int = 3, *, routing_policy=None,
                  cleanup_boot_id: int | None = None):
         if type(max_attempts) is not int or not 1 <= max_attempts <= 100:
             raise ValueError("max_attempts must be an integer from 1 to 100")
         self.max_attempts = max_attempts
+        self.transition_telemetry = None
         self.routing_policy = routes.policy_dict(routing_policy) if routing_policy is not None else None
         if cleanup_boot_id is not None and (type(cleanup_boot_id) is not int or cleanup_boot_id<=0):
             raise ValueError('cleanup_boot_id must be a positive trusted Windows boot identity')
@@ -188,7 +195,9 @@ class JobStore:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self._connection() as conn:
             conn.execute("PRAGMA journal_mode=WAL")
+            self._migrate_coding_schema(conn)
             conn.executescript(SCHEMA)
+            conn.executescript(CODING_SCHEMA)
             conn.executescript(routes.SCHEMA)
             # Older 4.2.2 draft databases predate a durable execution budget.
             # Migrate under the write lock so concurrently starting workers
@@ -198,7 +207,7 @@ class JobStore:
                 columns = {row["name"] for row in conn.execute("PRAGMA table_info(pipeline_jobs)")}
                 if "attempts" not in columns:
                     conn.execute("ALTER TABLE pipeline_jobs ADD COLUMN attempts INTEGER NOT NULL DEFAULT 0 CHECK(attempts>=0)")
-                    conn.execute("UPDATE pipeline_jobs SET attempts=fencing_token WHERE kind<>'MACRO_PLANNING_REQUEST'")
+                    conn.execute("UPDATE pipeline_jobs SET attempts=fencing_token WHERE kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')")
                 if "max_attempts" not in columns:
                     conn.execute("ALTER TABLE pipeline_jobs ADD COLUMN max_attempts INTEGER NOT NULL DEFAULT 3 CHECK(max_attempts>=1)")
                     conn.execute("UPDATE pipeline_jobs SET max_attempts=?", (max_attempts,))
@@ -209,14 +218,16 @@ class JobStore:
                     conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN observed_boot_id INTEGER CHECK(observed_boot_id IS NULL OR observed_boot_id>0)')
                 if 'containment_id' not in cleanup_columns:
                     conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN containment_id TEXT')
+                if 'owner_containment_id' not in cleanup_columns:
+                    conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN owner_containment_id TEXT')
                 # Capture policy for legacy active workflows without changing a
                 # live legacy attempt. Pending jobs adopt it only when claimed.
                 if self.routing_policy is not None:
-                    for root in conn.execute("SELECT job_id FROM pipeline_jobs WHERE kind='MACRO_PLANNING_REQUEST' AND status='IN_PROGRESS'").fetchall():
+                    for root in conn.execute("SELECT job_id FROM pipeline_jobs WHERE kind IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST') AND status='IN_PROGRESS'").fetchall():
                         routes.capture_workflow(conn, root['job_id'], self.routing_policy)
                     for row in conn.execute('''SELECT j.job_id FROM pipeline_jobs j LEFT JOIN pipeline_route_reservations r
                         ON r.job_id=j.job_id AND r.attempt_id=j.attempt_id WHERE j.status='IN_PROGRESS'
-                        AND j.kind<>'MACRO_PLANNING_REQUEST' AND r.reservation_id IS NULL''').fetchall():
+                        AND j.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST','CODE_TEST','CODE_INTEGRATE') AND r.reservation_id IS NULL''').fetchall():
                         legacy = self._get(conn,row['job_id'])
                         routes.guard_execution(conn,legacy,legacy['worker_slot'],observed_boot_id=self.cleanup_boot_id)
                 conn.commit()
@@ -224,10 +235,40 @@ class JobStore:
                 conn.rollback()
                 raise
 
+    @staticmethod
+    def _migrate_coding_schema(conn):
+        existing = conn.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name='pipeline_jobs'").fetchone()
+        if existing is None or "'CODE_PLAN'" in existing[0]:
+            return
+        # Preserve every child table and FK target name. Renaming the old table
+        # would rewrite references in immutable outputs and reservation history.
+        conn.execute('PRAGMA foreign_keys=OFF')
+        conn.execute('BEGIN IMMEDIATE')
+        try:
+            columns = [row['name'] for row in conn.execute('PRAGMA table_info(pipeline_jobs)')]
+            names = ','.join(columns)
+            conn.execute('CREATE TEMP TABLE coding_migration_jobs AS SELECT * FROM pipeline_jobs')
+            conn.execute('DROP TABLE pipeline_jobs')
+            table_sql = SCHEMA.split(';', 1)[0]
+            conn.execute(table_sql)
+            conn.execute('INSERT INTO pipeline_jobs('+names+') SELECT '+names+' FROM coding_migration_jobs')
+            conn.execute('DROP TABLE coding_migration_jobs')
+            # Other tables own these triggers; rebuild their expanded root rule.
+            conn.execute('DROP TRIGGER IF EXISTS pipeline_output_owner')
+            conn.commit()
+        except BaseException:
+            conn.rollback()
+            raise
+        finally:
+            conn.execute('PRAGMA foreign_keys=ON')
+        if conn.execute('PRAGMA foreign_key_check').fetchone():
+            raise RuntimeError('Coding schema migration found broken ownership references')
+
     @contextmanager
     def _connection(self) -> Iterator[sqlite3.Connection]:
         conn = sqlite3.connect(str(self.path), timeout=5.0, isolation_level=None)
         conn.row_factory = sqlite3.Row
+        conn.create_function('cochem_transition_telemetry',0,lambda:canonical_json(self.transition_telemetry))
         conn.execute("PRAGMA busy_timeout=5000")
         conn.execute("PRAGMA foreign_keys=ON")
         try:
@@ -267,10 +308,20 @@ class JobStore:
         result['route'] = routes.get_route(conn, job_id)
         if result['route'] is not None and result['worker_slot'] is None:
             result['worker_slot'] = result['route'].get('worker_slot')
+        if result['worker_slot'] is None and result['attempt_id'] is not None:
+            guard=conn.execute('SELECT worker_slot FROM pipeline_execution_cleanup WHERE job_id=? AND attempt_id=?',
+                               (job_id,result['attempt_id'])).fetchone()
+            if guard is not None:
+                result['worker_slot']=guard['worker_slot']
         return result
 
-    @staticmethod
-    def _event(conn: sqlite3.Connection, job: dict, event: str, **details: Any) -> None:
+    def set_transition_telemetry(self, measured: dict | None) -> None:
+        # Sensor collection belongs outside SQLite. Publish one immutable JSON
+        # copy; the event transaction records its actual observation timestamp.
+        self.transition_telemetry = json.loads(canonical_json(measured)) if measured is not None else None
+
+    def _event(self, conn: sqlite3.Connection, job: dict, event: str, **details: Any) -> None:
+        details['telemetry'] = routes.transition_evidence(conn,job,event_name=event)
         conn.execute("INSERT INTO pipeline_events(workflow_id,job_id,timestamp,event,details_json) VALUES(?,?,?,?,?)",
                      (job["workflow_id"], job["job_id"], time.time(), event, canonical_json(details)))
 
@@ -306,7 +357,7 @@ class JobStore:
             existing = conn.execute("SELECT job_id FROM pipeline_jobs WHERE job_id=?", (workflow_id,)).fetchone()
             if existing:
                 root = self._get(conn, workflow_id)
-                if root["kind"] != "MACRO_PLANNING_REQUEST" or root["payload"] != payload:
+                if root["kind"] not in ("MACRO_PLANNING_REQUEST", "CODE_REQUEST") or root["payload"] != payload:
                     raise ValueError("workflow_id already belongs to a different request")
                 if max_attempts is not None and root['max_attempts']!=budget:
                     raise ValueError('Existing workflow attempt budget is immutable')
@@ -327,10 +378,10 @@ class JobStore:
 
     def _reap(self, conn: sqlite3.Connection) -> list[dict]:
         expired = conn.execute("""SELECT j.job_id FROM pipeline_jobs j LEFT JOIN pipeline_routing_jobs r USING(job_id)
-            WHERE j.kind<>'MACRO_PLANNING_REQUEST'
+            WHERE j.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
             AND ((j.status='IN_PROGRESS' AND j.lease_expires_at<=?)
               OR (j.status IN ('PENDING','PENDING_RETRY') AND
-                 ((r.job_id IS NULL AND j.attempts>=j.max_attempts) OR
+                 ((r.job_id IS NULL AND j.kind NOT IN ('CODE_TEST','CODE_INTEGRATE') AND j.attempts>=j.max_attempts) OR
                   (r.job_id IS NOT NULL AND (r.failure_count>=j.max_attempts OR
                    (r.max_dispatches IS NOT NULL AND r.dispatches>=r.max_dispatches))))))""", (time.time(),)).fetchall()
         results = []
@@ -339,14 +390,20 @@ class JobStore:
             if previous["status"] == "FAILED":
                 continue  # Another exhausted sibling in this transaction fenced it.
             root = self._get(conn, previous["workflow_id"])
-            if previous['status']=='IN_PROGRESS' and previous.get('routing') is None and self.routing_policy is not None:
+            if (previous['status']=='IN_PROGRESS' and previous.get('routing') is None and self.routing_policy is not None
+                    and previous['kind'] not in CONTROLLER_KINDS):
                 routes.guard_execution(conn,previous,previous['worker_slot'],observed_boot_id=self.cleanup_boot_id)
             state = previous.get('routing')
             if state is not None and previous['status']=='IN_PROGRESS':
                 state = routes.failed(conn, previous, 'lease_expired')
+            controller_failures = None
+            if previous['kind'] in CONTROLLER_KINDS:
+                conn.execute('INSERT OR IGNORE INTO coding_controller_retries(job_id) VALUES(?)',(previous['job_id'],))
+                conn.execute('UPDATE coding_controller_retries SET failures=failures+1 WHERE job_id=?',(previous['job_id'],))
+                controller_failures=conn.execute('SELECT failures FROM coding_controller_retries WHERE job_id=?',(previous['job_id'],)).fetchone()[0]
             exhausted = ((state['failure_count']>=previous['max_attempts'] or
                           (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
-                         if state is not None else previous["attempts"] >= previous["max_attempts"])
+                         if state is not None else (controller_failures if controller_failures is not None else previous['attempts']) >= previous['max_attempts'])
             status = "FAILED" if exhausted or root["status"] == "FAILED" else "PENDING_RETRY"
             error = f"Attempt budget exhausted ({previous['max_attempts']} executions)" if exhausted else "Execution lease expired"
             if exhausted and state is not None:
@@ -372,7 +429,7 @@ class JobStore:
     def claim(self, owner: str, lease_seconds: float = 60, max_workers: int = 4, *,
               exclude_job_ids: Iterable[str] = (), worker_slot: str | None = None,
               requires_cleanup: bool = False, cleanup_boot_id: int | None = None,
-              containment_id: str | None = None) -> dict | None:
+              containment_id: str | None = None, allowed_kinds: Iterable[str] | None = None) -> dict | None:
         if not isinstance(owner, str) or not owner.strip():
             raise ValueError("owner must be nonempty")
         duration = self._lease_seconds(lease_seconds)
@@ -394,6 +451,15 @@ class JobStore:
             _identifier(worker_slot, "worker_slot")
         exclusion = " AND j.job_id NOT IN (" + ",".join("?" for _ in excluded) + ")" if excluded else ""
         parameters: list[Any] = list(excluded)
+        if allowed_kinds is not None:
+            if isinstance(allowed_kinds,(str,bytes)):
+                raise ValueError('allowed_kinds must be an iterable of executable kinds')
+            permitted=tuple(sorted(set(allowed_kinds)))
+            valid={'MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS',*CODING_KINDS}-{'CODE_REQUEST'}
+            if not permitted or any(kind not in valid for kind in permitted):
+                raise ValueError('allowed_kinds contains an unsupported execution kind')
+            exclusion+=' AND j.kind IN ('+','.join('?' for _ in permitted)+')'
+            parameters.extend(permitted)
         if worker_slot is None:
             # Compatibility callers may operate unbound jobs, but cannot steal
             # a chapter already assigned to a persistent production identity.
@@ -408,32 +474,34 @@ class JobStore:
             self._reap(conn)
             if routes.cleanup_barriers(conn):
                 return None
-            active = conn.execute("SELECT count(*) FROM pipeline_jobs WHERE status='IN_PROGRESS' AND kind<>'MACRO_PLANNING_REQUEST'").fetchone()[0]
+            active = conn.execute("SELECT count(*) FROM pipeline_jobs WHERE status='IN_PROGRESS' AND kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')").fetchone()[0]
             if active >= max_workers:
                 return None
             if self.routing_policy is not None and conn.execute('''SELECT 1 FROM pipeline_jobs j
                 LEFT JOIN pipeline_route_reservations r ON r.job_id=j.job_id AND r.attempt_id=j.attempt_id
-                WHERE j.status='IN_PROGRESS' AND j.kind<>'MACRO_PLANNING_REQUEST' AND r.reservation_id IS NULL LIMIT 1''').fetchone():
+                WHERE j.status='IN_PROGRESS' AND j.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST','CODE_TEST','CODE_INTEGRATE') AND r.reservation_id IS NULL LIMIT 1''').fetchone():
                 # Legacy active executions have no proven routing reservation.
                 # Wait for their fenced completion/reaping and OS cleanup rather
                 # than inventing a target or ignoring their resource occupancy.
                 return None
             rows = conn.execute("""SELECT j.job_id FROM pipeline_jobs j JOIN pipeline_jobs root ON root.job_id=j.workflow_id
-                WHERE j.status IN ('PENDING','PENDING_RETRY') AND j.kind<>'MACRO_PLANNING_REQUEST'
-                AND root.status='IN_PROGRESS'""" + exclusion + binding_filter
+                WHERE j.status IN ('PENDING','PENDING_RETRY') AND j.kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
+                AND root.status='IN_PROGRESS'
+                AND NOT EXISTS(SELECT 1 FROM coding_controller_retries cr WHERE cr.job_id=j.job_id AND cr.next_eligible_at>(julianday('now')-2440587.5)*86400.0)""" + exclusion + binding_filter
                                + " ORDER BY j.created_at,j.job_id", parameters).fetchall()
             selected, selection = None, None
             for row in rows:
                 candidate = self._get(conn, row['job_id'])
                 if candidate['status'] not in ('PENDING','PENDING_RETRY') or self._get(conn,candidate['workflow_id'])['status']!='IN_PROGRESS':
                     continue
-                choice, routed = routes.select(conn, candidate, self.routing_policy)
+                choice, routed = ((None, False) if candidate['kind'] in CONTROLLER_KINDS
+                                  else routes.select(conn, candidate, self.routing_policy))
                 if routed and choice is None:
                     continue
                 if routed and choice.get('exhausted'):
                     self._fail_workflow(conn, candidate['workflow_id'], choice['exhausted'])
                     continue
-                if not routed and candidate['attempts']>=candidate['max_attempts']:
+                if not routed and candidate['kind'] not in CONTROLLER_KINDS and candidate['attempts']>=candidate['max_attempts']:
                     continue
                 selected, selection = candidate, choice
                 break
@@ -452,7 +520,9 @@ class JobStore:
                 job = self._get(conn, row['job_id'])
             if requires_cleanup:
                 routes.guard_execution(conn,job,worker_slot,cleanup_boot_id if cleanup_boot_id is not None else self.cleanup_boot_id,
-                                       containment_id=containment_id)
+                                       containment_id=None if job['kind']=='CODE_TEST' else containment_id,
+                                       owner_containment_id=containment_id)
+                job['worker_slot']=worker_slot
             self._event(conn, job, "CLAIMED", attempt_id=job["attempt_id"], fencing_token=job["fencing_token"],
                         owner=owner, worker_slot=worker_slot)
             return job
@@ -638,6 +708,39 @@ class JobStore:
             if not self._owned(job, attempt_id, fencing_token):
                 self._reap(conn)
                 return False
+            if job['kind'] in CONTROLLER_KINDS:
+                conn.execute('INSERT OR IGNORE INTO coding_controller_retries(job_id) VALUES(?)',(job_id,))
+                if category not in ('resource','configuration','compatibility'):
+                    conn.execute('UPDATE coding_controller_retries SET failures=failures+1 WHERE job_id=?',(job_id,))
+                failures = conn.execute('SELECT failures FROM coding_controller_retries WHERE job_id=?',(job_id,)).fetchone()[0]
+                held = category in ('configuration','compatibility') or (category=='resource' and hold_scope=='job')
+                status = ('BLOCKED' if held else 'PENDING_RETRY') if retry and failures<job['max_attempts'] else 'FAILED'
+                delay = max(1.,min(86400.,retry_after_seconds or 30.)) if category=='resource' else 0.
+                conn.execute('UPDATE coding_controller_retries SET next_eligible_at=? WHERE job_id=?',(time.time()+delay,job_id))
+                conn.execute('UPDATE pipeline_jobs SET status=?,lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?',
+                             (status,error,time.time(),job_id))
+                self._event(conn,job,status,category=category,attempt_id=attempt_id,fencing_token=fencing_token,error=error)
+                if status=='FAILED':
+                    self._fail_workflow(conn,job['workflow_id'],error)
+                return True
+            if (job['kind'] in ('CODE_EDIT','CODE_TEST_AUTHOR','CODE_REVIEW') and retry
+                    and category in ('code','protocol')):
+                routes.failed(conn,job,category,retry_after_seconds,hold_scope,self.routing_policy)
+                conn.execute("UPDATE pipeline_jobs SET status='FAILED',lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?",
+                             (error,time.time(),job_id))
+                state = self._coding_state(conn,job['workflow_id'])
+                root = self._get(conn,job['workflow_id'])
+                # Fence outstanding reviews before starting a replacement chunk.
+                for review_id in state.get('pending_reviews',[]):
+                    if review_id!=job_id:
+                        conn.execute("UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,lease_expires_at=NULL,error=? WHERE job_id=? AND status<>'COMPLETED'",(error,review_id))
+                        routes.release(conn,review_id,error,'FAILED')
+                state['pending_reviews'] = []
+                state['retry_stage'] = 'CODE_TEST_AUTHOR' if job['kind']=='CODE_TEST_AUTHOR' else 'CODE_EDIT'
+                self._event(conn,job,'CODING_STAGE_REJECTED',category=category,error=error)
+                self._coding_retry(conn,root,state,error)
+                self._save_coding(conn,job['workflow_id'],state)
+                return True
             state = routes.failed(conn, job, category, retry_after_seconds, hold_scope,self.routing_policy)
             exhausted = ((state['failure_count']>=job['max_attempts'] or
                           (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
@@ -682,17 +785,23 @@ class JobStore:
             raise ValueError("error must be nonempty")
         with self._write() as conn:
             root = self._get(conn, workflow_id)
-            if root["kind"] != "MACRO_PLANNING_REQUEST":
+            if root["kind"] not in ("MACRO_PLANNING_REQUEST", "CODE_REQUEST"):
                 raise ValueError("ID does not identify a workflow root")
             if root["status"] == "COMPLETED":
                 return []
             rows = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE workflow_id=?
-                AND kind<>'MACRO_PLANNING_REQUEST' AND status='IN_PROGRESS'""", (workflow_id,)).fetchall()
+                AND kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST') AND status='IN_PROGRESS'""", (workflow_id,)).fetchall()
             active = [self._get(conn, row["job_id"]) for row in rows]
             conn.execute("""UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,
                 lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=?
                 WHERE workflow_id=? AND status NOT IN ('COMPLETED','FAILED')""", (error, time.time(), workflow_id))
             routes.release_workflow(conn, workflow_id, error)
+            if root['kind']=='CODE_REQUEST':
+                coding_state = self._coding_state(conn,workflow_id)
+                coding_state['status'] = 'CANCELLED'
+                coding_state['cancel_reason'] = error
+                coding_state['integration_reconciliation_required'] = bool(conn.execute("SELECT 1 FROM coding_integration_intents i JOIN pipeline_jobs j USING(job_id) WHERE j.workflow_id=? AND i.state='PREPARED' LIMIT 1",(workflow_id,)).fetchone())
+                self._save_coding(conn,workflow_id,coding_state)
             self._event(conn, root, "WORKFLOW_CANCELLED", error=error, active_job_ids=[job["job_id"] for job in active])
             return active
 
@@ -700,7 +809,7 @@ class JobStore:
         with self._connection() as conn:
             conn.execute("BEGIN")
             root = self._get(conn, workflow_id)
-            if root["kind"] != "MACRO_PLANNING_REQUEST":
+            if root["kind"] not in ("MACRO_PLANNING_REQUEST", "CODE_REQUEST"):
                 raise ValueError("ID does not identify a workflow root")
             identifiers = conn.execute("SELECT job_id FROM pipeline_jobs WHERE workflow_id=? ORDER BY created_at,job_id", (workflow_id,)).fetchall()
             artifacts = [dict(row) for row in conn.execute("SELECT * FROM pipeline_artifacts WHERE workflow_id=? ORDER BY chapter_id", (workflow_id,))]
@@ -737,7 +846,7 @@ class JobStore:
             raise ValueError("limit must be an integer from 1 to 1000")
         with self._connection() as conn:
             conn.execute("BEGIN")
-            rows = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE kind='MACRO_PLANNING_REQUEST'
+            rows = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE kind IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
                 ORDER BY created_at DESC,job_id LIMIT ?""", (limit,)).fetchall()
             return [self._get(conn, row["job_id"]) for row in rows]
 
@@ -745,7 +854,7 @@ class JobStore:
         """Snapshot currently leased execution jobs for runtime supervision."""
         with self._connection() as conn:
             conn.execute("BEGIN")
-            rows = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE kind<>'MACRO_PLANNING_REQUEST'
+            rows = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE kind NOT IN ('MACRO_PLANNING_REQUEST','CODE_REQUEST')
                 AND status='IN_PROGRESS' ORDER BY created_at,job_id""").fetchall()
             return [self._get(conn, row["job_id"]) for row in rows]
 
@@ -800,6 +909,15 @@ class JobStore:
     def execution_quarantines(self) -> list[dict]:
         with self._connection() as conn:
             return routes.cleanup_barriers(conn)
+
+    def execution_owner_stopped(self, job_id,attempt_id,fencing_token) -> bool:
+        """Read only a frozen supervisor's exact retained-Job owner-stop proof."""
+        with self._connection() as conn:
+            return conn.execute('''SELECT 1 FROM pipeline_execution_owner_stops p JOIN pipeline_execution_cleanup c
+                ON c.job_id=p.job_id AND c.attempt_id=p.attempt_id AND c.fencing_token=p.fencing_token
+                WHERE p.job_id=? AND p.attempt_id=? AND p.fencing_token=?
+                  AND p.containment_id=c.owner_containment_id AND p.boot_id=c.boot_id''',
+                (job_id,attempt_id,fencing_token)).fetchone() is not None
 
     def quarantine_unclosed_executions(self, reason: str = 'Warden restarted before native cleanup proof') -> list[dict]:
         """Startup-only controller barrier before touching any former workspace."""

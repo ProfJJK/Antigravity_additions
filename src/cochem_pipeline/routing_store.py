@@ -55,9 +55,20 @@ CREATE TABLE IF NOT EXISTS pipeline_execution_cleanup (
  fencing_token INTEGER NOT NULL, worker_slot TEXT, pid INTEGER,
  reason TEXT NOT NULL, quarantined INTEGER NOT NULL DEFAULT 0 CHECK(quarantined IN (0,1)),
  created_at REAL NOT NULL, cleared_at REAL, boot_id INTEGER CHECK(boot_id IS NULL OR boot_id>0),
- observed_boot_id INTEGER CHECK(observed_boot_id IS NULL OR observed_boot_id>0), containment_id TEXT,
+ observed_boot_id INTEGER CHECK(observed_boot_id IS NULL OR observed_boot_id>0), containment_id TEXT, owner_containment_id TEXT,
  PRIMARY KEY(job_id,attempt_id), CHECK(pid IS NULL OR pid>0)
 );
+CREATE TABLE IF NOT EXISTS pipeline_execution_owner_stops (
+ job_id TEXT NOT NULL,attempt_id TEXT NOT NULL,fencing_token INTEGER NOT NULL,
+ containment_id TEXT NOT NULL,boot_id INTEGER NOT NULL,verified_at REAL NOT NULL,
+ PRIMARY KEY(job_id,attempt_id,fencing_token)
+);
+CREATE TRIGGER IF NOT EXISTS pipeline_execution_owner_identity_immutable BEFORE UPDATE OF owner_containment_id ON pipeline_execution_cleanup
+BEGIN SELECT RAISE(ABORT,'execution owner identity is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS pipeline_execution_owner_stop_no_update BEFORE UPDATE ON pipeline_execution_owner_stops
+BEGIN SELECT RAISE(ABORT,'execution owner stop proof is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS pipeline_execution_owner_stop_no_delete BEFORE DELETE ON pipeline_execution_owner_stops
+BEGIN SELECT RAISE(ABORT,'execution owner stop proof is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS pipeline_routing_policy_immutable BEFORE UPDATE OF policy_json,score_json,candidates_json,created_at,max_dispatches,expires_at ON pipeline_routing_jobs
 BEGIN SELECT RAISE(ABORT,'captured routing policy is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS pipeline_workflow_routing_immutable BEFORE UPDATE ON pipeline_routing_workflows
@@ -139,7 +150,7 @@ def capture_workflow(conn, workflow_id, policy, max_dispatches=None):
 def ensure_job(conn, job_id):
     row = conn.execute('''SELECT j.*,w.policy_json,w.max_dispatches FROM pipeline_jobs j
         JOIN pipeline_routing_workflows w ON w.workflow_id=j.workflow_id WHERE j.job_id=?''', (job_id,)).fetchone()
-    if row is None or row['kind'] == 'MACRO_PLANNING_REQUEST' or (row['kind']=='SYNTHESIS' and row['status']=='BLOCKED'):
+    if row is None or row['kind'] in ('MACRO_PLANNING_REQUEST','CODE_REQUEST','CODE_TEST','CODE_INTEGRATE') or (row['kind']=='SYNTHESIS' and row['status']=='BLOCKED'):
         return
     if conn.execute('SELECT 1 FROM pipeline_routing_jobs WHERE job_id=?', (job_id,)).fetchone():
         return
@@ -175,7 +186,30 @@ def get_route(conn, job_id):
     return json.loads(row['route_json']) if row else None
 
 
+def transition_evidence(conn,job,*,event_name=None):
+    try:
+        sample=json.loads(conn.execute('SELECT cochem_transition_telemetry()').fetchone()[0])
+    except sqlite3.OperationalError:
+        sample=None
+    row=conn.execute('SELECT receipt_json FROM pipeline_outputs WHERE job_id=?',(job['job_id'],)).fetchone()
+    receipt=json.loads(row[0]) if row else {}
+    route=job.get('route') or get_route(conn,job['job_id']) or {}
+    started=receipt.get('started_at')
+    elapsed_scope='native_process' if receipt.get('provider') else 'controller_executor'
+    if type(started) not in (int,float):
+        claimed=conn.execute("SELECT timestamp FROM pipeline_events WHERE job_id=? AND event='CLAIMED' "
+            "AND json_extract(details_json,'$.attempt_id')=? ORDER BY id DESC LIMIT 1",(job['job_id'],job.get('attempt_id'))).fetchone()
+        started=claimed[0] if claimed else time.time() if event_name=='CLAIMED' else None
+        elapsed_scope='lease' if started is not None else None
+    return {'host_sample':sample,'cpu_scope':'host','sampled_at':sample.get('measured_at') if sample else None,
+            'elapsed_seconds':max(0.,receipt.get('finished_at',time.time())-started) if started is not None else None,
+            'elapsed_scope':elapsed_scope,'requested_provider':route.get('provider'),'requested_model':route.get('model'),
+            'native_provider':receipt.get('provider'),'native_reported_model':receipt.get('reported_model'),
+            'native_requested_model':receipt.get('requested_model'),'pid':receipt.get('pid')}
+
+
 def event(conn, job, name, **details):
+    details['telemetry']=transition_evidence(conn,job,event_name=name)
     conn.execute('INSERT INTO pipeline_events(workflow_id,job_id,timestamp,event,details_json) VALUES(?,?,?,?,?)',
                  (job['workflow_id'], job['job_id'], time.time(), name, encoded(details)))
 
@@ -192,12 +226,12 @@ def release_workflow(conn, workflow_id, reason):
         release(conn, row['job_id'], reason, 'COMPLETED' if row['status']=='COMPLETED' else 'FAILED')
 
 
-def guard_execution(conn, job, slot, boot_id=None, observed_boot_id=None, containment_id=None):
+def guard_execution(conn, job, slot, boot_id=None, observed_boot_id=None, containment_id=None,owner_containment_id=None):
     conn.execute('''INSERT OR IGNORE INTO pipeline_execution_cleanup
-        (job_id,attempt_id,fencing_token,worker_slot,reason,created_at,boot_id,observed_boot_id,containment_id)
-        VALUES(?,?,?,?,?,?,?,?,?)''',
+        (job_id,attempt_id,fencing_token,worker_slot,reason,created_at,boot_id,observed_boot_id,containment_id,owner_containment_id)
+        VALUES(?,?,?,?,?,?,?,?,?,?)''',
         (job['job_id'],job['attempt_id'],job['fencing_token'],slot,'Native execution cleanup is not yet confirmed',
-         time.time(),boot_id,observed_boot_id,containment_id))
+         time.time(),boot_id,observed_boot_id,containment_id,owner_containment_id))
 
 
 def cleanup_barriers(conn):
@@ -304,7 +338,9 @@ def select(conn, job, current_policy=None):
     for index in range(state['cursor'],len(targets)):
         target = targets[index]
         key,provider,pool = target['key'],target['provider'],target['quota_pool']
-        reason = None
+        producer = job.get('payload', {}).get('producer', {})
+        reason = ('asymmetric_review' if job['kind'] in ('CODE_REVIEW','CODE_PLAN_REVIEW') and
+                  (provider,target['model']) == (producer.get('provider'),producer.get('model')) else None)
         for scope,value in (('model',key),('provider',provider),('pool',pool)):
             held = conn.execute('SELECT reason FROM pipeline_route_holds WHERE scope=? AND resource_key=? AND until_at>?', (scope,value,now)).fetchone()
             if held:
@@ -376,7 +412,7 @@ def failed(conn,job,category,retry_after_seconds=None,hold_scope=None,current_po
     if state is None:
         return None
     route = get_route(conn,job['job_id'])
-    if category in {'configuration','compatibility'} and hold_scope=='job':
+    if category in {'configuration','compatibility','resource'} and hold_scope=='job':
         release(conn,job['job_id'],category,'BLOCKED')
         conn.execute("UPDATE pipeline_routing_jobs SET wait_reason=?,next_eligible_at=0 WHERE job_id=?", (category,job['job_id']))
         event(conn,job,'ROUTING_BLOCKED',reason=category)
@@ -384,6 +420,13 @@ def failed(conn,job,category,retry_after_seconds=None,hold_scope=None,current_po
     if category not in AVAILABILITY:
         conn.execute("UPDATE pipeline_routing_jobs SET failure_count=failure_count+1,state='READY' WHERE job_id=?", (job['job_id'],))
         release(conn,job['job_id'],category)
+        return get_state(conn,job['job_id'])
+    if category=='resource':
+        delay=max(1.,min(86400.,retry_after_seconds or 30.))
+        release(conn,job['job_id'],category,'WAITING')
+        conn.execute("UPDATE pipeline_routing_jobs SET next_eligible_at=?,wait_reason='host_resource_pressure' WHERE job_id=?",
+                     (time.time()+delay,job['job_id']))
+        event(conn,job,'RESOURCE_BACKOFF',delay_seconds=delay)
         return get_state(conn,job['job_id'])
     if route is None:
         raise ValueError('Availability failure requires a reserved route')

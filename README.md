@@ -1,7 +1,19 @@
-# Antigravity additions 4.2.4
+# Antigravity additions 4.2.5
 
-4.2.4 adds persisted complexity-based model routing for planning work. The
-user-corrected matrix is authoritative:
+4.2.5 adds coding execution, Docker test isolation, verified RAM workspaces and
+measured hardware controls to the protected Windows pipeline. See the
+[4.2.5 execution and installation guide](docs/EXECUTION_4.2.5.md),
+[requirements ledger](docs/REQUIREMENTS_4.2.5.md) and
+[release notes](docs/RELEASE_4.2.5.md) for implementation and validation status.
+Native Windows and live-provider acceptance remain unverified.
+
+The final 4.2.5 Linux suite completed with **1,826 passed, 29 skipped**, including
+actual Docker and offline native CLI checks. Independent copied-source
+acceptance completed with **1,102 passed, 45 skipped**; its Docker tests were
+disabled to preserve repair-account isolation. The release wheel also passed
+source verification. These are separate runs, not additive totals.
+
+The user-corrected model matrix remains authoritative:
 
 | Complexity | Route order |
 | --- | --- |
@@ -10,13 +22,12 @@ user-corrected matrix is authoritative:
 | 7–9 | Claude Opus 5.5 → GPT-6 Astra, low effort → Gemini 3.1 Pro |
 | 10 | Claude Fable 5.1 → GPT-6 Astra, ultra effort; only two routes |
 
-The four-worker ceiling, controller-owned leases/fencing, chapter isolation,
-Oracle safeguards and Gemini 3.1 Pro synthesis remain required. See the
-[4.2.4 routing and deployment guide](docs/ROUTING_4.2.4.md) and
-[release notes](docs/RELEASE_4.2.4.md). A fresh protected 4.2.4 supervisor and
-acceptance snapshot are required for this upgrade; the frozen 4.2.3 validator
-must not be reused to approve changed routing contracts. Native Windows and
-live-provider acceptance, including the Agy contract, remain unverified.
+The pipeline's four-seat ceiling, controller-owned leases/fencing, chapter isolation,
+Oracle safeguards and Gemini 3.1 Pro synthesis remain required. The
+[4.2.4 routing guide](docs/ROUTING_4.2.4.md) records the inherited routing
+contract. This upgrade requires a fresh protected 4.2.5 supervisor and
+acceptance snapshot; the old frozen validator cannot approve changed execution
+contracts. Preserve native credentials, task identities and repair budgets.
 
 ## Supervisor inherited from 4.2.3
 

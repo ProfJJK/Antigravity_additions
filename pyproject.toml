@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cochem"
-version = "4.2.4"
+version = "4.2.5"
 description = "Autonomous Molecular Engineering Engine and High-Throughput Quantum Chemistry Automation"
 readme = "README.md"
 requires-python = ">=3.10"

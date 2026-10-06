@@ -97,16 +97,32 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if self.command=='GET' and path=='/health':
                 self.reply(200,redact(runtime.status()))
+            elif self.command=='GET' and path=='/coding/projects':
+                self.reply(200,{'projects':sorted(runtime.config.coding_projects)})
+            elif self.command=='GET' and path.startswith('/coding/workflow/'):
+                self.reply(200,public_workflow(runtime.coding_workflow(path[len('/coding/workflow/'):])) )
             elif self.command=='GET' and path.startswith('/workflow/'):
                 self.reply(200,public_workflow(runtime.store.workflow(path[len('/workflow/'):])) )
-            elif self.command=='POST' and path in ('/submit','/cancel','/routing/resume'):
+            elif self.command=='POST' and path in ('/submit','/cancel','/routing/resume',
+                                                  '/coding/submit','/coding/cancel','/coding/resume'):
                 size=int(self.headers.get('Content-Length','0'))
                 if not 1<=size<=4*1024*1024:
                     raise ValueError('Request body must be 1..4194304 bytes')
                 data=json.loads(self.rfile.read(size))
                 if not isinstance(data,dict):
                     raise ValueError('Request must be a JSON object')
-                if path=='/submit':
+                if path=='/coding/submit':
+                    workflow=runtime.submit_coding(data['project_id'],data['objective'],
+                        data.get('requirements',['REQ-001']),workflow_id=data.get('workflow_id'))
+                    self.reply(202,public_workflow(workflow))
+                elif path=='/coding/cancel':
+                    self.reply(200,public_workflow(runtime.cancel_coding(data['workflow_id'])))
+                elif path=='/coding/resume':
+                    reason=data.get('reason')
+                    if not isinstance(reason,str) or not reason.strip() or len(reason)>512 or '\x00' in reason:
+                        raise ValueError('Coding resume requires an operator reason of at most 512 characters')
+                    self.reply(200,public_workflow(runtime.resume_coding(data['workflow_id'],reason.strip())))
+                elif path=='/submit':
                     count=data.get('chapter_count',6)
                     if type(count) is not int or not 1<=count<=len(runtime.config.workers):
                         raise ValueError('chapter_count must fit the provisioned distinct worker identity pool')

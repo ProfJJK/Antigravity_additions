@@ -378,6 +378,12 @@ class RepairRunner:
         if config is not None and not isinstance(config, Mapping):
             raise ValueError("RepairRunner configuration must be a mapping")
         config = dict(config or {})
+        self._boundary_config = {key:config[key] for key in ('pipeline_config','repair_worker') if key in config}
+        if isinstance(self._boundary_config.get('repair_worker'), Mapping):
+            self._boundary_config['repair_worker'] = dict(self._boundary_config['repair_worker'])
+        from cochem_pipeline.resource_limits import ResourceLimits
+        self.execution_limits = ResourceLimits.from_dict(config.get('repair_execution_limits'))
+        self._boundary_config['repair_execution_limits'] = self.execution_limits.as_dict()
         self.max_log_bytes = _positive_integer(config.get("max_log_bytes", 16 * 1024 * 1024), "max_log_bytes", 1024 * 1024 * 1024)
         self.max_prompt_bytes = _positive_integer(config.get("max_prompt_bytes", 2 * 1024 * 1024), "max_prompt_bytes", 16 * 1024 * 1024)
         self.auth_timeout_seconds = _positive_number(config.get("auth_timeout_seconds", 30), "auth_timeout_seconds", 120)
@@ -449,7 +455,11 @@ class RepairRunner:
             prompt.seek(0)
             if heartbeat() is not True:
                 raise RuntimeError("Repair lease was revoked before launch")
-            process = launch_worker(account, command, workspace, prompt, stdout, stderr, env_overrides=env_overrides)
+            from .windows import verify_repair_docker_boundary, verify_repair_execution_limits
+            resource_readiness = verify_repair_execution_limits(self._boundary_config)
+            docker_boundary = verify_repair_docker_boundary(self._boundary_config, identity)
+            process = launch_worker(account, command, workspace, prompt, stdout, stderr,
+                                    env_overrides=env_overrides,limits=self.execution_limits)
             with self._lock:
                 self._active[key] = process
             try:
@@ -478,7 +488,9 @@ class RepairRunner:
                    "stderr_sha256": hashlib.sha256(stderr_bytes).hexdigest(),
                    "stdout_bytes": len(stdout_bytes), "stderr_bytes": len(stderr_bytes),
                    "started_at": started, "finished_at": finished, "worker_account": account.name,
-                   "workspace": str(workspace), "cleanup_verified": True, "acceptance_verified": False}
+                   "workspace": str(workspace), "cleanup_verified": True, "acceptance_verified": False,
+                   "docker_boundary": docker_boundary,"resource_readiness":resource_readiness,
+                   "resource_limits":process.resource_limits_evidence}
         (logs / "process-receipt.json").write_text(json.dumps(receipt, sort_keys=True, indent=2), encoding="utf-8")
         return receipt
 

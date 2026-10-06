@@ -430,3 +430,82 @@ def test_payload_echoes_cannot_authorize_code_repair_or_expose_nested_request_da
 def test_invalid_monitor_limits_are_rejected(tmp_path, settings):
     with pytest.raises(ValueError):
         read_observation(tmp_path, **settings)
+
+
+def set_heartbeat_status(root, **extra):
+    path=root/'supervisor_status.json'
+    data=json.loads(path.read_text())
+    data['status'].update(extra)
+    path.write_text(json.dumps(data),encoding='utf-8')
+
+
+@pytest.mark.parametrize('state,reason',[
+    ('paused','Required CPU temperature telemetry is unavailable'),
+    ('critical','Windows commit headroom is below its critical reserve'),
+])
+def test_explicit_governor_hold_blocks_historical_code_repairs_and_queued_stalls(tmp_path,state,reason):
+    path=board(tmp_path); heartbeat(tmp_path)
+    insert(path,status='FAILED')
+    insert(path,job_id='pending',status='PENDING',updated_at=1,error=None)
+    set_heartbeat_status(tmp_path,hardware={'state':state,'capacity':0,
+        'reasons':[reason,'password=PRIVATE-SENSOR-SECRET'],
+        'measurements':{'private':'UNPROJECTED-SENSOR-DATA'}})
+    result=read_observation(tmp_path,now=NOW)
+    assert result['health']['repair_hold'] is True
+    assert result['health']['hardware']['state']==state
+    assert not any(item['repairable'] for item in result['incidents'])
+    assert any(item['evidence'].get('component')=='hardware' for item in result['incidents'])
+    assert 'PRIVATE-SENSOR-SECRET' not in json.dumps(result)
+    assert 'UNPROJECTED-SENSOR-DATA' not in json.dumps(result)
+
+
+@pytest.mark.parametrize('state,checked',[('unavailable',NOW),('healthy',NOW-100),('quarantined',NOW)])
+def test_required_engine_or_container_failure_is_infrastructure_not_paid_code_repair(tmp_path,state,checked):
+    path=board(tmp_path); heartbeat(tmp_path)
+    insert(path,status='FAILED')
+    component='containers' if state=='quarantined' else 'docker_engine'
+    set_heartbeat_status(tmp_path,components={component:{'required':True,'state':state,'checked_at':checked,
+        'diagnostic':'TypeError: infrastructure unavailable token=DOCKER-SECRET','containers':['PRIVATE-LEASE']}})
+    result=read_observation(tmp_path,now=NOW)
+    assert result['health']['repair_hold'] is True
+    assert not any(item['repairable'] for item in result['incidents'])
+    safe=result['health']['components'][component]
+    assert safe['state']==('unknown' if checked<NOW-30 else state)
+    assert 'PRIVATE-LEASE' not in json.dumps(result) and 'DOCKER-SECRET' not in json.dumps(result)
+
+
+def test_actual_oversized_sqlite_wal_blocks_repairs_without_reading_or_checkpointing_payload(tmp_path):
+    path=board(tmp_path); heartbeat(tmp_path)
+    insert(path,status='FAILED')
+    with sqlite3.connect(path) as conn:
+        conn.execute('PRAGMA journal_mode=WAL')
+        conn.execute('PRAGMA wal_autocheckpoint=0')
+        conn.execute('CREATE TABLE private_pressure(data BLOB)')
+        conn.execute('INSERT INTO private_pressure VALUES(zeroblob(2097152))')
+        conn.commit()
+        wal=Path(str(path)+'-wal')
+        before=wal.stat().st_size
+        result=read_observation(tmp_path,now=NOW,wal_limit_mb=1)
+        assert wal.stat().st_size==before
+        assert result['health']['database_wal']=={'state':'oversized','size_bytes':before,'limit_bytes':1048576}
+        assert result['health']['repair_hold'] is True
+        assert not any(item['repairable'] for item in result['incidents'])
+        assert any(item['evidence'].get('component')=='database_wal' for item in result['incidents'])
+
+
+def test_completion_progress_is_distinct_from_scheduler_events_and_planned_quota_delay(tmp_path):
+    path=board(tmp_path); heartbeat(tmp_path)
+    insert(path,job_id='completed',status='COMPLETED',updated_at=NOW-200,error=None)
+    insert(path,status='PENDING_RETRY',updated_at=1,error='Provider quota limit')
+    routing_wait(path)
+    result=read_observation(tmp_path,now=NOW)
+    assert result['health']['last_completion_at']==NOW-200
+    assert result['health']['last_completion_age_seconds']==200
+    assert result['health']['last_event_age_seconds']==10
+    assert result['health']['state']=='waiting' and result['incidents']==[]
+
+
+@pytest.mark.parametrize('limit',[0,True,4097,1.5])
+def test_wal_limit_requires_a_bounded_integer(tmp_path,limit):
+    with pytest.raises(ValueError,match='wal_limit_mb'):
+        read_observation(tmp_path,wal_limit_mb=limit)

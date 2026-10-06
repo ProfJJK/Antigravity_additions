@@ -22,7 +22,11 @@ def config_document(tmp_path, slots=6):
                        "arguments": ["--headless", "--output-format", "json", "--model", "{model}", "--workspace", "{workspace}"],
                        # Synthetic parser contract only; these are not proposed Agy flags/fields.
                        "subscription_probe": {"arguments": ["fixture-status", "--json"], "protocol": "json-fields",
-                                              "expected": {"fixture.login": True, "fixture.billing": "subscription"}}},
+                                              "expected": {"fixture.login": True, "fixture.billing": "subscription"}},
+                       "inference_only": {"arguments":["fixture-no-tools","{model}"],"version_arguments":["fixture-version"],
+                                          "executable_sha256":"a"*64,"version":"fixture-version",
+                                          "capability_reference":"configuration parser fixture; not a native contract",
+                                          "disables_tools":True,"disables_mcp":True,"disables_hooks":True}},
         },
         "rules": [], "token_file": str(tmp_path / "operator" / "controller.token"), "operator_name": "ExampleOperator",
     }
@@ -220,5 +224,49 @@ def test_config_captures_model_routing_independently_of_provider_default_model(t
 def test_invalid_routing_policy_is_rejected_before_runtime(tmp_path, routing):
     raw = config_document(tmp_path)
     raw["routing"] = routing
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def coding_config_document(tmp_path):
+    raw = config_document(tmp_path)
+    raw['ramdisk'] = {'enabled': True}
+    raw['docker'] = {'enabled': True, 'image': 'sha256:'+'a'*64,
+                     'allowed_images': ['sha256:'+'a'*64],
+                     'commands': [{'name':'tests','argv':['python','-m','pytest','tests']}]}
+    raw['coding_projects'] = {'sample': {'repository':str(tmp_path/'repository'),
+                                       'branch':'pipeline/accepted','allowed_paths':['src'],
+                                       'test_paths':['tests'],'auto_integrate':True}}
+    return raw
+
+
+def test_coding_configuration_captures_explicit_execution_policy(tmp_path):
+    config = load_config(write_config(tmp_path, coding_config_document(tmp_path)))
+    assert config.coding_projects['sample'].auto_integrate is True
+    assert config.docker.enabled and config.ramdisk.enabled
+    assert config.execution_limits.cpu_rate_percent == 20
+    assert config.hardware.gpu_required is True
+
+
+@pytest.mark.parametrize('component', ['ramdisk','docker'])
+def test_coding_projects_cannot_run_without_required_execution_plane(tmp_path, component):
+    raw = coding_config_document(tmp_path)
+    raw[component] = {'enabled': False}
+    with pytest.raises(ValueError, match='RAM workspaces and enabled Docker'):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize('location', ['private','private/nested','slots/0','slots/0/nested','operator','operator/controller.token'])
+def test_coding_project_registry_cannot_expose_control_or_identity_data(tmp_path, location):
+    raw = coding_config_document(tmp_path)
+    raw['coding_projects']['sample']['repository'] = str(tmp_path/location)
+    with pytest.raises(ValueError, match='disjoint'):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize('component', ['hardware','execution_limits','ramdisk','docker'])
+def test_unknown_execution_settings_fail_instead_of_silent_configuration_drift(tmp_path, component):
+    raw = config_document(tmp_path)
+    raw[component] = {'misspelled_limit': 1}
     with pytest.raises(ValueError):
         load_config(write_config(tmp_path, raw))

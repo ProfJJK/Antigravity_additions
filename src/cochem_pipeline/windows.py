@@ -703,7 +703,7 @@ def provision_layout(private_root: str | Path, slot_roots: Mapping[str, Path], w
     return validate_layout(private, roots, worker_identities, require_defender=add_defender)
 
 
-def _worker_environment(token, overrides: Mapping[str, str] | None) -> C.Array:
+def _worker_environment(token, overrides: Mapping[str, str] | None, *, ramdisk_workspace=None, limits=None) -> C.Array:
     api = _api()["userenv"]
     block = HANDLE()
     _check(api.CreateEnvironmentBlock(C.byref(block), token, False), "Create native worker environment")
@@ -753,17 +753,35 @@ def _worker_environment(token, overrides: Mapping[str, str] | None) -> C.Array:
                        APPDATA=str(Path(profile.value) / "AppData" / "Roaming"),
                        TEMP=str(Path(profile.value) / "AppData" / "Local" / "Temp"),
                        TMP=str(Path(profile.value) / "AppData" / "Local" / "Temp"))
+    from .resource_limits import node_heap_options
+    # Never preserve arbitrary inherited --require/--import injection options.
+    # Node children honor this 512 MiB old-space bound (560 MiB total V8 heap
+    # with the explicit 16 MiB semi-space setting); Rust/Bun native executables
+    # remain governed by their independently verified aggregate Job limits.
+    environment["NODE_OPTIONS"] = node_heap_options(limits)
+    if ramdisk_workspace is not None:
+        # RAM overrides come only from a controller-owned descriptor whose
+        # mount, driver, directory path and ACLs are rechecked here. Arbitrary
+        # caller overrides still cannot alter HOME or native CLI auth stores.
+        from .ramdisk import RamWorkspace, exclude_tree_from_indexing
+        if not isinstance(ramdisk_workspace, RamWorkspace):
+            raise WindowsIsolationError("RAM environment requires a verified workspace descriptor")
+        environment.update(ramdisk_workspace.environment())
+        ramdisk_workspace.bind_native_caches(Path(profile.value))
+        exclude_tree_from_indexing(ramdisk_workspace.root)
     return C.create_unicode_buffer("\x00".join(f"{key}={value}" for key, value in sorted(environment.items())) + "\x00\x00")
 
 
 class WindowsProcess:
     """Native child plus owned Job Object, profile and logon token handles."""
 
-    def __init__(self, process, job, token, profile, pid: int, argv: list[str], slot_lock=None):
+    def __init__(self, process, job, token, profile, pid: int, argv: list[str], slot_lock=None,
+                 resource_limits_evidence=None):
         self._process, self._job, self._token, self._profile = process, job, token, profile
         self.pid, self.args, self.returncode = pid, argv, None
         self._lock = threading.RLock()
         self._slot_lock = slot_lock
+        self.resource_limits_evidence = resource_limits_evidence
 
     def poll(self) -> int | None:
         with self._lock:
@@ -898,7 +916,8 @@ def _cleanup_failed_launch(process, job, token, profile, slot_lock) -> None:
 
 def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
                   stdin_file: BinaryIO | TextIO | Path, stdout_file: BinaryIO | TextIO | Path,
-                  stderr_file: BinaryIO | TextIO | Path, env_overrides: Mapping[str, str] | None = None) -> WindowsProcess:
+                  stderr_file: BinaryIO | TextIO | Path, env_overrides: Mapping[str, str] | None = None,
+                  *, limits=None, ramdisk_workspace=None) -> WindowsProcess:
     """Create suspended under a separate logon; assign to kill-on-close job before resume.
 
     Streams are open file objects or paths. Path outputs use exclusive creation.
@@ -909,7 +928,18 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
     if not argv or any(not isinstance(arg, str) or "\x00" in arg for arg in argv) or not Path(argv[0]).is_absolute():
         raise ValueError("Worker argv must begin with an absolute native executable and contain no NULs")
     validate_code_path(argv[0])
-    directory = Path(cwd).resolve(strict=True)
+    if ramdisk_workspace is not None:
+        from .ramdisk import RamWorkspace
+        if not isinstance(ramdisk_workspace, RamWorkspace):
+            raise WindowsIsolationError("RAM execution requires a verified workspace descriptor")
+        # Preserve the adopted directory mount path: resolve() would change it
+        # into a kernel volume path rejected by native CLI workspace policies.
+        directory = Path(os.path.abspath(cwd))
+        ramdisk_workspace.validate(identity=identity.name, cwd=directory)
+    else:
+        from .ramdisk import ordinary_tree
+        ordinary_tree(Path(cwd))
+        directory = Path(cwd).resolve(strict=True)
     sid = _sid_text(_account_sid(identity.name))
     _validate_worker_directory(directory, sid)
     api = _api()
@@ -928,11 +958,18 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
     job, process = None, _PROCESS_INFORMATION()
     try:
         _check(api["userenv"].LoadUserProfileW(token, C.byref(profile)), "Load native worker profile")
-        environment = _worker_environment(token, env_overrides)
+        environment = _worker_environment(token, env_overrides, ramdisk_workspace=ramdisk_workspace, limits=limits)
         job = _check(api["kernel32"].CreateJobObjectW(None, None), "Create worker Job Object")
-        limit = _EXTENDED_LIMIT()
-        limit.BasicLimitInformation.LimitFlags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
-        _check(api["kernel32"].SetInformationJobObject(job, 9, C.byref(limit), C.sizeof(limit)), "Enable Job Object kill-on-close")
+        resource_evidence = None
+        if limits is not None:
+            from .resource_limits import apply_job_limits
+            resource_evidence = apply_job_limits(job, limits)
+        else:
+            limit = _EXTENDED_LIMIT()
+            limit.BasicLimitInformation.LimitFlags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+            _check(api["kernel32"].SetInformationJobObject(job, 9, C.byref(limit), C.sizeof(limit)), "Enable Job Object kill-on-close")
+        from .resource_limits import launch_delay_seconds
+        time.sleep(launch_delay_seconds(limits))
         import msvcrt
         with _SPAWN_LOCK, ExitStack() as stack:
             duplicates = []
@@ -961,14 +998,18 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
             startup.StartupInfo.hStdInput, startup.StartupInfo.hStdOutput, startup.StartupInfo.hStdError = duplicates
             startup.lpAttributeList = C.addressof(attributes)
             command = C.create_unicode_buffer(subprocess.list2cmdline(argv))
-            flags = 0x4 | 0x400 | 0x80000 | 0x08000000  # suspended, Unicode env, extended startup, no window
+            # Suspended, Unicode env, extended startup, no window, a distinct
+            # process group and BelowNormal priority; Job Object ownership
+            # remains the descendant boundary, independent of console groups.
+            flags = 0x4 | 0x400 | 0x80000 | 0x08000000 | 0x200 | 0x4000
             _check(api["advapi32"].CreateProcessAsUserW(token, argv[0], command, None, None, True, flags,
                                                         environment, str(directory), C.byref(startup), C.byref(process)), "Create suspended worker")
             _check(api["kernel32"].AssignProcessToJobObject(job, process.hProcess), "Assign suspended worker to Job Object")
             if api["kernel32"].ResumeThread(process.hThread) == 0xFFFFFFFF:
                 raise WindowsIsolationError("Could not resume supervised worker")
         _close(process.hThread)
-        return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock)
+        return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock,
+                              resource_evidence)
     except BaseException as launch_error:
         try:
             _cleanup_failed_launch(process, job, token, profile, slot_lock)

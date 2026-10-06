@@ -25,7 +25,8 @@ from typing import Any
 POLICY_VERSION = 1
 SYNTHESIS_MODEL = "gemini-3.1-pro"
 _PROVIDERS = ("codex", "claude", "gemini")
-_KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS"}
+_KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS",
+          "CODE_REQUEST", "CODE_PLAN", "CODE_PLAN_REVIEW", "CODE_TEST_AUTHOR", "CODE_EDIT", "CODE_REVIEW", "CODE_RESEARCH"}
 _TIER_SIZES = {"1-3": 3, "4-6": 3, "7-9": 3, "10": 2}
 _MODEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}\Z")
 _POOL = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z")

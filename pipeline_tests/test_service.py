@@ -43,7 +43,8 @@ def test_actual_pipeline_mcp_session_creates_and_cancels_real_dag(endpoint):
         async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
             tools = await client.list_tools()
             assert {tool.name for tool in tools.tools} == {
-                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing'}
+                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing',
+                'pipeline_projects','pipeline_code','pipeline_code_status','pipeline_code_cancel','pipeline_code_resume'}
             response = await client.call_tool('pipeline_submit',{
                 'objective':'Create a six-chapter SRS/WBS', 'requirements':['REQ-1'], 'chapter_count':6})
             assert not response.isError
@@ -64,7 +65,7 @@ class DatabaseController:
     """Minimal controller for exercising the real HTTP-to-database boundary."""
 
     def __init__(self, directory: Path):
-        self.config = SimpleNamespace(port=0, workers={f"slot-{number}": {} for number in range(6)})
+        self.config = SimpleNamespace(port=0, workers={f"slot-{number}": {} for number in range(6)}, coding_projects={})
         self.store = JobStore(directory / "http-test.db")
 
     def status(self):
@@ -318,3 +319,99 @@ def test_client_surfaces_authentication_error_without_token_disclosure(endpoint,
     with pytest.raises(RuntimeError, match="Unauthorized") as error:
         ControlClient(endpoint.port, token_file).call("/health")
     assert endpoint.token not in str(error.value)
+
+
+@pytest.mark.parametrize('operation', ['/coding/projects','/coding/workflow/unknown'])
+def test_coding_reads_require_real_http_authentication(endpoint, operation):
+    assert request(endpoint,'GET',operation,authorization=None)[0] == 401
+
+
+@pytest.mark.parametrize('operation', ['/coding/submit','/coding/cancel','/coding/resume'])
+def test_coding_mutations_require_real_http_authentication(endpoint, operation):
+    assert request(endpoint,'POST',operation,{'objective':'unauthorized'},authorization=None)[0] == 401
+    assert endpoint.controller.store.list_workflows() == []
+
+
+def test_projects_endpoint_returns_only_registered_identifiers(endpoint):
+    endpoint.controller.config.coding_projects = {'registered-project': {'repository':'private-location'}}
+    assert endpoint.client.call('/coding/projects') == {'projects':['registered-project']}
+
+
+@pytest.fixture
+def coding_endpoint(endpoint, tmp_path):
+    """Actual Git/SQLite submission only; this fixture never simulates inference."""
+    import subprocess
+    from cochem_pipeline.coding import CodingCoordinator, CodingProject
+    from cochem_pipeline.container_policy import DockerPolicy
+    from cochem_pipeline.ramdisk import RamdiskConfig
+    repository = tmp_path/'registered-repository'
+    repository.mkdir()
+    def git(*args):
+        return subprocess.run(['git','-C',str(repository),*args],check=True,
+                              capture_output=True,text=True).stdout.strip()
+    git('init','-b','pipeline/accepted')
+    (repository/'src').mkdir(); (repository/'src'/'calculation.py').write_text('VALUE = 1\n')
+    git('add','src'); git('-c','user.name=API Test','-c','user.email=test@localhost','commit','-m','baseline')
+    controller = endpoint.controller
+    controller.config.private_root = tmp_path/'private'
+    controller.config.private_root.mkdir()
+    import os
+    controller.config.git_executable = r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git'
+    controller.config.ramdisk = RamdiskConfig(enabled=True)
+    controller.config.docker = DockerPolicy.from_dict({'enabled':True,'image':'sha256:'+'a'*64,
+        'allowed_images':['sha256:'+'a'*64],'commands':[{'name':'tests','argv':['python','-m','pytest','tests']}]})
+    controller.config.coding_projects = {'sample':CodingProject.from_dict('sample',{
+        'repository':str(repository),'branch':'pipeline/accepted','allowed_paths':['src']})}
+    coding = CodingCoordinator(controller.config,controller.store,None,None)
+    controller.submit_coding = coding.submit
+    controller.coding_workflow = controller.store.coding_workflow
+    def cancel(identifier):
+        controller.store.cancel_workflow(identifier)
+        return controller.store.coding_workflow(identifier)
+    controller.cancel_coding = cancel
+    controller.resume_coding = controller.store.resume_coding
+    return endpoint
+
+
+def test_real_http_coding_submission_captures_git_baseline_and_is_idempotent(coding_endpoint):
+    endpoint = coding_endpoint
+    data = {'project_id':'sample','objective':'Add a bounded numeric check','requirements':['R1'],
+            'workflow_id':'coding-api-test'}
+    first = endpoint.client.call('/coding/submit',data)
+    second = endpoint.client.call('/coding/submit',data)
+    assert first['workflow_id'] == second['workflow_id'] == 'coding-api-test'
+    assert len(first['coding']['baseline_commit']) == 40
+    assert first['coding']['status'] == 'PLANNING'
+    assert len([node for node in first['jobs'] if node['kind']=='CODE_PLAN']) == 1
+    assert first['evidence'] == []  # Submission cannot fabricate execution evidence.
+    assert endpoint.client.call('/coding/workflow/coding-api-test') == second
+    status, _ = request(endpoint,'POST','/coding/submit',{**data,'objective':'A different request'},
+                        authorization='Bearer '+endpoint.token)
+    assert status == 400
+    cancelled = endpoint.client.call('/coding/cancel',{'workflow_id':'coding-api-test'})
+    assert cancelled['status'] == 'FAILED'
+    status, _ = request(endpoint,'POST','/coding/resume',{'workflow_id':'coding-api-test','reason':'retry'},
+                        authorization='Bearer '+endpoint.token)
+    assert status == 400  # Cancellation is not a hidden budget-reset operation.
+
+
+def test_actual_mcp_coding_tool_creates_only_a_registered_real_workflow(coding_endpoint):
+    from mcp.shared.memory import create_connected_server_and_client_session
+    from cochem_pipeline.server import create_server
+    endpoint = coding_endpoint
+    async def scenario():
+        async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
+            projects = await client.call_tool('pipeline_projects',{})
+            assert projects.structuredContent == {'projects':['sample']}
+            denied = await client.call_tool('pipeline_code',{'project_id':'unregistered','objective':'No access'})
+            assert denied.isError
+            assert endpoint.controller.store.list_workflows() == []
+            result = await client.call_tool('pipeline_code',{'project_id':'sample','objective':'Implement the check',
+                                                           'workflow_id':'mcp-coding'})
+            assert not result.isError
+            assert result.structuredContent['coding']['status'] == 'PLANNING'
+            status = await client.call_tool('pipeline_code_status',{'workflow_id':'mcp-coding'})
+            assert status.structuredContent['evidence'] == []
+            result = await client.call_tool('pipeline_code_cancel',{'workflow_id':'mcp-coding'})
+            assert result.structuredContent['status'] == 'FAILED'
+    asyncio.run(scenario())

@@ -13,6 +13,7 @@ from typing import Any
 
 
 _SUMMARIES = {
+    'resource': 'Host or container resource pressure requires controlled retry',
     'quota': 'Provider quota or rate limit reached',
     'auth': 'Subscription authentication failed',
     'busy': 'Provider model is temporarily busy',

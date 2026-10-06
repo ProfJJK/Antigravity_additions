@@ -101,3 +101,38 @@ def test_verified_startup_failure_before_database_creation_needs_no_reconciliati
     database = tmp_path / 'never-created.db'
     assert reconcile_stopped_containment(database, receipt(launcher_exit_verified=True)) == 0
     assert not database.exists()
+
+
+def test_external_docker_guard_records_owner_death_without_claiming_container_cleanup(tmp_path):
+    from pipeline_tests.test_coding_workflow import CodingFixture
+    case = CodingFixture(tmp_path)
+    case.author()
+    node = case.store.claim('contained-controller',worker_slot='docker-slot',requires_cleanup=True,
+                            cleanup_boot_id=100,containment_id=SCOPE)
+    assert node['kind']=='CODE_TEST'
+    case.store.cancel_workflow(case.workflow_id)
+    assert reconcile_stopped_containment(case.store.path,receipt()) == 0
+    holds=case.store.execution_quarantines()
+    assert len(holds)==1 and holds[0]['attempt_id']==node['attempt_id']
+    assert case.store.claim('next-controller',worker_slot='other-slot') is None
+    with sqlite3.connect(case.store.path) as db:
+        proof=db.execute('SELECT job_id,attempt_id,fencing_token,containment_id,boot_id FROM pipeline_execution_owner_stops').fetchone()
+        assert proof==(node['job_id'],node['attempt_id'],node['fencing_token'],SCOPE,100)
+    assert reconcile_stopped_containment(case.store.path,receipt()) == 0
+    with sqlite3.connect(case.store.path) as db:
+        assert db.execute("SELECT count(*) FROM pipeline_events WHERE event='EXECUTION_OWNER_STOPPED_BY_SUPERVISOR'").fetchone()[0]==1
+
+
+def test_external_guard_cannot_use_a_different_controller_or_boot_stop_proof(tmp_path):
+    from pipeline_tests.test_coding_workflow import CodingFixture
+    case=CodingFixture(tmp_path)
+    case.author()
+    node=case.store.claim('contained-controller',worker_slot='docker-slot',requires_cleanup=True,
+                          cleanup_boot_id=100,containment_id=SCOPE)
+    case.store.cancel_workflow(case.workflow_id)
+    assert reconcile_stopped_containment(case.store.path,receipt(stopped_containment_id='b'*32))==0
+    assert reconcile_stopped_containment(case.store.path,receipt(stopped_boot_id=101))==0
+    assert len(case.store.execution_quarantines())==1
+    with sqlite3.connect(case.store.path) as db:
+        exists=db.execute("SELECT 1 FROM sqlite_schema WHERE name='pipeline_execution_owner_stops'").fetchone()
+        assert not exists or db.execute('SELECT count(*) FROM pipeline_execution_owner_stops').fetchone()[0]==0

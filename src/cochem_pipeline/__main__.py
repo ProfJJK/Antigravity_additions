@@ -62,32 +62,59 @@ def daemon(filename):
 
 
 def main():
-    parser=argparse.ArgumentParser(description=f'CoChem {__version__} privileged planning pipeline')
+    parser=argparse.ArgumentParser(description=f'CoChem {__version__} privileged planning and coding pipeline')
     parser.add_argument('--version',action='version',version=__version__)
     commands=parser.add_subparsers(dest='command',required=True)
     service=commands.add_parser('daemon')
     service.add_argument('--config',required=True)
-    for name in ('mcp','submit','status','cancel','health'):
+    for name in ('doctor','provision-execution'):
+        deployment=commands.add_parser(name)
+        deployment.add_argument('--config',required=True)
+    for name in ('mcp','submit','status','cancel','health','projects','code','code-status','code-cancel','code-resume'):
         command=commands.add_parser(name)
         command.add_argument('--client-config',required=True)
         if name=='submit':
             command.add_argument('--objective',required=True)
             command.add_argument('--requirements',nargs='+',default=['REQ-001'])
             command.add_argument('--chapters',type=int,default=6)
-        if name in ('status','cancel'):
+        if name=='code':
+            command.add_argument('--project',required=True)
+            command.add_argument('--objective',required=True)
+            command.add_argument('--requirements',nargs='+',default=['REQ-001'])
+            command.add_argument('--workflow-id')
+        if name in ('status','cancel','code-status','code-cancel','code-resume'):
             command.add_argument('workflow_id')
+        if name=='code-resume':
+            command.add_argument('--reason',required=True)
     args=parser.parse_args()
     logging.basicConfig(level=logging.INFO,stream=sys.stderr)
     if args.command=='daemon':
         daemon(args.config)
         return
+    if args.command in ('doctor','provision-execution'):
+        from .deployment import execution_readiness
+        report=execution_readiness(load_config(args.config),provision=args.command=='provision-execution')
+        print(json.dumps(report,indent=2,ensure_ascii=False))
+        raise SystemExit(0 if report['ready'] else 1)
     config=json.loads(Path(args.client_config).read_text(encoding='utf-8-sig'))
     client=ControlClient(config.get('port',47824),config['token_file'])
     if args.command=='mcp':
         from .server import create_server
         create_server(client).run(transport='stdio')
         return
-    if args.command=='submit':
+    if args.command=='projects':
+        result=client.call('/coding/projects')
+    elif args.command=='code':
+        result=client.call('/coding/submit',{'project_id':args.project,'objective':args.objective,
+                                          'requirements':args.requirements,'workflow_id':args.workflow_id})
+    elif args.command=='code-status':
+        result=client.call('/coding/workflow/'+args.workflow_id)
+    elif args.command in ('code-cancel','code-resume'):
+        data={'workflow_id':args.workflow_id}
+        if args.command=='code-resume':
+            data['reason']=args.reason
+        result=client.call('/coding/'+args.command.removeprefix('code-'),data)
+    elif args.command=='submit':
         result=client.call('/submit',{'objective':args.objective,'requirements':args.requirements,
                                      'chapter_count':args.chapters})
     elif args.command=='status':

@@ -28,6 +28,65 @@ from cochem_pipeline import windows as native
 REPAIR_IDENTITY = native.WorkerIdentity("CoChem423Repair", "CoChem423/repair")
 
 
+def verify_repair_execution_limits(config: Mapping) -> dict:
+    """Measure topology and memory before paid repair, without stopping recovery."""
+    native.require_system()
+    import psutil
+    from cochem_pipeline.resource_limits import ResourceLimits, ResourcePolicyError, validate_host_limits
+    from cochem_pipeline.resource_telemetry import _commit
+    limits = ResourceLimits.from_dict(config.get('repair_execution_limits'))
+    topology = validate_host_limits(limits)
+    available_mb = psutil.virtual_memory().available / (1024*1024)
+    commit = _commit()
+    # Reserve the child's full hard cap, plus the same baseline RAM/commit
+    # headroom used by the default pipeline policy. No model can relax this.
+    if available_mb < limits.memory_limit_mb + 1024:
+        raise ResourcePolicyError('Insufficient measured RAM for the bounded repair child plus reserve')
+    if not commit.get('available') or commit.get('free_mb',0) < limits.memory_limit_mb + 6144:
+        raise ResourcePolicyError('Insufficient verified Windows commit headroom for the bounded repair child')
+    return {'limits':limits.as_dict(),'topology':topology,'available_memory_mb':available_mb,
+            'commit':commit,'ram_reserve_mb':1024,'commit_reserve_mb':6144,'checked_at':time.time()}
+
+
+def repair_docker_endpoint(pipeline: Mapping) -> str | None:
+    """Read the reviewed Docker policy without treating malformed input as off."""
+    if not isinstance(pipeline, Mapping):
+        raise ValueError('The reviewed pipeline configuration must be an object')
+    if 'docker' in pipeline and not isinstance(pipeline['docker'], dict):
+        raise ValueError('An explicit Docker policy must be an object')
+    from cochem_pipeline.container_policy import DockerPolicy
+    policy = DockerPolicy.from_dict(pipeline.get('docker'))
+    if not policy.enabled:
+        return None
+    if not re.fullmatch(r'npipe:////\./pipe/([A-Za-z0-9_.-]+)', policy.endpoint or ''):
+        raise ValueError('Repair isolation requires the configured local Windows Docker pipe')
+    return policy.endpoint
+
+
+def verify_repair_docker_boundary(config: Mapping, identity: Mapping | None = None) -> dict:
+    """Prove repair-account denial immediately before untrusted process work.
+
+    This is deliberately not a supervisor startup requirement: an unavailable
+    daemon must hold repairs while the independent watchdog can recover it.
+    Only real ACCESS_DENIED on read, write and duplex opens is accepted.
+    """
+    native.require_system()
+    filename = Path(config['pipeline_config'])
+    native.validate_code_path(filename)
+    pipeline = json.loads(filename.read_text(encoding='utf-8-sig'))
+    endpoint = repair_docker_endpoint(pipeline)
+    expected = native.WorkerIdentity(**config['repair_worker'])
+    if identity is not None and native.WorkerIdentity(**identity) != expected:
+        raise native.WindowsIsolationError('Repair execution identity does not match its reviewed Docker boundary')
+    # Imported from this frozen supervisor installation, never a candidate.
+    from cochem_pipeline.deployment import verify_docker_access_boundary
+    return {'enabled': endpoint is not None,
+            'scope': 'configured and existing known local Desktop API pipes',
+            'worker_access': verify_docker_access_boundary(endpoint, {'repair': expected},
+                required=endpoint is not None,trusted_operator=pipeline.get('operator_name'),
+                trusted_server_executables=pipeline.get('docker',{}).get('pipe_server_executables',[]))}
+
+
 def _task_name(name: str) -> str:
     if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", name):
         raise ValueError("Use an exact root-folder Scheduled Task name; wildcards, paths and command text are forbidden")
