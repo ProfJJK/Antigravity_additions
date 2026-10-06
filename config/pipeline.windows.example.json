@@ -1,0 +1,76 @@
+{
+  "private_root": "C:\\ProgramData\\CoChemPipeline422\\private",
+  "slot_roots": {
+    "slot1": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot1",
+    "slot2": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot2",
+    "slot3": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot3",
+    "slot4": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot4",
+    "slot5": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot5",
+    "slot6": "C:\\ProgramData\\CoChemPipeline422\\workers\\slot6"
+  },
+  "workers": {
+    "slot1": {
+      "name": "CoChem422Worker1",
+      "credential_target": "CoChem422/slot1"
+    },
+    "slot2": {
+      "name": "CoChem422Worker2",
+      "credential_target": "CoChem422/slot2"
+    },
+    "slot3": {
+      "name": "CoChem422Worker3",
+      "credential_target": "CoChem422/slot3"
+    },
+    "slot4": {
+      "name": "CoChem422Worker4",
+      "credential_target": "CoChem422/slot4"
+    },
+    "slot5": {
+      "name": "CoChem422Worker5",
+      "credential_target": "CoChem422/slot5"
+    },
+    "slot6": {
+      "name": "CoChem422Worker6",
+      "credential_target": "CoChem422/slot6"
+    }
+  },
+  "operator_name": "YOUR_COMPUTER\\YOUR_WINDOWS_USER",
+  "token_file": "C:\\Users\\YOUR_WINDOWS_USER\\CoChem422\\controller.token",
+  "port": 47824,
+  "providers": {
+    "codex": {
+      "executable": "C:\\Program Files\\Codex\\codex.exe",
+      "model": "gpt-6-astra"
+    },
+    "claude": {
+      "executable": "C:\\Program Files\\Claude\\claude.exe",
+      "model": "claude-opus-5-5"
+    },
+    "gemini": {
+      "executable": "C:\\Program Files\\Agy\\agy.exe",
+      "model": "gemini-3.1-pro",
+      "arguments": [
+        "REPLACE_WITH_VERIFIED_AGY_HEADLESS_FLAGS",
+        "{model}"
+      ],
+      "protocol": "gemini-json",
+      "subscription_probe": {
+        "arguments": [
+          "REPLACE_WITH_VERIFIED_AGY_SUBSCRIPTION_STATUS_ARGUMENTS"
+        ],
+        "protocol": "json-fields",
+        "expected": {
+          "REPLACE_WITH_NATIVE_SUBSCRIPTION_STATUS_FIELD": "REPLACE_WITH_NATIVE_SUBSCRIPTION_STATUS_VALUE"
+        }
+      }
+    }
+  },
+  "timeout_seconds": 1800,
+  "lease_seconds": 60,
+  "max_attempts": 3,
+  "context_budget": 16384,
+  "reserved_fraction": 0.25,
+  "min_free_memory_mb": 1024,
+  "min_free_disk_mb": 512,
+  "rules": []
+}

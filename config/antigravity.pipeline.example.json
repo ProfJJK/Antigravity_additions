@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cochem-pipeline": {
+      "command": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "args": ["-m", "cochem_pipeline", "mcp", "--client-config", "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\pipeline.client.local.json"]
+    }
+  }
+}
