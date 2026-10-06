@@ -20,6 +20,6 @@ if _src_cochem.is_dir():
         __path__.remove(str(_src_cochem))
     __path__.insert(0, str(_src_cochem))
 
-__version__ = "0.1.0"
+__version__ = "4.2.1"
 
 __all__ = ["__version__"]

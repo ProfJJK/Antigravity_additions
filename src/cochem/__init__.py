@@ -12,3 +12,5 @@ from pkgutil import extend_path
 os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 __path__ = extend_path(__path__, __name__)
+
+__version__ = "4.2.1"

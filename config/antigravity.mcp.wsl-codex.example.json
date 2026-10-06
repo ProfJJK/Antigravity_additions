@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cochem-codex": {
+      "command": "C:\\Windows\\System32\\wsl.exe",
+      "args": ["--distribution", "Ubuntu", "--cd", "/mnt/d/__CoChem/__agentic", "--exec", "/home/YOUR_USER/.venvs/cochem-mcp/bin/python", "-m", "cochem_mcp", "--provider", "codex", "--config", "/mnt/d/__CoChem/__agentic/config/bridge.wsl.local.json"]
+    }
+  }
+}

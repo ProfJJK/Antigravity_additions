@@ -187,10 +187,15 @@ def run_cli(
         args.append(prompt_path)
         feed = None
 
+    input_file = None
     try:
+        if feed is not None:
+            input_file = tempfile.TemporaryFile(mode="w+b")
+            input_file.write(feed.encode("utf-8"))
+            input_file.seek(0)
         proc = subprocess.Popen(
             args,
-            stdin=subprocess.PIPE if feed is not None else subprocess.DEVNULL,
+            stdin=input_file if input_file is not None else subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             env=env,
@@ -198,7 +203,7 @@ def run_cli(
             **_popen_kwargs(build_cli_kwargs(timeout)),
         )
         try:
-            stdout, stderr = proc.communicate(input=feed, timeout=timeout)
+            stdout, stderr = proc.communicate(timeout=timeout)
         except BaseException as exc:
             # Kill the whole tree while the parent is still alive, so /T can walk it.
             if _IS_WINDOWS:
@@ -231,6 +236,8 @@ def run_cli(
                 ) from None
             raise
     finally:
+        if input_file is not None:
+            input_file.close()
         if prompt_path is not None:
             try:
                 os.unlink(prompt_path)
@@ -471,10 +478,7 @@ class ClaudeProvider(BaseLLMProvider):
 # Requires: claude.exe installed + logged in via `claude auth login`
 # IMPORTANT: Do NOT set ANTHROPIC_API_KEY in env — it overrides subscription billing.
 
-_CLAUDE_CLI_EXE = Path(os.environ.get(
-    "CLAUDE_CLI_EXE",
-    r"C:\Users\ansac\.local\bin\claude.exe"
-))
+_CLAUDE_CLI_EXE = csm.default_claude_exe()
 
 
 class ClaudeSubscriptionProvider(BaseLLMProvider):
@@ -515,7 +519,7 @@ class ClaudeSubscriptionProvider(BaseLLMProvider):
         auth_env = self._get_auth_env()
         sys_prompt = csm.resolve_persona_system_prompt(agent_name, system)
         wrapped_prompt = self.wrap_xml(prompt, agent_name=agent_name)
-        cli_model = model if model and model != self.DEFAULT_MODEL else None
+        cli_model = model or self.DEFAULT_MODEL
 
         result = csm.run_claude_subscription_batch(
             claude_exe=_CLAUDE_CLI_EXE,
@@ -548,7 +552,7 @@ class ClaudeSubscriptionProvider(BaseLLMProvider):
         auth_env = self._get_auth_env()
         sys_prompt = csm.resolve_persona_system_prompt(agent_name, system)
         wrapped_prompt = self.wrap_xml(prompt, agent_name=agent_name)
-        cli_model = model if model and model != self.DEFAULT_MODEL else None
+        cli_model = model or self.DEFAULT_MODEL
 
         yield from csm.stream_claude_subscription(
             claude_exe=_CLAUDE_CLI_EXE,
@@ -558,6 +562,36 @@ class ClaudeSubscriptionProvider(BaseLLMProvider):
             model=cli_model,
             timeout=float(timeout),
         )
+
+
+class CodexSubscriptionProvider(BaseLLMProvider):
+    """Run the native Codex CLI with ChatGPT authentication, never an API SDK."""
+
+    DEFAULT_MODEL = os.environ.get("DEFAULT_CODEX_MODEL", "gpt-6-sol")
+
+    def generate(self, prompt: str, *, system: str = "", model: Optional[str] = None,
+                 stream: bool = False, agent_name: str = "", timeout: int = 3600,
+                 cwd: Optional[str] = None, **kwargs) -> LLMResponse:
+        from cochem_mcp.providers import (auth_probe, build_command, executable_prefix,
+                                          parse_result, subscription_env)
+        prefix = executable_prefix("codex", os.environ.get("CODEX_CLI_EXE"))
+        env = subscription_env("codex")
+        auth = auth_probe("codex", prefix, env)
+        if not auth["ready"]:
+            raise RuntimeError(auth["reason"])
+        selected = model or self.DEFAULT_MODEL
+        workspace = str(Path(cwd or os.getcwd()).resolve())
+        command = build_command("codex", prefix, selected, workspace)
+        started = time.monotonic()
+        output = run_cli(command, stdin_text=self.wrap_xml(prompt, system, agent_name),
+                         timeout=timeout, env=env, cwd=workspace, large_prompt_to_file=False)
+        parsed = parse_result("codex", output)
+        return LLMResponse(content=parsed["content"], provider="codex", model=selected,
+                           elapsed_sec=time.monotonic() - started)
+
+    def stream_generate(self, prompt: str, **kwargs) -> Iterator[str]:
+        # Yield only a validated terminal response; don't label partial output as success.
+        yield self.generate(prompt, **kwargs).content
 
 
 # ---------------------------------------------------------------------------
@@ -911,6 +945,8 @@ _PROVIDER_FAMILIES = {
     "agy": "google",
     "google": "google",
     "ollama": "local",
+    "codex": "openai",
+    "gpt": "openai",
 }
 
 
@@ -946,17 +982,19 @@ def get_provider(provider: Optional[str] = None) -> BaseLLMProvider:
     """
     Return the appropriate provider instance.
 
-    Supported values: 'gemini' | 'claude' (SDK) | 'claude-subscription' (Max CLI) | 'ollama'
-    Priority: explicit arg > DEFAULT_LLM_PROVIDER env > gemini
+    Supported values: 'gemini' | 'claude' / 'claude-subscription' (CLI) | 'codex' | 'ollama'.
+    An unknown provider is an error; it never silently dispatches to Gemini.
     """
     p = (provider or os.environ.get("DEFAULT_LLM_PROVIDER", "gemini")).lower().strip()
-    if p == "claude-subscription":
+    if p in {"claude", "claude-subscription"}:
         return ClaudeSubscriptionProvider()
-    if p == "claude":
-        return ClaudeProvider()
+    if p == "codex":
+        return CodexSubscriptionProvider()
     if p == "ollama":
         return OllamaProvider()
-    return GeminiProvider()
+    if p in {"gemini", "agy"}:
+        return GeminiProvider()
+    raise ValueError(f"Unknown CLI provider: {p!r}. Choose codex, claude, gemini, or ollama.")
 
 
 # ---------------------------------------------------------------------------
@@ -975,7 +1013,10 @@ except ImportError:
 try:
     from v2.MODEL_REGISTRY_V2 import MODEL_REGISTRY
 except ImportError:
-    from MODEL_REGISTRY_V2 import MODEL_REGISTRY
+    try:
+        from MODEL_REGISTRY_V2 import MODEL_REGISTRY
+    except ImportError:
+        MODEL_REGISTRY = {}
 
 
 # Error signatures that indicate quota/rate exhaustion (not hard failures)
@@ -1009,11 +1050,12 @@ class QuotaFallbackRouter:
         self._disabled_at: dict = {}
 
     def _entry(self, agent_name: str) -> dict:
-        return MODEL_REGISTRY.get(
-            agent_name,
-            {"provider": "gemini", "model": "gemini-3.1-pro-preview",
-             "fallbacks": [("claude-subscription", "claude-sonnet-5"), ("gemini", "gemini-3.8-flash"), ("halt", "qwen3.5:9b")]},
-        )
+        if agent_name not in MODEL_REGISTRY:
+            raise ValueError(
+                f"No explicit model registry entry for {agent_name!r}; select provider/model directly "
+                "or use the configured 4.2.1 CLI MCP bridge."
+            )
+        return MODEL_REGISTRY[agent_name]
 
     def generate(
         self,
@@ -1081,8 +1123,7 @@ class QuotaFallbackRouter:
                     self._disabled_at[key] = time.monotonic()
                     last_exc = exc
                     continue
-                last_exc = exc
-                continue  # HARD FAILURES ALSO WALK CHAIN (as designed in v2)
+                raise  # Authentication, launch and protocol failures must remain visible.
 
         raise RuntimeError(
             f"All models exhausted for agent '{agent_name}'. "
@@ -1135,7 +1176,7 @@ class QuotaFallbackRouter:
                     self._disabled.add(key)
                     self._disabled_at[key] = time.monotonic()
                     continue
-                continue
+                raise
 
         raise RuntimeError(f"All models exhausted for agent '{agent_name}'. Fallback chain: {chain}")
 

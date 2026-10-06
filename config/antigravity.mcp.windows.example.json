@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "cochem-codex": {
+      "command": "D:\\__CoChem\\__agentic\\.venv-mcp\\Scripts\\python.exe",
+      "args": ["-m", "cochem_mcp", "--provider", "codex", "--config", "D:\\__CoChem\\__agentic\\config\\bridge.local.json"]
+    },
+    "cochem-claude": {
+      "command": "D:\\__CoChem\\__agentic\\.venv-mcp\\Scripts\\python.exe",
+      "args": ["-m", "cochem_mcp", "--provider", "claude", "--config", "D:\\__CoChem\\__agentic\\config\\bridge.local.json"]
+    }
+  }
+}

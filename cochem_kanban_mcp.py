@@ -15,13 +15,23 @@ for _candidate in (str(Path(__file__).resolve().parent), _AGENTIC_ROOT):
     if (Path(_candidate) / "v3" / "submit_v3.py").is_file() and _candidate not in sys.path:
         sys.path.insert(0, _candidate)
 
-from v3.submit_v3 import submit_task_detailed  # noqa: E402
+def submit_task_detailed(*args, **kwargs):
+    """Load the optional legacy queue only when called; missing queues cannot accept jobs."""
+    try:
+        from v3.submit_v3 import submit_task_detailed as submit
+    except ModuleNotFoundError as exc:
+        raise ValueError(
+            "Legacy v3 queue is unavailable in this checkout. Configure the 4.2.1 "
+            "cochem-codex and cochem-claude MCP servers for direct CLI handoffs."
+        ) from exc
+    return submit(*args, **kwargs)
+
 import claude_subscription_manager as _claude_sub  # noqa: E402
 
 # Create a FastMCP server
 mcp = FastMCP("CoChem Kanban")
 
-CLI_SCRIPT = os.getenv("COCHEM_KANBAN_SCRIPT", r"D:\__CoChem\__agentic\cochem_kanban.py")
+CLI_SCRIPT = os.getenv("COCHEM_KANBAN_SCRIPT", str(Path(__file__).resolve().with_name("cochem_kanban.py")))
 _NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
@@ -270,9 +280,7 @@ def trigger_pivot_council(
 
 @mcp.tool()
 def get_claude_subscription_health() -> str:
-    """Returns machine-readable JSON health and TTL telemetry for Claude Pro/Max subscription.
-    Keys: status (HEALTHY|EXPIRING|EXPIRED|ERROR), ttl_seconds, expires_at_iso, plan, tier,
-    token_prefix, error, needs_refresh, recommended_action, refresh_token_ttl_seconds."""
+    """Return native Claude subscription login status without credentials or inferred token TTLs."""
     return json.dumps(_claude_sub.get_claude_subscription_health(), sort_keys=True)
 
 
@@ -287,12 +295,11 @@ def get_claude_status() -> str:
     health = _claude_sub.get_claude_subscription_health()
     lines.append("=== Claude Auth ===")
     if health["status"] == "ERROR":
-        lines.append(f"[ERROR reading credentials: {health['error']}]")
+        lines.append(f"[ERROR checking CLI login: {health['error']}]")
     else:
         icon = {"HEALTHY": "✅", "EXPIRING": "⚠️", "EXPIRED": "❌ EXPIRED"}.get(health["status"], "?")
-        lines.append(f"Token:    {health['token_prefix']}...  {icon}")
-        lines.append(f"Expires:  {health['expires_at_iso']} ({health['ttl_seconds'] / 3600:.1f}h remaining)")
-        lines.append(f"Plan:     {health['plan']} / {health['tier']}")
+        lines.append(f"Native CLI login: {icon}")
+        lines.append(f"Plan: {health['plan']} / {health['tier']}")
     lines.append(f"Status:   {health['status']}  action={health['recommended_action']}")
 
     # ── 2. Daemon health ──────────────────────────────────────────────────────

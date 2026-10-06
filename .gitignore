@@ -19,3 +19,8 @@ tests/
 v3/
 .env
 .env.template
+.venv-mcp/
+config/bridge.local.json
+config/bridge.wsl.local.json
+
+config/antigravity.local.json

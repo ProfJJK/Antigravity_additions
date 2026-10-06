@@ -1,0 +1,17 @@
+{
+  "workspace_roots": ["D:\\__CoChem\\__agentic"],
+  "providers": {
+    "codex": {
+      "default_model": "sol",
+      "models": {"astra": "gpt-6-astra", "sol": "gpt-6-sol", "luna": "gpt-6-luna"},
+      "timeout_seconds": 1800,
+      "max_workers": 1
+    },
+    "claude": {
+      "default_model": "sonnet",
+      "models": {"fable": "claude-fable-5-1", "opus": "claude-opus-5-5", "sonnet": "claude-sonnet-5-5", "haiku": "claude-haiku-4-5"},
+      "timeout_seconds": 1800,
+      "max_workers": 1
+    }
+  }
+}

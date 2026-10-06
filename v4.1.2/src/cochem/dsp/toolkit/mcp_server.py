@@ -26,19 +26,25 @@ logger = logging.getLogger("cochem.dsp.toolkit.mcp_server")
 # Active DSP Job State Registry
 DSP_JOB_REGISTRY: dict[str, dict[str, Any]] = {}
 REGISTERED_PIPELINES: list[str] = ["code_forge", "academic_press", "pedagogy_engine"]
+DISPATCH_UNAVAILABLE = (
+    "This legacy DSP MCP server has no connected execution backend. "
+    "No task was queued or dispatched. Use the direct CLI MCP server to run "
+    "a Codex or Claude job and inspect its execution receipt."
+)
 
 mcp = FastMCP(
     name="cochem-dsp-mcp",
     instructions=(
-        "cochem-dsp-mcp FastMCP server exposing DSP lifecycle management endpoints "
-        "for The Code Forge, The Academic Press, and The Pedagogy Engine."
+        "Legacy DSP workflow registration and status interface. Workflow execution "
+        "is unavailable: registering or polling a request never executes an agent. "
+        "Use the direct CLI MCP server for Codex and Claude execution."
     ),
 )
 
 
 @mcp.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
 def trigger_dsp_pipeline(domain: str, payload: dict[str, Any]) -> dict[str, Any]:
-    """Triggers execution of a registered domain pipeline and records state."""
+    """Records an unavailable request; this legacy server cannot dispatch agents."""
     if domain not in REGISTERED_PIPELINES:
         raise ValueError(f"Unknown domain pipeline '{domain}'. Available: {REGISTERED_PIPELINES}")
     if not isinstance(payload, dict):
@@ -49,17 +55,25 @@ def trigger_dsp_pipeline(domain: str, payload: dict[str, Any]) -> dict[str, Any]
         "job_id": job_id,
         "domain": domain,
         "payload": payload,
-        "status": "QUEUED",
+        "status": "UNAVAILABLE",
+        "execution_started": False,
+        "error": DISPATCH_UNAVAILABLE,
         "created_at": int(time.time()),
         "completed_at": None,
     }
     DSP_JOB_REGISTRY[job_id] = record
-    return {"job_id": job_id, "status": "QUEUED", "domain": domain}
+    return {
+        "job_id": job_id,
+        "status": record["status"],
+        "domain": domain,
+        "execution_started": False,
+        "error": DISPATCH_UNAVAILABLE,
+    }
 
 
 @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=False))
 def get_dsp_status(job_id: str) -> dict[str, Any]:
-    """Queries execution status of a DSP job from the registry."""
+    """Reads recorded status without advancing or claiming execution."""
     if not job_id or not isinstance(job_id, str):
         raise ValueError("Job ID must be a non-empty string")
 
@@ -71,25 +85,20 @@ def get_dsp_status(job_id: str) -> dict[str, Any]:
         }
 
     job = DSP_JOB_REGISTRY[job_id]
-    # Advance state based on lifecycle
-    if job["status"] == "QUEUED":
-        job["status"] = "RUNNING"
-    elif job["status"] == "RUNNING":
-        job["status"] = "COMPLETED"
-        job["completed_at"] = int(time.time())
-
     return {
         "job_id": job_id,
         "domain": job["domain"],
         "status": job["status"],
         "created_at": job["created_at"],
         "completed_at": job.get("completed_at"),
+        "execution_started": job.get("execution_started", False),
+        "error": job.get("error"),
     }
 
 
 @mcp.tool(annotations=ToolAnnotations(readOnlyHint=True, idempotentHint=True, openWorldHint=False))
 def list_dsp_pipelines() -> list[str]:
-    """Lists all available domain pipelines."""
+    """Lists recognized domain names; their execution backend is unavailable."""
     return list(REGISTERED_PIPELINES)
 
 
