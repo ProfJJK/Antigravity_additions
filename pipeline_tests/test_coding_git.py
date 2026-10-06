@@ -1,6 +1,7 @@
 """Actual Git object, worktree, hook, and CAS integration tests."""
 from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -73,8 +74,117 @@ def test_stage_is_deterministic_and_preserves_tree_modes_and_binary(tmp_path, re
     assert captured.commit == snapshot.commit
     assert snapshot_digest(files, snapshot.modes) == receipt['snapshot_sha256']
     assert git(private, 'rev-parse', receipt['result_commit'] + '^') == snapshot.commit
+    patch=Path(receipt['patch_path'])
+    assert patch.suffix=='.patch' and '.staging' in patch.parts
+    assert patch.read_bytes().startswith(b'diff --git a/source.py b/source.py\n')
+    assert hashlib.sha256(patch.read_bytes()).hexdigest()==receipt['patch_sha256']
     with pytest.raises(GitSafetyError, match='already owns'):
         stager.stage(snapshot, dict(files, extra=b'different'), workflow_id='workflow', chunk_id='1')
+
+
+def test_standard_patch_applies_binary_add_delete_and_mode_changes_in_an_independent_index(tmp_path,repository):
+    (repository/'drop.txt').write_text('Remove this file\n')
+    git(repository,'add','drop.txt')
+    git(repository,'commit','-m','File to remove')
+    git(repository,'branch','-f','delivery','HEAD')
+    snapshot=capture_repository(repository,'delivery')
+    stager=GitStager(tmp_path/'private')
+    files=dict(snapshot.files,**{'asset.bin':b'\0changed\xff\x01','new.bin':b'\0new binary\xfe'})
+    files.pop('drop.txt')
+    before_index=(repository/'.git/index').read_bytes()
+    receipt=stager.stage(snapshot,files,workflow_id='binary',chunk_id='1',modes={'source.py':'100755'})
+    patch=Path(receipt['patch_path']).read_bytes()
+    assert b'GIT binary patch\n' in patch
+    assert b'deleted file mode 100644\n' in patch
+    assert b'old mode 100644\nnew mode 100755\n' in patch
+    # This is a separate ordinary Git apply, not the stager's verifier.
+    env=dict(os.environ,GIT_INDEX_FILE=str(tmp_path/'review.index'))
+    for args in [('read-tree',snapshot.commit),('apply','--cached',str(receipt['patch_path']))]:
+        subprocess.run(['git','-C',receipt['staging_repository'],*args],env=env,check=True,
+                       stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    applied=subprocess.run(['git','-C',receipt['staging_repository'],'write-tree'],env=env,check=True,
+                           stdout=subprocess.PIPE,stderr=subprocess.PIPE).stdout.decode().strip()
+    assert applied==receipt['tree']
+    assert (repository/'.git/index').read_bytes()==before_index
+    assert stager.integrate(snapshot,receipt,auto_integrate=True)['status']=='INTEGRATED'
+    assert capture_repository(repository,'delivery').files==files
+    assert not list(Path(receipt['patch_path']).parent.glob('.apply-*'))
+
+
+@pytest.mark.parametrize('mutation',['bytes','forged_hash','missing','other_path','wrong_hash','linked'])
+def test_tampered_patch_cannot_publish_or_advance_a_branch(tmp_path,repository,mutation):
+    stager,snapshot,_,receipt=staged(tmp_path,repository)
+    patch=Path(receipt['patch_path'])
+    if mutation in {'bytes','forged_hash'}:
+        patch.write_bytes(patch.read_bytes().replace(b'+    return 42',b'+    return 99'))
+        if mutation=='forged_hash': receipt['patch_sha256']=hashlib.sha256(patch.read_bytes()).hexdigest()
+    elif mutation=='missing': patch.unlink()
+    elif mutation=='other_path': receipt['patch_path']=str(repository/'outside.patch')
+    elif mutation=='wrong_hash': receipt['patch_sha256']='0'*64
+    else:
+        target=tmp_path/'linked.patch'
+        patch.rename(target)
+        patch.symlink_to(target)
+    with pytest.raises(GitSafetyError):
+        stager.integrate(snapshot,receipt,auto_integrate=True)
+    assert git(repository,'rev-parse','delivery')==snapshot.commit
+    assert not git(repository,'for-each-ref',receipt['output_ref'])
+
+
+def test_stage_replay_recovers_a_saved_patch_before_its_output_ref_was_published(tmp_path,repository):
+    stager,snapshot,files,receipt=staged(tmp_path,repository)
+    git(Path(receipt['staging_repository']),'update-ref','-d',receipt['output_ref'])
+    assert stager.stage(snapshot,files,workflow_id='workflow',chunk_id='1')==receipt
+    assert stager.integrate(snapshot,receipt,auto_integrate=True)['status']=='INTEGRATED'
+    assert stager.integrate(snapshot,receipt,auto_integrate=True)['reason']=='already_integrated'
+
+
+def test_stage_replay_rejects_replaced_patch_instead_of_overwriting_it(tmp_path,repository):
+    stager,snapshot,files,receipt=staged(tmp_path,repository)
+    patch=Path(receipt['patch_path'])
+    patch.write_bytes(b'Changed after staging\n')
+    with pytest.raises(GitSafetyError,match='different patch'):
+        stager.stage(snapshot,files,workflow_id='workflow',chunk_id='1')
+    assert patch.read_bytes()==b'Changed after staging\n'
+
+
+@pytest.mark.parametrize('count',[100,101])
+def test_coding_patch_limit_counts_actual_git_additions_and_deletions(tmp_path,repository,count):
+    snapshot=capture_repository(repository,'delivery')
+    stager=GitStager(tmp_path/'private')
+    files=dict(snapshot.files,**{'added.py':b'line\n'*count})
+    if count==101:
+        with pytest.raises(GitSafetyError,match='changed-line limit'):
+            stager.stage(snapshot,files,workflow_id='limit',chunk_id='1',max_changed_lines=100)
+        assert not list((stager.state_root/'.staging').glob('**/*.patch'))
+    else:
+        receipt=stager.stage(snapshot,files,workflow_id='limit',chunk_id='1',max_changed_lines=100)
+        assert receipt['changed_lines']==100 and receipt['max_changed_lines']==100
+        assert stager.integrate(snapshot,receipt,auto_integrate=True)['status']=='INTEGRATED'
+
+
+def test_coding_patch_limit_includes_deletions_and_rejects_unmeasurable_binary_changes(tmp_path,repository):
+    snapshot=capture_repository(repository,'delivery')
+    stager=GitStager(tmp_path/'private')
+    files=dict(snapshot.files,**{'source.py':b'replacement\n'*99})
+    with pytest.raises(GitSafetyError,match='changed-line limit'):
+        stager.stage(snapshot,files,workflow_id='limit',chunk_id='1',max_changed_lines=100)
+    with pytest.raises(GitSafetyError,match='Binary changes'):
+        stager.stage(snapshot,dict(snapshot.files,**{'asset.bin':b'\0new'}),
+                     workflow_id='limit',chunk_id='binary',max_changed_lines=100)
+
+
+@pytest.mark.parametrize('mutation',['removed_limit','larger_limit','different_count'])
+def test_patch_receipt_cannot_weaken_its_committed_line_limit(tmp_path,repository,mutation):
+    snapshot=capture_repository(repository,'delivery')
+    stager=GitStager(tmp_path/'private')
+    receipt=stager.stage(snapshot,dict(snapshot.files,extra=b'new\n'),
+                         workflow_id='limit',chunk_id='1',max_changed_lines=100)
+    if mutation=='removed_limit': receipt.pop('max_changed_lines')
+    elif mutation=='larger_limit': receipt['max_changed_lines']=101
+    else: receipt['changed_lines']=0
+    with pytest.raises(GitSafetyError): stager.integrate(snapshot,receipt,auto_integrate=True)
+    assert git(repository,'rev-parse','delivery')==snapshot.commit
 
 
 def test_integrate_noncheckedout_branch_preserves_dirty_user_tree_and_replays(tmp_path, repository):

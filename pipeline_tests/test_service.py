@@ -31,6 +31,9 @@ def test_public_redaction_preserves_hashable_user_artifacts():
     public = public_workflow(snapshot)
     assert public['jobs'][0]['output']==output
     assert public['jobs'][0]['receipt']=={}
+    from cochem_pipeline.coding import digest
+    assert public['jobs'][0]['receipt_sha256']==digest(snapshot['jobs'][0]['receipt'])
+    assert public['jobs'][0]['receipt_sha256']!=digest(public['jobs'][0]['receipt'])
     assert public['events'][0]['details']=={}
     assert snapshot['jobs'][0]['attempt_id']=='private-attempt'
 
@@ -44,6 +47,7 @@ def test_actual_pipeline_mcp_session_creates_and_cancels_real_dag(endpoint):
             tools = await client.list_tools()
             assert {tool.name for tool in tools.tools} == {
                 'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing',
+                'knowledge_search','knowledge_read','knowledge_status',
                 'pipeline_projects','pipeline_code','pipeline_code_status','pipeline_code_cancel','pipeline_code_resume'}
             response = await client.call_tool('pipeline_submit',{
                 'objective':'Create a six-chapter SRS/WBS', 'requirements':['REQ-1'], 'chapter_count':6})
@@ -373,7 +377,7 @@ def coding_endpoint(endpoint, tmp_path):
     return endpoint
 
 
-def test_real_http_coding_submission_captures_git_baseline_and_is_idempotent(coding_endpoint):
+def test_real_http_coding_submission_captures_baseline_and_holds_missing_protocol_idempotently(coding_endpoint):
     endpoint = coding_endpoint
     data = {'project_id':'sample','objective':'Add a bounded numeric check','requirements':['R1'],
             'workflow_id':'coding-api-test'}
@@ -381,8 +385,10 @@ def test_real_http_coding_submission_captures_git_baseline_and_is_idempotent(cod
     second = endpoint.client.call('/coding/submit',data)
     assert first['workflow_id'] == second['workflow_id'] == 'coding-api-test'
     assert len(first['coding']['baseline_commit']) == 40
-    assert first['coding']['status'] == 'PLANNING'
-    assert len([node for node in first['jobs'] if node['kind']=='CODE_PLAN']) == 1
+    assert first['status']=='BLOCKED'
+    assert first['coding']['status'] == 'PLANNING_HOLD'
+    assert 'canonical seven-stage protocol' in first['coding']['planning_hold']
+    assert len([node for node in first['jobs'] if node['kind']=='CODE_PLAN']) == 0
     assert first['evidence'] == []  # Submission cannot fabricate execution evidence.
     assert endpoint.client.call('/coding/workflow/coding-api-test') == second
     status, _ = request(endpoint,'POST','/coding/submit',{**data,'objective':'A different request'},
@@ -409,7 +415,9 @@ def test_actual_mcp_coding_tool_creates_only_a_registered_real_workflow(coding_e
             result = await client.call_tool('pipeline_code',{'project_id':'sample','objective':'Implement the check',
                                                            'workflow_id':'mcp-coding'})
             assert not result.isError
-            assert result.structuredContent['coding']['status'] == 'PLANNING'
+            assert result.structuredContent['coding']['status'] == 'PLANNING_HOLD'
+            assert result.structuredContent['status']=='BLOCKED'
+            assert 'canonical seven-stage protocol' in result.structuredContent['coding']['planning_hold']
             status = await client.call_tool('pipeline_code_status',{'workflow_id':'mcp-coding'})
             assert status.structuredContent['evidence'] == []
             result = await client.call_tool('pipeline_code_cancel',{'workflow_id':'mcp-coding'})

@@ -420,6 +420,18 @@ def failed(conn,job,category,retry_after_seconds=None,hold_scope=None,current_po
     if category not in AVAILABILITY:
         conn.execute("UPDATE pipeline_routing_jobs SET failure_count=failure_count+1,state='READY' WHERE job_id=?", (job['job_id'],))
         release(conn,job['job_id'],category)
+        failures = state['failure_count'] + 1
+        if category in {'timeout','protocol'} and failures < job['max_attempts']:
+            from .routing import load_routing_policy
+            delay = load_routing_policy(state['policy']).backoff_delay(failures,job['job_id'])
+            deadline = time.time() + delay
+            # A broken response consumes the ordinary failure budget. It does
+            # not diagnose quota, rotate providers or advance an availability
+            # cycle. Retain the target and persist the retry before releasing.
+            conn.execute("UPDATE pipeline_routing_jobs SET state='WAITING',next_eligible_at=?,wait_reason=? WHERE job_id=?",
+                         (deadline,category,job['job_id']))
+            event(conn,job,'TASK_RETRY_BACKOFF',category=category,failure_count=failures,
+                  next_eligible_at=deadline,delay_seconds=delay)
         return get_state(conn,job['job_id'])
     if category=='resource':
         delay=max(1.,min(86400.,retry_after_seconds or 30.))

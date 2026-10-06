@@ -79,6 +79,7 @@ def test_submit_is_durable_idempotent_and_preserves_legacy_tables(tmp_path):
     with store._connection() as conn:
         assert conn.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         assert conn.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
+        assert conn.execute("PRAGMA synchronous").fetchone()[0] == 1
 
 
 @pytest.mark.parametrize("bad", [
@@ -365,7 +366,7 @@ def test_worker_slot_and_exclusion_parameters_are_validated(tmp_path):
         store.claim("owner", exclude_job_ids="not-a-list")
 
 
-def test_three_expired_leases_exhaust_persistent_budget_and_fail_barrier(tmp_path):
+def test_three_expired_leases_exhaust_persistent_budget_and_block_barrier(tmp_path):
     store, workflow_id = seeded(tmp_path, 2)
     original_id = None
     for attempt in range(1, 4):
@@ -379,10 +380,11 @@ def test_three_expired_leases_exhaust_persistent_budget_and_fail_barrier(tmp_pat
         assert job["max_attempts"] == 3
         time.sleep(0.07)
         expired = store.reap_expired()
-        assert expired[0]["status"] == ("FAILED" if attempt == 3 else "PENDING_RETRY")
+        assert expired[0]["status"] == ("BLOCKED" if attempt == 3 else "PENDING_RETRY")
     result = store.workflow(workflow_id)
-    assert result["status"] == "FAILED"
-    assert all(job["status"] in {"FAILED", "COMPLETED"} for job in result["jobs"])
+    assert result["status"] == "BLOCKED"
+    assert all(job["status"] in {"BLOCKED", "COMPLETED"} for job in result["jobs"])
+    assert all(job['lease_owner'] is None and job['lease_expires_at'] is None for job in result['jobs'])
     assert store.claim("fourth-attempt", worker_slot="same-worker") is None
     assert "budget exhausted" in store.get(original_id)["error"]
     assert any(event["event"] == "ATTEMPT_BUDGET_EXHAUSTED" for event in store.events(workflow_id))
@@ -396,8 +398,8 @@ def test_retry_true_cannot_exceed_attempt_budget_and_expired_fail_reaps(tmp_path
     last = store.claim("last-attempt", lease_seconds=0.04)
     time.sleep(0.07)
     assert store.fail(last["job_id"], last["attempt_id"], last["fencing_token"], "expired retry", retry=True) is False
-    assert store.get(last["job_id"])["status"] == "FAILED"
-    assert store.workflow(workflow_id)["status"] == "FAILED"
+    assert store.get(last["job_id"])["status"] == "BLOCKED"
+    assert store.workflow(workflow_id)["status"] == "BLOCKED"
     assert store.claim("cannot-bypass") is None
 
 
@@ -407,8 +409,8 @@ def test_current_attempt_retry_request_becomes_terminal_at_budget(tmp_path):
     for number in range(1, 3):
         job = store.claim(f"attempt-{number}")
         assert store.fail(job["job_id"], job["attempt_id"], job["fencing_token"], "transient", retry=True)
-        assert store.get(job["job_id"])["status"] == ("PENDING_RETRY" if number == 1 else "FAILED")
-    assert store.workflow(workflow_id)["status"] == "FAILED"
+        assert store.get(job["job_id"])["status"] == ("PENDING_RETRY" if number == 1 else "BLOCKED")
+    assert store.workflow(workflow_id)["status"] == "BLOCKED"
 
 
 def test_budget_is_inherited_at_scatter_and_old_database_migrates_attempt_count(tmp_path):

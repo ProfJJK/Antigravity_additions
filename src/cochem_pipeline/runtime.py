@@ -57,6 +57,15 @@ def clear_slot(path: Path) -> None:
             item.unlink()
 
 
+def clear_ram_workspace(descriptor) -> None:
+    """Cleanup only the exact mounted device after native-tree exit is proved."""
+    from .ramdisk import RamWorkspace
+    if type(descriptor) is not RamWorkspace:
+        raise TypeError('RAM cleanup requires a genuine controller workspace descriptor')
+    descriptor.validate(identity=descriptor.identity,require_capacity=False)
+    clear_slot(descriptor.root)
+
+
 def startup_quarantines(slot_roots, previous_cleanup, *, ramdisk_required, ramdisk_ready):
     """Keep all RAM-dependent slots closed until containment and RAM are verified.
 
@@ -79,9 +88,19 @@ class Runtime:
         require_system()
         validate_code_path(Path(__file__))
         validate_code_path(Path(sys.executable))
+        from .resource_limits import controller_limits
+        from .controller_guard import ControllerMonitor
+        self.controller_scheduling = controller_limits(config.execution_limits,apply=True)
+        self.controller_monitor = ControllerMonitor()
         identities = {slot:WorkerIdentity(**value) for slot,value in config.workers.items()}
         validate_layout(config.private_root,config.slot_roots,identities,require_defender=True)
         self.config = config
+        from .knowledge import KnowledgeService
+        self.knowledge = KnowledgeService(config.knowledge)
+        knowledge_evidence = self.knowledge.refresh()
+        if not knowledge_evidence['index_size_sla_met']:
+            raise RuntimeError('Knowledge index exceeds the SRS four-times-corpus storage bound')
+        self._last_knowledge_refresh = time.monotonic()
         self.boot_id = current_boot_identity()
         self.containment_id = os.environ.get('COCHEM_WARDEN_CONTAINMENT_ID')
         if self.containment_id is not None and not re.fullmatch(r'[0-9a-f]{32}',self.containment_id):
@@ -101,6 +120,7 @@ class Runtime:
             rules.append(Rule(**{**spec,'patterns':tuple(spec.get('patterns',())),
                                 'facets':tuple(spec.get('facets',()))}))
         self.engine = ContextEngine(rules,config.context_budget,config.reserved_fraction)
+        self._context_drain_lock = threading.Lock()
         oracle_dir = config.private_root/'oracle'
         oracle_dir.mkdir(exist_ok=True)
         self.oracle = Oracle(self.engine,oracle_dir/'tracking.db',self.trip)
@@ -161,6 +181,11 @@ class Runtime:
             # This step must happen before any new identity can execute.
             if slot not in self.quarantined:
                 clear_slot(root)
+                if self.ramdisk is not None:
+                    try:
+                        clear_ram_workspace(self.ramdisk.workspace(slot))
+                    except Exception as exc:
+                        self.quarantined[slot] = 'Verified RAM startup cleanup failed: '+str(exc)
 
     def trip(self,job_id: str) -> None:
         # Kill independently of a scheduler lock that may be awaiting SQLite.
@@ -203,12 +228,16 @@ class Runtime:
         raise RuntimeError('Oracle did not durably deliver core context after debounce')
 
     def drain_context(self):
-        for context in self.oracle.drain():
-            if self.store.get(context['task_id'])['status'] in ('FAILED','COMPLETED'):
-                self.oracle.ack(context['task_id'],context['watermark'])
-                continue
-            self.store.set_context(context['task_id'],context['xml'],context['watermark'])
-            self.oracle.ack(context['task_id'],context['watermark'])
+        # Tick and worker preflight can both drain. Persist and acknowledge each
+        # ordered batch under one delivery lock so an older batch cannot replace
+        # a newer selection after it has already been acknowledged.
+        with self._context_drain_lock:
+            for context in self.oracle.drain():
+                if self.store.get(context['task_id'])['status'] in ('FAILED','COMPLETED'):
+                    self.oracle.ack(context['task_id'],context['watermark'],context['delivery_id'])
+                    continue
+                self.store.set_context(context['task_id'],context['xml'],context['watermark'])
+                self.oracle.ack(context['task_id'],context['watermark'],context['delivery_id'])
 
     def _workspace_root(self, slot, node=None):
         if self.ramdisk is not None:
@@ -288,9 +317,9 @@ class Runtime:
                         raise OSError('Filesystem observer did not stop; workspace quarantined')
                 if slot not in self.quarantined:
                     if self.ramdisk is not None:
-                        descriptor=self.ramdisk.workspace(slot)
-                        descriptor.validate(identity=descriptor.identity,require_capacity=False)
-                    clear_slot(self._workspace_root(slot,node))
+                        clear_ram_workspace(self.ramdisk.workspace(slot))
+                    else:
+                        clear_slot(self._workspace_root(slot,node))
             except Exception as exc:
                 self.quarantined[slot] = str(exc)
                 LOG.error('Slot %s quarantined after cleanup failure: %s',slot,exc)
@@ -330,7 +359,8 @@ class Runtime:
         readiness_error = isinstance(exc,(RamdiskError,ResourcePolicyError,WindowsIsolationError))
         category = ('resource' if active.get('resource_tripped') else
                     getattr(exc,'category','configuration') if readiness_error else
-                    exc.category if isinstance(exc,ProviderFailure) else 'code')
+                    exc.category if isinstance(exc,ProviderFailure) else
+                    'timeout' if isinstance(exc,TimeoutError) else 'code')
         if (category=='resource' and slot not in self.quarantined and not self.stop_event.is_set()
                 and not active.get('tripped',False)
                 and (not isinstance(exc,ExecutionRevokedError) or active.get('resource_tripped'))):
@@ -343,6 +373,11 @@ class Runtime:
         # A cancelled/reaped attempt can no longer mutate its job or trigger
         # another dispatch. Its stale failure is not a fresh recovery incident.
         if accepted:
+            from .crash import record_crash
+            try:
+                record_crash(self.config.private_root, exc, category)
+            except Exception:
+                LOG.error('Private crash metadata could not be persisted')
             emit_recovery_event(self.config.job_db,{
                 'tier':1,'action':('routing_hold' if hold_scope=='job' or category in ('configuration','compatibility')
                     else 'provider_unavailable' if category in ('quota','auth','busy','context','provider','backlog','resource') else 'worker_failure'),
@@ -383,6 +418,24 @@ class Runtime:
         for node in self.store.reap_expired():
             emit_recovery_event(self.config.job_db,{'tier':1,'action':'lease_reaper','job_id':node['job_id']})
         decision = self.guard.evaluate() if hasattr(self.guard,'evaluate') else {'capacity':self.guard.capacity()}
+        if getattr(self,'knowledge',None) is not None:
+            knowledge = self.knowledge.status()
+            self.components['knowledge'] = {'required':True,'checked_at':time.time(),
+                'state':'healthy' if knowledge['ready'] else 'unhealthy','evidence':knowledge}
+            if not knowledge['ready']:
+                decision = {**decision,'capacity':0,
+                    'reasons':[*decision.get('reasons',[]),'Registered knowledge corpus/index is not ready']}
+        if hasattr(self,'controller_monitor'):
+            controller = self.controller_monitor.sample()
+            self.components['warden_controller'] = {'required':True,
+                'state':'healthy' if controller['ready'] else 'resource_pressure',
+                **controller,'scheduling':self.controller_scheduling}
+            if not controller['ready']:
+                decision = {**decision,'capacity':0,
+                    'state':decision.get('state') if decision.get('action')=='terminate_active' else 'paused',
+                    'action':decision.get('action') if decision.get('action')=='terminate_active' else 'pause_admission',
+                    'reasons':[*decision.get('reasons',[]),*controller['reasons']],
+                    'controller':controller}
         ceiling = decision['capacity']
         self.store.set_transition_telemetry(decision)
         if decision.get('action') == 'terminate_active':
@@ -438,8 +491,9 @@ class Runtime:
         self._last_container_maintenance = time.monotonic()
         def maintain():
             try:
+                maintenance_result=None
                 if hasattr(self,'admission'):
-                    self.admission.maintenance()
+                    maintenance_result=self.admission.maintenance()
                 if hasattr(self.docker,'health'):
                     measured=self.docker.health()
                     if 'docker_engine' in measured:
@@ -451,6 +505,11 @@ class Runtime:
                         self.components['containers']={'required':True,'state':'quarantined' if census.get('quarantined',0) else 'healthy',
                             'checked_at':measured.get('checked_at'),'active_count':census.get('active',0),'owned':census.get('owned',0),
                             'warm':census.get('warm',0),'preparing':census.get('preparing',0),'quarantined':census.get('quarantined',0)}
+                    if isinstance(maintenance_result,dict) and 'requested_profile' in maintenance_result:
+                        self.components.setdefault('containers',{}).update(
+                            prepared_capacity_ready=maintenance_result['ready'],
+                            readiness_reason=None if maintenance_result['ready'] else
+                                maintenance_result.get('reason','awaiting_exact_preallocated_profile'))
             except Exception as exc:
                 self.components['docker_engine']={'required':True,'state':'unavailable',
                     'checked_at':time.time(),'diagnostic':type(exc).__name__}
@@ -484,6 +543,7 @@ class Runtime:
         return self.store.resume_coding(workflow_id,reason)
 
     def status(self):
+        from .planning_governance import planning_readiness
         with self.lock:
             active = [{'job_id':key,'slot':value['slot'],'pid':value['pid'],
                        'route':value['node'].get('route')} for key,value in self.active.items()]
@@ -492,6 +552,8 @@ class Runtime:
                 'trip_errors':self.oracle.trip_errors,'pid':os.getpid(),
                 'instance_id':self.heartbeat.instance_id,'process_started_at':self.heartbeat.started_at,
                 'routing':self.store.routing_status(),'components':dict(self.components),'execution_bounds':self.execution_bounds(),
+                'knowledge':self.knowledge.status() if getattr(self,'knowledge',None) is not None else {'ready':False},
+                'planning':planning_readiness(getattr(self.config,'coding_projects',{})),
                 'source_root':str(Path(__file__).resolve().parents[2])}
 
     def cancel(self,workflow_id):
@@ -510,6 +572,9 @@ class Runtime:
     def run(self):
         try:
             while not self.stop_event.is_set():
+                if getattr(self,'knowledge',None) is not None and time.monotonic()-self._last_knowledge_refresh>=30:
+                    self.knowledge.request_refresh()
+                    self._last_knowledge_refresh=time.monotonic()
                 self.tick()
                 self.heartbeat.completed_tick({'capacity':self.last_capacity,
                                                'active_count':len(self.active),
@@ -530,3 +595,6 @@ class Runtime:
             if self.docker is not None:
                 self.docker.reap_orphans(active_attempt_ids=set(),include_warm=True)
             self.oracle.close()
+            if getattr(self,'knowledge',None) is not None:
+                self.knowledge.close()
+            self.store.close()

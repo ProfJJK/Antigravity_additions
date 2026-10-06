@@ -13,6 +13,7 @@ from .hardware_guard import HardwarePolicy
 from .resource_limits import ResourceLimits
 from .ramdisk import RamdiskConfig
 from .container_policy import DockerPolicy
+from .knowledge import KnowledgeConfig
 
 
 def validate_subscription_probe(spec: Any) -> None:
@@ -61,7 +62,8 @@ class PipelineConfig:
     operator_name: str
     port: int = 47824
     timeout_seconds: int = 1800
-    lease_seconds: int = 30
+    lease_seconds: int = 1800
+    heartbeat_seconds: int = 5
     max_attempts: int = 3
     context_budget: int = 16384
     reserved_fraction: float = 0.25
@@ -73,6 +75,7 @@ class PipelineConfig:
     ramdisk: RamdiskConfig = field(default_factory=RamdiskConfig)
     docker: DockerPolicy = field(default_factory=DockerPolicy)
     coding_projects: dict[str, Any] = field(default_factory=dict)
+    knowledge: KnowledgeConfig = field(default_factory=KnowledgeConfig)
     git_executable: str = field(default_factory=lambda: r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
 
     @property
@@ -133,7 +136,7 @@ def load_config(filename: str) -> PipelineConfig:
     values = {}
     for key, default, low, high in [
         ('port',47824,1024,65535), ('timeout_seconds',1800,1,14400),
-        ('lease_seconds',30,5,600), ('max_attempts',3,1,10),
+        ('lease_seconds',1800,5,3600), ('heartbeat_seconds',5,1,5), ('max_attempts',3,1,10),
         ('context_budget',16384,1024,1048576), ('min_free_memory_mb',1024,0,1048576),
         ('min_free_disk_mb',512,0,1048576),
     ]:
@@ -141,6 +144,8 @@ def load_config(filename: str) -> PipelineConfig:
         if type(value) is not int or not low <= value <= high:
             raise ValueError(f'{key} must be an integer in {low}..{high}')
         values[key] = value
+    if values['heartbeat_seconds'] * 3 > values['lease_seconds']:
+        raise ValueError('heartbeat_seconds must allow at least three heartbeats per lease')
     fraction = raw.get('reserved_fraction',.25)
     if type(fraction) not in (float,int) or not 0 < fraction <= 1:
         raise ValueError('reserved_fraction must be in (0,1]')
@@ -168,6 +173,7 @@ def load_config(filename: str) -> PipelineConfig:
     execution_limits = ResourceLimits.from_dict(raw.get('execution_limits'))
     ramdisk = RamdiskConfig.from_dict(raw.get('ramdisk'))
     docker = DockerPolicy.from_dict(raw.get('docker'))
+    knowledge = KnowledgeConfig.from_dict(raw.get('knowledge'))
     git_executable = raw.get('git_executable',r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
     if (not isinstance(git_executable,str) or not git_executable.strip() or '\x00' in git_executable
             or (os.name=='nt' and not Path(git_executable).is_absolute())):
@@ -195,7 +201,10 @@ def load_config(filename: str) -> PipelineConfig:
         durable = [private.resolve(), token.resolve(), *(root.resolve() for root in roots.values())]
         if any(mount == path or mount in path.parents or path in mount.parents for path in durable):
             raise ValueError('RAM storage must be disjoint from persistent control state, tokens and identity roots')
+    knowledge.validate_placement(private,[token,*roots.values(),
+        *(project.repository for project in projects.values()),
+        *([Path(ramdisk.mount_root)] if ramdisk.enabled else [])])
     return PipelineConfig(private.resolve(), {k:v.resolve() for k,v in roots.items()}, workers,
                           providers, rules, token, operator, reserved_fraction=fraction, routing=routing,
                           hardware=hardware,execution_limits=execution_limits,ramdisk=ramdisk,
-                          docker=docker,coding_projects=projects,git_executable=git_executable, **values)
+                          docker=docker,coding_projects=projects,knowledge=knowledge,git_executable=git_executable, **values)

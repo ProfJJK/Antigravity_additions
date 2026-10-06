@@ -164,6 +164,30 @@ def validate_host_limits(limits: ResourceLimits) -> dict:
             'node_heap_mb':limits.node_heap_mb}
 
 
+def controller_limits(limits: ResourceLimits, *, apply=False) -> dict:
+    """Apply/inspect the Warden's own scheduling policy, separately from children."""
+    if os.name != 'nt':
+        raise ResourcePolicyError('Native Warden scheduling requires Windows')
+    import psutil
+    host = validate_host_limits(limits)
+    process = psutil.Process()
+    try:
+        if apply:
+            process.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
+            if host['affinity_mask']:
+                process.cpu_affinity(host['logical_processors'])
+        priority = process.nice()
+        affinity = process.cpu_affinity()
+    except (psutil.Error, OSError) as exc:
+        raise ResourcePolicyError('Warden scheduling policy could not be applied or inspected') from exc
+    if priority != psutil.BELOW_NORMAL_PRIORITY_CLASS:
+        raise ResourcePolicyError('The Warden itself is not running at BelowNormal priority')
+    if host['affinity_mask'] and set(affinity) != set(host['logical_processors']):
+        raise ResourcePolicyError('The Warden itself is not confined to its verified efficiency cores')
+    return {**host, 'pid':process.pid, 'priority_class':int(priority),
+            'observed_logical_processors':affinity, 'controller_policy_verified':True}
+
+
 def _jitter_seconds(limits: ResourceLimits | None, kind: str) -> float:
     limits = limits or ResourceLimits()
     low,high = getattr(limits,kind+'_jitter_min_ms'),getattr(limits,kind+'_jitter_max_ms')

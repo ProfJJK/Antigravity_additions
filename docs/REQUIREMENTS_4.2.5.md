@@ -1,5 +1,7 @@
 # 4.2.5 requirements and evidence ledger
 
+> Superseded by the [4.2.6 audit](REQUIREMENTS_4.2.6.md). Further code gaps were found, including forgeable candidate-side acceptance reports. The historical results below do not certify full SRS compliance.
+
 This ledger maps the active 4.2.5 implementation to the supplied requirements
 and identifies the evidence and remaining limits for each clause. Code,
 portable tests and actual Linux Docker execution do not establish native

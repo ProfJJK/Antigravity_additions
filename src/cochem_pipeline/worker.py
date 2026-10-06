@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 import stat
 import tempfile
@@ -18,10 +19,51 @@ from .store import output_digest
 
 CODING_NATIVE_KINDS = frozenset({'CODE_PLAN', 'CODE_PLAN_REVIEW', 'CODE_TEST_AUTHOR',
                                'CODE_EDIT', 'CODE_REVIEW', 'CODE_RESEARCH'})
+NATIVE_OUTPUT_LIMIT_BYTES = 8 * 1024 * 1024
+NATIVE_STATUS_LIMIT_BYTES = 1024 * 1024
+
+
+class NativeOutputLimitError(ProviderFailure):
+    """A native child exceeded its combined output budget; stop its entire tree."""
+    def __init__(self):
+        super().__init__('resource', retry_after_seconds=30)
+
+
+def _check_native_output(streams, maximum):
+    if sum(os.fstat(stream.fileno()).st_size for stream in streams) > maximum:
+        raise NativeOutputLimitError()
+
+
+def _read_native_output(stdout, stderr, maximum=NATIVE_OUTPUT_LIMIT_BYTES):
+    """Bound allocation even if a descendant writes between size inspection and read."""
+    _check_native_output((stdout, stderr), maximum)
+    stdout.seek(0)
+    stderr.seek(0)
+    raw = stdout.read(maximum + 1)
+    if len(raw) > maximum:
+        raise NativeOutputLimitError()
+    errors = stderr.read(maximum - len(raw) + 1)
+    if len(raw) + len(errors) > maximum:
+        raise NativeOutputLimitError()
+    _check_native_output((stdout, stderr), maximum)
+    return raw, errors
 
 
 class WorkerCleanupError(RuntimeError):
     """Process teardown is unverified; its identity must remain quarantined."""
+
+
+@contextmanager
+def native_prompt_input(prompt):
+    from .transport import PromptPipe, PipeCleanupError, MAX_PROMPT_BYTES
+    payload = prompt.encode('utf-8')
+    if len(payload) > MAX_PROMPT_BYTES:
+        raise ProviderFailure('context')
+    try:
+        with PromptPipe(payload) as pipe:
+            yield pipe
+    except PipeCleanupError as exc:
+        raise WorkerCleanupError(str(exc)) from exc
 
 
 class ExecutionRevokedError(RuntimeError):
@@ -63,11 +105,21 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
             'acceptance_criteria': [{'id':'AC1','statement':'Observable success','requirement_ids':['R1'],'test_ids':['T1']}],
             'test_cases':[{'id':'T1','name':'test_behavior','asserts':'Concrete assertion','criteria_ids':['AC1']}],
             'leaves':[{'id':'L1','objective':'One bounded code chunk','requirement_ids':['R1'],
-                      'criteria_ids':['AC1'],'file_targets':['src/example.py'],'estimated_changed_lines':20,'dependencies':[]}]}
+                      'criteria_ids':['AC1'],'file_targets':['src/example.py'],'estimated_context_lines':20,'dependencies':[]}]}
         instruction = ('Plan the actual project coding task before implementation. Inspect the supplied source_context file texts. '
             'Map supplied requirements in order to R1..Rn. Produce modular SRS chapters, explicit acceptance criteria '
-            'and tests, and an acyclic FractureManifest of N=1 leaves, each 20-100 changed lines. '
+            'and tests, and an acyclic FractureManifest of N=1 leaves, each with 20–100 real context lines. '
+            'The full source-plus-test Git diff for a leaf is at most 100 added-plus-deleted lines. '
             'Use only registered source paths. The controller checks all traces and independently reviews this plan.')
+        if payload.get('planning_evidence'):
+            contract['method_matrix']=[{'id':f'M-{index}','artifacts':['srs/ch01.md'],
+                                       'requirement_ids':['R1']} for index in range(1,9)]
+            instruction += (' Apply the exact registered Method Matrix clause texts in planning_evidence. '
+                            'Link each clause to actual generated artifacts and requirements; do not invent clause meanings.')
+        if payload.get('previous_plan'):
+            instruction += (' Revise the supplied previous_plan using every artifact-bound planning_feedback finding. '
+                            'Preserve correct material. Every cited artifact group must contain an actual substantive change; '
+                            'unchanged resubmissions are held by the controller.')
     elif kind == 'CODE_PLAN_REVIEW':
         contract = {'plan_sha256': payload['plan_sha256'], 'verdict':'PASS',
                     'requirements_checked':list(payload['plan']['requirements']),
@@ -75,7 +127,9 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
         instruction = ('Independently review the exact proposed coding plan against the existing project and request. '
             'Check acceptance criteria, proposed test assertions, modular boundaries and dependency graph. '
             'Do not change any file. A producing model cannot approve its own plan. Return the exact bound plan/artifact digests; '
-            'findings must contain severity and issue. Only LOW/INFO findings are compatible with PASS.')
+            'findings must contain severity and issue. Only LOW/INFO findings are compatible with PASS. '
+            'Return FAIL or REVISE for an unacceptable plan, with each finding naming its affected artifacts as exact paths; '
+            'the controller schedules bounded revisions and never dispatches implementation for non-PASS.')
     elif kind == 'MANIFEST_GENERATOR':
         contract = {
             'chapters': [{'chapter_id': 'unique-id', 'title': 'Chapter title',
@@ -104,9 +158,9 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
                     'artifact_blocks':'<<<FILE: tests/test_example.py>>>\ndef test_example():\n    assert False\n<<<END FILE>>>',
                     'summary': 'Tests authored before implementation'}
         instruction = ('Inspect the provided source_context. Propose targeted regression tests only under test_paths, before source implementation. '
-                       'Existing tests and all configuration are protected; never modify or delete them. Reusing existing tests is allowed only '
-                       'with actual test paths in reuse_tests and explicit requirement tracing. Source code must remain unchanged. '
-                       'Keep this chunk within 100 changed lines. Do not directly modify files. Return complete proposed files '
+                       'Existing tests and all configuration are protected; never modify or delete them. Author new tests that physically fail '
+                       'before implementation. Mock libraries, monkeypatch, encoded mock imports and unfinished stubs are forbidden. Source code must remain unchanged. '
+                       'The entire leaf, including implementation and tests, has a 100 added-plus-deleted-line ceiling and 20–100 real context lines. Do not directly modify files. Return complete proposed files '
                        'in artifact_blocks using exact FILE/END FILE markers; the controller alone applies and verifies those bytes.')
     elif kind == 'CODE_EDIT':
         contract = {'requirements_traced': payload['requirements'], 'done': True,
@@ -114,7 +168,9 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
                     'remaining_work':False, 'summary': 'Actual bounded source change'}
         instruction = ('Implement the requested code in the current project working copy under allowed_paths only. '
                        'Tests were sealed before your implementation and must not change. Do not edit configuration, Git metadata or caches. '
-                       'Use one targeted chunk of at most 100 changed lines, normally 20-100 lines; smaller fixes are allowed. '
+                       'The entire leaf, including its authored tests, may contain at most 100 added-plus-deleted lines. '
+                       'Its physical context windows must total 20–100 lines; use adjacent existing source context, never pad edits. '
+                       'Mock libraries, monkeypatch, encoded mock imports and unfinished stubs are forbidden. '
                        'Aggregate edits to an existing file may not exceed 500 lines or 80 percent. '
                        'Set done true only when the requested objective is implemented; false requests another tested/reviewed chunk. '
                        'Use the complete target file text supplied in source_context. Return complete proposed files in artifact_blocks '
@@ -152,6 +208,12 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
                        'The controller verifies every quotation and binds your dossier to the three failed attempts.')
     else:
         raise ValueError(f'Unsupported executable node kind: {kind}')
+    if kind=='CODE_RESEARCH' and payload.get('planning_evidence'):
+        contract['external_sources']=[{'source_id':'registered-source-id','quote':'Exact relevant fetched source passage',
+                                      'requirement_ids':['R1']}]
+        instruction += (' Cite at least two distinct controller-fetched external_sources in planning_evidence and trace '
+                        'all current requirements as R1..Rn. The controller checks source bytes, exact quotes and '
+                        'coverage; a self-reported confidence score cannot satisfy the evidence gate.')
     if kind in CODING_NATIVE_KINDS:
         instruction += (' Native tools, MCP servers, hooks, and host execution are disabled. '
                         'Use only the supplied source_context file texts and controller diagnostics as project evidence. '
@@ -440,20 +502,26 @@ class NativeRunner:
                 with self._lock:
                     self._active.pop(job_id,None)
 
-    def _wait(self,process,heartbeat,timeout,on_launch):
+    def _wait(self,process,heartbeat,timeout,on_launch,*,output_streams=(),
+              output_limit_bytes=NATIVE_OUTPUT_LIMIT_BYTES):
         if on_launch:
             on_launch(process.pid)
         next_heartbeat = time.monotonic()
         deadline = next_heartbeat+timeout
         if not heartbeat():
             raise ExecutionRevokedError('Execution lease was revoked or expired')
-        while process.poll() is None:
+        while True:
+            _check_native_output(output_streams, output_limit_bytes)
+            if process.poll() is not None:
+                _check_native_output(output_streams, output_limit_bytes)
+                break
             if time.monotonic()>=deadline:
                 raise TimeoutError('Provider execution exceeded its deadline')
             if time.monotonic()>=next_heartbeat:
                 if not heartbeat():
                     raise ExecutionRevokedError('Execution lease was revoked or expired')
-                next_heartbeat = time.monotonic()+self.config.lease_seconds/3
+                next_heartbeat = time.monotonic()+min(getattr(self.config,'heartbeat_seconds',5),
+                                                      self.config.lease_seconds/3)
             from .resource_limits import poll_delay_seconds
             time.sleep(poll_delay_seconds(getattr(self.config,'execution_limits',None)))
         return process.wait(timeout=1)
@@ -513,10 +581,9 @@ class NativeRunner:
                 raise ExecutionRevokedError('Execution lease was revoked before native policy validation')
             process = self._launch_worker(identity, argv, workspace, source, out, err, **launch_options)
             with self._managed(node['job_id'], process):
-                code = self._wait(process, heartbeat, 30, on_launch)
-            out.seek(0)
-            err.seek(0)
-            raw, errors = out.read(maximum + 1), err.read(maximum + 1)
+                code = self._wait(process, heartbeat, 30, on_launch,
+                                  output_streams=(out, err), output_limit_bytes=maximum)
+            raw, errors = _read_native_output(out, err, maximum)
             if code != 0 or len(raw) > maximum or len(errors) > maximum:
                 raise ProviderFailure('compatibility')
             # Store hashes/identity only. In particular, MCP enumeration may
@@ -627,9 +694,10 @@ class NativeRunner:
         with tempfile.TemporaryFile('w+b') as input_file, (log_dir/'auth.out').open('w+b') as out, (log_dir/'auth.err').open('w+b') as err:
             auth = self._launch_worker(identity,auth_argv,workspace,input_file,out,err,**launch_options)
             with self._managed(node['job_id'],auth):
-                code = self._wait(auth,heartbeat,30,on_launch)
-            out.seek(0);err.seek(0)
-            stdout,stderr = out.read().decode('utf-8','replace'),err.read().decode('utf-8','replace')
+                code = self._wait(auth,heartbeat,30,on_launch,output_streams=(out,err),
+                                  output_limit_bytes=NATIVE_STATUS_LIMIT_BYTES)
+            raw, errors = _read_native_output(out,err,NATIVE_STATUS_LIMIT_BYTES)
+            stdout,stderr = raw.decode('utf-8','replace'),errors.decode('utf-8','replace')
             verified = (subscription_probe_status(stdout,stderr,code,spec['subscription_probe']) if provider=='gemini'
                         else subscription_status(provider,stdout,stderr,code))
             if not verified:
@@ -653,7 +721,8 @@ class NativeRunner:
                 probe_argv = [*prefix,'-c','model_reasoning_effort='+json.dumps(reasoning_effort),'features','list']
                 probe = self._launch_worker(identity,probe_argv,workspace,input_file,out,err,**launch_options)
                 with self._managed(node['job_id'],probe):
-                    code = self._wait(probe,heartbeat,30,on_launch)
+                    code = self._wait(probe,heartbeat,30,on_launch,output_streams=(out,err),
+                                      output_limit_bytes=NATIVE_STATUS_LIMIT_BYTES)
                 if code != 0:
                     raise ProviderFailure('compatibility')
         try:
@@ -667,22 +736,26 @@ class NativeRunner:
             raise ProviderFailure('compatibility') from exc
         prompt = node_prompt(node,context_xml)
         started = time.time()
-        with tempfile.TemporaryFile('w+b') as input_file, (log_dir/'stdout.log').open('w+b') as out, (log_dir/'stderr.log').open('w+b') as err:
-            input_file.write(prompt.encode('utf-8'));input_file.seek(0)
+        with native_prompt_input(prompt) as input_pipe, (log_dir/'stdout.log').open('w+b') as out, (log_dir/'stderr.log').open('w+b') as err:
             if not heartbeat():
                 raise ExecutionRevokedError('Execution lease was revoked before launch')
-            process = self._launch_worker(identity,argv,workspace,input_file,out,err,**launch_options)
+            process = self._launch_worker(identity,argv,workspace,input_pipe.reader,out,err,**launch_options)
             with self._managed(node['job_id'],process):
-                code = self._wait(process,heartbeat,self.config.timeout_seconds,on_launch)
-                out.seek(0)
-                raw = out.read().decode('utf-8','replace')
-                err.seek(0)
-                stderr = err.read(1048576).decode('utf-8','replace')
+                input_pipe.start()
+                code = self._wait(process,heartbeat,self.config.timeout_seconds,on_launch,
+                                  output_streams=(out,err))
+                native_stdout, native_stderr = _read_native_output(out,err)
+                raw = native_stdout.decode('utf-8','replace')
+                stderr = native_stderr.decode('utf-8','replace')
                 failure = parse_native_failure(provider,raw,stderr,code)
                 if failure is not None:
                     raise failure
                 if code != 0:
                     raise ProviderFailure('code')
+                try:
+                    input_pipe.verify_delivered()
+                except BrokenPipeError as exc:
+                    raise ProviderFailure('protocol') from exc
                 try:
                     parsed = parse_result(provider,raw) if provider!='gemini' else parse_gemini(raw,spec['protocol'],model)
                     reported_effort = native_reported_effort(provider,raw)
@@ -695,7 +768,7 @@ class NativeRunner:
                 try:
                     output = parse_payload(parsed['content'])
                 except (ValueError,TypeError) as exc:
-                    raise ProviderFailure('code') from exc
+                    raise ProviderFailure('protocol') from exc
             receipt = {'provider':provider,'pid':process.pid,'exit_code':code,'session_id':parsed['session_id'],
                        'requested_model':model,'reported_model':parsed.get('reported_model'),
                        'requested_effort':reasoning_effort,'reported_effort':reported_effort,
@@ -705,6 +778,9 @@ class NativeRunner:
                        'route_reservation_id':selected['reservation_id'],'selected_route':selected,
                        'route_reservation_sha256':hashlib.sha256(selected['reservation_id'].encode('utf-8')).hexdigest(),
                        'stdout_sha256':hashlib.sha256(raw.encode()).hexdigest(),
+                       'prompt_transport':'windows_named_pipe',
+                       'prompt_sha256':hashlib.sha256(prompt.encode('utf-8')).hexdigest(),
+                       'prompt_bytes':len(prompt.encode('utf-8')),
                        'started_at':started,'finished_at':time.time(),'worker_account':identity.name,
                        'subscription_verified':True}
             receipt['docker_denial'] = process.docker_denial_evidence

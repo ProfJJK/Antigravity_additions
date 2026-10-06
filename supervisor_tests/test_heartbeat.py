@@ -116,7 +116,7 @@ def test_workflow_attempt_override_can_only_lower_budget_and_remains_immutable(t
         store.submit("Acceptance smoke", ["REQ-1"], 1, workflow_id="one-attempt", max_attempts=2)
     job = store.claim("smoke-worker")
     assert store.fail(job["job_id"], job["attempt_id"], job["fencing_token"], "single-attempt failure", retry=True)
-    assert store.workflow("one-attempt")["status"] == "FAILED"
+    assert store.workflow("one-attempt")["status"] == "BLOCKED"
     assert store.claim("second-not-permitted") is None
 
 

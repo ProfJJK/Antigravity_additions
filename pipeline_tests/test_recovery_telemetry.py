@@ -74,6 +74,7 @@ def test_emit_recovery_event_connection_injection_and_lifecycle(tmp_path: Path, 
         assert emit_recovery_event(conn=connection, event_data={"tier": 3}) == 2
         assert not connection.in_transaction
         assert connection.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
+        assert connection.execute("PRAGMA synchronous").fetchone()[0] == 1
         assert connection.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
         assert connection.execute("SELECT COUNT(*) FROM recovery_telemetry").fetchone()[0] == 2
         with sqlite3.connect(database) as independent_reader:
@@ -124,6 +125,35 @@ def test_in_memory_connection_is_supported_and_remains_open() -> None:
         assert connection.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
     finally:
         connection.close()
+
+
+@pytest.mark.parametrize("write_pending", [False, True])
+def test_injected_open_transaction_commits_and_enters_wal(tmp_path: Path, write_pending: bool) -> None:
+    database = tmp_path / "existing_transaction.db"
+    connection = sqlite3.connect(database)
+    try:
+        connection.execute("CREATE TABLE caller_data (value TEXT)")
+        connection.commit()
+        assert connection.execute("PRAGMA journal_mode").fetchone()[0] == "delete"
+        connection.execute("BEGIN")
+        if write_pending:
+            connection.execute("INSERT INTO caller_data VALUES ('caller transaction')")
+        else:
+            connection.execute("SELECT * FROM caller_data").fetchall()
+        assert connection.in_transaction
+        row_id = emit_recovery_event(connection, {"tier": 2, "action": "transaction_recovery"})
+        assert row_id == 1
+        assert not connection.in_transaction
+        assert connection.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
+        with sqlite3.connect(database) as independent_reader:
+            assert independent_reader.execute("SELECT tier,action FROM recovery_telemetry").fetchall() == [
+                (2, "transaction_recovery")]
+            assert independent_reader.execute("SELECT * FROM caller_data").fetchall() == (
+                [("caller transaction",)] if write_pending else [])
+        independent_reader.close()
+    finally:
+        connection.close()
+    database.unlink()
 
 
 def test_sql_failure_closes_owned_connection_and_preserves_injected_connection(tmp_path: Path) -> None:

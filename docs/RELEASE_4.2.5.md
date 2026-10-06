@@ -1,5 +1,7 @@
 # 4.2.5: Coding execution, container tests and RAM workspaces
 
+> Superseded by the [4.2.6 audit](REQUIREMENTS_4.2.6.md). Further code gaps were found, including forgeable candidate-side acceptance reports. The historical results below do not certify full SRS compliance.
+
 4.2.5 addresses the missing connection between planning, coding workspaces and
 real isolated test execution. It adds the Docker/RAM-disk/hardware components
 and deployment checks while retaining native Windows subscription CLIs,

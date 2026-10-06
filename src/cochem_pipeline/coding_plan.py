@@ -60,8 +60,8 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
                   requirements: list[str]) -> dict:
     """Validate substantive traceability and generate the actual plan artifact DAG.
 
-    Each N=1 leaf has one implementation target and a 20–100 line planned work
-    scope. Physical changes remain independently bounded by observed_changes;
+    Each N=1 leaf has one implementation target and a 20–100 line planned context
+    scope. Physical context and added/deleted lines remain independently bounded;
     a complete-file transport block does not authorize a whole-file rewrite.
     """
     if not isinstance(plan,dict) or not isinstance(project,CodingProject):
@@ -132,9 +132,13 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
             raise ValueError('Fracture target is outside registered source scope')
         if any(name.startswith(target+'/') for name in source_files):
             raise ValueError('Fracture target must identify a file, not a directory')
-        size=item.get('estimated_changed_lines')
+        # Accept the legacy serialized key as a context estimate only; it never
+        # proves an actual diff size or replaces the controller's physical gate.
+        size=item.get('estimated_context_lines',item.get('estimated_changed_lines'))
+        if 'estimated_context_lines' in item and 'estimated_changed_lines' in item and item['estimated_changed_lines']!=size:
+            raise ValueError('Conflicting planned context estimates')
         if type(size) is not int or not 20<=size<=100:
-            raise ValueError('A fracture leaf must plan a 20–100 line work chunk')
+            raise ValueError('A fracture leaf must plan a 20–100 line context window')
         refs=_ids(item.get('requirement_ids'),'leaf requirements',requirement_map)
         ac=_ids(item.get('criteria_ids'),'leaf criteria',criteria)
         if any(not set(criteria[criterion]['requirement_ids']).issubset(refs) for criterion in ac):
@@ -147,7 +151,7 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
         leaf_criteria.update(ac); leaf_requirements.update(refs)
         canonical_leaves.append({'id':identifier,'N':1,'objective':_text(item.get('objective'),'leaf objective',limit=8000),
             'requirement_ids':refs,'criteria_ids':ac,'file_targets':[target],
-            'estimated_changed_lines':size,'dependencies':list(dependencies)})
+            'estimated_context_lines':size,'dependencies':list(dependencies)})
     if leaf_criteria!=set(criteria) or leaf_requirements!=set(requirement_map):
         raise ValueError('Fracture leaves must cover every criterion and requirement')
     remaining={item['id']:set(item['dependencies']) for item in canonical_leaves}; ordered=[]
@@ -174,18 +178,27 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
     artifacts['graph.json']=json.dumps(graph,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     artifacts['graph.mmd']=mermaid
     artifacts['FractureManifest.json']=json.dumps(fracture,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
+    registration=None
+    if project.planning:
+        from .planning_governance import validate_registration,method_matrix_artifact
+        registration=validate_registration(project.planning,source_files)
+        matrix=method_matrix_artifact(plan.get('method_matrix'),registration,artifacts,requirement_map)
+        artifacts['MethodMatrix.json']=json.dumps(matrix,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     result={'schema':'4.2.5-coding-plan/1','goal':goal,'requirements':requirement_map,
             'srs':{'skeleton':skeleton,'chapters':canonical_chapters},'acceptance_criteria':canonical_criteria,
             'test_cases':canonical_tests,'fracture_manifest':fracture,'phases':[{'id':key,'name':name} for key,name in TDD_PHASES],
             'artifacts':artifacts,'artifact_hashes':{name:hashlib.sha256(text.encode()).hexdigest() for name,text in artifacts.items()}}
+    if registration is not None:
+        result['planning_registration']=registration
     result['plan_sha256']=digest(result)
     return result
 
 
-def validate_plan_review(review,plan,*,planner_receipt,reviewer_receipt):
+def validate_plan_review(review,plan,*,planner_receipt,reviewer_receipt,allow_revision=False):
     if not isinstance(plan,dict) or plan.get('plan_sha256')!=digest({key:value for key,value in plan.items() if key!='plan_sha256'}):
         raise ValueError('Planning audit requires an intact controller-hashed plan')
-    if not isinstance(review,dict) or review.get('verdict')!='PASS' or review.get('plan_sha256')!=plan.get('plan_sha256'):
+    permitted={'PASS','FAIL','REVISE'} if allow_revision else {'PASS'}
+    if not isinstance(review,dict) or review.get('verdict') not in permitted or review.get('plan_sha256')!=plan.get('plan_sha256'):
         raise ValueError('Planning requires an independent PASS bound to the exact plan hash')
     def native_identity(receipt):
         if (not isinstance(receipt,dict) or receipt.get('subscription_verified') is not True
@@ -211,13 +224,21 @@ def validate_plan_review(review,plan,*,planner_receipt,reviewer_receipt):
     if not isinstance(findings,list) or len(findings)>200:
         raise ValueError('Planning audit findings must be a bounded list')
     for finding in findings:
-        if not isinstance(finding,dict) or finding.get('severity') not in {'LOW','INFO'}:
+        severities={'LOW','INFO'} if review['verdict']=='PASS' else {'CRITICAL','HIGH','MEDIUM','LOW','INFO'}
+        if not isinstance(finding,dict) or finding.get('severity') not in severities:
             raise ValueError('Blocking or malformed planning findings prevent dispatch')
         _text(finding.get('issue'),'planning finding',limit=4000)
+        if review['verdict']!='PASS':
+            paths=finding.get('artifacts')
+            if not isinstance(paths,list) or not paths or any(path not in plan['artifact_hashes'] for path in paths):
+                raise ValueError('Revision findings must identify exact affected planning artifacts')
+    if review['verdict']!='PASS' and not findings:
+        raise ValueError('A non-PASS planning audit requires actionable artifact-bound findings')
     examined=review.get('artifact_hashes')
     if examined!=plan['artifact_hashes']:
         raise ValueError('Planning audit must attest every exact generated SRS/DAG/fracture artifact hash')
-    return {'approved':True,'plan_sha256':plan['plan_sha256'],'review_sha256':digest(review),
+    return {'approved':review['verdict']=='PASS','verdict':review['verdict'],
+            'findings':deepcopy(findings),'plan_sha256':plan['plan_sha256'],'review_sha256':digest(review),
             'planner':list(planner),'reviewer':list(reviewer),'requirements_checked':list(plan['requirements']),
             'artifact_hashes':deepcopy(plan['artifact_hashes'])}
 

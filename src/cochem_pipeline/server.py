@@ -1,14 +1,52 @@
 """Unprivileged Antigravity interface; the SYSTEM Warden owns execution."""
 from __future__ import annotations
 import asyncio
+from contextlib import asynccontextmanager
 from typing import Any
 from mcp.server.fastmcp import FastMCP
+from mcp.types import ToolAnnotations
 from .service import ControlClient
 from . import __version__
 
 
+def client_lifespan(client):
+    @asynccontextmanager
+    async def lifespan(server):
+        try:
+            yield {}
+        finally:
+            await asyncio.to_thread(client.close)
+    return lifespan
+
+
+def register_knowledge_tools(server,client):
+    read=ToolAnnotations(readOnlyHint=True,idempotentHint=True,openWorldHint=False)
+    @server.tool(annotations=read)
+    async def knowledge_search(query:str,limit:int=5)->dict[str,Any]:
+        """Search the ratified .sources/wiki catalog using literal terms and BM25; returns indexed evidence."""
+        return await asyncio.to_thread(client.call,'/knowledge/search',{'query':query,'limit':limit})
+
+    @server.tool(annotations=read)
+    async def knowledge_read(doc_path:str)->dict[str,Any]:
+        """Read a catalog Markdown document with verified UTF-8 bytes and SHA-256; host paths are forbidden."""
+        return await asyncio.to_thread(client.call,'/knowledge/read',{'doc_path':doc_path})
+
+    @server.tool(annotations=read)
+    async def knowledge_status()->dict[str,Any]:
+        """Inspect actual knowledge generation, index-size evidence and background refresh failures."""
+        return await asyncio.to_thread(client.call,'/knowledge/status')
+
+
+def create_knowledge_server(client:ControlClient):
+    server=FastMCP('cochem-knowledge-mcp',log_level='WARNING',lifespan=client_lifespan(client),instructions=(
+        'Search the ratified permanent .sources/wiki catalog, then read catalog paths with their physical hashes. '
+        'The authenticated Windows controller owns files and indexing; this interface never accepts arbitrary host paths.'))
+    register_knowledge_tools(server,client)
+    return server
+
+
 def create_server(client:ControlClient):
-    server=FastMCP(f'CoChem Pipeline {__version__}',instructions=(
+    server=FastMCP(f'CoChem Pipeline {__version__}',lifespan=client_lifespan(client),instructions=(
         'For code changes, list configured projects with pipeline_projects and submit once with pipeline_code. '
         'The controller owns staged edits, independent tests, review and configured Git integration. '
         'Poll pipeline_code_status; only its verified terminal result establishes completion. '
@@ -18,6 +56,7 @@ def create_server(client:ControlClient):
         'busy or quota-limited targets can cause a recorded fallback or timed wait. '
         'A submission is not completion. Poll pipeline_status for routing decisions and wait times. '
         'Report failures and blocked prerequisites; never invent another agent output.'))
+    register_knowledge_tools(server,client)
 
     @server.tool()
     async def pipeline_submit(objective:str,requirements:list[str]|None=None,chapter_count:int=6,

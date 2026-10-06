@@ -46,7 +46,8 @@ def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
     assert config.job_db == config.private_root / "job_board.db"
     assert config.context_budget == 16384
     assert config.reserved_fraction == .25
-    assert config.lease_seconds == 30
+    assert config.lease_seconds == 1800
+    assert config.heartbeat_seconds == 5
     assert config.max_attempts == 3
     assert config.providers["gemini"]["model"] == "gemini-3.1-pro"
     assert isinstance(config.routing, RoutingPolicy)
@@ -59,6 +60,21 @@ def test_supported_slot_capacity_boundaries(tmp_path, slots):
     assert len(load_config(write_config(tmp_path, config_document(tmp_path, slots))).slot_roots) == slots
 
 
+@pytest.mark.parametrize('lease,heartbeat',[(1800,5),(3600,5),(5,1)])
+def test_lease_and_heartbeat_can_be_configured_with_renewal_headroom(tmp_path,lease,heartbeat):
+    raw = config_document(tmp_path)
+    raw.update(lease_seconds=lease,heartbeat_seconds=heartbeat)
+    config = load_config(write_config(tmp_path,raw))
+    assert (config.lease_seconds,config.heartbeat_seconds)==(lease,heartbeat)
+
+
+def test_heartbeat_must_fit_the_configured_lease(tmp_path):
+    raw = config_document(tmp_path)
+    raw.update(lease_seconds=5,heartbeat_seconds=5)
+    with pytest.raises(ValueError,match='three heartbeats'):
+        load_config(write_config(tmp_path,raw))
+
+
 @pytest.mark.parametrize("slots", [0, 65])
 def test_invalid_slot_capacity_boundaries(tmp_path, slots):
     with pytest.raises(ValueError):
@@ -66,7 +82,8 @@ def test_invalid_slot_capacity_boundaries(tmp_path, slots):
 
 
 @pytest.mark.parametrize("key,value", [("port", True), ("port", 1023), ("port", 65536),
-    ("timeout_seconds", 0), ("timeout_seconds", 14401), ("lease_seconds", 4),
+    ("timeout_seconds", 0), ("timeout_seconds", 14401), ("lease_seconds", 4), ("lease_seconds", 3601),
+    ("heartbeat_seconds", 0), ("heartbeat_seconds", 6), ("heartbeat_seconds", True),
     ("max_attempts", 0), ("context_budget", 1023), ("context_budget", 1048577),
     ("min_free_memory_mb", -1), ("min_free_disk_mb", 1.5),
     ("reserved_fraction", True), ("reserved_fraction", float("nan")), ("reserved_fraction", 0),

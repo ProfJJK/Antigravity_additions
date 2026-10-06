@@ -19,6 +19,7 @@ _SUMMARIES = {
     'busy': 'Provider model is temporarily busy',
     'context': 'Provider model context limit reached',
     'provider': 'Provider service unavailable',
+    'timeout': 'Native request or execution deadline exceeded',
     'protocol': 'Unknown native CLI argument or output protocol',
     'code': 'Native CLI execution failed; protected logs require diagnosis',
     'configuration': 'Selected captured model is disabled by current operator configuration',
@@ -51,7 +52,7 @@ class ProviderFailure(RuntimeError):
             raise ValueError('Unknown provider failure category')
         if hold_scope not in (None, 'pool', 'model', 'job'):
             raise ValueError('Unknown provider failure hold scope')
-        if category in ('code', 'protocol', 'context') and hold_scope is not None:
+        if category in ('code', 'protocol', 'timeout', 'context') and hold_scope is not None:
             raise ValueError('Execution, protocol and context failures cannot hold a provider globally')
         if category in ('configuration','compatibility') and hold_scope not in (None,'job'):
             raise ValueError('Configuration and compatibility require an explicit job hold')
@@ -91,8 +92,12 @@ _CODES = {
         'invalid_request_error', 'invalid_request', 'invalid_argument',
         'unsupported_protocol', 'invalid_cli_argument',
     },
+    'timeout': {
+        'timeout', 'request_timeout', 'connection_timeout', 'deadline_exceeded',
+        'request_timed_out', 'etimedout',
+    },
 }
-_HTTP_CODES = {401: 'auth', 429: 'quota', 500: 'provider', 502: 'provider',
+_HTTP_CODES = {401: 'auth', 408: 'timeout', 429: 'quota', 500: 'provider', 502: 'provider',
                503: 'busy', 504: 'provider', 529: 'busy'}
 _CODE_FIELDS = ('code', 'type', 'status', 'status_code', 'http_status',
                 'http_status_code', 'error_type')
@@ -247,7 +252,7 @@ def parse_native_failure(provider: str, stdout: str, stderr: str,
         fields, fallback = selected
         categories = [_category(field.get(key)) for field in fields for key in _CODE_FIELDS]
         # Prefer a specific typed cause to a generic API/server classification.
-        category = next((candidate for candidate in ('auth', 'quota', 'context', 'busy', 'provider', 'protocol')
+        category = next((candidate for candidate in ('auth', 'quota', 'context', 'busy', 'timeout', 'provider', 'protocol')
                          if candidate in categories), None)
         if category is None:
             category = _native_diagnostic_category(provider,record,fields) or fallback
@@ -255,7 +260,7 @@ def parse_native_failure(provider: str, stdout: str, stderr: str,
         failures.append(ProviderFailure(category, retry_after))
     if not failures:
         return None
-    priority = {'auth': 0, 'quota': 1, 'context': 2, 'busy': 3, 'provider': 4, 'protocol': 5, 'code': 6}
+    priority = {'auth': 0, 'quota': 1, 'context': 2, 'busy': 3, 'timeout': 4, 'provider': 5, 'protocol': 6, 'code': 7}
     failure = min(failures, key=lambda item: priority[item.category])
     matching_hints = [item.retry_after_seconds for item in failures
                       if item.category == failure.category and item.retry_after_seconds is not None]

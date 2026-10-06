@@ -44,21 +44,40 @@ def daemon(filename):
                               backupCount=3,encoding='utf-8')
     log.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(name)s %(message)s'))
     logging.getLogger().addHandler(log)
-    with service_lock(config.private_root/'warden.lock'):
-        runtime=Runtime(config)
-        server=ControlServer(runtime,config.token_file.read_text(encoding='utf-8').strip())
-        def stop(*_):
-            runtime.stop_event.set()
-        signal.signal(signal.SIGINT,stop)
-        signal.signal(signal.SIGTERM,stop)
-        thread=threading.Thread(target=server.serve_forever,daemon=True,name='warden-control')
-        thread.start()
+    from .crash import record_crash
+    prior_thread_hook = threading.excepthook
+    def crash_thread(args):
         try:
-            runtime.run()
-        finally:
-            server.shutdown()
-            server.server_close()
-            thread.join(timeout=10)
+            record_crash(config.private_root, args.exc_value,
+                         getattr(args.exc_value, 'category', 'code'))
+        except Exception:
+            logging.error('Private thread crash metadata could not be persisted')
+        prior_thread_hook(args)
+    threading.excepthook = crash_thread
+    try:
+        with service_lock(config.private_root/'warden.lock'):
+            runtime=Runtime(config)
+            server=ControlServer(runtime,config.token_file.read_text(encoding='utf-8').strip())
+            def stop(*_):
+                runtime.stop_event.set()
+            signal.signal(signal.SIGINT,stop)
+            signal.signal(signal.SIGTERM,stop)
+            thread=threading.Thread(target=server.serve_forever,daemon=True,name='warden-control')
+            thread.start()
+            try:
+                runtime.run()
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join(timeout=10)
+    except Exception as exc:
+        try:
+            record_crash(config.private_root, exc, getattr(exc, 'category', 'code'))
+        except Exception:
+            logging.error('Private service crash metadata could not be persisted')
+        raise
+    finally:
+        threading.excepthook = prior_thread_hook
 
 
 def main():
@@ -70,7 +89,8 @@ def main():
     for name in ('doctor','provision-execution'):
         deployment=commands.add_parser(name)
         deployment.add_argument('--config',required=True)
-    for name in ('mcp','submit','status','cancel','health','projects','code','code-status','code-cancel','code-resume'):
+    for name in ('mcp','submit','status','cancel','health','projects','code','code-status','code-cancel','code-resume',
+                 'knowledge-search','knowledge-read','knowledge-status','knowledge-refresh'):
         command=commands.add_parser(name)
         command.add_argument('--client-config',required=True)
         if name=='submit':
@@ -86,6 +106,13 @@ def main():
             command.add_argument('workflow_id')
         if name=='code-resume':
             command.add_argument('--reason',required=True)
+        if name=='knowledge-search':
+            command.add_argument('query')
+            command.add_argument('--limit',type=int,default=5)
+        if name=='knowledge-read':
+            command.add_argument('doc_path')
+        if name=='knowledge-refresh':
+            command.add_argument('--full',action='store_true')
     args=parser.parse_args()
     logging.basicConfig(level=logging.INFO,stream=sys.stderr)
     if args.command=='daemon':
@@ -102,7 +129,15 @@ def main():
         from .server import create_server
         create_server(client).run(transport='stdio')
         return
-    if args.command=='projects':
+    if args.command=='knowledge-search':
+        result=client.call('/knowledge/search',{'query':args.query,'limit':args.limit})
+    elif args.command=='knowledge-read':
+        result=client.call('/knowledge/read',{'doc_path':args.doc_path})
+    elif args.command=='knowledge-status':
+        result=client.call('/knowledge/status')
+    elif args.command=='knowledge-refresh':
+        result=client.call('/knowledge/refresh',{'full':args.full})
+    elif args.command=='projects':
         result=client.call('/coding/projects')
     elif args.command=='code':
         result=client.call('/coding/submit',{'project_id':args.project,'objective':args.objective,

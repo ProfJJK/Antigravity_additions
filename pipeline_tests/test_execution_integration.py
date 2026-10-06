@@ -40,7 +40,7 @@ test_stage.__test__=False
 def prepared_board(tmp_path):
     store=JobStore(tmp_path/'job_board.db')
     workflow=store.submit('Observe physical scheduler state',['REQ-1'],1)
-    job=store.claim('integration-owner',lease_seconds=7200,worker_slot='worker1')
+    job=store.claim('integration-owner',lease_seconds=3600,worker_slot='worker1')
     return store,workflow,job
 
 

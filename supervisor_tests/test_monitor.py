@@ -256,7 +256,7 @@ def test_operator_routing_limit_is_blocked_without_code_repair(tmp_path):
 def test_planned_wait_cannot_hide_an_expired_active_process_lease(tmp_path):
     path = board(tmp_path)
     heartbeat(tmp_path)
-    insert(path, status="IN_PROGRESS", error=None, lease_expires_at=NOW-10)
+    insert(path, status="IN_PROGRESS", error=None, lease_expires_at=NOW-61)
     routing_wait(path)
     result = read_observation(tmp_path, now=NOW)
     assert "lease expired" in result["incidents"][0]["summary"]
@@ -359,11 +359,18 @@ def test_cleanup_hold_sampling_is_bounded(tmp_path):
 def test_expired_execution_is_detected_from_real_database_lease_metadata(tmp_path):
     path = board(tmp_path)
     heartbeat(tmp_path)
-    insert(path, status="IN_PROGRESS", error=None, lease_expires_at=NOW-40)
+    insert(path, status="IN_PROGRESS", error=None, lease_expires_at=NOW-61)
     result = read_observation(tmp_path, now=NOW)
     assert result["incidents"][0]["category"] == "code"
     assert "lease expired" in result["incidents"][0]["summary"]
-    assert result["incidents"][0]["evidence"]["expired_seconds"] == 40
+    assert result["incidents"][0]["evidence"]["expired_seconds"] == 61
+
+
+@pytest.mark.parametrize('expired',[0.1,30,59.999,60])
+def test_reaper_has_full_sixty_second_expiry_grace_even_for_old_progress(tmp_path,expired):
+    path=board(tmp_path);heartbeat(tmp_path)
+    insert(path,status='IN_PROGRESS',error=None,updated_at=1,lease_expires_at=NOW-expired)
+    assert not read_observation(tmp_path,now=NOW)['incidents']
 
 
 def test_missing_schema_is_a_compatibility_incident(tmp_path):

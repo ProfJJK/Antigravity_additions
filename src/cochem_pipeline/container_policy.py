@@ -29,7 +29,7 @@ class TestCommand:
     name: str
     argv: tuple[str, ...]
     kind: str = 'pytest'
-    timeout_seconds: int = 300
+    timeout_seconds: int = 30
 
     @classmethod
     def from_dict(cls, raw):
@@ -49,7 +49,7 @@ class TestCommand:
             if any(arg.startswith(('--junit', '--collect-only', '--co')) for arg in argv[3:]):
                 raise ValueError('Controller owns JUnit and tests must actually execute')
         return cls(name, tuple(argv), kind,
-                   _integer(raw.get('timeout_seconds', 300), 'timeout_seconds', 1, 3600))
+                   _integer(raw.get('timeout_seconds', 30), 'timeout_seconds', 1, 30))
 
     def as_dict(self):
         return {'name': self.name, 'argv': list(self.argv), 'kind': self.kind,

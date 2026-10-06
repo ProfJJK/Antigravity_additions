@@ -13,6 +13,7 @@ from dataclasses import dataclass
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path, PurePosixPath
 import re
@@ -250,7 +251,8 @@ class CommandResult:
 def _bounded_process(argv, *, env, timeout, output_limit, data=None, cancel_event=None):
     """Bound both pipes while draining them; no unbounded communicate buffer."""
     proc = subprocess.Popen(argv, stdin=subprocess.PIPE if data is not None else subprocess.DEVNULL,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env,
+                            creationflags=(0x08000000 | 0x00000200) if os.name == 'nt' else 0)
     captured = [bytearray(), bytearray()]
     exceeded = threading.Event()
     def consume(stream, index):
@@ -324,7 +326,8 @@ class DockerRunner:
             for name, declaration in (('policy_digest', 'TEXT'), ('label_job_hash', 'TEXT'),
                                       ('memory_mb', 'INTEGER'), ('pool_digest', 'TEXT'), ('endpoint', 'TEXT'),
                                       ('creation_uncertain', 'INTEGER NOT NULL DEFAULT 0'),
-                                      ('creation_boot_id', 'TEXT'), ('creation_daemon_id', 'TEXT')):
+                                      ('creation_boot_id', 'TEXT'), ('creation_daemon_id', 'TEXT'),
+                                      ('request_started_at','REAL'),('reservation_started_at','REAL')):
                 if name not in columns:
                     db.execute('ALTER TABLE containers ADD COLUMN ' + name + ' ' + declaration)
             db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('owner', uuid.uuid4().hex))
@@ -364,12 +367,16 @@ class DockerRunner:
         except ValueError as error:
             raise ContainerError('Docker returned invalid inspection JSON') from error
 
-    def _reserve(self, job_id, attempt_id, *, preparing=False, capacity_limit=None):
+    def _reserve(self, job_id, attempt_id, *, preparing=False, capacity_limit=None,
+                 require_warm=False, request_started_at=None):
         if not all(isinstance(value, str) and 0 < len(value) <= 256 and '\0' not in value
                    for value in (job_id, attempt_id)):
             raise ValueError('Container requires bounded job and attempt identities')
         lease = uuid.uuid4().hex
         now = time.time()
+        requested = now if request_started_at is None else request_started_at
+        if type(requested) not in (int,float) or not math.isfinite(requested) or not 0 <= requested <= now:
+            raise ValueError('Container request start must be a real, nonfuture controller timestamp')
         record = {'lease': lease, 'name': 'cochem-' + self.owner[:12] + '-' + lease,
                   'container_id': None, 'image': self.policy.image, 'job_id': job_id,
                   'attempt_id': attempt_id, 'created_at': now,
@@ -379,6 +386,7 @@ class DockerRunner:
                   'memory_mb': self.policy.memory_mb, 'pool_digest': self.policy.pool_digest,
                   'endpoint': self.policy.endpoint, 'creation_uncertain': 0,
                   'creation_boot_id': None, 'creation_daemon_id': None}
+        record.update(request_started_at=requested,reservation_started_at=now)
         if preparing:
             record['deadline'] = now + 120
         with closing(self._connect()) as db:
@@ -397,17 +405,20 @@ class DockerRunner:
                 if warm is not None:
                     claimed = dict(warm)
                     claimed.update(job_id=job_id, attempt_id=attempt_id,
-                                   deadline=record['deadline'], status='ACTIVE', policy_digest=self.policy.digest)
-                    db.execute("UPDATE containers SET job_id=?,attempt_id=?,deadline=?,status='ACTIVE',policy_digest=? WHERE lease=? AND status='WARM'",
-                               (job_id, attempt_id, record['deadline'], self.policy.digest, claimed['lease']))
+                                   deadline=record['deadline'], status='ACTIVE', policy_digest=self.policy.digest,
+                                   request_started_at=requested,reservation_started_at=now)
+                    db.execute("UPDATE containers SET job_id=?,attempt_id=?,deadline=?,status='ACTIVE',policy_digest=?,request_started_at=?,reservation_started_at=? WHERE lease=? AND status='WARM'",
+                               (job_id, attempt_id, record['deadline'], self.policy.digest, requested, now, claimed['lease']))
                     db.commit()
                     claimed['warm_claimed'] = True
                     return claimed
+                if require_warm:
+                    raise ContainerCapacityError('Exact captured Docker profile is awaiting verified preallocated capacity')
             count = db.execute("SELECT count(*) FROM containers WHERE status!='REMOVED'").fetchone()[0]
             if count >= min(effective_limit, capacity_limit if capacity_limit is not None else self.policy.max_containers):
                 raise ContainerCapacityError('Four-container or stricter operator capacity is occupied')
-            db.execute('INSERT INTO containers(lease,name,container_id,image,job_id,attempt_id,created_at,deadline,status,policy_digest,label_job_hash,memory_mb,pool_digest,endpoint) '
-                       'VALUES(:lease,:name,:container_id,:image,:job_id,:attempt_id,:created_at,:deadline,:status,:policy_digest,:label_job_hash,:memory_mb,:pool_digest,:endpoint)', record)
+            db.execute('INSERT INTO containers(lease,name,container_id,image,job_id,attempt_id,created_at,deadline,status,policy_digest,label_job_hash,memory_mb,pool_digest,endpoint,request_started_at,reservation_started_at) '
+                       'VALUES(:lease,:name,:container_id,:image,:job_id,:attempt_id,:created_at,:deadline,:status,:policy_digest,:label_job_hash,:memory_mb,:pool_digest,:endpoint,:request_started_at,:reservation_started_at)', record)
             db.commit()
         return record
 
@@ -475,10 +486,11 @@ class DockerRunner:
         return [*args, '--entrypoint', 'python', policy.image, '-I', '-c',
                 'import time; time.sleep(604800)']
 
-    def _inspect_owned(self, record):
+    def _inspect_owned(self, record, *, timeout=30):
         if record.get('endpoint') not in (None, self.policy.endpoint):
             raise ContainerCleanupError('Recorded container belongs to a different Docker endpoint')
-        result = self._call(['inspect', record.get('container_id') or record['name']], output_limit=4194304)
+        result = self._call(['inspect', record.get('container_id') or record['name']],
+                            timeout=timeout, output_limit=4194304)
         if result.returncode:
             error = result.stderr.decode(errors='replace').casefold()
             if result.returncode == 1 and ('no such object' in error or 'no such container' in error):
@@ -676,16 +688,19 @@ class DockerRunner:
                 'reserved_memory_mb': unknown * self.policy.memory_mb + sum(row['memory_mb'] or self.policy.memory_mb for row in records),
                 'containers': records}
 
-    def reserve_attempt(self, job_id, attempt_id, *, retire_incompatible=True):
+    def reserve_attempt(self, job_id, attempt_id, *, retire_incompatible=True,
+                        require_warm=False, request_started_at=None):
         """Bind one physical slot under the controller's shared admission lock."""
         if not self.policy.enabled:
             raise ContainerError('Docker execution is disabled')
         try:
-            record = self._reserve(job_id, attempt_id)
+            record = self._reserve(job_id, attempt_id,require_warm=require_warm,
+                                   request_started_at=request_started_at)
         except ContainerCapacityError:
             if not retire_incompatible or not self._retire_incompatible_warm():
                 raise
-            record = self._reserve(job_id, attempt_id)
+            record = self._reserve(job_id, attempt_id,require_warm=require_warm,
+                                   request_started_at=request_started_at)
         self._set(record['lease'], status='BOUND')
         record['status'] = 'BOUND'
         return record
@@ -799,6 +814,27 @@ class DockerRunner:
                 raise
         return {'prepared': prepared, 'drained': drained, 'census': self.census()}
 
+    def prepare_requested_profile(self, capacity):
+        """Prepare one exact queued policy without taking an additional physical seat."""
+        census=self.census()
+        target=min(capacity,self.policy.max_containers)
+        if census['owned']>target:
+            self.prepare_pool(target=max(0,target))
+            census=self.census()
+            if census['owned']>target:
+                return {'ready':False,'reason':'pressure_requires_active_seat_drain','census':census}
+        if any(row['status']=='WARM' and row['pool_digest']==self.policy.pool_digest
+               and row['deadline']>time.time() for row in census['containers']):
+            return {'ready':True,'census':census}
+        if capacity<=0 or self.policy.warm_pool_size<=0 or census['quarantined']:
+            return {'ready':False,'reason':'preallocated_capacity_unavailable','census':census}
+        if census['owned']>=target and not self._retire_incompatible_warm():
+            return {'ready':False,'reason':'all_preallocated_seats_active','census':self.census()}
+        self.prepare_pool(target=min(target,self.census()['owned']+1))
+        census=self.census()
+        return {'ready':any(row['status']=='WARM' and row['pool_digest']==self.policy.pool_digest
+                           for row in census['containers']),'census':census}
+
     def health(self):
         checked = time.time()
         discoveries = []
@@ -851,13 +887,29 @@ class DockerRunner:
         request_started = time.time()
         if not self.policy.enabled:
             raise ContainerError('Docker execution is disabled; coding acceptance cannot be claimed')
-        record = self._consume_reservation(reservation or self.reserve_attempt(job_id, attempt_id), job_id, attempt_id)
+        record = self._consume_reservation(reservation or self.reserve_attempt(job_id, attempt_id,
+            request_started_at=request_started), job_id, attempt_id)
+        requested = record.get('request_started_at') or request_started
+        reserved = record.get('reservation_started_at') or request_started
         receipt = {'schema_version': 1, 'kind': 'docker-test-execution', 'job_id': job_id,
                    'attempt_id': attempt_id, 'policy_sha256': self.policy.digest,
                    'image_id': self.policy.image, 'source': None, 'commands': [],
                    'started_at': request_started, 'passed': False, 'cleanup_verified': False, 'source_verified': False,
                    'input_source_verified': False, 'failure_scope': None,
                    'failure_category': None, 'quarantine_required': False}
+        receipt.update(request_started_at=requested,reservation_started_at=reserved,
+                       execution_started_at=request_started,
+                       queue_wait_seconds=max(0,reserved-requested),
+                       handoff_wait_seconds=max(0,request_started-reserved))
+        cycle_started = None
+        def remaining_cycle_seconds():
+            remaining = 30. - (time.monotonic() - cycle_started)
+            if remaining <= 0:
+                receipt['failure_category'], receipt['quarantine_required'] = 'timeout', True
+                raise ContainerError('Aggregate test execution and evidence collection exceeded 30 seconds')
+            return remaining
+        def cycle_call(arguments, *, timeout=30, **kwargs):
+            return self._call(arguments, timeout=min(timeout, remaining_cycle_seconds()), **kwargs)
         try:
             archive, source = source_snapshot(Path(source_root), self.policy,
                                              ramdisk_workspace=ramdisk_workspace, source_modes=source_modes)
@@ -896,9 +948,17 @@ class DockerRunner:
             if result.returncode or result.stdout.decode().strip() != source['sha256']:
                 raise ContainerError('RAM snapshot transfer failed independent digest verification')
             receipt['input_source_verified'] = True
-            receipt['startup_seconds'] = time.time() - receipt['started_at']
+            ready_at=time.time()
+            receipt['execution_startup_seconds'] = ready_at-receipt['started_at']
+            receipt['startup_seconds'] = ready_at-requested
             receipt['startup_sla_seconds'] = 1.5
-            receipt['startup_sla_met'] = receipt['startup_seconds'] <= 1.5
+            receipt['startup_clock_verified'] = (requested<=reserved<=ready_at and
+                (reserved<=request_started<=ready_at if reservation else requested<=request_started<=reserved))
+            receipt['startup_sla_met'] = receipt['startup_clock_verified'] and 0<=receipt['startup_seconds']<=1.5
+            receipt['startup_violation_reason'] = (None if receipt['startup_sla_met'] else
+                'controller_startup_clock_order_unverified' if not receipt['startup_clock_verified'] else
+                'request_to_test_ready_exceeded_1_5_seconds_including_queue_and_handoff')
+            cycle_started = time.monotonic()
             for index, command in enumerate(self.policy.commands):
                 if cancel_event is not None and cancel_event.is_set():
                     receipt['failure_category'] = 'cancelled'
@@ -913,7 +973,7 @@ class DockerRunner:
                     # operator arguments select a deeper test directory.
                     argv += ['--rootdir=/work/source', '--junitxml=' + report_path, '-p', 'no:cacheprovider']
                 before = time.time()
-                result = self._call(['exec', '--workdir', '/work/source', container_id, *argv],
+                result = cycle_call(['exec', '--workdir', '/work/source', container_id, *argv],
                                     timeout=command.timeout_seconds, cancel_event=cancel_event)
                 item = {'name': command.name, 'kind': command.kind, 'argv': argv,
                         'exit_code': result.returncode, 'elapsed_seconds': time.time() - before,
@@ -922,7 +982,8 @@ class DockerRunner:
                         'timed_out': result.timed_out, 'cancelled': result.cancelled,
                         'output_exceeded': result.output_exceeded, 'passed': False}
                 receipt['commands'].append(item)
-                inspected = self._inspect_owned(record)
+                remaining = 30. - (time.monotonic() - cycle_started)
+                inspected = self._inspect_owned(record, timeout=remaining) if remaining > 0 else None
                 oom = bool(inspected and inspected.get('State', {}).get('OOMKilled')) or result.returncode == 137
                 if oom:
                     receipt['failure_category'], receipt['quarantine_required'] = 'oom', True
@@ -937,7 +998,7 @@ class DockerRunner:
                 if receipt['failure_category'] and receipt['failure_category'] != 'tests_failed':
                     break
                 if command.kind == 'pytest':
-                    report = self._call(['exec', container_id, 'python', '-I', '-c', _READ_RESULT,
+                    report = cycle_call(['exec', container_id, 'python', '-I', '-c', _READ_RESULT,
                                          report_path, str(self.policy.junit_limit_bytes)],
                                         output_limit=self.policy.junit_limit_bytes)
                     if report.returncode or report.output_exceeded:
@@ -951,10 +1012,10 @@ class DockerRunner:
                     break
                 item['passed'] = True
             if receipt['failure_category'] in (None, 'tests_failed'):
-                processes = self._call(['top', container_id, '-eo', 'pid,comm'])
+                processes = cycle_call(['top', container_id, '-eo', 'pid,comm'])
                 if processes.returncode or len(processes.stdout.decode().strip().splitlines()) != 2:
                     raise ContainerError('Test command left unowned background processes running')
-                tree = self._call(['exec', container_id, 'python', '-I', '-c', _OUTPUT_TREE,
+                tree = cycle_call(['exec', container_id, 'python', '-I', '-c', _OUTPUT_TREE,
                                    str(self.policy.max_source_mb * 1048576), str(self.policy.max_source_files)])
                 if tree.returncode or tree.output_exceeded:
                     raise ContainerError('Cannot establish bounded output tree evidence')
@@ -963,6 +1024,7 @@ class DockerRunner:
                 if any(output_files.get(path) != entry for path, entry in source['files'].items()):
                     raise ContainerError('Test execution modified or removed input source files')
                 _, final_source = source_snapshot(Path(source_root), self.policy, ramdisk_workspace=ramdisk_workspace, source_modes=source_modes)
+                remaining_cycle_seconds()
                 if final_source['sha256'] != source['sha256']:
                     raise ContainerError('Host source changed during test execution')
                 receipt['source_verified'] = True
@@ -970,10 +1032,19 @@ class DockerRunner:
                                  and all(item['passed'] for item in receipt['commands'])
                                  and receipt['failure_category'] is None)
         except Exception as error:
-            if receipt['failure_category'] in (None, 'tests_failed'):
+            if cycle_started is not None and time.monotonic()-cycle_started >= 30:
+                receipt['failure_category'], receipt['quarantine_required'] = 'timeout', True
+            elif receipt['failure_category'] in (None, 'tests_failed'):
                 receipt['failure_category'] = 'container_contract'
             receipt['error'] = str(error)[:1024]
         finally:
+            receipt['test_cycle_limit_seconds'] = 30
+            receipt['test_cycle_seconds'] = None if cycle_started is None else time.monotonic() - cycle_started
+            receipt['test_cycle_deadline_met'] = (cycle_started is not None
+                and receipt['test_cycle_seconds'] <= 30 and receipt['failure_category'] != 'timeout')
+            if cycle_started is not None and receipt['test_cycle_seconds'] > 30:
+                receipt['passed'] = False
+                receipt['failure_category'], receipt['quarantine_required'] = 'timeout', True
             try:
                 self._remove(record)
                 receipt['cleanup_verified'] = True

@@ -5,7 +5,7 @@ the resulting files; generated descriptions of changes are never evidence.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import ast
 import difflib
 import hashlib
@@ -43,12 +43,13 @@ class CodingProject:
     test_paths: tuple[str, ...] = ('tests',)
     auto_integrate: bool = False
     test_strategy: str = 'red_green'
+    planning: dict = field(default_factory=dict)
 
     @classmethod
     def from_dict(cls, project_id, raw):
         if not isinstance(project_id, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,127}', project_id):
             raise ValueError('Invalid coding project identifier')
-        if not isinstance(raw, dict) or set(raw) - {'repository', 'branch', 'allowed_paths', 'test_paths', 'auto_integrate', 'test_strategy'}:
+        if not isinstance(raw, dict) or set(raw) - {'repository', 'branch', 'allowed_paths', 'test_paths', 'auto_integrate', 'test_strategy', 'planning'}:
             raise ValueError('Invalid registered coding project fields')
         repository = raw.get('repository')
         if not isinstance(repository, str) or not repository or '\x00' in repository:
@@ -74,14 +75,16 @@ class CodingProject:
         if type(auto) is not bool:
             raise ValueError('auto_integrate must be boolean')
         strategy = raw.get('test_strategy', 'red_green')
-        if strategy not in ('red_green','preserve_behavior'):
-            raise ValueError('test_strategy must be red_green or preserve_behavior')
-        return cls(project_id, path, branch, allowed, tests, auto, strategy)
+        if strategy != 'red_green':
+            raise ValueError('Coding requires red_green; preserve_behavior cannot bypass the mandatory failing-first gate')
+        from .planning_governance import normalize_policy
+        return cls(project_id, path, branch, allowed, tests, auto, strategy,normalize_policy(raw.get('planning')))
 
     def as_dict(self):
         return {'repository': str(self.repository), 'branch': self.branch,
                 'allowed_paths': list(self.allowed_paths), 'test_paths': list(self.test_paths),
-                'auto_integrate': self.auto_integrate, 'test_strategy': self.test_strategy}
+                'auto_integrate': self.auto_integrate, 'test_strategy': self.test_strategy,
+                'planning':json.loads(json.dumps(self.planning))}
 
 
 def validate_coding_projects(raw) -> dict[str, CodingProject]:
@@ -234,14 +237,15 @@ def observed_changes(before, after, original, project: CodingProject, *, tests_o
         new = after.get(name, b'').decode('utf-8')
         initial = original.get(name, b'').decode('utf-8')
         def lines_changed(a, b):
-            return sum(max(i2-i1, j2-j1) for tag,i1,i2,j1,j2 in
-                       difflib.SequenceMatcher(None, a.splitlines(), b.splitlines(), autojunk=False).get_opcodes()
+            return sum((i2-i1)+(j2-j1) for tag,i1,i2,j1,j2 in
+                       difflib.SequenceMatcher(None, a.splitlines(True), b.splitlines(True), autojunk=False).get_opcodes()
                        if tag != 'equal')
         count = lines_changed(old, new)
-        aggregate = lines_changed(initial, new)
+        aggregate = sum(max(i2-i1,j2-j1) for tag,i1,i2,j1,j2 in
+                        difflib.SequenceMatcher(None,initial.splitlines(True),new.splitlines(True),autojunk=False).get_opcodes()
+                        if tag!='equal')
         total += count
-        if aggregate > 500 or (name in original and len(initial.splitlines()) >= 20
-                               and aggregate > .8 * len(initial.splitlines())):
+        if aggregate > 500 or (name in original and aggregate > .8 * len(initial.splitlines())):
             raise ValueError('Aggregate edits exceed the per-file rewrite boundary')
         patch = ''.join(difflib.unified_diff(old.splitlines(True), new.splitlines(True),
                                            fromfile='a/'+name, tofile='b/'+name, n=3))
@@ -255,6 +259,43 @@ def observed_changes(before, after, original, project: CodingProject, *, tests_o
     if total > 100:
         raise ValueError('A staging chunk may change at most 100 lines across all files')
     return records
+
+
+def validate_leaf_chunk(before, after, original, project):
+    """Bound the entire source/test commit by actual added plus deleted lines.
+
+    Context is real neighboring file content, independently bounded to 20–100
+    lines. Small edits are not padded: their window expands into unchanged
+    source. New short test files contribute their actual contents to the leaf.
+    """
+    records=[]; windows=[]
+    for name in sorted(set(before)|set(after)):
+        if before.get(name)==after.get(name):
+            continue
+        tests=within(name,project.test_paths)
+        record=observed_changes({name:before[name]} if name in before else {},
+            {name:after[name]} if name in after else {},
+            {name:original[name]} if name in original else {},project,tests_only=tests)[0]
+        records.append(record)
+        old=before.get(name,b'').decode().splitlines(True); new=after.get(name,b'').decode().splitlines(True)
+        # Use the larger physical side; include every changed span and extend
+        # narrow windows with adjacent unchanged lines, never invented padding.
+        use_new=len(new)>=len(old); content=new if use_new else old
+        opcodes=difflib.SequenceMatcher(None,old,new,autojunk=False).get_opcodes()
+        changed=[(j1,j2) if use_new else (i1,i2) for tag,i1,i2,j1,j2 in opcodes if tag!='equal']
+        start=min(a for a,b in changed); end=max(b for a,b in changed)
+        width=max(end-start,min(20,len(content)))
+        start=max(0,min(start-(width-(end-start))//2,len(content)-width)); end=start+width
+        windows.append({'path':name,'side':'after' if use_new else 'before','start_line':start+1,
+                        'end_line':end,'line_count':width,
+                        'content_sha256':hashlib.sha256(''.join(content[start:end]).encode()).hexdigest()})
+    count=sum(item['changed_lines'] for item in records)
+    context=sum(item['line_count'] for item in windows)
+    if not records or count>100:
+        raise ValueError('A complete leaf source/test Git diff may contain at most 100 added plus deleted lines')
+    if not 20<=context<=100:
+        raise ValueError('A complete leaf requires 20–100 physical context lines; re-fracture its context windows')
+    return {'changed_lines':count,'context_lines':context,'context_windows':windows}
 
 
 class CodingCoordinator:
@@ -274,8 +315,19 @@ class CodingCoordinator:
         project = self.config.coding_projects[project_id]
         snapshot = capture_repository(project.repository, project.branch, git_executable=getattr(self.config,'git_executable',None))
         validate_project_files(snapshot.files)
+        from .planning_governance import validate_registration,collect_external_sources
+        try:
+            planning_evidence=validate_registration(project.planning,snapshot.files)
+        except ValueError as exc:
+            return self.store.submit_coding_snapshot(project,objective,requirements,snapshot,
+                self.config.docker,workflow_id,planning_blocker=str(exc))
+        if not planning_evidence['stage_execution_verified']:
+            return self.store.submit_coding_snapshot(project,objective,requirements,snapshot,
+                self.config.docker,workflow_id,planning_evidence=planning_evidence,
+                planning_blocker='Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding')
+        planning_evidence['external_sources']=collect_external_sources(project.planning)
         return self.store.submit_coding_snapshot(project, objective, requirements, snapshot,
-                                                 self.config.docker, workflow_id)
+                                                 self.config.docker, workflow_id,planning_evidence=planning_evidence)
 
     def run(self, node, slot, context, heartbeat, launched, cancel_event, *, on_native_start=None,on_native_end=None,container_reservation=None):
         from .coding_git import RepositorySnapshot
@@ -299,7 +351,7 @@ class CodingCoordinator:
         if kind in ('CODE_TEST', 'CODE_INTEGRATE'):
             stopped = threading.Event()
             def renew():
-                while not stopped.wait(max(.1, self.config.lease_seconds / 3)):
+                while not stopped.wait(max(.1,min(getattr(self.config,'heartbeat_seconds',5), self.config.lease_seconds / 3))):
                     if not heartbeat():
                         cancel_event.set()
                         return
@@ -347,7 +399,7 @@ class CodingCoordinator:
                         staged = state['chunks'][-1]['staged']
                     else:
                         staged = self.git.stage(baseline, before, workflow_id=node['workflow_id'], chunk_id=chunk_id,
-                                                parent_commit=state['last_commit'])
+                                                parent_commit=state['last_commit'],max_changed_lines=100)
                     if cancel_event.is_set() or not heartbeat():
                         raise ExecutionRevokedError('Coding integration was revoked')
                     self.store.prepare_coding_integration(node,staged)
@@ -400,13 +452,7 @@ class CodingCoordinator:
                         target.write_bytes(data)
                 after=read_workspace(workspace)
             if kind=='CODE_TEST_AUTHOR' and after==before:
-                if project.test_strategy != 'preserve_behavior':
-                    raise ValueError('Red-green projects require newly authored regression tests before implementation')
-                reused = output.get('reuse_tests')
-                if (not isinstance(reused, list) or not reused or
-                        any(not isinstance(name,str) or name not in before or not within(name, project.test_paths) for name in reused)):
-                    raise ValueError('Unchanged test authoring requires actual existing regression-test paths')
-                changes = []
+                raise ValueError('Red-green projects require newly authored regression tests before implementation')
             else:
                 no_change = kind=='CODE_EDIT' and node['payload'].get('phase')=='P9' and after==before and output.get('remaining_work') is False
                 changes = state.get('changes',[]) if no_change else observed_changes(before, after, before if kind=='CODE_TEST_AUTHOR' else original, project, tests_only=kind=='CODE_TEST_AUTHOR')
@@ -417,7 +463,12 @@ class CodingCoordinator:
                 raise ValueError('Editor must explicitly report whether the requested work is complete')
             if kind=='CODE_EDIT' and len(changes)+len(state.get('test_changes',[]))>14:
                 raise ValueError('Combined source/test files exceed the bounded review task batch')
+            from .coding_checks import validate_generated_files
+            validate_generated_files(after,[name for name in after if before.get(name)!=after[name]])
+            chunk = (validate_leaf_chunk(self.store.coding_files(state['leaf_baseline_snapshot']),after,original,project)
+                     if kind=='CODE_EDIT' else None)
             return output, receipt, {'changes': changes, 'snapshot_sha256': digest(manifest(after)),
+                                     'chunk':chunk,
                                      'no_source_change':after==before,
                                      'requirements_traced': output.get('requirements_traced', [])}, after
         evidence = {'source_snapshot_sha256': state['current_snapshot']}
@@ -442,4 +493,8 @@ class CodingCoordinator:
             if (job_phase:=node['payload'].get('research_phase'))!='initial' and (not any(item['path']=='$test_receipt' for item in verified) or not any(item['path']!='$test_receipt' for item in verified)):
                 raise ValueError('Research must examine actual test diagnostics and project technical sources')
             evidence['verified_sources'] = verified
+            if project.planning:
+                from .planning_governance import validate_external_research
+                evidence.update(validate_external_research(output,state['planning_evidence']['external_sources'],
+                    [f'R{index}' for index in range(1,len(node['payload']['requirements'])+1)]))
         return output, receipt, evidence, None

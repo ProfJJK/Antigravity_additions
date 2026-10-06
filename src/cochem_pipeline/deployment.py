@@ -160,7 +160,29 @@ def execution_readiness(config, *, provision=False):
     identities = {slot:win.WorkerIdentity(**value) for slot,value in config.workers.items()}
     win.validate_layout(config.private_root,config.slot_roots,identities,require_defender=True)
     win.validate_controller_token(config.token_file,config.operator_name,identities)
-    checks = {}
+    from .planning_governance import planning_readiness
+    checks = {'planning':planning_readiness(config.coding_projects)}
+    try:
+        from .knowledge import KnowledgeService,provision_knowledge
+        if provision:
+            provision_knowledge(config.knowledge)
+        knowledge=KnowledgeService(config.knowledge)
+        try:
+            evidence=knowledge.refresh()
+            checks['knowledge']={'ready':evidence['index_size_sla_met'],'evidence':evidence}
+        finally:
+            knowledge.close()
+    except Exception as exc:
+        checks['knowledge']={'ready':False,'error':str(exc)[:2048]}
+    try:
+        from .resource_limits import controller_limits
+        from .controller_guard import ControllerMonitor
+        scheduling = controller_limits(config.execution_limits,apply=True)
+        controller = ControllerMonitor().sample(force=True)
+        checks['warden_controller'] = {'ready':controller['ready'],
+                                       'evidence':{**controller,'scheduling':scheduling}}
+    except Exception as exc:
+        checks['warden_controller'] = {'ready':False,'error':str(exc)[:2048]}
     try:
         from .resource_limits import validate_host_limits
         checks['execution_limits'] = {'ready':True,'evidence':validate_host_limits(config.execution_limits)}
@@ -190,6 +212,8 @@ def execution_readiness(config, *, provision=False):
         checks['ramdisk'] = {'ready':not bool(config.coding_projects),'enabled':False}
     if config.docker.enabled:
         try:
+            if config.coding_projects and config.docker.warm_pool_size<=0:
+                raise ValueError('Production coding requires preallocated warm Docker capacity')
             win.validate_code_path(config.docker.executable)
             runner = DockerRunner(config.docker,config.private_root/'containers',trusted_operator=config.operator_name,
                                   host_boot_id=win.current_boot_identity())

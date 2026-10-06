@@ -119,6 +119,11 @@ def require_supervisor(config: Mapping) -> dict:
     native.validate_code_path(Path(__file__))
     native.validate_code_path(Path(native.__file__))
     native.validate_code_path(Path(sys.executable))
+    # The sterile -I -S child receives only these exact independently installed
+    # package trees; validate their native ACLs before any detector launch.
+    import psutil
+    _protected_tree(Path(__file__).parent)
+    _protected_tree(Path(psutil.__file__).parent)
     private = Path(config["private_root"]).resolve(strict=True)
     workspace = Path(config["repair_workspace"]).resolve(strict=True)
     identity = native.WorkerIdentity(**config["repair_worker"])
@@ -601,6 +606,7 @@ def migrate_ledger(source_private: str | Path, target_private: str | Path, super
     if source.exists() or source.is_symlink():
         native.validate_private_directory(source)
         for filename in ('supervisor.db', 'supervisor.db-wal', 'supervisor.db-shm',
+                         'component-recovery.db', 'component-recovery.db-wal', 'component-recovery.db-shm',
                          'repair-quarantine.json', 'release-journal.json'):
             item = source / filename
             if item.exists() or item.is_symlink():
@@ -624,7 +630,7 @@ def migrate_ledger(source_private: str | Path, target_private: str | Path, super
         {'name': _task_name(supervisor_task), 'source_ledger_exists': source_ledger_exists, 'prior_fresh': prior_fresh})
     from .upgrade import migrate_budget_state
     result = migrate_budget_state(source, Path(target_private))
-    for filename in ('supervisor.db', 'repair-quarantine.json', 'budget-upgrade.json'):
+    for filename in ('supervisor.db', 'component-recovery.db', 'repair-quarantine.json', 'budget-upgrade.json'):
         item = Path(target_private) / filename
         if item.exists():
             native.validate_private_path(item)

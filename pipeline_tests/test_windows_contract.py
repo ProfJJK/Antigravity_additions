@@ -210,3 +210,60 @@ def test_real_windows_job_object_kills_descendant_before_close_returns(native_wi
         for path in directory.iterdir():
             path.unlink()
         directory.rmdir()
+
+
+def test_real_low_privilege_worker_inherits_large_prompt_pipe_and_eof(native_windows_layout):
+    import hashlib
+    import psutil
+    from cochem_pipeline.transport import PromptPipe
+    data,roots,identities=native_windows_layout
+    slot=next(iter(roots))
+    directory=Path(data['private_root'])/('worker-stdin-check-'+uuid.uuid4().hex)
+    directory.mkdir()
+    payload=os.urandom(2*1024*1024+37)
+    script=('import sys,hashlib,json; data=sys.stdin.buffer.read(); '
+            'print(json.dumps({"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest(),'
+            '"eof":sys.stdin.buffer.read(1)==b""}),flush=True)')
+    try:
+        with PromptPipe(payload) as pipe:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c',script],roots[slot],
+                               pipe.reader,directory/'stdout',directory/'stderr') as process:
+                assert psutil.Process(process.pid).username().split('\\')[-1].casefold()==identities[slot].name.casefold()
+                pipe.start()
+                assert process.wait(30)==0
+                pipe.verify_delivered()
+            assert process.poll() is not None
+        result=json.loads((directory/'stdout').read_text())
+        assert result=={'bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest(),'eof':True}
+    finally:
+        for path in directory.iterdir(): path.unlink()
+        directory.rmdir()
+
+
+def test_real_low_privilege_nonreader_pipe_cancellation_releases_identity(native_windows_layout):
+    import psutil
+    from cochem_pipeline.transport import PromptPipe,MAX_PROMPT_BYTES
+    data,roots,identities=native_windows_layout
+    slot=next(iter(roots))
+    directory=Path(data['private_root'])/('worker-stdin-cancel-'+uuid.uuid4().hex)
+    directory.mkdir()
+    try:
+        with PromptPipe(b'x'*MAX_PROMPT_BYTES) as pipe:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c','import time;time.sleep(120)'],
+                               roots[slot],pipe.reader,directory/'stdout',directory/'stderr') as process:
+                assert psutil.Process(process.pid).username().split('\\')[-1].casefold()==identities[slot].name.casefold()
+                pipe.start()
+                started=time.monotonic()
+                process.terminate()
+            pipe.close()
+            assert time.monotonic()-started<5
+            assert not pipe.delivered
+            assert not psutil.pid_exists(process.pid)
+        # Reacquisition proves the real profile and identity guard were released.
+        with tempfile.TemporaryFile('w+b') as empty:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c','pass'],roots[slot],
+                               empty,directory/'second.out',directory/'second.err') as second:
+                assert second.wait(30)==0
+    finally:
+        for path in directory.iterdir(): path.unlink()
+        directory.rmdir()

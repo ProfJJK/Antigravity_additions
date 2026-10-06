@@ -10,7 +10,9 @@ from copy import deepcopy
 import hashlib
 import json
 
-_DIAGNOSTIC_FIELDS = ('test_receipt','last_test','failures','previous_failure','research_dossier')
+_DIAGNOSTIC_FIELDS = ('test_receipt','last_test','failures','previous_failure','research_dossier',
+                      'minor_findings','repair_findings','findings','debug_notes','diagnostics',
+                      'operator_resolution','strategy','root_cause','hypothesis')
 MAX_DIAGNOSTIC_BYTES = 1900
 
 

@@ -189,7 +189,8 @@ def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]
         if age < -5:
             raise ValueError("Heartbeat timestamp is in the future; check the host clock")
         info.update(state="fresh" if age <= timeout else "stale", age_seconds=round(max(age, 0), 3),
-                    pid=data["pid"], sequence=data["sequence"],instance_id=data['instance_id'])
+                    pid=data["pid"], sequence=data["sequence"],instance_id=data['instance_id'],
+                    process_started_at=data['process_started_at'])
         status = data["status"]
         if isinstance(status, dict):
             bounds=status.get('execution_bounds',{})
@@ -261,6 +262,22 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
         any(item.get('required') and item.get('state')!='healthy' for item in heartbeat['components'].values()) or
         any(incident['evidence'].get('component') for incident in incidents if not incident['repairable']))
     health['repair_hold'] = bool(infrastructure_hold)
+    from .diagnostics import read_crash
+    crash=read_crash(root,now=observed)
+    health['crash']=crash
+    if (crash['state']=='observed' and not (heartbeat['state']=='fresh' and
+            heartbeat.get('process_started_at',0)>crash['timestamp'])):
+        declared=crash['category']
+        category={'busy':'provider','backlog':'provider','timeout':'provider','context':'resource','protocol':'compatibility'}.get(declared,declared)
+        classified=classify_error(crash['exception_type'])
+        if classified['category'] in {'auth','quota','provider','resource'}:
+            category=classified['category']
+        repairable=category in {'code','compatibility'} and classified['repairable'] and not infrastructure_hold
+        incidents.append(_incident(category,repairable,'Structured pipeline crash requires diagnosis',
+            {'source':'crash-envelope.json','latest_failure_at':crash['timestamp'],**crash},
+            'crash '+crash['exception_type']+' '+json.dumps(crash['frames'][-1],sort_keys=True)))
+        if category not in {'code','compatibility'}:
+            health['repair_hold']=True
     database = root / "job_board.db"
     if not database.is_file() or database.is_symlink():
         incidents.append(_incident("configuration", False, "The configured pipeline job database is unavailable",
@@ -269,8 +286,22 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
         try:
             with closing(sqlite3.connect(database.as_uri() + "?mode=ro", uri=True, timeout=1)) as conn:
                 conn.execute("PRAGMA query_only=ON")
+                conn.execute("PRAGMA trusted_schema=OFF")
+                conn.setlimit(sqlite3.SQLITE_LIMIT_LENGTH,262144)
+                conn.setlimit(sqlite3.SQLITE_LIMIT_SQL_LENGTH,8192)
+                conn.setlimit(sqlite3.SQLITE_LIMIT_COLUMN,128)
+                conn.setlimit(sqlite3.SQLITE_LIMIT_EXPR_DEPTH,32)
+                deadline=time.monotonic()+.75
+                conn.set_progress_handler(lambda:int(time.monotonic()>deadline),1000)
                 conn.row_factory = sqlite3.Row
                 conn.execute("BEGIN")
+                from .structural import inspect_structure
+                structure=inspect_structure(conn,observed)
+                health['structural_integrity']=structure
+                for violation in structure['violations']:
+                    incidents.append(_incident('code',False,violation['summary'],
+                        {'component':'database_structure',**violation},
+                        'structural invariant '+violation['invariant']))
                 cleanup_rows = []
                 if conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pipeline_execution_cleanup'").fetchone():
                     # Match the admission barrier without selecting lease
@@ -335,7 +366,8 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                 error = row["error"]
                 classification = None
                 route_state, eligible = row["routing_state"], row["next_eligible_at"]
-                if route_state == "BLOCKED":
+                if (route_state == "BLOCKED" and not
+                        (isinstance(error,str) and error.strip() and classify_error(error)['repairable'])):
                     incidents.append(_incident("configuration", False,
                         "Routing is blocked pending operator action",
                         {"kind": kind, "routing_state": "BLOCKED"}, "routing operator limit"))
@@ -353,9 +385,9 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                     # The progress timer starts when a planned delay ends.
                     # A genuinely abandoned due queue still becomes detectable.
                     age = min(age, observed-eligible) if age is not None else observed-eligible
-                if status == "BLOCKED":
+                if status == "BLOCKED" and not (isinstance(error,str) and error.strip()):
                     continue  # Normal unreleased synthesis/manifest barrier.
-                if status in ("FAILED", "PENDING_RETRY"):
+                if status in ("FAILED", "PENDING_RETRY", "BLOCKED"):
                     error = error if isinstance(error, str) and error.strip() else "Failure did not include a diagnostic"
                     classification = classify_error(error)
                     normalized = _normalized(error)
@@ -371,7 +403,10 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                     # Until termination is proven, apparent stalled queues or
                     # leases are expected admission holds, not code repairs.
                     continue
-                if status == "IN_PROGRESS" and _number(row["lease_expires_at"]) and row["lease_expires_at"] < observed:
+                if (status=='IN_PROGRESS' and _number(row['lease_expires_at']) and
+                        observed-60<=row['lease_expires_at']<observed):
+                    continue  # Give the authoritative reaper the complete 60s recovery buffer.
+                if status == "IN_PROGRESS" and _number(row["lease_expires_at"]) and row["lease_expires_at"] < observed-60:
                     incidents.append(_incident("code", True, "An execution lease expired without scheduler recovery",
                         {"kind": kind, "expired_seconds": round(observed - row["lease_expires_at"], 3)}, "expired execution lease"))
                 elif (age is not None and age > progress_timeout and status in {"IN_PROGRESS", "PENDING", "PENDING_RETRY"}
@@ -409,8 +444,10 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
         unique.setdefault(incident["fingerprint"], incident)
     incidents = list(unique.values())
     health['repair_hold'] |= bool(health['execution_cleanup_hold'])
-    if incidents:
-        health["state"] = "degraded" if any(incident["repairable"] for incident in incidents) else "blocked"
+    if health.get('structural_integrity',{}).get('state')=='violated':
+        health.update(state='collapsed',repair_hold=True)
+    elif incidents:
+        health["state"] = "degraded" if not health['repair_hold'] and any(incident["repairable"] for incident in incidents) else "blocked"
     elif health["routing_waits"]:
         health["state"] = "waiting"
     health["routing_wait_count"] = len(health["routing_waits"])

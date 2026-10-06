@@ -237,20 +237,14 @@ def test_unsupported_or_ambiguous_planned_test_definitions_cannot_be_sealed(tmp_
 
 
 @pytest.mark.parametrize('selected',['tests/test_existing.py','src/answer.py'])
-def test_preservation_identity_is_bound_only_to_selected_registered_existing_tests(tmp_path,selected):
-    case=CodingFixture(tmp_path,strategy='preserve_behavior',same_named_baseline_test=True)
+def test_existing_test_reuse_cannot_replace_new_failing_first_tests(tmp_path,selected):
+    case=CodingFixture(tmp_path,same_named_baseline_test=True)
     case.plan()
     case.initial_research()
     author=case.claim('CODE_TEST_AUTHOR')
     before=case.store.coding_files(case.state()['current_snapshot'])
     output={'requirements_traced':['REQ-1'],'reuse_tests':[selected]}
     evidence={'changes':[],'snapshot_sha256':digest(manifest(before))}
-    if selected.startswith('src/'):
-        with pytest.raises(ValueError,match='protected test paths'):
-            case.complete_native(author,output,evidence,before)
-        assert case.state()['sealed_tests_snapshot'] is None
-    else:
+    with pytest.raises(ValueError,match='newly authored'):
         case.complete_native(author,output,evidence,before)
-        identity=case.state()['test_identities']['test_regression']
-        assert identity=={'path':selected,'class_name':'tests.test_existing','name':'test_regression',
-                         'file_sha256':hashlib.sha256(before[selected]).hexdigest()}
+    assert case.state()['sealed_tests_snapshot'] is None

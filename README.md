@@ -1,17 +1,20 @@
-# Antigravity additions 4.2.5
+# Antigravity additions 4.2.6
 
-4.2.5 adds coding execution, Docker test isolation, verified RAM workspaces and
-measured hardware controls to the protected Windows pipeline. See the
-[4.2.5 execution and installation guide](docs/EXECUTION_4.2.5.md),
-[requirements ledger](docs/REQUIREMENTS_4.2.5.md) and
-[release notes](docs/RELEASE_4.2.5.md) for implementation and validation status.
-Native Windows and live-provider acceptance remain unverified.
+4.2.6 corrects additional SRS gaps found in the Oracle, coding gates, native
+process handling, knowledge service and independent repair supervisor. See the
+[requirements ledger](docs/REQUIREMENTS_4.2.6.md),
+[upgrade guide](docs/EXECUTION_4.2.6.md) and
+[release evidence](docs/RELEASE_4.2.6.md).
 
-The final 4.2.5 Linux suite completed with **1,826 passed, 29 skipped**, including
-actual Docker and offline native CLI checks. Independent copied-source
-acceptance completed with **1,102 passed, 45 skipped**; its Docker tests were
-disabled to preserve repair-account isolation. The release wheel also passed
-source verification. These are separate runs, not additive totals.
+**Complete SRS compliance is not yet certified.** Native Windows/live-provider
+acceptance, sustained host performance and the referenced but missing canonical
+seven-stage planning/Method Matrix definitions remain outstanding. Production
+coding returns `PLANNING_HOLD`: the exact stage binding remains unimplemented
+until those definitions are available. Readiness reports this blocker explicitly.
+Prior passing test counts
+did not establish these requirements or prevent candidate-forged JUnit reports.
+The repair gate now uses a trusted outer verifier in addition to regression and
+live smoke checks; finite contract checks are not a proof of arbitrary code.
 
 The user-corrected model matrix remains authoritative:
 
@@ -25,7 +28,7 @@ The user-corrected model matrix remains authoritative:
 The pipeline's four-seat ceiling, controller-owned leases/fencing, chapter isolation,
 Oracle safeguards and Gemini 3.1 Pro synthesis remain required. The
 [4.2.4 routing guide](docs/ROUTING_4.2.4.md) records the inherited routing
-contract. This upgrade requires a fresh protected 4.2.5 supervisor and
+contract. This upgrade requires a fresh protected 4.2.6 supervisor and
 acceptance snapshot; the old frozen validator cannot approve changed execution
 contracts. Preserve native credentials, task identities and repair budgets.
 

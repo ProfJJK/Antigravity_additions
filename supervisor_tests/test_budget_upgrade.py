@@ -116,3 +116,38 @@ def test_wrong_sqlite_database_and_link_are_rejected(tmp_path):
         pytest.skip('Host policy disallows real symlink creation')
     with pytest.raises((ValueError, RuntimeError)):
         migrate_budget_state(source, target)
+
+
+def test_component_recovery_reservations_and_wal_history_survive_upgrade(tmp_path):
+    from cochem_supervisor.component_recovery import RecoveryLedger
+    source,target=roots(tmp_path)
+    Ledger(source/'supervisor.db')
+    recovery=RecoveryLedger(source/'component-recovery.db')
+    connection=sqlite3.connect(recovery.path)
+    connection.execute('PRAGMA journal_mode=WAL')
+    try:
+        for at in (1000,1010,1030):
+            recovery.observe('docker_engine',False,now=at)
+        # A crash between reservation and finish must not refund this action.
+        result=migrate_budget_state(source,target)
+        assert result['component_status']=='LEDGER_COPIED'
+        assert migrate_budget_state(source,target)['component_status']=='IDENTICAL_LEDGER_PRESERVED'
+        migrated=RecoveryLedger(target/'component-recovery.db')
+        assert migrated.observe('docker_engine',False,now=1040)['state']=='exhausted'
+        migrated.finish('docker_engine',{'interrupted':True})
+        with pytest.raises(ValueError,match='differs'):
+            migrate_budget_state(source,target)
+        assert migrated.observe('docker_engine',True,now=1050)['attempts']==1
+    finally:
+        connection.close()
+
+
+def test_component_ledger_mismatch_is_checked_before_copying_model_ledger(tmp_path):
+    from cochem_supervisor.component_recovery import RecoveryLedger
+    source,target=roots(tmp_path)
+    Ledger(source/'supervisor.db')
+    RecoveryLedger(source/'component-recovery.db').observe('warden',False,now=1)
+    RecoveryLedger(target/'component-recovery.db').observe('warden',False,now=2)
+    with pytest.raises(ValueError,match='differs'):
+        migrate_budget_state(source,target)
+    assert not (target/'supervisor.db').exists()

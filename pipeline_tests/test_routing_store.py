@@ -203,7 +203,7 @@ def test_real_lease_expiry_consumes_failure_budget_and_releases_occupancy(tmp_pa
     assert store.reap_expired()[0]["job_id"] == job_id
     assert store.get(job_id)["routing"]["failure_count"] == 1
     assert store.routing_status()["active_reservations"] == []
-    assert store.workflow(workflow_id)["status"] == "FAILED"
+    assert store.workflow(workflow_id)["status"] == "BLOCKED"
     assert store.heartbeat(job_id, node["attempt_id"], node["fencing_token"]) is False
 
 

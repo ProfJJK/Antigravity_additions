@@ -23,6 +23,11 @@ def redact(value):
                                ('route_reservation_id','route_reservation_sha256')):
             if isinstance(value.get(source),str) and value[source]:
                 public[target] = hashlib.sha256(value[source].encode('utf-8')).hexdigest()
+        if isinstance(value.get('receipt'),dict):
+            # Commit to the actual immutable receipt before private lease and
+            # reservation fields are redacted from the authenticated view.
+            public['receipt_sha256']=hashlib.sha256(json.dumps(value['receipt'],sort_keys=True,
+                separators=(',',':'),ensure_ascii=False,allow_nan=False).encode()).hexdigest()
         return public
     if isinstance(value,list):
         return [redact(item) for item in value]
@@ -69,6 +74,8 @@ class ControlServer(ThreadingHTTPServer):
 
 class Handler(BaseHTTPRequestHandler):
     server: ControlServer
+    protocol_version = 'HTTP/1.1'
+    disable_nagle_algorithm = True
     def log_message(self,*args):
         # Default HTTP logs may include user-supplied paths; structured service logs suffice.
         return None
@@ -90,6 +97,7 @@ class Handler(BaseHTTPRequestHandler):
     def dispatch(self):
         supplied=self.headers.get('Authorization','')
         if not hmac.compare_digest(supplied.encode('utf-8'),('Bearer '+self.server.token).encode('utf-8')):
+            self.close_connection=True
             self.reply(401,{'error':'Unauthorized'})
             return
         runtime=self.server.runtime
@@ -97,6 +105,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if self.command=='GET' and path=='/health':
                 self.reply(200,redact(runtime.status()))
+            elif self.command=='GET' and path=='/knowledge/status':
+                self.reply(200,runtime.knowledge.status())
             elif self.command=='GET' and path=='/coding/projects':
                 self.reply(200,{'projects':sorted(runtime.config.coding_projects)})
             elif self.command=='GET' and path.startswith('/coding/workflow/'):
@@ -104,14 +114,23 @@ class Handler(BaseHTTPRequestHandler):
             elif self.command=='GET' and path.startswith('/workflow/'):
                 self.reply(200,public_workflow(runtime.store.workflow(path[len('/workflow/'):])) )
             elif self.command=='POST' and path in ('/submit','/cancel','/routing/resume',
-                                                  '/coding/submit','/coding/cancel','/coding/resume'):
+                                                  '/coding/submit','/coding/cancel','/coding/resume',
+                                                  '/knowledge/search','/knowledge/read','/knowledge/refresh'):
                 size=int(self.headers.get('Content-Length','0'))
                 if not 1<=size<=4*1024*1024:
                     raise ValueError('Request body must be 1..4194304 bytes')
                 data=json.loads(self.rfile.read(size))
                 if not isinstance(data,dict):
                     raise ValueError('Request must be a JSON object')
-                if path=='/coding/submit':
+                if path=='/knowledge/search':
+                    self.reply(200,{'results':runtime.knowledge.search(data['query'],data.get('limit',5))})
+                elif path=='/knowledge/read':
+                    self.reply(200,runtime.knowledge.read(data['doc_path']))
+                elif path=='/knowledge/refresh':
+                    if set(data)-{'full'} or type(data.get('full',False)) is not bool:
+                        raise ValueError('Knowledge refresh accepts only a boolean full flag')
+                    self.reply(200,runtime.knowledge.refresh(full=data.get('full',False)))
+                elif path=='/coding/submit':
                     workflow=runtime.submit_coding(data['project_id'],data['objective'],
                         data.get('requirements',['REQ-001']),workflow_id=data.get('workflow_id'))
                     self.reply(202,public_workflow(workflow))
@@ -152,18 +171,40 @@ class ControlClient:
         if not 1024<=port<=65535:
             raise ValueError('Invalid controller port')
         self.port,self.token_file=port,Path(token_file)
+        self._knowledge_lock=threading.Lock()
+        self._knowledge_connection=None
 
     def call(self,operation:str,data:dict|None=None):
-        token=self.token_file.read_text(encoding='utf-8').strip()
+        if operation.startswith('/knowledge/'):
+            # The read-only MCP repeatedly queries one authenticated controller.
+            # Reusing its bounded connection removes TCP/thread setup per query;
+            # every request still rereads the token and authenticates at the server.
+            with self._knowledge_lock:
+                if self._knowledge_connection is None:
+                    self._knowledge_connection=http.client.HTTPConnection('127.0.0.1',self.port,timeout=30)
+                try:
+                    return self._call(operation,data,self._knowledge_connection)
+                except BaseException:
+                    self._knowledge_connection.close();self._knowledge_connection=None
+                    raise
         connection=http.client.HTTPConnection('127.0.0.1',self.port,timeout=30)
         try:
-            body=json.dumps(data) if data is not None else None
-            connection.request('POST' if data is not None else 'GET',operation,body,
-                               {'Authorization':'Bearer '+token,'Content-Type':'application/json'})
-            response=connection.getresponse()
-            value=json.loads(response.read())
-            if response.status>=400:
-                raise RuntimeError(value.get('error','Controller rejected request'))
-            return value
+            return self._call(operation,data,connection)
         finally:
             connection.close()
+
+    def _call(self,operation,data,connection):
+        token=self.token_file.read_text(encoding='utf-8').strip()
+        body=json.dumps(data) if data is not None else None
+        connection.request('POST' if data is not None else 'GET',operation,body,
+                           {'Authorization':'Bearer '+token,'Content-Type':'application/json'})
+        response=connection.getresponse()
+        value=json.loads(response.read())
+        if response.status>=400:
+            raise RuntimeError(value.get('error','Controller rejected request'))
+        return value
+
+    def close(self):
+        with self._knowledge_lock:
+            if self._knowledge_connection is not None:
+                self._knowledge_connection.close();self._knowledge_connection=None

@@ -1,12 +1,19 @@
 {
-  "private_root": "C:\\ProgramData\\CoChemPipeline425\\private",
+  "private_root": "C:\\ProgramData\\CoChemPipeline426\\private",
+  "knowledge": {
+    "enabled": true,
+    "source_root": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\.sources",
+    "wiki_root": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\wiki",
+    "manifest_path": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\v4.1.2_manifest.json",
+    "state_root": "C:\\ProgramData\\CoChemPipeline426\\private\\knowledge"
+  },
   "slot_roots": {
-    "slot1": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot1",
-    "slot2": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot2",
-    "slot3": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot3",
-    "slot4": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot4",
-    "slot5": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot5",
-    "slot6": "C:\\ProgramData\\CoChemPipeline425\\workers\\slot6"
+    "slot1": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot1",
+    "slot2": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot2",
+    "slot3": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot3",
+    "slot4": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot4",
+    "slot5": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot5",
+    "slot6": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot6"
   },
   "workers": {
     "slot1": {
@@ -81,7 +88,8 @@
     }
   },
   "timeout_seconds": 1800,
-  "lease_seconds": 60,
+  "lease_seconds": 1800,
+  "heartbeat_seconds": 5,
   "max_attempts": 3,
   "context_budget": 16384,
   "reserved_fraction": 0.25,
@@ -278,7 +286,7 @@
           "-q"
         ],
         "kind": "pytest",
-        "timeout_seconds": 300
+        "timeout_seconds": 30
       }
     ],
     "executable": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",

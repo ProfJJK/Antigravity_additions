@@ -18,8 +18,8 @@ from cochem_pipeline.store import JobStore
 from cochem_pipeline.worker import ExecutionRevokedError, WorkerCleanupError
 
 
-def controller(tmp_path,max_attempts=2):
-    policy = load_routing_policy()
+def controller(tmp_path,max_attempts=2,policy=None):
+    policy = policy or load_routing_policy()
     store = JobStore(tmp_path/'jobs.db',max_attempts=max_attempts,routing_policy=policy)
     workflow = store.submit('Write one documented chapter',['REQ-1'],1)
     runtime = Runtime.__new__(Runtime)
@@ -41,6 +41,42 @@ def claim(runtime,requires_cleanup=False,lease_seconds=60):
     assert node is not None
     runtime.active[node['job_id']] = {'node':node,'slot':'slot1','tripped':False}
     return node
+
+
+def test_default_lease_and_renewal_each_retain_thirty_minutes(tmp_path,monkeypatch):
+    from cochem_pipeline import routing_store, store as store_module
+    clock = [1900000000.]
+    measured = SimpleNamespace(time=lambda: clock[0])
+    monkeypatch.setattr(routing_store,'time',measured)
+    monkeypatch.setattr(store_module,'time',measured)
+    runtime,_ = controller(tmp_path)
+    node = runtime.store.claim('lease-contract',worker_slot='slot1')
+    assert node['lease_expires_at']==clock[0]+1800
+    clock[0] += 5
+    assert runtime.store.heartbeat(node['job_id'],node['attempt_id'],node['fencing_token'])
+    assert runtime.store.get(node['job_id'])['lease_expires_at']==clock[0]+1800
+
+
+def test_sqlite_lease_maximum_cannot_be_bypassed_by_direct_claim_or_renewal(tmp_path,monkeypatch):
+    from cochem_pipeline import routing_store, store as store_module
+    clock=[1900000000.]
+    measured=SimpleNamespace(time=lambda:clock[0])
+    monkeypatch.setattr(routing_store,'time',measured)
+    monkeypatch.setattr(store_module,'time',measured)
+    runtime,_=controller(tmp_path)
+    with pytest.raises(ValueError,match='at most 3600'):
+        runtime.store.claim('too-long',worker_slot='slot1',lease_seconds=3600.001)
+    node=runtime.store.claim('maximum',worker_slot='slot1',lease_seconds=3600)
+    expires=node['lease_expires_at']
+    assert expires==clock[0]+3600
+    with pytest.raises(ValueError,match='at most 3600'):
+        runtime.store.heartbeat(node['job_id'],node['attempt_id'],node['fencing_token'],3600.001)
+    assert runtime.store.get(node['job_id'])['lease_expires_at']==expires
+    clock[0]=expires
+    assert not runtime.store.heartbeat(node['job_id'],node['attempt_id'],node['fencing_token'],3600)
+    replacement=runtime.store.claim('after-expiry',worker_slot='slot1',lease_seconds=3600)
+    assert replacement['fencing_token']>node['fencing_token']
+    assert replacement['lease_expires_at']==expires+3600
 
 
 def test_quota_and_auth_advance_routes_without_spending_task_failure_budget(tmp_path):
@@ -77,8 +113,90 @@ def test_many_dispatches_do_not_replace_the_ordinary_failure_counter(tmp_path):
     assert fourth['routing']['failure_count'] == 1
     assert fourth['route']['candidate_index'] == third['route']['candidate_index']
     assert runtime._record_failure(fourth,'slot1',ProviderFailure('protocol'))
-    assert runtime.store.get(fourth['job_id'])['status'] == 'FAILED'
+    assert runtime.store.get(fourth['job_id'])['status'] == 'BLOCKED'
     assert runtime.store.claim('after-task-budget',worker_slot='slot1') is None
+
+
+@pytest.mark.parametrize('failure', [TimeoutError('Native deadline exceeded'), ProviderFailure('protocol')])
+def test_transient_native_failures_wait_durably_until_exact_deadline(tmp_path,monkeypatch,failure):
+    """Exercise real SQLite claims across restarts without sleeping for retry delays."""
+    from cochem_pipeline import routing_store, store as store_module
+    clock = [1900000000.]
+    measured = SimpleNamespace(time=lambda: clock[0])
+    monkeypatch.setattr(routing_store,'time',measured)
+    monkeypatch.setattr(store_module,'time',measured)
+    policy = load_routing_policy({'backoff_base_seconds':3,'backoff_max_seconds':5,
+                                  'backoff_jitter_fraction':0})
+    runtime,workflow = controller(tmp_path,max_attempts=4,policy=policy)
+    node = claim(runtime,requires_cleanup=True)
+    preferred = node['route']['key']
+    for failures,delay in enumerate((3,5,5),start=1):
+        assert runtime._record_failure(node,'slot1',failure)
+        waiting = runtime.store.get(node['job_id'])
+        assert waiting['status']=='PENDING_RETRY'
+        assert waiting['routing']['state']=='WAITING'
+        assert waiting['routing']['next_eligible_at']==clock[0]+delay
+        assert waiting['routing']['failure_count']==failures
+        assert waiting['routing']['cursor']==0 and waiting['routing']['cycle']==0
+        assert waiting['lease_expires_at'] is None and waiting['lease_owner'] is None
+        assert runtime.store.routing_status()['active_reservations']==[]
+        assert runtime.store.routing_status()['holds']==[]
+        assert runtime.store.claim('too-soon',worker_slot='slot1') is None
+        runtime.store = JobStore(runtime.store.path,max_attempts=4,routing_policy=policy)
+        assert runtime.store.get(node['job_id'])['routing']==waiting['routing']
+        clock[0] += delay-.001
+        assert runtime.store.claim('before-boundary',worker_slot='slot1') is None
+        clock[0] = waiting['routing']['next_eligible_at']
+        previous = node
+        node = claim(runtime,requires_cleanup=True)
+        assert node['route']['key']==preferred
+        assert node['attempt_id']!=previous['attempt_id']
+        assert node['fencing_token']>previous['fencing_token']
+    assert runtime._record_failure(node,'slot1',failure)
+    final = runtime.store.get(node['job_id'])
+    assert final['status']=='BLOCKED' and final['routing']['failure_count']==4
+    assert runtime.store.workflow(workflow['workflow_id'])['root']['status']=='BLOCKED'
+    assert runtime.store.claim('budget-exhausted',worker_slot='slot1') is None
+    retries = [event for event in runtime.store.events(workflow['workflow_id'])
+               if event['event']=='TASK_RETRY_BACKOFF']
+    assert [event['details']['delay_seconds'] for event in retries]==[3,5,5]
+
+
+@pytest.mark.parametrize('rejection',['chapter_schema','synthesis_hash'])
+def test_valid_json_with_invalid_artifacts_still_consumes_code_failure_budget(tmp_path,rejection):
+    from cochem_pipeline.store import output_digest
+    from pipeline_tests.test_routing_store import completion
+    from pipeline_tests.test_store import chapter, manifest
+    runtime,workflow = controller(tmp_path,max_attempts=2)
+
+    def complete(node,output):
+        _,receipt = completion(node)
+        receipt['output_sha256'] = output_digest(output)
+        return runtime.store.complete(node['job_id'],node['attempt_id'],node['fencing_token'],output,receipt)
+
+    complete(claim(runtime),manifest(1))
+    node = claim(runtime)
+    output = chapter(node)
+    if rejection=='chapter_schema':
+        output['wbs_tasks_defined'] = []
+    else:
+        complete(node,output)
+        node = claim(runtime)
+        output = {'artifact_text':'Invalid synthesized document',
+                  'chapter_hashes':{name:'f'*64 for name in node['payload']['chapter_hashes']}}
+    with pytest.raises(ValueError) as rejected:
+        complete(node,output)
+    assert runtime._record_failure(node,'slot1',rejected.value)
+    pending = runtime.store.get(node['job_id'])
+    assert pending['output'] is None
+    assert pending['routing']['failure_count']==1
+    assert pending['routing']['state']=='READY'
+    assert pending['routing']['cycle']==0 and pending['routing']['next_eligible_at']==0
+    assert runtime.store.routing_status()['holds']==[]
+    with sqlite3.connect(runtime.store.path) as connection:
+        latest = json.loads(connection.execute('SELECT details FROM recovery_telemetry ORDER BY id DESC LIMIT 1').fetchone()[0])
+    assert latest['category']=='code'
+    assert runtime.store.workflow(workflow['workflow_id'])['status']=='IN_PROGRESS'
 
 
 def test_context_failure_rotates_only_this_job_without_global_provider_hold(tmp_path):

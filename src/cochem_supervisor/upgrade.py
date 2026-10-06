@@ -28,19 +28,40 @@ def _checked_json(path: Path) -> dict:
     return value
 
 
-def _ledger_digest(path: Path) -> str:
+def _ledger_digest(path: Path, *, component: bool = False) -> str:
     _stat_plain(path)
     with closing(sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)) as db:
         if db.execute('PRAGMA integrity_check').fetchone()[0] != 'ok':
             raise ValueError('Supervisor ledger integrity check failed')
         tables = {row[0] for row in db.execute("SELECT name FROM sqlite_schema WHERE type='table'")}
-        if not {'supervisor_incidents', 'supervisor_attempts', 'supervisor_events'} <= tables:
+        required = {'components', 'recovery_events'} if component else {'supervisor_incidents', 'supervisor_attempts', 'supervisor_events'}
+        if not required <= tables:
             raise ValueError('Source is not a supervisor budget ledger')
         digest = hashlib.sha256()
         for line in db.iterdump():
             digest.update(line.encode('utf-8'))
             digest.update(b'\n')
-        return digest.hexdigest()
+    return digest.hexdigest()
+
+
+def _copy_ledger(old: Path, new: Path, expected: str, *, component: bool = False) -> str:
+    if new.exists() or new.is_symlink():
+        if _ledger_digest(new, component=component) != expected:
+            raise ValueError('Existing destination ledger differs; budgets will not be overwritten')
+        return 'IDENTICAL_LEDGER_PRESERVED'
+    temporary = new.parent / ('.ledger-upgrade-' + uuid.uuid4().hex + '.db')
+    try:
+        with closing(sqlite3.connect(old.as_uri() + '?mode=ro', uri=True, timeout=5)) as origin:
+            with closing(sqlite3.connect(temporary, timeout=5)) as destination:
+                origin.backup(destination)
+        if _ledger_digest(temporary, component=component) != expected:
+            raise ValueError('Source ledger changed during upgrade; stop its writer first')
+        with temporary.open('rb') as stream:
+            os.fsync(stream.fileno())
+        os.replace(temporary, new)
+    finally:
+        temporary.unlink(missing_ok=True)
+    return 'LEDGER_COPIED'
 
 
 def migrate_budget_state(source_private: Path, target_private: Path) -> dict:
@@ -76,26 +97,22 @@ def migrate_budget_state(source_private: Path, target_private: Path) -> dict:
     old, new = source / 'supervisor.db', target / 'supervisor.db'
     result = {'source_private': str(source), 'target_private': str(target),
               'status': 'NO_PRIOR_LEDGER', 'quarantine_preserved': quarantine_value is not None}
-    if old.exists() or old.is_symlink():
-        expected = _ledger_digest(old)
-        if new.exists() or new.is_symlink():
-            if _ledger_digest(new) != expected:
-                raise ValueError('Existing destination ledger differs; budgets will not be overwritten')
-            result.update(status='IDENTICAL_LEDGER_PRESERVED', ledger_digest=expected)
+    copies = []
+    for filename, component in (('supervisor.db', False), ('component-recovery.db', True)):
+        origin, destination = source / filename, target / filename
+        if origin.exists() or origin.is_symlink():
+            expected = _ledger_digest(origin, component=component)
+            # Preflight every destination before publishing either database.
+            if destination.exists() or destination.is_symlink():
+                if _ledger_digest(destination, component=component) != expected:
+                    raise ValueError('Existing destination ledger differs; budgets will not be overwritten')
+            copies.append((origin, destination, expected, component))
+    for origin, destination, expected, component in copies:
+        status = _copy_ledger(origin, destination, expected, component=component)
+        if component:
+            result.update(component_status=status, component_ledger_digest=expected)
         else:
-            temporary = target / ('.ledger-upgrade-' + uuid.uuid4().hex + '.db')
-            try:
-                with closing(sqlite3.connect(old.as_uri() + '?mode=ro', uri=True, timeout=5)) as origin:
-                    with closing(sqlite3.connect(temporary, timeout=5)) as destination:
-                        origin.backup(destination)
-                if _ledger_digest(temporary) != expected:
-                    raise ValueError('Source ledger changed during upgrade; stop its writer first')
-                with temporary.open('rb') as stream:
-                    os.fsync(stream.fileno())
-                os.replace(temporary, new)
-            finally:
-                temporary.unlink(missing_ok=True)
-            result.update(status='LEDGER_COPIED', ledger_digest=expected)
+            result.update(status=status, ledger_digest=expected)
     if quarantine_value is not None:
         write_json(target_quarantine, quarantine_value)
     write_json(target / 'budget-upgrade.json', result)

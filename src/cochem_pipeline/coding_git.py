@@ -19,6 +19,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
+import tempfile
 import threading
 import time
 from typing import Mapping
@@ -450,12 +451,90 @@ class GitStager:
         identity = hashlib.sha256((snapshot.repository + '\0' + workflow_id).encode()).hexdigest()
         return self.state_root / (identity + '.git')
 
+    def _patch_path(self, staging: Path, chunk_id: str) -> Path:
+        return self.state_root / '.staging' / staging.stem / (hashlib.sha256(chunk_id.encode()).hexdigest()+'.patch')
+
+    @staticmethod
+    def _change_limit(value):
+        if value is not None and (type(value) is not int or not 1<=value<=100):
+            raise GitSafetyError('Git changed-line limit must be an integer from 1 through 100')
+        return value
+
+    @staticmethod
+    def _changed_lines(staging: Path, parent: str, result: str, limit):
+        counts=_git(staging,'diff','--no-ext-diff','--no-textconv','--no-renames','--numstat','-z',parent,result,'--')
+        total=0
+        for record in counts.split(b'\0'):
+            if not record:
+                continue
+            added,deleted,_=record.split(b'\t',2)
+            if not added.isdigit() or not deleted.isdigit():
+                if limit is not None:
+                    raise GitSafetyError('Binary changes cannot satisfy the coding Git changed-line limit')
+                return None
+            total+=int(added)+int(deleted)
+        if limit is not None and total>limit:
+            raise GitSafetyError('Git patch exceeds its added-and-deleted changed-line limit')
+        return total
+
+    @staticmethod
+    def _apply_patch_tree(staging: Path, parent: str, patch: bytes, tree: str, directory: Path):
+        # A separate index guarantees git apply cannot edit the user's working
+        # tree or the repository's index, even for binary/mode-only patches.
+        with tempfile.TemporaryDirectory(prefix='.apply-',dir=directory) as temporary:
+            env={'GIT_INDEX_FILE':str(Path(temporary)/'index')}
+            _git(staging,'read-tree',parent,env_extra=env)
+            _git(staging,'apply','--cached','--binary','--allow-empty','--whitespace=nowarn','-',
+                 data=patch,env_extra=env)
+            applied=_git(staging,'write-tree',env_extra=env).decode().strip()
+            if applied!=tree:
+                raise GitSafetyError('Applied patch tree does not match the immutable staged result')
+
+    def _write_patch(self, staging: Path, parent: str, result: str, tree: str, chunk_id: str):
+        patch=_git(staging,'diff','--binary','--full-index','--no-ext-diff','--no-textconv','--no-renames',
+                   '--no-color','--src-prefix=a/','--dst-prefix=b/',parent,result,'--')
+        path=self._patch_path(staging,chunk_id)
+        _reject_links(path,missing_ok=True)
+        path.parent.mkdir(mode=0o700,parents=True,exist_ok=True)
+        self._apply_patch_tree(staging,parent,patch,tree,path.parent)
+        if path.exists():
+            if not path.is_file() or path.read_bytes()!=patch:
+                raise GitSafetyError('A different patch already owns this workflow chunk')
+        else:
+            descriptor,temporary=tempfile.mkstemp(prefix='.patch-',suffix='.pending',dir=path.parent)
+            try:
+                with os.fdopen(descriptor,'wb') as stream:
+                    stream.write(patch)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(temporary,path)
+            finally:
+                Path(temporary).unlink(missing_ok=True)
+        return path,hashlib.sha256(patch).hexdigest()
+
+    def _verify_patch(self, staging: Path, receipt: Mapping, parent: str, result: str, tree: str):
+        path=self._patch_path(staging,receipt['chunk_id'])
+        if receipt.get('patch_path')!=str(path):
+            raise GitSafetyError('Staged patch path is not controller-owned')
+        _reject_links(path)
+        if not path.is_file():
+            raise GitSafetyError('Staged patch artifact is missing')
+        patch=path.read_bytes()
+        if hashlib.sha256(patch).hexdigest()!=receipt.get('patch_sha256'):
+            raise GitSafetyError('Staged patch hash does not match its sealed receipt')
+        self._apply_patch_tree(staging,parent,patch,tree,path.parent)
+        limit=self._change_limit(receipt.get('max_changed_lines'))
+        if self._changed_lines(staging,parent,result,limit)!=receipt.get('changed_lines'):
+            raise GitSafetyError('Staged Git changed-line count does not match its receipt')
+
     @_using_stager_git
     def stage(self, snapshot: RepositorySnapshot, files: Mapping[str, bytes], *,
               workflow_id: str, chunk_id: str, parent_commit: str | None = None,
-              modes: Mapping[str, str] | None = None, message: str = 'Verified coding chunk') -> dict:
+              modes: Mapping[str, str] | None = None, message: str = 'Verified coding chunk',
+              max_changed_lines: int | None = None) -> dict:
         """Create an immutable commit in private storage, without changing the project."""
         files = _validate_files(files)
+        max_changed_lines=self._change_limit(max_changed_lines)
         if not isinstance(chunk_id, str) or not chunk_id or len(chunk_id) > 1024:
             raise GitSafetyError('Chunk ID must be a bounded string')
         if not isinstance(message, str) or len(message.encode()) > 16384 or '\0' in message:
@@ -524,7 +603,9 @@ class GitStager:
             digest = snapshot_digest(files, selected_modes)
             parent_time = int(_git(staging, 'show', '-s', '--format=%ct', parent).decode().strip())
             date = f'@{parent_time + 1} +0000'
-            body = f'{message}\n\nWorkflow: {workflow_id}\nChunk: {chunk_id}\nSnapshot-SHA256: {digest}\n'
+            limit_text='unbounded' if max_changed_lines is None else str(max_changed_lines)
+            body = (f'{message}\n\nWorkflow: {workflow_id}\nChunk: {chunk_id}\n'
+                    f'Max-Changed-Lines: {limit_text}\nSnapshot-SHA256: {digest}\n')
             result = _oid(_git(staging, 'commit-tree', tree, '-p', parent, data=body.encode(),
                                env_extra={'GIT_AUTHOR_DATE': date, 'GIT_COMMITTER_DATE': date}).decode().strip())
             workflow_hash = hashlib.sha256(workflow_id.encode()).hexdigest()
@@ -536,11 +617,15 @@ class GitStager:
                 prior = '0' * len(result)
             if prior not in ('0' * len(result), result):
                 raise GitSafetyError('A different commit already owns this workflow chunk')
+            changed_lines=self._changed_lines(staging,parent,result,max_changed_lines)
+            patch_path,patch_sha256=self._write_patch(staging,parent,result,tree,chunk_id)
             _git(staging, 'update-ref', output_ref, result, prior)
             return {'baseline_commit': snapshot.commit, 'parent_commit': parent,
                     'result_commit': result, 'tree': tree, 'snapshot_sha256': digest,
                     'staging_repository': str(staging), 'output_ref': output_ref,
                     'workflow_id': workflow_id, 'chunk_id': chunk_id,
+                    'patch_path':str(patch_path),'patch_sha256':patch_sha256,
+                    'max_changed_lines':max_changed_lines,'changed_lines':changed_lines,
                     'repository': snapshot.repository, 'branch': snapshot.branch,
                     'status': 'STAGED'}
 
@@ -585,9 +670,12 @@ class GitStager:
         if not isinstance(digest, str) or not re.fullmatch(r'[0-9a-f]{64}', digest):
             raise GitSafetyError('Staged snapshot digest is invalid')
         commit_bytes = _git(staging, 'cat-file', 'commit', result)
-        if not commit_bytes.endswith(f'\nSnapshot-SHA256: {digest}\n'.encode()):
+        limit=self._change_limit(receipt.get('max_changed_lines'))
+        limit_text='unbounded' if limit is None else str(limit)
+        if not commit_bytes.endswith(f'\nMax-Changed-Lines: {limit_text}\nSnapshot-SHA256: {digest}\n'.encode()):
             raise GitSafetyError('Staged snapshot digest does not match its immutable commit')
         _git(staging, 'merge-base', '--is-ancestor', snapshot.commit, result)
+        self._verify_patch(staging,receipt,parent,result,tree)
         repository = _repository(Path(snapshot.repository))
         _git(repository, 'check-ref-format', snapshot.ref)
         common_dir = Path(os.fsdecode(_git(repository, 'rev-parse', '--path-format=absolute', '--git-common-dir')).strip())

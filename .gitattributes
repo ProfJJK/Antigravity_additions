@@ -1,0 +1,4 @@
+# Knowledge manifest hashes cover exact bytes, including on Windows checkouts.
+knowledge/** -text
+# Preserve whitespace in the supplied source captures (including Markdown breaks).
+knowledge/.sources/** -whitespace

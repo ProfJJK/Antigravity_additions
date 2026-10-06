@@ -159,6 +159,7 @@ class CodingFixture:
         return {'execution_kind': 'controller-storage-contract-fixture', 'kind': 'docker-test-execution',
             'job_id': node['job_id'], 'attempt_id': node['attempt_id'], 'image_id': self.docker.image,
             'policy_sha256': self.docker.digest, 'cleanup_verified': True, 'source_verified': True,
+            'test_cycle_seconds':0.1,'test_cycle_deadline_met':True,
             'passed': passed, 'failure_category': None if passed else 'tests_failed', 'quarantine_required': False,
             'source': {'sha256': digest(index), 'files': index, 'file_count': len(index), 'bytes': sum(map(len, files.values()))},
             'commands': [{'name': 'regression', 'kind': 'pytest', 'argv': ['python', '-I', '-m', 'pytest', 'tests'],
@@ -246,7 +247,7 @@ class CodingFixture:
         else:
             staged = self.stager.stage(baseline, self.store.coding_files(state['current_snapshot']),
                 workflow_id=self.workflow_id, chunk_id=f'leaf-{state["leaf_index"]}-cycle-{state["cycle"]}',
-                parent_commit=state['last_commit'])
+                parent_commit=state['last_commit'],max_changed_lines=100)
         self.store.prepare_coding_integration(node, staged)
         return baseline, staged
 
@@ -308,11 +309,57 @@ def test_red_green_rejects_initial_green_or_collection_errors(tmp_path, passed, 
     case.claim('CODE_TEST_AUTHOR')
 
 
-def test_preservation_policy_requires_initial_green(tmp_path):
-    case = CodingFixture(tmp_path, strategy='preserve_behavior')
-    case.author()
-    case.test(passed=True)
-    case.claim('CODE_EDIT')
+def test_preservation_policy_cannot_bypass_required_failing_first(tmp_path):
+    with pytest.raises(ValueError,match='mandatory failing-first'):
+        CodingFixture(tmp_path, strategy='preserve_behavior')
+
+
+def test_existing_registered_test_mocks_cannot_enter_the_execution_snapshot(tmp_path):
+    case=CodingFixture(tmp_path)
+    (case.repository/'tests/test_existing.py').write_text('from unittest.mock import Mock\ndef test_existing():\n    assert Mock()\n')
+    git(case.repository,'add','.');git(case.repository,'commit','-m','Add disallowed test dependency')
+    git(case.repository,'branch','-f','delivery','HEAD')
+    snapshot=capture_repository(case.repository,'delivery')
+    with pytest.raises(ValueError,match='Zero-mock'):
+        case.store.submit_coding_snapshot(case.project,'Inspect tests',['REQ-1'],snapshot,case.docker,workflow_id='unsafe-tests')
+
+
+@pytest.mark.parametrize('category',['protocol','timeout'])
+def test_native_transport_failure_retries_same_stage_after_durable_backoff(tmp_path,monkeypatch,category):
+    case=CodingFixture(tmp_path)
+    case.author(); case.test(passed=False)
+    node=case.claim('CODE_EDIT')
+    from types import SimpleNamespace
+    from cochem_pipeline import routing_store,store as store_module
+    clock=[time.time()]
+    measured=SimpleNamespace(time=lambda:clock[0])
+    monkeypatch.setattr(routing_store,'time',measured)
+    monkeypatch.setattr(store_module,'time',measured)
+    assert case.store.fail(node['job_id'],node['attempt_id'],node['fencing_token'],
+        'Native transport produced no usable artifact',retry=True,category=category)
+    failed=case.store.get(node['job_id'])
+    assert failed['routing']['failure_count']==1 and failed['routing']['state']=='WAITING'
+    assert case.state()['cycle']==1 and case.state()['consecutive_failures']==0
+    assert case.store.claim('before-backoff',worker_slot='worker-one') is None
+    case.store=JobStore(case.store.path,routing_policy=case.policy)
+    clock[0]=failed['routing']['next_eligible_at']-.001
+    assert case.store.claim('before-exact-boundary',worker_slot='worker-one') is None
+    clock[0]=failed['routing']['next_eligible_at']
+    retry=case.claim('CODE_EDIT')
+    assert retry['job_id']==node['job_id'] and retry['attempt_id']!=node['attempt_id']
+    assert case.store.fail(retry['job_id'],retry['attempt_id'],retry['fencing_token'],
+        'Actual proposed artifact violates its bounded contract',retry=True,category='code')
+    assert case.state()['cycle']==2 and case.state()['consecutive_failures']==1
+
+
+@pytest.mark.parametrize('duration,met',[(30.01,False),(float('nan'),True),(None,True),(1,False)])
+def test_precode_receipt_cannot_bypass_test_and_collection_deadline(tmp_path,duration,met):
+    case=CodingFixture(tmp_path);case.author();node=case.claim('CODE_TEST')
+    evidence=case.test_evidence(node,passed=False)
+    evidence.update(test_cycle_seconds=duration,test_cycle_deadline_met=met)
+    with pytest.raises(ValueError):
+        case.complete_controller(node,{'passed':False,'phase':'precode'},evidence)
+    assert case.state()['status']=='TESTING_PRECODE'
 
 
 @pytest.mark.parametrize('mutation',['missing','skipped','unrelated_failure','outcome_alias'])
@@ -491,21 +538,21 @@ def test_edits_from_failed_cycle_still_require_file_review_after_later_fix(tmp_p
     case.test(passed=False)
     first = case.claim('CODE_EDIT')
     before = case.store.coding_files(case.state()['current_snapshot'])
-    after = dict(before, **{'src/new_helper.py': b'HELPER = 1\n'})
+    after = dict(before)
+    after['src/answer.py']=after['src/answer.py'].replace(b'# Existing documentation line 0',b'# Corrected explanation from the first failed cycle')
     changes = observed_changes(before, after, case.snapshot.files, case.project)
     case.complete_native(first, {'done': False, 'requirements_traced': ['REQ-1']},
                           {'changes': changes, 'snapshot_sha256': digest(manifest(after))}, after)
     case.test(passed=False)
-    # The second attempt changes answer.py only.  Its accepted chunk must still
-    # include new_helper.py from the preceding failed attempt.
+    # The second attempt changes only the final answer assignment. Its accepted
+    # file diff must retain the earlier explanation change too.
     case.reviews(approved=False,objective_satisfied=False)
     case.edit()
     case.test(passed=True)
     pending = [case.store.get(identifier) for identifier in case.state()['pending_reviews']]
-    assert {node['payload']['file']['path'] for node in pending} == {
-        'src/new_helper.py', 'src/answer.py', 'tests/test_regression.py'}
-    helper_review = next(node for node in pending if node['payload']['file']['path'] == 'src/new_helper.py')
-    assert helper_review['payload']['file']['after_sha256'] == hashlib.sha256(b'HELPER = 1\n').hexdigest()
+    assert {node['payload']['file']['path'] for node in pending} == {'src/answer.py', 'tests/test_regression.py'}
+    source_review = next(node for node in pending if node['payload']['file']['path'] == 'src/answer.py')
+    assert '+# Corrected explanation from the first failed cycle' in source_review['payload']['file']['patch']
 
 
 def test_ten_cycle_and_three_pivot_budgets_survive_restart(tmp_path):
@@ -525,13 +572,89 @@ def test_ten_cycle_and_three_pivot_budgets_survive_restart(tmp_path):
                 'strategy': f'Analyze the specific failure set from cycle {cycle}'},
                 {'verified_sources': [{'path': '$test_receipt', 'source_sha256': digest(case.state()['last_test'])},
                     {'path': 'src/answer.py', 'source_sha256': manifest(case.store.coding_files(case.state()['current_snapshot']))['src/answer.py']}]})
-    assert case.state()['status'] == 'EXHAUSTED'
+    assert case.state()['status'] == 'PHYSICS_WALL'
     assert case.state()['cycle'] == 10
     assert case.state()['pivots'] == 3
     assert case.store.coding_workflow(case.workflow_id)['status'] == 'FAILED'
+    autopsy=case.state()['autopsy']
+    assert autopsy['marker']=='[HARD_ABORT: PHYSICS WALL]'
+    artifacts=case.store.coding_files(autopsy['snapshot_sha256'])
+    report=artifacts['Physics_Autopsy_Report.md']
+    assert hashlib.sha256(report).hexdigest()==autopsy['report_sha256']
+    assert report.decode()==autopsy['report'] and b'does not establish a physical impossibility' in report
+    evidence=json.loads(artifacts['AutopsyEvidence.json'])
+    assert digest(evidence)==autopsy['evidence_sha256']
+    assert evidence['scientific_diagnosis'] is None and evidence['trigger']=='methodological_pivots'
+    assert len(evidence['failures'])==10 and len(evidence['research_dossiers'])==3
+    assert digest(evidence['failure_history'])==evidence['failure_history_sha256']
+    assert all(len(json.dumps(item['diagnostics'],separators=(',',':')).encode())<2000
+               for item in evidence['research_dossiers'])
+    with sqlite3.connect(case.store.path) as conn:
+        assert conn.execute('SELECT error FROM pipeline_jobs WHERE job_id=?',(case.workflow_id,)).fetchone()[0].startswith('[HARD_ABORT: PHYSICS WALL]')
+        retained=json.loads(conn.execute('SELECT evidence_json FROM coding_evidence WHERE job_id=?',(case.workflow_id,)).fetchone()[0])
+        assert retained==evidence
+        for execution in evidence['executions']:
+            assert conn.execute('SELECT output_sha256 FROM pipeline_outputs WHERE job_id=?',(execution['job_id'],)).fetchone()[0]==execution['output_sha256']
+        with pytest.raises(sqlite3.IntegrityError,match='immutable'):
+            conn.execute('UPDATE coding_evidence SET evidence_json=? WHERE job_id=?',('{}',case.workflow_id))
+        with pytest.raises(sqlite3.IntegrityError,match='immutable'):
+            conn.execute('DELETE FROM coding_blobs WHERE sha256=?',(autopsy['report_sha256'],))
     assert case.store.claim('no-eleventh-cycle', worker_slot='worker-one') is None
     with pytest.raises(ValueError, match='final'):
         case.store.resume_coding(case.workflow_id, 'Cannot reset an exhausted budget')
+
+
+def test_ten_cycle_limit_still_writes_autopsy_without_claiming_three_failed_pivots(tmp_path):
+    case=CodingFixture(tmp_path);case.author();case.test(passed=False)
+    # Boundary restoration of an old durable state with fewer research pivots.
+    # No model/container execution is claimed by this storage-contract case.
+    with case.store._write() as conn:
+        state=case.store._coding_state(conn,case.workflow_id);state['cycle']=10;state['pivots']=2
+        root=case.store._get(conn,case.workflow_id)
+        case.store._coding_retry(conn,root,state,'Restored final cycle failed its actual contract')
+        case.store._save_coding(conn,case.workflow_id,state)
+    restarted=JobStore(case.store.path,routing_policy=case.policy)
+    state=restarted.coding_state(case.workflow_id)
+    assert state['status']=='EXHAUSTED'
+    assert state['autopsy']['marker']=='[HARD_ABORT: TDD CYCLE LIMIT]'
+    assert state['autopsy']['trigger']=='tdd_cycles'
+    assert 'Physics_Autopsy_Report.md' in restarted.coding_files(state['autopsy']['snapshot_sha256'])
+    assert restarted.claim('no-resume',worker_slot='worker-one') is None
+
+
+def test_third_unresolved_research_escalation_writes_autopsy_instead_of_unresumable_hold(tmp_path):
+    case=CodingFixture(tmp_path);case.author();case.test(passed=False)
+    for value in (42,43,44):
+        case.edit(value=value);case.test(passed=False);case.reviews(approved=False,objective_satisfied=False)
+    for pivot in range(1,4):
+        node=case.claim('CODE_RESEARCH')
+        case.complete_native(node,{'failure_evidence_sha256':node['payload']['failure_evidence_sha256'],
+            'root_cause':{'category':'interface_contract','diagnosis':'The recorded assertion conflicts with the documented interface contract'},
+            'disposition':'escalate','strategy':f'Resolve interface ambiguity number {pivot}'},
+            {'verified_sources':[{'path':'$test_receipt','source_sha256':digest(case.state()['last_test'])}]})
+        if pivot<3:
+            assert case.state()['status']=='RESEARCH_HOLD'
+            case.store.resume_coding(case.workflow_id,'Operator supplied an additional contract interpretation')
+    assert case.state()['status']=='PHYSICS_WALL' and case.state()['cycle']==3
+    evidence=json.loads(case.store.coding_files(case.state()['autopsy']['snapshot_sha256'])['AutopsyEvidence.json'])
+    assert len(evidence['research_dossiers'])==3 and evidence['pivots']==3
+    assert case.store.claim('fourth-research',worker_slot='worker-one') is None
+
+
+def test_late_container_startup_records_event_bound_to_immutable_attempt_receipt(tmp_path):
+    case=CodingFixture(tmp_path);case.author();node=case.claim('CODE_TEST')
+    evidence=case.test_evidence(node,passed=False)
+    evidence.update(startup_sla_met=False,startup_seconds=2.5,startup_sla_seconds=1.5,
+        queue_wait_seconds=2.0,handoff_wait_seconds=.2,execution_startup_seconds=.3,
+        startup_violation_reason='queue_and_container_readiness_exceeded_1.5_seconds')
+    case.store.record_coding_attempt_evidence(node,evidence)
+    with sqlite3.connect(case.store.path) as conn:
+        row=conn.execute("SELECT details_json FROM pipeline_events WHERE job_id=? AND event='CONTAINER_STARTUP_SLA_MISSED'",(node['job_id'],)).fetchone()
+        details=json.loads(row[0])
+        assert details['evidence_sha256']==digest(evidence) and details['startup_seconds']==2.5
+        assert details['queue_wait_seconds']==2.0 and details['handoff_wait_seconds']==.2
+        with pytest.raises(sqlite3.IntegrityError,match='immutable'):
+            conn.execute('UPDATE coding_attempt_evidence SET evidence_json=? WHERE job_id=?',('{}',node['job_id']))
 
 
 def test_controller_and_native_jobs_share_four_worker_global_cap(tmp_path):

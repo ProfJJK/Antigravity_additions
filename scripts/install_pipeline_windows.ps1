@@ -5,7 +5,7 @@ param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$Uv = "$env:ProgramFiles\uv\uv.exe",
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.5",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.6",
     [string]$DataRoot = "$env:ProgramData\CoChemPipeline422",
     [string]$TokenFile = "$env:USERPROFILE\CoChem422\controller.token",
     [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
@@ -37,6 +37,9 @@ function Assert-ReviewedExecutionPolicy {
     param([string]$Path)
     $reviewed = Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
     if ($null -eq $reviewed.PSObject.Properties['routing']) { throw 'The reviewed configuration must include the authoritative routing policy.' }
+    if ($null -eq $reviewed.PSObject.Properties['knowledge'] -or $reviewed.knowledge.enabled -ne $true) {
+        throw 'Production requires an enabled, reviewed dual-wiki knowledge policy and an existing ratified corpus/catalog. Provisioning validates their bytes; it does not invent them.'
+    }
     $projects = $reviewed.PSObject.Properties['coding_projects']
     if ($null -ne $projects -and $null -ne $projects.Value -and @($projects.Value.PSObject.Properties).Count -gt 0) {
         foreach ($key in @('hardware','execution_limits','ramdisk','docker')) {
@@ -52,7 +55,7 @@ function Assert-ReviewedExecutionPolicy {
 
 function Invoke-ExecutionProvision {
     param([string]$ConfigPath)
-    $taskName = 'CoChem-4.2.5-Execution-Provision'
+    $taskName = 'CoChem-4.2.6-Execution-Provision'
     $script = Join-Path $InstallRoot 'execution-provision-task.ps1'
     $log = Join-Path $InstallRoot 'execution-provision.log'
     $values = @('-I','-m','cochem_pipeline','provision-execution','--config',$ConfigPath)
@@ -75,6 +78,33 @@ function Invoke-ExecutionProvision {
     } while ($task.State -in @('Running','Queued') -or $info.LastRunTime -lt $requestedStart.AddSeconds(-1))
     if ($info.LastTaskResult -ne 0) { throw "SYSTEM RAM-disk/Docker/hardware provisioning failed ($($info.LastTaskResult)). Inspect $log; daemon registration was not performed." }
     Write-Host "Execution prerequisites verified by SYSTEM: $log"
+}
+
+function Install-RegisteredKnowledgeCorpus {
+    param([string]$ConfigPath)
+    $reviewed = Get-Content -LiteralPath $ConfigPath -Raw | ConvertFrom-Json
+    $corpusRoot = Split-Path -Parent $reviewed.knowledge.source_root
+    if (Test-Path -LiteralPath $corpusRoot) {
+        Write-Host "Preserving existing registered knowledge corpus: $corpusRoot"
+        return
+    }
+    $corpusSource = Join-Path $repo 'knowledge'
+    foreach ($entry in (Get-TreeWithoutLinks -Path $corpusSource)) {
+        if (-not $entry.PSIsContainer -and $entry.Extension -notin @('.md','.json')) {
+            throw 'The initial knowledge corpus contains an unexpected file type.'
+        }
+    }
+    $corpusParent = Split-Path -Parent $corpusRoot
+    Assert-ProtectedAncestors -Path $corpusParent
+    # Protect the empty destination before copying. SYSTEM provisioning will
+    # tighten its read ACL and verify every registered byte/hash and wiki link.
+    New-Item -ItemType Directory -Path $corpusRoot -ErrorAction Stop | Out-Null
+    Protect-InstalledTree -Path $corpusRoot
+    foreach ($name in @('.sources','wiki','v4.1.2_manifest.json')) {
+        Copy-Item -LiteralPath (Join-Path $corpusSource $name) -Destination (Join-Path $corpusRoot $name) -Recurse
+    }
+    Protect-InstalledTree -Path $corpusRoot
+    Write-Host "Copied exact registered source captures and catalog: $corpusRoot"
 }
 
 function Quote-TaskArgument {
@@ -192,7 +222,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
-    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,5))')
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,6))')
     Write-Host "Preserving existing protected installation: $InstallRoot"
 }
 else {
@@ -258,6 +288,7 @@ if ($RegisterDaemon) {
     else { Copy-Item -LiteralPath $configSource -Destination $configTarget }
     Protect-InstalledTree -Path $InstallRoot
     Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$configTarget)
+    Install-RegisteredKnowledgeCorpus -ConfigPath $configTarget
     Invoke-ExecutionProvision -ConfigPath $configTarget
     $daemonAction = New-ScheduledTaskAction -Execute $installedPython -Argument ('-I -m cochem_pipeline daemon --config ' + (Quote-TaskArgument $configTarget)) -WorkingDirectory $InstallRoot
     $daemonSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)

@@ -129,6 +129,13 @@ class LocalSupervisor(Supervisor):
         self.clear_calls += 1
         clear_slot(Path(self.config["repair_workspace"]))
 
+    def _read_observation(self):
+        # Detector process/import isolation is separately tested with a real
+        # subprocess; this driver composes the actual readonly observer/ledger.
+        return read_observation(self.config['pipeline_private_root'],
+            heartbeat_timeout=self.config['heartbeat_timeout'],stall_timeout=self.config['stall_timeout'],
+            repeated_failures=self.config['repeated_failures'],wal_limit_mb=self.config.get('wal_limit_mb',256))
+
     def _protect_release_tree(self, path):
         self.protected.append(Path(path))
 
@@ -140,6 +147,10 @@ class LocalSupervisor(Supervisor):
         # This fixture never provisions or impersonates a native account.
         # Real Windows Docker pipe denial is an opt-in platform test.
         return {'enabled':False,'test_driver':'local protocol fixture; no Windows Docker assertion'}
+
+    def _outer_acceptance(self,candidate,directory):
+        # Real candidate subprocess/SQLite checks have their own physical suite.
+        return {'passed':True,'test_driver':'local engine composition fixture; no independent behavior assertion'}
 
     def _stop(self):
         self.lifecycle.append("stop")
@@ -266,7 +277,12 @@ def test_restart_persists_private_bounded_diagnostics_before_request_event(tmp_p
     assert supervisor.private in path.parents and path.is_file()
     report=json.loads(path.read_text())
     assert report['observation']['health']['database']=='readable'
-    assert report['scope'].startswith('bounded heartbeat')
+    snapshot=report['bundle']['private_database_snapshot']
+    assert snapshot['state']=='captured' and snapshot['consistent_sqlite_backup']
+    assert snapshot['contains_private_payloads'] is True
+    assert (path.with_suffix('')/'database-private.db').is_file()
+    assert report['bundle']['safe_projection_omits']==[
+        'prompts','payloads','artifacts','authentication','source lines','locals']
 
 
 def test_failed_restart_health_probe_is_recorded_without_claiming_recovery(tmp_path):
@@ -278,6 +294,96 @@ def test_failed_restart_health_probe_is_recorded_without_claiming_recovery(tmp_p
     finished=next(item for item in history if item['event']=='WARDEN_RESTART_FINISHED')
     assert finished['details']['health_verified'] is False
     assert supervisor.ledger.has_event('WARDEN_RESTART_FAILED',fingerprint=value['fingerprint'])
+
+
+def failed_restart_fixture(tmp_path,error='TypeError: broken scheduler state'):
+    from cochem_supervisor.component_recovery import RecoveryLedger
+    supervisor=LocalSupervisor(tmp_path)
+    supervisor.previous_probe_result=False
+    root=Path(supervisor.config['pipeline_private_root'])
+    store=JobStore(root/'job_board.db',max_attempts=1)
+    store.submit('Real SQLite failure evidence',['REQ-1'],1)
+    job=store.claim('fixture-owner')
+    store.fail(job['job_id'],job['attempt_id'],job['fencing_token'],error)
+    path=root/'supervisor_status.json'
+    data=json.loads(path.read_text())
+    data.update(timestamp=time.time()-60,process_started_at=time.time()-120)
+    write_json(path,data)
+    ledger=RecoveryLedger(supervisor.private/'component-recovery.db')
+    ledger.observe('warden',False,now=time.time()-40)
+    ledger.observe('warden',False,now=time.time()-30)
+    return supervisor
+
+
+def test_failed_restart_escalates_evidenced_code_only_after_verified_cleanup(tmp_path):
+    supervisor=failed_restart_fixture(tmp_path)
+    supervisor.tick(ignore_startup_grace=True)
+    assert not supervisor.runner.repair_calls
+    observed=supervisor.tick(ignore_startup_grace=True)
+    assert not observed['health']['repair_hold']
+    assert supervisor.runner.repair_calls==['codex']
+    assert supervisor.lifecycle.count('stop')==2  # restart, then verified pre-repair cleanup
+    events=supervisor.ledger.history()
+    cleanup=next(item['id'] for item in events if item['event']=='WARDEN_REPAIR_CLEANUP_VERIFIED')
+    reserved=next(item['id'] for item in events if item['event']=='ATTEMPT_RESERVED')
+    assert cleanup<reserved
+    assert 'TypeError:' in supervisor.runner.repair_evidence[0]['incident']['evidence']['diagnostic']
+    # Restoring the durable objects cannot increase the original repair budget.
+    supervisor.ledger=Ledger(supervisor.ledger.path)
+    supervisor.tick(ignore_startup_grace=True)
+    supervisor.tick(ignore_startup_grace=True)
+    assert supervisor.runner.repair_calls==['codex','codex']
+
+
+@pytest.mark.parametrize('error',['HTTP 429 quota exceeded','PermissionError: access denied',
+    'ConnectionError: connection refused','MemoryError: cannot allocate memory','Unknown failure'])
+def test_failed_restart_with_environmental_evidence_never_authorizes_model(tmp_path,error):
+    supervisor=failed_restart_fixture(tmp_path,error)
+    for _ in range(3): supervisor.tick(ignore_startup_grace=True)
+    assert not supervisor.runner.repair_calls
+    assert supervisor.lifecycle.count('stop')==1
+
+
+def test_failed_restart_cannot_escalate_when_contained_stop_fails(tmp_path):
+    supervisor=failed_restart_fixture(tmp_path)
+    supervisor.tick(ignore_startup_grace=True)
+    def cannot_stop():
+        raise RuntimeError('Fixture: retained process tree is not empty')
+    supervisor._stop=cannot_stop
+    observed=supervisor.tick(ignore_startup_grace=True)
+    assert observed['health']['repair_hold']
+    assert not supervisor.runner.repair_calls
+    assert not any(item['event']=='ATTEMPT_RESERVED' for item in supervisor.ledger.history())
+
+
+def test_structured_startup_crash_can_repair_before_database_creation(tmp_path):
+    from cochem_pipeline.crash import record_crash
+    supervisor=failed_restart_fixture(tmp_path)
+    root=Path(supervisor.config['pipeline_private_root'])
+    (root/'job_board.db').unlink()
+    try:
+        object().missing_startup_method()
+    except AttributeError as exc:
+        record_crash(root,exc)
+    supervisor.tick(ignore_startup_grace=True)
+    supervisor.tick(ignore_startup_grace=True)
+    assert supervisor.runner.repair_calls==['codex']
+    evidence=supervisor.runner.repair_evidence[0]['incident']['evidence']
+    assert evidence['source']=='crash-envelope.json' and evidence['frames']
+
+
+def test_model_generated_regression_pass_cannot_bypass_outer_gate(tmp_path):
+    supervisor=LocalSupervisor(tmp_path,LocalProtocolDriver(acceptance='passed'))
+    supervisor.config['auto_deploy']=True
+    def rejected(candidate,directory):
+        raise ValueError('Physical external ownership assertion failed')
+    supervisor._outer_acceptance=rejected
+    value=incident(supervisor)
+    previous=supervisor.releases.current()
+    supervisor._repair(value)
+    assert supervisor.releases.current()==previous
+    assert supervisor.ledger.get_incident(value['fingerprint'])['status']=='OPEN'
+    assert not supervisor.lifecycle
 
 
 @pytest.mark.parametrize('http_status',[401,503])
@@ -503,3 +609,47 @@ store.deploy(json.loads(Path(sys.argv[4]).read_text()),crash,lambda:True,lambda 
     assert supervisor.ledger.get_incident(value["fingerprint"])["attempts"] == 0
     assert supervisor.runner.repair_calls == [] and supervisor.clear_calls == 0
     assert sentinel.read_text() == "previous repair evidence"
+
+
+@pytest.mark.parametrize('blocker',[None,'Authentication failed','MemoryError','Provider unavailable'])
+def test_actual_structural_corruption_freezes_before_repair_and_honors_environment(tmp_path,blocker):
+    supervisor=LocalSupervisor(tmp_path)
+    store=JobStore(Path(supervisor.config['pipeline_private_root'])/'job_board.db')
+    workflow=store.submit('fixture private objective',['REQ-1'],1)
+    job=next(item for item in workflow['jobs'] if item['kind']=='MANIFEST_GENERATOR')
+    with store._write() as connection:
+        connection.execute("UPDATE pipeline_jobs SET status=?,lease_owner='illegal-owner',error=?,attempts=3 WHERE job_id=?",
+                           ('PENDING' if blocker is None else 'FAILED',blocker,job['job_id']))
+    observation=supervisor.tick()
+    structural=next(item for item in observation['incidents'] if item['evidence'].get('component')=='database_structure')
+    assert observation['health']['state']=='collapsed'
+    assert supervisor.lifecycle[0]=='stop'
+    assert supervisor.ledger.has_event('STRUCTURAL_FREEZE_VERIFIED',fingerprint=structural['fingerprint'])
+    assert list((supervisor.private/'diagnostics').glob('*/database-private.db'))
+    assert len(supervisor.runner.repair_calls)==(1 if blocker is None else 0)
+    assert store.get(job['job_id'])['lease_owner']=='illegal-owner'
+
+
+def test_structural_stop_failure_never_authorizes_repair(tmp_path):
+    class FailedContainment(LocalSupervisor):
+        def _stop(self):
+            self.lifecycle.append('failed-stop')
+            return False
+    supervisor=FailedContainment(tmp_path)
+    store=JobStore(Path(supervisor.config['pipeline_private_root'])/'job_board.db')
+    workflow=store.submit('fixture',['REQ-1'],1)
+    job=next(item for item in workflow['jobs'] if item['kind']=='MANIFEST_GENERATOR')
+    with store._write() as connection:
+        connection.execute("UPDATE pipeline_jobs SET lease_owner='illegal-owner' WHERE job_id=?",(job['job_id'],))
+    observed=supervisor.tick()
+    assert observed['health']['repair_hold'] and not supervisor.runner.repair_calls
+    assert supervisor.lifecycle==['failed-stop']
+
+
+def test_production_detector_launcher_reads_actual_board_in_sterile_subprocess(tmp_path):
+    supervisor=LocalSupervisor(tmp_path)
+    observed=Supervisor._read_observation(supervisor)
+    assert observed['health']['database']=='readable'
+    assert observed['health']['structural_integrity']['state']=='healthy'
+    assert observed['health']['process_resources']['state']=='observed'
+    assert (supervisor.private/'process-history.json').is_file()

@@ -11,6 +11,7 @@ from pathlib import Path
 import subprocess
 import tarfile
 import threading
+import time
 
 import pytest
 
@@ -176,6 +177,23 @@ def test_real_custom_command_timeout_removes_process_tree(tmp_path,docker_image)
     assert not receipt['passed'] and receipt['quarantine_required']
     assert receipt['failure_category']=='timeout'
     assert receipt['input_source_verified'] and receipt['failure_scope']=='code'
+
+
+def test_real_commands_share_thirty_second_cycle_deadline_and_cleanup(tmp_path,docker_image):
+    receipt=real_run(tmp_path,docker_image,{'module.py':'x=1\n'},commands=[
+        {'name':'first','kind':'command','argv':['python','-c','import time;time.sleep(16)'],
+         'timeout_seconds':30},
+        {'name':'second','kind':'command','argv':['python','-c','import time;time.sleep(16)'],
+         'timeout_seconds':30}])
+    assert not receipt['passed']
+    assert receipt['failure_category']=='timeout'
+    assert receipt['test_cycle_limit_seconds']==30
+    assert receipt['test_cycle_deadline_met'] is False
+    assert 29 <= receipt['test_cycle_seconds'] < 33
+    assert len(receipt['commands'])==2
+    assert receipt['commands'][0]['exit_code']==0
+    assert receipt['commands'][1]['timed_out']
+    assert receipt['cleanup_verified']
 
 
 def test_real_custom_build_command_and_actual_exit_evidence(tmp_path,docker_image):
@@ -534,6 +552,37 @@ def test_real_joint_admission_drains_one_idle_container_before_native_claim(tmp_
             assert runner._inspect_owned(record)['State']['Running']
     finally:
         runner.reap_orphans(set(),include_warm=True)
+
+
+def test_real_strict_profile_wait_prepares_exact_policy_without_extra_seat_and_counts_handoff(tmp_path,docker_image):
+    root=tmp_path/'source';root.mkdir()
+    (root/'test_actual.py').write_text('def test_actual(): assert 2+3==5\n')
+    current=DockerRunner(policy(docker_image),tmp_path/'containers')
+    captured=DockerRunner(policy(docker_image,memory_mb=1024,cpus=1,tmpfs_mb=256),tmp_path/'containers')
+    current.set_capacity(2)
+    try:
+        current.prepare_pool(target=2)
+        with pytest.raises(ContainerCapacityError,match='preallocated'):
+            captured.reserve_attempt('queued','queued',require_warm=True,retire_incompatible=False)
+        assert current.census()['owned']==2
+        result=captured.prepare_requested_profile(2)
+        assert result['ready'] and result['census']['owned']==2
+        requested=time.time()
+        reservation=captured.reserve_attempt('queued','actual',require_warm=True,
+            retire_incompatible=False,request_started_at=requested)
+        assert reservation['container_id']
+        # Real handoff delay must count even though the sandbox is already warm.
+        threading.Event().wait(1.6)
+        receipt=captured.run(root,job_id='queued',attempt_id='actual',reservation=reservation)
+        assert receipt['passed'] and receipt['cleanup_verified'],receipt
+        assert receipt['warm_pool_used']
+        assert receipt['handoff_wait_seconds']>=1.6
+        assert receipt['startup_seconds']>=receipt['handoff_wait_seconds']+receipt['execution_startup_seconds']
+        assert receipt['startup_sla_met'] is False
+        assert receipt['startup_violation_reason']
+        assert current.census()['owned']==1
+    finally:
+        current.reap_orphans(set(),include_warm=True)
 
 
 def test_real_pytest_controller_rootdir_seals_nested_junit_module_and_class(tmp_path,docker_image):

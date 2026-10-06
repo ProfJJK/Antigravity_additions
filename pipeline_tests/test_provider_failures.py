@@ -18,6 +18,10 @@ from cochem_pipeline.failures import ProviderFailure, parse_native_failure
     ('gemini', {'error':{'code':503}}, 'busy','model'),
     ('gemini', {'error':{'code':502}}, 'provider','model'),
     ('codex', {'type':'turn.failed','error':{'code':'invalid_argument'}}, 'protocol',None),
+    ('codex', {'type':'turn.failed','error':{'code':'request_timeout'}}, 'timeout',None),
+    ('claude', {'type':'error','error':{'code':'connection_timeout'}}, 'timeout',None),
+    ('gemini', {'error':{'code':408}}, 'timeout',None),
+    ('gemini', {'error':{'status':'DEADLINE_EXCEEDED'}}, 'timeout',None),
 ])
 def test_recognized_native_failure_envelopes(provider,record,category,scope):
     failure = parse_native_failure(provider,json.dumps(record),'',1)
@@ -85,6 +89,15 @@ def test_context_failure_is_job_local_not_a_shared_provider_hold():
     assert failure.hold_scope is None
     with pytest.raises(ValueError,match='globally'):
         ProviderFailure('context',hold_scope='pool')
+
+
+def test_timeout_does_not_claim_provider_availability_or_allow_global_holds():
+    failure = ProviderFailure('timeout')
+    assert failure.hold_scope is None
+    with pytest.raises(ValueError,match='globally'):
+        ProviderFailure('timeout',hold_scope='pool')
+    answer = {'type':'item.completed','item':{'type':'agent_message','text':'request_timeout'}}
+    assert parse_native_failure('codex',json.dumps(answer),'',0) is None
 
 
 def test_plain_native_messages_outside_allowlist_remain_execution_failures():

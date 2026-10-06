@@ -271,7 +271,9 @@ class Oracle:
     Contexts and their watermarks are persisted atomically to a durable outbox.
     ``drain`` replays unacknowledged contexts, including after a restart. The
     controller must persist each context idempotently in its protected job board
-    and then call ``ack(task_id, watermark)``. This is at-least-once delivery;
+    in delivery order and then call ``ack(task_id, watermark, delivery_id)``.
+    A return to an earlier context creates a new delivery, while repetitions of
+    the current context do not. This is at-least-once delivery;
     acknowledgment is never inferred from returning a Python value.
     """
 
@@ -319,6 +321,22 @@ class Oracle:
             columns = {row[1] for row in self._connection.execute("PRAGMA table_info(_oracle_watermarks)")}
             if not {"payload", "acknowledged"}.issubset(columns):
                 raise RuntimeError("Legacy Oracle tracking lacks durable payloads; configure a new private Oracle database and replay pending job events")
+            self._connection.execute('''CREATE TABLE IF NOT EXISTS _oracle_deliveries (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                task_id TEXT NOT NULL,
+                watermark TEXT NOT NULL,
+                acknowledged INTEGER NOT NULL DEFAULT 0 CHECK (acknowledged IN (0,1))
+            )''')
+            self._connection.execute('''CREATE INDEX IF NOT EXISTS _oracle_delivery_task
+                ON _oracle_deliveries(task_id, id)''')
+            # Preserve existing acknowledged history and pending payloads when
+            # upgrading. Watermark identity and delivery identity are separate:
+            # A -> B -> A needs another A delivery, but no duplicate rule body.
+            self._connection.execute('''INSERT INTO _oracle_deliveries(task_id,watermark,acknowledged)
+                SELECT w.task_id,w.watermark,w.acknowledged FROM _oracle_watermarks w
+                WHERE NOT EXISTS (SELECT 1 FROM _oracle_deliveries d
+                                  WHERE d.task_id=w.task_id AND d.watermark=w.watermark)
+                ORDER BY w.rowid''')
             self._connection.commit()
         except BaseException:
             self._connection.close()
@@ -422,6 +440,7 @@ class Oracle:
                         continue
                 # No state lock is held across SQLite I/O: velocity detection
                 # and the asynchronous reaper remain live even during DB locks.
+                delivery_id = None
                 with self._connection:
                     cursor = self._connection.execute(
                         "INSERT OR IGNORE INTO _oracle_watermarks (task_id,watermark,rule_ids,created_at,payload) VALUES (?,?,?,?,?)",
@@ -429,18 +448,45 @@ class Oracle:
                          json.dumps(output, ensure_ascii=False, sort_keys=True, separators=(",", ":"))),
                     )
                     inserted = cursor.rowcount == 1
+                    current_delivery = self._connection.execute(
+                        "SELECT watermark FROM _oracle_deliveries WHERE task_id=? ORDER BY id DESC LIMIT 1",
+                        (task_id,),
+                    ).fetchone()
+                    if current_delivery is None or current_delivery[0] != watermark:
+                        cursor = self._connection.execute(
+                            "INSERT INTO _oracle_deliveries(task_id,watermark) VALUES (?,?)", (task_id, watermark)
+                        )
+                        delivery_id = cursor.lastrowid
+                        self._connection.execute(
+                            "UPDATE _oracle_watermarks SET acknowledged=0 WHERE task_id=? AND watermark=?",
+                            (task_id, watermark),
+                        )
                 with self._lock:
                     current = not self._closing and task_id not in self._tripped and self._pending.get(task_id) is event
                     if current:
                         self._pending.pop(task_id, None)
-                if inserted and not current:
+                if not current and (inserted or delivery_id is not None):
                     with self._connection:
-                        self._connection.execute("DELETE FROM _oracle_watermarks WHERE task_id=? AND watermark=?", (task_id, watermark))
+                        if delivery_id is not None:
+                            self._connection.execute("DELETE FROM _oracle_deliveries WHERE id=?", (delivery_id,))
+                        if inserted:
+                            self._connection.execute("DELETE FROM _oracle_watermarks WHERE task_id=? AND watermark=?", (task_id, watermark))
+                        else:
+                            self._connection.execute('''UPDATE _oracle_watermarks SET acknowledged=NOT EXISTS (
+                                SELECT 1 FROM _oracle_deliveries WHERE task_id=? AND watermark=? AND acknowledged=0)
+                                WHERE task_id=? AND watermark=?''', (task_id, watermark, task_id, watermark))
             rows = self._connection.execute(
-                "SELECT task_id,watermark,payload FROM _oracle_watermarks WHERE acknowledged=0 ORDER BY rowid"
+                """SELECT d.id,d.task_id,d.watermark,w.payload FROM _oracle_deliveries d
+                   JOIN _oracle_watermarks w ON w.task_id=d.task_id AND w.watermark=d.watermark
+                   WHERE d.acknowledged=0 ORDER BY d.id"""
             ).fetchall()
             outputs = []
-            for task_id, watermark, payload in rows:
+            for delivery_id, task_id, watermark, payload in rows:
+                with self._lock:
+                    # Replayed payloads have already passed their original
+                    # debounce, but a fresh event starts another quiet window.
+                    if self._closing or task_id in self._tripped or task_id in self._pending:
+                        continue
                 output = json.loads(payload)
                 if not isinstance(output, dict) or output.get("task_id") != task_id or output.get("watermark") != watermark:
                     raise RuntimeError("Oracle outbox identity integrity check failed")
@@ -448,32 +494,46 @@ class Oracle:
                                       sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
                 if hashlib.sha256(material).hexdigest() != watermark:
                     raise RuntimeError("Oracle outbox watermark integrity check failed")
-                outputs.append(output)
+                outputs.append({**output, "delivery_id": delivery_id})
             with self._lock:
                 return [output for output in outputs if not self._closing
                         and output["task_id"] not in self._tripped
                         and output["task_id"] not in self._pending]
 
-    def ack(self, task_id: str, watermark: str) -> None:
+    def ack(self, task_id: str, watermark: str, delivery_id: int | None = None) -> None:
         """Acknowledge only after the controller durably stores this context.
 
-        Repeated acknowledgments are idempotent. Unknown identifiers fail instead
-        of pretending that an ungenerated context was delivered.
+        Repeated acknowledgments are idempotent. A delivery ID prevents an old
+        acknowledgment from consuming a later reactivation of the same rules.
+        The legacy two-argument form is accepted only for unambiguous history.
         """
         if not isinstance(task_id, str) or not task_id.strip():
             raise ValueError("task_id must be a nonempty string")
         if not isinstance(watermark, str) or len(watermark) != 64 or any(char not in "0123456789abcdef" for char in watermark):
             raise ValueError("watermark must be a lowercase SHA-256 hex digest")
+        if delivery_id is not None and (type(delivery_id) is not int or delivery_id <= 0):
+            raise ValueError("delivery_id must be a positive integer")
         with self._drain_lock:
             with self._lock:
                 self._require_open()
             with self._connection:
+                if delivery_id is None:
+                    identifiers = self._connection.execute(
+                        "SELECT id FROM _oracle_deliveries WHERE task_id=? AND watermark=?", (task_id, watermark)
+                    ).fetchall()
+                    if len(identifiers) > 1:
+                        raise ValueError("Reactivated context acknowledgment requires its delivery_id")
+                    delivery_id = identifiers[0][0] if identifiers else None
                 cursor = self._connection.execute(
-                    "UPDATE _oracle_watermarks SET acknowledged=1 WHERE task_id=? AND watermark=?",
-                    (task_id, watermark),
+                    "UPDATE _oracle_deliveries SET acknowledged=1 WHERE id=? AND task_id=? AND watermark=?",
+                    (delivery_id, task_id, watermark),
                 )
                 if cursor.rowcount != 1:
                     raise KeyError("Oracle context watermark was not generated for this task")
+                self._connection.execute('''UPDATE _oracle_watermarks SET acknowledged=1
+                    WHERE task_id=? AND watermark=? AND NOT EXISTS (
+                        SELECT 1 FROM _oracle_deliveries WHERE task_id=? AND watermark=? AND acknowledged=0)''',
+                    (task_id, watermark, task_id, watermark))
 
     def close(self) -> None:
         if threading.current_thread().name.startswith("oracle-reaper"):

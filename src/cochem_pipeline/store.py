@@ -1,6 +1,8 @@
 """Transactional scatter/gather job board and immutable document artifacts.
 
-Connections are short-lived and never span CLI execution. The trusted scheduler
+Transactions never span CLI execution. A single serialized writer connection
+per store retains SQLite's schema cache; readers use independent connections.
+The trusted scheduler
 supplies process receipts; generated prose is never treated as provider identity.
 The namespaced tables coexist with older CoChem job-board schemas.
 """
@@ -10,12 +12,15 @@ from contextlib import contextmanager
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import re
 import sqlite3
 import time
+import threading
 from typing import Any, Iterable, Iterator
 import uuid
+import weakref
 
 from . import routing_store as routes
 from .coding_store import CodingStoreMixin, CODING_KINDS, CONTROLLER_KINDS, SCHEMA as CODING_SCHEMA
@@ -193,6 +198,10 @@ class JobStore(CodingStoreMixin):
             raise ValueError("A durable on-disk SQLite path is required")
         self.path = Path(path).expanduser().resolve()
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._writer_lock = threading.Lock()
+        self._writer_pid = os.getpid()
+        self._writer_connection = None
+        self._writer_finalizer = None
         with self._connection() as conn:
             conn.execute("PRAGMA journal_mode=WAL")
             self._migrate_coding_schema(conn)
@@ -211,6 +220,11 @@ class JobStore(CodingStoreMixin):
                 if "max_attempts" not in columns:
                     conn.execute("ALTER TABLE pipeline_jobs ADD COLUMN max_attempts INTEGER NOT NULL DEFAULT 3 CHECK(max_attempts>=1)")
                     conn.execute("UPDATE pipeline_jobs SET max_attempts=?", (max_attempts,))
+                # Older completions cleared expiry but retained their lease
+                # owner. Repair only inactive leases; preserve output receipts,
+                # attempt identities, fencing and all active execution leases.
+                conn.execute("""UPDATE pipeline_jobs SET lease_owner=NULL,lease_expires_at=NULL
+                    WHERE status<>'IN_PROGRESS' AND (lease_owner IS NOT NULL OR lease_expires_at IS NOT NULL)""")
                 cleanup_columns = {row['name'] for row in conn.execute('PRAGMA table_info(pipeline_execution_cleanup)')}
                 if 'boot_id' not in cleanup_columns:
                     conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN boot_id INTEGER CHECK(boot_id IS NULL OR boot_id>0)')
@@ -264,13 +278,25 @@ class JobStore(CodingStoreMixin):
         if conn.execute('PRAGMA foreign_key_check').fetchone():
             raise RuntimeError('Coding schema migration found broken ownership references')
 
+    def _open_connection(self, *, check_same_thread=True) -> sqlite3.Connection:
+        conn = sqlite3.connect(str(self.path), timeout=5.0, isolation_level=None,
+                               check_same_thread=check_same_thread)
+        conn.row_factory = sqlite3.Row
+        owner = weakref.ref(self)
+        conn.create_function('cochem_transition_telemetry',0,
+            lambda: canonical_json(owner().transition_telemetry if owner() is not None else None))
+        try:
+            conn.execute("PRAGMA busy_timeout=5000")
+            conn.execute("PRAGMA synchronous=NORMAL")
+            conn.execute("PRAGMA foreign_keys=ON")
+        except BaseException:
+            conn.close()
+            raise
+        return conn
+
     @contextmanager
     def _connection(self) -> Iterator[sqlite3.Connection]:
-        conn = sqlite3.connect(str(self.path), timeout=5.0, isolation_level=None)
-        conn.row_factory = sqlite3.Row
-        conn.create_function('cochem_transition_telemetry',0,lambda:canonical_json(self.transition_telemetry))
-        conn.execute("PRAGMA busy_timeout=5000")
-        conn.execute("PRAGMA foreign_keys=ON")
+        conn = self._open_connection()
         try:
             yield conn
         finally:
@@ -278,14 +304,42 @@ class JobStore(CodingStoreMixin):
 
     @contextmanager
     def _write(self) -> Iterator[sqlite3.Connection]:
-        with self._connection() as conn:
+        # Queue same-process writers before connection setup, not in SQLite's
+        # coarse busy-handler sleeps. BEGIN IMMEDIATE remains the cross-process
+        # authority for all lease, fencing, cleanup and capacity checks.
+        if os.getpid() != self._writer_pid:
+            raise RuntimeError('Construct a new JobStore after forking; SQLite writer connections cannot be inherited')
+        with self._writer_lock:
+            if self._writer_connection is None:
+                self._writer_connection = self._open_connection(check_same_thread=False)
+                self._writer_finalizer = weakref.finalize(
+                    self, self._close_owned_connection, self._writer_connection, self._writer_pid)
+            conn = self._writer_connection
             conn.execute("BEGIN IMMEDIATE")
             try:
                 yield conn
                 conn.commit()
             except BaseException:
-                conn.rollback()
+                try:
+                    conn.rollback()
+                except BaseException:
+                    self._writer_finalizer()
+                    self._writer_connection = None
                 raise
+
+    @staticmethod
+    def _close_owned_connection(conn, pid):
+        if os.getpid() == pid:
+            conn.close()
+
+    def close(self):
+        """Release the one idle writer handle, after any active transaction."""
+        if os.getpid() != self._writer_pid:
+            raise RuntimeError('An inherited JobStore cannot close its parent process connection')
+        with self._writer_lock:
+            if self._writer_connection is not None:
+                self._writer_finalizer()
+                self._writer_connection = None
 
     @staticmethod
     def _get(conn: sqlite3.Connection, job_id: str) -> dict:
@@ -372,8 +426,9 @@ class JobStore(CodingStoreMixin):
 
     @staticmethod
     def _lease_seconds(value: float) -> float:
-        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value <= 0:
-            raise ValueError("lease_seconds must be finite and positive")
+        if (isinstance(value, bool) or not isinstance(value, (int, float)) or
+                not math.isfinite(value) or not 0 < value <= 3600):
+            raise ValueError("lease_seconds must be finite, positive, and at most 3600")
         return float(value)
 
     def _reap(self, conn: sqlite3.Connection) -> list[dict]:
@@ -387,7 +442,7 @@ class JobStore(CodingStoreMixin):
         results = []
         for row in expired:
             previous = self._get(conn, row["job_id"])
-            if previous["status"] == "FAILED":
+            if previous["status"] in ("FAILED", "BLOCKED"):
                 continue  # Another exhausted sibling in this transaction fenced it.
             root = self._get(conn, previous["workflow_id"])
             if (previous['status']=='IN_PROGRESS' and previous.get('routing') is None and self.routing_policy is not None
@@ -404,7 +459,10 @@ class JobStore(CodingStoreMixin):
             exhausted = ((state['failure_count']>=previous['max_attempts'] or
                           (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
                          if state is not None else (controller_failures if controller_failures is not None else previous['attempts']) >= previous['max_attempts'])
-            status = "FAILED" if exhausted or root["status"] == "FAILED" else "PENDING_RETRY"
+            failures_exhausted = (state['failure_count'] if state is not None else
+                                  controller_failures if controller_failures is not None else previous['attempts']) >= previous['max_attempts']
+            status = ("FAILED" if root["status"] == "FAILED" else "BLOCKED" if failures_exhausted
+                      else "FAILED" if exhausted else "PENDING_RETRY")
             error = f"Attempt budget exhausted ({previous['max_attempts']} executions)" if exhausted else "Execution lease expired"
             if exhausted and state is not None:
                 error = (f"Dispatch budget exhausted ({state['max_dispatches']} reservations)"
@@ -413,11 +471,13 @@ class JobStore(CodingStoreMixin):
             conn.execute("""UPDATE pipeline_jobs SET status=?,attempt_id=NULL,lease_owner=NULL,
                 lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?""",
                          (status, error, time.time(), previous["job_id"]))
-            routes.release(conn, previous['job_id'], 'lease_expired', 'FAILED' if status=='FAILED' else 'READY')
+            routes.release(conn, previous['job_id'], 'lease_expired', status if status in ('FAILED','BLOCKED') else 'READY')
             self._event(conn, previous, "ATTEMPT_BUDGET_EXHAUSTED" if exhausted else "LEASE_EXPIRED",
                         attempt_id=previous["attempt_id"], fencing_token=previous["fencing_token"],
                         attempts=previous["attempts"], max_attempts=previous["max_attempts"])
-            if status == "FAILED":
+            if status == "BLOCKED":
+                self._block_exhausted_workflow(conn, previous['workflow_id'], error)
+            elif status == "FAILED":
                 self._fail_workflow(conn, previous["workflow_id"], error)
             results.append(self._get(conn, previous["job_id"]))
         return results
@@ -426,7 +486,7 @@ class JobStore(CodingStoreMixin):
         with self._write() as conn:
             return self._reap(conn)
 
-    def claim(self, owner: str, lease_seconds: float = 60, max_workers: int = 4, *,
+    def claim(self, owner: str, lease_seconds: float = 1800, max_workers: int = 4, *,
               exclude_job_ids: Iterable[str] = (), worker_slot: str | None = None,
               requires_cleanup: bool = False, cleanup_boot_id: int | None = None,
               containment_id: str | None = None, allowed_kinds: Iterable[str] | None = None) -> dict | None:
@@ -499,7 +559,10 @@ class JobStore(CodingStoreMixin):
                 if routed and choice is None:
                     continue
                 if routed and choice.get('exhausted'):
-                    self._fail_workflow(conn, candidate['workflow_id'], choice['exhausted'])
+                    if candidate['routing']['failure_count'] >= candidate['max_attempts']:
+                        self._block_exhausted_workflow(conn, candidate['workflow_id'], choice['exhausted'])
+                    else:
+                        self._fail_workflow(conn, candidate['workflow_id'], choice['exhausted'])
                     continue
                 if not routed and candidate['kind'] not in CONTROLLER_KINDS and candidate['attempts']>=candidate['max_attempts']:
                     continue
@@ -533,7 +596,7 @@ class JobStore(CodingStoreMixin):
                 and type(fencing_token) is int and job["fencing_token"] == fencing_token
                 and job["lease_expires_at"] is not None and job["lease_expires_at"] > time.time())
 
-    def heartbeat(self, job_id: str, attempt_id: str, fencing_token: int, lease_seconds: float = 60) -> bool:
+    def heartbeat(self, job_id: str, attempt_id: str, fencing_token: int, lease_seconds: float = 1800) -> bool:
         duration = self._lease_seconds(lease_seconds)
         with self._write() as conn:
             job = self._get(conn, job_id)
@@ -663,7 +726,7 @@ class JobStore(CodingStoreMixin):
                     artifact_text,sha256,created_at) VALUES(?,?,?,?,?,?,?)""",
                              (job_id, job["workflow_id"], chapter_id, f"db://{job['workflow_id']}/{chapter_id}",
                               output["artifact_text"], artifact_digest(output["artifact_text"]), time.time()))
-            conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
+            conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_owner=NULL,lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
             routes.release(conn, job_id, 'completed', 'COMPLETED')
             self._event(conn, job, "COMPLETED", attempt_id=attempt_id, fencing_token=fencing_token, output_sha256=output_digest(output))
             if chapters is not None:
@@ -714,17 +777,22 @@ class JobStore(CodingStoreMixin):
                     conn.execute('UPDATE coding_controller_retries SET failures=failures+1 WHERE job_id=?',(job_id,))
                 failures = conn.execute('SELECT failures FROM coding_controller_retries WHERE job_id=?',(job_id,)).fetchone()[0]
                 held = category in ('configuration','compatibility') or (category=='resource' and hold_scope=='job')
-                status = ('BLOCKED' if held else 'PENDING_RETRY') if retry and failures<job['max_attempts'] else 'FAILED'
+                status = ('BLOCKED' if failures>=job['max_attempts'] else
+                          ('BLOCKED' if held else 'PENDING_RETRY') if retry else 'FAILED')
                 delay = max(1.,min(86400.,retry_after_seconds or 30.)) if category=='resource' else 0.
-                conn.execute('UPDATE coding_controller_retries SET next_eligible_at=? WHERE job_id=?',(time.time()+delay,job_id))
+                conn.execute('UPDATE coding_controller_retries SET next_eligible_at=? WHERE job_id=?',
+                             (time.time()+delay if delay else 0,job_id))
                 conn.execute('UPDATE pipeline_jobs SET status=?,lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?',
                              (status,error,time.time(),job_id))
                 self._event(conn,job,status,category=category,attempt_id=attempt_id,fencing_token=fencing_token,error=error)
-                if status=='FAILED':
+                if failures>=job['max_attempts']:
+                    self._block_exhausted_workflow(conn,job['workflow_id'],
+                        f"Task failure budget exhausted ({job['max_attempts']} failures): {error}")
+                elif status=='FAILED':
                     self._fail_workflow(conn,job['workflow_id'],error)
                 return True
             if (job['kind'] in ('CODE_EDIT','CODE_TEST_AUTHOR','CODE_REVIEW') and retry
-                    and category in ('code','protocol')):
+                    and category=='code'):
                 routes.failed(conn,job,category,retry_after_seconds,hold_scope,self.routing_policy)
                 conn.execute("UPDATE pipeline_jobs SET status='FAILED',lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?",
                              (error,time.time(),job_id))
@@ -733,7 +801,7 @@ class JobStore(CodingStoreMixin):
                 # Fence outstanding reviews before starting a replacement chunk.
                 for review_id in state.get('pending_reviews',[]):
                     if review_id!=job_id:
-                        conn.execute("UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,lease_expires_at=NULL,error=? WHERE job_id=? AND status<>'COMPLETED'",(error,review_id))
+                        conn.execute("UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,lease_owner=NULL,lease_expires_at=NULL,error=? WHERE job_id=? AND status<>'COMPLETED'",(error,review_id))
                         routes.release(conn,review_id,error,'FAILED')
                 state['pending_reviews'] = []
                 state['retry_stage'] = 'CODE_TEST_AUTHOR' if job['kind']=='CODE_TEST_AUTHOR' else 'CODE_EDIT'
@@ -745,10 +813,11 @@ class JobStore(CodingStoreMixin):
             exhausted = ((state['failure_count']>=job['max_attempts'] or
                           (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
                          if state is not None else job["attempts"] >= job["max_attempts"])
-            status = "PENDING_RETRY" if retry and not exhausted else "FAILED"
+            failures_exhausted = (state['failure_count'] if state is not None else job['attempts']) >= job['max_attempts']
+            status = "BLOCKED" if failures_exhausted else "PENDING_RETRY" if retry and not exhausted else "FAILED"
             if state is not None and state['state']=='BLOCKED' and retry and not exhausted:
                 status = 'BLOCKED'
-            if retry and exhausted:
+            if exhausted and (retry or failures_exhausted):
                 if state is None:
                     error = f"Attempt budget exhausted ({job['max_attempts']} executions): {error}"
                 elif state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']:
@@ -758,7 +827,9 @@ class JobStore(CodingStoreMixin):
             conn.execute("""UPDATE pipeline_jobs SET status=?,lease_owner=NULL,lease_expires_at=NULL,
                 error=?,updated_at=? WHERE job_id=?""", (status, error, time.time(), job_id))
             self._event(conn, job, status, attempt_id=attempt_id, fencing_token=fencing_token, error=error)
-            if status == "FAILED":
+            if failures_exhausted:
+                self._block_exhausted_workflow(conn, job['workflow_id'], error)
+            elif status == "FAILED":
                 routes.release(conn, job_id, error, 'FAILED')
                 self._fail_workflow(conn, job["workflow_id"], error)
             return True
@@ -770,6 +841,27 @@ class JobStore(CodingStoreMixin):
             lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=?
             WHERE workflow_id=? AND status NOT IN ('COMPLETED','FAILED')""", (error, time.time(), workflow_id))
         routes.release_workflow(conn, workflow_id, error)
+
+    def _block_exhausted_workflow(self, conn: sqlite3.Connection, workflow_id: str, error: str) -> None:
+        """Terminal poison pill: preserve budgets and fence every unfinished node.
+
+        Availability waits and explicit cancellation use their own transitions.
+        Existing completed/failed evidence remains immutable; this hold cannot
+        be resumed by the operator APIs that handle configuration/research holds.
+        """
+        root = self._get(conn, workflow_id)
+        conn.execute("""UPDATE pipeline_jobs SET status='BLOCKED',attempt_id=NULL,
+            fencing_token=fencing_token+1,lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=?
+            WHERE workflow_id=? AND status NOT IN ('COMPLETED','FAILED')""", (error,time.time(),workflow_id))
+        for row in conn.execute('SELECT job_id,status FROM pipeline_jobs WHERE workflow_id=?', (workflow_id,)).fetchall():
+            routes.release(conn,row['job_id'],error,row['status'])
+            if row['status']=='BLOCKED':
+                conn.execute("UPDATE pipeline_routing_jobs SET wait_reason='poison_pill',next_eligible_at=0 WHERE job_id=?", (row['job_id'],))
+        if root['kind']=='CODE_REQUEST':
+            state = self._coding_state(conn,workflow_id)
+            state['status'],state['failure_reason'] = 'POISON_PILL',error
+            self._save_coding(conn,workflow_id,state)
+        self._event(conn,root,'TASK_POISON_PILL',reason=error)
 
     def get(self, job_id: str) -> dict:
         with self._connection() as conn:

@@ -3,11 +3,12 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import time
 import uuid
 from contextlib import contextmanager
 
-from .coding import CodingProject, digest, manifest, bind_test_identities, within
+from .coding import CodingProject, digest, manifest, bind_test_identities, within, validate_leaf_chunk
 from . import routing_store as routes
 
 ROOT_KINDS = ('MACRO_PLANNING_REQUEST', 'CODE_REQUEST')
@@ -117,6 +118,10 @@ class CodingStoreMixin:
                     raise ValueError('Attempt evidence has no controller-owned execution identity')
             conn.execute('INSERT INTO coding_attempt_evidence VALUES(?,?,?,?,?)',
                 (node['job_id'],node['attempt_id'],node['fencing_token'],encoded(evidence),digest(evidence)))
+            if evidence.get('kind')=='docker-test-execution' and evidence.get('startup_sla_met') is False:
+                self._event(conn,current,'CONTAINER_STARTUP_SLA_MISSED',evidence_sha256=digest(evidence),
+                    **{key:evidence.get(key) for key in ('startup_seconds','startup_sla_seconds',
+                        'execution_startup_seconds','queue_wait_seconds','handoff_wait_seconds','startup_violation_reason')})
 
     def prepare_coding_integration(self, node, staged):
         with self._write() as conn:
@@ -138,7 +143,9 @@ class CodingStoreMixin:
                     node['payload']['reviews_sha256'] != digest(state['reviews']) or
                     node['payload']['test_receipt_sha256'] != digest(state['last_test']) or
                     staged.get('baseline_commit') != state['baseline_commit'] or
-                    staged.get('snapshot_sha256') != expected_tree or staged.get('parent_commit') != expected_parent):
+                    staged.get('snapshot_sha256') != expected_tree or staged.get('parent_commit') != expected_parent or
+                    staged.get('max_changed_lines')!=100 or type(staged.get('changed_lines')) is not int or
+                    not 1<=staged['changed_lines']<=100):
                 raise ValueError('Git integration requires the exact accepted reviews, test evidence, and baseline')
             values = (node['job_id'],node['attempt_id'],node['fencing_token'],state['current_snapshot'],
                       digest(state['last_test']),digest(state['reviews']),state['baseline_commit'],staged['result_commit'])
@@ -178,6 +185,8 @@ class CodingStoreMixin:
         task = {'objective': root['payload']['objective'], 'requirements': root['payload']['requirements'],
                 'project_id': root['payload']['project_id'], 'cycle': state['cycle'],
                 'snapshot_sha256': state['current_snapshot'], 'strategy': state.get('strategy', ''), **payload}
+        if state.get('planning_evidence') and kind in ('CODE_PLAN','CODE_PLAN_REVIEW','CODE_RESEARCH'):
+            task['planning_evidence']=state['planning_evidence']
         if state.get('plan') and kind not in ('CODE_PLAN','CODE_PLAN_REVIEW'):
             plan = state['plan']
             leaf_id = plan['fracture_manifest']['topological_order'][state['leaf_index']]
@@ -201,6 +210,13 @@ class CodingStoreMixin:
         state['phase_ledger'].append(record)
         self._event(conn,root,'CODING_PHASE_RECORDED',**record)
 
+    def _planning_hold(self,conn,root,state,reason):
+        state['status']='PLANNING_HOLD'
+        state['planning_hold']=reason
+        conn.execute("UPDATE pipeline_jobs SET status='BLOCKED',error=?,updated_at=? WHERE job_id=?",
+                     (reason,time.time(),root['job_id']))
+        self._event(conn,root,'PLANNING_HELD',reason=reason)
+
     def _coding_converge(self, conn, root, state):
         minor = [finding for review in state['reviews'] for finding in review.get('minor_findings',[])]
         if minor:
@@ -217,11 +233,24 @@ class CodingStoreMixin:
         self._coding_job(conn,root,state,'CODE_TEST',phase='final')
 
     def submit_coding_snapshot(self, project: CodingProject, objective, requirements, snapshot, docker_policy,
-                               workflow_id=None):
+                               workflow_id=None,*,planning_evidence=None,planning_blocker=None):
         from .store import _identifier, _strings
+        if project.test_strategy!='red_green':
+            raise ValueError('Coding requires red_green; a preservation baseline cannot replace physical RED')
+        from .coding_checks import validate_generated_files
+        validate_generated_files(snapshot.files,[path for path in snapshot.files if within(path,project.test_paths)])
         if not isinstance(objective, str) or not objective.strip():
             raise ValueError('objective must be nonempty')
         _strings(requirements, 'requirements')
+        if planning_blocker is not None and (not isinstance(planning_blocker,str) or not planning_blocker.strip()):
+            raise ValueError('Planning prerequisite hold requires a concrete reason')
+        if project.planning and planning_blocker is None:
+            from .planning_governance import validate_registration
+            registration=validate_registration(project.planning,snapshot.files)
+            if (not isinstance(planning_evidence,dict) or
+                    any(planning_evidence.get(key)!=value for key,value in registration.items()) or
+                    not planning_evidence.get('external_sources')):
+                raise ValueError('Registered planning requires controller-collected source evidence')
         if sum(len(text.splitlines()) for text in [objective, *requirements]) > 400:
             raise ValueError('A coding request SRS may contain at most 400 lines; split larger requests')
         identifier = _identifier(workflow_id or uuid.uuid4().hex, 'workflow_id')
@@ -236,6 +265,7 @@ class CodingStoreMixin:
                 routes.capture_workflow(conn, identifier, self.routing_policy or {})
                 sha = self._snapshot(conn, snapshot.files)
                 state = {'project': project.as_dict(), 'docker': docker_policy.as_dict(),
+                         'planning_evidence':planning_evidence,'planning_history':[],'planning_revision':0,
                          'baseline_commit': snapshot.commit, 'baseline_ref': snapshot.ref, 'repository_snapshot': snapshot.as_dict(),
                          'modes': snapshot.modes, 'original_snapshot': sha, 'current_snapshot': sha,
                          'sealed_tests_snapshot': None, 'cycle': 1, 'max_cycles': 10, 'leaf_index':0,
@@ -252,9 +282,12 @@ class CodingStoreMixin:
                              'mermaid': 'flowchart LR\n tests_first-->baseline_test-->bounded_edit-->independent_test-->file_reviews-->staged_git'}}
                 conn.execute('INSERT INTO coding_workflows VALUES(?,?)', (identifier, encoded(state)))
                 root = self._get(conn, identifier)
-                state['status']='PLANNING'
+                if planning_blocker is not None:
+                    self._planning_hold(conn,root,state,planning_blocker)
+                else:
+                    state['status']='PLANNING'
+                    self._coding_job(conn, root, state, 'CODE_PLAN', allowed_paths=list(project.allowed_paths))
                 self._save_coding(conn,identifier,state)
-                self._coding_job(conn, root, state, 'CODE_PLAN', allowed_paths=list(project.allowed_paths))
                 self._event(conn, root, 'CODING_SUBMITTED', baseline_commit=snapshot.commit,
                             source_sha256=sha, project_policy_sha256=digest(state['project']))
         return self.coding_workflow(identifier)
@@ -277,6 +310,67 @@ class CodingStoreMixin:
                                                                for item in result['integration_intents'])
         return result
 
+    def _coding_hard_abort(self, conn, root, state, trigger):
+        """Persist an immutable autopsy before fencing every unfinished stage.
+
+        The historical PHYSICS WALL name identifies a workflow budget failure;
+        no scientific diagnosis is inferred from a general coding failure.
+        """
+        marker=('[HARD_ABORT: PHYSICS WALL]' if trigger=='methodological_pivots'
+                else '[HARD_ABORT: TDD CYCLE LIMIT]')
+        leaf=state.get('plan',{}).get('fracture_manifest',{}).get('topological_order',[])
+        leaf_id=leaf[state['leaf_index']] if leaf else None
+        executions=[]; dossiers=[]
+        rows=conn.execute('SELECT j.job_id,j.kind,j.status,j.payload_json,p.output_json,p.output_sha256,'
+            'p.receipt_json,e.sha256 AS evidence_sha256 FROM pipeline_jobs j '
+            'LEFT JOIN pipeline_outputs p USING(job_id) LEFT JOIN coding_evidence e USING(job_id) '
+            'WHERE j.workflow_id=? ORDER BY j.created_at,j.job_id',(root['workflow_id'],))
+        from .diagnostics import bounded_coding_diagnostics
+        for row in rows:
+            payload=json.loads(row['payload_json'])
+            if payload.get('active_leaf',{}).get('id')!=leaf_id or not row['output_json']:
+                continue
+            output=json.loads(row['output_json']); receipt=json.loads(row['receipt_json'])
+            executions.append({'job_id':row['job_id'],'kind':row['kind'],'cycle':payload.get('cycle'),
+                'source_snapshot_sha256':payload.get('snapshot_sha256'),'output_sha256':row['output_sha256'],
+                'receipt_sha256':digest(receipt),'evidence_sha256':row['evidence_sha256']})
+            if row['kind']=='CODE_RESEARCH' and payload.get('research_phase')!='initial':
+                dossiers.append({'job_id':row['job_id'],'output_sha256':row['output_sha256'],
+                    'diagnostics':bounded_coding_diagnostics({key:output[key] for key in
+                        ('root_cause','strategy','hypothesis') if key in output}).get('diagnostics',{})})
+        failures=[{'cycle':item['cycle'],'source_snapshot_sha256':item['snapshot_sha256'],
+            'test_sha256':item['test_sha256'],'reason_sha256':digest(item['reason'])}
+            for item in state['failures']]
+        evidence={'schema':'coding-autopsy/1','workflow_id':root['workflow_id'],'leaf_id':leaf_id,
+            'marker':marker,'trigger':trigger,'cycle':state['cycle'],'max_cycles':10,
+            'pivots':state['pivots'],'max_pivots':3,'source_snapshot_sha256':state['current_snapshot'],
+            'failure_history_sha256':digest(state['failures']),'failure_history':state['failures'],
+            'failures':failures,'executions':executions,
+            'research_dossiers':dossiers,'scientific_diagnosis':None}
+        evidence_sha=digest(evidence)
+        report=(f'# Physics Autopsy Report\n\n{marker}\n\n'
+            f'Workflow: `{root["workflow_id"]}`\n\nLeaf: `{leaf_id}`\n\n'
+            f'Exhausted budget: {trigger}. Cycles: {state["cycle"]}/10. Methodological pivots: {state["pivots"]}/3.\n\n'
+            'This is an execution-budget autopsy. The historical PHYSICS WALL label does not establish '
+            'a physical impossibility or a scientific root cause. Proposed diagnoses remain attributed research evidence.\n\n'
+            f'Immutable evidence SHA256: `{evidence_sha}`\n\n'
+            f'Final source snapshot: `{state["current_snapshot"]}`\n\n'
+            f'Failure history SHA256: `{evidence["failure_history_sha256"]}`\n\n'
+            '## Failure evidence\n\n'+''.join(f'- Cycle {item["cycle"]}: source `{item["source_snapshot_sha256"]}`, '
+                f'test receipt `{item["test_sha256"]}`, reason `{item["reason_sha256"]}`.\n' for item in failures)+
+            '\n## Recorded research triage\n\n'+''.join(f'Job `{item["job_id"]}`, output `{item["output_sha256"]}`:\n\n'
+                '```json\n'+encoded(item['diagnostics'])+'\n```\n\n' for item in dossiers))
+        snapshot=self._snapshot(conn,{'Physics_Autopsy_Report.md':report.encode(),
+                                     'AutopsyEvidence.json':encoded(evidence).encode()})
+        state['autopsy']={'name':'Physics_Autopsy_Report.md','snapshot_sha256':snapshot,
+            'report_sha256':hashlib.sha256(report.encode()).hexdigest(),'evidence_sha256':evidence_sha,
+            'marker':marker,'trigger':trigger,'report':report}
+        state['status']='PHYSICS_WALL' if trigger=='methodological_pivots' else 'EXHAUSTED'
+        conn.execute('INSERT INTO coding_evidence VALUES(?,?,?)',(root['job_id'],encoded(evidence),evidence_sha))
+        self._event(conn,root,'CODING_HARD_ABORT',marker=marker,trigger=trigger,
+                    autopsy_snapshot_sha256=snapshot,evidence_sha256=evidence_sha)
+        self._fail_workflow(conn,root['workflow_id'],marker+' Exhausted '+trigger+'; see Physics_Autopsy_Report.md')
+
     def _coding_retry(self, conn, root, state, reason):
         state.pop('pending_refine_skip',None)
         state['retry_phase']='P7' if state.get('changes') and state.get('last_test') else 'P4'
@@ -285,15 +379,13 @@ class CodingStoreMixin:
         state['failures'].append({'cycle': state['cycle'], 'reason': reason,
                                   'test_sha256': digest(state['last_test']) if state['last_test'] else None,
                                   'snapshot_sha256': state['current_snapshot']})
+        if state['pivots'] >= 3:
+            self._coding_hard_abort(conn,root,state,'methodological_pivots')
+            return
         if state['cycle'] >= 10:
-            state['status'] = 'EXHAUSTED'
-            self._fail_workflow(conn, root['workflow_id'], 'Coding exhausted its immutable ten-cycle budget')
+            self._coding_hard_abort(conn,root,state,'tdd_cycles')
             return
         if state['consecutive_failures'] >= 3:
-            if state['pivots'] >= 3:
-                state['status'] = 'RESEARCH_EXHAUSTED'
-                self._fail_workflow(conn, root['workflow_id'], 'Coding exhausted its three research pivots')
-                return
             state['status'] = 'RESEARCH_REQUIRED'
             self._coding_job(conn, root, state, 'CODE_RESEARCH', failures=state['failures'][-3:],
                              test_receipt=state['last_test'], failure_evidence_sha256=digest(state['failures'][-3:]))
@@ -350,35 +442,77 @@ class CodingStoreMixin:
             if files is not None:
                 if kind not in ('CODE_EDIT', 'CODE_TEST_AUTHOR'):
                     raise ValueError('Read-only stages cannot publish modified files')
+                before=self.coding_files(state['current_snapshot'])
+                from .coding_checks import validate_generated_files
+                validate_generated_files(files,[name for name in files if before.get(name)!=files[name]])
+                if kind=='CODE_EDIT':
+                    if any(name not in job['payload']['active_leaf']['file_targets']
+                           for name in set(before)|set(files) if before.get(name)!=files.get(name)):
+                        raise ValueError('A fracture leaf may change only its single planned implementation target')
+                    chunk=validate_leaf_chunk(self.coding_files(state['leaf_baseline_snapshot']),files,
+                        self.coding_files(state['original_snapshot']),CodingProject.from_dict(root['payload']['project_id'],state['project']))
+                    evidence={**evidence,'chunk':chunk}
                 state['current_snapshot'] = self._snapshot(conn, files)
             conn.execute('INSERT INTO coding_evidence VALUES(?,?,?)', (job_id, encoded(evidence), digest(evidence)))
             conn.execute('INSERT INTO pipeline_outputs VALUES(?,?,?,?,?,?,?,?)',
                          (job_id, attempt_id, fencing_token, None, encoded(output), encoded(receipt), digest(output), time.time()))
-            conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
+            conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_owner=NULL,lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
             routes.release(conn, job_id, 'completed', 'COMPLETED')
             self._event(conn, job, 'COMPLETED', evidence_sha256=digest(evidence), output_sha256=digest(output))
             if kind == 'CODE_PLAN':
                 plan = evidence['plan']
                 if plan.get('plan_sha256')!=digest({key:value for key,value in plan.items() if key!='plan_sha256'}):
                     raise ValueError('Controller planning artifacts failed their immutable digest')
-                state['plan'],state['planner_receipt']=plan,receipt
-                state['fracture_manifest']=plan['fracture_manifest']
-                state['status']='REVIEWING_PLAN'
-                self._coding_job(conn,root,state,'CODE_PLAN_REVIEW',plan=plan,plan_sha256=plan['plan_sha256'],
-                                 producer={'provider':receipt['provider'],'model':receipt['requested_model']})
+                previous=job['payload'].get('previous_plan')
+                findings=job['payload'].get('planning_feedback',{}).get('findings',[])
+                changed={name for name,sha in plan['artifact_hashes'].items()
+                         if previous is not None and previous['artifact_hashes'].get(name)!=sha}
+                no_progress=previous is not None and (not changed or any(
+                    not changed.intersection(finding['artifacts']) for finding in findings))
+                state.setdefault('planning_history',[]).append({'job_id':job_id,'kind':kind,
+                    'revision':state.get('planning_revision',0),'plan_sha256':plan['plan_sha256'],
+                    'output_sha256':digest(output),'receipt_sha256':digest(receipt),
+                    'changed_artifacts':sorted(changed),'no_progress':no_progress})
+                if no_progress:
+                    self._planning_hold(conn,root,state,'Planning revision did not change every cited artifact group')
+                else:
+                    state['plan'],state['planner_receipt']=plan,receipt
+                    state['fracture_manifest']=plan['fracture_manifest']
+                    state['status']='REVIEWING_PLAN'
+                    self._coding_job(conn,root,state,'CODE_PLAN_REVIEW',plan=plan,plan_sha256=plan['plan_sha256'],
+                                     planner_job_id=job['job_id'],planner_receipt_sha256=digest(receipt),
+                                     producer={'provider':receipt['provider'],'model':receipt['requested_model']})
             elif kind == 'CODE_PLAN_REVIEW':
+                if (job['payload'].get('planner_job_id')!=state['planner_receipt']['job_id'] or
+                        job['payload'].get('planner_receipt_sha256')!=digest(state['planner_receipt'])):
+                    raise ValueError('Planning audit is detached from its exact producing execution')
                 from .coding_plan import validate_plan_review
-                approved = validate_plan_review(output,state['plan'],planner_receipt=state['planner_receipt'],reviewer_receipt=receipt)
-                state['plan_review']=approved
-                self._coding_phase(conn,root,state,'P1',{'plan_sha256':state['plan']['plan_sha256'],'review_sha256':digest(approved)})
-                state['status']='RESEARCHING'
-                self._coding_job(conn,root,state,'CODE_RESEARCH',research_phase='initial')
+                approved = validate_plan_review(output,state['plan'],planner_receipt=state['planner_receipt'],reviewer_receipt=receipt,
+                                                allow_revision=True)
+                state.setdefault('planning_history',[]).append({'job_id':job_id,'kind':kind,
+                    'revision':state.get('planning_revision',0),'plan_sha256':state['plan']['plan_sha256'],
+                    'output_sha256':digest(output),'receipt_sha256':digest(receipt),'verdict':output['verdict']})
+                if not approved['approved']:
+                    maximum=state['project'].get('planning',{}).get('max_revisions',5)
+                    if state.get('planning_revision',0)>=maximum:
+                        self._planning_hold(conn,root,state,'Planning exhausted its immutable revision budget')
+                    else:
+                        state['planning_revision']=state.get('planning_revision',0)+1
+                        state['status']='REVISING_PLAN'
+                        self._coding_job(conn,root,state,'CODE_PLAN',previous_plan=state['plan'],
+                            planning_feedback=output,revision_index=state['planning_revision'],
+                            allowed_paths=state['project']['allowed_paths'])
+                        self._event(conn,root,'PLANNING_REVISION_REQUESTED',revision=state['planning_revision'],
+                                    review_sha256=digest(output),plan_sha256=state['plan']['plan_sha256'])
+                else:
+                    state['plan_review']=approved
+                    self._coding_phase(conn,root,state,'P1',{'plan_sha256':state['plan']['plan_sha256'],'review_sha256':digest(approved)})
+                    state['status']='RESEARCHING'
+                    self._coding_job(conn,root,state,'CODE_RESEARCH',research_phase='initial')
             elif kind == 'CODE_TEST_AUTHOR':
                 selected_paths=[change['path'] for change in evidence.get('changes',[])]
                 if not selected_paths:
-                    if state['project'].get('test_strategy','red_green')!='preserve_behavior':
-                        raise ValueError('Red-green test sealing requires newly authored regression files')
-                    selected_paths=output.get('reuse_tests')
+                    raise ValueError('Red-green test sealing requires newly authored regression files')
                 if (not isinstance(selected_paths,list) or any(not isinstance(path,str) or
                         not within(path,state['project']['test_paths']) for path in selected_paths)):
                     raise ValueError('Selected tests must stay within the captured protected test paths')
@@ -395,6 +529,7 @@ class CodingStoreMixin:
                 self._coding_job(conn, root, state, 'CODE_TEST', phase='precode')
             elif kind == 'CODE_EDIT':
                 state['changes'] = evidence['changes']
+                state['chunk_bounds']=evidence['chunk']
                 if not evidence.get('no_source_change'):
                     state['producer'] = {'provider': receipt['provider'], 'model': receipt['requested_model']}
                 state['producer_done'] = output.get('done') is True
@@ -412,6 +547,11 @@ class CodingStoreMixin:
                     state['status'] = 'TESTING'
                     self._coding_job(conn, root, state, 'CODE_TEST', phase='final' if phase=='P9' else 'postedit')
             elif kind == 'CODE_TEST':
+                duration=evidence.get('test_cycle_seconds')
+                if evidence.get('passed') or evidence.get('failure_category')=='tests_failed':
+                    if (type(duration) not in (int,float) or not math.isfinite(duration) or not 0<=duration<=30
+                            or evidence.get('test_cycle_deadline_met') is not True):
+                        raise ValueError('Coding tests and result collection must complete within 30 seconds')
                 candidate_failure = evidence.get('failure_category') in ('oom','timeout','output_limit')
                 source_proven = evidence.get('source_verified') is True or (candidate_failure and evidence.get('input_source_verified') is True and evidence.get('passed') is False)
                 if (evidence.get('cleanup_verified') is not True or not source_proven
@@ -453,8 +593,7 @@ class CodingStoreMixin:
                                and any(case.get('status')=='failed' for values in matched.values() for case in values)
                                and all(case.get('status') in ('passed','failed') for values in matched.values() for case in values)
                                and all(command.get('junit',{}).get('errors',0)==0 for command in evidence.get('commands',[])))
-                    acceptable = (red if state['project'].get('test_strategy','red_green')=='red_green'
-                                  else evidence['passed'] is True)
+                    acceptable = red and state['project'].get('test_strategy','red_green')=='red_green'
                     if not acceptable:
                         state['current_snapshot'] = state['leaf_baseline_snapshot']
                         state['sealed_tests_snapshot'] = None
@@ -519,6 +658,12 @@ class CodingStoreMixin:
                             self._coding_job(conn, root, state, 'CODE_INTEGRATE', done=final_leaf,
                                              reviews_sha256=digest(state['reviews']), test_receipt_sha256=digest(state['last_test']))
             elif kind == 'CODE_RESEARCH':
+                if state['project'].get('planning'):
+                    from .planning_governance import validate_external_research
+                    verified=validate_external_research(output,state['planning_evidence']['external_sources'],
+                        [f'R{index}' for index in range(1,len(job['payload']['requirements'])+1)])
+                    if any(evidence.get(key)!=value for key,value in verified.items()):
+                        raise ValueError('Research confidence must match controller-verified external source evidence')
                 if job['payload'].get('research_phase')=='initial':
                     if output.get('plan_sha256')!=state['plan']['plan_sha256'] or not evidence.get('verified_sources') or not output.get('strategy'):
                         raise ValueError('Initial research must bind the approved plan and verified project sources')
@@ -542,6 +687,10 @@ class CodingStoreMixin:
                     raise ValueError('A research pivot must change the previous strategy')
                 state['pivots'] += 1
                 if output['disposition']=='escalate':
+                    if state['pivots']>=3:
+                        self._coding_hard_abort(conn,root,state,'methodological_pivots')
+                        self._save_coding(conn,root['workflow_id'],state)
+                        return self._get(conn,job_id)
                     state['status']='RESEARCH_HOLD'
                     state['research_hold']={'dossier_sha256':digest(output),'root_cause':cause}
                     conn.execute("UPDATE pipeline_jobs SET status='BLOCKED',updated_at=? WHERE job_id=?",(time.time(),root['job_id']))
@@ -574,6 +723,7 @@ class CodingStoreMixin:
                     raise ValueError('Git publication has no matching durable integration intent')
                 if not job['payload'].get('approved_integration'):
                     state['chunks'].append({'cycle': state['cycle'], 'staged': staged,
+                                            'bounds':state['chunk_bounds'],
                                             'reviews': state['reviews'], 'test_receipt_sha256': digest(state['last_test'])})
                 state['last_commit'] = staged['result_commit']
                 state['review_base_snapshot'] = state['current_snapshot']

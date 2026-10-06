@@ -344,3 +344,36 @@ def test_real_windows_installed_claude_selects_the_bound_project_cache_without_i
         for path in logdir.iterdir():
             path.unlink()
         logdir.rmdir()
+
+
+def test_real_verified_ram_startup_cleanup_removes_prior_project_before_reuse():
+    if (os.name!='nt' or not os.environ.get('COCHEM_WINDOWS_RAMDISK_CONFIG')
+            or os.environ.get('COCHEM_TEST_DISPOSABLE_RAM_CLEANUP')!='1'):
+        pytest.skip('Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1')
+    import ctypes
+    from cochem_pipeline import windows as win
+    from cochem_pipeline.config import load_config
+    from cochem_pipeline.runtime import clear_ram_workspace
+    config=load_config(os.environ['COCHEM_WINDOWS_RAMDISK_CONFIG'])
+    identities={slot:win.WorkerIdentity(**value) for slot,value in config.workers.items()}
+    manager=RamdiskManager(config.ramdisk,config.private_root,identities)
+    manager.inspect()
+    slot=next(iter(identities));descriptor=manager.workspace(slot)
+    sid=win._sid_text(win._account_sid(identities[slot].name))
+    ctypes.set_last_error(0)
+    mutex=win._check(win._api()['kernel32'].CreateMutexW(None,False,'Global\\CoChemPipeline422-'+sid),
+                     'Reserve actual disposable worker identity')
+    try:
+        if ctypes.get_last_error()==183:
+            pytest.skip('The native worker identity is still reserved; cleanup cannot be tested')
+        descriptor.validate(identity=descriptor.identity)
+        if any(descriptor.root.iterdir()):
+            pytest.skip('Disposable RAM slot must start empty; existing files are preserved')
+        project=descriptor.root/'project';project.mkdir()
+        (project/'prior-attempt.txt').write_bytes(b'actual prior RAM attempt')
+        clear_ram_workspace(descriptor)
+        assert list(descriptor.root.iterdir())==[]
+        # The next CodingCoordinator mkdir now succeeds without consuming a failure.
+        project.mkdir();project.rmdir()
+    finally:
+        win._close(mutex)

@@ -3,14 +3,18 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import os
 from pathlib import Path
+import subprocess
+import sys
+import tempfile
 import threading
 import time
 import uuid
 
 from . import __version__
 from .io import write_json
-from .monitor import read_observation,classify_error,redact_diagnostic
+from .monitor import classify_error,redact_diagnostic
 from .state import Ledger
 from .releases import ReleaseError,ReleaseStore,snapshot_tree,tree_manifest,validate_changes
 
@@ -56,6 +60,36 @@ class Supervisor:
             return True
         return self.ledger.heartbeat(self.current_attempt,lease_seconds=180)
 
+    def _read_observation(self):
+        """Run the sterile detector separately from the privileged actuator.
+
+        The protected detector never imports pipeline/MCP application modules.
+        Temporary handles bound output readback; a timeout terminates this one
+        fixed child, whose implementation never launches subprocesses.
+        """
+        import psutil
+        package=Path(__file__).resolve().parent
+        command=[sys.executable,'-I','-S',str(package/'detector_bootstrap.py'),
+            '--supervisor-package',str(package),'--psutil-package',str(Path(psutil.__file__).resolve().parent),
+            '--private-root',self.config['pipeline_private_root'],
+            '--heartbeat-timeout',str(self.config['heartbeat_timeout']),
+            '--stall-timeout',str(self.config['stall_timeout']),
+            '--repeated-failures',str(self.config['repeated_failures']),
+            '--wal-limit-mb',str(self.config.get('wal_limit_mb',256)),
+            '--process-history',str(self.private/'process-history.json')]
+        with tempfile.TemporaryFile() as output,tempfile.TemporaryFile() as error:
+            completed=subprocess.run(command,stdin=subprocess.DEVNULL,stdout=output,stderr=error,
+                timeout=5,creationflags=0x08000000 if os.name=='nt' else 0)
+            if completed.returncode or output.tell()>2*1024*1024:
+                raise RuntimeError('Independent sterile detector did not produce bounded observation evidence')
+            output.seek(0)
+            value=json.loads(output.read(2*1024*1024))
+        if (not isinstance(value,dict) or value.get('import_audit',{}).get('sterile') is not True
+                or value['import_audit'].get('isolated') is not True or value['import_audit'].get('site_disabled') is not True
+                or value['import_audit'].get('forbidden_modules') or not isinstance(value.get('observation'),dict)):
+            raise RuntimeError('Independent detector import boundary was not verified')
+        return value['observation']
+
     def _stop(self):
         from .windows import stop_task
         from .cleanup import reconcile_stopped_containment
@@ -66,8 +100,8 @@ class Supervisor:
         return True
 
     def _clear_workspace(self):
-        from cochem_pipeline.runtime import clear_slot
-        clear_slot(Path(self.config['repair_workspace']))
+        from .workspace import clear_workspace
+        clear_workspace(Path(self.config['repair_workspace']))
 
     def _prepare_workspace(self,candidate):
         from .windows import prepare_repair_workspace
@@ -123,20 +157,21 @@ class Supervisor:
         return result
 
     def _capture_recovery_diagnostics(self,incident,observation=None):
-        """Persist bounded, secret-free evidence before changing component state."""
+        """Persist bounded private evidence before changing component state."""
         if observation is None:
-            observation=read_observation(self.config['pipeline_private_root'],
-                heartbeat_timeout=self.config['heartbeat_timeout'],stall_timeout=self.config['stall_timeout'],
-                repeated_failures=self.config['repeated_failures'])
+            observation=self._read_observation()
         directory=self.private/'diagnostics'
         directory.mkdir(parents=True,exist_ok=True)
         target=directory/(uuid.uuid4().hex+'.json')
+        from .diagnostics import capture_bundle
+        bundle=capture_bundle(Path(self.config['pipeline_private_root']),target.with_suffix(''),observation)
         write_json(target,{'captured_at':time.time(),'incident':incident,'observation':observation,
-                           'scope':'bounded heartbeat, SQLite metadata, hardware and infrastructure diagnostics'})
+                           'scope':'private SQLite backup plus bounded heartbeat, metadata, hardware and infrastructure diagnostics',
+                           'bundle':bundle})
         digest=hashlib.sha256(target.read_bytes()).hexdigest()
         self.ledger.record_event('PRE_RECOVERY_DIAGNOSTICS',{'path':str(target),'sha256':digest},
                                  fingerprint=incident['fingerprint'])
-        return {'path':str(target),'sha256':digest}
+        return {'path':str(target),'sha256':digest,'bundle':bundle}
 
     def _restart_once(self,incident,observation=None):
         if not ('heartbeat' in incident['summary'].lower() or
@@ -152,6 +187,7 @@ class Supervisor:
         self.stage='restarting'
         self._publish(incident=incident)
         try:
+            self._recovery_action_started('warden',incident['fingerprint'])
             self._stop()
             self._start(Path(self.releases.current()['source_root']))
             verified=bool(self._probe(Path(self.releases.current()['source_root'])))
@@ -163,6 +199,13 @@ class Supervisor:
         if not verified:
             self.ledger.record_event('WARDEN_RESTART_FAILED',{'health_verified':False},fingerprint=incident['fingerprint'])
         return True
+
+    def _recovery_action_started(self,component,fingerprint):
+        started=time.time()
+        confirmed=getattr(self,'recovery_confirmed_at',started)
+        self.ledger.record_event('RECOVERY_ACTION_STARTED',{'component':component,
+            'confirmed_at':confirmed,'started_at':started,'elapsed_seconds':max(0,started-confirmed)},
+            fingerprint=fingerprint)
 
     def _observe_controller(self,observation):
         # Test drivers that explicitly do not provision an HTTP controller have
@@ -221,10 +264,12 @@ class Supervisor:
             # A reservation survives a crash during diagnostics or the action.
             # No subsequent tick can repeat the physical recovery automatically.
             try:
+                self.recovery_confirmed_at=time.time()
                 if component=='docker_engine':
                     diagnostic=self._capture_recovery_diagnostics(incident,observation)
                     self.ledger.record_event('COMPONENT_RECOVERY_REQUESTED',
                         {**decision,'diagnostic':diagnostic},fingerprint=incident['fingerprint'])
+                    self._recovery_action_started(component,incident['fingerprint'])
                     outcome=start_docker_service()
                 else:
                     outcome={'restart_requested':self._restart_once(incident,observation)}
@@ -239,10 +284,148 @@ class Supervisor:
             return True
         return delayed
 
+    @staticmethod
+    def _code_evidence(incident):
+        """An unavailable heartbeat is not evidence that changing code will help."""
+        evidence=incident.get('evidence',{})
+        if (incident.get('category')=='code' and evidence.get('component')=='database_structure'
+                and evidence.get('invariant') in {'inactive_lease_owner','pending_exhausted_failure_budget'}):
+            return type(evidence.get('count')) is int and evidence['count']>0
+        diagnostic=evidence.get('diagnostic')
+        if incident.get('category') not in {'code','compatibility'} or not isinstance(diagnostic,str):
+            return False
+        if not classify_error(diagnostic)['repairable']:
+            return False
+        if evidence.get('source')=='crash-envelope.json':
+            return bool(evidence.get('frames'))
+        return (type(evidence.get('required_repetitions')) is int and
+                max(evidence.get('observed_jobs',0),evidence.get('attempts',0))>=evidence['required_repetitions'])
+
+    def _prepare_structural_repair(self,observation):
+        """Freeze a collapsed queue before considering its evidenced code repair."""
+        incident=next(item for item in observation['incidents']
+                      if item['evidence'].get('component')=='database_structure')
+        self.ledger.observe(incident['fingerprint'],incident['category'],incident)
+        self.stage='collapsed'
+        self.recovery_confirmed_at=time.time()
+        self._publish(observation)
+        # Persistent corruption can survive many held ticks. Preserve its first
+        # physical snapshot rather than copying up to 32 MiB every poll.
+        if not self.ledger.has_event('PRE_RECOVERY_DIAGNOSTICS',fingerprint=incident['fingerprint']):
+            self._capture_recovery_diagnostics(incident,observation)
+        try:
+            self._recovery_action_started('structural_freeze',incident['fingerprint'])
+            if self._stop() is not True:
+                raise RuntimeError('Collapsed queue containment was not verified')
+        except Exception as exc:
+            self.ledger.record_event('STRUCTURAL_FREEZE_BLOCKED',{
+                'diagnostic':redact_diagnostic(f'{type(exc).__name__}: {exc}')},fingerprint=incident['fingerprint'])
+            return False
+        self.ledger.record_event('STRUCTURAL_FREEZE_VERIFIED',{
+            'invariant':incident['evidence']['invariant'],'count':incident['evidence']['count']},
+            fingerprint=incident['fingerprint'])
+        refreshed=self._read_observation()
+        self._observe_controller(refreshed)
+        health=refreshed['health']
+        blockers=(health.get('database')!='readable' or health.get('execution_cleanup_hold')
+            or health.get('hardware_capacity')==0 or health.get('hardware',{}).get('state') in {'paused','critical'}
+            or any(name!='controller' and part.get('required') and part.get('state')!='healthy'
+                   for name,part in health.get('components',{}).items())
+            or any(item['category'] not in {'code','compatibility'} and item['evidence'].get('component')!='controller'
+                   for item in refreshed['incidents']))
+        repairable=[item for item in refreshed['incidents'] if
+                    item['evidence'].get('component')=='database_structure' and self._code_evidence(item)]
+        observation.clear();observation.update(refreshed)
+        if blockers or not repairable:
+            observation['health'].update(repair_hold=True,state='collapsed')
+            return False
+        for item in refreshed['incidents']:
+            item['repairable']=item in repairable
+        refreshed['health'].update(repair_hold=False,state='collapsed',structural_freeze_verified=True)
+        return True
+
+    def _escalate_failed_restart(self,observation):
+        """Allow evidenced source repair after a failed restart and verified stop.
+
+        Availability alone, auth, quota and resource failures remain holds. The
+        controller can be unavailable because the very implementation being
+        repaired crashes on startup; it is not required to attest its own fix.
+        """
+        incidents=observation['incidents']
+        failed=next((item for item in incidents if self.ledger.has_event(
+            'WARDEN_RESTART_FAILED',fingerprint=item['fingerprint'])),None)
+        evidenced=[item for item in incidents if self._code_evidence(item)]
+        if failed is None or not evidenced:
+            return False
+
+        def external_hold(value, *, before_stop=False):
+            health=value['health']
+            startup_crash=any(self._code_evidence(item) and item['evidence'].get('source')=='crash-envelope.json'
+                              for item in value['incidents'])
+            if ((health.get('database')!='readable' and not (startup_crash and health.get('database')=='missing'))
+                    or health.get('hardware_capacity')==0):
+                return True
+            if health.get('hardware',{}).get('state') in {'paused','critical'}:
+                return True
+            if health.get('execution_cleanup_hold') and not before_stop:
+                return True
+            if any(name!='controller' and part.get('required') and part.get('state')!='healthy'
+                   for name,part in health.get('components',{}).items()):
+                return True
+            for item in value['incidents']:
+                evidence=item['evidence']
+                if evidence.get('component')=='controller':
+                    continue
+                if startup_crash and health.get('database')=='missing' and evidence.get('source')=='job_board.db':
+                    continue
+                if before_stop and evidence.get('state')=='BLOCKED' and 'sampled_holds' in evidence:
+                    continue
+                if item['category'] not in {'code','compatibility'}:
+                    return True
+            return False
+
+        if external_hold(observation,before_stop=True):
+            return False
+        self._capture_recovery_diagnostics(failed,observation)
+        try:
+            if self._stop() is not True:
+                raise RuntimeError('Contained Warden shutdown was not verified')
+        except Exception as exc:
+            self.ledger.record_event('REPAIR_CLEANUP_BLOCKED',{
+                'diagnostic':redact_diagnostic(f'{type(exc).__name__}: {exc}')},fingerprint=failed['fingerprint'])
+            return False
+        refreshed=self._read_observation()
+        self._observe_controller(refreshed)
+        if external_hold(refreshed):
+            return False
+        repairable=[item for item in refreshed['incidents'] if self._code_evidence(item)]
+        if not repairable:
+            return False
+        self.ledger.record_event('WARDEN_REPAIR_CLEANUP_VERIFIED',{
+            'code_incidents':[item['fingerprint'] for item in repairable],
+            'proof':'verified contained tree stop and read-only cleanup recheck'},fingerprint=failed['fingerprint'])
+        # Preserve observed availability failures for diagnosis, but dispatch
+        # only the implementation evidence through the ordinary durable budget.
+        for item in refreshed['incidents']:
+            item['repairable']=item in repairable
+        refreshed['health'].update(repair_hold=False,state='degraded')
+        observation.clear(); observation.update(refreshed)
+        return True
+
     def _repair_boundary_check(self):
         from .windows import verify_repair_docker_boundary, verify_repair_execution_limits
         return {'resources':verify_repair_execution_limits(self.config),
                 'docker':verify_repair_docker_boundary(self.config)}
+
+    def _outer_acceptance(self,candidate,directory):
+        from .blackbox import run_blackbox
+        def invoke(arguments,request,logs,timeout):
+            return self.runner.run_process(self.config['repair_worker'],
+                [self.config['test_python'],'-I','-m','cochem_supervisor.blackbox_child',*arguments],
+                Path(self.config['repair_workspace']),logs,stdin_text=json.dumps(request),
+                timeout_seconds=timeout,heartbeat=self._heartbeat)
+        return run_blackbox(candidate,Path(self.config['repair_workspace'])/'outer-contract',
+            directory/'outer-acceptance.json',invoke,timeout_seconds=self.config['test_timeout_seconds'])
 
     def _repair_boundary_hold(self):
         try:
@@ -341,6 +524,7 @@ class Supervisor:
         terminal='FAILED'
         try:
             directory.mkdir(parents=True,exist_ok=False)
+            details['diagnostics']=self._capture_recovery_diagnostics(incident)
             self.stage='repairing'
             self._publish(incident=incident)
             self._clear_workspace()
@@ -356,6 +540,11 @@ class Supervisor:
                 'All changes must preserve compatibility with existing stored workflow data.'),
                 'allowed_paths':self.config['allowed_paths'],'incident':incident,
                 'previous_failure':self._previous_failure(incident['fingerprint'])}
+            bundle=details['diagnostics']['bundle']
+            # Inference receives immutable artifact metadata, never the raw
+            # private snapshot, workflow payloads or a private storage path.
+            evidence['diagnostic_bundle']={key:bundle[key] for key in
+                ('schema','captured_at','database','private_database_snapshot','files','manifest_sha256')}
             details['native_receipt']=self.runner.run(spec,self.config['repair_worker'],candidate,evidence,
                 directory/'model',self.config['repair_timeout_seconds'],self._heartbeat)
             try:
@@ -388,6 +577,18 @@ class Supervisor:
                 raise CandidateRejected('Independent acceptance tests changed during validation')
             if tree_manifest(frozen)!=changed['manifest']:
                 raise CandidateRejected('Candidate changed during acceptance tests')
+            # Candidate imports share the pytest interpreter and can forge its
+            # XML. Regression results remain useful but cannot attest themselves.
+            # Promotion additionally requires protected out-of-process assertions.
+            details['tests']['scope']='in-process regression diagnostics; not tamperproof attestation'
+            try:
+                details['outer_acceptance']=self._outer_acceptance(frozen,directory)
+            except ValueError as exc:
+                raise CandidateRejected(str(exc)) from exc
+            if details['outer_acceptance'].get('passed') is not True:
+                raise CandidateRejected('Independent outer acceptance did not pass')
+            if tree_manifest(frozen)!=changed['manifest']:
+                raise CandidateRejected('Candidate changed during outer acceptance')
             if not self._heartbeat():
                 raise RuntimeError('Repair lease was lost before deployment')
             release=self.releases.prepare(frozen,changed['manifest'],self._protect_release_tree)
@@ -437,17 +638,30 @@ class Supervisor:
             return {'health':{'state':'blocked','reason':'repair identity quarantined'},'incidents':[]}
         if self.releases.recovery_required():
             self.recover()
-        observation=read_observation(self.config['pipeline_private_root'],
-            heartbeat_timeout=self.config['heartbeat_timeout'],stall_timeout=self.config['stall_timeout'],
-            repeated_failures=self.config['repeated_failures'],wal_limit_mb=self.config.get('wal_limit_mb',256))
+        observation_started=time.monotonic()
+        observed_at=time.time()
+        observation=self._read_observation()
         self._observe_controller(observation)
+        duration=time.monotonic()-observation_started
+        observation['health']['observation_seconds']=duration
+        self.ledger.record_event('SUPERVISOR_OBSERVATION_TIMED',{'observed_at':observed_at,'duration_seconds':duration})
         self.stage='observing'
         self._publish(observation)
-        incidents=list(observation['incidents'])
         if not ignore_startup_grace and time.time()-self.started_at<self.config['startup_grace_seconds']:
             return observation
-        if self._recover_components(observation) or observation['health'].get('repair_hold'):
+        if observation['health'].get('structural_integrity',{}).get('state')=='violated':
+            if not self._prepare_structural_repair(observation):
+                return observation
+        elif self._recover_components(observation):
             return observation
+        if observation['health'].get('repair_hold') and not self._escalate_failed_restart(observation):
+            return observation
+        incidents=list(observation['incidents'])
+        # A missing/stale heartbeat or an expired lease is an availability
+        # symptom. Without a diagnosed exception it never authorizes inference.
+        for item in incidents:
+            if item['repairable'] and item['category'] in {'code','compatibility'} and not self._code_evidence(item):
+                item['repairable']=False
         if self._repair_boundary_hold():
             observation['health']['repair_hold']=True
             observation['health']['state']='blocked'

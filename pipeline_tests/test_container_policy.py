@@ -44,9 +44,11 @@ def test_pytest_cannot_replace_owned_junit_or_omit_execution(argv):
 
 
 def test_custom_build_commands_are_argv_with_explicit_test_kind_and_budget():
-    command = Command.from_dict({'name': 'build', 'kind': 'command', 'argv': ['npm','run','build'], 'timeout_seconds': 80})
+    command = Command.from_dict({'name': 'build', 'kind': 'command', 'argv': ['npm','run','build'], 'timeout_seconds': 20})
     assert command.argv == ('npm','run','build')
-    assert command.timeout_seconds == 80
+    assert command.timeout_seconds == 20
+    with pytest.raises(ValueError,match='timeout_seconds'):
+        Command.from_dict({'name':'slow','kind':'command','argv':['npm','run','build'],'timeout_seconds':31})
 
 
 def test_empty_pool_compatibility_ignores_unexecuted_command_variations():

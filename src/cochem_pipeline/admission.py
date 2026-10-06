@@ -27,6 +27,7 @@ class JointAdmission:
         self._capacity=0
         self._pending_native=0
         self._drain_target=None
+        self._warm_requests={}
         self.maintenance_requested=threading.Event()
         self.update_capacity(capacity)
 
@@ -74,6 +75,8 @@ class JointAdmission:
     def _captured_runner(self,node):
         captured=DockerPolicy.from_dict(self.store.coding_state(node['workflow_id'])['docker'])
         current=self.docker.policy
+        if captured.warm_pool_size<=0:
+            raise ValueError('Production Docker testing requires preallocated warm capacity')
         if (not captured.enabled or captured.image not in current.allowed_images
                 or captured.endpoint!=current.endpoint or captured.executable!=current.executable
                 or any(getattr(captured,key)>getattr(current,key) for key in
@@ -100,7 +103,7 @@ class JointAdmission:
                         category=category,retry_after_seconds=5,
                         hold_scope='job' if category=='configuration' else None)
 
-    def claim(self,owner,lease_seconds=60,ceiling=None,*,exclude_job_ids=(),worker_slot=None,
+    def claim(self,owner,lease_seconds=1800,ceiling=None,*,exclude_job_ids=(),worker_slot=None,
               requires_cleanup=True,cleanup_boot_id=None,containment_id=None):
         """Nonblocking scheduler admission; return ``(node,reservation)`` or None.
 
@@ -133,17 +136,27 @@ class JointAdmission:
                 if node is not None:
                     try:
                         runner=self._captured_runner(node)
-                        reservation=runner.reserve_attempt(node['job_id'],node['attempt_id'],retire_incompatible=False)
+                        reservation=runner.reserve_attempt(node['job_id'],node['attempt_id'],retire_incompatible=False,
+                            require_warm=True,request_started_at=node['created_at'])
                     except ContainerCapacityError as exc:
+                        if len(self._warm_requests)<64 or runner.policy.pool_digest in self._warm_requests:
+                            self._warm_requests.setdefault(runner.policy.pool_digest,(runner,node['job_id']))
                         self._unstarted_failure(node,exc)
-                        self._request_drain(max(0,residual-1))
+                        self.maintenance_requested.set()
                         return None
                     except (ValueError,ContainerCleanupError) as exc:
                         self._unstarted_failure(node,exc,category='configuration')
                         return None
                     with self._budget_lock:
                         self._drain_target=None
+                    self._warm_requests.pop(runner.policy.pool_digest,None)
+                    if self._warm_requests:
+                        self.maintenance_requested.set()
                     return node,reservation
+                if self._warm_requests:
+                    # Preserve the first queued profile's seat through its
+                    # retry delay instead of letting native traffic evict it.
+                    return None
                 if not self._native_pending():
                     return None
                 target=max(0,residual-1)
@@ -190,6 +203,19 @@ class JointAdmission:
             if self.docker.census()['quarantined']:
                 self.docker.set_capacity(0)
                 return {'blocked':'unverified_container_cleanup','census':self.docker.census()}
+            while self._warm_requests:
+                digest,(runner,job_id)=next(iter(self._warm_requests.items()))
+                job=self.store.get(job_id)
+                if job['status'] not in ('PENDING','PENDING_RETRY','IN_PROGRESS'):
+                    self._warm_requests.pop(digest)
+                    continue
+                # Keep this FIFO request until its prepared slot is handed off.
+                # Otherwise a later incompatible profile could immediately
+                # evict the first one before its controlled retry becomes due.
+                result=runner.prepare_requested_profile(target)
+                if result['ready']:
+                    self.maintenance_requested.clear()
+                return {'requested_profile':digest,**result}
             result=self.docker.prepare_pool(target=target)
             with self._budget_lock:
                 # A pressure update while Docker was working must request a
