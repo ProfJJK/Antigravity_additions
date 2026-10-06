@@ -24,3 +24,6 @@ config/bridge.local.json
 config/bridge.wsl.local.json
 
 config/antigravity.local.json
+
+config/pipeline.local.json
+config/pipeline.client.local.json

@@ -1,0 +1,190 @@
+"""Deployment configuration contracts using real JSON files and pure validation."""
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from cochem_pipeline.config import load_config
+
+
+def config_document(tmp_path, slots=6):
+    return {
+        "private_root": str(tmp_path / "private"),
+        "slot_roots": {f"slot-{index}": str(tmp_path / "slots" / str(index)) for index in range(slots)},
+        "workers": {f"slot-{index}": {"name": f"CoChemWorker{index}", "credential_target": f"CoChem/slot-{index}"} for index in range(slots)},
+        "providers": {
+            "codex": {"executable": "codex.exe", "model": "gpt-6.1"},
+            "claude": {"executable": "claude.exe", "model": "sonnet"},
+            "gemini": {"executable": "agy.exe", "model": "gemini-3.1-pro", "protocol": "terminal-json",
+                       "arguments": ["--headless", "--output-format", "json", "--model", "{model}", "--workspace", "{workspace}"],
+                       # Synthetic parser contract only; these are not proposed Agy flags/fields.
+                       "subscription_probe": {"arguments": ["fixture-status", "--json"], "protocol": "json-fields",
+                                              "expected": {"fixture.login": True, "fixture.billing": "subscription"}}},
+        },
+        "rules": [], "token_file": str(tmp_path / "operator" / "controller.token"), "operator_name": "ExampleOperator",
+    }
+
+
+def write_config(tmp_path, data, encoding="utf-8"):
+    filename = tmp_path / "pipeline.json"
+    filename.write_text(json.dumps(data), encoding=encoding)
+    return str(filename)
+
+
+def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
+    raw = config_document(tmp_path)
+    config = load_config(write_config(tmp_path, raw, "utf-8-sig"))
+    assert len(config.slot_roots) == 6
+    assert config.private_root == (tmp_path / "private").resolve()
+    assert config.job_db == config.private_root / "job_board.db"
+    assert config.context_budget == 16384
+    assert config.reserved_fraction == .25
+    assert config.lease_seconds == 30
+    assert config.max_attempts == 3
+    assert config.providers["gemini"]["model"] == "gemini-3.1-pro"
+    assert not config.private_root.exists(), "Loading configuration must not provision privileged paths"
+
+
+@pytest.mark.parametrize("slots", [1, 64])
+def test_supported_slot_capacity_boundaries(tmp_path, slots):
+    assert len(load_config(write_config(tmp_path, config_document(tmp_path, slots))).slot_roots) == slots
+
+
+@pytest.mark.parametrize("slots", [0, 65])
+def test_invalid_slot_capacity_boundaries(tmp_path, slots):
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, config_document(tmp_path, slots)))
+
+
+@pytest.mark.parametrize("key,value", [("port", True), ("port", 1023), ("port", 65536),
+    ("timeout_seconds", 0), ("timeout_seconds", 14401), ("lease_seconds", 4),
+    ("max_attempts", 0), ("context_budget", 1023), ("context_budget", 1048577),
+    ("min_free_memory_mb", -1), ("min_free_disk_mb", 1.5),
+    ("reserved_fraction", True), ("reserved_fraction", float("nan")), ("reserved_fraction", 0),
+    ("reserved_fraction", 1.1)])
+def test_invalid_resource_and_budget_values_fail_closed(tmp_path, key, value):
+    raw = config_document(tmp_path, 1)
+    raw[key] = value
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def test_private_and_worker_paths_must_be_absolute_distinct_and_disjoint(tmp_path):
+    for name, value in [("private", "relative/private"), ("slot", "relative/slot"),
+                        ("same", str(tmp_path / "private")), ("nested", str(tmp_path / "private" / "worker"))]:
+        raw = config_document(tmp_path, 1)
+        if name == "private":
+            raw["private_root"] = value
+        else:
+            raw["slot_roots"]["slot-0"] = value
+        with pytest.raises(ValueError):
+            load_config(write_config(tmp_path, raw))
+
+
+def test_worker_identity_keys_and_account_names_must_be_distinct(tmp_path):
+    raw = config_document(tmp_path, 2)
+    raw["workers"].pop("slot-1")
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+    raw = config_document(tmp_path, 2)
+    raw["workers"]["slot-1"]["name"] = raw["workers"]["slot-0"]["name"].upper()
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("key,value", [("name", ""), ("name", "   "), ("credential_target", ""), ("credential_target", 123)])
+def test_worker_metadata_requires_nonempty_strings(tmp_path, key, value):
+    raw = config_document(tmp_path, 1)
+    raw["workers"]["slot-0"][key] = value
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("provider", ["codex", "claude", "gemini"])
+@pytest.mark.parametrize("key,value", [("executable", ""), ("executable", "   "), ("executable", "cli\x00.exe"),
+                                       ("executable", ["cli"]), ("model", ""), ("model", "   "), ("model", 42)])
+def test_provider_configuration_requires_explicit_valid_strings(tmp_path, provider, key, value):
+    raw = config_document(tmp_path, 1)
+    raw["providers"][provider][key] = value
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("arguments", [[], "--model {model}", ["--model={model}"], ["--model", 12],
+    ["REPLACE_WITH_VERIFIED_HEADLESS_ARGUMENTS", "--model", "{model}"],
+    ["--model", "{model}", "\x00"], ["--model", "{model}", "{unknown_placeholder}"]])
+def test_gemini_argv_requires_verified_complete_placeholder_free_configuration(tmp_path, arguments):
+    raw = config_document(tmp_path, 1)
+    raw["providers"]["gemini"]["arguments"] = arguments
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-flash", "gemini-3-pro"])
+def test_synthesis_requires_gemini_31_pro(tmp_path, model):
+    raw = config_document(tmp_path, 1)
+    raw["providers"]["gemini"]["model"] = model
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def test_unknown_gemini_result_protocol_is_rejected(tmp_path):
+    raw = config_document(tmp_path, 1)
+    raw["providers"]["gemini"]["protocol"] = "guess-output"
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def test_operator_token_cannot_use_relative_or_worker_visible_location(tmp_path):
+    for location in ("relative/token", str(tmp_path / "slots" / "0" / "controller.token")):
+        raw = config_document(tmp_path, 1)
+        raw["token_file"] = location
+        with pytest.raises(ValueError):
+            load_config(write_config(tmp_path, raw))
+    raw = config_document(tmp_path, 1)
+    raw["operator_name"] = "  "
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("rules", [{"id": "not-a-list"}, ["not-a-rule"], [{"id": "broken"}]])
+def test_malformed_rule_configuration_is_rejected_during_load(tmp_path, rules):
+    raw = config_document(tmp_path, 1)
+    raw["rules"] = rules
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("probe", [None, {},
+    {"arguments": [], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"},
+    {"arguments": ["status", "{model}"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"},
+    {"arguments": ["REPLACE_WITH_NATIVE_STATUS_ARGS"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"},
+    {"arguments": ["status", "\x00"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"},
+    {"arguments": ["status"], "protocol": "invented", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"},
+    {"arguments": ["status"], "protocol": "exact-line", "success_line": ""},
+    {"arguments": ["status"], "protocol": "exact-line", "success_line": "first\nsecond"},
+    {"arguments": ["status"], "protocol": "exact-line", "success_line": "REPLACE_WITH_SUCCESS_LINE"},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {}},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {"auth..active": True}},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {"auth": {"nested": True}}},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {"auth.tier": ["active"]}},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {"auth.tier": float("nan")}},
+    {"arguments": ["status"], "protocol": "json-fields", "expected": {"REPLACE_FIELD": "active"}},
+])
+def test_missing_unverified_or_malformed_subscription_probe_is_rejected(tmp_path, probe):
+    raw = config_document(tmp_path, 1)
+    if probe is None:
+        del raw["providers"]["gemini"]["subscription_probe"]
+    else:
+        raw["providers"]["gemini"]["subscription_probe"] = probe
+    with pytest.raises(ValueError, match="subscription_probe"):
+        load_config(write_config(tmp_path, raw))
+
+
+def test_exact_line_subscription_probe_loads_without_guessing_native_schema(tmp_path):
+    raw = config_document(tmp_path, 1)
+    probe = {"arguments": ["fixture-status"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"}
+    raw["providers"]["gemini"]["subscription_probe"] = probe
+    assert load_config(write_config(tmp_path, raw)).providers["gemini"]["subscription_probe"] == probe

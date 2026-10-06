@@ -155,18 +155,35 @@ current configuration. Merge the **two entries inside** `mcpServers` from
 `config/antigravity.local.json` into the existing `mcpServers` object. Preserve
 other servers and settings; do not replace the whole configuration with an
 example. If either entry already exists, update that specific entry after
-review. Reload the servers and confirm both providers expose five tools:
+review. Reload the servers and confirm both providers expose the five original
+tools plus `submit_node` when running 4.2.2:
 
 | Codex | Claude | Meaning |
 | --- | --- | --- |
 | `codex_health` | `claude_health` | CLI discovery and subscription login check. |
 | `codex_submit` | `claude_submit` | Accept a job and return its receipt and `job_id`. |
+| `codex_submit_node` | `claude_submit_node` | 4.2.2: accept a structured standalone manifest/chapter draft for development; does not mutate the protected pipeline DAG. |
 | `codex_status` | `claude_status` | Read actual recorded execution state. |
 | `codex_result` | `claude_result` | Retrieve completed output and execution receipt. |
 | `codex_cancel` | `claude_cancel` | Cancel a queued job or terminate the running process tree. |
 
 Use `python.exe`, not `pythonw.exe`, for stdio MCP. The server reserves stdout
 for MCP protocol traffic; logs go to stderr and per-job files.
+
+The optional structured tool accepts `kind`, `payload`, and `workflow_id`, plus
+the usual `workspace` and `model`. Kinds are `MANIFEST_GENERATOR` and
+`CHAPTER_DRAFT`; final synthesis belongs to the pipeline's Gemini runner.
+Both payloads need `objective` and a nonempty list of distinct `requirements`.
+Manifest payloads also need `chapter_count` (1–64); chapter payloads need
+`chapter_id` and `title`. Attempt IDs, leases, fencing tokens and controller
+credential fields are rejected, including inside nested payload objects.
+
+This tool shares the controller's node prompt and native CLI adapter, but is
+only a standalone development surface. Its accepted CLI result does not claim
+a protected lease, create a DAG node, accept an artifact, or complete a workflow.
+It does not provide the pipeline's dedicated-identity isolation. Use
+`pipeline_submit` for a controller-managed workflow. Poll the existing
+provider status/result tools for standalone draft output.
 
 ## 4. Verify one real Codex job, then one real Claude job
 

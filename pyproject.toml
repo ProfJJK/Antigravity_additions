@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cochem"
-version = "4.2.1"
+version = "4.2.2"
 description = "Autonomous Molecular Engineering Engine and High-Throughput Quantum Chemistry Automation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -20,6 +20,8 @@ dependencies = [
     "pydantic>=2.0",
     "mendeleev>=0.15",
     "ase",
+    "psutil>=5.9",
+    "watchdog>=6,<7",
 ]
 
 [project.optional-dependencies]
@@ -42,6 +44,7 @@ dev = [
 [project.scripts]
 cochem = "cochem.cli.main:main"
 cochem-mcp = "cochem_mcp.__main__:main"
+cochem-pipeline = "cochem_pipeline.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
