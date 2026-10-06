@@ -58,7 +58,7 @@ def test_fixed_repair_provider_and_absolute_cli(provider):
 
 @pytest.mark.parametrize("changes", [
     {"provider": "gemini"}, {"provider": "GPT"}, {"provider": []}, {"provider": {}},
-    {"model": "gpt-6-sol"}, {"model": "latest"}, {"model": ""},
+    {"model": "unconfigured-model"}, {"model": "latest"}, {"model": ""},
     {"executable": "codex"}, {"executable": ""}, {"executable": "/tmp/native\x00cli"},
     {"allowed_tools": "Bash"}, {"allowed_tools": [""]}, {"allowed_tools": [None]},
     {"allowed_tools": ["Bash"]},
@@ -68,17 +68,19 @@ def test_provider_policy_rejects_fallbacks_and_malformed_inputs(changes):
         validate_provider_spec(spec(**changes))
 
 
-def test_claude_tools_are_explicit_and_do_not_bypass_permission_policy():
-    command = repair_command(spec("claude", allowed_tools=["Read", "Edit", "Bash(python:*)"]),
+def test_claude_repair_disables_all_tools_and_nested_agents():
+    command = repair_command(spec("claude"),
                              ["/trusted/claude"], "/candidate")
     assert command[:1] == ["/trusted/claude"]
     for flag, value in (("--model", "claude-fable-5-1"), ("--output-format", "json"),
-                        ("--permission-mode", "acceptEdits"),
+                        ("--permission-mode", "default"),
                         ("--mcp-config", '{"mcpServers":{}}'), ("--setting-sources", "")):
         assert command[command.index(flag) + 1] == value
     assert "--print" in command and "--no-session-persistence" in command
     assert "--permission-prompts" not in command and "--bare" not in command
-    assert command[command.index("--allowedTools") + 1:] == ["Read", "Edit", "Bash(python:*)"]
+    assert command[command.index("--tools") + 1] == ""
+    assert "--allowedTools" not in command
+    assert "--disable-slash-commands" in command
     assert not any("bypass" in arg or "dangerously" in arg for arg in command)
 
 
@@ -86,7 +88,7 @@ def test_codex_command_selects_subscription_provider_and_stdin_without_persisten
     command = repair_command(spec(), ["/trusted/node", "/trusted/codex.js"], "/candidate")
     assert command[:2] == ["/trusted/node", "/trusted/codex.js"]
     assert command[-1] == "-"
-    for flag, value in (("--model", "gpt-6-astra"), ("--sandbox", "workspace-write"),
+    for flag, value in (("--model", "gpt-6-astra"), ("--sandbox", "read-only"),
                         ("--cd", "/candidate"), ("-a", "never")):
         assert command[command.index(flag) + 1] == value
     for flag in ("exec", "--json", "--ignore-user-config", "--skip-git-repo-check", "--ephemeral",

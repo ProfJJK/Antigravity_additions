@@ -34,6 +34,23 @@ CREATE TABLE IF NOT EXISTS pipeline_routing_jobs (
  CHECK(max_dispatches IS NULL OR max_dispatches>0),
  CHECK(state IN ('READY','WAITING','ACTIVE','COMPLETED','FAILED','BLOCKED'))
 );
+CREATE TABLE IF NOT EXISTS pipeline_routing_amendments (
+ job_id TEXT PRIMARY KEY REFERENCES pipeline_routing_jobs(job_id),
+ previous_candidates_sha256 TEXT NOT NULL CHECK(length(previous_candidates_sha256)=64),
+ candidates_json TEXT NOT NULL CHECK(json_valid(candidates_json)),
+ specification TEXT NOT NULL CHECK(specification='COCHEM-4.2.7'),
+ reason TEXT NOT NULL, created_at REAL NOT NULL
+);
+CREATE TRIGGER IF NOT EXISTS pipeline_routing_amendment_owner BEFORE INSERT ON pipeline_routing_amendments
+BEGIN
+ SELECT CASE WHEN NOT EXISTS(SELECT 1 FROM pipeline_jobs j WHERE j.job_id=NEW.job_id
+   AND j.kind='SYNTHESIS' AND j.status IN ('PENDING','PENDING_RETRY'))
+ THEN RAISE(ABORT,'routing amendment requires an undispatched synthesis attempt') END;
+END;
+CREATE TRIGGER IF NOT EXISTS pipeline_routing_amendment_no_update BEFORE UPDATE ON pipeline_routing_amendments
+BEGIN SELECT RAISE(ABORT,'routing amendments are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS pipeline_routing_amendment_no_delete BEFORE DELETE ON pipeline_routing_amendments
+BEGIN SELECT RAISE(ABORT,'routing amendments are immutable'); END;
 CREATE TABLE IF NOT EXISTS pipeline_route_reservations (
  reservation_id TEXT PRIMARY KEY, job_id TEXT NOT NULL REFERENCES pipeline_jobs(job_id),
  attempt_id TEXT NOT NULL UNIQUE, fencing_token INTEGER NOT NULL,
@@ -113,7 +130,7 @@ END;
 """
 
 
-AVAILABILITY = frozenset({'quota','auth','busy','backlog','provider','resource','context'})
+AVAILABILITY = frozenset({'quota','auth','busy','backlog','provider','resource','context','compatibility'})
 
 
 def encoded(value):
@@ -152,9 +169,30 @@ def ensure_job(conn, job_id):
         JOIN pipeline_routing_workflows w ON w.workflow_id=j.workflow_id WHERE j.job_id=?''', (job_id,)).fetchone()
     if row is None or row['kind'] in ('MACRO_PLANNING_REQUEST','CODE_REQUEST','CODE_TEST','CODE_INTEGRATE') or (row['kind']=='SYNTHESIS' and row['status']=='BLOCKED'):
         return
-    if conn.execute('SELECT 1 FROM pipeline_routing_jobs WHERE job_id=?', (job_id,)).fetchone():
-        return
+    existing = conn.execute('SELECT * FROM pipeline_routing_jobs WHERE job_id=?', (job_id,)).fetchone()
     from .routing import load_routing_policy, score_task
+    if existing:
+        # The owner withdrew the fixed Gemini synthesis role. Preserve old
+        # authority and spent budgets in the audit event; amend only pending
+        # dispatch candidates, never an active reservation or accepted receipt.
+        old = json.loads(existing['candidates_json'])
+        if (row['kind'] == 'SYNTHESIS' and row['status'] in ('PENDING', 'PENDING_RETRY')
+                and len(old) == 1 and old[0].get('provider') == 'gemini'
+                and old[0].get('model') == 'gemini-3.1-pro'
+                and not conn.execute('SELECT 1 FROM pipeline_routing_amendments WHERE job_id=?', (job_id,)).fetchone()):
+            policy = load_routing_policy(json.loads(row['policy_json']))
+            score = json.loads(existing['score_json'])['score']
+            revised = [target.as_dict() for target in policy.candidates(score, row['kind'])]
+            conn.execute('INSERT INTO pipeline_routing_amendments VALUES(?,?,?,?,?,?)',
+                         (job_id, digest(old), encoded(revised), 'COCHEM-4.2.7',
+                          'Owner withdrew single-model synthesis exception', time.time()))
+            conn.execute('UPDATE pipeline_routing_jobs SET cursor=0 WHERE job_id=?', (job_id,))
+            event(conn, dict(row), 'UNIVERSAL_ROUTING_AMENDED',
+                  specification='COCHEM-4.2.7', previous_candidates=old,
+                  previous_candidates_sha256=digest(old), candidates=revised,
+                  previous_cursor=existing['cursor'], preserved_dispatches=existing['dispatches'],
+                  preserved_failure_count=existing['failure_count'], preserved_cycle=existing['cycle'])
+        return
     policy = load_routing_policy(json.loads(row['policy_json']))
     score = score_task(row['kind'], json.loads(row['payload_json']))
     candidates = [target.as_dict() for target in policy.candidates(score['score'], row['kind'])]
@@ -175,6 +213,14 @@ def get_state(conn, job_id):
     result = dict(row)
     for source, target in (('policy_json','policy'),('score_json','score_details'),('candidates_json','candidates')):
         result[target] = json.loads(result.pop(source))
+    amendment = conn.execute('SELECT * FROM pipeline_routing_amendments WHERE job_id=?', (job_id,)).fetchone()
+    if amendment:
+        if digest(result['candidates']) != amendment['previous_candidates_sha256']:
+            raise ValueError('Routing amendment does not match immutable original authority')
+        result['captured_candidates'] = result['candidates']
+        result['candidates'] = json.loads(amendment['candidates_json'])
+        result['owner_amendment'] = {key: amendment[key] for key in
+                                    ('specification', 'reason', 'created_at', 'previous_candidates_sha256')}
     result['policy_digest'] = digest(result['policy'])
     result['policy_hash'] = result['policy_digest']
     return result
@@ -319,6 +365,61 @@ def _backoff(conn, job, state):
     event(conn,job,'ROUTING_BACKOFF',cycle=cycle,next_eligible_at=now+delay,delay_seconds=delay)
 
 
+def _candidate_unavailability(conn, job, state, target, current_policy, now):
+    """Read-only candidate checks shared by prediction and atomic reservation."""
+    policy = state['policy']
+    key,provider,pool = target['key'],target['provider'],target['quota_pool']
+    producer = job.get('payload', {}).get('producer', {})
+    reconciliation = job.get('payload', {}).get('review_scope') == 'srs_wbs_reconciliation'
+    same_author = (provider == producer.get('provider') if reconciliation else
+                   (provider, target['model']) == (producer.get('provider'), producer.get('model')))
+    reason = ('asymmetric_review' if job['kind'] in ('CODE_REVIEW', 'CODE_PLAN_REVIEW') and same_author else None)
+    for scope,value in (('model',key),('provider',provider),('pool',pool)):
+        held = conn.execute('SELECT reason FROM pipeline_route_holds WHERE scope=? AND resource_key=? AND until_at>?', (scope,value,now)).fetchone()
+        if held:
+            reason = held['reason']; break
+    # Selection identity is captured with the task. Capacity is live
+    # controller policy: both lowering and releasing an old operator cap
+    # must affect the next attempt, without rewriting active reservations.
+    admission = current_policy if current_policy is not None else policy
+    if provider == 'claude' and conn.execute(
+            "SELECT count(*) FROM pipeline_route_reservations WHERE provider='claude' AND released_at IS NULL").fetchone()[0] >= 20:
+        reason = 'claude_cli_concurrency'
+    if reason is None:
+        model_limit = admission['model_limits'].get(key)
+        provider_limit = admission['provider_limits'][provider]['max_concurrency']
+        current_pool = admission['provider_limits'][provider]['quota_pool']
+        pool_providers = [name for name, spec in admission['provider_limits'].items() if spec['quota_pool'] == current_pool]
+        held = conn.execute("SELECT 1 FROM pipeline_route_holds WHERE scope='pool' AND resource_key=? AND until_at>?", (current_pool, now)).fetchone()
+        counts = []
+        for column, value, limit in (('model_key', key, model_limit), ('provider', provider, provider_limit)):
+            if limit is not None:
+                count = conn.execute(f'SELECT count(*) FROM pipeline_route_reservations WHERE {column}=? AND released_at IS NULL',
+                                     (value,)).fetchone()[0]
+                counts.append((count, limit))
+        pool_limit = admission['quota_pool_limits'][current_pool]
+        if pool_limit is not None:
+            placeholders = ','.join('?' for _ in pool_providers)
+            count = conn.execute('SELECT count(*) FROM pipeline_route_reservations WHERE released_at IS NULL AND (quota_pool=? OR provider IN ('+placeholders+'))',
+                                 [current_pool, *pool_providers]).fetchone()[0]
+            counts.append((count, pool_limit))
+        if held or any(count >= limit for count, limit in counts):
+            reason = 'busy' if not held else 'quota_pool_hold'
+    threshold = policy.get('backlog_threshold', 0)
+    if reason is None and threshold:
+        # Only earlier eligible jobs count as backlog. Including later
+        # submissions would make an otherwise idle preferred target starve.
+        ahead = conn.execute('''SELECT count(*) FROM pipeline_jobs j JOIN pipeline_routing_jobs r USING(job_id)
+            LEFT JOIN pipeline_routing_amendments a USING(job_id)
+            WHERE j.status IN ('PENDING','PENDING_RETRY') AND r.state='READY' AND r.next_eligible_at<=?
+            AND (j.created_at<? OR (j.created_at=? AND j.job_id<?))
+            AND json_extract(coalesce(a.candidates_json,r.candidates_json),'$[' || r.cursor || '].key')=?''',
+            (now,job['created_at'],job['created_at'],job['job_id'],key)).fetchone()[0]
+        if ahead>=threshold:
+            reason='backlog'
+    return reason
+
+
 def select(conn, job, current_policy=None):
     """Return a target or persist a bounded availability wait, without dispatch."""
     ensure_job(conn,job['job_id'])
@@ -341,60 +442,81 @@ def select(conn, job, current_policy=None):
     if state['failure_count']>=job['max_attempts']:
         return {'exhausted': 'Task failure budget exhausted'}, True
     targets = state['candidates']
+    admission = current_policy if current_policy is not None else policy
     for index in range(state['cursor'],len(targets)):
         target = targets[index]
         key,provider,pool = target['key'],target['provider'],target['quota_pool']
-        producer = job.get('payload', {}).get('producer', {})
-        reason = ('asymmetric_review' if job['kind'] in ('CODE_REVIEW','CODE_PLAN_REVIEW') and
-                  (provider,target['model']) == (producer.get('provider'),producer.get('model')) else None)
-        for scope,value in (('model',key),('provider',provider),('pool',pool)):
-            held = conn.execute('SELECT reason FROM pipeline_route_holds WHERE scope=? AND resource_key=? AND until_at>?', (scope,value,now)).fetchone()
-            if held:
-                reason = held['reason']; break
-        caps = (("model_key", key, target['max_concurrency']),
-                ("provider",provider,policy['provider_limits'][provider]['max_concurrency']),
-                ("quota_pool",pool,policy['quota_pool_limits'][pool]))
-        if reason is None:
-            for column,value,limit in caps:
-                count = conn.execute(f'SELECT count(*) FROM pipeline_route_reservations WHERE {column}=? AND released_at IS NULL', (value,)).fetchone()[0]
-                if count>=limit:
-                    reason='busy'; break
-        if reason is None and current_policy is not None:
-            # Captured selection order is immutable, but an operator lowering
-            # current admission limits must take effect for old queued work.
-            current = current_policy
-            model_limit = current['model_limits'].get(key,target['max_concurrency'])
-            provider_limit = current['provider_limits'][provider]['max_concurrency']
-            current_pool = current['provider_limits'][provider]['quota_pool']
-            pool_providers = [name for name,spec in current['provider_limits'].items() if spec['quota_pool']==current_pool]
-            held = conn.execute("SELECT 1 FROM pipeline_route_holds WHERE scope='pool' AND resource_key=? AND until_at>?",(current_pool,now)).fetchone()
-            counts = [(conn.execute('SELECT count(*) FROM pipeline_route_reservations WHERE model_key=? AND released_at IS NULL',(key,)).fetchone()[0],model_limit),
-                      (conn.execute('SELECT count(*) FROM pipeline_route_reservations WHERE provider=? AND released_at IS NULL',(provider,)).fetchone()[0],provider_limit)]
-            placeholders = ','.join('?' for _ in pool_providers)
-            count = conn.execute('SELECT count(*) FROM pipeline_route_reservations WHERE released_at IS NULL AND (quota_pool=? OR provider IN ('+placeholders+'))',
-                                 [current_pool,*pool_providers]).fetchone()[0]
-            counts.append((count,current['quota_pool_limits'][current_pool]))
-            if held or any(count>=limit for count,limit in counts):
-                reason='busy' if not held else 'quota_pool_hold'
-        threshold = policy.get('backlog_threshold', 0)
-        if reason is None and threshold:
-            # Only earlier eligible jobs count as backlog. Including later
-            # submissions would make an otherwise idle preferred target starve.
-            ahead = conn.execute('''SELECT count(*) FROM pipeline_jobs j JOIN pipeline_routing_jobs r USING(job_id)
-                WHERE j.status IN ('PENDING','PENDING_RETRY') AND r.state='READY' AND r.next_eligible_at<=?
-                AND (j.created_at<? OR (j.created_at=? AND j.job_id<?))
-                AND json_extract(r.candidates_json,'$[' || r.cursor || '].key')=?''',
-                (now,job['created_at'],job['created_at'],job['job_id'],key)).fetchone()[0]
-            if ahead>=threshold:
-                reason='backlog'
+        reason = _candidate_unavailability(conn,job,state,target,current_policy,now)
         if reason:
             event(conn,job,'ROUTE_SKIPPED',candidate_index=index,model_key=key,reason=reason,cycle=state['cycle'])
             continue
         return {**target,'pool':pool,'candidate_index':index,'cycle':state['cycle'],
                 'score':state['score_details']['score'],'tier':state['score_details']['tier'],
-                'policy_digest':state['policy_digest']}, True
+                'policy_digest':state['policy_digest'],
+                'admission_policy_digest':digest(admission)}, True
     _backoff(conn,job,state)
     return None, True
+
+
+def preview_next_route(conn, job, current_policy=None, now=None):
+    """Predict eligibility from this read snapshot; never reserve or write state.
+
+    Callers may set PRAGMA query_only=ON. Full prompt/Oracle context validation
+    happens in the executor; this view reports that limitation and preserves a
+    previous context failure's cursor instead of inventing model token limits.
+    """
+    observed = time.time() if now is None else now
+    if type(observed) not in (int,float) or not math.isfinite(observed):
+        raise ValueError('Route preview timestamp must be finite')
+    result = {'prediction_only':True, 'unknown_until_atomic_claim':True, 'observed_at':observed,
+              'eligible_candidate':None, 'candidate_index':None, 'skipped':[],
+              'next_eligible_at':None, 'context_check':'pending_complete_prompt_and_oracle_validation'}
+    if job['kind'] in ('MACRO_PLANNING_REQUEST','CODE_REQUEST','CODE_TEST','CODE_INTEGRATE'):
+        return {**result,'state':'not_model_job'}
+    if job['status'] not in ('PENDING','PENDING_RETRY'):
+        return {**result,'state':'not_queued','job_status':job['status']}
+    root=conn.execute('SELECT status FROM pipeline_jobs WHERE job_id=?',(job['workflow_id'],)).fetchone()
+    if root is None or root['status']!='IN_PROGRESS':
+        return {**result,'state':'workflow_not_active'}
+    if cleanup_barriers(conn):
+        return {**result,'state':'execution_cleanup_unverified'}
+    retry=conn.execute('SELECT next_eligible_at FROM coding_controller_retries WHERE job_id=?',(job['job_id'],)).fetchone()
+    if retry and retry['next_eligible_at']>observed:
+        return {**result,'state':'controller_retry_wait','next_eligible_at':retry['next_eligible_at']}
+    state=get_state(conn,job['job_id'])
+    if state is None:
+        return {**result,'state':'awaiting_routing_capture'}
+    # The next claim records this already-authorized amendment. A read-only
+    # view can display its effect without rewriting the original snapshot.
+    old=state['candidates']
+    if (job['kind']=='SYNTHESIS' and not state.get('owner_amendment') and len(old)==1
+            and old[0].get('provider')=='gemini' and old[0].get('model')=='gemini-3.1-pro'):
+        from .routing import load_routing_policy
+        state={**state,'cursor':0,'candidates':[target.as_dict() for target in
+            load_routing_policy(state['policy']).candidates(state['score_details']['score'],job['kind'])]}
+        result['owner_amendment_pending_capture']=True
+    if state['state']=='BLOCKED':
+        return {**result,'state':'routing_blocked','reason':state.get('wait_reason')}
+    if state['next_eligible_at']>observed:
+        return {**result,'state':'routing_wait','reason':state.get('wait_reason'),
+                'next_eligible_at':state['next_eligible_at']}
+    policy=state['policy']
+    if ((state['expires_at'] is not None and observed>=state['expires_at'])
+            or (policy.get('max_routing_cycles',0) and state['cycle']>=policy['max_routing_cycles'])):
+        return {**result,'state':'routing_operator_limit'}
+    if state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']:
+        return {**result,'state':'dispatch_budget_exhausted'}
+    if state['failure_count']>=job['max_attempts']:
+        return {**result,'state':'failure_budget_exhausted'}
+    for index in range(state['cursor'],len(state['candidates'])):
+        target=state['candidates'][index]
+        reason=_candidate_unavailability(conn,job,state,target,current_policy,observed)
+        if reason:
+            result['skipped'].append({'candidate_index':index,'model_key':target['key'],'reason':reason})
+            continue
+        return {**result,'state':'candidate_eligible','eligible_candidate':dict(target),'candidate_index':index}
+    return {**result,'state':'all_candidates_unavailable',
+            'reason':'atomic_scheduler_must_persist_backoff', 'next_eligible_at':None}
 
 
 def reserve(conn,job,selected,worker_slot):

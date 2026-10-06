@@ -42,8 +42,8 @@ def test_actual_capacity_obeys_configured_and_hard_limits(tmp_path: Path, max_ag
         max_cpu_percent=100,
     )
     snapshot = guard.snapshot()
-    assert snapshot["capacity"] <= min(max_agents, 4, snapshot["cpu_count"])
-    assert guard.capacity() <= min(max_agents, 4)
+    assert snapshot["capacity"] <= min(max_agents, snapshot["cpu_count"])
+    assert guard.capacity() <= max_agents
 
 
 def test_real_memory_below_explicit_reserve_blocks_admission(tmp_path: Path) -> None:
@@ -140,7 +140,7 @@ def test_invalid_resource_bounds_are_rejected(settings: dict[str, object]) -> No
 
 def policy_case():
     """Pure policy input, explicitly not evidence of physical host telemetry."""
-    return {'cpu':{'available':True,'count':8,'percent':10,'temperature_available':True,'temperature_celsius':50},
+    return {'cpu':{'available':True,'count':8,'physical_count':8,'physical_count_available':True,'percent':10,'temperature_available':True,'temperature_celsius':50},
             'memory':{'available':True,'total_mb':32768,'available_mb':24000},
             'commit':{'available':True,'total_mb':10000,'limit_mb':64000,'free_mb':54000},
             'gpus':{'available':True,'devices':[{'id':'policy-case','total_mb':24000,'used_mb':6000,
@@ -323,3 +323,41 @@ def test_latest_snapshot_never_invents_a_cold_measurement_and_copies_completed_s
     assert guard.latest_snapshot()['measurements']['cpu']['count']>0
     with pytest.raises(ValueError): HardwareGuard(workspaces=[])
     with pytest.raises(ValueError): HardwareGuard(workspaces=str(tmp_path))
+
+
+def test_configured_high_capacity_is_measured_not_limited_by_provider_agent_counts():
+    measured = policy_case()
+    measured['cpu']['count'] = 128
+    measured['cpu']['physical_count'] = 128
+    measured['memory'].update(total_mb=1024*1024,available_mb=512*1024)
+    measured['commit'].update(limit_mb=1024*1024,free_mb=512*1024)
+    policy = effective_execution_policy(HardwarePolicy(),2048,4096)
+    assert assess_resources(measured,policy,max_agents=64)['capacity'] == 64
+    measured['memory']['available_mb'] = 5*4096+policy.min_free_memory_mb
+    assert assess_resources(measured,policy,max_agents=64)['capacity'] == 5
+    measured['cpu']['percent'] = 99
+    assert assess_resources(measured,policy,max_agents=64)['capacity'] == 0
+
+
+def test_physical_core_admission_never_invents_missing_measurement():
+    measured=policy_case()
+    measured['cpu']['count']=64
+    measured['cpu']['physical_count']=2
+    assert assess_resources(measured,HardwarePolicy(),max_agents=64)['capacity']==2
+    measured['cpu'].update(physical_count=None,physical_count_available=False)
+    decision=assess_resources(measured,HardwarePolicy(),max_agents=64)
+    assert decision['capacity']==0
+    assert any('physical CPU count' in reason for reason in decision['reasons'])
+    explicit=assess_resources(measured,HardwarePolicy(physical_cpu_count_required=False),max_agents=64)
+    assert explicit['capacity']>0
+    assert any('explicitly configured' in alert for alert in explicit['alerts'])
+
+
+@pytest.mark.parametrize('ceiling,cpu,free,expected',[(1,40,20000,1),(2,40,20000,1),
+    (3,40,20000,2),(5,40,20000,3),(5,60,20000,2),(5,80,20000,1),
+    (64,40,256000,48),(64,60,256000,32),(64,80,256000,16)])
+def test_fractional_hardware_bands_floor_with_one_seat_minimum(ceiling,cpu,free,expected):
+    measured=policy_case()
+    measured['cpu'].update(count=128,physical_count=128,percent=cpu)
+    measured['memory'].update(total_mb=512000,available_mb=free)
+    assert assess_resources(measured,HardwarePolicy(),max_agents=ceiling)['capacity']==expected

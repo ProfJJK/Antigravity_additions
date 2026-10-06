@@ -2,9 +2,10 @@
 #Requires -RunAsAdministrator
 [CmdletBinding()]
 param(
-    [Parameter(Mandatory=$true)][ValidateSet('codex','claude')][string]$Provider,
+    [Parameter(Mandatory=$true)][ValidateSet('codex','claude','gemini')][string]$Provider,
     [Parameter(Mandatory=$true)][string]$Executable,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.7"
+    [string]$LoginContract = "",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.7-r2"
 )
 $Slot = 'repair'
 $ErrorActionPreference = 'Stop'
@@ -53,6 +54,12 @@ $logPath = Join-Path $logDirectory "$Provider-$Slot-$id.log"
 $taskName = "CoChem-4.2.3-Supervisor-Login-$Slot-$id"
 $values = @('-I','-m','cochem_pipeline.windows','login','--layout',$layoutPath,'--slot',$Slot,
     '--provider',$Provider,'--executable',$Executable,'--log-path',$logPath)
+if ($Provider -eq 'gemini') {
+    if (-not $LoginContract) { throw 'Gemini login requires a protected reviewed JSON LoginContract with actual native subscription-login arguments; no Agy flags are assumed.' }
+    $LoginContract = (Resolve-Path -LiteralPath $LoginContract).Path
+    $values = @('-I','-m','cochem_supervisor.windows','login-gemini','--layout',$layoutPath,'--slot',$Slot,
+        '--executable',$Executable,'--log-path',$logPath,'--login-contract',$LoginContract)
+}
 $quoted = foreach ($value in $values) {
     if ($value.Contains('"') -or $value.Contains("`n") -or $value.Contains("`r")) { throw 'Invalid task argument.' }
     '"' + $value.TrimEnd('\') + '"'

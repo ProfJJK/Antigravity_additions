@@ -13,6 +13,7 @@ Primary source captures retained in this active corpus:
 - [Complete telemetry dossier](../.sources/full_dossier_untruncated.md)
 - [Short telemetry dossier](../.sources/full_dossier.md)
 
+The original4.2.7 corpus is preserved at docs/archive/knowledge_4.2.7_original.
 The original 4.2.6 corpus is preserved byte-for-byte in the repository archive
 at docs/archive/knowledge_4.2.6. It is outside this active retrieval collection.
 Historical snippets cannot create new execution gates. The manifest filename

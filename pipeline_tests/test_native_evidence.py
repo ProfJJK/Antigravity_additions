@@ -94,11 +94,16 @@ def test_real_sqlite_completion_retains_usage_atomically_with_transition(tmp_pat
     # This actual Python child establishes only the storage receipt fixture PID.
     process = subprocess.run([sys.executable, '-c', 'import os; print(os.getpid())'],
                              capture_output=True, text=True, check=True)
-    usage = native_usage('codex', {'input_tokens': 23, 'output_tokens': 9})
-    receipt = {'provider': 'codex', 'pid': int(process.stdout), 'exit_code': process.returncode,
+    route = node['route']
+    usage = native_usage(route['provider'], {'input_tokens': 23, 'output_tokens': 9})
+    receipt = {'provider': route['provider'], 'pid': int(process.stdout), 'exit_code': process.returncode,
                'session_id': 'python-storage-fixture', 'execution_kind': 'storage-contract-test',
                'output_sha256': output_digest(output), 'usage': usage,
-               'requested_model': 'gpt-6-sol', 'reported_model': 'gpt-6-sol'}
+               'requested_model': route['model'], 'reported_model': route['model'],
+               'requested_effort': route.get('reasoning_effort'), 'selected_route': route,
+               'route_reservation_id': route['reservation_id'], 'attempt_id': node['attempt_id'],
+               'fencing_token': node['fencing_token'], 'worker_slot': node['worker_slot'],
+               'job_id': node['job_id'], 'workflow_id': node['workflow_id']}
     with pytest.raises(RuntimeError, match='rollback metadata'):
         with store._write() as conn:
             store._event(conn, node, 'METADATA_ROLLBACK', fixture=True)

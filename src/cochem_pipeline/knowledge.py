@@ -33,6 +33,14 @@ class KnowledgeFileChanged(KnowledgeError):
     """An ordinary file changed across one verified read; no bytes were accepted."""
 
 
+AUTHORITY_LABELS = {
+    'current_normative': 'Current normative',
+    'owner_decision': 'Owner decision',
+    'historical_source': 'Historical source',
+    'unclassified': 'Unclassified — not requirements authority',
+}
+
+
 @dataclass(frozen=True)
 class KnowledgeConfig:
     enabled: bool = False
@@ -295,13 +303,19 @@ class KnowledgeService:
             raise KnowledgeError('v4.1.2_manifest.json requires a complete documents catalog')
         catalog={};seen=set()
         for item in manifest['documents']:
-            if not isinstance(item,dict) or set(item)-{'path','sha256'}:
-                raise KnowledgeError('Manifest documents require exact path and sha256 entries')
+            if not isinstance(item,dict) or set(item)-{'path','sha256','authority','authority_revision'}:
+                raise KnowledgeError('Manifest documents require path, sha256 and optional reviewed authority metadata')
             key=_key(item.get('path'));digest=item.get('sha256')
             if (key.casefold() in seen or not isinstance(digest,str)
                     or not re.fullmatch('[0-9a-f]{64}',digest)):
                 raise KnowledgeError('Manifest contains a duplicate path or invalid SHA-256')
             catalog[key]=digest
+            authority=item.get('authority','unclassified')
+            revision=item.get('authority_revision','')
+            if (not isinstance(authority,str) or authority not in AUTHORITY_LABELS or not isinstance(revision,str) or len(revision)>128
+                    or any(ord(c)<32 for c in revision)
+                    or authority in {'current_normative','owner_decision'} and not revision):
+                raise KnowledgeError('Invalid reviewed knowledge authority or missing authority revision')
             seen.add(key.casefold())
         if not 1<=len(catalog)<=self.config.max_documents:
             raise KnowledgeError('Manifest document count exceeds the configured bound')
@@ -310,7 +324,9 @@ class KnowledgeService:
             if (not isinstance(srs,list) or any(not isinstance(key,str) or key not in catalog for key in srs)
                     or len(set(srs))!=len(srs)):
                 raise KnowledgeError('Manifest srs_documents must identify distinct catalog entries')
-        return catalog,_digest(raw),set(manifest.get('srs_documents',[]))
+        authorities={item['path']:{'authority':item.get('authority','unclassified'),
+                     'authority_revision':item.get('authority_revision','')} for item in manifest['documents']}
+        return catalog,_digest(raw),set(manifest.get('srs_documents',[])),authorities
 
     def _inventory(self):
         result={}
@@ -342,7 +358,7 @@ class KnowledgeService:
         return data
 
     def validate(self):
-        catalog,manifest_hash,srs=self._catalog()
+        catalog,manifest_hash,srs,authorities=self._catalog()
         if self._inventory()!=set(catalog):
             raise KnowledgeError('Manifest catalog and physical Markdown corpus are not synchronized')
         records={};total=0;links=0;chapter_links={}
@@ -394,7 +410,7 @@ class KnowledgeService:
         for key,digest in self._pins().items():
             if catalog.get(key)!=digest:
                 raise KnowledgeError('Previously accepted .sources documents are immutable: '+key)
-        return {'valid':True,'manifest_sha256':manifest_hash,'documents':records,
+        return {'valid':True,'manifest_sha256':manifest_hash,'documents':records,'authorities':authorities,
                 'document_count':len(records),'section_count':sum(row['sections'] for row in records.values()),
                 'corpus_bytes':total,'relative_links_checked':links}
 
@@ -496,13 +512,20 @@ class KnowledgeService:
                             CREATE VIRTUAL TABLE fts_index USING fts5(doc_path UNINDEXED,
                             section_title,content,tokenize='porter unicode61');''')
                         existing={}
+                    columns={row[1] for row in writer.execute('PRAGMA table_info(documents)')}
+                    if 'authority' not in columns:
+                        writer.execute("ALTER TABLE documents ADD COLUMN authority TEXT NOT NULL DEFAULT 'unclassified'")
+                        writer.execute("ALTER TABLE documents ADD COLUMN authority_revision TEXT NOT NULL DEFAULT ''")
                     removed=set(existing)-set(validated['documents'])
                     with writer:
                         for key in removed:
                             writer.execute('DELETE FROM fts_index WHERE doc_path=?',(key,))
                             writer.execute('DELETE FROM documents WHERE doc_path=?',(key,))
                         for key,record in validated['documents'].items():
+                            authority=validated['authorities'][key]
                             if existing.get(key)==record['sha256']:
+                                writer.execute('UPDATE documents SET authority=?,authority_revision=? WHERE doc_path=?',
+                                    (authority['authority'],authority['authority_revision'],key))
                                 continue
                             actual,_,sections=self._document(key)
                             if actual!=record:
@@ -512,6 +535,8 @@ class KnowledgeService:
                                 ON CONFLICT(doc_path) DO UPDATE SET title=excluded.title,line_count=excluded.line_count,
                                 sha256=excluded.sha256,updated_at=strftime('%s','now')''',
                                 (key,record['title'],record['line_count'],record['sha256']))
+                            writer.execute('UPDATE documents SET authority=?,authority_revision=? WHERE doc_path=?',
+                                (authority['authority'],authority['authority_revision'],key))
                             writer.executemany('INSERT INTO fts_index(doc_path,section_title,content) VALUES (?,?,?)',
                                                ((key,title,content) for title,content in sections))
                             changed+=1
@@ -582,10 +607,15 @@ class KnowledgeService:
         expression=' AND '.join('"'+word+'"' for word in words)
         try:
             with self._reader() as (generation,reader):
-                rows=reader.execute('''SELECT doc_path,section_title,
+                columns={row[1] for row in reader.execute('PRAGMA table_info(documents)')}
+                authority_columns=("d.authority,d.authority_revision" if 'authority' in columns else
+                                   "'unclassified' AS authority,'' AS authority_revision")
+                rows=reader.execute('''SELECT fts_index.doc_path,section_title,
                     snippet(fts_index,2,'','', ' … ',32) AS snippet,bm25(fts_index) AS score
-                    FROM fts_index WHERE fts_index MATCH ? ORDER BY rank LIMIT ?''',(expression,limit)).fetchall()
-                return [{**dict(row),'generation':generation['generation']} for row in rows]
+                    ,'''+authority_columns+''' FROM fts_index JOIN documents d ON d.doc_path=fts_index.doc_path
+                    WHERE fts_index MATCH ? ORDER BY rank LIMIT ?''',(expression,limit)).fetchall()
+                return [{**dict(row),'authority_label':AUTHORITY_LABELS.get(row['authority'],AUTHORITY_LABELS['unclassified']),
+                         'generation':generation['generation']} for row in rows]
         except (sqlite3.DatabaseError,FileNotFoundError):
             self.request_refresh()
             raise KnowledgeError('Knowledge index unavailable; a background rebuild was requested') from None
@@ -594,7 +624,10 @@ class KnowledgeService:
         key=_key(doc_path)
         try:
             with self._reader() as (generation,reader):
-                row=reader.execute('SELECT sha256 FROM documents WHERE doc_path=?',(key,)).fetchone()
+                columns={item[1] for item in reader.execute('PRAGMA table_info(documents)')}
+                authority_columns=("authority,authority_revision" if 'authority' in columns else
+                                   "'unclassified' AS authority,'' AS authority_revision")
+                row=reader.execute('SELECT sha256,'+authority_columns+' FROM documents WHERE doc_path=?',(key,)).fetchone()
                 if row is None:
                     raise KnowledgeError('Document is not in the accepted knowledge catalog')
         except (sqlite3.DatabaseError,FileNotFoundError):
@@ -604,7 +637,9 @@ class KnowledgeService:
         if record['sha256']!=row['sha256']:
             self.request_refresh()
             raise KnowledgeError('Document changed since ratification; refresh is pending')
-        return {**record,'text':text,'generation':generation['generation']}
+        return {**record,'text':text,'generation':generation['generation'], 'authority':row['authority'],
+                'authority_revision':row['authority_revision'],
+                'authority_label':AUTHORITY_LABELS.get(row['authority'],AUTHORITY_LABELS['unclassified'])}
 
     def status(self):
         result={'enabled':True,'last_error':self._last_error,

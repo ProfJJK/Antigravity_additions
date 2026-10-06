@@ -11,7 +11,7 @@ import json
 import pytest
 
 from cochem_pipeline.routing import (
-    ModelTarget, RoutingPolicy, SYNTHESIS_MODEL, load_routing_policy,
+    ModelTarget, RoutingPolicy, load_routing_policy,
     score_task, tier_for_score, validate_selected_route,
 )
 
@@ -31,7 +31,7 @@ def test_authoritative_tier_boundaries_order_models_and_exact_effort(score, tier
     assert tier_for_score(score) == tier
     candidates = policy.candidates(score, "CHAPTER_DRAFT")
     assert [(value.provider, value.model, value.reasoning_effort) for value in candidates] == EXPECTED[tier]
-    assert all(value.max_concurrency == 1 and value.quota_pool == value.provider for value in candidates)
+    assert all(value.max_concurrency is None and value.quota_pool == value.provider for value in candidates)
     assert len({value.key for value in candidates}) == len(candidates)
 
 
@@ -45,11 +45,10 @@ def test_ultra_and_low_are_distinct_target_identities_without_remapping():
 
 
 @pytest.mark.parametrize("score", range(1, 11))
-def test_synthesis_never_substitutes_its_required_gemini_pro_role(score):
-    candidates = RoutingPolicy().candidates(score, "SYNTHESIS")
-    assert len(candidates) == 1
-    assert candidates[0].provider == "gemini" and candidates[0].model == SYNTHESIS_MODEL
-    assert candidates[0].reasoning_effort is None
+@pytest.mark.parametrize("kind", ["SYNTHESIS", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST", "CODE_PLAN", "CODE_REVIEW"])
+def test_every_model_job_uses_the_same_complexity_tier(score, kind):
+    candidates = RoutingPolicy().candidates(score, kind)
+    assert [(value.provider, value.model, value.reasoning_effort) for value in candidates] == EXPECTED[tier_for_score(score)]
 
 
 @pytest.mark.parametrize("score", [True, False, 0, 11, -1, 1.0, "1", None, {}, []])
@@ -68,7 +67,7 @@ def test_policy_snapshot_digest_and_collections_survive_roundtrip_and_mutation()
     data["tiers"]["10"][1]["reasoning_effort"] = "high"
     data["provider_limits"]["codex"]["max_concurrency"] = 64
     assert policy.candidates(10)[1].reasoning_effort == "ultra"
-    assert policy.provider_max_concurrency["codex"] == 2
+    assert policy.provider_max_concurrency["codex"] is None
     copy = policy.failure_cooldowns
     copy["quota"] = 0
     assert policy.failure_cooldowns["quota"] == 300
@@ -83,19 +82,19 @@ def test_shared_subscription_pool_and_exact_model_caps_are_explicit():
         "quota_pool_limits": {"shared": 2, "gemini": 1},
         "model_limits": {"codex:gpt-6-astra:ultra": 2},
     })
-    assert policy.provider_max_concurrency == {"codex": 3, "claude": 2, "gemini": 2}
+    assert policy.provider_max_concurrency == {"codex": 3, "claude": 2, "gemini": None}
     assert policy.quota_pool_max_concurrency == {"gemini": 1, "shared": 2}
     assert policy.candidates(10)[0].quota_pool == "shared"
     assert policy.candidates(10)[1].quota_pool == "shared"
     assert policy.candidates(10)[1].max_concurrency == 2
-    assert policy.candidates(7)[1].max_concurrency == 1
+    assert policy.candidates(7)[1].max_concurrency is None
 
 
 @pytest.mark.parametrize("config", [
     [], "default", {"unexpected": 1}, {"policy_version": True}, {"policy_version": 2},
     {"tiers": {}}, {"tiers": []}, {"model_limits": {"unknown": 1}},
     {"model_limits": {"codex:gpt-6-luna": True}}, {"model_limits": {"codex:gpt-6-luna": 0}},
-    {"model_limits": {"codex:gpt-6-luna": 65}}, {"provider_limits": {"other": {}}},
+    {"model_limits": {"codex:gpt-6-luna": 1000001}}, {"provider_limits": {"other": {}}},
     {"provider_limits": {"codex": {"quota_pool": "unconfigured"}}},
     {"provider_limits": {"codex": {"max_concurrency": False}}},
     {"provider_limits": {"codex": {"quota_pool": "../outside"}}},
@@ -259,11 +258,11 @@ def test_selected_route_cannot_omit_required_captured_binding(missing):
         validate_selected_route(RoutingPolicy(), route)
 
 
-def test_reordered_current_policy_cannot_reinterpret_old_captured_assignment():
+def test_current_capacity_change_cannot_reinterpret_old_captured_assignment():
     captured = RoutingPolicy()
     route = selected(captured)
     updated = captured.as_dict()
-    updated["tiers"]["7-9"].reverse()
+    updated["model_limits"]["codex:gpt-6-astra:low"] = 2
     current = load_routing_policy(updated)
     assert validate_selected_route(captured, route).reasoning_effort == "low"
     assert current.is_enabled(route)
@@ -272,8 +271,31 @@ def test_reordered_current_policy_cannot_reinterpret_old_captured_assignment():
     assert not current.is_enabled({**route, "reasoning_effort": "high"})
 
 
-def test_synthesis_binding_rejects_an_ordinary_tier_candidate():
+def test_synthesis_binding_rejects_wrong_kind_but_accepts_scored_tier_candidate():
     with pytest.raises(ValueError):
         validate_selected_route(RoutingPolicy(), selected(score=1, index=0), kind="SYNTHESIS")
     policy = RoutingPolicy()
-    assert validate_selected_route(policy, selected(policy, score=10, index=0, kind="SYNTHESIS")).model == SYNTHESIS_MODEL
+    assert validate_selected_route(policy, selected(policy, score=10, index=0, kind="SYNTHESIS")).model == "claude-fable-5-1"
+
+
+def test_only_claude_has_a_provider_hard_ceiling():
+    policy = RoutingPolicy()
+    assert policy.provider_max_concurrency == {"codex": None, "claude": 20, "gemini": None}
+    assert all(value is None for value in policy.model_max_concurrency.values())
+    assert all(value is None for value in policy.quota_pool_max_concurrency.values())
+    assert load_routing_policy({"provider_limits": {"gemini": {"max_concurrency": 128}}}).provider_max_concurrency['gemini'] == 128
+    for limit in (None, 0, 21, 64, True):
+        with pytest.raises(ValueError, match="Claude CLI"):
+            load_routing_policy({"provider_limits": {"claude": {"max_concurrency": limit}}})
+
+
+@pytest.mark.parametrize("tier", ["1-3", "4-6", "7-9", "10"])
+def test_unratified_route_reordering_or_model_substitution_is_rejected(tier):
+    reordered = RoutingPolicy().as_dict()
+    reordered['tiers'][tier].reverse()
+    with pytest.raises(ValueError, match='canonical Chapter 06'):
+        load_routing_policy(reordered)
+    substituted = RoutingPolicy().as_dict()
+    substituted['tiers'][tier][0]['model'] = 'unratified-model'
+    with pytest.raises(ValueError, match='canonical Chapter 06'):
+        load_routing_policy(substituted)

@@ -23,7 +23,7 @@ from cochem_pipeline.ramdisk import (
 )
 
 
-def device_bytes(*, size_mb=1024, flags=0x1110, number=7, image_offset=0, drive=0, filename=r"\Device\AWEAlloc"):
+def device_bytes(*, size_mb=1024, flags=0x1110, number=7, image_offset=0, drive=ord("R"), filename=r"\Device\AWEAlloc"):
     encoded = filename.encode("utf-16-le")
     result = bytearray(48 + len(encoded))
     struct.pack_into("<I", result, 0, number)
@@ -38,20 +38,25 @@ def reparse_bytes(target="\\Device\\ImDisk7\\", *, tag=0xA0000003):
     return struct.pack("<IHHHHHH", tag, 8 + len(encoded), 0, 0, len(encoded), 0, 0) + encoded
 
 
-def test_default_preserves_adopted_directory_mount_and_physical_ram():
+def test_default_adopts_existing_r_drive_without_any_creation_or_formatting():
     config = RamdiskConfig()
     assert config.mount_root == DEFAULT_MOUNT
-    assert config.backing == "awe"
+    assert config.backing == "auto"
     assert RamdiskConfig.from_dict(config.as_dict()) == config
-    command = imdisk_create_argv(config)
-    assert command[command.index("-m") + 1] == DEFAULT_MOUNT
+    assert config.mount_root == "R:\\" and config.size_mb == 8192
+    assert config.adopted_drive and config.startup_wait_seconds == 120
+    with pytest.raises(RamdiskError, match="must never be created"):
+        imdisk_create_argv(config)
+    legacy = RamdiskConfig(mount_root=r"D:\__CoChem\__agentic\.scripts\tdd_runs")
+    command = imdisk_create_argv(legacy)
+    assert command[command.index("-m") + 1] == legacy.mount_root
     assert command[command.index("-t") + 1] == "file"
     assert command[command.index("-o") + 1] == "awe"
     assert "-f" not in command and "-F" not in command
     assert "/fs:ntfs" in command[-1]
 
 
-@pytest.mark.parametrize("value", ["R:\\", r"D:\temp", r"\\server\share\folder", "relative", r"D:\x\..\escape",
+@pytest.mark.parametrize("value", ["R:", r"D:\temp", r"\\server\share\folder", "relative", r"D:\x\..\escape",
                                    r"D:\x\bad:ads", r"D:\x\wild*card", "D:\\x\\nul\x00"])
 def test_reject_drive_letters_unc_escapes_and_unsafe_mount_names(value):
     with pytest.raises(ValueError):
@@ -113,7 +118,7 @@ def test_physical_paths_reject_a_symlink_in_any_ancestor(tmp_path):
 
 
 def test_driver_query_distinguishes_nonpageable_ram_from_pageable_and_disk_files():
-    awe = RamdiskConfig(size_mb=1024)
+    awe = RamdiskConfig(size_mb=1024, backing='awe')
     observed = parse_imdisk_device(device_bytes(), awe, target=r"\Device\ImDisk7")
     assert observed["nonpageable"] is True
     vm = RamdiskConfig(size_mb=1024, backing="vm")
@@ -125,7 +130,21 @@ def test_driver_query_distinguishes_nonpageable_ram_from_pageable_and_disk_files
         parse_imdisk_device(device_bytes(flags=0x110, filename=r"C:\disk.img"), awe, target=r"\Device\ImDisk7")
 
 
-@pytest.mark.parametrize("change", [{"size_mb": 2048}, {"number": 8}, {"image_offset": 512}, {"drive": ord("R")},
+def test_adoption_auto_attests_existing_pageable_or_nonpageable_backing_without_conversion():
+    config = RamdiskConfig(size_mb=1024)
+    physical = parse_imdisk_device(device_bytes(), config, target=r'\Device\ImDisk7')
+    virtual = parse_imdisk_device(device_bytes(flags=0x210, filename=''), config, target=r'\Device\ImDisk7')
+    assert physical['backing'] == 'awe' and physical['nonpageable'] is True
+    assert virtual['backing'] == 'vm' and virtual['nonpageable'] is False
+    assert physical['configured_backing'] == virtual['configured_backing'] == 'auto'
+    with pytest.raises(RamdiskError, match='disk image'):
+        parse_imdisk_device(device_bytes(flags=0x210, filename=r'C:\disk.img'), config, target=r'\Device\ImDisk7')
+    managed = RamdiskConfig(size_mb=1024, mount_root=r'D:\owned\ram\mount')
+    with pytest.raises(RamdiskError, match='backing type'):
+        parse_imdisk_device(device_bytes(flags=0x210, filename='', drive=0), managed, target=r'\Device\ImDisk7')
+
+
+@pytest.mark.parametrize("change", [{"size_mb": 2048}, {"number": 8}, {"image_offset": 512}, {"drive": ord("S")},
                                     {"flags": 0x1111}, {"filename": r"C:\not-ram.img"}])
 def test_wrong_native_volume_properties_are_not_accepted(change):
     with pytest.raises(RamdiskError):
@@ -188,7 +207,7 @@ def lifecycle_record(config, *, state="READY", boot_id=100):
 
 
 def test_crash_and_reboot_recovery_preserve_exact_owned_mount_boundary():
-    config = RamdiskConfig()
+    config = RamdiskConfig(mount_root=r"D:\__CoChem\__agentic\.scripts\tdd_runs")
     target = r"\Device\ImDisk7"
     assert mount_recovery_action(None, config, 100, None) == "CREATE"
     for state in ("PREPARING", "READY"):
@@ -200,6 +219,71 @@ def test_crash_and_reboot_recovery_preserve_exact_owned_mount_boundary():
         mount_recovery_action(None, config, 100, target)
     with pytest.raises(RamdiskError, match="target changed"):
         mount_recovery_action(lifecycle_record(config), config, 200, r"\Device\ImDisk8")
+
+
+def test_adopted_drive_waits_and_reattests_after_startup_without_recreation():
+    config = RamdiskConfig()
+    target = r"\Device\ImDisk7"
+    assert mount_recovery_action(None, config, 100, None) == "WAIT_FOR_STARTUP_TASK"
+    assert mount_recovery_action(None, config, 100, target) == "ADOPT"
+    prior = lifecycle_record(config)
+    assert mount_recovery_action(prior, config, 100, target) == "VERIFY"
+    assert mount_recovery_action(prior, config, 200, r"\Device\ImDisk8") == "ADOPT"
+    with pytest.raises(RamdiskError, match="target changed"):
+        mount_recovery_action(prior, config, 100, r"\Device\ImDisk8")
+    with pytest.raises(RamdiskError, match="must never be detached"):
+        from cochem_pipeline.ramdisk import _remove_stale_mount
+        _remove_stale_mount(config, target)
+
+
+def test_legacy_directory_ledger_gets_only_new_default_fields():
+    config = RamdiskConfig(mount_root=r"D:\__CoChem\__agentic\.scripts\tdd_runs")
+    prior = lifecycle_record(config)
+    del prior['config']['lifecycle']
+    del prior['config']['startup_wait_seconds']
+    assert mount_recovery_action(prior, config, 100, r"\Device\ImDisk7") == 'VERIFY'
+    prior['config']['size_mb'] = 4096
+    with pytest.raises(RamdiskError, match="differs"):
+        mount_recovery_action(prior, config, 100, r"\Device\ImDisk7")
+
+
+@pytest.mark.parametrize('settings', [
+    {'lifecycle': 'managed_directory'}, {'lifecycle': 'unknown'},
+    {'mount_root': r'D:\owned\mount', 'lifecycle': 'adopt_existing'},
+    {'startup_wait_seconds': True}, {'startup_wait_seconds': -1}, {'startup_wait_seconds': 601},
+])
+def test_adoption_configuration_cannot_authorize_drive_recreation(settings):
+    with pytest.raises(ValueError):
+        RamdiskConfig(**settings)
+
+
+def test_occupancy_and_scratch_age_are_real_bounded_and_do_not_claim_disk_savings(tmp_path):
+    from cochem_pipeline.ramdisk import workspace_observation
+    scratch = tmp_path / 'slot1' / '.cochem-scratch'
+    scratch.mkdir(parents=True)
+    data = scratch / 'actual.bin'
+    data.write_bytes(b'x' * 100)
+    os.utime(data, (1000, 1000))
+    external = tmp_path.parent / ('outside-' + uuid.uuid4().hex)
+    external.write_bytes(b'do not count')
+    try:
+        (scratch / 'link').symlink_to(external)
+        before = data.read_bytes()
+        result = workspace_observation(tmp_path, [scratch], RamdiskConfig(), now=2000)
+        assert result['scratch']['resident_bytes'] == 100
+        assert result['scratch']['oldest_file_age_seconds'] == 1000
+        assert result['scratch']['skipped_reparse_entries'] == 1
+        assert result['capacity_bytes'] >= result['free_bytes']
+        assert result['resize']['dynamic_resize_supported'] is False
+        assert result['resize']['repeated_administrator_setup_required'] is False
+        assert result['disk_write_reduction']['bytes'] is None
+        assert data.read_bytes() == before
+        bounded = workspace_observation(tmp_path, [scratch], RamdiskConfig(), maximum_entries=1)
+        assert bounded['scratch']['inventory_truncated'] is True
+        with pytest.raises(RamdiskError, match='escaped'):
+            workspace_observation(tmp_path, [external], RamdiskConfig())
+    finally:
+        external.unlink()
 
 
 @pytest.mark.parametrize("change", [{"boot_id": False}, {"boot_id": -1}, {"state": "UNKNOWN"},
@@ -242,7 +326,7 @@ def test_real_windows_imdisk_mount_acl_and_ram_io():
         {slot: WorkerIdentity(**identity) for slot, identity in config.workers.items()})
     evidence = manager.ensure()
     assert evidence["observed"]["filesystem"] == "NTFS"
-    assert evidence["observed"]["backing"] == config.ramdisk.backing
+    assert evidence["observed"]["backing"] in ({'awe','vm'} if config.ramdisk.backing == 'auto' else {config.ramdisk.backing})
     descriptor = manager.workspace(next(iter(config.workers)))
     descriptor.validate(identity=descriptor.identity, cwd=descriptor.root)
     payload = os.urandom(1048576)

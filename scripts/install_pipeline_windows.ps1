@@ -5,12 +5,12 @@ param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$Uv = "$env:ProgramFiles\uv\uv.exe",
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.7",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.7-r2",
     [string]$DataRoot = "$env:ProgramData\CoChemPipeline422",
     [string]$TokenFile = "$env:USERPROFILE\CoChem422\controller.token",
     [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
     [string]$SupervisorTaskName = 'CoChem-4.2.3-Supervisor',
-    [ValidateRange(1,64)][int]$Slots = 6,
+    [ValidateRange(1,256)][int]$Slots = 6,
     [string]$Config,
     [switch]$RegisterDaemon
 )
@@ -222,7 +222,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
-    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,6))')
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,7))')
     Write-Host "Preserving existing protected installation: $InstallRoot"
 }
 else {
@@ -245,6 +245,10 @@ else {
     # installation points the SYSTEM interpreter back into the user checkout.
     Protect-InstalledTree -Path $InstallRoot
 }
+
+# Identical package versions may carry different owner amendments. Never reuse
+# an installed source/lock/assets snapshot solely because it says 4.2.7.
+Invoke-Checked -Executable $installedPython -Arguments @('-I','-m','cochem_pipeline.deployment_revision','--source-repository',$repo,'--installed-source',$sourceRoot)
 
 $provisionArgs = @('-I','-m','cochem_pipeline.windows','provision',
     '--private-root',(Join-Path $DataRoot 'private'),'--workers-root',(Join-Path $DataRoot 'workers'),
@@ -291,8 +295,15 @@ if ($RegisterDaemon) {
     Install-RegisteredKnowledgeCorpus -ConfigPath $configTarget
     Invoke-ExecutionProvision -ConfigPath $configTarget
     $daemonAction = New-ScheduledTaskAction -Execute $installedPython -Argument ('-I -m cochem_pipeline daemon --config ' + (Quote-TaskArgument $configTarget)) -WorkingDirectory $InstallRoot
-    $daemonSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
-    Register-ScheduledTask -TaskName $WardenTaskName -Action $daemonAction -Principal $principal -Settings $daemonSettings -Trigger (New-ScheduledTaskTrigger -AtStartup) -Force | Out-Null
+    $daemonSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1) -StartWhenAvailable
+    $startupTrigger = New-ScheduledTaskTrigger -AtStartup
+    $startupTrigger.Delay = 'PT15S'
+    # The already installed ImDisk task owns creation of R:. Repeated triggers
+    # only retry the protected controller if boot-time prerequisites were late;
+    # IgnoreNew keeps a running daemon single-instance. No RAM volume is resized,
+    # formatted or recreated, and no recurring administrator setup is needed.
+    $recoveryTrigger = New-ScheduledTaskTrigger -Once -At ((Get-Date).AddMinutes(5)) -RepetitionInterval (New-TimeSpan -Minutes 5)
+    Register-ScheduledTask -TaskName $WardenTaskName -Action $daemonAction -Principal $principal -Settings $daemonSettings -Trigger @($startupTrigger,$recoveryTrigger) -Force | Out-Null
     Disable-ScheduledTask -TaskName $WardenTaskName -TaskPath '\' | Out-Null
     Write-Host "Registered SYSTEM Warden task $WardenTaskName, stopped and disabled. After all configuration and supervisor installation is complete, enable it and perform a full Windows Restart."
 }

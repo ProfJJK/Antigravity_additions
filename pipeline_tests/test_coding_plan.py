@@ -23,7 +23,7 @@ def inputs(tmp_path):
           'test_cases':[{'id':'T1','name':'test_negative_bound','asserts':'A negative bound raises ValueError.','criteria_ids':['AC1']}],
           'leaves':[{'id':'L1','objective':'Validate the single boundary implementation.',
                      'requirement_ids':['R1'],'criteria_ids':['AC1'],'file_targets':['src/main.py'],
-                     'estimated_changed_lines':20,'dependencies':[]}]}
+                     'estimated_changed_lines':20,'estimated_added_deleted_lines':7,'dependencies':[]}]}
     return project,files,plan,['Reject negative bounds.']
 
 
@@ -49,14 +49,14 @@ def test_physical_source_plan_generates_hashed_modular_srs_and_matching_machine_
     assert not (tmp_path/'srs').exists()  # Caller owns durable storage/materialization.
 
 
-def test_twenty_one_distinct_single_target_leaves_form_two_bounded_dependency_batches(tmp_path):
+def test_twenty_one_leaves_are_not_split_by_claude_concurrency_limit(tmp_path):
     project,files,raw,requirements=inputs(tmp_path)
     template=raw['leaves'][0]
     raw['leaves']=[{**template,'id':f'L{index}','file_targets':[f'src/part{index}.py'],
                    'dependencies':[f'L{index-1}'] if index>1 else []} for index in range(1,22)]
     plan=validate_plan(raw,project,files,requirements)
     fracture=plan['fracture_manifest']
-    assert [len(batch['leaf_ids']) for batch in fracture['batches']]==[20,1]
+    assert [len(batch['leaf_ids']) for batch in fracture['batches']]==[21]
     assert fracture['topological_order']==[f'L{index}' for index in range(1,22)]
     assert ['L20','L21'] in fracture['graph']['edges']
     assert 'L20 --> L21' in fracture['mermaid']
@@ -70,8 +70,6 @@ def test_twenty_one_distinct_single_target_leaves_form_two_bounded_dependency_ba
     lambda p:p['leaves'][0].update(file_targets=['tests/test_protected.py']),
     lambda p:p['leaves'][0].update(file_targets=['src']),
     lambda p:p['leaves'][0].update(file_targets=['../outside.py']),
-    lambda p:p['leaves'][0].update(estimated_changed_lines=19),
-    lambda p:p['leaves'][0].update(estimated_changed_lines=101),
     lambda p:p['leaves'][0].update(estimated_changed_lines=True),
     lambda p:p['leaves'][0].update(dependencies=['L1']),
     lambda p:p['leaves'][0].update(criteria_ids=['AC2']),

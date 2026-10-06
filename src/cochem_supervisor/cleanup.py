@@ -1,7 +1,8 @@
 """Reconcile exact execution guards after native contained-tree shutdown.
 
-This frozen supervisor module uses only the standard library. It neither
-imports candidate pipeline code nor infers process death from a lease or PID.
+Native guard reconciliation uses only the standard library. External container
+cleanup uses the supervisor's protected installed Docker actuator; neither path
+imports candidate pipeline code or infers process death from a lease or PID.
 The caller supplies the receipt from the retained Windows Job Object check.
 """
 from contextlib import closing
@@ -93,3 +94,99 @@ def reconcile_stopped_containment(database: Path, receipt: dict) -> int:
                     'EXECUTION_CLEANUP_VERIFIED_BY_SUPERVISOR', details))
                 cleared += 1
             return cleared
+
+
+def quiesce_external_container_runner(runner, *, stop_receipt):
+    """Drain only exact protected leases after native controller shutdown.
+
+    This function measures the actual Docker engine. Labels alone never grant
+    deletion authority; DockerRunner verifies each object's retained lease,
+    owner, name, image and full container ID. Unknown or uncertain objects hold
+    failover capacity. Database tombstones and all job attempts are preserved.
+    """
+    from cochem_pipeline.containers import ContainerCleanupError
+    if (not isinstance(stop_receipt, dict) or stop_receipt.get('tree_exit_verified') is not True
+            or stop_receipt.get('scheduling_disabled') is not True):
+        raise ContainerCleanupError('External cleanup requires verified stopped native scheduling and process tree')
+    import hashlib
+    info = runner._json(['info', '--format', '{{json .}}'])
+    engine_id = info.get('ID')
+    if not isinstance(engine_id, str) or not engine_id or len(engine_id) > 256:
+        raise ContainerCleanupError('External cleanup requires a bounded independent Docker engine identity')
+    runner._daemon_identity = engine_id
+    runner.set_capacity(0)
+    discoveries = runner._discover_owned()
+    before = runner.census()
+    if discoveries or before['unknown_owned'] or before['owned'] > 256:
+        raise ContainerCleanupError('Unknown external Docker ownership prevents repair admission')
+    removed = []
+    for record in before['containers']:
+        runner._remove(record)
+        removed.append(record['lease'])
+    # A second physical census detects a late daemon response or a tombstone
+    # that rematerialized after removal; an empty registry alone is insufficient.
+    discoveries = runner._discover_owned()
+    after = runner.census()
+    if discoveries or after['owned'] or after['unknown_owned'] or after['quarantined']:
+        raise ContainerCleanupError('External Docker cleanup remains unverified; repair capacity stays held')
+    return {'schema': 'cochem-external-quiescence/4.2.7', 'checked_at': time.time(),
+            'cleanup_verified': True, 'enabled': True, 'endpoint': runner.policy.endpoint,
+            'engine_id': engine_id, 'owner': runner.owner, 'policy_sha256': runner.policy.digest,
+            'stop_receipt_sha256': hashlib.sha256(json.dumps(stop_receipt, sort_keys=True,
+                separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode()).hexdigest(),
+            'previous_owned': before['owned'], 'removed_leases': removed,
+            'remaining_owned': after['owned'], 'published_capacity': after['published_capacity'],
+            'prepared_pool_drained': before['warm'], 'job_board_modified': False}
+
+
+def ensure_external_containers_quiescent(config, *, stop_receipt):
+    """Privileged production boundary for the independently installed supervisor.
+
+    Imports resolve inside the supervisor's frozen installation, never inside
+    the release under repair. Missing registries and unreachable engines remain
+    explicit holds; they cannot be converted to claims of available capacity.
+    """
+    from cochem_pipeline import windows as native
+    from cochem_pipeline.container_policy import DockerPolicy
+    from cochem_pipeline.containers import DockerRunner, ContainerCleanupError
+    from .windows import repair_docker_endpoint
+    native.require_system()
+    if (not isinstance(stop_receipt, dict) or stop_receipt.get('tree_exit_verified') is not True
+            or stop_receipt.get('scheduling_disabled') is not True):
+        raise ContainerCleanupError('External cleanup requires verified stopped native scheduling and process tree')
+    filename = Path(config['pipeline_config'])
+    native.validate_code_path(filename)
+    pipeline = json.loads(filename.read_text(encoding='utf-8-sig'))
+    endpoint = repair_docker_endpoint(pipeline)
+    root = Path(pipeline['private_root'])
+    if root != Path(config['pipeline_private_root']):
+        raise ContainerCleanupError('Configured pipeline private state changed before external cleanup')
+    native.validate_private_directory(root)
+    state_root = root / 'containers'
+    database = state_root / 'containers.db'
+    if endpoint is None:
+        if database.exists():
+            raise ContainerCleanupError('Existing Docker ownership requires an enabled reviewed policy for physical cleanup')
+        return {'schema': 'cochem-external-quiescence/4.2.7', 'enabled': False,
+                'cleanup_verified': True, 'remaining_owned': 0,
+                'scope': 'Docker disabled with no existing registered execution plane', 'checked_at': time.time()}
+    if not database.is_file():
+        raise ContainerCleanupError('Protected Docker ownership registry is missing; external capacity cannot be verified')
+    _plain_ancestors(state_root)
+    _stat_plain(database)
+    native.validate_private_directory(state_root)
+    native.validate_private_path(database)
+    policy = DockerPolicy.from_dict(pipeline['docker'])
+    native.validate_code_path(policy.executable)
+    deadline = time.monotonic() + 60
+
+    class DeadlineCleanupRunner(DockerRunner):
+        def _call(self, arguments, *, timeout=30, **kwargs):
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise ContainerCleanupError('External cleanup exceeded its bounded deadline; repair admission remains held')
+            return super()._call(arguments, timeout=min(timeout, remaining), **kwargs)
+
+    runner = DeadlineCleanupRunner(policy, state_root, trusted_operator=pipeline.get('operator_name'),
+                                   host_boot_id=native.current_boot_identity())
+    return quiesce_external_container_runner(runner, stop_receipt=stop_receipt)

@@ -151,3 +151,28 @@ def test_component_ledger_mismatch_is_checked_before_copying_model_ledger(tmp_pa
     with pytest.raises(ValueError,match='differs'):
         migrate_budget_state(source,target)
     assert not (target/'supervisor.db').exists()
+
+
+def test_reviewed_same_state_upgrade_preserves_advanced_charged_budget(tmp_path):
+    from cochem_supervisor.upgrade import preserve_advanced_budget_state
+    source,target=roots(tmp_path)
+    old=Ledger(source/'supervisor.db')
+    attempt=reserve_once(old)
+    old.finish(attempt['attempt_id'],'FAILED',{},now=1001)
+    migrate_budget_state(source,target)
+    current=Ledger(target/'supervisor.db')
+    second=current.reserve('incident',max_per_incident=20,max_per_day=20,cooldown_seconds=0,now=1002)
+    current.finish(second['attempt_id'],'FAILED',{},now=1003)
+    history=current.history()
+    result=preserve_advanced_budget_state(source,target)
+    assert result['status']=='ADVANCED_LEDGER_PRESERVED' and result['budgets_reset'] is False
+    assert current.history()==history
+    assert current.reserve('incident',max_per_incident=20,max_per_day=20,cooldown_seconds=0,now=1004) is None
+
+
+def test_existing_database_without_prior_lineage_does_not_authorize_preserve(tmp_path):
+    from cochem_supervisor.upgrade import preserve_advanced_budget_state
+    source,target=roots(tmp_path)
+    Ledger(source/'supervisor.db');Ledger(target/'supervisor.db')
+    with pytest.raises((OSError,ValueError,RuntimeError)):
+        preserve_advanced_budget_state(source,target)

@@ -60,7 +60,7 @@ def test_real_index_unicode_catalog_links_and_read_only_schema(corpus):
     assert corpus.service.search('ΔG')[0]['doc_path']=='.sources/reference.md'
     with corpus.service._reader() as (_,reader):
         assert [row[1] for row in reader.execute('PRAGMA table_info(documents)')]==[
-            'id','doc_path','title','line_count','sha256','updated_at']
+            'id','doc_path','title','line_count','sha256','updated_at','authority','authority_revision']
         assert 'porter unicode61' in reader.execute("SELECT sql FROM sqlite_master WHERE name='fts_index'").fetchone()[0]
         with pytest.raises(sqlite3.OperationalError):
             reader.execute('DELETE FROM documents')
@@ -274,3 +274,35 @@ def test_real_authenticated_http_mcp_and_cli_retrieval(corpus,tmp_path):
     finally:
         client.close()
         server.shutdown();server.server_close();thread.join(timeout=3)
+
+
+def test_authority_badges_are_ratified_metadata_not_self_proclaimed_document_text(corpus):
+    path=corpus.root/'v4.1.2_manifest.json'
+    manifest=json.loads(path.read_text())
+    for item in manifest['documents']:
+        item['authority']='historical_source' if item['path'].startswith('.sources/') else 'current_normative'
+        item['authority_revision']='owner-amendment-2026-10-06'
+    path.write_text(json.dumps(manifest))
+    first=corpus.service.refresh()
+    assert corpus.service.search('SQLite')[0]['authority']=='current_normative'
+    assert corpus.service.read('.sources/reference.md')['authority_label']=='Historical source'
+    # Same bytes, different reviewed authority: metadata changes publish a generation.
+    for item in manifest['documents']:
+        if item['path']=='wiki/warden.md':item['authority']='owner_decision'
+    path.write_text(json.dumps(manifest))
+    refreshed=corpus.service.refresh()
+    assert refreshed['generation']!=first['generation'] and refreshed['changed_documents']==0
+    result=corpus.service.search('SQLite')[0]
+    assert result['authority']=='owner_decision'
+    assert result['authority_label']=='Owner decision'
+    assert result['authority_revision']=='owner-amendment-2026-10-06'
+
+
+def test_uncatalogued_authority_is_never_inferred_from_filename_or_prose(corpus):
+    corpus.service.refresh()
+    assert corpus.service.search('SQLite')[0]['authority']=='unclassified'
+    path=corpus.root/'v4.1.2_manifest.json';manifest=json.loads(path.read_text())
+    manifest['documents'][0]['authority']='current_normative'
+    path.write_text(json.dumps(manifest))
+    with pytest.raises(KnowledgeError,match='authority'):corpus.service.refresh()
+    assert corpus.service.search('SQLite')[0]['authority']=='unclassified'

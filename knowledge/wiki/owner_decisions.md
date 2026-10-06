@@ -1,41 +1,71 @@
-# Active owner decisions for 4.2.7
+# Active owner decisions for 4.2.7, amendment 2026-10-06
 
-## Authority
+The [canonical 4.2.7 SRS](../.sources/4.2.7_SRS.md) and
+[owner addendum](../.sources/SRS_ADDENDUM_4.2.7.md) govern the active pipeline.
+Current explicit owner instructions take precedence. Historical source material
+and debug snippets do not create new requirements.
 
-The [canonical 4.2.7 SRS](../.sources/4.2.7_SRS.md) governs pipeline execution.
-The [owner-approved addendum](../.sources/SRS_ADDENDUM_4.2.7.md) records the
-October 6, 2026 amendments. Current owner instructions take precedence.
-Legacy debug logs and code snippets do not establish new requirements.
-
-## Planning
-
-The obsolete seven-stage planning bullet and agentic Method Matrix M-1–M-8
-requirements are withdrawn. Method Matrix is a chemistry-domain concept.
-Fresh coding requests must not be held for those phantom prerequisites.
-The replacement controller contract validates actual state transitions, source
-and artifact hashes, predecessor receipts, independent audits and physical tests.
-Real research, revision/no-progress, provider, resource and safety holds remain.
-
-## Routing and execution
+## Every model job uses Chapter 06
 
 - Complexity 1–3: Flash → Haiku → Luna.
 - Complexity 4–6: Sonnet → Sol → Gemini Pro.
 - Complexity 7–9: Opus → Astra low → Gemini Pro.
 - Complexity 10: Fable → Astra ultra, exactly two candidates.
 
-Final document synthesis remains Gemini 3.1 Pro. Windows Python controls native
-subscription CLIs. All native and prepared/active Docker execution shares a
-four-seat maximum. Containers are prepared by maintenance and consumed once.
+Planning, synthesis, coding, research, review, preflight and repair all use these
+chains through a durable job board. There is no Gemini-only synthesis or fixed
+repair-model exception. Busy, quota, availability and backlog cause ordered
+spillover; all-unavailable tiers back off and restart from the preferred model.
+Inference-only native CLI restrictions prevent hidden nested model agents.
 
-## Performance and failure isolation
+Claude CLI alone permits at most 20 concurrent agents. Codex/Agy and coding leaf
+or batch counts do not inherit this ceiling. Configurable shared hardware
+admission begins conservatively at four until actual host capacity is measured.
+All native and preparing/prepared/active Docker reservations remain accounted.
 
-The measured 29.347 ms queue maximum, 7.731 ms authenticated MCP mean and
-4.85 s cold container preparation are owner-accepted observations. Queue
-acceptance remains conditional on actual Windows launch measurement with four
-workers and the production database/workload. Measure before any queue redesign.
-Cold preparation belongs to pool replenishment; normal jobs use prepared
-containers, with honest pool-wait timing. Authentication remains mandatory.
+## Planning and final code approval
+
+The obsolete seven-stage bullet and agentic Method Matrix M-1–M-8 prerequisites
+are withdrawn. The Method Matrix remains a chemistry calculation concept.
+Fresh coding must not be blocked by those phantom requirements. Real research,
+revision/no-progress, resource, provider and safety holds remain enforceable.
+
+Before final approval, different-provider Chapter 06 review reconciles captured
+SRS chapters, WBS requirements, acceptance/test mappings, source/patch and
+physical test/audit evidence. Missing coverage or divergence blocks integration.
+The 20-agent Claude ceiling is not a coding batch limit.
+
+## RAM and prepared containers
+
+Adopt the existing ImDisk `R:` 8 GiB volume, created by the owner's startup task.
+Setup requiring administration happens once; startup waits, physical backing
+attestation and per-slot scratch mapping are automated. Never format, replace
+or repeatedly ask the owner to recreate an adopted drive. Unsupported live
+resizing remains unsupported; observe occupancy and hold on genuine pressure.
+
+Normal Docker jobs consume persistent prepared single-use containers. Cold
+creation is background replenishment; pool waiting and handoff timings remain
+separate. Fixed targets remain default until measured demand supports adaptation.
+
+## All 18 chapter improvements accepted
+
+The accepted inserts are now mandatory S427-OPS-001 through S427-OPS-018.
+Authenticated views expose captured authority, deployment evidence, blockers,
+coverage, leaf estimates, queue routes, hardware/RAM observations, Oracle
+history, pool demand, knowledge authority badges and requirement acceptance.
+Bounded preflight follows universal routing. Incident replay consumes no
+subscriptions. Archive copies retain verified hashes and originals. Production
+SLOs await measured launch distributions. Upgrade previews and closure checklists
+preserve actual evidence and expose missing prerequisites.
+
+## Accepted performance and isolated failure policy
+
+The 29.347 ms queue maximum, 7.731 ms authenticated MCP mean and 4.85 s cold
+container preparation are accepted observations, not invented universal maxima.
+Queue acceptance remains conditional on actual Windows launch withfour workers,
+the production database and realistic workload before any redesign. Authentication,
+containment, durability and 30-second test deadlines remain mandatory.
 
 Ordinary task failures stay isolated. Confirmed structural queue corruption
-triggers containment under the amended FR009. Target-host/live-model and
-48-hour acceptance still require actual evidence.
+triggers containment under amended FR009. Windows/live-subscription and 48-hour
+acceptance require real host evidence; portable tests cannot establish them.

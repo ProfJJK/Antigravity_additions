@@ -5,8 +5,8 @@ param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$Uv = "$env:ProgramFiles\uv\uv.exe",
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.7",
-    [string]$PipelineRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.7",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.7-r2",
+    [string]$PipelineRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.7-r2",
     [string]$PipelineConfig,
     [string]$DataRoot = "$env:ProgramData\CoChemSupervisor427",
     [string]$PreviousDataRoot = "$env:ProgramData\CoChemSupervisor426",
@@ -209,7 +209,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
-    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_supervisor; raise SystemExit(tuple(map(int,cochem_supervisor.__version__.split(chr(46)))) != (4,2,6))')
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_supervisor; raise SystemExit(tuple(map(int,cochem_supervisor.__version__.split(chr(46)))) != (4,2,7))')
     Write-Host "Preserving independent supervisor code and acceptance snapshot: $InstallRoot"
 }
 else {
@@ -241,6 +241,8 @@ else {
     Protect-InstalledTree -Path $InstallRoot
 }
 
+Invoke-Checked -Executable $installedPython -Arguments @('-I','-m','cochem_pipeline.deployment_revision','--source-repository',$repo,'--installed-source',$sourceRoot,'--acceptance-root',$acceptanceRoot)
+
 $reviewedPipeline = Get-Content -LiteralPath $pipelineConfigSource -Raw | ConvertFrom-Json
 Assert-ReviewedExecutionPolicy -Path $pipelineConfigSource
 if ($null -eq $reviewedPipeline.PSObject.Properties['routing']) {
@@ -271,11 +273,19 @@ Invoke-SystemSetup -Mode 'Provision' -Arguments @('-I','-m','cochem_supervisor.w
     '--operator-name',$OperatorName,'--layout-output',$layoutFile,'--login-log-root',$LoginLogRoot)
 Invoke-SystemSetup -Mode 'MigrateLedger' -Arguments @('-I','-m','cochem_supervisor.windows','migrate-ledger',
     '--source-private',(Join-Path $PreviousDataRoot 'private'),'--target-private',(Join-Path $DataRoot 'private'),
-    '--supervisor-task',$SupervisorTaskName)
+    '--supervisor-task',$SupervisorTaskName,'--preserve-existing')
 Invoke-SystemSetup -Mode 'Execution' -Arguments @('-I','-m','cochem_pipeline','provision-execution','--config',$pipelineConfig)
 if (-not (Test-Path -LiteralPath $generatedConfig)) {
     $pipeline = Get-Content -LiteralPath $pipelineConfig -Raw | ConvertFrom-Json
     $repairLimits = Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import json; from cochem_pipeline.resource_limits import ResourceLimits; print(json.dumps(ResourceLimits().as_dict()))') | ConvertFrom-Json
+    # Models are catalogue metadata only; every dispatch is selected by Chapter 06.
+    $repairProviders = foreach ($providerName in @('claude','codex','gemini')) {
+        $entry = [ordered]@{provider=$providerName}
+        foreach ($property in $pipeline.providers.$providerName.PSObject.Properties) {
+            $entry[$property.Name] = $property.Value
+        }
+        $entry
+    }
     $generated = [ordered]@{
         private_root = (Join-Path $DataRoot 'private')
         repair_workspace = (Join-Path $DataRoot 'workers\repair')
@@ -291,10 +301,7 @@ if (-not (Test-Path -LiteralPath $generatedConfig)) {
         operator_name = $OperatorName
         warden_task = $WardenTaskName
         supervisor_task = $SupervisorTaskName
-        providers = @(
-            @{provider='codex';executable=$pipeline.providers.codex.executable;model='gpt-6-astra'},
-            @{provider='claude';executable=$pipeline.providers.claude.executable;model='claude-fable-5-1'}
-        )
+        providers = @($repairProviders)
         auto_deploy = $true
         max_per_incident = 2
         max_per_day = 4

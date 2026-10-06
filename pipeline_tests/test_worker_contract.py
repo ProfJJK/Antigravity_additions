@@ -100,15 +100,14 @@ def test_selected_route_identity_and_fence_must_match(change):
         runner.route(node)
 
 
-def test_existing_route_preserves_captured_policy_after_current_order_changes():
+def test_existing_route_preserves_captured_policy_after_current_capacity_changes():
     runner,node = selected_route_fixture()
     changed = runner.config.routing.as_dict()
-    changed['tiers']['7-9'].reverse()
     changed['model_limits']['codex:gpt-6-astra:low'] = 2
     runner.config.routing = load_routing_policy(changed)
     assert runner.config.routing.digest != node['route']['policy_digest']
     assert runner.route(node)['candidate_index'] == 1
-    assert runner.route(node)['max_concurrency'] == 1
+    assert runner.route(node)['max_concurrency'] is None
 
 
 def test_conflicting_captured_policy_copies_are_rejected():
@@ -119,16 +118,14 @@ def test_conflicting_captured_policy_copies_are_rejected():
         runner.route(node)
 
 
-def test_currently_removed_model_explicitly_holds_the_captured_job():
+def test_unratified_current_model_substitution_is_rejected_before_dispatch():
     runner,node = selected_route_fixture()
     changed = runner.config.routing.as_dict()
     changed['tiers']['7-9'][1] = {'provider':'codex','model':'gpt-6-sol','reasoning_effort':None}
     changed['model_limits'].pop('codex:gpt-6-astra:low')
-    runner.config.routing = load_routing_policy(changed)
-    with pytest.raises(ProviderFailure) as error:
-        runner.route(node)
-    assert error.value.category == 'configuration'
-    assert error.value.hold_scope == 'job'
+    with pytest.raises(ValueError, match='canonical Chapter 06'):
+        load_routing_policy(changed)
+    assert runner.route(node)['model'] == 'gpt-6-astra'
 
 
 @pytest.mark.parametrize('effort',['low','ultra'])

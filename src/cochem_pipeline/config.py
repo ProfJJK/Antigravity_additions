@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .routing import RoutingPolicy, SYNTHESIS_MODEL, load_routing_policy
+from .routing import RoutingPolicy, load_routing_policy
 from .hardware_guard import HardwarePolicy
 from .resource_limits import ResourceLimits
 from .ramdisk import RamdiskConfig
@@ -65,6 +65,7 @@ class PipelineConfig:
     lease_seconds: int = 1800
     heartbeat_seconds: int = 5
     max_attempts: int = 3
+    max_execution_slots: int = 4
     context_budget: int = 16384
     reserved_fraction: float = 0.25
     min_free_memory_mb: int = 1024
@@ -88,8 +89,8 @@ def load_config(filename: str) -> PipelineConfig:
     private = Path(raw['private_root']).expanduser()
     roots = {key: Path(value).expanduser() for key, value in raw['slot_roots'].items()}
     workers = raw['workers']
-    if not private.is_absolute() or not roots or len(roots) > 64:
-        raise ValueError('private_root must be absolute; configure one to 64 worker identities (at most four active)')
+    if not private.is_absolute() or not roots or len(roots) > 256:
+        raise ValueError('private_root must be absolute; configure one to 256 isolated worker identities')
     if set(workers) != set(roots):
         raise ValueError('workers and slot_roots must have identical keys')
     paths = [private.resolve(), *(root.resolve() for root in roots.values())]
@@ -130,20 +131,20 @@ def load_config(filename: str) -> PipelineConfig:
             re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}')
             for arg in inference_args):
         raise ValueError('Gemini inference-only arguments require exactly one separate {model} entry and supported placeholders')
-    # This is required by the architecture, not an inferred alias/provider swap.
-    if gemini['model'] != SYNTHESIS_MODEL:
-        raise ValueError(f'The SRS synthesis route requires exact native model {SYNTHESIS_MODEL}; aliases are not remapped')
     values = {}
     for key, default, low, high in [
         ('port',47824,1024,65535), ('timeout_seconds',1800,1,14400),
         ('lease_seconds',1800,5,3600), ('heartbeat_seconds',5,1,5), ('max_attempts',3,1,10),
         ('context_budget',16384,1024,1048576), ('min_free_memory_mb',1024,0,1048576),
-        ('min_free_disk_mb',512,0,1048576),
+        ('min_free_disk_mb',512,0,1048576), ('max_execution_slots',4,1,256),
     ]:
         value = raw.get(key,default)
         if type(value) is not int or not low <= value <= high:
             raise ValueError(f'{key} must be an integer in {low}..{high}')
         values[key] = value
+    if 'max_execution_slots' in raw and values['max_execution_slots'] > len(roots):
+        raise ValueError('max_execution_slots cannot exceed the isolated worker identities configured')
+    values['max_execution_slots'] = min(values['max_execution_slots'], len(roots))
     if values['heartbeat_seconds'] * 3 > values['lease_seconds']:
         raise ValueError('heartbeat_seconds must allow at least three heartbeats per lease')
     fraction = raw.get('reserved_fraction',.25)

@@ -227,7 +227,7 @@ def execution_readiness(config, *, provision=False):
     else:
         checks['docker'] = {'ready':not bool(config.coding_projects),'enabled':False}
     try:
-        hardware = HardwareGuard(max_agents=len(identities),workspaces=(config.private_root,*workspaces),
+        hardware = HardwareGuard(max_agents=min(getattr(config,'max_execution_slots',4),len(identities)),workspaces=(config.private_root,*workspaces),
             policy=effective_execution_policy(config.hardware,config.execution_limits.memory_limit_mb,
                 config.docker.memory_mb if config.docker.enabled else 0)).evaluate(force=True)
         # Startup ramp-up is expected. Readiness requires valid measurements and

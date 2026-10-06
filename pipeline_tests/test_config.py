@@ -55,7 +55,7 @@ def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
     assert not config.private_root.exists(), "Loading configuration must not provision privileged paths"
 
 
-@pytest.mark.parametrize("slots", [1, 64])
+@pytest.mark.parametrize("slots", [1, 64, 256])
 def test_supported_slot_capacity_boundaries(tmp_path, slots):
     assert len(load_config(write_config(tmp_path, config_document(tmp_path, slots))).slot_roots) == slots
 
@@ -75,7 +75,7 @@ def test_heartbeat_must_fit_the_configured_lease(tmp_path):
         load_config(write_config(tmp_path,raw))
 
 
-@pytest.mark.parametrize("slots", [0, 65])
+@pytest.mark.parametrize("slots", [0, 257])
 def test_invalid_slot_capacity_boundaries(tmp_path, slots):
     with pytest.raises(ValueError):
         load_config(write_config(tmp_path, config_document(tmp_path, slots)))
@@ -146,13 +146,13 @@ def test_gemini_argv_requires_verified_complete_placeholder_free_configuration(t
         load_config(write_config(tmp_path, raw))
 
 
-@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-flash", "gemini-3-pro",
-                                 "gemini-3.1-pro-preview", "pretend-gemini-3.1-pro"])
-def test_synthesis_requires_gemini_31_pro(tmp_path, model):
+@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-pro"])
+def test_provider_default_model_does_not_override_dynamic_synthesis(tmp_path, model):
     raw = config_document(tmp_path, 1)
     raw["providers"]["gemini"]["model"] = model
-    with pytest.raises(ValueError):
-        load_config(write_config(tmp_path, raw))
+    configured = load_config(write_config(tmp_path, raw))
+    assert configured.providers['gemini']['model'] == model
+    assert [target.provider for target in configured.routing.candidates(10, 'SYNTHESIS')] == ['claude', 'codex']
 
 
 def test_unknown_gemini_result_protocol_is_rejected(tmp_path):
@@ -287,3 +287,17 @@ def test_unknown_execution_settings_fail_instead_of_silent_configuration_drift(t
     raw[component] = {'misspelled_limit': 1}
     with pytest.raises(ValueError):
         load_config(write_config(tmp_path, raw))
+
+
+def test_configured_sixty_four_execution_slots_require_sixty_four_isolated_identities(tmp_path):
+    raw = config_document(tmp_path, 64)
+    raw['max_execution_slots'] = 64
+    assert load_config(write_config(tmp_path,raw)).max_execution_slots == 64
+    raw['max_execution_slots'] = 65
+    with pytest.raises(ValueError,match='isolated worker'):
+        load_config(write_config(tmp_path,raw))
+
+
+def test_execution_capacity_default_remains_four_without_raising_small_deployments(tmp_path):
+    assert load_config(write_config(tmp_path,config_document(tmp_path,64))).max_execution_slots == 4
+    assert load_config(write_config(tmp_path,config_document(tmp_path,1))).max_execution_slots == 1

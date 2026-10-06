@@ -64,7 +64,7 @@ def create_server(client:ControlClient):
         'The controller owns staged edits, independent tests, review and configured Git integration. '
         'Poll pipeline_code_status; only its verified terminal result establishes completion. '
         'For planning documents, submit one objective with pipeline_submit. The Warden automatically generates a manifest, '
-        'runs isolated chapter workers within hardware limits, and starts Gemini synthesis only after '
+        'runs isolated chapter workers within hardware limits, and routes synthesis only after '
         'all chapter outputs are accepted. Complexity determines the configured model priority; '
         'busy or quota-limited targets can cause a recorded fallback or timed wait. '
         'A submission is not completion. Poll pipeline_status for routing decisions and wait times. '
@@ -88,6 +88,27 @@ def create_server(client:ControlClient):
     async def pipeline_health()->dict[str,Any]:
         """Read privileged service, resource admission, active processes and quarantine status."""
         return await asyncio.to_thread(client.call,'/health')
+
+    @server.tool()
+    async def pipeline_provider_preflight_submit(workflow_id:str|None=None)->dict[str,Any]:
+        """Manually enqueue one bounded genuine subscription job through Chapter 06; poll pipeline_status for the actual selected provider/model receipt."""
+        return await asyncio.to_thread(client.call,'/preflight',{'workflow_id':workflow_id})
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True,idempotentHint=True,openWorldHint=False))
+    async def pipeline_operator_view(workflow_id:str|None=None,job_id:str|None=None,after_event_id:int|None=None)->dict[str,Any]:
+        """Inspect governing captures, blocking prerequisites, queue, resource plots, deployment drift and SRS acceptance evidence."""
+        if workflow_id is not None and job_id is not None:
+            raise ValueError('Select a workflow or a job, not both')
+        for identifier in (workflow_id,job_id):
+            import re
+            if identifier is not None and not re.fullmatch(r'[A-Za-z0-9_.-]{1,128}',identifier):
+                raise ValueError('Invalid workflow or job ID')
+        if after_event_id is not None and (type(after_event_id) is not int or after_event_id<0):
+            raise ValueError('Event cursor must be a nonnegative integer')
+        operation='/operator/job/'+job_id if job_id else '/operator/workflow/'+workflow_id if workflow_id else '/operator'
+        if after_event_id is not None:
+            operation+='?after_event_id='+str(after_event_id)
+        return await asyncio.to_thread(client.call,operation)
 
     @server.tool()
     async def pipeline_cancel(workflow_id:str)->dict[str,Any]:

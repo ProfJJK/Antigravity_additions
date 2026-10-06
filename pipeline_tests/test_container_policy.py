@@ -21,7 +21,7 @@ def test_defaults_enforce_four_container_caps_and_immutable_round_trip():
 @pytest.mark.parametrize('values', [
     {'image': 'python:latest'}, {'allowed_images': []}, {'image': IMAGE.upper()},
     {'memory_mb': 8192}, {'cpus': 3}, {'pids_limit': 513}, {'tmpfs_mb': 4096},
-    {'max_containers': 5}, {'cpus': float('nan')}, {'memory_mb': True},
+    {'max_containers': 257}, {'cpus': float('nan')}, {'memory_mb': True},
     {'endpoint': 'tcp://127.0.0.1:2375'}, {'endpoint': 'ssh://remote'},
     {'commands': []}, {'enabled': 1}, {'unknown': True},
 ])

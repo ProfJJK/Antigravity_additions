@@ -8,7 +8,7 @@ concern, not a universal agent workflow gate.
 
 ## Preserve deployment state
 
-Stage new protected `Pipeline4.2.7` and `Supervisor4.2.7` code/environments.
+Stage new protected `Pipeline4.2.7-r2` and `Supervisor4.2.7-r2` code/environments.
 Use the supplied Windows installers only after merging the actual deployment
 configuration. The example's paths identify a fresh installation; copying them
 over a running configuration does not migrate its database, accounts or logins.
@@ -16,8 +16,9 @@ Keep the existing private job database, native credentials, task identities,
 quarantine and immutable evidence. Back up active SQLite consistently.
 
 Preserve both `supervisor.db` and `component-recovery.db` through the existing
-SYSTEM migration helper. The supervisor installer's previous-data default is
-4.2.6; set it to the real previous deployment if different. Paid repair budgets
+SYSTEM migration helper. Use the actual existing supervisor data directory as the previous-data source;
+the r2 installer preserves the current427 state by default. Do not initialize
+new budget ledgers over an existing deployment. Paid repair budgets
 and component recovery budgets must not reset. A new protected acceptance
 snapshot is required because the execution contract changed.
 
@@ -35,21 +36,26 @@ The exact 4.2.6 corpus is retained under `docs/archive/knowledge_4.2.6`; it is
 outside the active source/wiki collections so obsolete snippets are not retrieved
 as current instructions. Original repository documents also remain available.
 
-Provision a fresh protected corpus location such as `Knowledge4.2.7` and a
+Provision a fresh protected corpus location such as `Knowledge4.2.7-r2` and a
 dedicated private knowledge-index directory, then point the reviewed knowledge
 configuration there. The installer only seeds an absent destination; it preserves
 an existing corpus. Do not silently overwrite an operator's custom corpus or
 delete its immutable pins. Merge desired domain sources deliberately and ratify
 the complete physical inventory/hashes before indexing. The historical manifest
 basename `v4.1.2_manifest.json` is retained for parser compatibility; its version
-and contents identify 4.2.7.
+and contents identify the 4.2.7 owner amendment. Original4.2.7 captures are
+archived under `docs/archive/knowledge_4.2.7_original`. The exported SQLite FTS5
+snapshot is a reviewable public-corpus artifact; the installed protected index
+is rebuilt locally and is not a claim that the Windows database was updated.
 
 ## Planning and held requests
 
 Fresh coding requests capture the controller-owned `cochem-planning/4.2.7`
 contract and proceed to actual `CODE_PLAN` work when real deployment prerequisites
 are satisfied. Plan review, real research, test-first RED, source-only changes,
-GREEN, independent audit and fenced Git integration remain evidence-gated.
+GREEN, independent audit, explicit different-provider SRS/WBS reconciliation
+and fenced Git integration remain evidence-gated. Coding leaf/batch counts are
+not capped at 20; Claude concurrency alone is capped at 20.
 
 Use authenticated `code-resume` with the original workflow ID and a reason to
 migrate an eligible untouched phantom-only hold. Migration must retain its
@@ -68,7 +74,7 @@ capacity is an explicit resource wait; durable profile demand requests
 replenishment. Consumed/dead containers are removed with verified cleanup.
 
 Native attempts, preparation, unused prepared members and active containers all
-remain within the shared four-seat/resource ceiling. A pool cannot reserve four
+remain within the configured hardware/resource ceiling. A pool cannot reserve all
 idle seats indefinitely while starving eligible native work. Refill is triggered
 on handoff and released capacity. Record preparation, request/queue and prepared
 handoff times separately; the accepted cold preparation observation is not a
@@ -107,3 +113,20 @@ subscription CLIs. Complete the genuine 48-hour resource/handle observation and
 desktop-heap measurement. Linux checks, PowerShell parsing and offline provider
 help/version probes do not establish those results. Current executed evidence
 belongs in [the release record](RELEASE_4.2.7.md).
+
+## Owner-amendment operations
+
+Use [the operations guide](OPERATIONS_4.2.7-r2.md) for the authenticated operator
+views, one-time R: adoption, read-only upgrade preview, independent incident
+replay, bounded routed preflight, archival and observed workload objectives.
+All model tasks use Chapter 06. The legacy provider-named bridges require the
+controller token/port and exact registered coding project mappings; the former
+direct-inference queue is removed. Preserve old bridge receipts as history.
+
+Existing workflows retain immutable captured policies and budgets. Pending
+legacy single-Gemini synthesis receives an audited candidate amendment before
+a new attempt. Coding workflows with an older execution contract cannot bypass
+the new final reconciliation gate; the preview reports these holds and the
+controller rejects incompatible captures. Review/re-submit with explicit
+lineage where a safe untouched-hold migration does not apply; do not erase
+history or claim an old review proves the amended contract.

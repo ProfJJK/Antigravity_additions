@@ -420,7 +420,10 @@ class QueueLaunchObserver:
             settings_ok = self.settings == {"journal_mode": "wal", "synchronous": 1,
                                             "busy_timeout": 5000, "foreign_keys": 1}
             attested_overlap = any(cohort <= self.native_attested for cohort in self.overlap_cohorts)
-            coverage = {"at_least_64_acquisitions": len(self.claims) >= 64,
+            configured_ceiling=min(getattr(config,'max_execution_slots',4),len(config.slot_roots))
+            exact_four_topology=configured_ceiling==4
+            coverage = {"configured_four_worker_acceptance_topology":exact_four_topology,
+                "at_least_64_acquisitions": len(self.claims) >= 64,
                 "at_least_16_native_completions": len(native_completed) >= 16,
                 "multiple_job_kinds": len(self.kinds) >= 2,
                 "four_live_native_processes_observed": self.maximum_native == 4,
@@ -441,7 +444,8 @@ class QueueLaunchObserver:
                 "sample_not_truncated": not self.truncated}
             complete = os.name == "nt" and all(coverage.values())
             within_target = bool(self.acquisition_times) and latency["maximum_ms"] < 5
-            status = ("pending_windows_launch" if os.name != "nt" else
+            status = ("unsupported_topology_for_four_worker_acceptance" if not exact_four_topology else
+                      "pending_windows_launch" if os.name != "nt" else
                       "pending_representative_workload" if not complete else
                       "conditionally_accepted_launch_measured_optimization_review" if not within_target else
                       "accepted_windows_launch_target_met")
@@ -449,7 +453,10 @@ class QueueLaunchObserver:
                 "platform": os.name, "platform_release": platform.release(),
                 "python_version": platform.python_version(), "sqlite_version": __import__("sqlite3").sqlite_version,
                 "started_at": self.started_at, "elapsed_seconds": time.monotonic() - self.started_monotonic,
-                "topology": "one deployed controller JobStore; actual native subprocess workers; shared four-seat admission",
+                "topology": "one deployed controller JobStore; actual native subprocess workers; configured hardware admission",
+                "configured_admission_ceiling":configured_ceiling,
+                "acceptance_topology_required_workers":4,
+                "topology_matches_four_worker_acceptance":exact_four_topology,
                 "controller_pid": os.getpid(), "configured_slots": len(config.slot_roots),
                 "actual_database": str(self.store.path), "storage": self.storage,
                 "database_bytes_at_start": self.database_bytes_at_start,

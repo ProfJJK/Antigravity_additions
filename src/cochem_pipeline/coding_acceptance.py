@@ -198,7 +198,7 @@ def validate_audit_jobs(jobs, plan, final_phases, evidence):
             'Planning audit task is bound to a different plan')
     reviewed={leaf:{} for leaf in final_phases}
     for job in completed:
-        if job.get('kind')!='CODE_REVIEW':
+        if job.get('kind')!='CODE_REVIEW' or job.get('payload',{}).get('review_scope')=='srs_wbs_reconciliation':
             continue
         payload=job.get('payload',{}); output=job.get('output',{}); receipt=job.get('receipt',{})
         file=payload.get('file',{}); producer=payload.get('producer',{})
@@ -231,6 +231,54 @@ def validate_audit_jobs(jobs, plan, final_phases, evidence):
         expected_paths.update(change['path'] for change in author_evidence['changes'])
         require(expected_paths.issubset(reviewed[leaf]), 'Final independent audit is missing an implementation or test file')
     return approved
+
+
+def validate_srs_wbs_reconciliations(jobs, plan, chunks, evidence):
+    """Join final approval to the actual independent review and integration."""
+    from .coding_reconciliation import validate_reconciliation
+    completed={job['job_id']:job for job in jobs if job.get('status')=='COMPLETED'}
+    leaves=plan['fracture_manifest']['topological_order']
+    for leaf,chunk in zip(leaves,chunks):
+        audit=chunk.get('reconciliation') or {}
+        job=completed.get(audit.get('job_id'),{})
+        payload=job.get('payload',{}); manifest=payload.get('reconciliation_manifest') or {}
+        require(job.get('kind')=='CODE_REVIEW' and payload.get('review_scope')=='srs_wbs_reconciliation'
+                and payload.get('active_leaf',{}).get('id')==leaf
+                and manifest.get('plan_sha256')==plan['plan_sha256']
+                and manifest.get('artifact_hashes')==plan['artifact_hashes']
+                and manifest.get('file_reviews_sha256')==digest(chunk.get('reviews'))
+                and manifest.get('test_receipt_sha256')==chunk.get('test_receipt_sha256'),
+                'Final approval has no exact SRS/WBS reconciliation for its leaf and physical evidence')
+        planned=next(item for item in plan['fracture_manifest']['leaves'] if item['id']==leaf)
+        final=leaf==leaves[-1]
+        selected=plan['fracture_manifest']['leaves'] if final else [planned]
+        refs={key for item in selected for key in item['requirement_ids']}
+        criterion_ids={key for item in selected for key in item['criteria_ids']}
+        criteria=[item for item in plan['acceptance_criteria'] if item['id'] in criterion_ids]
+        require(manifest.get('wbs_leaf')==planned
+                and manifest.get('wbs_leaves')==selected
+                and manifest.get('reconciliation_scope')==('workflow' if final else 'leaf')
+                and manifest.get('requirements')=={key:plan['requirements'][key] for key in plan['requirements'] if key in refs}
+                and manifest.get('srs_chapters')==[item for item in plan['srs']['chapters']
+                    if set(item['requirement_ids']) & refs]
+                and manifest.get('acceptance_criteria')==criteria
+                and manifest.get('test_cases')==[item for item in plan['test_cases']
+                    if set(item['criteria_ids']) & criterion_ids],
+                'SRS/WBS reconciliation changed its captured chapter or requirement content')
+        verified=validate_reconciliation(job.get('output'),manifest,job.get('receipt'),payload.get('producer',{}))
+        # The authenticated public projection preserves the original private
+        # receipt commitment while deliberately removing lease authority.
+        verified['receipt_sha256']=job.get('receipt_sha256',verified['receipt_sha256'])
+        require(audit=={'job_id':job['job_id'],**verified},
+                'Final SRS/WBS reconciliation is detached from its native review')
+        require(any(stage.get('kind')=='CODE_INTEGRATE'
+                and stage.get('payload',{}).get('active_leaf',{}).get('id')==leaf
+                and stage['payload'].get('reconciliation_sha256')==digest(audit)
+                and stage['payload'].get('snapshot_sha256')==manifest.get('source_snapshot_sha256')
+                and stage.get('created_at',-1)>=job.get('updated_at',float('inf'))
+                and evidence.get(stage['job_id'],{}).get('evidence',{}).get('reconciliation_sha256')==digest(audit)
+                for stage in completed.values()),
+                'Git approval did not follow and bind successful SRS/WBS reconciliation')
 
 
 def validate_test_deadline(test):
@@ -494,6 +542,7 @@ def validate_coding_workflow(workflow):
     evidence={item['job_id']:item for item in workflow.get('evidence',[])}
     approved=validate_audit_jobs(workflow.get('jobs',[]),plan,final_phases,evidence)
     require(approved==state.get('plan_review'), 'Accepted plan review is detached from its native audit')
+    validate_srs_wbs_reconciliations(workflow.get('jobs',[]),plan,chunks,evidence)
     validate_precode_tests(records,plan,workflow.get('jobs',[]),evidence)
     validate_phase_tests(final_phases,workflow.get('jobs',[]),evidence)
     test=state.get('last_test') or {}

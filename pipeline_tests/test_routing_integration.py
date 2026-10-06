@@ -329,7 +329,8 @@ def test_six_routed_chapters_have_four_physical_processes_and_one_synthesis_barr
     assert len([event for event in before["events"] if event["event"] == "SYNTHESIS_RELEASED"]) == 1
     synthesis = store.claim("synthesis-controller", worker_slot="slot1")
     assert synthesis["kind"] == "SYNTHESIS"
-    assert synthesis["route"]["provider"] == "gemini" and synthesis["route"]["model"] == "gemini-3.1-pro"
+    expected = load_routing_policy(synthesis["routing_policy"]).candidates(synthesis["route"]["score"], "SYNTHESIS")[0]
+    assert synthesis["route"]["provider"] == expected.provider and synthesis["route"]["model"] == expected.model
     _finish_fixture(store, synthesis, fixture_cli, tmp_path)
     final = store.workflow(workflow["workflow_id"])
     assert final["status"] == "COMPLETED" and len(final["artifacts"]) == 7
@@ -402,7 +403,7 @@ while not Path(sys.argv[3]).exists():
     if time.monotonic() >= deadline:
         raise SystemExit(72)
     time.sleep(.005)
-print(json.dumps(store.claim('independent-controller', max_workers=64,
+print(json.dumps(store.claim('independent-controller', max_workers=4,
                             worker_slot=sys.argv[4])), flush=True)
 '''
     executions = []

@@ -60,6 +60,15 @@ def test_loaded_default_policy_collections_are_independent(tmp_path):
     assert second["test_targets"] == expected_targets
 
 
+def test_incomplete_agy_contract_does_not_disable_other_repair_providers(tmp_path):
+    raw=document(tmp_path)
+    raw['providers'].append({'provider':'gemini','model':'gemini-3.8-flash',
+        'executable':str(tmp_path/'bin'/'agy.exe')})
+    result=load_config(write_config(tmp_path,raw))
+    assert {item['provider'] for item in result['providers']}=={'codex','claude','gemini'}
+    assert set(result['provider_contract_errors'])=={'gemini'}
+
+
 @pytest.mark.parametrize("field", PATH_FIELDS)
 def test_all_policy_paths_must_be_absolute_native_paths(tmp_path, field):
     raw = document(tmp_path)
@@ -91,6 +100,7 @@ def test_release_pointer_must_be_inside_private_state(tmp_path):
     ("max_log_bytes", 1), ("max_log_bytes", 1023), ("max_log_bytes", 67108865),
     ("auto_deploy", "true"), ("warden_task", "name;command"), ("supervisor_task", "../outside"),
     ("max_per_incident", 1001), ("max_per_day", 1001),
+    ("max_per_incident", 3), ("max_per_day", 5), ("cooldown_seconds", 1799),
     ("repair_timeout_seconds", 86401), ("test_timeout_seconds", 86401),
 ])
 def test_invalid_policy_bounds_fail_closed(tmp_path, field, value):
@@ -108,7 +118,7 @@ def test_log_limit_boundaries_are_accepted(tmp_path, value):
 
 
 @pytest.mark.parametrize("field,value", [
-    ("max_per_incident", 1000), ("max_per_day", 1000),
+    ("max_per_incident", 2), ("max_per_day", 4),
     ("repair_timeout_seconds", 86400), ("test_timeout_seconds", 86400),
 ])
 def test_policy_limits_match_runner_and_ledger_upper_bounds(tmp_path, field, value):

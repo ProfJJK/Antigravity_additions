@@ -28,24 +28,53 @@ from cochem_pipeline import windows as native
 REPAIR_IDENTITY = native.WorkerIdentity("CoChem423Repair", "CoChem423/repair")
 
 
+def assess_repair_resources(measurements: Mapping, pipeline: Mapping, limits) -> dict:
+    """Use the frozen governor's current host policy for one repair execution.
+
+    This pure decision function does not attest invented readings as native
+    evidence. The privileged actuator collects actual readings before calling
+    it; the independent sterile observer still imports no application code.
+    """
+    from cochem_pipeline.hardware_guard import HardwarePolicy, assess_resources, effective_execution_policy
+    from cochem_pipeline.resource_limits import ResourcePolicyError
+    policy=effective_execution_policy(HardwarePolicy.from_dict(pipeline.get('hardware')),
+                                      limits.memory_limit_mb)
+    decision=assess_resources(dict(measurements),policy,max_agents=1)
+    if decision['capacity']<1 or decision['action']!='none':
+        reasons='; '.join(decision.get('reasons',[])) or 'Measured host pressure denies repair admission'
+        raise ResourcePolicyError('Repair hardware admission held: '+reasons)
+    return {**decision,'policy':policy.as_dict(),'measurements':dict(measurements),
+            'scope':'one independent repair attempt after primary inference quiescence'}
+
+
 def verify_repair_execution_limits(config: Mapping) -> dict:
-    """Measure topology and memory before paid repair, without stopping recovery."""
+    """Measure all configured hardware gates before repair or offline probes."""
     native.require_system()
-    import psutil
-    from cochem_pipeline.resource_limits import ResourceLimits, ResourcePolicyError, validate_host_limits
-    from cochem_pipeline.resource_telemetry import _commit
-    limits = ResourceLimits.from_dict(config.get('repair_execution_limits'))
-    topology = validate_host_limits(limits)
-    available_mb = psutil.virtual_memory().available / (1024*1024)
-    commit = _commit()
-    # Reserve the child's full hard cap, plus the same baseline RAM/commit
-    # headroom used by the default pipeline policy. No model can relax this.
-    if available_mb < limits.memory_limit_mb + 1024:
-        raise ResourcePolicyError('Insufficient measured RAM for the bounded repair child plus reserve')
-    if not commit.get('available') or commit.get('free_mb',0) < limits.memory_limit_mb + 6144:
-        raise ResourcePolicyError('Insufficient verified Windows commit headroom for the bounded repair child')
-    return {'limits':limits.as_dict(),'topology':topology,'available_memory_mb':available_mb,
-            'commit':commit,'ram_reserve_mb':1024,'commit_reserve_mb':6144,'checked_at':time.time()}
+    from cochem_pipeline.resource_limits import ResourceLimits, validate_host_limits
+    from cochem_pipeline.resource_telemetry import collect_resources
+    filename=Path(config['pipeline_config'])
+    native.validate_code_path(filename)
+    if filename.stat().st_size>4*1024*1024:
+        raise ValueError('Protected pipeline configuration exceeds its 4 MiB bound')
+    raw=filename.read_bytes()
+    pipeline=json.loads(raw.decode('utf-8-sig'))
+    if not isinstance(pipeline,dict):
+        raise ValueError('Protected pipeline configuration must be an object')
+    limits=ResourceLimits.from_dict(config.get('repair_execution_limits'))
+    topology=validate_host_limits(limits)
+    workspaces=[Path(config['private_root']),Path(config['repair_workspace']),Path(pipeline['private_root'])]
+    ramdisk=pipeline.get('ramdisk',{})
+    if isinstance(ramdisk,dict) and ramdisk.get('enabled'):
+        workspaces.append(Path(ramdisk['mount_root']))
+    from cochem_pipeline.hardware_guard import HardwarePolicy
+    policy=HardwarePolicy.from_dict(pipeline.get('hardware'))
+    measured=collect_resources(workspaces,sample_seconds=policy.sample_seconds)
+    hardware=assess_repair_resources(measured,pipeline,limits)
+    return {'limits':limits.as_dict(),'topology':topology,
+            'available_memory_mb':measured.get('memory',{}).get('available_mb'),
+            'commit':measured.get('commit',{}),'ram_reserve_mb':policy.min_free_memory_mb,
+            'commit_reserve_mb':policy.min_free_commit_mb,'hardware':hardware,
+            'pipeline_configuration_sha256':hashlib.sha256(raw).hexdigest(),'checked_at':time.time()}
 
 
 def repair_docker_endpoint(pipeline: Mapping) -> str | None:
@@ -597,7 +626,7 @@ def _matching_fresh_upgrade_receipt(value: object, source: Path, target: Path) -
             and value.get("target_private") == str(target.absolute()))
 
 
-def migrate_ledger(source_private: str | Path, target_private: str | Path, supervisor_task: str) -> dict:
+def migrate_ledger(source_private: str | Path, target_private: str | Path, supervisor_task: str, *, preserve_existing: bool=False) -> dict:
     """Administrator upgrade gate: preserve budgets, never resume an old daemon."""
     native.require_system()
     native.validate_private_directory(target_private)
@@ -628,9 +657,12 @@ def migrate_ledger(source_private: str | Path, target_private: str | Path, super
         "if ($registered.GetInstances(0).Count -gt 0 -or $registered.State -in @(2,4) -or $registered.Enabled) "
         "{ throw 'Stop and disable the previous supervisor task before copying its budget ledger' } }",
         {'name': _task_name(supervisor_task), 'source_ledger_exists': source_ledger_exists, 'prior_fresh': prior_fresh})
-    from .upgrade import migrate_budget_state
-    result = migrate_budget_state(source, Path(target_private))
-    for filename in ('supervisor.db', 'component-recovery.db', 'repair-quarantine.json', 'budget-upgrade.json'):
+    from .upgrade import migrate_budget_state, preserve_advanced_budget_state
+    if type(preserve_existing) is not bool:
+        raise ValueError("preserve_existing must be a boolean")
+    result = (preserve_advanced_budget_state(source, Path(target_private)) if preserve_existing
+              else migrate_budget_state(source, Path(target_private)))
+    for filename in ('supervisor.db', 'component-recovery.db', 'repair-quarantine.json', 'budget-upgrade.json', 'budget-upgrade-preserved.json'):
         item = Path(target_private) / filename
         if item.exists():
             native.validate_private_path(item)
@@ -826,6 +858,44 @@ def configure_tasks(config_file: str | Path, previous_source: str | Path) -> dic
     return result
 
 
+def gemini_login_argv(executable, contract):
+    """Validate documented native login arguments without inventing Agy flags."""
+    if (not isinstance(contract,dict) or set(contract)!={'provider','executable','arguments','purpose','capability_reference'}
+            or contract.get('provider')!='gemini' or contract.get('purpose')!='subscription-login'
+            or contract.get('executable')!=executable or not isinstance(contract.get('capability_reference'),str)
+            or not contract['capability_reference'].strip()):
+        raise ValueError('Gemini login needs its exact reviewed native subscription-login contract')
+    arguments=contract.get('arguments')
+    if (not isinstance(arguments,list) or not 1<=len(arguments)<=32 or
+            any(not isinstance(value,str) or not value or '\x00' in value or len(value)>2048 for value in arguments)):
+        raise ValueError('Gemini login arguments must be bounded literal native argv')
+    return [executable,*arguments]
+
+
+def login_gemini_worker(layout_file,slot,executable,log_path,contract_file):
+    native.require_system()
+    for path in (layout_file,executable,contract_file):
+        native.validate_code_path(path)
+    contract_path=Path(contract_file)
+    if contract_path.stat().st_size>16384:
+        raise ValueError('Gemini login contract exceeds its size bound')
+    command=gemini_login_argv(executable,json.loads(contract_path.read_text(encoding='utf-8-sig')))
+    layout=json.loads(Path(layout_file).read_text(encoding='utf-8'))
+    if slot not in layout['slots']:
+        raise ValueError('Gemini login requires a provisioned worker slot')
+    spec=layout['slots'][slot]
+    identity=native.WorkerIdentity(spec['identity'],spec['credential_target'])
+    import tempfile
+    destination=Path(log_path)
+    with native._create_operator_file(destination,layout['operator_name']) as output, tempfile.TemporaryFile('w+b') as prompt:
+        with native.launch_worker(identity,command,spec['root'],prompt,output,output) as process:
+            try:
+                return process.wait(timeout=600)
+            except subprocess.TimeoutExpired:
+                process.terminate()
+                raise native.WindowsIsolationError('Native Gemini login exceeded ten minutes') from None
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Native independent CoChem supervisor deployment controls")
     sub = parser.add_subparsers(dest="operation", required=True)
@@ -844,7 +914,13 @@ def main() -> None:
     migrate.add_argument("--source-private", required=True)
     migrate.add_argument("--target-private", required=True)
     migrate.add_argument("--supervisor-task", required=True)
+    migrate.add_argument("--preserve-existing", action="store_true")
+    login=sub.add_parser('login-gemini')
+    for name in ('layout','slot','executable','log-path','login-contract'):
+        login.add_argument('--'+name,required=True)
     args = parser.parse_args()
+    if args.operation=='login-gemini':
+        raise SystemExit(login_gemini_worker(args.layout,args.slot,args.executable,args.log_path,args.login_contract))
     if args.operation == "provision":
         result = provision_supervisor(args.private_root, args.repair_workspace, args.operator_name, args.login_log_root)
         output = Path(args.layout_output)
@@ -853,7 +929,7 @@ def main() -> None:
     elif args.operation == "configure":
         result = configure_tasks(args.config, args.previous_source)
     elif args.operation == "migrate-ledger":
-        result = migrate_ledger(args.source_private, args.target_private, args.supervisor_task)
+        result = migrate_ledger(args.source_private, args.target_private, args.supervisor_task, preserve_existing=args.preserve_existing)
     else:
         native.validate_code_path(args.config)
         from .config import load_config

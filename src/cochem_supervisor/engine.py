@@ -6,6 +6,7 @@ import logging
 import os
 from pathlib import Path
 import subprocess
+import sqlite3
 import sys
 import tempfile
 import threading
@@ -22,6 +23,14 @@ from .releases import ReleaseError,ReleaseStore,snapshot_tree,tree_manifest,vali
 class CandidateRejected(RuntimeError):
     """A bounded repair may retry a rejected patch; it cannot bypass the gate."""
     category = 'code'
+
+
+class ReviewPending(RuntimeError):
+    """A validated candidate awaits the same durable reviewer job, without spend."""
+
+
+class ReviewRoutingBlocked(CandidateRejected):
+    category = 'configuration'
 
 
 class Supervisor:
@@ -94,9 +103,26 @@ class Supervisor:
         from .windows import stop_task
         from .cleanup import reconcile_stopped_containment
         receipt=stop_task(self.config['warden_task'],pointer_file=self.config['pointer_file'])
-        cleared=reconcile_stopped_containment(Path(self.config['pipeline_private_root'])/'job_board.db',receipt)
+        self.last_stop_receipt=receipt
+        try:
+            cleared=reconcile_stopped_containment(Path(self.config['pipeline_private_root'])/'job_board.db',receipt)
+        except sqlite3.DatabaseError as exc:
+            # A broken primary database cannot revoke the independently verified
+            # native stop. Preserve its rows and defer DB reconciliation; actual
+            # Docker census/cleanup still must pass before independent inference.
+            self.ledger.record_event('PRIMARY_DB_CLEANUP_RECONCILIATION_DEFERRED',
+                {'reason_type':type(exc).__name__,'native_stop_receipt':receipt,'cleared_guards':0})
+            cleared=0
         if cleared:
             self.ledger.record_event('WARDEN_EXECUTION_CLEANUP_VERIFIED',{'cleared_guards':cleared})
+        return True
+
+    def _quiesce_for_repair(self):
+        from .cleanup import ensure_external_containers_quiescent
+        if self._stop() is not True:
+            raise RuntimeError('Primary native containment cleanup is unverified')
+        proof=ensure_external_containers_quiescent(self.config,stop_receipt=self.last_stop_receipt)
+        self.ledger.record_event('REPAIR_DOCKER_QUIESCENCE_VERIFIED',proof)
         return True
 
     def _clear_workspace(self):
@@ -131,17 +157,20 @@ class Supervisor:
         return True
 
     def _probe(self,source):
-        from .probes import wait_for_health,run_smoke_workflow
+        from .probes import wait_for_health,run_acceptance_preflight
         healthy=wait_for_health(Path(self.config['pipeline_private_root']),self.client,Path(source),
                                 self.start_requested_at,timeout_seconds=self.config['startup_grace_seconds'],
                                 heartbeat=self._heartbeat)
         if not healthy:
             return False
         # Rollback checks the previous service's actual heartbeat and API. Only
-        # the candidate also spends quota on the bounded two-chapter workflow.
+        # the candidate also performs one routed native preflight, with a separate
+        # persistent three-dispatch cap tied to this deployment journal.
         if self.smoke_candidate is not None and Path(source)==self.smoke_candidate:
-            self.smoke_report=run_smoke_workflow(self.config,self.client,
-                self.private/'attempts'/self.current_attempt/'live-smoke.json',self._heartbeat)
+            journal=json.loads(self.releases.journal.read_text(encoding='utf-8'))
+            self.smoke_report=run_acceptance_preflight(self.config,self.client,
+                self.private/'deployment-smoke'/('smoke-'+journal['transaction_id']+'.json'),
+                journal['transaction_id'],self._heartbeat)
             return self.smoke_report.get('passed') is True
         return True
 
@@ -439,20 +468,22 @@ class Supervisor:
             return True
         return False
 
-    def _version_checks(self):
+    def _version_checks(self, *, force=False):
         if self._repair_boundary_hold():
             return []
         from cochem_mcp.providers import executable_prefix
         record_file=self.private/'cli-contracts.json'
         previous=json.loads(record_file.read_text(encoding='utf-8')) if record_file.exists() else {}
-        if time.time()-previous.get('checked_at',0)<self.config['version_probe_seconds']:
+        if not force and time.time()-previous.get('checked_at',0)<self.config['version_probe_seconds']:
             return previous.get('incidents',[])
         results={}
         incidents=[]
         for spec in self.config['providers']:
             provider=spec['provider']
             try:
-                prefix=executable_prefix(provider,spec['executable'])
+                from .runner import validate_provider_spec
+                validate_provider_spec(spec)
+                prefix=executable_prefix(provider,spec['executable']) if provider!='gemini' else [spec['executable']]
                 folder=self.private/'version-probes'/uuid.uuid4().hex
                 receipt=self.runner.run_process(self.config['repair_worker'],prefix+['--version'],
                     Path(self.config['repair_workspace']),folder,timeout_seconds=30,heartbeat=self._heartbeat)
@@ -464,7 +495,8 @@ class Supervisor:
                 help_text=Path(help_receipt['stdout_path']).read_text(encoding='utf-8',errors='replace')
                 flags=(['--json','--model','--ignore-user-config','--ephemeral'] if provider=='codex' else
                        ['--print','--output-format','--permission-mode','--setting-sources',
-                        '--strict-mcp-config','--no-session-persistence'])
+                        '--strict-mcp-config','--no-session-persistence'] if provider=='claude' else
+                       [arg for arg in spec['arguments'] if arg.startswith('--')])
                 missing=[flag for flag in flags if flag not in help_text]
                 results[provider]={'available':True,'version':version,'missing_flags':missing,
                                    'exit_code':receipt['exit_code'],'help_exit_code':help_receipt['exit_code']}
@@ -486,11 +518,22 @@ class Supervisor:
     def _eligible_providers(self):
         contracts=self.private/'cli-contracts.json'
         observed=json.loads(contracts.read_text(encoding='utf-8')).get('providers',{}) if contracts.exists() else {}
-        return [spec for spec in self.config['providers']
-                if observed.get(spec['provider'],{}).get('available') is True
+        result=[]
+        for spec in self.config['providers']:
+            if spec['provider']=='gemini':
+                try:
+                    from cochem_pipeline.inference_policy import gemini_inference_arguments
+                    from .runner import validate_provider_spec
+                    validate_provider_spec(spec)
+                    gemini_inference_arguments(spec)
+                except ValueError:
+                    continue
+            if (observed.get(spec['provider'],{}).get('available') is True
                 and not observed[spec['provider']].get('missing_flags')
                 and observed[spec['provider']].get('exit_code')==0
-                and observed[spec['provider']].get('help_exit_code')==0]
+                and observed[spec['provider']].get('help_exit_code')==0):
+                result.append(spec)
+        return result
 
     def _previous_failure(self,fingerprint):
         for event in reversed(self.ledger.history(fingerprint)):
@@ -498,6 +541,169 @@ class Supervisor:
                 details=event['details']
                 return {key:details[key] for key in ('failure','test_diagnostic','live_smoke') if key in details}
         return None
+
+    def _prepare_review_checkpoint(self,candidate,baseline,frozen,incident,details,directory,changed):
+        from .reconciliation import build_review_manifest,digest
+        manifest=build_review_manifest(Path(self.config['baseline_source']),baseline,frozen,incident=incident,
+            allowed_paths=self.config['allowed_paths'],test_evidence=details['tests'],outer_evidence=details['outer_acceptance'])
+        manifest['artifact_hashes']['producer_receipt']=digest(details['native_receipt'])
+        self.ledger.save_review_checkpoint(self.current_attempt,{
+            'candidate':str(candidate),'baseline':str(baseline),'frozen':str(frozen),'directory':str(directory),
+            'incident':incident,'details':details,'changed':changed,'review_manifest':manifest,
+            'acceptance_manifest':self.acceptance_manifest,'baseline_manifest':tree_manifest(baseline)})
+
+    def _reconcile_repair(self, candidate, baseline, frozen, incident, details, directory):
+        """One independent routed reviewer is mandatory before release promotion."""
+        from .job_board import RepairJobBoard, canonical
+        from .reconciliation import build_review_manifest, validate_review, digest as review_digest
+        specification_root=Path(self.config['baseline_source'])
+        manifest=build_review_manifest(specification_root,baseline,frozen,incident=incident,
+            allowed_paths=self.config['allowed_paths'],test_evidence=details['tests'],
+            outer_evidence=details['outer_acceptance'])
+        producer=details['native_receipt']
+        manifest['artifact_hashes']['producer_receipt']=review_digest(producer)
+        checkpoint=self.ledger.review_checkpoint(self.current_attempt)
+        if checkpoint is None or checkpoint['checkpoint']['review_manifest']!=manifest:
+            raise CandidateRejected('Captured SRS, candidate or review evidence changed before reconciliation')
+        write_json(directory/'reconciliation-manifest.json',manifest)
+        board=RepairJobBoard(self.private/'repair-job-board.db')
+        payload={'objective':'Independently reconcile all canonical SRS requirements and repair WBS before final code approval.',
+            'artifact_text':canonical(manifest),'dependencies':[details['repair_route']['job_id']],
+            'excluded_providers':[producer['provider']]}
+        review=board.submit('review:'+review_digest(manifest),payload,
+            self.config.get('pipeline_routing'),kind='REPAIR_REVIEW')
+        if review['status']=='COMPLETED':
+            # Crash after physical review completion may replay only the exact
+            # native receipt bound to this unchanged candidate/SRS manifest.
+            receipt=review['receipt']
+            board.validate_receipt(review['reservation'],receipt)
+            result=validate_review(receipt['review_output'],manifest,receipt,producer)
+            if result.get('approved') is not True:
+                raise CandidateRejected('Stored asymmetric review rejected the candidate')
+            details['reconciliation']={'manifest_sha256':review_digest(manifest),'review_route':review['reservation'],
+                'review_receipt':receipt,'validation':result,'reused_completed_review':True}
+            return result
+        deadline=time.monotonic()+self.config['repair_timeout_seconds']
+        while True:
+            if not self._heartbeat() or time.monotonic()>=deadline:
+                raise ReviewPending('Asymmetric repair review remains pending; frozen candidate and original budgets retained')
+            active=self.ledger.get_attempt(self.current_attempt)
+            if self.ledger.get_incident(incident['fingerprint'])['model_calls']>=active['max_per_incident']:
+                raise CandidateRejected('Original model-call budget is exhausted; asymmetric approval remains required')
+            providers={spec['provider']:spec for spec in self._eligible_providers()}
+            route=board.claim(review['job_id'],providers,primary_cleanup_verified=True)
+            if route is None:
+                state=board.get(review['job_id'])
+                if state['status']=='BLOCKED':
+                    raise ReviewRoutingBlocked('Asymmetric review exhausted its captured routing budget; operator review required')
+                if state['status']=='IN_PROGRESS':
+                    raise CandidateRejected('Interrupted paid reviewer has no completed receipt; its call remains charged')
+                self.stop_event.wait(min(.25,max(0,deadline-time.monotonic())))
+                continue
+            charged=self.ledger.reserve_additional_model_call(self.current_attempt,route['reservation_sha256'])
+            if charged is None:
+                board.release_unspent(route)
+                raise CandidateRejected('Original repair model-call budget cannot authorize an asymmetric reviewer; promotion held')
+            board.bind_budget(route,self.current_attempt)
+            spec={**providers[route['provider']],'model':route['model'],'reasoning_effort':route['reasoning_effort']}
+            evidence={'allowed_paths':self.config['allowed_paths'],'route_reservation':route,
+                'review_manifest':manifest,'objective':'Review only; never edit source or delegate another model.'}
+            before=tree_manifest(candidate)
+            try:
+                receipt=self.runner.run(spec,self.config['repair_worker'],candidate,evidence,
+                    directory/('review-'+charged['call_id']),max(1,int(deadline-time.monotonic())),self._heartbeat)
+                if tree_manifest(candidate)!=before or review_digest(tree_manifest(frozen))!=manifest['artifact_hashes']['candidate_tree']:
+                    raise CandidateRejected('Candidate changed during independent repair review')
+                board.validate_receipt(route,receipt)
+                result=validate_review(receipt['review_output'],manifest,receipt,producer)
+                board.finish(route,receipt=receipt)
+                details['reconciliation']={'manifest_sha256':review_digest(manifest),'review_route':route,
+                    'charged_call':charged,'review_receipt':receipt,'validation':result}
+                if result.get('approved') is not True:
+                    raise CandidateRejected('Asymmetric SRS/WBS reviewer rejected the proposed repair')
+                return result
+            except CandidateRejected:
+                if board.get(review['job_id'])['status']=='IN_PROGRESS':
+                    board.finish(route,failure='code')
+                raise
+            except Exception as exc:
+                if board.get(review['job_id'])['status']=='IN_PROGRESS':
+                    board.finish(route,failure=getattr(exc,'category','protocol'))
+                details['review_failure']={'type':type(exc).__name__,'category':getattr(exc,'category','protocol')}
+                # Availability/protocol failure moves to the next Chapter 06
+                # candidate only when the original spend budget has room.
+
+    def _deploy_reviewed(self,frozen,changed,details):
+        if not self._heartbeat():
+            raise RuntimeError('Repair lease was lost before deployment')
+        release=self.releases.prepare(frozen,changed['manifest'],self._protect_release_tree)
+        details.update(changes=changed['changed'],release=release)
+        if not self.config['auto_deploy']:
+            details['reason']='Candidate validated; automatic deployment is disabled by policy'
+            return 'BLOCKED',False
+        if not self._heartbeat():
+            raise RuntimeError('Repair lease was lost before activation')
+        self.stage='deploying';self._publish(release=release)
+        self.smoke_candidate=Path(release['source_root'])
+        transaction=self.releases.deploy(release,self._start,self._stop,self._probe)
+        details.update(deployment=transaction,live_smoke=self.smoke_report,deployed=transaction['state']=='COMMITTED')
+        terminal='SUCCEEDED' if details['deployed'] else 'ROLLED_BACK'
+        if (terminal=='ROLLED_BACK' and self.smoke_report and
+                self.smoke_report.get('failure_category') in ('auth','quota','provider','resource','configuration')):
+            terminal='BLOCKED'
+        return terminal,True
+
+    def _resume_pending_review(self,incident):
+        from .job_board import RepairJobBoard
+        pending=next((row for row in self.ledger.pending_reviews() if row['fingerprint']==incident['fingerprint']),None)
+        if pending is None:return False
+        if self._quiesce_for_repair() is not True:
+            raise RuntimeError('Review continuation requires verified physical cleanup')
+        self.ledger.resume_review(pending['attempt_id'],cleanup_verified=True)
+        self.current_attempt=pending['attempt_id'];self.smoke_report=None
+        checkpoint=pending['checkpoint'];details=checkpoint['details'];incident=checkpoint['incident']
+        candidate=Path(checkpoint['candidate']);baseline=Path(checkpoint['baseline']);frozen=Path(checkpoint['frozen'])
+        directory=Path(checkpoint['directory']);changed=checkpoint['changed']
+        terminal='FAILED';waiting=False;lifecycle_restored=False
+        board=RepairJobBoard(self.private/'repair-job-board.db')
+        try:
+            if (Path(self.releases.current()['source_root'])!=baseline or tree_manifest(baseline)!=checkpoint['baseline_manifest']
+                    or tree_manifest(frozen)!=changed['manifest'] or tree_manifest(candidate)!=changed['manifest']
+                    or tree_manifest(Path(self.config['acceptance_root']))!=checkpoint['acceptance_manifest']):
+                raise CandidateRejected('Protected review continuation source or acceptance evidence changed')
+            producer=board.get(details['repair_route']['job_id'])
+            if producer['status']=='IN_PROGRESS':
+                # A checkpoint includes the already verified successful writer
+                # receipt; finish that exact reservation without another call.
+                board.finish(details['repair_route'],receipt=details['native_receipt'])
+            elif producer['status']!='COMPLETED':
+                raise CandidateRejected('Review continuation producer reservation is no longer valid')
+            self.stage='reviewing';self._publish(incident=incident,continuation=True)
+            self._reconcile_repair(candidate,baseline,frozen,incident,details,directory)
+            terminal,lifecycle_restored=self._deploy_reviewed(frozen,changed,details)
+        except ReviewPending as exc:
+            waiting=True;details['review_pending']={'reason':str(exc),'same_charged_attempt':True}
+            self.ledger.record_event('REVIEW_PENDING',details['review_pending'],attempt_id=self.current_attempt)
+        except Exception as exc:
+            details['failure']={'type':type(exc).__name__,**classify_error(f'{type(exc).__name__}: {exc}')}
+            if getattr(exc,'category',None) in ('configuration','resource'):
+                terminal='BLOCKED'
+                details['failure']['category']=exc.category
+            self.ledger.record_event('REPAIR_REVIEW_CONTINUATION_FAILED',details['failure'],attempt_id=self.current_attempt)
+        finally:
+            try:
+                if not lifecycle_restored and not self.releases.recovery_required() and not self._quarantine_hold():
+                    self._start(Path(self.releases.current()['source_root']))
+                write_json(directory/'supervisor-receipt.json',details)
+                if not waiting:
+                    self.ledger.finish(self.current_attempt,terminal,details)
+                    for interrupted in board.interrupted_reservations():
+                        if interrupted['attempt_id']==self.current_attempt:
+                            board.recover_interrupted(interrupted['reservation'],cleanup_verified=True,budget_attempt_terminal=True)
+            finally:
+                self.current_attempt=None;self.smoke_candidate=None;self.stage='observing'
+                self._publish(last_result='REVIEW_PENDING' if waiting else terminal)
+        return True
 
     def _repair(self,incident):
         from .acceptance import validate_junit
@@ -508,20 +714,58 @@ class Supervisor:
             return False
         if self._repair_boundary_hold():
             return False
-        eligible=self._eligible_providers()
+        if any(row['fingerprint']==incident['fingerprint'] for row in self.ledger.pending_reviews()):
+            return self._resume_pending_review(incident)
+        from .job_board import RepairJobBoard
+        board=RepairJobBoard(self.private/'repair-job-board.db')
+        # Controller-authored constraints and the actual diagnostic/objective
+        # are scored as content; incident/model-provided scores have no authority.
+        from .replay import repair_scoring_payload
+        payload=repair_scoring_payload(incident)
+        job=board.submit(incident['fingerprint'],payload,self.config.get('pipeline_routing'))
+        previous=self.ledger.get_incident(incident['fingerprint'])
+        if job['status']=='COMPLETED' and previous['status']=='OPEN':
+            job=board.submit(incident['fingerprint']+':revision:'+str(previous['attempts']+1),payload,self.config.get('pipeline_routing'))
+        eligible={spec['provider']:spec for spec in self._eligible_providers()}
         if not eligible:
+            board.claim(job['job_id'],[],primary_cleanup_verified=False)
             self.stage='blocked'
-            self._publish(reason='No compatible repair CLI is available; inspect cli-contracts.json')
+            self._publish(reason='Repair routes unavailable; durable job-board backoff retained')
+            return False
+        if job['status'] in ('COMPLETED','BLOCKED') or job['next_eligible']>time.time():
+            return False
+        # Main and failover boards cannot race a shared subscription ceiling.
+        # _stop verifies native/container containment before granting ownership.
+        if self._quiesce_for_repair() is not True:
+            raise RuntimeError('Primary containment cleanup was not verified for repair dispatch')
+        current=self.releases.current()
+        for interrupted in board.interrupted_reservations():
+            charged=interrupted['attempt_id']
+            if charged is not None and self.ledger.get_attempt(charged)['status']=='RUNNING':
+                self._start(Path(current['source_root']))
+                return False
+            board.recover_interrupted(interrupted['reservation'],cleanup_verified=True,budget_attempt_terminal=True)
+        route=board.claim(job['job_id'],eligible,primary_cleanup_verified=True)
+        if route is None:
+            self._start(Path(current['source_root']))
             return False
         attempt=self.ledger.reserve(incident['fingerprint'],self.config['max_per_incident'],
             self.config['max_per_day'],self.config['cooldown_seconds'],lease_seconds=180)
         if attempt is None:
+            board.release_unspent(route)
+            self._start(Path(current['source_root']))
             return False
+        board.bind_budget(route,attempt['attempt_id'])
+        spec={**eligible[route['provider']], 'model':route['model'],
+              'reasoning_effort':route['reasoning_effort']}
         self.current_attempt=attempt['attempt_id']
         self.smoke_report=None
         directory=self.private/'attempts'/self.current_attempt
-        details={'incident':incident,'deployed':False}
+        details={'incident':incident,'deployed':False,'repair_route':route}
+        board_finished=False
+        lifecycle_restored=False
         terminal='FAILED'
+        review_waiting=False
         try:
             directory.mkdir(parents=True,exist_ok=False)
             details['diagnostics']=self._capture_recovery_diagnostics(incident)
@@ -532,13 +776,11 @@ class Supervisor:
             candidate=Path(self.config['repair_workspace'])/'source'
             baseline=snapshot_tree(Path(current['source_root']),candidate)
             self._prepare_workspace(candidate)
-            ordinal=attempt['incident']['attempts']
-            spec=eligible[(ordinal-1)%len(eligible)]
             evidence={'objective':incident.get('objective','Repair the independently observed pipeline defect. '
                 'Preserve existing behavior and authentication boundaries. Do not modify the supervisor, tests, '
                 'dependencies, configuration, credentials, database schemas or deployment tooling. '
                 'All changes must preserve compatibility with existing stored workflow data.'),
-                'allowed_paths':self.config['allowed_paths'],'incident':incident,
+                'allowed_paths':self.config['allowed_paths'],'incident':incident,'route_reservation':route,
                 'previous_failure':self._previous_failure(incident['fingerprint'])}
             bundle=details['diagnostics']['bundle']
             # Inference receives immutable artifact metadata, never the raw
@@ -547,6 +789,10 @@ class Supervisor:
                 ('schema','captured_at','database','private_database_snapshot','files','manifest_sha256')}
             details['native_receipt']=self.runner.run(spec,self.config['repair_worker'],candidate,evidence,
                 directory/'model',self.config['repair_timeout_seconds'],self._heartbeat)
+            board.validate_receipt(route,details['native_receipt'])
+            from .repair_artifacts import apply_proposal
+            details['application']=apply_proposal(candidate,details['native_receipt']['proposal'],
+                details['native_receipt']['source_packet'],self.config['allowed_paths'])
             try:
                 changed=validate_changes(baseline,candidate,self.config['allowed_paths'])
             except (ValueError,ReleaseError) as exc:
@@ -589,46 +835,45 @@ class Supervisor:
                 raise CandidateRejected('Independent outer acceptance did not pass')
             if tree_manifest(frozen)!=changed['manifest']:
                 raise CandidateRejected('Candidate changed during outer acceptance')
-            if not self._heartbeat():
-                raise RuntimeError('Repair lease was lost before deployment')
-            release=self.releases.prepare(frozen,changed['manifest'],self._protect_release_tree)
-            details.update(changes=changed['changed'],release=release)
-            if not self.config['auto_deploy']:
-                terminal='BLOCKED'
-                details['reason']='Candidate validated; automatic deployment is disabled by policy'
-            else:
-                if not self._heartbeat():
-                    raise RuntimeError('Repair lease was lost before activation')
-                self.stage='deploying'
-                self._publish(release=release)
-                self.smoke_candidate=Path(release['source_root'])
-                transaction=self.releases.deploy(release,self._start,self._stop,self._probe)
-                details.update(deployment=transaction,live_smoke=self.smoke_report,
-                               deployed=transaction['state']=='COMMITTED')
-                terminal='SUCCEEDED' if details['deployed'] else 'ROLLED_BACK'
-                if (terminal=='ROLLED_BACK' and self.smoke_report and
-                    self.smoke_report.get('failure_category') in ('auth','quota','provider','resource','configuration')):
-                    terminal='BLOCKED'
+            self._prepare_review_checkpoint(candidate,Path(current['source_root']),frozen,incident,details,directory,changed)
+            board.finish(route,receipt=details['native_receipt'])
+            board_finished=True
+            self._reconcile_repair(candidate,Path(current['source_root']),frozen,incident,details,directory)
+            terminal,lifecycle_restored=self._deploy_reviewed(frozen,changed,details)
+            if terminal in ('SUCCEEDED','BLOCKED') and not board_finished:
+                board.finish(route,receipt=details['native_receipt'])
+                board_finished=True
+        except ReviewPending as exc:
+            review_waiting=True
+            details['review_pending']={'reason':str(exc),'same_charged_attempt':True}
+            self.ledger.record_event('REVIEW_PENDING',details['review_pending'],attempt_id=self.current_attempt)
         except Exception as exc:
             classification=classify_error(f'{type(exc).__name__}: {exc}')
             if getattr(exc,'category',None) in ('code','compatibility','auth','quota','provider','resource','configuration'):
                 classification['category']=exc.category
                 classification['repairable']=exc.category in ('code','compatibility')
             details['failure']={'type':type(exc).__name__,**classification}
-            if classification['category'] in ('auth','quota','provider','resource','configuration'):
+            if classification['category'] in ('resource','configuration'):
                 terminal='BLOCKED'
+            # Auth/quota/provider unavailability advances Chapter 06 while the
+            # independent spend ledger still enforces its original cooldown/budget.
             self.ledger.record_event('REPAIR_EXCEPTION',details['failure'],attempt_id=self.current_attempt,
                                      fingerprint=incident['fingerprint'])
         finally:
             try:
+                if not board_finished:
+                    board.finish(route,failure=details.get('failure',{}).get('category','code'))
+                if not lifecycle_restored and not self.releases.recovery_required() and not self._quarantine_hold():
+                    self._start(Path(self.releases.current()['source_root']))
                 if directory.is_dir():
                     write_json(directory/'supervisor-receipt.json',details)
-                self.ledger.finish(self.current_attempt,terminal,details)
+                if not review_waiting:
+                    self.ledger.finish(self.current_attempt,terminal,details)
             finally:
                 self.current_attempt=None
                 self.smoke_candidate=None
                 self.stage='observing'
-                self._publish(last_result=terminal,quarantined_identities=sorted(self.runner.quarantined_identities))
+                self._publish(last_result='REVIEW_PENDING' if review_waiting else terminal,quarantined_identities=sorted(self.runner.quarantined_identities))
                 self._quarantine_hold()
         return True
 
@@ -674,6 +919,10 @@ class Supervisor:
             self.ledger.record_event('CLI_PROBE_BLOCKED',classification)
             return observation
         if self._quarantine_hold() or self.stop_event.is_set():
+            return observation
+        pending=self.ledger.pending_reviews()
+        if pending:
+            self._resume_pending_review(pending[0]['checkpoint']['incident'])
             return observation
         # Explicit operator update requests enter the same durable limits.
         for item in self.ledger.list_incidents():

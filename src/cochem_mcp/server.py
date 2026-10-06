@@ -17,7 +17,7 @@ from .jobs import JobManager
 def _structured_node_prompt(kind: str, payload: dict[str, Any], workflow_id: str) -> str:
     """Validate manual node data without accepting controller-owned authority."""
     if kind not in {"MANIFEST_GENERATOR", "CHAPTER_DRAFT"}:
-        raise ValueError("kind must be MANIFEST_GENERATOR or CHAPTER_DRAFT; protected synthesis belongs to Gemini")
+        raise ValueError("kind must be MANIFEST_GENERATOR or CHAPTER_DRAFT; all DAG nodes belong to the controller")
     if not isinstance(workflow_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", workflow_id):
         raise ValueError("workflow_id must be a nonempty identifier of at most 128 characters")
     if not isinstance(payload, dict):
@@ -54,13 +54,7 @@ def _structured_node_prompt(kind: str, payload: dict[str, Any], workflow_id: str
     json.dumps(payload, ensure_ascii=False, allow_nan=False)
     from cochem_pipeline.worker import node_prompt
 
-    return (
-        "Standalone development request only. This CLI job is not a protected pipeline attempt. "
-        "This tool provides no controller identity isolation or DAG commit; any such assurances in "
-        "the shared node template describe the controller-managed workflow, not this development job. "
-        "Return the requested structured draft; do not claim that its workflow was committed or completed.\n\n"
-        + node_prompt({"kind": kind, "payload": payload, "workflow_id": workflow_id})
-    )
+    return node_prompt({"kind": kind, "payload": payload, "workflow_id": workflow_id})
 
 
 def create_server(manager: JobManager) -> FastMCP:
@@ -76,15 +70,12 @@ def create_server(manager: JobManager) -> FastMCP:
     server = FastMCP(
         f"cochem-{provider}-{__version__}",
         instructions=(
-            f"Delegate to the actual {provider} subscription CLI using {provider}_submit. "
-            "A returned job_id means accepted only. Poll status, then retrieve result. "
-            "Never report completion before status=completed; failed/timed_out/cancelled/interrupted are failures. "
-            "Do not impersonate the worker or invent a result. Retain job_id, provider, exit_code and session_id "
-            "when citing a handoff. requested_model is configuration; reported_model may be null when the CLI "
-            "does not disclose it. A completed CLI turn does not prove the requested code works: inspect changes "
-            "and run relevant tests separately. There is no provider fallback. "
-            f"{provider}_submit_node accepts structured standalone development drafts only; "
-            "it never claims, changes or completes the protected pipeline DAG."
+            "Compatibility front end for the authenticated pipeline job board. Every model task uses "
+            "Chapter 06 complexity routing and spillover across Claude, Codex and Agy. Provider tool "
+            "names do not pin a model; explicit model requests are rejected. A job_id is acceptance "
+            "only. Poll status and retrieve real controller evidence. Never impersonate an agent or "
+            "invent completion. Coding requires an exact registered project mapping. Structured "
+            "node submission starts a complete planning DAG; it cannot modify an existing node."
         ),
         lifespan=lifespan,
     )
@@ -93,43 +84,37 @@ def create_server(manager: JobManager) -> FastMCP:
 
     @server.tool(name=f"{provider}_health", annotations=read)
     async def health() -> dict[str, Any]:
-        """Check binary discovery and native subscription login without model inference. Models remain unverified."""
+        """Check authenticated job-board health without inference. Models remain unverified."""
         return await asyncio.to_thread(manager.health)
 
     @server.tool(name=f"{provider}_submit", annotations=write)
     def submit(prompt: str, workspace: str = "", model: str = "") -> dict[str, Any]:
-        """Start a CLI coding job. Returns an acceptance receipt, not a completed answer. Use configured model alias."""
+        """Submit a routed coding workflow. Returns acceptance only; model must be empty."""
         return manager.submit(prompt, workspace, model)
 
     @server.tool(name=f"{provider}_submit_node", annotations=write)
     def submit_node(kind: str, payload: dict[str, Any], workflow_id: str,
                     workspace: str = "", model: str = "") -> dict[str, Any]:
-        """Accept a standalone MANIFEST_GENERATOR or CHAPTER_DRAFT CLI job; poll status/result.
+        """Submit a complete planning DAG from a validated manifest/chapter request.
 
-        Returns acceptance only. Does not mutate the protected workflow DAG.
-        Only the controller owns leases and accepted completion. Payload must
-        contain objective/requirements plus chapter_count (manifest), or
-        chapter_id/title (chapter). Never supply fencing or credential fields.
+        Every generated task is routed by the controller. The workflow_id names
+        a new workflow, never an existing node. Model must be empty.
         """
-        prompt = _structured_node_prompt(kind, payload, workflow_id)
-        record = manager.submit(prompt, workspace, model)
-        return {**record, "submission_scope": "standalone_node_draft",
-                "workflow_id": workflow_id, "node_kind": kind, "protected_dag_mutated": False,
-                "notice": "Accepted CLI job only; this is not a protected workflow claim or completion."}
+        return manager.submit_node(kind, payload, workflow_id, workspace, model)
 
     @server.tool(name=f"{provider}_status", annotations=read)
     def status(job_id: str) -> dict[str, Any]:
-        """Read recorded process state. Polling never advances a job. Only completed means CLI terminal success."""
+        """Read controller workflow state; polling never advances work or asserts model execution."""
         return manager.status(job_id)
 
     @server.tool(name=f"{provider}_result", annotations=read)
     def result(job_id: str, offset: int = 0, limit: int = 16000) -> dict[str, Any]:
-        """Read completed CLI text and receipt, in pages. Noncompleted jobs return content=null."""
+        """Read accepted workflow evidence in pages. Noncompleted workflows return content=null."""
         return manager.result(job_id, offset, limit)
 
     @server.tool(name=f"{provider}_cancel", annotations=write)
     async def cancel(job_id: str) -> dict[str, Any]:
-        """Cancel a queued job or terminate the running CLI process tree. Already completed jobs are preserved."""
+        """Request controller-owned workflow cancellation. Completed evidence is preserved."""
         return await asyncio.to_thread(manager.cancel, job_id)
 
     return server

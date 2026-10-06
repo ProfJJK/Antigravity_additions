@@ -32,6 +32,9 @@ def _legacy_complete(store, node, output, provider):
 
 def test_legacy_accepted_artifact_survives_routing_adoption_for_pending_sibling(tmp_path):
     legacy = JobStore(tmp_path / "job_board.db")
+    # Explicit historical fixture only: emulate the pre-universal writer. New
+    # production JobStore construction always captures Chapter 06 routing.
+    legacy.routing_policy = None
     workflow = legacy.submit("Draft two operational chapters", ["REQ-1"], 2)
     manifest = legacy.claim("legacy-controller")
     assert manifest["routing"] is None
@@ -56,7 +59,7 @@ def test_legacy_accepted_artifact_survives_routing_adoption_for_pending_sibling(
     fixture.write_text(CLI_FIXTURE, encoding="utf-8")
     _finish_fixture(upgraded, remaining, fixture, tmp_path)
     synthesis = upgraded.claim("new-routing-controller", worker_slot="slot1")
-    assert synthesis["route"]["model"] == "gemini-3.1-pro"
+    assert synthesis["route"]["model"] == synthesis["routing"]["candidates"][0]["model"]
     _finish_fixture(upgraded, synthesis, fixture, tmp_path)
     final = upgraded.workflow(workflow["workflow_id"])
     assert final["status"] == "COMPLETED"

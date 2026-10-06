@@ -126,7 +126,11 @@ def test_lowered_workflow_budget_is_inherited_by_scattered_chapters(tmp_path):
     manifest = store.claim("manifest-worker")
     output = {"chapters": [{"chapter_id": "chapter-1", "title": "Requirements", "requirements": ["REQ-1"]}]}
     # Storage-contract input; this test does not invoke or claim a model run.
-    receipt = {"provider": "codex", "pid": os.getpid(), "exit_code": 0,
+    route=manifest["route"]
+    receipt = {"provider": route["provider"], "requested_model":route["model"],
+               "requested_effort":route.get("reasoning_effort"),"route_reservation_id":route["reservation_id"],
+               **{key:manifest[key] for key in ("attempt_id","fencing_token","worker_slot","job_id","workflow_id")},
+               "pid": os.getpid(), "exit_code": 0,
                "session_id": "storage-contract-test", "output_sha256": output_digest(output)}
     store.complete(manifest["job_id"], manifest["attempt_id"], manifest["fencing_token"], output, receipt)
     chapters = [job for job in store.workflow(workflow["workflow_id"])["jobs"] if job["kind"] == "CHAPTER_DRAFT"]

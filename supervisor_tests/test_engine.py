@@ -8,6 +8,7 @@ release journals, and durable budgets are exercised directly without mocks.
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import subprocess
 import sys
@@ -46,6 +47,7 @@ class LocalProtocolDriver:
             child = subprocess.Popen([sys.executable, "-c", script, *args], stdout=out, stderr=err)
             returncode = child.wait(timeout=10)
         return {"test_driver": "local Python protocol fixture", "pid": child.pid,
+                "stdout_sha256":hashlib.sha256(stdout.read_bytes()).hexdigest(),
                 "exit_code": returncode, "stdout_path": str(stdout), "stderr_path": str(stderr)}
 
     def run_process(self, identity, argv, cwd, log_dir, *, timeout_seconds, heartbeat):
@@ -69,8 +71,26 @@ class LocalProtocolDriver:
     def run(self, spec, identity, candidate, evidence, log_dir, timeout_seconds, heartbeat):
         self.repair_calls.append(spec["provider"])
         self.repair_evidence.append(json.loads(json.dumps(evidence)))
-        script = "from pathlib import Path; import sys; Path(sys.argv[1]).write_text('# controlled fixture change\\n',encoding='utf-8')"
-        return self._process(script, [str(candidate / "src" / "cochem_pipeline" / "runtime.py")], log_dir, heartbeat)
+        from cochem_supervisor.repair_artifacts import source_packet
+        if 'review_manifest' in evidence:
+            from cochem_supervisor.reconciliation import review_output_contract, digest
+            output=review_output_contract(evidence['review_manifest'])
+            if getattr(self,'review_verdict','PASS')=='FAIL':
+                output.update(verdict='FAIL',findings=['Fixture reviewer found concrete source divergence from the SRS.'])
+            process=self._process("print('controlled review fixture; no model inference')",[],log_dir,heartbeat)
+            return {**process,'provider':spec['provider'],'requested_model':spec['model'],
+                'requested_effort':spec.get('reasoning_effort'),'subscription_verified':True,
+                'terminal_success':True,'session_id':'synthetic-review-contract-fixture',
+                'output_sha256':digest(output),'review_output_sha256':digest(output),'review_output':output,
+                'route_reservation_sha256':evidence['route_reservation']['reservation_sha256']}
+        packet=source_packet(candidate,evidence['allowed_paths'],evidence)
+        process = self._process("print('controlled proposal fixture; no model inference')", [], log_dir, heartbeat)
+        return {**process, "provider":spec["provider"], "requested_model":spec["model"],
+            "requested_effort":spec.get("reasoning_effort"), "subscription_verified":True,
+            "terminal_success":True, "session_id":"local-protocol-fixture-not-native",
+            "output_sha256":"a"*64, "source_packet":packet,
+            "proposal":{"summary":"controlled fixture change","files":{"src/cochem_pipeline/runtime.py":"# controlled fixture change\n"}},
+            "route_reservation_sha256":evidence["route_reservation"]["reservation_sha256"]}
 
     def terminate(self):
         self.terminated = True
@@ -89,6 +109,7 @@ class LocalSupervisor(Supervisor):
         (baseline / "src" / "cochem_pipeline" / "runtime.py").write_text("# original baseline\n", encoding="utf-8")
         (acceptance / "pytest.ini").write_text("[pytest]\n", encoding="utf-8")
         self.config = {
+            "baseline_source":str(Path(__file__).resolve().parents[1]),
             "private_root": str(self.private), "release_root": str(releases), "pointer_file": str(self.private / "current.json"),
             "repair_workspace": str(workspace), "acceptance_root": str(acceptance), "pipeline_private_root": str(pipeline),
             "repair_worker": {"name": "RepairAccount", "credential_target": "test-fixture-only"},
@@ -97,6 +118,7 @@ class LocalSupervisor(Supervisor):
             "test_targets": ["pipeline_tests"], "max_per_incident": 2, "max_per_day": 4,
             "cooldown_seconds": 0, "repair_timeout_seconds": 10, "test_timeout_seconds": 10,
             "minimum_passed_tests": 1, "maximum_skipped_tests": 0, "auto_deploy": False,
+            "pipeline_routing":{"backoff_base_seconds":.001,"backoff_max_seconds":.001,"backoff_jitter_fraction":0},
             "heartbeat_timeout": 30, "stall_timeout": 600, "repeated_failures": 1,
             "startup_grace_seconds": 120, "version_probe_seconds": 3600, "poll_seconds": 1,
         }
@@ -148,9 +170,24 @@ class LocalSupervisor(Supervisor):
         # Real Windows Docker pipe denial is an opt-in platform test.
         return {'enabled':False,'test_driver':'local protocol fixture; no Windows Docker assertion'}
 
+    def _reconcile_repair(self,*args,**kwargs):
+        # Enable the independently routed second provider in this local protocol
+        # fixture; the actual production method and durable budgets run unchanged.
+        if not any(spec['provider']=='claude' for spec in self.config['providers']):
+            self.config['providers'].append({'provider':'claude','model':'claude-fable-5-1','executable':sys.executable})
+        contracts=json.loads((self.private/'cli-contracts.json').read_text())
+        contracts['providers']['claude']={'available':True,'missing_flags':[],'exit_code':0,'help_exit_code':0}
+        write_json(self.private/'cli-contracts.json',contracts)
+        return super()._reconcile_repair(*args,**kwargs)
+
     def _outer_acceptance(self,candidate,directory):
         # Real candidate subprocess/SQLite checks have their own physical suite.
         return {'passed':True,'test_driver':'local engine composition fixture; no independent behavior assertion'}
+
+    def _quiesce_for_repair(self):
+        # Fixture has no Windows daemon/containers; native/Docker proofs have
+        # separate physical suites. No production ownership check is bypassed.
+        return self._stop()
 
     def _stop(self):
         self.lifecycle.append("stop")
@@ -230,7 +267,7 @@ def test_failed_independent_validation_retries_until_durable_budget_is_exhausted
         assert supervisor.releases.current() == original
         assert supervisor.current_attempt is None
     assert supervisor._repair(value) is False
-    assert supervisor.runner.repair_calls == ["codex", "claude"] and supervisor.clear_calls == 2
+    assert supervisor.runner.repair_calls == ["claude", "claude"] and supervisor.clear_calls == 2
     first_input, retry_input = supervisor.runner.repair_evidence
     assert first_input["previous_failure"] is None
     assert retry_input["previous_failure"]["failure"]["category"] == "code"
@@ -250,7 +287,7 @@ def test_valid_candidate_held_by_deploy_policy_preserves_real_receipt_and_pointe
     attempt = supervisor.ledger.history(value["fingerprint"])[-1]
     assert attempt["event"] == "ATTEMPT_BLOCKED"
     assert attempt["details"]["tests"]["passed"] == 1
-    assert supervisor.lifecycle == []
+    assert supervisor.lifecycle == ["stop", ("start", Path(original["source_root"]))]
     assert json.loads((supervisor.private / "supervisor-status.json").read_text())["quarantined_identities"] == []
 
 
@@ -322,7 +359,7 @@ def test_failed_restart_escalates_evidenced_code_only_after_verified_cleanup(tmp
     observed=supervisor.tick(ignore_startup_grace=True)
     assert not observed['health']['repair_hold']
     assert supervisor.runner.repair_calls==['codex']
-    assert supervisor.lifecycle.count('stop')==2  # restart, then verified pre-repair cleanup
+    assert supervisor.lifecycle.count('stop')==3  # restart, escalation cleanup, failover-board ownership
     events=supervisor.ledger.history()
     cleanup=next(item['id'] for item in events if item['event']=='WARDEN_REPAIR_CLEANUP_VERIFIED')
     reserved=next(item['id'] for item in events if item['event']=='ATTEMPT_RESERVED')
@@ -331,6 +368,7 @@ def test_failed_restart_escalates_evidenced_code_only_after_verified_cleanup(tmp
     # Restoring the durable objects cannot increase the original repair budget.
     supervisor.ledger=Ledger(supervisor.ledger.path)
     supervisor.tick(ignore_startup_grace=True)
+    time.sleep(.01)
     supervisor.tick(ignore_startup_grace=True)
     assert supervisor.runner.repair_calls==['codex','codex']
 
@@ -383,7 +421,7 @@ def test_model_generated_regression_pass_cannot_bypass_outer_gate(tmp_path):
     supervisor._repair(value)
     assert supervisor.releases.current()==previous
     assert supervisor.ledger.get_incident(value['fingerprint'])['status']=='OPEN'
-    assert not supervisor.lifecycle
+    assert supervisor.lifecycle == ["stop", ("start", Path(supervisor.releases.current()["source_root"]))]
 
 
 @pytest.mark.parametrize('http_status',[401,503])
@@ -467,7 +505,7 @@ def test_explicit_once_tick_can_process_update_during_startup_grace(tmp_path):
     supervisor.tick(ignore_startup_grace=True)
     stored = supervisor.ledger.get_incident(value["fingerprint"])
     assert stored["attempts"] == 1 and stored["status"] == "BLOCKED"
-    assert len(supervisor.runner.repair_calls) == 1
+    assert len(supervisor.runner.repair_calls) == 2
 
 
 def test_missing_native_executable_cannot_authorize_repair_or_clear_workspace(tmp_path):
@@ -512,14 +550,15 @@ def test_successful_deployment_commits_actual_release_pointer_and_resolves_incid
     journal = json.loads(supervisor.releases.journal.read_text())
     assert journal["state"] == "COMMITTED" and journal["candidate"] == active
     assert journal["previous"] == original
-    assert supervisor.lifecycle == ["stop", ("start", active_source), ("probe", active_source)]
+    assert supervisor.lifecycle == ["stop", "stop", ("start", active_source), ("probe", active_source)]
     assert supervisor.ledger.get_incident(value["fingerprint"])["status"] == "RESOLVED"
     terminal = supervisor.ledger.history(value["fingerprint"])[-1]
     assert terminal["event"] == "ATTEMPT_SUCCEEDED"
     assert terminal["details"]["deployed"] is True
     assert terminal["details"]["live_smoke"]["passed"] is True
     assert supervisor._repair(value) is False
-    assert len(supervisor.runner.repair_calls) == 1
+    assert len(supervisor.runner.repair_calls) == 2
+    assert supervisor.ledger.get_incident(value["fingerprint"])["model_calls"] == 2
 
 
 @pytest.mark.parametrize("failure_category", [None, "code"])
@@ -528,6 +567,7 @@ def test_failed_candidate_health_or_code_smoke_restores_pointer_and_allows_bound
     supervisor.config["auto_deploy"] = True
     supervisor.candidate_probe_result = False
     supervisor.smoke_failure_category = failure_category
+    supervisor.config["max_per_incident"]=4  # Explicit fixture budget for two generation/review pairs.
     value = incident(supervisor)
     original = supervisor.releases.current()
     assert supervisor._repair(value) is True
@@ -535,7 +575,7 @@ def test_failed_candidate_health_or_code_smoke_restores_pointer_and_allows_bound
     journal = json.loads(supervisor.releases.journal.read_text())
     assert journal["state"] == "ROLLED_BACK"
     candidate, previous = Path(journal["candidate"]["source_root"]), Path(original["source_root"])
-    assert supervisor.lifecycle == ["stop", ("start", candidate), ("probe", candidate),
+    assert supervisor.lifecycle == ["stop", "stop", ("start", candidate), ("probe", candidate),
                                     "stop", ("start", previous), ("probe", previous)]
     stored = supervisor.ledger.get_incident(value["fingerprint"])
     assert stored["status"] == "OPEN" and stored["attempts"] == 1
@@ -549,7 +589,7 @@ def test_failed_candidate_health_or_code_smoke_restores_pointer_and_allows_bound
     assert json.loads(supervisor.releases.journal.read_text())["state"] == "COMMITTED"
     assert supervisor.ledger.get_incident(value["fingerprint"])["status"] == "RESOLVED"
     assert supervisor.ledger.get_incident(value["fingerprint"])["attempts"] == 2
-    previous_failure = supervisor.runner.repair_evidence[1]["previous_failure"]
+    previous_failure = supervisor.runner.repair_evidence[2]["previous_failure"]
     assert previous_failure["live_smoke"]["passed"] is False
     assert previous_failure["live_smoke"]["failure_category"] == failure_category
 
@@ -570,7 +610,7 @@ def test_external_quota_smoke_failure_rolls_back_and_blocks_further_model_spend(
     assert terminal["details"]["live_smoke"]["failure_category"] == "quota"
     assert supervisor.ledger.get_incident(value["fingerprint"])["status"] == "BLOCKED"
     assert supervisor._repair(value) is False
-    assert len(supervisor.runner.repair_calls) == 1 and supervisor.clear_calls == 1
+    assert len(supervisor.runner.repair_calls) == 2 and supervisor.clear_calls == 1
 
 
 def test_unfinished_deployment_with_failed_recovery_prevents_new_paid_reservation(tmp_path):
@@ -653,3 +693,20 @@ def test_production_detector_launcher_reads_actual_board_in_sterile_subprocess(t
     assert observed['health']['structural_integrity']['state']=='healthy'
     assert observed['health']['process_resources']['state']=='observed'
     assert (supervisor.private/'process-history.json').is_file()
+
+
+def test_asymmetric_srs_rejection_prevents_promotion_and_spends_both_original_calls(tmp_path):
+    driver=LocalProtocolDriver(acceptance='passed')
+    driver.review_verdict='FAIL'
+    supervisor=LocalSupervisor(tmp_path,driver)
+    supervisor.config['auto_deploy']=True
+    value=incident(supervisor)
+    before=supervisor.releases.current()
+    assert supervisor._repair(value) is True
+    assert supervisor.releases.current()==before
+    assert supervisor.runner.repair_calls==['codex','claude']
+    state=supervisor.ledger.get_incident(value['fingerprint'])
+    assert state['model_calls']==2 and state['status']=='EXHAUSTED'
+    final=supervisor.ledger.history(value['fingerprint'])[-1]
+    assert final['details']['reconciliation']['validation']['approved'] is False
+    assert supervisor._repair(value) is False

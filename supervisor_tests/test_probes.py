@@ -31,8 +31,7 @@ def routing_fixture(kind, payload, index=0):
     policy = configured_routing_policy()
     scoring = score_routing_task(kind,payload)
     score,tier = scoring["score"],scoring["tier"]
-    candidates = ([{"provider":"gemini","model":"gemini-3.1-pro","reasoning_effort":None}]
-                  if kind == "SYNTHESIS" else deepcopy(policy["tiers"][tier]))
+    candidates = deepcopy(policy["tiers"][tier])
     for target in candidates:
         key = target["provider"]+":"+target["model"]+(":"+target["reasoning_effort"] if target["reasoning_effort"] else "")
         target.update(key=key,max_concurrency=policy["model_limits"][key],
@@ -56,7 +55,7 @@ def workflow_fixture(workflow_id="contract-only-fixture"):
         payload = {"chapter_index":index,"requirements":[f"SUPERVISOR-{index+1}"]} if index is not None else {}
         candidate_index = 0 if kind == "SYNTHESIS" else 2 if provider == "codex" else 1
         routing, route = routing_fixture(kind, payload, candidate_index)
-        receipt = {"provider": provider, "subscription_verified": True, "pid": 123,
+        receipt = {"provider": provider, "subscription_verified": True, "pid": 123, "execution_kind":"native_cli",
                    "exit_code": 0, "session_id": "synthetic-contract-fixture-not-live",
                    "requested_model": route["model"], "reported_model": route["model"],
                    "requested_effort": route["reasoning_effort"],
@@ -202,12 +201,12 @@ def test_dynamic_assignment_accepts_gemini_chapter_instead_of_fixed_codex_parity
     assert result["process_receipts"][1]["routing"]["tier"] == "1-3"
 
 
-def test_fixed_synthesis_cannot_use_an_ordinary_score_band_fallback():
+def test_synthesis_cannot_substitute_model_outside_its_complexity_band():
     workflow = workflow_fixture()
     synthesis = workflow["jobs"][-1]
-    synthesis["routing"]["candidates"][0]["model"]="gemini-3.8-flash"
-    synthesis["route"]["model"]="gemini-3.8-flash"
-    synthesis["receipt"].update(requested_model="gemini-3.8-flash",reported_model="gemini-3.8-flash")
+    synthesis["routing"]["candidates"][0]["model"]="gemini-3.1-pro"
+    synthesis["route"]["model"]="gemini-3.1-pro"
+    synthesis["receipt"].update(requested_model="gemini-3.1-pro",reported_model="gemini-3.1-pro")
     with pytest.raises(ValueError,match="candidates differ"):
         verify_smoke_workflow(workflow,MODELS)
 
@@ -450,3 +449,50 @@ def test_unhealthy_or_old_release_cannot_pass_health(endpoint, failure):
     elif failure == "trip-error":
         state["health"]["trip_errors"] = {"job": "reaper failed"}
     assert not wait_for_health(directory, client, directory, started_after=started, timeout_seconds=.03)
+
+
+def preflight_contract_fixture(identifier):
+    payload={'objective':'Respond ready without external actions.'}
+    routing,route=routing_fixture('PREFLIGHT_REQUEST',payload)
+    routing.update(max_dispatches=3,dispatches=2)
+    output={'ready':True}
+    root={'job_id':identifier,'workflow_id':identifier,'status':'COMPLETED','kind':'MACRO_PLANNING_REQUEST'}
+    receipt={'provider':route['provider'],'requested_model':route['model'],'reported_model':route['model'],
+        'requested_effort':route.get('reasoning_effort'),'route_reservation_sha256':route['reservation_sha256'],
+        'execution_kind':'native_cli','subscription_verified':True,'pid':123,'exit_code':0,
+        'session_id':'synthetic-native-contract-fixture-not-a-model','stdout_sha256':'a'*64,
+        'output_sha256':digest(output),'process_creation_filetime':1000,
+        'process_identity_source':'owned_windows_process_handle'}
+    job={'job_id':identifier+'-probe','workflow_id':identifier,'parent_job_id':identifier,'kind':'PREFLIGHT_REQUEST',
+        'status':'COMPLETED','payload':payload,'output':output,'output_sha256':digest(output),
+        'routing':routing,'route':route,'receipt':receipt}
+    return {'workflow_id':identifier,'root':root,'jobs':[root,job],'status':'COMPLETED','artifacts':[]}
+
+
+def test_live_preflight_restart_reuses_one_durable_workflow_and_spent_dispatches(endpoint):
+    from cochem_supervisor.probes import run_acceptance_preflight
+    state,client,directory=endpoint
+    transaction='a'*32;identifier='repair-smoke-'+transaction
+    state['workflow']=preflight_contract_fixture(identifier)
+    report=directory/'smoke.json'
+    first=run_acceptance_preflight({},client,report,transaction)
+    second=run_acceptance_preflight({},client,report,transaction)
+    assert first['passed'] is second['passed'] is True  # Synthetic contract data, never actual native execution.
+    assert first['native_dispatches']==second['native_dispatches']==2
+    assert first['deadline_at']==second['deadline_at']
+    assert [path for path,_ in state['calls']]==['/preflight','/workflow/'+identifier]
+    # A missing restored DB workflow cannot trigger recreation/refund.
+    state['forced_status']=404
+    failed=run_acceptance_preflight({},client,report,transaction)
+    assert failed['passed'] is False
+    assert sum(path=='/preflight' for path,_ in state['calls'])==1
+
+
+def test_live_preflight_rejects_unverified_model_handoff(endpoint):
+    from cochem_supervisor.probes import run_acceptance_preflight
+    state,client,directory=endpoint
+    transaction='b'*32
+    state['workflow']=preflight_contract_fixture('repair-smoke-'+transaction)
+    state['workflow']['jobs'][1]['receipt']['subscription_verified']=False
+    result=run_acceptance_preflight({},client,directory/'smoke.json',transaction)
+    assert result['passed'] is False and result['failure_category']=='compatibility'

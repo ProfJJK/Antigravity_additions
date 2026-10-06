@@ -91,17 +91,21 @@ class CodingStoreMixin:
         conn.execute('INSERT OR IGNORE INTO coding_snapshots VALUES(?,?)', (sha, encoded(index)))
         return sha
 
+    @staticmethod
+    def _coding_files(conn, snapshot_sha):
+        row = conn.execute('SELECT manifest_json FROM coding_snapshots WHERE sha256=?', (snapshot_sha,)).fetchone()
+        if row is None:
+            raise ValueError('Unknown immutable coding snapshot')
+        index = json.loads(row[0])
+        files = {name: bytes(conn.execute('SELECT content FROM coding_blobs WHERE sha256=?', (sha,)).fetchone()[0])
+                 for name, sha in index.items()}
+        if manifest(files) != index or digest(index) != snapshot_sha:
+            raise ValueError('Immutable coding snapshot failed its content hashes')
+        return files
+
     def coding_files(self, snapshot_sha):
         with self._connection() as conn:
-            row = conn.execute('SELECT manifest_json FROM coding_snapshots WHERE sha256=?', (snapshot_sha,)).fetchone()
-            if row is None:
-                raise ValueError('Unknown immutable coding snapshot')
-            index = json.loads(row[0])
-            files = {name: bytes(conn.execute('SELECT content FROM coding_blobs WHERE sha256=?', (sha,)).fetchone()[0])
-                     for name, sha in index.items()}
-            if manifest(files) != index or digest(index) != snapshot_sha:
-                raise ValueError('Immutable coding snapshot failed its content hashes')
-            return files
+            return self._coding_files(conn,snapshot_sha)
 
     def coding_state(self, workflow_id):
         with self._connection() as conn:
@@ -129,6 +133,7 @@ class CodingStoreMixin:
             if not self._owned(current,node['attempt_id'],node['fencing_token']):
                 raise ValueError('Revoked coding attempt cannot prepare Git integration')
             state = self._coding_state(conn,node['workflow_id'])
+            self._require_coding_reconciliation(conn,node,state)
             from .coding_git import snapshot_digest
             index = json.loads(conn.execute('SELECT manifest_json FROM coding_snapshots WHERE sha256=?',(state['current_snapshot'],)).fetchone()[0])
             files = {name:bytes(conn.execute('SELECT content FROM coding_blobs WHERE sha256=?',(sha,)).fetchone()[0])
@@ -173,12 +178,42 @@ class CodingStoreMixin:
             intent = conn.execute('SELECT * FROM coding_integration_intents WHERE job_id=? AND attempt_id=? AND fencing_token=?',
                                   (node['job_id'],node['attempt_id'],node['fencing_token'])).fetchone()
             state = self._coding_state(conn,node['workflow_id'])
+            self._require_coding_reconciliation(conn,node,state)
             if intent is None or intent['source_sha256']!=state['current_snapshot'] or intent['reviews_sha256']!=digest(state['reviews']):
                 raise ValueError('Git CAS has no matching durable sealed integration intent')
             yield
             conn.execute("UPDATE coding_integration_intents SET state='APPLIED',applied_at=? WHERE job_id=? AND attempt_id=? AND fencing_token=?",
                          (time.time(),node['job_id'],node['attempt_id'],node['fencing_token']))
             self._event(conn,current,'GIT_CAS_APPLIED',result_commit=intent['result_commit'])
+
+    def _require_coding_reconciliation(self, conn, node, state):
+        from .coding_reconciliation import reconciliation_manifest, validate_reconciliation
+        audit=state.get('reconciliation') or {}
+        if not audit.get('approved') or node['payload'].get('reconciliation_sha256')!=digest(audit):
+            raise ValueError('Git integration requires accepted asymmetric SRS/WBS reconciliation')
+        row=conn.execute("SELECT j.kind,j.status,j.payload_json,p.output_json,p.receipt_json "
+            "FROM pipeline_jobs j JOIN pipeline_outputs p USING(job_id) WHERE j.job_id=? AND j.workflow_id=?",
+            (audit.get('job_id'),node['workflow_id'])).fetchone()
+        if row is None or row['kind']!='CODE_REVIEW' or row['status']!='COMPLETED':
+            raise ValueError('SRS/WBS reconciliation has no completed native review job')
+        payload=json.loads(row['payload_json'])
+        expected=reconciliation_manifest(state)
+        if payload.get('review_scope')!='srs_wbs_reconciliation' or payload.get('reconciliation_manifest')!=expected:
+            raise ValueError('SRS/WBS reconciliation is stale for the current source or plan')
+        verified=validate_reconciliation(json.loads(row['output_json']),expected,
+            json.loads(row['receipt_json']),payload['producer'])
+        if audit!={'job_id':audit['job_id'],**verified}:
+            raise ValueError('SRS/WBS reconciliation evidence no longer matches its native execution')
+
+    def _coding_reconcile(self, conn, root, state):
+        from .coding_reconciliation import reconciliation_manifest
+        manifest=reconciliation_manifest(state)
+        state['status']='RECONCILING_SRS'
+        state.pop('reconciliation',None)
+        review=self._coding_job(conn,root,state,'CODE_REVIEW',phase='SRS_WBS',
+            review_scope='srs_wbs_reconciliation',producer=state['producer'],
+            reconciliation_manifest=manifest,reconciliation_manifest_sha256=digest(manifest))
+        state['pending_reviews']=[review]
 
     def _coding_job(self, conn, root, state, kind, **payload):
         identifier = uuid.uuid4().hex
@@ -195,10 +230,27 @@ class CodingStoreMixin:
                         requirements=[plan['requirements'][key] for key in leaf['requirement_ids']],
                         acceptance_criteria=[item for item in plan['acceptance_criteria'] if item['id'] in leaf['criteria_ids']],
                         test_cases=[item for item in plan['test_cases'] if set(item['criteria_ids']) & set(leaf['criteria_ids'])])
+        if kind=='CODE_REVIEW' and payload.get('review_scope')=='srs_wbs_reconciliation':
+            review_manifest=payload['reconciliation_manifest']
+            task['requirements']=list(review_manifest['requirements'].values())
+            task['acceptance_criteria']=review_manifest['acceptance_criteria']
+            task['test_cases']=review_manifest['test_cases']
+        if kind in ('CODE_TEST_AUTHOR','CODE_EDIT'):
+            from .coding_reconciliation import estimate_leaf_sizes
+            declared=next(item for item in plan['leaf_size_estimates']['leaves'] if item['leaf_id']==leaf_id)
+            task['leaf_size_estimate']=estimate_leaf_sizes([leaf],self._coding_files(conn,state['current_snapshot']),
+                raw_leaves=[{'id':leaf_id,'estimated_added_deleted_lines':declared['estimated_added_deleted_lines']}])['leaves'][0]
+            if task['leaf_size_estimate']['dispatch_ready'] is not True:
+                raise ValueError('Further fracture is required before a model can edit this leaf')
         if kind=='CODE_TEST':
             # Capture this leaf's sealed definitions before later leaves replace
             # the current state. Public acceptance can then bind exact identities.
-            task['test_identities']=json.loads(json.dumps(state.get('test_identities',{})))
+            identities=dict(state.get('test_identities',{}))
+            if payload.get('phase')=='final' and state['leaf_index']+1==len(plan['fracture_manifest']['topological_order']):
+                for chunk in state['chunks']:
+                    identities.update(chunk['reconciliation_manifest']['sealed_test_identities'])
+                task['test_cases']=json.loads(json.dumps(plan['test_cases']))
+            task['test_identities']=json.loads(json.dumps(identities))
         from .planning_governance import SPECIFICATION_ID, execution_contract, validate_dispatch
         previous_id = state.get('last_completed_job_id')
         previous = None if previous_id is None else conn.execute(
@@ -292,7 +344,7 @@ class CodingStoreMixin:
                          'consecutive_failures': 0, 'pivots': 0, 'status': 'AUTHORING_TESTS',
                          'chunks': [], 'last_commit': None, 'pending_reviews': [], 'reviews': [],
                          'last_test': None, 'strategy': '', 'failures': [],
-                         'fracture_manifest': {'schema': 1, 'N': 1, 'max_tasks_per_batch': 20,
+                         'fracture_manifest': {'schema': 2, 'N': 1,
                              'max_chunk_changed_lines': 100, 'preferred_context_lines': [20, 100],
                              'leaves': [{'id': 'chunk', 'requirements': requirements, 'source_paths': list(project.allowed_paths)}],
                              'nodes': ['tests_first','baseline_test','bounded_edit','independent_test','file_reviews','staged_git'],
@@ -495,6 +547,9 @@ class CodingStoreMixin:
             state['last_completed_job_id'] = job_id
             if kind == 'CODE_PLAN':
                 plan = evidence['plan']
+                registration={key:value for key,value in state['planning_evidence'].items() if key!='external_sources'}
+                if plan.get('planning_registration')!=registration:
+                    raise ValueError('Planning specification or captured source authority drifted after submission')
                 if plan.get('plan_sha256')!=digest({key:value for key,value in plan.items() if key!='plan_sha256'}):
                     raise ValueError('Controller planning artifacts failed their immutable digest')
                 previous=job['payload'].get('previous_plan')
@@ -526,6 +581,14 @@ class CodingStoreMixin:
                 state.setdefault('planning_history',[]).append({'job_id':job_id,'kind':kind,
                     'revision':state.get('planning_revision',0),'plan_sha256':state['plan']['plan_sha256'],
                     'output_sha256':digest(output),'receipt_sha256':digest(receipt),'verdict':output['verdict']})
+                estimates=state['plan'].get('leaf_size_estimates',{})
+                if approved['approved'] and estimates.get('all_dispatch_ready') is not True:
+                    approved['approved']=False
+                    output={**output,'verdict':'REVISE','findings':[{'severity':'HIGH',
+                        'issue':'Controller predispatch size estimate requires further fracture: '+encoded(estimates),
+                        'artifacts':['LeafSizeEstimates.json','FractureManifest.json']}]}
+                    self._event(conn,root,'LEAF_REFRACTURE_REQUIRED',estimates_sha256=digest(estimates),
+                        proposals=[row['remediation'] for row in estimates.get('leaves',[]) if not row['dispatch_ready']])
                 if not approved['approved']:
                     maximum=state['project'].get('planning',{}).get('max_revisions',5)
                     if state.get('planning_revision',0)>=maximum:
@@ -608,7 +671,7 @@ class CodingStoreMixin:
                     raise ValueError('Docker source evidence does not match the queued immutable snapshot')
                 state['last_test'] = evidence
                 planned={item['name'] for item in job['payload'].get('test_cases',[])}
-                identities=state.get('test_identities',{})
+                identities=job['payload'].get('test_identities',{})
                 if set(identities)!=planned or any(expected_index.get(value['path'])!=value['file_sha256'] for value in identities.values()):
                     raise ValueError('The planned regression definitions are not bound to the sealed test snapshot')
                 cases=[case for command in evidence.get('commands',[]) for case in command.get('junit_cases',[])
@@ -652,6 +715,25 @@ class CodingStoreMixin:
                         review = self._coding_job(conn, root, state, 'CODE_REVIEW', file=change,
                                                   test_receipt_sha256=digest(evidence), producer=producer,phase=state['review_phase'])
                         state['pending_reviews'].append(review)
+            elif kind == 'CODE_REVIEW' and job['payload'].get('review_scope')=='srs_wbs_reconciliation':
+                from .coding_reconciliation import reconciliation_manifest, validate_reconciliation
+                expected=reconciliation_manifest(state)
+                if job['payload'].get('reconciliation_manifest')!=expected:
+                    raise ValueError('Final reconciliation requires the current captured SRS/WBS and physical evidence')
+                verified=validate_reconciliation(output,expected,receipt,job['payload']['producer'],allow_rejection=True)
+                state['pending_reviews'].remove(job_id)
+                state['reconciliation']={'job_id':job_id,**verified}
+                self._event(conn,root,'SRS_WBS_RECONCILED',approved=verified['approved'],
+                    manifest_sha256=verified['manifest_sha256'],review_job_id=job_id)
+                if not verified['approved']:
+                    state['repair_findings']=output['divergences']
+                    self._coding_retry(conn,root,state,'SRS/WBS reconciliation rejected divergence: '+'; '.join(output['divergences']))
+                else:
+                    state['status']='STAGING_GIT'
+                    final_leaf=state['leaf_index']+1==len(state['plan']['fracture_manifest']['topological_order'])
+                    self._coding_job(conn,root,state,'CODE_INTEGRATE',done=final_leaf,
+                        reviews_sha256=digest(state['reviews']),test_receipt_sha256=digest(state['last_test']),
+                        reconciliation_sha256=digest(state['reconciliation']))
             elif kind == 'CODE_REVIEW':
                 expected = {'path': job['payload']['file']['path'], 'file_sha256': job['payload']['file']['after_sha256'],
                             'diff_sha256': job['payload']['file']['diff_sha256'],
@@ -687,10 +769,7 @@ class CodingStoreMixin:
                         elif any(review['minor_findings'] for review in state['reviews']):
                             self._coding_retry(conn,root,state,'Final audit has unresolved minor findings')
                         else:
-                            state['status'] = 'STAGING_GIT'
-                            final_leaf = state['leaf_index']+1 == len(state['plan']['fracture_manifest']['topological_order'])
-                            self._coding_job(conn, root, state, 'CODE_INTEGRATE', done=final_leaf,
-                                             reviews_sha256=digest(state['reviews']), test_receipt_sha256=digest(state['last_test']))
+                            self._coding_reconcile(conn,root,state)
             elif kind == 'CODE_RESEARCH':
                 if state['project'].get('planning', {}).get('research_sources'):
                     from .planning_governance import validate_external_research
@@ -745,6 +824,9 @@ class CodingStoreMixin:
                                  phase=state.get('retry_phase','P4'),minor_findings=state.get('repair_findings',[]),
                                  research_dossier=output, test_receipt=state['last_test'])
             elif kind == 'CODE_INTEGRATE':
+                self._require_coding_reconciliation(conn,job,state)
+                if evidence.get('reconciliation_sha256')!=digest(state['reconciliation']):
+                    raise ValueError('Git publication must bind the final SRS/WBS reconciliation')
                 staged, integration = evidence['staged'], evidence['integration']
                 if evidence.get('source_snapshot_sha256') != state['current_snapshot']:
                     raise ValueError('Staged Git commit is not the independently reviewed source snapshot')
@@ -756,9 +838,12 @@ class CodingStoreMixin:
                 if prepared is None or prepared['result_commit']!=staged.get('result_commit') or prepared['source_sha256']!=state['current_snapshot']:
                     raise ValueError('Git publication has no matching durable integration intent')
                 if not job['payload'].get('approved_integration'):
+                    from .coding_reconciliation import reconciliation_manifest
                     state['chunks'].append({'cycle': state['cycle'], 'staged': staged,
                                             'bounds':state['chunk_bounds'],
-                                            'reviews': state['reviews'], 'test_receipt_sha256': digest(state['last_test'])})
+                                            'reviews': state['reviews'], 'reconciliation':state['reconciliation'],
+                                            'reconciliation_manifest':reconciliation_manifest(state),
+                                            'test_receipt_sha256': digest(state['last_test'])})
                 state['last_commit'] = staged['result_commit']
                 state['review_base_snapshot'] = state['current_snapshot']
                 state['consecutive_failures'] = 0
@@ -850,6 +935,7 @@ class CodingStoreMixin:
             state['status'] = 'STAGING_GIT'
             self._coding_job(conn, root, state, 'CODE_INTEGRATE', done=True, approved_integration=True,
                              resume_reason=reason, reviews_sha256=digest(state['reviews']),
-                             test_receipt_sha256=digest(state['last_test']))
+                             test_receipt_sha256=digest(state['last_test']),
+                             reconciliation_sha256=digest(state['reconciliation']))
             self._save_coding(conn, workflow_id, state)
         return self.coding_workflow(workflow_id)

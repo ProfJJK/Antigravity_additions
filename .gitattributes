@@ -4,3 +4,11 @@ knowledge/** -text
 knowledge/.sources/** -whitespace
 # Retained 4.2.6 knowledge history also preserves exact source bytes.
 docs/archive/knowledge_4.2.6/** -text -whitespace
+docs/archive/knowledge_4.2.7_original/** -text -whitespace
+# Canonical authority and evidence hashes must also survive Windows autocrlf.
+4.2.7_SRS.md -text
+docs/SRS_ADDENDUM_4.2.7.md -text
+docs/requirements_4.2.7.json -text
+docs/acceptance_4.2.7.json -text
+docs/evidence/** -text
+src/cochem_pipeline/specification/** -text

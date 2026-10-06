@@ -153,7 +153,15 @@ def source_context(files, payload, project, *, max_bytes=98304):
     omitted files explicitly and includes the entire active N=1 target, so a
     complete-file proposal cannot silently overwrite unseen target content.
     """
-    targets=payload.get('active_leaf',{}).get('file_targets',[])
+    targets=set(payload.get('active_leaf',{}).get('file_targets',[]))
+    if payload.get('file',{}).get('path'):
+        targets.add(payload['file']['path'])
+    if payload.get('review_scope')=='srs_wbs_reconciliation':
+        reconciliation=payload['reconciliation_manifest']
+        targets.update(item['path'] for item in reconciliation['changes'])
+        targets.update(item['path'] for item in reconciliation['sealed_test_identities'].values())
+        if targets-set(files):
+            raise ValueError('Final SRS/WBS review requires every implementation and sealed test source file')
     names=sorted(files,key=lambda name:(0 if name in targets else
         1 if name.lower().endswith(('.md','.rst')) else 2 if within(name,project.test_paths) else 3,name))
     selected, total = {}, 0
@@ -254,8 +262,6 @@ def observed_changes(before, after, original, project: CodingProject, *, tests_o
                         'diff_sha256': hashlib.sha256(patch.encode()).hexdigest(), 'patch': patch,
                         'changed_lines': count, 'aggregate_changed_lines': aggregate,
                         'small_targeted_change': count < 20})
-    if len(changed)>14:
-        raise ValueError('A chunk may change at most 14 files so its execution/review batch stays within 20 tasks')
     if total > 100:
         raise ValueError('A staging chunk may change at most 100 lines across all files')
     return records
@@ -417,6 +423,7 @@ class CodingCoordinator:
                     evidence = {'staged': staged, 'integration': integration,
                                 'source_snapshot_sha256': state['current_snapshot'],
                                 'reviews_sha256': node['payload']['reviews_sha256'],
+                                'reconciliation_sha256':node['payload']['reconciliation_sha256'],
                                 'test_receipt_sha256': node['payload']['test_receipt_sha256']}
                     output = {'status': integration['status'], 'result_commit': staged['result_commit']}
                 receipt = {'executor': 'docker' if kind=='CODE_TEST' else 'git', 'job_id': node['job_id'],
@@ -468,8 +475,6 @@ class CodingCoordinator:
                     changes = observed_changes(review_base,after,original,project)
             if kind=='CODE_EDIT' and type(output.get('done')) is not bool:
                 raise ValueError('Editor must explicitly report whether the requested work is complete')
-            if kind=='CODE_EDIT' and len(changes)+len(state.get('test_changes',[]))>14:
-                raise ValueError('Combined source/test files exceed the bounded review task batch')
             from .coding_checks import validate_generated_files
             validate_generated_files(after,[name for name in after if before.get(name)!=after[name]])
             chunk = (validate_leaf_chunk(self.store.coding_files(state['leaf_baseline_snapshot']),after,original,project)

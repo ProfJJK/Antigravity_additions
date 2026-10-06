@@ -118,17 +118,17 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
                 'session_id':'outer-storage-contract-'+nonce,'output_sha256':_digest(output),
                 'execution_kind':'external-storage-contract-fixture'}
         if row is not None:
-            route=_rows(database,'SELECT route_json FROM pipeline_route_reservations WHERE job_id=? AND released_at IS NULL',(row['job_id'],))
-            _require(len(route)==1,'Coding stage has no physical route reservation')
+            route=_rows(database,'SELECT route_json FROM pipeline_route_reservations WHERE job_id=? AND attempt_id=? AND fencing_token=?',(row['job_id'],row['attempt_id'],row['fencing_token']))
+            _require(len(route)==1,'Model stage has no physical route reservation')
             selected=json.loads(route[0]['route_json'])
-            result.update(**identity(row),workflow_id=row['workflow_id'],worker_slot='outer-slot',
+            result.update(**identity(row),workflow_id=row['workflow_id'],worker_slot=selected['worker_slot'],
                 provider=selected['provider'],requested_model=selected['model'],
                 requested_effort=selected.get('reasoning_effort'),route_reservation_id=selected['reservation_id'],
                 selected_route=selected,subscription_verified=True)
         return result
 
     def complete(row,output,provider='codex',**changes):
-        data={**identity(row),'output':output,'receipt':receipt(output,provider)}
+        data={**identity(row),'output':output,'receipt':receipt(output,provider,row=row)}
         data.update(changes)
         return call('complete',data)
 
@@ -147,7 +147,7 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
         rejected=complete(manifest_job,manifest,attempt_id=uuid.uuid4().hex)
         _require('error_type' in rejected,'Stale attempt was not rejected')
         unchanged(before,'Stale completion mutated physical workflow state')
-        bad=receipt(manifest); bad['output_sha256']='0'*64
+        bad=receipt(manifest,row=manifest_job); bad['output_sha256']='0'*64
         _require('error_type' in complete(manifest_job,manifest,receipt=bad),'Forged output receipt was accepted')
         unchanged(before,'Forged receipt mutated workflow state')
         _require(call('heartbeat',{**identity(manifest_job),'fencing_token':0})=={'result':False},'Stale heartbeat was accepted')
@@ -189,9 +189,10 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
         synthesis=job('SYNTHESIS',status='IN_PROGRESS')
         output={'artifact_text':'Synthesis '+nonce,'chapter_hashes':artifacts}
         before=jobs()
-        _require('error_type' in complete(synthesis,output),'Non-Gemini synthesis was accepted')
+        bad=receipt(output,row=synthesis); bad['requested_model']='wrong-'+nonce
+        _require('error_type' in complete(synthesis,output,receipt=bad),'Synthesis with a forged reserved model was accepted')
         unchanged(before,'Rejected synthesis mutated root state')
-        complete(synthesis,output,'gemini')
+        complete(synthesis,output)
         _require(job('MACRO_PLANNING_REQUEST')['status']=='COMPLETED','Synthesis did not complete the physical DAG')
         checks.append('exact synthesis tracing and provider contract gate DAG completion')
 
@@ -218,7 +219,7 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
             'acceptance_criteria':[{'id':'AC1','statement':'Value equals 42.','requirement_ids':['R1'],'test_ids':['T1']}],
             'test_cases':[{'id':'T1','name':'test_value_'+nonce[:8],'asserts':'VALUE equals 42.','criteria_ids':['AC1']}],
             'leaves':[{'id':'L1','objective':'Correct value','file_targets':['src/value.py'],
-                'estimated_changed_lines':20,'requirement_ids':['R1'],'criteria_ids':['AC1'],'dependencies':[]}]}
+                'estimated_changed_lines':20,'estimated_added_deleted_lines':2,'requirement_ids':['R1'],'criteria_ids':['AC1'],'dependencies':[]}]}
         good_receipt=receipt(plan,row=planner)
         before=jobs(); bad={**good_receipt,'requested_model':'wrong-'+nonce}
         _require('error_type' in call('coding_plan',{**identity(planner),'output':plan,'receipt':bad}),

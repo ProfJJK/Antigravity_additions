@@ -27,7 +27,7 @@ def require(condition, message: str) -> None:
         raise ValueError(message)
 
 
-def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | None = None) -> dict:
+def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | None = None, *, admission: dict | None = None) -> dict:
     """Check a controller snapshot; this pure function does not execute models.
 
     Provider identity is taken from trusted process receipts, never generated
@@ -35,6 +35,17 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
     Raw stdout remains private to the service, so its digest is format-checked
     and retained, rather than falsely claimed to be independently recomputed.
     """
+    require(isinstance(admission,dict), 'Acceptance requires the captured configured hardware admission limit')
+    limit=admission.get('configured_max_execution_slots')
+    workers=admission.get('configured_worker_count')
+    observed=admission.get('controller_hardware_max_agents')
+    require(type(limit) is int and 1<=limit<=256 and type(workers) is int and 1<=workers<=256
+            and type(observed) is int and observed==min(limit,workers),
+            'Configured admission limit does not match the authenticated controller hardware ceiling')
+    require(isinstance(admission.get('configuration_sha256'),str)
+            and re.fullmatch('[0-9a-f]{64}',admission['configuration_sha256'])
+            and isinstance(admission.get('controller_instance_id'),str) and admission['controller_instance_id'],
+            'Admission evidence requires captured configuration hash and controller instance identity')
     require(isinstance(workflow, dict), "Workflow must be an object")
     require(workflow.get("status") == "COMPLETED", "Workflow has not completed successfully")
     root = workflow.get("root", {})
@@ -73,12 +84,13 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
     require(len(by_job) == 7, "Multiple artifacts claim the same job")
     intervals, accounts, sessions, unreported, counts, routing_decisions = [], [], [], [], Counter(), []
     unreported_effort = []
+    all_intervals = []
     for job in [*manifests, *chapters, *syntheses]:
         job_id, kind = job["job_id"], job["kind"]
         require(job.get("status") == "COMPLETED", f"Job {job_id} is not completed")
         output, receipt = job.get("output"), job.get("receipt")
         require(isinstance(output, dict) and isinstance(receipt, dict), f"Job {job_id} lacks an output/receipt")
-        require("execution_kind" not in receipt, f"Job {job_id} has a test/emulator receipt, not a live receipt")
+        require(receipt.get("execution_kind") == "native_cli", f"Job {job_id} has a test/emulator receipt, not a live receipt")
         require(receipt.get("subscription_verified") is True, f"Job {job_id} lacks native subscription verification")
         assignment = verify_routing_assignment(job, routing_policy)
         expected_provider, model = assignment["provider"], assignment["model"]
@@ -107,6 +119,7 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
         require(sum(event.get("event") == "COMPLETED" and event.get("job_id") == job_id for event in events) == 1,
                 f"Job {job_id} lacks one accepted completion event")
         counts[expected_provider] += 1
+        all_intervals.append((expected_provider,started,finished))
         if kind in {"CHAPTER_DRAFT", "SYNTHESIS"}:
             artifact = by_job.get(job_id)
             require(isinstance(artifact, dict), f"Job {job_id} lacks a stored artifact")
@@ -146,14 +159,43 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
     for _, delta in sweep:
         running += delta
         peak = max(peak, running)
-    require(2 <= peak <= 4, f"Accepted chapter overlap was {peak}; expected at least two and at most four")
+    require(2 <= peak <= observed, f"Accepted chapter overlap was {peak}; expected at least two and at most configured hardware limit {observed}")
+    concurrency=validate_execution_overlap(all_intervals,observed)
     return {"verified": True, "workflow_id": workflow["workflow_id"], "chapter_artifacts": 6,
             "synthesis_artifacts": 1, "validated_process_receipts": 8, "accepted_chapter_peak": peak,
             "provider_counts": dict(counts), "jobs_without_reported_model_metadata": unreported,
-            "routing_decisions": routing_decisions,
+            "routing_decisions": routing_decisions, "admission": admission, "concurrency":concurrency,
             "jobs_without_reported_effort_metadata": unreported_effort,
             "stdout_content_independently_recomputed": False,
             "verification_scope": "Controller process receipts, canonical output/artifact hashes, identity bindings, event ledger and accepted execution overlap"}
+
+
+def validate_execution_overlap(intervals, capacity):
+    """Bound actual receipt intervals by configured seats and Claude's own cap."""
+    require(type(capacity) is int and 1<=capacity<=256, 'Invalid configured admission ceiling')
+    def peak(values):
+        running=maximum=0
+        for _,delta in sorted([(start,1) for _,start,end in values]+[(end,-1) for _,start,end in values]):
+            running+=delta;maximum=max(maximum,running)
+        return maximum
+    maximum=peak(intervals)
+    require(maximum<=capacity, 'Native execution overlap exceeded the captured configured hardware ceiling')
+    claude=peak([item for item in intervals if item[0]=='claude'])
+    require(claude<=20, 'Claude CLI exceeded its twenty-concurrent-agent ceiling')
+    return {'native_peak':maximum,'claude_peak':claude,'configured_hardware_ceiling':capacity,
+            'claude_provider_ceiling':20,'codex_provider_ceiling':None,'gemini_provider_ceiling':None}
+
+
+def capture_admission(config, health):
+    import hashlib
+    evidence={'configured_max_execution_slots':config.get('max_execution_slots',4),
+        'configured_worker_count':len(config.get('workers',[])),
+        'controller_hardware_max_agents':health.get('hardware',{}).get('max_agents'),
+        'configuration_sha256':hashlib.sha256(json.dumps(config,sort_keys=True,separators=(',',':')).encode()).hexdigest(),
+        'controller_instance_id':health.get('instance_id')}
+    # Raw configuration may contain protected command arguments; retain only
+    # its commitment and the independently returned controller capacity.
+    return evidence
 
 
 def write_report(path: Path, report: dict) -> None:
@@ -169,7 +211,7 @@ def write_report(path: Path, report: dict) -> None:
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", required=True, help="Pipeline JSON configuration; only model names, port and token path are read")
+    parser.add_argument("--config", required=True, help="Pipeline JSON configuration; capture model routing, worker capacity and an opaque configuration hash")
     parser.add_argument("--token-file", help="Override the local client token file path")
     parser.add_argument("--port", type=int, help="Override the localhost controller port")
     parser.add_argument("--report", required=True, type=Path, help="New JSON report path; an existing file will not be overwritten")
@@ -200,6 +242,7 @@ def main(argv=None) -> int:
         configured_tiers(routing_policy)
         client = ControlClient(args.port or config.get("port", 47824), args.token_file or config["token_file"])
         report["health_before"] = client.call("/health")
+        report["admission"] = capture_admission(config,report["health_before"])
         identifier = "acceptance-" + uuid.uuid4().hex
         report["workflow_id"] = identifier  # Retain ID even if a submit response is lost.
         workflow = client.call("/submit", {"workflow_id": identifier, "objective": args.objective,
@@ -223,7 +266,10 @@ def main(argv=None) -> int:
                 raise TimeoutError("Live workflow exceeded the verification timeout")
             time.sleep(min(args.poll_seconds, max(0, deadline - time.monotonic())))
             workflow = client.call("/workflow/" + identifier)
-        report["validation"] = validate_workflow(workflow, providers, routing_policy)
+        report["health_after"] = client.call("/health")
+        require(capture_admission(config,report["health_after"])==report["admission"],
+                'Controller identity or hardware capacity changed during acceptance')
+        report["validation"] = validate_workflow(workflow, providers, routing_policy,admission=report["admission"])
         confirmation = client.call("/workflow/" + identifier)
         require(confirmation["artifacts"] == workflow["artifacts"], "Completed artifacts changed between reads")
         report["status"] = "PASSED"

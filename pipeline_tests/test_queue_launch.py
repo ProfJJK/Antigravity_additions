@@ -24,7 +24,12 @@ def runtime(tmp_path):
 
 def complete_manifest(store, node):
     output = {"chapters": [{"chapter_id": "c1", "title": "One", "requirements": ["R1"]}]}
-    receipt = {"provider": "codex", "pid": os.getpid(), "exit_code": 0,
+    route=node["route"]
+    receipt = {"provider":route["provider"],"requested_model":route["model"],
+        "requested_effort":route.get("reasoning_effort"),"selected_route":route,
+        "route_reservation_id":route["reservation_id"],
+        **{key:node[key] for key in ("job_id","workflow_id","attempt_id","fencing_token","worker_slot")},
+        "pid": os.getpid(), "exit_code": 0,
         "session_id": "synthetic-observer-contract", "execution_kind": "python-test",
         "output_sha256": output_digest(output)}
     return store.complete(node['job_id'], node['attempt_id'], node['fencing_token'], output, receipt)
@@ -292,4 +297,21 @@ def test_mismatched_physical_executable_latches_even_after_a_later_matching_laun
         assert observer.native[key]['matches_configured_executable'] is True
         assert observer.report()['coverage']['no_native_launch_identity_mismatch'] is False
         assert observer.report()['native_windows_acceptance'] is False
+    actual.store.close()
+
+
+@pytest.mark.skipif(os.name == 'nt', reason='Portable observer contract does not attest Windows SYSTEM identity')
+def test_larger_configured_capacity_is_reported_as_unsupported_for_four_worker_acceptance(tmp_path):
+    actual=runtime(tmp_path)
+    actual.config.max_execution_slots=64
+    actual.config.slot_roots={f'slot{i}':tmp_path/str(i) for i in range(64)}
+    with QueueLaunchObserver(actual,tmp_path/'large-topology') as observer:
+        report=observer.report()
+        assert report['configured_admission_ceiling']==64
+        assert report['topology_matches_four_worker_acceptance'] is False
+        assert report['coverage']['configured_four_worker_acceptance_topology'] is False
+        assert report['acceptance_status']=='unsupported_topology_for_four_worker_acceptance'
+        assert report['native_windows_acceptance'] is False
+        # Observation never mutates the real configured admission limit.
+        assert actual.config.max_execution_slots==64
     actual.store.close()

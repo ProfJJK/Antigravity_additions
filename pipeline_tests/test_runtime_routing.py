@@ -213,7 +213,7 @@ def test_context_failure_rotates_only_this_job_without_global_provider_hold(tmp_
 def test_configuration_and_capability_holds_require_operator_resume(tmp_path,category):
     runtime,_ = controller(tmp_path,max_attempts=1)
     node = claim(runtime)
-    assert runtime._record_failure(node,'slot1',ProviderFailure(category))
+    assert runtime._record_failure(node,'slot1',ProviderFailure(category, hold_scope='job'))
     held = runtime.store.get(node['job_id'])
     assert held['status'] == 'BLOCKED'
     assert held['routing']['state'] == 'BLOCKED'
@@ -342,3 +342,16 @@ def test_fenced_local_attempt_is_promptly_stopped_without_releasing_its_guard(tm
     runtime._terminate_fenced_attempts()
     assert observed == [node['job_id']]
     assert runtime.store.execution_quarantines()
+
+
+def test_exact_model_capability_unavailability_spills_over_without_task_failure(tmp_path):
+    runtime, _ = controller(tmp_path, max_attempts=1)
+    node = claim(runtime)
+    unavailable = ProviderFailure('compatibility')
+    assert unavailable.hold_scope == 'model'
+    assert runtime._record_failure(node, 'slot1', unavailable)
+    following = claim(runtime)
+    assert following['route']['candidate_index'] == node['route']['candidate_index'] + 1
+    assert following['routing']['failure_count'] == 0
+    holds = runtime.store.routing_status()['holds']
+    assert any(item['scope'] == 'model' and item['resource_key'] == node['route']['key'] for item in holds)

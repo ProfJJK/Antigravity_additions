@@ -37,7 +37,7 @@ _DISPATCH_STATES = {
     'CODE_TEST_AUTHOR': ('AUTHORING_TESTS', 'EDITING'),
     'CODE_EDIT': ('EDITING', 'IMPROVING', 'REFINING'),
     'CODE_TEST': ('TESTING_PRECODE', 'TESTING', 'FINAL_TESTING'),
-    'CODE_REVIEW': ('REVIEWING',),
+    'CODE_REVIEW': ('REVIEWING', 'RECONCILING_SRS'),
     'CODE_INTEGRATE': ('STAGING_GIT',),
 }
 _PREDECESSORS = {
@@ -47,7 +47,7 @@ _PREDECESSORS = {
     'CODE_TEST_AUTHOR': ('CODE_RESEARCH', 'CODE_TEST'),
     'CODE_EDIT': ('CODE_TEST', 'CODE_REVIEW', 'CODE_EDIT', 'CODE_RESEARCH'),
     'CODE_TEST': ('CODE_TEST_AUTHOR', 'CODE_EDIT', 'CODE_REVIEW'),
-    'CODE_REVIEW': ('CODE_TEST',),
+    'CODE_REVIEW': ('CODE_TEST', 'CODE_REVIEW'),
     'CODE_INTEGRATE': ('CODE_REVIEW', 'CODE_INTEGRATE'),
 }
 LEGACY_PHANTOM_HOLDS = frozenset({
@@ -70,7 +70,7 @@ def execution_contract():
             'leaf_cycle_limit': 10, 'methodological_pivot_limit': 3,
             'evidence_gates': ['source-bound-plan', 'independent-plan-audit', 'verified-research',
                 'sealed-assertion-red', 'bounded-source-and-test-diff', 'physical-green',
-                'independent-file-audits', 'ordered-phase-ledger', 'fenced-git-cas']}
+                'independent-file-audits', 'asymmetric-srs-wbs-reconciliation', 'predispatch-leaf-size-estimate', 'ordered-phase-ledger', 'fenced-git-cas']}
 
 
 def normalize_policy(raw):
@@ -119,12 +119,29 @@ def validate_url(url):
     return url
 
 
+def canonical_authority():
+    """Capture exact installed normative bytes, never infer an attestation label."""
+    from importlib.resources import files
+    root=files('cochem_pipeline').joinpath('specification')
+    names=('4.2.7_SRS.md','SRS_ADDENDUM_4.2.7.md')
+    content={name:root.joinpath(name).read_bytes() for name in names}
+    if any(not raw or len(raw)>2_097_152 for raw in content.values()):
+        raise ValueError('Installed canonical specification assets are missing or unbounded')
+    hashes={name:hashlib.sha256(raw).hexdigest() for name,raw in content.items()}
+    return {'specification_id':SPECIFICATION_ID,
+            'specification_revision':'owner-amendment-2026-10-06',
+            'specification_sha256':hashes['4.2.7_SRS.md'],
+            'owner_amendments':[{'source':'SRS_ADDENDUM_4.2.7.md',
+                'revision':'owner-amendment-2026-10-06','sha256':hashes['SRS_ADDENDUM_4.2.7.md']}],
+            'specification_artifact_hashes':hashes}
+
+
 def validate_registration(policy, files):
     """Bind executable policy and actual captured source; never claim execution."""
     policy = normalize_policy(policy)
     from .coding import manifest
     contract = execution_contract()
-    return {'schema': 'planning-source-registration/2', 'specification_id': SPECIFICATION_ID,
+    return {'schema': 'planning-source-registration/2', **canonical_authority(),
             'policy_sha256': digest(policy), 'source_manifest_sha256': digest(manifest(files)),
             'contract_sha256': digest(contract), 'contract': contract}
 
@@ -172,6 +189,8 @@ def validate_dispatch(transition, kind, payload, *, current_state=None):
         raise ValueError('Coding edit phase is not permitted in the captured execution state')
     if kind == 'CODE_RESEARCH' and ((state == 'RESEARCHING') != (payload.get('research_phase') == 'initial')):
         raise ValueError('Coding research phase is not permitted in the captured execution state')
+    if kind == 'CODE_REVIEW' and ((state == 'RECONCILING_SRS') != (payload.get('review_scope') == 'srs_wbs_reconciliation')):
+        raise ValueError('Final reconciliation must use its own captured execution state')
     predecessor = transition.get('predecessor')
     if predecessor is None:
         if kind != 'CODE_PLAN' or state != 'PLANNING':

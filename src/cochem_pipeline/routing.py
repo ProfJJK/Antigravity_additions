@@ -23,10 +23,10 @@ from typing import Any
 
 
 POLICY_VERSION = 1
-SYNTHESIS_MODEL = "gemini-3.1-pro"
+GEMINI_PRO_MODEL = "gemini-3.1-pro"
 _PROVIDERS = ("codex", "claude", "gemini")
 _KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS",
-          "CODE_REQUEST", "CODE_PLAN", "CODE_PLAN_REVIEW", "CODE_TEST_AUTHOR", "CODE_EDIT", "CODE_REVIEW", "CODE_RESEARCH"}
+          "CODE_REQUEST", "CODE_PLAN", "CODE_PLAN_REVIEW", "CODE_TEST_AUTHOR", "CODE_EDIT", "CODE_REVIEW", "CODE_RESEARCH", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST"}
 _TIER_SIZES = {"1-3": 3, "4-6": 3, "7-9": 3, "10": 2}
 _MODEL = re.compile(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}\Z")
 _POOL = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}\Z")
@@ -74,7 +74,7 @@ def _target_key(provider: str, model: str, reasoning_effort: str | None) -> str:
 class ModelTarget:
     provider: str
     model: str
-    max_concurrency: int = 1
+    max_concurrency: int | None = None
     quota_pool: str = ""
     reasoning_effort: str | None = None
 
@@ -95,13 +95,14 @@ def _defaults() -> dict:
         "policy_version": POLICY_VERSION,
         "tiers": {
             "1-3": [route("gemini", "gemini-3.8-flash"), route("claude", "claude-haiku-4-5"), route("codex", "gpt-6-luna")],
-            "4-6": [route("claude", "claude-sonnet-5-5"), route("codex", "gpt-6-sol"), route("gemini", SYNTHESIS_MODEL)],
-            "7-9": [route("claude", "claude-opus-5-5"), route("codex", "gpt-6-astra", "low"), route("gemini", SYNTHESIS_MODEL)],
+            "4-6": [route("claude", "claude-sonnet-5-5"), route("codex", "gpt-6-sol"), route("gemini", GEMINI_PRO_MODEL)],
+            "7-9": [route("claude", "claude-opus-5-5"), route("codex", "gpt-6-astra", "low"), route("gemini", GEMINI_PRO_MODEL)],
             "10": [route("claude", "claude-fable-5-1"), route("codex", "gpt-6-astra", "ultra")],
         },
         "model_limits": {},
-        "provider_limits": {provider: {"max_concurrency": 2, "quota_pool": provider} for provider in _PROVIDERS},
-        "quota_pool_limits": {provider: 2 for provider in _PROVIDERS},
+        "provider_limits": {provider: {"max_concurrency": 20 if provider == "claude" else None, "quota_pool": provider}
+                            for provider in _PROVIDERS},
+        "quota_pool_limits": {provider: None for provider in _PROVIDERS},
         "backlog_threshold": 8,
         "failure_cooldowns": {"quota": 300, "auth": 300, "busy": 30, "backlog": 30,
                               "provider": 30, "timeout": 30, "resource": 30,
@@ -120,6 +121,11 @@ def _integer(value: Any, label: str, low: int, high: int) -> int:
     if type(value) is not int or not low <= value <= high:
         raise ValueError(f"{label} must be an integer in {low}..{high}")
     return value
+
+
+def _concurrency_limit(value: Any, label: str) -> int | None:
+    """Null means no configured cap; hardware admission remains independent."""
+    return None if value is None else _integer(value, label, 1, 1000000)
 
 
 def _number(value: Any, label: str, low: float, high: float) -> float:
@@ -163,14 +169,15 @@ def _normalize(raw: Mapping[str, Any] | None) -> dict:
         identities = [_target_key(value["provider"], value["model"], value["reasoning_effort"]) for value in pairs]
         if len(set(identities)) != count:
             raise ValueError(f"Tier {tier} must contain distinct provider/model/effort identities")
+        if pairs != [_route_pair(value) for value in defaults['tiers'][tier]]:
+            raise ValueError(f'Tier {tier} must preserve the canonical Chapter 06 model order and reasoning effort')
         normalized_tiers[tier] = pairs
         keys.update(identities)
-    keys.add(_target_key("gemini", SYNTHESIS_MODEL, None))
     data["tiers"] = normalized_tiers
     limits = data["model_limits"]
     if not isinstance(limits, Mapping) or set(limits) - keys:
         raise ValueError("model_limits must refer only to configured routing target keys")
-    data["model_limits"] = {key: _integer(limits.get(key, 1), f"model_limits.{key}", 1, 64) for key in sorted(keys)}
+    data["model_limits"] = {key: _concurrency_limit(limits.get(key), f"model_limits.{key}") for key in sorted(keys)}
     providers = data["provider_limits"]
     if not isinstance(providers, Mapping) or set(providers) - set(_PROVIDERS):
         raise ValueError("provider_limits may configure only codex, claude and gemini")
@@ -182,8 +189,12 @@ def _normalize(raw: Mapping[str, Any] | None) -> dict:
         pool = value.get("quota_pool", provider)
         if not isinstance(pool, str) or not _POOL.fullmatch(pool):
             raise ValueError("Quota pools require literal nonempty identifiers")
-        normalized_providers[provider] = {"max_concurrency": _integer(value.get("max_concurrency", 2), "provider max_concurrency", 1, 64),
-                                         "quota_pool": pool}
+        maximum = value.get("max_concurrency", defaults["provider_limits"][provider]["max_concurrency"])
+        if provider == "claude":
+            maximum = _integer(maximum, "Claude CLI max_concurrency", 1, 20)
+        else:
+            maximum = _concurrency_limit(maximum, "provider max_concurrency")
+        normalized_providers[provider] = {"max_concurrency": maximum, "quota_pool": pool}
     data["provider_limits"] = normalized_providers
     pools = data["quota_pool_limits"]
     active_pools = {value["quota_pool"] for value in normalized_providers.values()}
@@ -191,7 +202,7 @@ def _normalize(raw: Mapping[str, Any] | None) -> dict:
         raise ValueError("quota_pool_limits must map pool identifiers to concurrency limits")
     if active_pools - set(pools):
         raise ValueError("Every configured shared quota pool needs an explicit concurrency limit")
-    data["quota_pool_limits"] = {pool: _integer(pools[pool], f"quota_pool_limits.{pool}", 1, 64) for pool in sorted(active_pools)}
+    data["quota_pool_limits"] = {pool: _concurrency_limit(pools[pool], f"quota_pool_limits.{pool}") for pool in sorted(active_pools)}
     data["backlog_threshold"] = _integer(data["backlog_threshold"], "backlog_threshold", 1, 100000)
     cooldowns = data["failure_cooldowns"]
     if not isinstance(cooldowns, Mapping) or set(cooldowns) - set(defaults["failure_cooldowns"]):
@@ -234,15 +245,15 @@ class RoutingPolicy:
         return hashlib.sha256(self._snapshot_json.encode("utf-8")).hexdigest()
 
     @property
-    def provider_max_concurrency(self) -> dict[str, int]:
+    def provider_max_concurrency(self) -> dict[str, int | None]:
         return {key: value["max_concurrency"] for key, value in self.as_dict()["provider_limits"].items()}
 
     @property
-    def quota_pool_max_concurrency(self) -> dict[str, int]:
+    def quota_pool_max_concurrency(self) -> dict[str, int | None]:
         return self.as_dict()["quota_pool_limits"]
 
     @property
-    def model_max_concurrency(self) -> dict[str, int]:
+    def model_max_concurrency(self) -> dict[str, int | None]:
         return self.as_dict()["model_limits"]
 
     @property
@@ -282,7 +293,9 @@ class RoutingPolicy:
         if not isinstance(kind, str) or kind not in _KINDS:
             raise ValueError("Unsupported pipeline task kind")
         data = self.as_dict()
-        pairs = [{"provider": "gemini", "model": SYNTHESIS_MODEL, "reasoning_effort": None}] if kind == "SYNTHESIS" else data["tiers"][tier]
+        # Every inference task uses the same scored tier; synthesis and repair
+        # are not single-model exceptions.
+        pairs = data["tiers"][tier]
         result = []
         for pair in pairs:
             key = _target_key(pair["provider"], pair["model"], pair["reasoning_effort"])

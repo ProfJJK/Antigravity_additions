@@ -1,0 +1,37 @@
+{
+  "release": "v4.2.7-r2",
+  "wheel": "cochem-4.2.7-py3-none-any.whl",
+  "sha256": "0164ab570b295150571dd2308fbf28264bbed56e2319874d2cc30be270b56ac5",
+  "python_modules": 134,
+  "all_python_modules_match_tested_source": true,
+  "canonical_assets_match_reviewed_sources": true,
+  "isolated_imports": true,
+  "dashboard_counts": {
+    "mandatory": 110,
+    "verified": 35,
+    "unverified": 75
+  },
+  "full_target_acceptance": false,
+  "installed_revision": {
+    "schema": "cochem-installed-revision/1",
+    "verified": true,
+    "read_only": true,
+    "files": 93,
+    "source_sha256": "1a526d3a66f7596f6952637a14855fc7ac45d9f132c74dc1d80e5b7d647f06d5",
+    "acceptance_files": 0,
+    "acceptance_sha256": null
+  },
+  "post_evidence_asset_checks": {
+    "passed": 48,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0,
+    "junit_sha256": "3e4ca8c872b5a362fa3354647248599bb04eb0e55bee476544dc23afb931d0ae",
+    "scope": "Operator dashboard, immutable document/preflight captures, installed revision, knowledge authority, and SRS repair reconciliation after attaching final evidence."
+  },
+  "windows_autocrlf_simulation": {
+    "files_checked": 36,
+    "all_hashed_assets_unchanged": true,
+    "native_windows_executed": false
+  }
+}

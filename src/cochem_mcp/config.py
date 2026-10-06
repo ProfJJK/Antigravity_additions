@@ -1,4 +1,4 @@
-"""Explicit, native-runtime configuration; no inferred provider fallback."""
+"""Compatibility MCP settings; inference authority belongs to the job board."""
 from __future__ import annotations
 
 import json
@@ -19,6 +19,9 @@ class Settings:
     max_workers: int = 1
     max_pending: int = 16
     allowed_tools: tuple[str, ...] = ()
+    controller_port: int = 0
+    controller_token_file: str = ""
+    projects: tuple[tuple[str, str], ...] = ()
 
     def workspace(self, value: str) -> Path:
         path = Path(value).expanduser().resolve() if value else self.workspace_roots[0]
@@ -34,6 +37,13 @@ class Settings:
         if resolved not in self.models.values():
             raise ValueError(f"Model must be one of the configured aliases: {', '.join(self.models)}")
         return resolved
+
+    def project(self, workspace: str) -> str:
+        directory = self.workspace(workspace)
+        matches = [project for path, project in self.projects if Path(path).resolve() == directory]
+        if len(matches) != 1:
+            raise ValueError("Workspace requires one exact registered pipeline project mapping")
+        return matches[0]
 
 
 def load_settings(filename: str, provider: str) -> Settings:
@@ -74,13 +84,40 @@ def load_settings(filename: str, provider: str) -> Settings:
     pending = section.get("max_pending", 16)
     if type(timeout) is not int or not 1 <= timeout <= 14400:
         raise ValueError("timeout_seconds must be an integer between 1 and 14400")
-    if type(workers) is not int or not 1 <= workers <= 4:
-        raise ValueError("max_workers must be an integer between 1 and 4")
-    if type(pending) is not int or not workers <= pending <= 100:
-        raise ValueError("max_pending must be between max_workers and 100")
+    if type(workers) is not int or not 1 <= workers <= 256:
+        raise ValueError("Legacy max_workers must be an integer between 1 and 256; the controller owns concurrency")
+    # Deprecated compatibility fields do not reserve native workers or impose
+    # another queue limit. Only the controller's captured routing/admission
+    # policy may decide provider concurrency and pending work.
+    if type(pending) is not int or not 1 <= pending <= 1000000:
+        raise ValueError("Legacy max_pending must be an integer between 1 and 1000000; the controller owns its queue")
     allowed = section.get("allowed_tools", [])
     if (not isinstance(allowed, list) or not all(isinstance(x, str) and x and not x.startswith("-")
             and "\x00" not in x for x in allowed) or (allowed and provider != "claude")):
         raise ValueError("allowed_tools must be a list of Claude native tool permission patterns")
+    controller = data.get('controller', {})
+    if not isinstance(controller, dict) or set(controller)-{'port', 'token_file', 'projects'}:
+        raise ValueError('controller accepts port, token_file and projects only')
+    port, token = controller.get('port', 0), controller.get('token_file', '')
+    if (type(port) is not int or (port != 0 and not 1024 <= port <= 65535)
+            or not isinstance(token, str) or '\x00' in token or bool(port) != bool(token)):
+        raise ValueError('controller requires a valid port and token_file together')
+    if token and not Path(token).expanduser().is_absolute():
+        token = str((path.parent / token).resolve())
+    projects = controller.get('projects', {})
+    if not isinstance(projects, dict):
+        raise ValueError('controller.projects maps exact workspace paths to registered project IDs')
+    mappings = []
+    for directory, project in projects.items():
+        if (not isinstance(directory, str) or not Path(directory).is_absolute()
+                or not isinstance(project, str) or not project.strip() or len(project) > 128
+                or any(c in project for c in '/\\\x00')):
+            raise ValueError('Invalid controller project mapping')
+        resolved = Path(directory).resolve()
+        if not any(resolved == root or root in resolved.parents for root in resolved_roots):
+            raise ValueError('Controller project must be inside workspace_roots')
+        mappings.append((str(resolved), project))
+    if len({path.casefold() for path, _ in mappings}) != len(mappings):
+        raise ValueError('Duplicate controller project path')
     return Settings(provider, executable, resolved_roots, state.resolve() / provider,
-                    models, default, timeout, workers, pending, tuple(allowed))
+                    models, default, timeout, workers, pending, tuple(allowed), port, token, tuple(mappings))

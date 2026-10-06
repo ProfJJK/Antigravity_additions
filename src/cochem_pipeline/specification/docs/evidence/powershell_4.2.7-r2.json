@@ -1,0 +1,30 @@
+[
+  {
+    "file": "inspect_agy_windows.ps1",
+    "errors": []
+  },
+  {
+    "file": "install_mcp_windows.ps1",
+    "errors": []
+  },
+  {
+    "file": "install_pipeline_windows.ps1",
+    "errors": []
+  },
+  {
+    "file": "install_supervisor_windows.ps1",
+    "errors": []
+  },
+  {
+    "file": "login_pipeline_worker.ps1",
+    "errors": []
+  },
+  {
+    "file": "login_supervisor_worker.ps1",
+    "errors": []
+  },
+  {
+    "file": "provision_ramdisk_windows.ps1",
+    "errors": []
+  }
+]

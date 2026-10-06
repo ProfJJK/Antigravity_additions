@@ -105,10 +105,11 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
             'acceptance_criteria': [{'id':'AC1','statement':'Observable success','requirement_ids':['R1'],'test_ids':['T1']}],
             'test_cases':[{'id':'T1','name':'test_behavior','asserts':'Concrete assertion','criteria_ids':['AC1']}],
             'leaves':[{'id':'L1','objective':'One bounded code chunk','requirement_ids':['R1'],
-                      'criteria_ids':['AC1'],'file_targets':['src/example.py'],'estimated_context_lines':20,'dependencies':[]}]}
+                      'criteria_ids':['AC1'],'file_targets':['src/example.py'],'estimated_context_lines':20,'estimated_added_deleted_lines':7,'dependencies':[]}]}
         instruction = ('Plan the actual project coding task before implementation. Inspect the supplied source_context file texts. '
             'Map supplied requirements in order to R1..Rn. Produce modular SRS chapters, explicit acceptance criteria '
             'and tests, and an acyclic FractureManifest of N=1 leaves, each with 20–100 real context lines. '
+            'Predict estimated_added_deleted_lines separately from context lines for every leaf, counting source and tests. '
             'The full source-plus-test Git diff for a leaf is at most 100 added-plus-deleted lines. '
             'Use only registered source paths. The controller checks all traces and independently reviews this plan.')
         instruction += (' Follow the controller-supplied COCHEM-4.2.7 execution contract. '
@@ -127,6 +128,10 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
             'findings must contain severity and issue. Only LOW/INFO findings are compatible with PASS. '
             'Return FAIL or REVISE for an unacceptable plan, with each finding naming its affected artifacts as exact paths; '
             'the controller schedules bounded revisions and never dispatches implementation for non-PASS.')
+    elif kind == 'PREFLIGHT_REQUEST':
+        contract = {'ready': True}
+        instruction = ('Confirm this one native subscription CLI inference by returning exactly ready true. '
+                       'Do not use tools, start other agents, read or change files, or claim other providers were tested.')
     elif kind == 'MANIFEST_GENERATOR':
         contract = {
             'chapters': [{'chapter_id': 'unique-id', 'title': 'Chapter title',
@@ -149,7 +154,9 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
         contract = {'artifact_text': 'Complete synthesized master SRS/WBS Markdown',
                     'chapter_hashes': payload['chapter_hashes']}
         instruction = ('Synthesize all supplied, hash-verified chapters into one master document. '
-                       'Preserve the supplied chapter_hashes map exactly; the Warden independently verifies it.')
+                       'Preserve the supplied chapter_hashes map exactly; the Warden independently verifies it. '
+                       'Use the controller-computed coverage_report to preserve every requested requirement and chapter ownership; '
+                       'reconcile reported overlaps without silently dropping any assigned requirement.')
     elif kind == 'CODE_TEST_AUTHOR':
         contract = {'requirements_traced': payload['requirements'], 'reuse_tests': [],
                     'artifact_blocks':'<<<FILE: tests/test_example.py>>>\ndef test_example():\n    assert False\n<<<END FILE>>>',
@@ -172,6 +179,22 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
                        'Set done true only when the requested objective is implemented; false requests another tested/reviewed chunk. '
                        'Use the complete target file text supplied in source_context. Return complete proposed files in artifact_blocks '
                        'using exact FILE/END FILE markers. The controller applies bounded changes, runs Docker tests and gets independent review.')
+    elif kind == 'CODE_REVIEW' and payload.get('review_scope') == 'srs_wbs_reconciliation':
+        contract = {'approved': False, 'requirements_traced': payload['requirements'],
+                    'reconciliation_manifest_sha256': payload['reconciliation_manifest_sha256'],
+                    'requirements_checked': [{'requirement_id': 'R1', 'chapter_ids': ['ch01'],
+                        'criteria_ids': ['AC1'], 'test_ids': ['T1'], 'wbs_leaf_id': 'L1', 'wbs_leaf_ids': ['L1'],
+                        'status': 'SATISFIED', 'rationale': 'Exact code and test evidence showing compliance'}],
+                    'divergences': []}
+        instruction = ('Before final code approval independently reconcile the implemented code with every supplied SRS chapter, '
+                       'WBS leaf, requirement, acceptance criterion and test in reconciliation_manifest. '
+                       'Inspect the exact source_context, sealed tests and prior asymmetric review receipts. '
+                       'A reviewer from the producing provider cannot approve reconciliation. Do not change files. '
+                       'Return one concrete requirement mapping for every assigned requirement and copy the manifest hash exactly. '
+                       'When reconciliation_scope is workflow, cover all wbs_leaves and every workflow requirement; otherwise cover the current leaf. '
+                       'Sort all chapter, criterion, test and owning wbs_leaf_ids exactly; set wbs_leaf_id to the first owner. '
+                       'Approve only if every requirement is satisfied and there are no divergences. '
+                       'If code, planning or requirements diverged, set approved false and describe every divergence for remediation.')
     elif kind == 'CODE_REVIEW':
         item = payload['file']
         contract = {'path': item['path'], 'file_sha256': item['after_sha256'], 'diff_sha256': item['diff_sha256'],
@@ -211,8 +234,10 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
         instruction += (' Cite at least two distinct controller-fetched external_sources in planning_evidence and trace '
                         'all current requirements as R1..Rn. The controller checks source bytes, exact quotes and '
                         'coverage; a self-reported confidence score cannot satisfy the evidence gate.')
+    instruction += (' Native tools, MCP servers, hooks, and host execution are disabled. '
+                    'Delegation is disabled. All model jobs are assigned by the controller job board; never spawn another agent.')
     if kind in CODING_NATIVE_KINDS:
-        instruction += (' Native tools, MCP servers, hooks, and host execution are disabled. '
+        instruction += (' '
                         'Use only the supplied source_context file texts and controller diagnostics as project evidence. '
                         'The inventory identifies omitted files; do not claim to have inspected omitted contents or executed tests. '
                         'Only the controller applies file proposals and runs project code in Docker.')
@@ -459,8 +484,8 @@ class NativeRunner:
 
     def route(self, node: dict) -> dict:
         """Validate the durable controller selection; never select or fall back here."""
-        if node['kind'] not in ('MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','CODE_PLAN','CODE_PLAN_REVIEW','CODE_TEST_AUTHOR','CODE_EDIT','CODE_REVIEW','CODE_RESEARCH'):
-            raise ValueError('Only manifest, chapter, and synthesis nodes are executable')
+        if node['kind'] not in ('MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','PREFLIGHT_REQUEST','CODE_PLAN','CODE_PLAN_REVIEW','CODE_TEST_AUTHOR','CODE_EDIT','CODE_REVIEW','CODE_RESEARCH'):
+            raise ValueError('Only native job-board inference nodes are executable')
         selected = node.get('route')
         if not isinstance(selected,dict):
             raise ValueError('Execution requires a persisted controller route and reservation')
@@ -648,11 +673,13 @@ class NativeRunner:
         if node.get('worker_slot') != slot:
             raise ValueError('Selected attempt belongs to a different isolated worker slot')
         spec = self.config.providers[provider]
-        inference_only = node['kind'] in CODING_NATIVE_KINDS
+        # Every job is inference-only: native host tools could spawn uncounted
+        # agents and evade the Chapter 06 board and Claude's shared CLI ceiling.
+        inference_only = True
         if inference_only and ramdisk_workspace is None:
             raise ProviderFailure('configuration')
         source_context_sha256 = None
-        if inference_only:
+        if node['kind'] in CODING_NATIVE_KINDS:
             try:
                 source_context_sha256 = validate_coding_source_context(node)
             except (ValueError, TypeError) as exc:
@@ -743,7 +770,8 @@ class NativeRunner:
             process = self._launch_worker(identity,argv,workspace,input_pipe.reader,out,err,**launch_options)
             with self._managed(node['job_id'],process):
                 input_pipe.start()
-                code = self._wait(process,heartbeat,self.config.timeout_seconds,on_launch,
+                timeout = min(self.config.timeout_seconds, 60) if node['kind'] == 'PREFLIGHT_REQUEST' else self.config.timeout_seconds
+                code = self._wait(process,heartbeat,timeout,on_launch,
                                   output_streams=(out,err))
                 native_stdout, native_stderr = _read_native_output(out,err)
                 raw = native_stdout.decode('utf-8','replace')
@@ -781,6 +809,7 @@ class NativeRunner:
                        'job_id':node['job_id'],'workflow_id':node['workflow_id'],
                        'fencing_token':node['fencing_token'],'worker_slot':slot,
                        'route_reservation_id':selected['reservation_id'],'selected_route':selected,
+                       'admission_policy_digest': selected.get('admission_policy_digest'),
                        'route_reservation_sha256':hashlib.sha256(selected['reservation_id'].encode('utf-8')).hexdigest(),
                        'stdout_sha256':hashlib.sha256(raw.encode()).hexdigest(),
                        'prompt_transport':'windows_named_pipe',

@@ -329,6 +329,11 @@ class DockerRunner:
                 lease TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,container_id TEXT,
                 image TEXT NOT NULL,job_id TEXT NOT NULL,attempt_id TEXT NOT NULL,
                 created_at REAL NOT NULL,deadline REAL NOT NULL,status TEXT NOT NULL);
+              CREATE TABLE IF NOT EXISTS pool_demand(
+                profile_digest TEXT NOT NULL,job_id TEXT NOT NULL,requested_at REAL NOT NULL,
+                handed_off_at REAL,preparation_seconds REAL,
+                PRIMARY KEY(profile_digest,job_id));
+              CREATE INDEX IF NOT EXISTS pool_demand_window ON pool_demand(profile_digest,requested_at);
               CREATE TABLE IF NOT EXISTS preparation_requests(
                 sequence INTEGER PRIMARY KEY AUTOINCREMENT,
                 profile_digest TEXT UNIQUE NOT NULL,job_id TEXT NOT NULL,
@@ -344,7 +349,7 @@ class DockerRunner:
                 if name not in columns:
                     db.execute('ALTER TABLE containers ADD COLUMN ' + name + ' ' + declaration)
             db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('owner', uuid.uuid4().hex))
-            db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('capacity', '4'))
+            db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('capacity', str(policy.max_containers)))
             db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('unknown_owned', '0'))
             self.owner = db.execute("SELECT value FROM metadata WHERE key='owner'").fetchone()[0]
             db.commit()
@@ -413,7 +418,7 @@ class DockerRunner:
                 raise ContainerCapacityError('Stricter current ceiling requires idle-pool drainage first')
             if not preparing:
                 candidates = db.execute("SELECT * FROM containers WHERE status='WARM' AND pool_digest=? "
-                                        'AND deadline>? ORDER BY created_at LIMIT 4',
+                                        'AND deadline>? ORDER BY created_at LIMIT 256',
                                         (self.policy.pool_digest, now)).fetchall()
                 warm = next((dict(row) for row in candidates
                              if _prepared_provenance(dict(row), as_of=now)), None)
@@ -424,6 +429,8 @@ class DockerRunner:
                                    request_started_at=requested,reservation_started_at=now)
                     db.execute("UPDATE containers SET job_id=?,attempt_id=?,deadline=?,status='ACTIVE',policy_digest=?,request_started_at=?,reservation_started_at=? WHERE lease=? AND status='WARM'",
                                (job_id, attempt_id, record['deadline'], self.policy.digest, requested, now, claimed['lease']))
+                    db.execute('UPDATE pool_demand SET handed_off_at=?,preparation_seconds=? WHERE profile_digest=? AND job_id=?',
+                               (now, warm['preparation_seconds'], self.policy.pool_digest, job_id))
                     db.commit()
                     claimed['warm_claimed'] = True
                     return claimed
@@ -431,7 +438,7 @@ class DockerRunner:
                     raise ContainerCapacityError('Exact captured Docker profile is awaiting verified preallocated capacity')
             count = db.execute("SELECT count(*) FROM containers WHERE status!='REMOVED'").fetchone()[0]
             if count >= min(effective_limit, capacity_limit if capacity_limit is not None else self.policy.max_containers):
-                raise ContainerCapacityError('Four-container or stricter operator capacity is occupied')
+                raise ContainerCapacityError('Configured container or hardware capacity is occupied')
             db.execute('INSERT INTO containers(lease,name,container_id,image,job_id,attempt_id,created_at,deadline,status,policy_digest,label_job_hash,memory_mb,pool_digest,endpoint,request_started_at,reservation_started_at) '
                        'VALUES(:lease,:name,:container_id,:image,:job_id,:attempt_id,:created_at,:deadline,:status,:policy_digest,:label_job_hash,:memory_mb,:pool_digest,:endpoint,:request_started_at,:reservation_started_at)', record)
             db.commit()
@@ -583,7 +590,7 @@ class DockerRunner:
                                  'label=' + _LABEL_OWNER + '=' + self.owner,
                                  '--format', '{{.ID}}'], output_limit=65536)
             identifiers = listed.stdout.decode().splitlines()
-            if (listed.returncode or listed.output_exceeded or len(identifiers) > 64
+            if (listed.returncode or listed.output_exceeded or len(identifiers) > 256
                     or len(set(identifiers)) != len(identifiers)
                     or any(not re.fullmatch('[0-9a-f]{64}', value) for value in identifiers)):
                 raise ContainerCleanupError('Actual Docker ownership census failed or exceeded its bound')
@@ -691,8 +698,8 @@ class DockerRunner:
         durable cap in its same SQLite write transaction, including warm prep.
         Lowering a cap never silently kills active code execution.
         """
-        if type(limit) is not int or not 0 <= limit <= 4:
-            raise ValueError('Published Docker capacity must be between zero and four')
+        if type(limit) is not int or not 0 <= limit <= 256:
+            raise ValueError('Published Docker capacity must be between zero and the configured ceiling')
         with closing(self._connect()) as db:
             db.execute('BEGIN IMMEDIATE')
             db.execute("UPDATE metadata SET value=? WHERE key='capacity'", (str(limit),))
@@ -758,6 +765,12 @@ class DockerRunner:
             raise ContainerError('Docker execution is disabled')
         if require_warm is not True:
             raise ValueError('Job requests require prepared containers; cold creation belongs to pool replenishment')
+        if not all(isinstance(value,str) and 0<len(value)<=256 and '\0' not in value for value in (job_id,attempt_id)):
+            raise ValueError('Container requires bounded job and attempt identities')
+        with closing(self._connect()) as db:
+            db.execute('INSERT OR IGNORE INTO pool_demand(profile_digest,job_id,requested_at) VALUES(?,?,?)',
+                       (self.policy.pool_digest, job_id, time.time()))
+            db.commit()
         if self.policy.warm_pool_size <= 0:
             raise ContainerCapacityError('Prepared-container pool is disabled; no job may cold-create a container')
         try:
@@ -816,6 +829,44 @@ class DockerRunner:
         self._remove(record)
         return True
 
+    def pool_target_snapshot(self, *, now=None, window_seconds=300):
+        """Bounded measured recommendation; fixed defaults until enough demand.
+
+        Adaptation never invents physical capacity: the selected value is only
+        a profile inventory target, subsequently bounded by shared admission,
+        FIFO requests and native fairness. At least 32 completed warm handoffs
+        spanning 60 seconds are required before opt-in adaptation can act.
+        """
+        observed = time.time() if now is None else now
+        if type(observed) not in (int, float) or not math.isfinite(observed):
+            raise ValueError('Pool observation time must be finite')
+        if type(window_seconds) is not int or not 60 <= window_seconds <= 3600:
+            raise ValueError('Pool demand window must be in 60..3600 seconds')
+        with closing(self._connect()) as db:
+            rows = db.execute('SELECT requested_at,handed_off_at,preparation_seconds FROM pool_demand '
+                'WHERE profile_digest=? AND requested_at>=? AND requested_at<=? ORDER BY requested_at DESC LIMIT 4097',
+                (self.policy.pool_digest, observed-window_seconds, observed)).fetchall()
+        overflow = len(rows)>4096
+        completed = [row for row in rows if row['handed_off_at'] is not None
+                     and type(row['preparation_seconds']) in (int,float) and row['preparation_seconds']>=0]
+        span = max(0, observed-min((row['requested_at'] for row in rows),default=observed))
+        sufficient = not overflow and len(completed)>=32 and span>=60
+        preparation_p95 = (sorted(row['preparation_seconds'] for row in completed)[math.ceil(.95*len(completed))-1]
+                           if completed else None)
+        rate = len(rows)/span if span else None
+        recommendation = (min(self.policy.warm_pool_size, max(1, math.ceil(rate*preparation_p95)+1))
+                          if sufficient and self.policy.warm_pool_size else None)
+        adaptive = bool(self.policy.adaptive_pool_enabled and sufficient)
+        return {'profile_digest':self.policy.pool_digest, 'mode':'adaptive' if adaptive else 'fixed',
+                'configured_target':self.policy.warm_pool_size,
+                'selected_target':recommendation if adaptive else self.policy.warm_pool_size,
+                'recommended_target':recommendation, 'evidence_sufficient':sufficient,
+                'reason':'measured_demand' if adaptive else 'adaptation_disabled' if not self.policy.adaptive_pool_enabled else 'insufficient_measured_demand',
+                'demand_count':len(rows), 'completed_handoffs':len(completed),
+                'observation_seconds':span, 'window_seconds':window_seconds,
+                'preparation_p95_seconds':preparation_p95, 'observed_arrivals_per_second':rate,
+                'sample_overflow':overflow, 'hardware_can_only_lower_target':True}
+
     def prepare_pool(self, target=None):
         """Precreate unused sandboxes outside the request path, subject to capacity.
 
@@ -829,7 +880,7 @@ class DockerRunner:
         target = self.policy.warm_pool_size if target is None else target
         if type(target) is not int or not 0 <= target <= self.policy.max_containers:
             raise ValueError('Warm-pool target must respect the hard container ceiling')
-        target = min(target, self.policy.warm_pool_size)
+        target = min(target, self.pool_target_snapshot()['selected_target'])
         # Lower admission drains only idle containers, atomically excluding a
         # concurrent dispatch. Active tests are governed by their own lease.
         drained = []

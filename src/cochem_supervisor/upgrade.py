@@ -117,3 +117,63 @@ def migrate_budget_state(source_private: Path, target_private: Path) -> dict:
         write_json(target_quarantine, quarantine_value)
     write_json(target / 'budget-upgrade.json', result)
     return result
+
+
+def preserve_advanced_budget_state(source_private: Path, target_private: Path) -> dict:
+    """Verify a previously migrated destination and preserve its newer spend.
+
+    An absent target follows ordinary first migration. An advanced target needs
+    the original protected migration receipt and an intact append-only source
+    history; merely finding a database file cannot authorize zeroing budgets.
+    """
+    source,target=Path(source_private).absolute(),Path(target_private).absolute()
+    if not (target/'supervisor.db').exists() and not (target/'supervisor.db').is_symlink():
+        return migrate_budget_state(source,target)
+    _plain_ancestors(target)
+    _stat_plain(target,directory=True)
+    evidence=_checked_json(target/'budget-upgrade.json')
+    if (evidence.get('source_private')!=str(source) or evidence.get('target_private')!=str(target) or
+            evidence.get('status') not in ('LEDGER_COPIED','IDENTICAL_LEDGER_PRESERVED','NO_PRIOR_LEDGER')):
+        raise ValueError('Existing target lacks matching protected migration lineage')
+    for directory in (source,target):
+        journal=directory/'release-journal.json'
+        if journal.exists() or journal.is_symlink():
+            if _checked_json(journal).get('state') not in ('COMMITTED','ROLLED_BACK'):
+                raise ValueError('Recover the existing release transaction before upgrading')
+    digests={}
+    for filename,component in (('supervisor.db',False),('component-recovery.db',True)):
+        destination,origin=target/filename,source/filename
+        if not destination.exists() and not destination.is_symlink():
+            if origin.exists() or origin.is_symlink():
+                raise ValueError('Existing target is missing a previously migrated budget ledger')
+            continue
+        digests[filename]=_ledger_digest(destination,component=component)
+        if origin.exists() or origin.is_symlink():
+            _ledger_digest(origin,component=component)
+            with closing(sqlite3.connect(origin.as_uri()+'?mode=ro',uri=True)) as old, \
+                 closing(sqlite3.connect(destination.as_uri()+'?mode=ro',uri=True)) as new:
+                old.row_factory=new.row_factory=sqlite3.Row
+                table='recovery_events' if component else 'supervisor_events'
+                for row in old.execute('SELECT * FROM '+table):
+                    stored=new.execute('SELECT * FROM '+table+' WHERE id=?',(row['id'],)).fetchone()
+                    if stored is None or dict(row)!=dict(stored):
+                        raise ValueError('Destination does not preserve original append-only budget events')
+                if not component:
+                    immutable=('attempt_id','fingerprint','category','evidence_json','started_at','budget_day',
+                               'max_per_incident','max_per_day','cooldown_seconds')
+                    for row in old.execute('SELECT * FROM supervisor_attempts'):
+                        stored=new.execute('SELECT * FROM supervisor_attempts WHERE attempt_id=?',(row['attempt_id'],)).fetchone()
+                        if stored is None or any(row[key]!=stored[key] for key in immutable):
+                            raise ValueError('Destination lost or changed original charged budget reservations')
+                        if row['status']!='RUNNING' and dict(row)!=dict(stored):
+                            raise ValueError('Destination changed an immutable terminal budget reservation')
+        elif evidence['status']!='NO_PRIOR_LEDGER':
+            raise ValueError('Original migrated budget ledger is unavailable for lineage verification')
+    quarantine=target/'repair-quarantine.json'
+    if quarantine.exists() or quarantine.is_symlink():
+        _checked_json(quarantine)
+    result={'status':'ADVANCED_LEDGER_PRESERVED','source_private':str(source),'target_private':str(target),
+            'ledger_digests':digests,'original_migration_receipt_sha256':hashlib.sha256((target/'budget-upgrade.json').read_bytes()).hexdigest(),
+            'budgets_reset':False,'quarantine_preserved':quarantine.exists()}
+    write_json(target/'budget-upgrade-preserved.json',result)
+    return result

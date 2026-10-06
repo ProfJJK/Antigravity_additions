@@ -28,7 +28,7 @@ _SUMMARIES = {
 _DEFAULT_SCOPE = {
     'quota': 'pool', 'auth': 'pool', 'busy': 'model',
     'provider': 'model',
-    'configuration': 'job', 'compatibility': 'job',
+    'configuration': 'job', 'compatibility': 'model',
 }
 _MAX_RETRY_AFTER = 86400.0
 
@@ -54,8 +54,10 @@ class ProviderFailure(RuntimeError):
             raise ValueError('Unknown provider failure hold scope')
         if category in ('code', 'protocol', 'timeout', 'context') and hold_scope is not None:
             raise ValueError('Execution, protocol and context failures cannot hold a provider globally')
-        if category in ('configuration','compatibility') and hold_scope not in (None,'job'):
-            raise ValueError('Configuration and compatibility require an explicit job hold')
+        if category == 'configuration' and hold_scope not in (None,'job'):
+            raise ValueError('Configuration requires an explicit job hold')
+        if category == 'compatibility' and hold_scope not in (None,'model','job'):
+            raise ValueError('Compatibility requires a model or explicit job hold')
         self.category = category
         self.summary = _SUMMARIES[category]
         self.hold_scope = hold_scope or _DEFAULT_SCOPE.get(category)
@@ -88,6 +90,8 @@ _CODES = {
         'api_error', 'server_error', 'internal_server_error', 'internal_error',
         'internal', 'service_unavailable', 'bad_gateway', 'gateway_timeout',
     },
+    'compatibility': {'model_not_found', 'unknown_model', 'unsupported_model', 'model_not_supported',
+                      'requested_model_not_found', 'model_not_available'},
     'protocol': {
         'invalid_request_error', 'invalid_request', 'invalid_argument',
         'unsupported_protocol', 'invalid_cli_argument',
@@ -252,7 +256,7 @@ def parse_native_failure(provider: str, stdout: str, stderr: str,
         fields, fallback = selected
         categories = [_category(field.get(key)) for field in fields for key in _CODE_FIELDS]
         # Prefer a specific typed cause to a generic API/server classification.
-        category = next((candidate for candidate in ('auth', 'quota', 'context', 'busy', 'timeout', 'provider', 'protocol')
+        category = next((candidate for candidate in ('auth', 'quota', 'context', 'busy', 'timeout', 'provider', 'compatibility', 'protocol')
                          if candidate in categories), None)
         if category is None:
             category = _native_diagnostic_category(provider,record,fields) or fallback
@@ -260,7 +264,7 @@ def parse_native_failure(provider: str, stdout: str, stderr: str,
         failures.append(ProviderFailure(category, retry_after))
     if not failures:
         return None
-    priority = {'auth': 0, 'quota': 1, 'context': 2, 'busy': 3, 'timeout': 4, 'provider': 5, 'protocol': 6, 'code': 7}
+    priority = {'auth': 0, 'quota': 1, 'context': 2, 'busy': 3, 'timeout': 4, 'provider': 5, 'compatibility': 6, 'protocol': 7, 'code': 8}
     failure = min(failures, key=lambda item: priority[item.category])
     matching_hints = [item.retry_after_seconds for item in failures
                       if item.category == failure.category and item.retry_after_seconds is not None]

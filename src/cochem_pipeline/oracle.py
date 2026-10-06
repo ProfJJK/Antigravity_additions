@@ -327,6 +327,10 @@ class Oracle:
                 watermark TEXT NOT NULL,
                 acknowledged INTEGER NOT NULL DEFAULT 0 CHECK (acknowledged IN (0,1))
             )''')
+            delivery_columns = {row[1] for row in self._connection.execute("PRAGMA table_info(_oracle_deliveries)")}
+            for name in ('selected_at', 'acknowledged_at'):
+                if name not in delivery_columns:
+                    self._connection.execute('ALTER TABLE _oracle_deliveries ADD COLUMN '+name+' REAL')
             self._connection.execute('''CREATE INDEX IF NOT EXISTS _oracle_delivery_task
                 ON _oracle_deliveries(task_id, id)''')
             # Preserve existing acknowledged history and pending payloads when
@@ -454,7 +458,7 @@ class Oracle:
                     ).fetchone()
                     if current_delivery is None or current_delivery[0] != watermark:
                         cursor = self._connection.execute(
-                            "INSERT INTO _oracle_deliveries(task_id,watermark) VALUES (?,?)", (task_id, watermark)
+                            "INSERT INTO _oracle_deliveries(task_id,watermark,selected_at) VALUES (?,?,?)", (task_id, watermark, time.time())
                         )
                         delivery_id = cursor.lastrowid
                         self._connection.execute(
@@ -525,8 +529,8 @@ class Oracle:
                         raise ValueError("Reactivated context acknowledgment requires its delivery_id")
                     delivery_id = identifiers[0][0] if identifiers else None
                 cursor = self._connection.execute(
-                    "UPDATE _oracle_deliveries SET acknowledged=1 WHERE id=? AND task_id=? AND watermark=?",
-                    (delivery_id, task_id, watermark),
+                    "UPDATE _oracle_deliveries SET acknowledged=1,acknowledged_at=coalesce(acknowledged_at,?) WHERE id=? AND task_id=? AND watermark=?",
+                    (time.time(), delivery_id, task_id, watermark),
                 )
                 if cursor.rowcount != 1:
                     raise KeyError("Oracle context watermark was not generated for this task")
@@ -534,6 +538,38 @@ class Oracle:
                     WHERE task_id=? AND watermark=? AND NOT EXISTS (
                         SELECT 1 FROM _oracle_deliveries WHERE task_id=? AND watermark=? AND acknowledged=0)''',
                     (task_id, watermark, task_id, watermark))
+
+    def decision_log(self, task_id: str | None = None, *, after_id: int = 0, limit: int = 100) -> dict:
+        """Protected, read-only delivery generations without prompts or rule bodies.
+
+        The existing private outbox is the authority: A/B/A has three distinct
+        generations. Legacy rows retain unknown selection/ack clocks instead of
+        acquiring invented upgrade-time timestamps. Ack IDs identify exactly
+        the generation acknowledged, never a later occurrence of the same rule.
+        """
+        if task_id is not None and (not isinstance(task_id, str) or not task_id.strip()):
+            raise ValueError('task_id must be a nonempty string')
+        if type(after_id) is not int or after_id < 0 or type(limit) is not int or not 1 <= limit <= 1000:
+            raise ValueError('Decision log cursor and page size are invalid')
+        with self._drain_lock:
+            with self._lock:
+                self._require_open()
+            rows = self._connection.execute(
+                "SELECT d.id,d.task_id,d.watermark,d.acknowledged,d.selected_at,d.acknowledged_at,w.payload "
+                "FROM _oracle_deliveries d JOIN _oracle_watermarks w "
+                "ON w.task_id=d.task_id AND w.watermark=d.watermark "
+                "WHERE d.id>? AND (? IS NULL OR d.task_id=?) ORDER BY d.id LIMIT ?",
+                (after_id, task_id, task_id, limit)).fetchall()
+        entries = []
+        for generation, task, watermark, acknowledged, selected_at, acknowledged_at, payload in rows:
+            selected = json.loads(payload)
+            entries.append({'delivery_generation': generation, 'task_id': task, 'watermark': watermark,
+                'rule_ids': selected['rule_ids'], 'budget_used': selected['budget_used'],
+                'budget_limit': selected['budget_limit'], 'reserved_budget': selected['reserved_budget'],
+                'selected_at': selected_at, 'acknowledged': bool(acknowledged),
+                'ack_generation': generation if acknowledged else None, 'acknowledged_at': acknowledged_at})
+        return {'entries': entries, 'next_cursor': entries[-1]['delivery_generation'] if entries else after_id,
+                'source': 'protected_oracle_outbox', 'includes_prompt_content': False}
 
     def close(self) -> None:
         if threading.current_thread().name.startswith("oracle-reaper"):

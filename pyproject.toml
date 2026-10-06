@@ -54,6 +54,7 @@ include = ["cochem*"]
 
 [tool.setuptools.package-data]
 cochem = ["py.typed"]
+cochem_pipeline = ["specification/*.md", "specification/*.json", "specification/docs/evidence/*.json", "specification/docs/evidence/*.xml"]
 
 [tool.mypy]
 python_version = "3.12"

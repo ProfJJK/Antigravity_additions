@@ -46,7 +46,7 @@ def test_actual_pipeline_mcp_session_creates_and_cancels_real_dag(endpoint):
         async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
             tools = await client.list_tools()
             assert {tool.name for tool in tools.tools} == {
-                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing',
+                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing','pipeline_operator_view','pipeline_provider_preflight_submit',
                 'knowledge_search','knowledge_read','knowledge_status',
                 'pipeline_projects','pipeline_code','pipeline_code_status','pipeline_code_cancel','pipeline_code_resume'}
             response = await client.call_tool('pipeline_submit',{

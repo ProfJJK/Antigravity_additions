@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS pipeline_jobs (
     job_id TEXT PRIMARY KEY,
     workflow_id TEXT NOT NULL REFERENCES pipeline_jobs(job_id),
     parent_job_id TEXT REFERENCES pipeline_jobs(job_id),
-    kind TEXT NOT NULL CHECK(kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','CODE_REQUEST','CODE_PLAN','CODE_PLAN_REVIEW','CODE_TEST_AUTHOR','CODE_EDIT','CODE_TEST','CODE_REVIEW','CODE_RESEARCH','CODE_INTEGRATE')),
+    kind TEXT NOT NULL CHECK(kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','CODE_REQUEST','CODE_PLAN','CODE_PLAN_REVIEW','CODE_TEST_AUTHOR','CODE_EDIT','CODE_TEST','CODE_REVIEW','CODE_RESEARCH','CODE_INTEGRATE','PREFLIGHT_REQUEST')),
     status TEXT NOT NULL CHECK(status IN ('BLOCKED','PENDING','IN_PROGRESS','COMPLETED','FAILED','PENDING_RETRY')),
     chapter_id TEXT,
     payload_json TEXT NOT NULL CHECK(json_valid(payload_json)),
@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS pipeline_jobs (
 );
 CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_chapter ON pipeline_jobs(workflow_id,chapter_id) WHERE kind='CHAPTER_DRAFT';
 CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_stage ON pipeline_jobs(workflow_id,kind) WHERE kind IN ('MACRO_PLANNING_REQUEST','MANIFEST_GENERATOR','SYNTHESIS','CODE_REQUEST');
+CREATE UNIQUE INDEX IF NOT EXISTS pipeline_unique_preflight ON pipeline_jobs(workflow_id) WHERE kind='PREFLIGHT_REQUEST';
 CREATE INDEX IF NOT EXISTS pipeline_claimable ON pipeline_jobs(status,created_at);
 CREATE TABLE IF NOT EXISTS pipeline_outputs (
     job_id TEXT PRIMARY KEY REFERENCES pipeline_jobs(job_id),
@@ -119,6 +120,16 @@ BEGIN SELECT RAISE(ABORT,'worker identity bindings are immutable'); END;
 CREATE TRIGGER IF NOT EXISTS pipeline_chapter_index_immutable BEFORE UPDATE OF payload_json ON pipeline_jobs
 WHEN OLD.kind='CHAPTER_DRAFT' AND json_extract(NEW.payload_json,'$.chapter_index') IS NOT json_extract(OLD.payload_json,'$.chapter_index')
 BEGIN SELECT RAISE(ABORT,'manifest chapter position is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS pipeline_governing_capture_immutable BEFORE UPDATE OF payload_json ON pipeline_jobs
+WHEN json_extract(NEW.payload_json,'$.governing_requirements') IS NOT json_extract(OLD.payload_json,'$.governing_requirements')
+BEGIN SELECT RAISE(ABORT,'captured governing requirements are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS pipeline_governing_capture_parent BEFORE INSERT ON pipeline_jobs
+WHEN NEW.parent_job_id IS NOT NULL
+BEGIN
+    SELECT CASE WHEN json_extract(NEW.payload_json,'$.governing_requirements') IS NOT (
+        SELECT json_extract(payload_json,'$.governing_requirements') FROM pipeline_jobs WHERE job_id=NEW.workflow_id)
+    THEN RAISE(ABORT,'child governing requirements must match the workflow capture') END;
+END;
 CREATE TRIGGER IF NOT EXISTS pipeline_output_owner BEFORE INSERT ON pipeline_outputs
 BEGIN
     SELECT CASE WHEN NOT EXISTS (
@@ -159,6 +170,10 @@ BEGIN
         THEN RAISE(ABORT,'completion requires an accepted output') END;
     SELECT CASE WHEN NEW.kind='MACRO_PLANNING_REQUEST'
         AND NOT EXISTS(SELECT 1 FROM pipeline_jobs WHERE workflow_id=NEW.workflow_id AND kind='SYNTHESIS' AND status='COMPLETED')
+        AND NOT (COALESCE(json_extract(NEW.payload_json,'$.workflow_type')='provider_preflight',0)
+          AND EXISTS(SELECT 1 FROM pipeline_jobs j JOIN pipeline_outputs o USING(job_id)
+            WHERE j.workflow_id=NEW.workflow_id AND j.kind='PREFLIGHT_REQUEST' AND j.status='COMPLETED'
+            AND json_type(o.output_json,'$.ready')='true'))
         THEN RAISE(ABORT,'root completion requires synthesis') END;
     SELECT CASE WHEN NEW.kind='CODE_REQUEST'
         AND NOT EXISTS(SELECT 1 FROM pipeline_jobs j JOIN pipeline_outputs o USING(job_id)
@@ -185,12 +200,17 @@ def _identifier(value: Any, label: str) -> str:
 
 class JobStore(CodingStoreMixin):
     def __init__(self, path: str | Path, max_attempts: int = 3, *, routing_policy=None,
-                 cleanup_boot_id: int | None = None):
+                 cleanup_boot_id: int | None = None, governing_requirements: dict | None = None):
         if type(max_attempts) is not int or not 1 <= max_attempts <= 100:
             raise ValueError("max_attempts must be an integer from 1 to 100")
         self.max_attempts = max_attempts
         self.transition_telemetry = None
-        self.routing_policy = routes.policy_dict(routing_policy) if routing_policy is not None else None
+        self.routing_policy = routes.policy_dict(routing_policy if routing_policy is not None else {})
+        if governing_requirements is not None and not isinstance(governing_requirements, dict):
+            raise ValueError('governing_requirements must be a controller-captured object')
+        self.governing_requirements = json.loads(canonical_json(governing_requirements or {
+            'specification_id': 'COCHEM-4.2.7', 'specification_sha256': None,
+            'status': 'canonical_source_unavailable', 'owner_amendments': []}))
         if cleanup_boot_id is not None and (type(cleanup_boot_id) is not int or cleanup_boot_id<=0):
             raise ValueError('cleanup_boot_id must be a positive trusted Windows boot identity')
         self.cleanup_boot_id = cleanup_boot_id
@@ -252,7 +272,9 @@ class JobStore(CodingStoreMixin):
     @staticmethod
     def _migrate_coding_schema(conn):
         existing = conn.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name='pipeline_jobs'").fetchone()
-        if existing is None or "'CODE_PLAN'" in existing[0]:
+        required_kinds = ('MACRO_PLANNING_REQUEST', 'MANIFEST_GENERATOR', 'CHAPTER_DRAFT',
+                          'SYNTHESIS', 'PREFLIGHT_REQUEST', *CODING_KINDS)
+        if existing is None or all(repr(kind) in existing[0] for kind in required_kinds):
             return
         # Preserve every child table and FK target name. Renaming the old table
         # would rewrite references in immutable outputs and reservation history.
@@ -384,6 +406,11 @@ class JobStore(CodingStoreMixin):
                 kind: str, status: str, payload: dict, chapter_id: str | None = None,
                 max_attempts: int = 3) -> None:
         timestamp = time.time()
+        if parent is not None and 'governing_requirements' not in payload:
+            root = conn.execute('SELECT payload_json FROM pipeline_jobs WHERE job_id=?', (workflow_id,)).fetchone()
+            governing = json.loads(root['payload_json']).get('governing_requirements') if root else None
+            if governing is not None:
+                payload = {**payload, 'governing_requirements': governing}
         conn.execute("""INSERT INTO pipeline_jobs(job_id,workflow_id,parent_job_id,kind,status,chapter_id,
             payload_json,created_at,updated_at,max_attempts) VALUES(?,?,?,?,?,?,?,?,?,?)""",
                      (job_id, workflow_id, parent, kind, status, chapter_id, canonical_json(payload), timestamp, timestamp, max_attempts))
@@ -403,25 +430,56 @@ class JobStore(CodingStoreMixin):
             raise ValueError('Workflow max_attempts may only lower the configured execution budget')
         if max_dispatches is not None and (type(max_dispatches) is not int or not 1 <= max_dispatches <= 1000000):
             raise ValueError('max_dispatches must be an integer from 1 to 1000000')
-        # A caller explicitly requesting the new all-dispatch cap opts into
-        # routing even when using the backwards-compatible constructor.
-        requested_policy = self.routing_policy if self.routing_policy is not None else ({} if max_dispatches is not None else None)
+        # New submissions always capture Chapter 06 routing authority.
+        requested_policy = self.routing_policy
+        from .document_governance import capture_authority
+        governing = capture_authority(self.governing_requirements, 'document_plan')
         payload = {"objective": objective, "requirements": requirements, "chapter_count": chapter_count}
         with self._write() as conn:
             existing = conn.execute("SELECT job_id FROM pipeline_jobs WHERE job_id=?", (workflow_id,)).fetchone()
             if existing:
                 root = self._get(conn, workflow_id)
-                if root["kind"] not in ("MACRO_PLANNING_REQUEST", "CODE_REQUEST") or root["payload"] != payload:
+                if root["kind"] not in ("MACRO_PLANNING_REQUEST", "CODE_REQUEST") or {key: root["payload"].get(key) for key in payload} != payload:
                     raise ValueError("workflow_id already belongs to a different request")
                 if max_attempts is not None and root['max_attempts']!=budget:
                     raise ValueError('Existing workflow attempt budget is immutable')
                 routes.capture_workflow(conn, workflow_id, requested_policy, max_dispatches)
             else:
+                payload = {**payload, 'governing_requirements': governing}
                 self._insert(conn, workflow_id, workflow_id, None, "MACRO_PLANNING_REQUEST", "IN_PROGRESS", payload, max_attempts=budget)
                 routes.capture_workflow(conn, workflow_id, requested_policy, max_dispatches)
                 self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "MANIFEST_GENERATOR", "PENDING", payload, max_attempts=budget)
                 self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "SYNTHESIS", "BLOCKED", payload, max_attempts=budget)
                 self._event(conn, self._get(conn, workflow_id), "WORKFLOW_SUBMITTED", chapter_count=chapter_count)
+        return self.workflow(workflow_id)
+
+    def submit_preflight(self, workflow_id: str | None = None) -> dict:
+        """Queue one real, readonly inference job; never bypass route assignment."""
+        workflow_id = _identifier(workflow_id or uuid.uuid4().hex, 'workflow_id')
+        from .document_governance import capture_authority
+        payload = {'workflow_type': 'provider_preflight',
+                   'objective': 'Confirm one native subscription inference can return a bounded readiness response.',
+                   'requirements': ['Return ready true without tools or filesystem changes.'],
+                   'preflight_timeout_seconds': 60,
+                   'governing_requirements': capture_authority(self.governing_requirements, 'provider_preflight')}
+        with self._write() as conn:
+            existing = conn.execute('SELECT job_id FROM pipeline_jobs WHERE job_id=?', (workflow_id,)).fetchone()
+            if existing:
+                root = self._get(conn, workflow_id)
+                if root['kind'] != 'MACRO_PLANNING_REQUEST' or root['payload'].get('workflow_type') != 'provider_preflight':
+                    raise ValueError('workflow_id already belongs to a different request')
+            else:
+                self._insert(conn, workflow_id, workflow_id, None, 'MACRO_PLANNING_REQUEST',
+                             'IN_PROGRESS', payload, max_attempts=1)
+                bounded_policy = dict(self.routing_policy)
+                bounded_policy['max_routing_seconds'] = min(bounded_policy.get('max_routing_seconds') or 300, 300)
+                dispatch_limit = min(bounded_policy.get('max_dispatches') or 3, 3)
+                routes.capture_workflow(conn, workflow_id, bounded_policy, max_dispatches=dispatch_limit)
+                self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, 'PREFLIGHT_REQUEST',
+                             'PENDING', payload, max_attempts=1)
+                self._event(conn, self._get(conn, workflow_id), 'PREFLIGHT_SUBMITTED',
+                            model_job_count=1, maximum_dispatches=dispatch_limit,
+                            routing_deadline_seconds=bounded_policy['max_routing_seconds'])
         return self.workflow(workflow_id)
 
     @staticmethod
@@ -493,9 +551,8 @@ class JobStore(CodingStoreMixin):
         if not isinstance(owner, str) or not owner.strip():
             raise ValueError("owner must be nonempty")
         duration = self._lease_seconds(lease_seconds)
-        if type(max_workers) is not int or not 1 <= max_workers <= 64:
-            raise ValueError("max_workers must be an integer from 1 to 64")
-        max_workers = min(max_workers, 4)
+        if type(max_workers) is not int or not 1 <= max_workers <= 256:
+            raise ValueError("max_workers must be an integer from 1 to 256")
         if type(requires_cleanup) is not bool:
             raise ValueError('requires_cleanup must be a boolean')
         if cleanup_boot_id is not None and (type(cleanup_boot_id) is not int or cleanup_boot_id<=0):
@@ -515,7 +572,7 @@ class JobStore(CodingStoreMixin):
             if isinstance(allowed_kinds,(str,bytes)):
                 raise ValueError('allowed_kinds must be an iterable of executable kinds')
             permitted=tuple(sorted(set(allowed_kinds)))
-            valid={'MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS',*CODING_KINDS}-{'CODE_REQUEST'}
+            valid={'MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','PREFLIGHT_REQUEST',*CODING_KINDS}-{'CODE_REQUEST'}
             if not permitted or any(kind not in valid for kind in permitted):
                 raise ValueError('allowed_kinds contains an unsupported execution kind')
             exclusion+=' AND j.kind IN ('+','.join('?' for _ in permitted)+')'
@@ -701,6 +758,9 @@ class JobStore(CodingStoreMixin):
             chapters = None
             if job["kind"] == "MANIFEST_GENERATOR":
                 chapters = self._manifest(job, output)
+            elif job["kind"] == "PREFLIGHT_REQUEST":
+                if output.get('ready') is not True or set(output) != {'ready'}:
+                    raise ValueError('Preflight must return the exact bounded ready:true response')
             elif job["kind"] == "CHAPTER_DRAFT":
                 self._chapter(job, output)
             elif job["kind"] == "SYNTHESIS":
@@ -709,8 +769,6 @@ class JobStore(CodingStoreMixin):
                 count = self._get(conn, job["workflow_id"])["payload"]["chapter_count"]
                 if len(expected) != count or self._hashes(output) != expected:
                     raise ValueError("Synthesis chapter hashes must exactly match every immutable chapter")
-                if receipt["provider"] != "gemini":
-                    raise ValueError("Synthesis requires a Gemini process receipt")
             else:
                 raise ValueError("Root jobs cannot be completed by workers")
             if job["kind"] in {"CHAPTER_DRAFT", "SYNTHESIS"}:
@@ -738,9 +796,10 @@ class JobStore(CodingStoreMixin):
                 self._event(conn, job, "CHAPTERS_SCATTERED", count=len(chapters))
             elif job["kind"] == "CHAPTER_DRAFT":
                 self._release_synthesis(conn, job["workflow_id"])
-            elif job["kind"] == "SYNTHESIS":
+            elif job["kind"] in ("SYNTHESIS", "PREFLIGHT_REQUEST"):
                 conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',updated_at=? WHERE job_id=?", (time.time(), job["workflow_id"]))
-                self._event(conn, self._get(conn, job["workflow_id"]), "WORKFLOW_COMPLETED", synthesis_job_id=job_id)
+                self._event(conn, self._get(conn, job["workflow_id"]), "WORKFLOW_COMPLETED",
+                            **({'synthesis_job_id': job_id} if job['kind'] == 'SYNTHESIS' else {'preflight_job_id': job_id}))
             return self._get(conn, job_id)
 
     def _release_synthesis(self, conn: sqlite3.Connection, workflow_id: str) -> None:
@@ -749,17 +808,36 @@ class JobStore(CodingStoreMixin):
             ORDER BY json_extract(payload_json,'$.chapter_index'),chapter_id""", (workflow_id,)).fetchall()
         if root["status"] != "IN_PROGRESS" or len(rows) != root["payload"]["chapter_count"] or any(row["status"] != "COMPLETED" for row in rows):
             return
-        chapters = []
+        chapters, completed = [], []
         for row in rows:
             job = self._get(conn, row["job_id"])
+            completed.append(job)
             chapters.append({**job["payload"], "artifact_uri": job["output"]["artifact_uri"],
                              "artifact_text": job["output"]["artifact_text"], "sha256": job["artifact_sha256"]})
+        coverage_rows = []
+        for requirement in root['payload']['requirements']:
+            owners = [job['chapter_id'] for job in completed if requirement in job['payload']['requirements']]
+            traced = [job['chapter_id'] for job in completed if requirement in job['output']['requirements_traced']]
+            coverage_rows.append({'requirement': requirement, 'owning_chapters': owners,
+                                  'traced_by_chapters': traced,
+                                  'overlap': len(owners) > 1,
+                                  'gap': not owners or any(owner not in traced for owner in owners)})
+        coverage = {'schema': 'cochem-document-coverage/4.2.7',
+                    'requirements': coverage_rows,
+                    'gaps': [row['requirement'] for row in coverage_rows if row['gap']],
+                    'overlaps': [row['requirement'] for row in coverage_rows if row['overlap']],
+                    'chapter_hashes': {chapter['chapter_id']: chapter['sha256'] for chapter in chapters},
+                    'complete': all(not row['gap'] for row in coverage_rows)}
+        if not coverage['complete']:
+            raise ValueError('Synthesis coverage report contains uncovered required chapter ownership')
         payload = {**root["payload"], "chapters": chapters,
-                   "chapter_hashes": {chapter["chapter_id"]: chapter["sha256"] for chapter in chapters}}
+                   "chapter_hashes": coverage['chapter_hashes'],
+                   'coverage_report': coverage, 'coverage_report_sha256': output_digest(coverage)}
         changed = conn.execute("""UPDATE pipeline_jobs SET status='PENDING',payload_json=?,updated_at=?
             WHERE workflow_id=? AND kind='SYNTHESIS' AND status='BLOCKED'""", (canonical_json(payload), time.time(), workflow_id)).rowcount
         if changed:
-            self._event(conn, root, "SYNTHESIS_RELEASED", chapter_hashes=payload["chapter_hashes"])
+            self._event(conn, root, "SYNTHESIS_RELEASED", chapter_hashes=payload["chapter_hashes"],
+                        coverage_report=coverage, coverage_report_sha256=payload["coverage_report_sha256"])
 
     def fail(self, job_id: str, attempt_id: str, fencing_token: int, error: str, retry: bool = False,
              *, category: str = 'code', retry_after_seconds: float | None = None,

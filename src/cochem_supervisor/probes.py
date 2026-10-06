@@ -19,7 +19,7 @@ import uuid
 from .monitor import classify_error, redact_diagnostic
 
 _MAX_RESPONSE = 16 * 1024 * 1024
-_KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS"}
+_KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST"}
 # This independent acceptance contract deliberately does not import the release
 # under test. Configured overrides are checked against the persisted policy.
 _DEFAULT_TIERS = {
@@ -67,7 +67,7 @@ class ControllerClient:
         self.port, self.token_file, self.timeout = port, Path(token_file), timeout
 
     def call(self, operation: str, data: dict | None = None) -> dict:
-        if not isinstance(operation, str) or not (operation in {"/health", "/submit", "/cancel"}
+        if not isinstance(operation, str) or not (operation in {"/health", "/submit", "/preflight", "/cancel"}
                 or re.fullmatch(r"/workflow/[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", operation)):
             raise ValueError("Unsupported controller operation")
         if data is not None and not isinstance(data, dict):
@@ -146,6 +146,7 @@ def configured_tiers(routing_policy: dict | None = None) -> dict:
                  "Routing policy has an invalid candidate count")
         result[tier] = [_target_identity(target) for target in targets]
         _require(len(set(result[tier])) == len(result[tier]), "Routing policy contains duplicate targets")
+        _require(result[tier] == _DEFAULT_TIERS[tier], "Routing policy must preserve the ratified Chapter 06 model order")
     return result
 
 
@@ -168,7 +169,9 @@ def configured_routing_policy(raw: dict | None = None) -> dict:
         _require(all(not set(target)-{"provider","model","reasoning_effort"} for target in targets),
                  "Routing policy targets contain undocumented fields")
 
-    def number(value, low, high, integral=False):
+    def number(value, low, high, integral=False, nullable=False):
+        if value is None and nullable:
+            return None
         _require((type(value) is int if integral else type(value) in (int,float))
                  and math.isfinite(value) and low <= value <= high, "Routing policy limit is invalid")
         return value if integral else float(value)
@@ -183,18 +186,19 @@ def configured_routing_policy(raw: dict | None = None) -> dict:
         pool = value.get("quota_pool",provider)
         _require(isinstance(pool,str) and bool(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}",pool)),
                  "Routing policy quota pool is invalid")
-        result["provider_limits"][provider] = {"max_concurrency":number(value.get("max_concurrency",2),1,64,True),
+        result["provider_limits"][provider] = {"max_concurrency":number(value.get("max_concurrency",20 if provider=="claude" else None),1,20 if provider=="claude" else 1000000,True,True),
                                                  "quota_pool":pool}
-    pools = raw.get("quota_pool_limits",{provider:2 for provider in ("codex","claude","gemini")})
-    _require(isinstance(pools,dict), "Routing policy quota limits are invalid")
+    _require(result["provider_limits"]["claude"]["max_concurrency"] is not None, "Claude requires its twenty-agent ceiling")
+    pools = raw.get("quota_pool_limits",{provider:None for provider in ("codex","claude","gemini")})
+    _require(isinstance(pools,dict) and all(isinstance(pool,str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}",pool) for pool in pools), "Routing policy quota limits are invalid")
     for pool in {entry["quota_pool"] for entry in result["provider_limits"].values()}:
         _require(pool in pools, "Routing policy quota pool has no configured limit")
-        result["quota_pool_limits"][pool] = number(pools[pool],1,64,True)
+        result["quota_pool_limits"][pool] = number(pools[pool],1,1000000,True,True)
     keys = {provider+":"+model+(":"+effort if effort else "") for entries in tiers.values() for provider,model,effort in entries}
     keys.add("gemini:gemini-3.1-pro")
     limits = raw.get("model_limits",{})
     _require(isinstance(limits,dict) and not set(limits)-keys, "Routing policy model limits are invalid")
-    result["model_limits"] = {key:number(limits.get(key,1),1,64,True) for key in keys}
+    result["model_limits"] = {key:number(limits.get(key),1,1000000,True,True) for key in keys}
     overrides = raw.get("failure_cooldowns",{})
     _require(isinstance(overrides,dict) and not set(overrides)-set(cooldowns), "Routing policy failure cooldowns are invalid")
     result["failure_cooldowns"] = {key:number(overrides.get(key,value),0,86400) for key,value in cooldowns.items()}
@@ -275,12 +279,12 @@ def verify_routing_assignment(job: dict, routing_policy: dict | None = None) -> 
     _require(score_details.get("tier") == tier and type(route.get("score")) is int
              and route.get("score") == score and route.get("tier") == tier,
              "Routing complexity score and tier disagree")
-    expected = [("gemini", "gemini-3.1-pro", None)] if job.get("kind") == "SYNTHESIS" else expected_tiers[tier]
+    expected = expected_tiers[tier]
     _require(isinstance(candidates, list) and [_target_identity(target) for target in candidates] == expected,
              "Persisted routing candidates differ from configured score band")
     for target, (provider,model,effort) in zip(candidates,expected):
         key = provider+":"+model+(":"+effort if effort else "")
-        _require(target.get("key") == key and type(target.get("max_concurrency")) is int
+        _require(target.get("key") == key and type(target.get("max_concurrency")) is type(expected_policy["model_limits"][key])
                  and target.get("max_concurrency") == expected_policy["model_limits"][key]
                  and target.get("quota_pool") == expected_policy["provider_limits"][provider]["quota_pool"],
                  "Persisted routing target limits differ from configured policy")
@@ -353,7 +357,7 @@ def verify_smoke_workflow(workflow: dict, provider_models: dict, routing_policy:
                  "Smoke acceptance prohibits multiple native dispatches")
         _require(receipt.get("provider") == provider and receipt.get("subscription_verified") is True,
                  "Smoke worker provider or subscription mode is unverified")
-        _require("execution_kind" not in receipt, "Emulator/test receipt markers cannot establish native smoke acceptance")
+        _require(receipt.get("execution_kind")=="native_cli", "Emulator/test receipt markers cannot establish native smoke acceptance")
         _require(type(receipt.get("pid")) is int and 0 < receipt["pid"] <= 0xFFFFFFFF
                  and type(receipt.get("exit_code")) is int and receipt["exit_code"] == 0,
                  "Smoke worker lacks successful native process metadata")
@@ -585,4 +589,98 @@ def run_smoke_workflow(config: dict, client: ControllerClient, report_file: str 
                 report["cancellation_error"] = "Controller cancellation could not be confirmed"
         report["finished_at"] = time.time()
         _save_report(Path(report_file), report)
+    return report
+
+
+def verify_acceptance_preflight(workflow, routing_policy=None):
+    """One native routed response is a live handoff smoke, not full product acceptance."""
+    _require(isinstance(workflow,dict) and workflow.get('status')=='COMPLETED','Live preflight did not complete')
+    jobs=workflow.get('jobs',[])
+    children=[job for job in jobs if job.get('kind')!='MACRO_PLANNING_REQUEST']
+    _require(len(jobs)==2 and len(children)==1 and children[0].get('kind')=='PREFLIGHT_REQUEST',
+             'Live acceptance preflight must contain exactly one native task')
+    job=children[0]
+    root=workflow.get('root',{})
+    _require(root.get('job_id')==workflow.get('workflow_id') and root.get('kind')=='MACRO_PLANNING_REQUEST' and
+             root.get('status')=='COMPLETED' and job.get('workflow_id')==workflow['workflow_id'] and
+             job.get('parent_job_id')==workflow['workflow_id'],'Live preflight ownership is inconsistent')
+    _require(job.get('status')=='COMPLETED' and job.get('output')=={'ready':True},'Live preflight output is unverified')
+    assignment=verify_routing_assignment(job,routing_policy)
+    route=job['routing'];receipt=job['receipt']
+    _require(type(route.get('dispatches')) is int and 1<=route['dispatches']<=3 and
+             type(route.get('max_dispatches')) is int and 1<=route['max_dispatches']<=3,
+             'Live preflight native dispatch budget is unverified')
+    _require(receipt.get('execution_kind')=='native_cli' and receipt.get('subscription_verified') is True and
+             type(receipt.get('pid')) is int and receipt['pid']>0 and type(receipt.get('exit_code')) is int and receipt.get('exit_code')==0 and
+             type(receipt.get('process_creation_filetime')) is int and receipt['process_creation_filetime']>0 and
+             receipt.get('process_identity_source')=='owned_windows_process_handle' and
+             isinstance(receipt.get('session_id'),str) and bool(receipt['session_id']) and
+             receipt.get('output_sha256')==_digest({'ready':True}) and job.get('output_sha256')==receipt['output_sha256'] and
+             bool(re.fullmatch('[a-f0-9]{64}',receipt.get('stdout_sha256',''))),
+             'Live preflight lacks process-derived subscription/output evidence')
+    _require(receipt.get('reported_model') in (None,assignment['model']) and
+             (assignment['provider']!='gemini' or receipt.get('reported_model')==assignment['model']),
+             'Live preflight native model metadata contradicts its route')
+    return {'passed':True,'workflow_id':workflow['workflow_id'],'native_dispatches':route['dispatches'],
+            'accepted_result_limit':1,'native_dispatch_limit':route['max_dispatches'],
+            'receipt':{**assignment,'pid':receipt['pid'],'session_id':receipt['session_id'],
+                'reported_model':receipt.get('reported_model'),'stdout_sha256':receipt['stdout_sha256']},
+            'scope':'One real subscription-CLI handoff; complete planning/coding launch acceptance remains separate.'}
+
+
+def run_acceptance_preflight(config,client,report_file,transaction_id,heartbeat=lambda:True):
+    """Idempotent per-deployment live smoke; at most three durable native dispatches."""
+    _require(isinstance(transaction_id,str) and bool(re.fullmatch('[a-f0-9]{32}',transaction_id)),
+             'Acceptance preflight requires the durable deployment journal identity')
+    path=Path(report_file)
+    identifier='repair-smoke-'+transaction_id
+    timeout=min(300,config.get('smoke_timeout_seconds',300))
+    _require(type(timeout) in (int,float) and math.isfinite(timeout) and timeout>0,'Invalid smoke deadline')
+    existed=path.exists()
+    if existed:
+        _require(not path.is_symlink() and path.stat().st_size<=1024*1024,'Smoke receipt must be a bounded private ordinary file')
+        previous=_json(path.read_text(encoding='utf-8'))
+        _require(previous.get('workflow_id')==identifier and previous.get('transaction_id')==transaction_id,
+                 'Smoke receipt belongs to a different deployment transaction')
+        started=previous['started_at'];deadline=previous['deadline_at']
+    else:
+        started=time.time();deadline=started+timeout
+    report={'passed':False,'workflow_id':identifier,'transaction_id':transaction_id,'started_at':started,
+        'deadline_at':deadline,'native_dispatch_limit':3,'accepted_result_limit':1,
+        'budget_scope':'Separate durable deployment acceptance smoke; generation/review remain in repair ledger.'}
+    _save_report(path,report)  # Persist identity/deadline before a request can spend quota.
+    submitted=False;completed=False
+    try:
+        _require(heartbeat() is True,'Supervisor lease lost before live preflight')
+        submitted=True
+        # After any attempted submission, never recreate a missing workflow:
+        # a restored/lost primary database must not refund the smoke budget.
+        workflow=(client.call('/workflow/'+identifier) if existed else
+                  client.call('/preflight',{'workflow_id':identifier}))
+        while True:
+            _require(workflow.get('workflow_id')==identifier,'Live preflight returned the wrong workflow')
+            completed=workflow.get('status')=='COMPLETED'
+            if completed:
+                report.update(verify_acceptance_preflight(workflow,config.get('pipeline_routing')))
+                break
+            if workflow.get('status')=='FAILED':
+                report.update(_failed_workflow_evidence(workflow))
+                raise RuntimeError('Live deployment preflight failed')
+            if time.time()>=deadline or heartbeat() is not True:
+                raise TimeoutError('Live deployment preflight exceeded its persisted deadline')
+            time.sleep(min(.2,max(0,deadline-time.time())))
+            workflow=client.call('/workflow/'+identifier)
+    except Exception as exc:
+        report.update(error_type=type(exc).__name__,error=redact_diagnostic(str(exc)))
+        if 'failure_category' not in report:
+            report['failure_category']='compatibility' if completed else 'provider' if isinstance(exc,TimeoutError) else classify_error(str(exc))['category']
+    finally:
+        if submitted and not completed:
+            try:
+                result=client.call('/cancel',{'workflow_id':identifier})
+                report['unfinished_work_cancelled']=result.get('status') in ('FAILED','COMPLETED')
+            except Exception as exc:
+                report['cancellation_error_type']=type(exc).__name__
+        report['finished_at']=time.time()
+        _save_report(path,report)
     return report

@@ -105,6 +105,9 @@ def main():
     for name in ('doctor','provision-execution'):
         deployment=commands.add_parser(name)
         deployment.add_argument('--config',required=True)
+    preview=commands.add_parser('upgrade-preview')
+    preview.add_argument('--current-config',required=True)
+    preview.add_argument('--proposed-config',required=True)
     for name in ('mcp','submit','status','cancel','health','projects','code','code-status','code-cancel','code-resume',
                  'knowledge-search','knowledge-read','knowledge-status','knowledge-refresh'):
         command=commands.add_parser(name)
@@ -139,6 +142,10 @@ def main():
         report=execution_readiness(load_config(args.config),provision=args.command=='provision-execution')
         print(json.dumps(report,indent=2,ensure_ascii=False))
         raise SystemExit(0 if report['ready'] else 1)
+    if args.command=='upgrade-preview':
+        from .upgrade_preview import upgrade_preview
+        print(json.dumps(upgrade_preview(args.current_config,args.proposed_config),indent=2,ensure_ascii=False))
+        return
     config=json.loads(Path(args.client_config).read_text(encoding='utf-8-sig'))
     client=ControlClient(config.get('port',47824),config['token_file'])
     if args.command=='mcp':

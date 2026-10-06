@@ -2,9 +2,9 @@
 
 Only the controller can create a workspace descriptor. Every native launch
 rechecks the mount's reparse data and ImDisk kernel flags, rather than trusting a
-drive label, a directory name, or a successful command. The default AWE backing
-uses physical, nonpageable RAM; ordinary ImDisk ``vm`` backing is explicitly
-reported as pageable. No provider home, credentials, prompt or private ledger
+drive label, a directory name, or a successful command. Adopted drives may use
+verified AWE nonpageable RAM or explicitly reported pageable ``vm`` RAM. Newly
+managed directory mounts default to AWE. No provider home, credentials or private ledger
 is copied into this volume.
 """
 from __future__ import annotations
@@ -26,7 +26,7 @@ import uuid
 from typing import Mapping
 
 
-DEFAULT_MOUNT = r"D:\__CoChem\__agentic\.scripts\tdd_runs"
+DEFAULT_MOUNT = "R:\\"
 _SLOT = re.compile(r"[A-Za-z][A-Za-z0-9_-]{0,63}\Z")
 _RESERVED_NAMES = {"CON", "PRN", "AUX", "NUL", *(f"{prefix}{number}" for prefix in ("COM", "LPT") for number in range(1, 10))}
 _REPARSE_TAG_MOUNT_POINT = 0xA0000003
@@ -55,19 +55,33 @@ class RamdiskConfig:
     size_mb: int = 8192
     min_free_mb: int = 512
     reserve_host_memory_mb: int = 4096
-    backing: str = "awe"
+    backing: str = "auto"
     imdisk_executable: str = r"C:\Windows\System32\imdisk.exe"
     claude_project_cache: bool = True
+    lifecycle: str = "auto"
+    startup_wait_seconds: int = 120
+
+    @property
+    def adopted_drive(self) -> bool:
+        return len(PureWindowsPath(self.mount_root).parts) == 1
 
     def __post_init__(self):
         if type(self.enabled) is not bool or type(self.claude_project_cache) is not bool:
             raise ValueError("RAM disk enable/cache settings must be booleans")
         path = PureWindowsPath(self.mount_root)
         if (not path.is_absolute() or not re.fullmatch(r"[A-Za-z]:", path.drive)
-                or len(path.parts) < 4 or any(part in {"..", "."} for part in path.parts)
+                or len(path.parts) not in (1,) and len(path.parts) < 4
+                or any(part in {"..", "."} for part in path.parts)
                 or any(any(char in part for char in ':*?"<>|') for part in path.parts[1:])
                 or any(c in self.mount_root for c in ("\x00", "\r", "\n"))):
-            raise ValueError("RAM disk requires a dedicated local NTFS directory mount; drive letters/UNC roots are forbidden")
+            raise ValueError("RAM disk requires an exact local drive root or dedicated NTFS directory mount")
+        if self.lifecycle not in {"auto", "adopt_existing", "managed_directory"}:
+            raise ValueError("RAM lifecycle must be auto, adopt_existing or managed_directory")
+        if ((self.lifecycle == "adopt_existing" and not self.adopted_drive)
+                or (self.lifecycle == "managed_directory" and self.adopted_drive)):
+            raise ValueError("Drive roots must be adopted; only dedicated directory mounts may be managed")
+        if type(self.startup_wait_seconds) is not int or not 0 <= self.startup_wait_seconds <= 600:
+            raise ValueError("RAM startup wait must be an integer between zero and 600 seconds")
         executable = PureWindowsPath(self.imdisk_executable)
         if (not executable.is_absolute() or executable.name.casefold() != "imdisk.exe"
                 or any(c in self.imdisk_executable for c in ("\x00", "\r", "\n"))):
@@ -79,8 +93,8 @@ class RamdiskConfig:
                 raise ValueError(f"ramdisk.{name} must be an integer between {minimum} and {maximum}")
         if self.min_free_mb >= self.size_mb:
             raise ValueError("RAM disk free-space reserve must be smaller than capacity")
-        if self.backing not in {"awe", "vm"}:
-            raise ValueError("RAM disk backing must be awe (physical RAM) or vm (pageable memory)")
+        if self.backing not in {"auto", "awe", "vm"}:
+            raise ValueError("RAM disk backing must be auto, awe (physical RAM) or vm (pageable memory)")
 
     @classmethod
     def from_dict(cls, value: Mapping | None = None):
@@ -200,20 +214,27 @@ def parse_imdisk_device(data: bytes, config: RamdiskConfig, *, target: str) -> d
         raise RamdiskError("ImDisk query device does not match mount target")
     physical = flags & 0xF00 == 0x100 and flags & 0xF000 == 0x1000
     virtual = flags & 0xF00 == 0x200
-    if not ((config.backing == "awe" and physical) or (config.backing == "vm" and virtual)):
+    allow_physical = config.backing in {"awe", "auto"}
+    allow_virtual = config.backing == "vm" or config.backing == "auto" and config.adopted_drive
+    if not ((allow_physical and physical) or (allow_virtual and virtual)):
         raise RamdiskError("ImDisk device is not the configured RAM backing type")
     if physical and filename.casefold() not in {"", r"\device\awealloc"}:
         raise RamdiskError("Unexpected AWE backing-store name")
     if virtual and filename:
         raise RamdiskError("RAM disk must not load or persist a disk image")
-    if image_offset != 0 or drive != 0 or size != config.size_mb * 1024 * 1024 or flags & 1:
+    expected_drive = ord(PureWindowsPath(config.mount_root).drive[0].upper()) if config.adopted_drive else 0
+    if image_offset != 0 or drive != expected_drive or size != config.size_mb * 1024 * 1024 or flags & 1:
         raise RamdiskError("RAM disk size, write access or drive-letter policy does not match configuration")
     return {"device_number": number, "target": target, "size_bytes": size,
-            "backing": config.backing, "nonpageable": physical, "flags": flags}
+            "backing": "awe" if physical else "vm", "configured_backing": config.backing,
+            "nonpageable": physical, "flags": flags,
+            "drive_letter": chr(drive) if drive else None}
 
 
 def imdisk_create_argv(config: RamdiskConfig) -> list[str]:
-    backing = ["-t", "file", "-o", "awe"] if config.backing == "awe" else ["-t", "vm"]
+    if config.adopted_drive:
+        raise RamdiskError("An adopted RAM drive must never be created, formatted or resized by the pipeline")
+    backing = ["-t", "vm"] if config.backing == "vm" else ["-t", "file", "-o", "awe"]
     return [config.imdisk_executable, "-a", *backing, "-s", str(config.size_mb * 1024 * 1024),
             "-m", config.mount_root, "-p", "/fs:ntfs /q /y /v:CoChemRAM"]
 
@@ -227,7 +248,7 @@ def mount_recovery_action(prior: dict | None, config: RamdiskConfig, boot_id: in
         if (not isinstance(prior, dict) or prior.get("schema") != 1
                 or prior.get("state") not in {"PREPARING", "READY"}
                 or prior.get("mount_root") != str(Path(config.mount_root))
-                or prior.get("config") != config.as_dict()
+                or not _equivalent_ledger_config(prior.get("config"), config)
                 or type(prior.get("boot_id")) is not int or prior["boot_id"] <= 0):
             raise RamdiskError("Existing RAM lifecycle ledger differs from reviewed configuration")
         if prior["state"] == "READY":
@@ -237,6 +258,14 @@ def mount_recovery_action(prior: dict | None, config: RamdiskConfig, boot_id: in
                     or type(observed.get("device_number")) is not int
                     or type(observed.get("volume_serial")) is not int):
                 raise RamdiskError("READY RAM ledger lacks native volume identity")
+    if config.adopted_drive:
+        if target is None:
+            return "WAIT_FOR_STARTUP_TASK"
+        if prior is None or prior["boot_id"] != boot_id:
+            return "ADOPT"
+        if target != prior.get("observed", {}).get("target", target):
+            raise RamdiskError("Recorded mount target changed outside the RAM lifecycle")
+        return "VERIFY"
     if target is None:
         return "CREATE"
     if prior is None:
@@ -244,6 +273,25 @@ def mount_recovery_action(prior: dict | None, config: RamdiskConfig, boot_id: in
     if target != prior.get("observed", {}).get("target", target):
         raise RamdiskError("Recorded mount target changed outside the RAM lifecycle")
     return "VERIFY" if prior["boot_id"] == boot_id else "RECREATE"
+
+
+def _equivalent_ledger_config(value, config: RamdiskConfig) -> bool:
+    """New default-only settings do not invalidate a protected older ledger."""
+    try:
+        original_fields = set(RamdiskConfig.__dataclass_fields__) - {"lifecycle", "startup_wait_seconds"}
+        if not isinstance(value, dict) or not original_fields <= value.keys():
+            return False
+        prior = RamdiskConfig.from_dict(value)
+        before, after = prior.as_dict(), config.as_dict()
+        # Managed-directory auto still means AWE; this is not a change to an
+        # existing backing policy and must not demand repeated setup on upgrade.
+        if not prior.adopted_drive and before['backing'] == 'auto':
+            before['backing'] = 'awe'
+        if not config.adopted_drive and after['backing'] == 'auto':
+            after['backing'] = 'awe'
+        return before == after
+    except (ValueError, TypeError):
+        return False
 
 
 def _native_reparse(path: str | Path) -> bytes:
@@ -268,6 +316,18 @@ def _native_reparse(path: str | Path) -> bytes:
 
 
 def _mount_target(config: RamdiskConfig) -> str:
+    if config.adopted_drive:
+        from . import windows as win
+        win.require_system()
+        query = win._api()["kernel32"].QueryDosDeviceW
+        query.restype, query.argtypes = win.DWORD, [win.LPWSTR, win.LPWSTR, win.DWORD]
+        buffer = C.create_unicode_buffer(32768)
+        win._check(query(PureWindowsPath(config.mount_root).drive, buffer, len(buffer)),
+                   "Resolve the exact adopted RAM drive through the native DOS device namespace")
+        target = buffer.value
+        if not re.fullmatch(r"\\Device\\ImDisk[0-9]{1,8}", target, re.IGNORECASE):
+            raise RamdiskError("Adopted drive is not an exact ImDisk device; ordinary disks are forbidden")
+        return target
     return parse_mount_reparse(_native_reparse(config.mount_root))
 
 
@@ -296,6 +356,8 @@ def _create_cache_junction(source: Path, target: Path) -> None:
 def _remove_stale_mount(config: RamdiskConfig, expected_target: str) -> None:
     """Remove only a verified old-boot mount link, never its target volume."""
     from . import windows as win
+    if config.adopted_drive:
+        raise RamdiskError("An externally provisioned RAM drive must never be detached by the pipeline")
     if _mount_target(config) != expected_target:
         raise RamdiskError("Stale RAM mount changed during recovery")
     api = win._api()["kernel32"]
@@ -316,6 +378,11 @@ def _native_volume(config: RamdiskConfig) -> dict:
     target = _mount_target(config)
     api = win._api()["kernel32"]
     ioctl = api.DeviceIoControl
+    # Drive adoption resolves QueryDosDevice directly; unlike directory mounts
+    # it does not call _native_reparse first. Always declare the pointer-sized
+    # handle signature here, independently of the mount-resolution path.
+    ioctl.restype, ioctl.argtypes = win.BOOL, [win.HANDLE, win.DWORD, win.HANDLE, win.DWORD,
+        win.HANDLE, win.DWORD, C.POINTER(win.DWORD), win.HANDLE]
     get_volume = api.GetVolumeInformationW
     get_volume.restype, get_volume.argtypes = win.BOOL, [win.LPWSTR, win.LPWSTR, win.DWORD,
         C.POINTER(win.DWORD), C.POINTER(win.DWORD), C.POINTER(win.DWORD), win.LPWSTR, win.DWORD]
@@ -625,19 +692,20 @@ class RamdiskManager:
         mount = Path(self.config.mount_root)
         ordinary_tree(self.private_root)
         win.validate_private_directory(self.private_root)
-        missing_parents = []
-        parent = mount.parent
-        while not parent.exists() and not parent.is_symlink():
-            missing_parents.append(parent)
-            parent = parent.parent
-        ordinary_tree(parent)
-        win._validate_control_ancestors(parent)
         worker_sids = [win._sid_text(win._account_sid(identity.name)) for identity in self.identities.values()]
-        for parent in reversed(missing_parents):
-            parent.mkdir()
-            win._protect_boundary(parent, worker_sids)
-        ordinary_tree(mount.parent)
-        win._validate_control_ancestors(mount.parent)
+        if not self.config.adopted_drive:
+            missing_parents = []
+            parent = mount.parent
+            while not parent.exists() and not parent.is_symlink():
+                missing_parents.append(parent)
+                parent = parent.parent
+            ordinary_tree(parent)
+            win._validate_control_ancestors(parent)
+            for parent in reversed(missing_parents):
+                parent.mkdir()
+                win._protect_boundary(parent, worker_sids)
+            ordinary_tree(mount.parent)
+            win._validate_control_ancestors(mount.parent)
         win.validate_code_path(self.config.imdisk_executable)
         if self.private_root == mount or mount in self.private_root.parents or self.private_root in mount.parents:
             raise RamdiskError("RAM and persistent private state must be disjoint")
@@ -660,12 +728,20 @@ class RamdiskManager:
                     raise RamdiskError("Invalid RAM mount lifecycle ledger")
                 prior = json.loads(state_path.read_text(encoding="utf-8"))
             boot_id = win.current_boot_identity()
+            if self.config.adopted_drive:
+                deadline = time.monotonic() + self.config.startup_wait_seconds
+                while not mount.exists():
+                    if time.monotonic() >= deadline:
+                        raise RamdiskCapacityError(
+                            "Waiting for the existing Windows startup task to provide the reviewed RAM drive; "
+                            "the pipeline never formats or replaces an adopted drive")
+                    time.sleep(min(0.5, max(0, deadline - time.monotonic())))
             try:
                 metadata = mount.lstat()
             except FileNotFoundError:
                 mount.mkdir()
                 metadata = mount.lstat()
-            mounted = bool(getattr(metadata, "st_file_attributes", 0) & 0x400)
+            mounted = self.config.adopted_drive or bool(getattr(metadata, "st_file_attributes", 0) & 0x400)
             target = _mount_target(self.config) if mounted else None
             action = mount_recovery_action(prior, self.config, boot_id, target)
             if action == "RECREATE":
@@ -686,7 +762,7 @@ class RamdiskManager:
                 if completed.returncode:
                     raise RamdiskError("ImDisk provisioning failed; original files remain in the before-ramdisk backup")
             observed = _native_volume(self.config)
-            if (mounted and prior.get("state") == "READY"
+            if (mounted and action == "VERIFY" and prior is not None and prior.get("state") == "READY"
                     and (observed["volume_serial"], observed["device_number"]) != (
                         prior["observed"]["volume_serial"], prior["observed"]["device_number"])):
                 raise RamdiskError("Active RAM volume was replaced without a controller lifecycle transition")
@@ -694,6 +770,8 @@ class RamdiskManager:
             # roots or enumerate sibling directories through this boundary.
             win._protect_boundary(mount, worker_sids)
             win._validate_boundary(mount, worker_sids)
+            ordinary_tree(mount.parent)
+            win._validate_control_ancestors(mount.parent)
             _no_content_index(mount, apply=True)
             for slot, identity in self.identities.items():
                 root = mount / slot
@@ -701,6 +779,8 @@ class RamdiskManager:
                     metadata = root.lstat()
                     if stat.S_ISLNK(metadata.st_mode) or getattr(metadata, "st_file_attributes", 0) & 0x400:
                         raise RamdiskError("Existing RAM slot is a link/reparse point")
+                    if self.config.adopted_drive and prior is None and any(root.iterdir()):
+                        raise RamdiskError("Existing files in an unowned RAM worker slot are preserved; use distinct worker slot names")
                 root.mkdir(exist_ok=True)
                 sid = win._sid_text(win._account_sid(identity.name))
                 win._set_acl(root, sid)
@@ -720,6 +800,8 @@ class RamdiskManager:
                         "mount_root": str(mount), "observed": observed,
                         "boot_id": boot_id, "checked_at": time.time(),
                         "backup": str(backup) if backup else None, "slots": sorted(self.workspaces),
+                        "lifecycle_action": action, "adopted_existing_drive": self.config.adopted_drive,
+                        "resize": resize_capability(self.config),
                         "auth_profiles": "persistent_native_profiles_unchanged",
                         "search_not_content_indexed": True, "defender_exact_roots_verified": True}
             self._save_state(evidence)
@@ -740,7 +822,7 @@ class RamdiskManager:
     def execution_roots(self) -> dict[str, Path]:
         return {slot: descriptor.root for slot, descriptor in self.workspaces.items()}
 
-    def inspect(self) -> dict:
+    def inspect(self, *, require_capacity=True) -> dict:
         """Read-only deployment check; never create a volume, directory or file."""
         from . import windows as win
         win.require_system()
@@ -767,11 +849,84 @@ class RamdiskManager:
         for slot, identity in self.identities.items():
             descriptor = RamWorkspace(self.config, slot, identity.name, observed["volume_serial"],
                                       observed["device_number"], self.private_root)
-            descriptor.validate(identity=identity.name, cwd=descriptor.root)
+            descriptor.validate(identity=identity.name, cwd=descriptor.root, require_capacity=require_capacity)
             if str(descriptor.root.resolve()).casefold() not in exclusions:
                 raise RamdiskError("Exact RAM execution root lacks its Defender exclusion")
             self.workspaces[slot] = descriptor
         return {**prior, "observed": observed, "inspection_only": True, "checked_at": time.time()}
+
+    def observation(self) -> dict:
+        """Attested occupancy and scratch ages; never delete active/cache data."""
+        evidence = self.inspect(require_capacity=False)
+        return {**workspace_observation(Path(self.config.mount_root),
+            [descriptor.scratch for descriptor in self.workspaces.values()], self.config),
+            'volume': evidence['observed'], 'physical_backing_attested': True}
+
+
+def resize_capability(config: RamdiskConfig) -> dict:
+    return {"mode": "fixed_capacity", "configured_bytes": config.size_mb * 1048576,
+            "dynamic_resize_supported": False,
+            "reason": "No verified non-destructive online ImDisk/AWE resize contract is available",
+            "pressure_action": "wait_for_verified_free_space_and_retry",
+            "reboot_action": "adopt_existing_startup_task_volume" if config.adopted_drive else "recover_managed_mount",
+            "repeated_administrator_setup_required": False}
+
+
+def workspace_observation(mount: Path, scratch_roots, config: RamdiskConfig, *, now=None, maximum_entries=25000) -> dict:
+    """Bounded filesystem observation; caller separately attests physical RAM.
+
+    Resident bytes are not cumulative writes or an SSD endurance claim. No
+    volume-wide disk counter can attribute unrelated host writes to this job.
+    """
+    if type(maximum_entries) is not int or not 1 <= maximum_entries <= 250000:
+        raise ValueError("RAM observation inventory bound must be between one and 250000")
+    now = time.time() if now is None else float(now)
+    usage = shutil.disk_usage(mount)
+    entries, files, total, oldest, skipped, truncated = 0, 0, 0, None, 0, False
+    for root in scratch_roots:
+        root = Path(root)
+        if root != mount and mount not in root.parents:
+            raise RamdiskError("Scratch observation escaped the admitted RAM volume")
+        stack = [root]
+        while stack:
+            item = stack.pop()
+            try:
+                metadata = item.lstat()
+                entries += 1
+                if entries > maximum_entries:
+                    truncated = True
+                    break
+                if stat.S_ISLNK(metadata.st_mode) or getattr(metadata, "st_file_attributes", 0) & 0x400:
+                    skipped += 1
+                    continue
+                if stat.S_ISDIR(metadata.st_mode):
+                    # Bound enumeration as well as metadata reads.
+                    with os.scandir(item) as children:
+                        for child in children:
+                            if len(stack) + entries >= maximum_entries:
+                                truncated = True
+                                break
+                            stack.append(Path(child.path))
+                elif stat.S_ISREG(metadata.st_mode):
+                    files += 1
+                    total += metadata.st_size
+                    oldest = metadata.st_mtime if oldest is None else min(oldest, metadata.st_mtime)
+            except FileNotFoundError:
+                # Active jobs can replace a cache while this read-only view runs.
+                continue
+        if entries >= maximum_entries:
+            break
+    return {"schema": 1, "checked_at": now, "mount_root": str(mount),
+            "capacity_bytes": usage.total, "occupied_bytes": usage.used, "free_bytes": usage.free,
+            "occupancy_fraction": usage.used / usage.total if usage.total else None,
+            "free_reserve_bytes": config.min_free_mb * 1048576,
+            "capacity_wait": usage.free < config.min_free_mb * 1048576,
+            "scratch": {"files": files, "resident_bytes": total,
+                        "oldest_file_age_seconds": max(0, now - oldest) if oldest is not None else None,
+                        "inventory_truncated": truncated, "skipped_reparse_entries": skipped},
+            "disk_write_reduction": {"bytes": None, "status": "not_measured",
+                "reason": "RAM residency proves placement; attributable persistent-write baseline is not available"},
+            "resize": resize_capability(config), "read_only": True}
 
 
 def main():

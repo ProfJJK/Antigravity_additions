@@ -1,0 +1,2821 @@
+{
+  "schema": "cochem-requirements/4.2.7",
+  "revision": "owner-amendment-2026-10-06",
+  "specification_id": "COCHEM-4.2.7",
+  "specification_sha256": "2563c33b7237f099b936a48af6545a674012fc2fb6792f2d7c343e94c9afaf83",
+  "requirements": [
+    {
+      "id": "S427-GOV-001",
+      "chapter": "01: Authority and scope",
+      "requirement": "Current explicit owner decisions take precedence over this specification, then this specification governs the active pipeline. The authoritative inputs are [the 4.2.0 planner architecture](Pipeline_4_2_0_Architecture.md), [Oracle SRS/WBS](Oracle_SRS_WBS.md), [complete telemetry dossier](full_dossier_untruncated.md), the corrected [routing specification](docs/ROUTING_4.2.4.md), and the applicable concurrency, queue, coding, knowledge and watchdog requirements listed below. The truncated [dossier](full_dossier.md) adds no conflicting authority.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/planning_governance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-GOV-002",
+      "chapter": "01: Authority and scope",
+      "requirement": "The “canonical seven-stage protocol” and “Method Matrix M-1–M-8” are withdrawn as agentic execution requirements. Method Matrix concerns chemical calculation tiers only. Their absence SHALL NOT cause `PLANNING_HOLD`, readiness failure or acceptance failure. Historical snippets and debug logs cannot create new requirements. Chemistry-specific validation applies only when a registered project explicitly requests it.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/planning_governance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-GOV-003",
+      "chapter": "01: Authority and scope",
+      "requirement": "Preserve the real ten-phase TDD evidence sequence, asymmetric SRS/WBS reconciliation, artifact protocol, fracture bounds, process containment and subscription-only inference. Every model task SHALL be submitted to a durable job board and assigned exclusively by Chapter 06, including planning, synthesis, coding, review, research, preflight and repair. The only provider-specific hard concurrency ceiling is 20 Claude CLI agents. Hardware admission is a separate configurable limit; neither Codex nor Agy inherits a Claude cap.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/planning_governance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-GOV-004",
+      "chapter": "01: Authority and scope",
+      "requirement": "The owner-approved FR009 amendment remains effective: ordinary task failures/cancellations are isolated; confirmed structural corruption triggers containment. Owner acceptance of the measured performance observations is precisely scoped in Chapter 16. No measured cloud result constitutes Windows acceptance.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/planning_governance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OPS-001",
+      "chapter": "01: Authority and scope",
+      "requirement": "Expose an authenticated per-workflow/job governing-requirements view with exact captured specification, execution-contract and routing-policy hashes plus owner amendments. Do not substitute the installed current specification for an older capture.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py",
+        "src/cochem_pipeline/planning_governance.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-ARCH-001",
+      "chapter": "02: Topology and trust boundaries",
+      "requirement": "Antigravity 2.0 is the primary GUI. Its interface submits and observes requests through authenticated MCP; the protected Windows Python Warden owns scheduling, private SQLite state, native process launch, receipts, Oracle delivery and admission. Any pipeline model task initiated by the interface uses Chapter 06. The GUI transport does not confer a Gemini-only execution role; interface prose cannot assert completion, select trusted identity or mutate controller authority.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/containers.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_containers.py"
+      ],
+      "owner_decisions": [
+        "Every model task uses board routing; Windows Python and native subscription CLIs."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ARCH-002",
+      "chapter": "02: Topology and trust boundaries",
+      "requirement": "Codex, `claude.exe` and Agy execute through their configured native CLI subscription sessions. Linux containers execute generated code/tests; they SHALL NOT run Windows PE CLIs, receive subscription credentials, mount the private job board, or access the Docker socket. WSL2 support must name the actual configured executable/environment; a path translation is not proof that a CLI runs there.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/containers.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_containers.py"
+      ],
+      "owner_decisions": [
+        "Every model task uses board routing; Windows Python and native subscription CLIs."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ARCH-003",
+      "chapter": "02: Topology and trust boundaries",
+      "requirement": "SYSTEM/controller, isolated worker identities, repair identity and operator retain distinct authorities. Workers cannot read sibling workspaces/profiles, controller credentials, watermark tables or protected repair tests. The Windows Docker API pipe server identity and worker/repair denial must be physically verified. Protected roots reject untrusted owners/writers, unexpected links/reparse points and hard links.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/containers.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_containers.py"
+      ],
+      "owner_decisions": [
+        "Every model task uses board routing; Windows Python and native subscription CLIs."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ARCH-004",
+      "chapter": "02: Topology and trust boundaries",
+      "requirement": "Persist SQLite/WAL, policies, receipts, source/artifact hashes, release journals, repair budgets and authentication outside RAM scratch. Active Windows SQLite remains on a filesystem with verified locking; never share its live WAL through a Windows/Linux mount. Backups use SQLite-consistent operations, never a naked live `.db` copy.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/containers.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_containers.py"
+      ],
+      "owner_decisions": [
+        "Every model task uses board routing; Windows Python and native subscription CLIs."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-002",
+      "chapter": "02: Topology and trust boundaries",
+      "requirement": "Generate a deployment diagram from actual attested identities, paths, pipes and Docker engine evidence, displaying configured and observed values separately and flagging unknown or drifting facts.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Every model task uses board routing; Windows Python and native subscription CLIs."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-STATE-001",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Controller transactions are the sole state authority. Each job has immutable request identity, workflow/parent relationship and kind; every executable attempt receives a fresh attempt ID, increasing fence, lease, worker/seat and captured route. Idempotent resubmission of the same ID/payload returns its existing workflow; different payload reuse is rejected. Workflow roots summarize children and do not consume an execution seat merely by existing.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-STATE-002",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Use SQLite WAL, `synchronous=NORMAL`, `busy_timeout=5000` and atomic `BEGIN IMMEDIATE` claims. Default lease is 1,800 seconds, supported maximum 3,600; heartbeat interval is at most five seconds and at most one-third of the lease. Do no inference, external retrieval or slow filesystem/subprocess operation inside a write transaction. Read-only monitors have no mutation authority.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-STATE-003",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Every transition leaving active execution clears both lease owner and expiry in the same transaction. Late zombie results, duplicate differing outputs, sibling identity claims and missing receipt bindings are rejected by controller checks and database constraints. Identical accepted completion replay is idempotent. Cleanup uncertainty retains the physical reservation/quarantine; it never frees a possibly live seat.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-STATE-004",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Availability waits are distinct from ordinary execution failures. Default ordinary failure budget is three; exhaustion leaves a terminal poison-pill hold. Dispatch, routing cycle/time and repair budgets are separate. Scheduler progress is not equivalent to completed work. Crash recovery reconciles launch, cleanup, output and integration journals without duplicate acceptance.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-STATE-005",
+      "chapter": "03: Durable job state machine",
+      "requirement": "The coding execution contract SHALL be controller-owned, versioned and hashed (`cochem-planning/4.2.7`, specification `COCHEM-4.2.7`). Bind each stage to the permitted prior workflow state, phase, leaf, cycle, source snapshot and accepted predecessor job/receipt/evidence identities. Include `ExecutionContract.json` in the exact audited planning artifacts; recheck transition bindings before completion and final acceptance. A caller boolean cannot attest execution.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-STATE-006",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Coding aggregate labels such as `PLANNING`, `RESEARCHING`, `TESTING` and `READY_TO_INTEGRATE` are progress projections over real jobs. They neither replace the above statuses nor grant authority. A legacy, never-executed phantom-only `PLANNING_HOLD` may migrate through authenticated resume with a reason, original baseline retained and explicit migration evidence; real revision/no-progress/research holds remain enforced.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_planning_governance.py",
+        "pipeline_tests/test_routing_store.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OPS-003",
+      "chapter": "03: Durable job state machine",
+      "requirement": "Expose a read-only transition timeline with persisted state, prerequisites, dependencies, eligibility times and the exact current blocker; unknown causes remain unknown.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Durable budgets and captured contracts remain preserved."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-PLAN-001",
+      "chapter": "04: Planning DAG",
+      "requirement": "One ordinary planning request creates a `MACRO_PLANNING_REQUEST` root and `MANIFEST_GENERATOR` node. The manifest declares bounded, distinct chapters, their ownership, requirements and WBS work. Submission creates exactly one logical blocked `SYNTHESIS` barrier. Valid manifest completion atomically creates the `CHAPTER_DRAFT` siblings and binds their coverage to that existing barrier. Invalid scatter rolls back completely.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PLAN-002",
+      "chapter": "04: Planning DAG",
+      "requirement": "Chapter workers may run concurrently within Chapter 07 admission; each owns exactly one chapter. They cannot read sibling chapters, submit a sibling's output or impersonate synthesis. Accept only structured outputs containing `requirements_traced`, `wbs_tasks_defined` and `artifact_uri`, bound to actual immutable artifact bytes and native receipts.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PLAN-003",
+      "chapter": "04: Planning DAG",
+      "requirement": "Release synthesis only when every declared chapter is accepted `COMPLETED` and its deterministic coverage report accounts for the requested requirements and owning chapters. Synthesis input contains exact accepted chapter IDs/output hashes and the coverage report/hash. Concurrent final completions create exactly one logical gather; crashes cannot duplicate accepted output. Gaps block gather; intended overlapping ownership is reported for reconciliation.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PLAN-004",
+      "chapter": "04: Planning DAG",
+      "requirement": "Synthesis is an ordinary complexity-scored model job on the same board, using the exact Chapter 06 tier order, availability fallbacks, durable quota/backlog holds and preferred-model retry after backoff. There is no fixed Gemini, single-model or model-specific synthesis exception. The completion receipt must match the actually reserved provider/model/effort and native invocation; model prose is never identity evidence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PLAN-005",
+      "chapter": "04: Planning DAG",
+      "requirement": "This document-planning DAG and the coding plan/review flow in Chapter 05 are distinct supported workflows. A requested coding task needs an approved executable fracture plan; a standalone planning request produces a document. Neither silently counts the other's output as executed code, accepted tests or integrated Git work.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PLAN-006",
+      "chapter": "04: Planning DAG",
+      "requirement": "Acceptance must demonstrate one request without repeated delegation; six chapters with at least two overlapping accepted native runs while obeying the configured hardware/provider limits; database rejection of sibling submission; one synthesis under concurrent completion; and crash recovery without duplicate accepted output. Exercise synthesis fallback with real receipt evidence when a preferred route is unavailable.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/document_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py",
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_acceptance_report.py",
+        "pipeline_tests/test_document_governance.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-004",
+      "chapter": "04: Planning DAG",
+      "requirement": "Persist a deterministic pre-synthesis requirement-coverage report identifying every requested requirement, all owning chapters and overlaps or gaps, bound to accepted chapter output hashes. Coverage is a gather prerequisite.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_store.py"
+      ],
+      "owner_decisions": [
+        "Synthesis uses Chapter 06 without a Gemini-only exception."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-CODE-001",
+      "chapter": "05: Coding execution",
+      "requirement": "Snapshot a registered Git project and capture allowed source/test paths, exact baseline commit, image/test policy and governing execution contract. `CODE_PLAN` produces an SRS skeleton/chapters, requirements, reciprocal acceptance/test traceability, acyclic `graph.json`/`graph.mmd`, `FractureManifest.json` and WBS leaf groups. The number 20 SHALL NOT limit leaves, coding batches, Codex or Agy. Groups remain bounded by explicit input/context safety limits. Each SRS/chapter is at most 400 lines; each leaf has one implementation target and a planned 20–100-line context. Every requirement and criterion is covered.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-002",
+      "chapter": "05: Coding execution",
+      "requirement": "`CODE_PLAN_REVIEW` independently audits every exact artifact/plan hash and requirement. Producer and reviewer cannot have the same actual provider/model pair. Only `PASS` enters implementation. `REVISE`/`FAIL` retain actionable artifact-bound findings, exact producer receipt identity and immutable revision history; bounded smart revisions must make relevant progress. No-progress/exhausted revision budgets create a real hold.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-003",
+      "chapter": "05: Coding execution",
+      "requirement": "Initial and recovery research must cite physical source evidence, bind the current plan or actual failures, and identify a concrete strategy. If a reviewed external-source policy is configured, collect two to eight literal HTTPS sources under bounded TLS/proxy/redirect/address/byte/deadline rules and verify quotations/requirement coverage. Missing mandatory project research remains a hold. Generic coding does not require chemistry databases or an agentic Method Matrix.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-004",
+      "chapter": "05: Coding execution",
+      "requirement": "Preserve the complete-file artifact transport markers while independently enforcing real changes. Per leaf, combined source/test Git additions plus deletions are at most 100; physical context totals 20–100 lines. Reject >500-line or >80% existing-file rewrites, including short files; reject padding used to pretend compliance. Never treat complete-file transport as whole-file rewrite permission.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-005",
+      "chapter": "05: Coding execution",
+      "requirement": "A test-first gate requires physical assertion RED, not a model claim, skipped run, collection failure or `preserve_behavior` flag. GREEN requires exact sealed tests, verified source/image/policy, genuine parsed execution results and confirmed container cleanup. Test execution plus report collection shares a single 30-second deadline. Output/logs are bounded; tests cannot silently mutate accepted source.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-006",
+      "chapter": "05: Coding execution",
+      "requirement": "Per-leaf Execute→Audit→Repair is bounded to ten cycles. Three consecutive failures stop generation and trigger research/triage of the real failures; a pivot must change strategy. At most three methodological pivots are permitted. Exhaustion emits immutable failure/source/test/research evidence and `Physics_Autopsy_Report.md`; the historical label does not assert scientific impossibility for general code.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-007",
+      "chapter": "05: Coding execution",
+      "requirement": "Repair prompts contain a conservative diagnostic projection below 2,000 bytes, including minor findings; retain full evidence privately. Test-assumption pivots must reset to the leaf baseline and establish new physical RED. Auth/resource/availability holds cannot be disguised as code defects or consume the wrong budget.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-008",
+      "chapter": "05: Coding execution",
+      "requirement": "Use real baseline/result commits, hashed standard patches, private-index `git apply --cached`, exact tree verification and serialized fenced ref compare-and-swap. Preserve dirty/untracked operator files. Auto-integration disabled, changed baseline or a checked-out target branch produces `READY_TO_INTEGRATE`; only a verified applied integration intent permits `COMPLETED`.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-009",
+      "chapter": "05: Coding execution",
+      "requirement": "Preserve the phase evidence ledger P1 PLAN, P2 RESEARCH, P3 TEST_FIRST_RED, P4 CODE, P5 TEST, P6 AUDIT, P7 IMPROVE, P8 PLAN_NEXT, P9 REFINE, P10 TEST_AND_AUDIT. Each accepted phase is tied to real job/attempt/receipt/evidence identities and leaf/cycle lineage; phase labels alone do not prove work.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CODE-010",
+      "chapter": "05: Coding execution",
+      "requirement": "Before final approval, Git integration intent or completion, enter `RECONCILING_SRS` after P10 tests and file audits. Dispatch a Chapter 06 review that excludes the producing provider/model. Bind its receipt to the exact captured SRS chapters, WBS leaf, requirements, acceptance criteria/test identities, source snapshot, patch, tests and file-audit hashes. Explicitly reconcile each requirement against the planned and implemented behavior. Final workflow reconciliation includes all captured SRS chapters and WBS leaves, with earlier sealed regressions included in the final physical GREEN run. Missing coverage, unplanned divergence or a mismatching evidence commitment blocks approval and triggers bounded remediation; a generic PASS cannot satisfy reconciliation.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding.py",
+        "src/cochem_pipeline/coding_store.py",
+        "src/cochem_pipeline/coding_plan.py",
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_git.py",
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_plan.py",
+        "pipeline_tests/test_coding_workflow.py",
+        "pipeline_tests/test_coding_reconciliation.py",
+        "pipeline_tests/test_coding_boundaries.py",
+        "pipeline_tests/test_coding_acceptance.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-005",
+      "chapter": "05: Coding execution",
+      "requirement": "Before dispatch, produce leaf-size estimates from real registered source/context and planned change bounds. If bounds cannot be met, require a proposed further fracture and bounded plan revision rather than relaxing physical context/change gates.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding_reconciliation.py",
+        "src/cochem_pipeline/coding_store.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_reconciliation.py"
+      ],
+      "owner_decisions": [
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-ROUTE-001",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "The controller calculates and stores score/rationale from task content; submitted model, score, tier or identity fields confer no authority. Current deterministic scoring starts at one, adds two for non-chapter task kinds, one per estimated-token threshold crossed (512/2,048/8,192), requirements threshold (4/12), dependency threshold (1/4), work breadth threshold (3/8) and distinct risk-group threshold (1/3), then caps at ten. Estimates are scheduling heuristics, not measured intelligence or tokenizer output. Version/hash the captured policy.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/routing.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/failures.py",
+        "src/cochem_pipeline/inference_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_routing_policy.py",
+        "pipeline_tests/test_routing_store.py",
+        "pipeline_tests/test_routing_integration.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ROUTE-002",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "Attempt the exact tier order above for every model job, without exceptions. Busy reservation, unavailable provider, quota, auth, backlog or capability incompatibility advances to the next eligible candidate; record the actual reason. If every candidate is unavailable, persist exponential backoff (default 30 seconds, cap 600, ±20% deterministic jitter), then restart at the preferred model. No invented complexity-10 third route, paid API fallback, silent model alias, fixed-model override or tight resubmission loop.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/routing.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/failures.py",
+        "src/cochem_pipeline/inference_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_routing_policy.py",
+        "pipeline_tests/test_routing_store.py",
+        "pipeline_tests/test_routing_integration.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ROUTE-003",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "Enforce at most 20 concurrent Claude CLI agent reservations, across its models and efforts. Codex and Agy have no assumed provider concurrency ceiling. Optional reviewed provider/model/effort/shared-pool operational limits may be lower than measured capabilities but SHALL be labelled configuration, not provider facts; default model/pool reservations have no artificial one/two cap. Current live admission limits govern new attempts, with their own captured admission-policy digest; an older task policy does not retain retired default one/two caps. Immutable task model order and already active reservations remain evidence-bound. Hardware admission and actual provisioned isolated identities still bound execution. Backlog, quota and cooldown observations distinguish actual evidence from assumptions. Never report remaining credits from a concurrency counter.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/routing.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/failures.py",
+        "src/cochem_pipeline/inference_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_routing_policy.py",
+        "pipeline_tests/test_routing_store.py",
+        "pipeline_tests/test_routing_integration.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ROUTE-004",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "Persist quota/auth/configuration/compatibility holds (default 300 seconds) and ordinary busy/backlog/provider/resource cooldowns (default 30 seconds). Classify structured CLI failures, preserve bounded same-model timeout/protocol retry, and distinguish availability cycles from ordinary failures. Optional dispatch/cycle/elapsed ceilings remain enforced across restart; zero means no operator-supplied ceiling, not permission to omit delay.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/routing.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/failures.py",
+        "src/cochem_pipeline/inference_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_routing_policy.py",
+        "pipeline_tests/test_routing_store.py",
+        "pipeline_tests/test_routing_integration.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ROUTE-005",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "Route resumes require authentication and a reason; never reset captured policy or consumed budgets. Receipt provider/model/effort and reservation must match dispatch. Independent review excludes the producing provider/model even when fallback is necessary. Record actual token usage when reported; explicit estimates remain labelled estimates and unknown credit usage remains unknown.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/routing.py",
+        "src/cochem_pipeline/routing_store.py",
+        "src/cochem_pipeline/failures.py",
+        "src/cochem_pipeline/inference_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_routing_policy.py",
+        "pipeline_tests/test_routing_store.py",
+        "pipeline_tests/test_routing_integration.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-006",
+      "chapter": "06: Complexity routing and spillover",
+      "requirement": "Expose a queue panel with score/rationale, ordered candidates, next eligible route, cooldown expiry and observed-versus-assumed quota evidence. Starvation aging remains a measured follow-up, not an unreviewed change to model order.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-HOST-001",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Use one configurable hardware admission ceiling across native attempts and Docker `PREPARING`/prepared/active reservations. The conservative initial setting is four until the host is measured; it is not a universal provider maximum. Increasing configured capacity requires sufficient provisioned isolated identities and measured resource headroom. SQLite admission and the Docker registry reconcile under one shared lock. Internal helpers/subagents cannot create unaccounted inference; every task is submitted and Chapter 06 routed. Pressure may lower capacity to zero and retries cannot override it.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-HOST-002",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Collect actual CPU utilization/count/temperature, available RAM, Windows commit headroom, GPU utilization/VRAM/temperature, required-volume free space and disk throughput/IOPS. Missing required sensors cause a visible admission hold, never a zero-valued healthy reading. CPU-only/sensor exceptions require an explicitly configured host profile and cannot claim the omitted guarantee.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-HOST-003",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "CPU/RAM admission bands scale within the configured hardware ceiling: below 30% CPU/>16 GiB free admits full configured capacity, below 50%/>8 GiB floor(3N/4), below 70%/>4 GiB floor(N/2), below 85%/>2 GiB floor(N/4), each with a minimum of one for positive configured N, otherwise zero. Further bound seats by measured memory/commit reserves, physical CPUs, per-attempt caps and available isolated identities. At initial four seats these bands remain 4/3/2/1. Reserve the larger permitted native/container memory cap per seat; do not subtract already measured RAM-disk allocation twice.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-HOST-004",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Default protections: CPU pause/critical 95%/99%; CPU temperature 85/95°C; GPU temperature 85/92°C; VRAM throttle above 80%, pause at 90%, sustained critical at 98%; free RAM reserve/critical 1,024/256 MiB; free commit 6,144/512 MiB; disk reserve/critical 512/128 MiB; disk I/O pause above 120 MiB/s or 4,000 IOPS. These are configurable protective defaults, not invented historic host measurements. Immediate thermal/critical reserve trips override state gating; sustained pressure confirms after five seconds. Recovery requires ten healthy seconds and three samples, increasing by one seat.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-HOST-005",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Before resuming a native child, verify its Windows Job Object limits: aggregate 2,048 MiB memory, 20% CPU rate and 16 processes by default, kill-on-close, E-core affinity and BelowNormal priority. Resolve E cores from actual topology rather than assume `0x00FF0000`. Warden itself uses verified E-core/BelowNormal scheduling. Set no-window/new-process-group flags and separate 100–500 ms launch/poll jitter. Node old-space is at most 512 MiB; this is not a total process/heap cap and does not govern Rust/Bun.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-HOST-006",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Warden monitors its own measured RSS/CPU; violation of 50 MiB/5% pauses admission. Required native acceptance includes <15% actual desktop-heap allocation use and a 48-hour handle/resource stability run. USER/GDI counts cannot substitute for desktop-heap used/capacity evidence. Emergency teardown verifies physical descendants/container removal before any reservation is released.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/hardware_guard.py",
+        "src/cochem_pipeline/resource_telemetry.py",
+        "src/cochem_pipeline/resource_limits.py",
+        "src/cochem_pipeline/controller_guard.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_hardware_guard.py",
+        "pipeline_tests/test_resource_telemetry.py",
+        "pipeline_tests/test_resource_limits.py",
+        "pipeline_tests/test_controller_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native",
+        "Windows-48-hour"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts. Complete the 48-hour resource/handle run and actual desktop-heap evidence."
+    },
+    {
+      "id": "S427-OPS-007",
+      "chapter": "07: Shared concurrency and hardware",
+      "requirement": "Plot observed admission capacity beside limiting resource measurements and hold reasons, distinguishing intentional throttle from lack of useful progress. Missing sensors cannot appear as healthy zeroes.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py",
+        "src/cochem_pipeline/hardware_guard.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py",
+        "pipeline_tests/test_hardware_guard.py"
+      ],
+      "owner_decisions": [
+        "Hardware capacity is configurable; initial four seats await actual host measurements."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ORACLE-001",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "The SYSTEM-tier Warden observes filesystem/database events and applies a 500 ms debounce before watermark checking or new rule generation. Consolidate events; do not inject during an incomplete debounce interval or feed injected hints back into an infinite loop.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py",
+        "src/cochem_pipeline/runtime.py",
+        "src/cochem_pipeline/transport.py",
+        "src/cochem_pipeline/windows.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ORACLE-002",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "Use Aho-Corasick faceted retrieval with overlapping matches and knapsack context selection. Reserve a configured baseline percentage for non-evictable core rules. Count the complete encoded/XML-wrapped context against its budget and escape `<oracle_directive>` content. Insufficient core capacity is a failure, never silent eviction.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py",
+        "src/cochem_pipeline/runtime.py",
+        "src/cochem_pipeline/transport.py",
+        "src/cochem_pipeline/windows.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ORACLE-003",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "Store cryptographic watermarks and ordered delivery generations in private out-of-band SQLite inaccessible to workers. Drain→set context→ack is serialized; acknowledge the exact generation. Repeated A→B→A must deliver the second A, while stale acknowledgments cannot erase newer context. Preserve delivery state through restart.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py",
+        "src/cochem_pipeline/runtime.py",
+        "src/cochem_pipeline/transport.py",
+        "src/cochem_pipeline/windows.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ORACLE-004",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "Deliver transient context via SQLite-controlled payload or protected local named pipe/inherited read handle, never `.warden_hints.md` or worker-writable prompt files. Bound delivery/backpressure and cancel cleanly. Verify workspace Defender exclusions and Search Indexer non-indexed attributes; preserve persistent authentication and protected logs.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py",
+        "src/cochem_pipeline/runtime.py",
+        "src/cochem_pipeline/transport.py",
+        "src/cochem_pipeline/windows.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-ORACLE-005",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "Strictly more than 500 events per rolling second trips the velocity breaker immediately even during `IN_PROGRESS`, bypassing normal state gates. Asynchronously stop monitoring/rogue process trees via native Job Objects, verify cleanup, then fence/reap affected jobs into `FAILED` or `PENDING_RETRY` with handles/locks released. Unrelated task failure is not a global collapse.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py",
+        "src/cochem_pipeline/runtime.py",
+        "src/cochem_pipeline/transport.py",
+        "src/cochem_pipeline/windows.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-008",
+      "chapter": "08: Oracle context and circuit breaker",
+      "requirement": "Retain a protected Oracle decision log containing selected rule IDs, token budget use and delivery/ack generation, without private prompt/XML contents.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/oracle.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_oracle.py"
+      ],
+      "owner_decisions": [
+        "Protected Oracle decision logging is accepted."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-RAM-001",
+      "chapter": "09: RAM workspaces and persistent state",
+      "requirement": "Adopt the existing ImDisk RAM volume at `R:\\`, configured as 8 GiB and created automatically by the owner's Windows startup task. Verify actual driver/device/NTFS backing and capacity before use, then create protected per-slot scratch there. Existing ImDisk AWE and VM backing are both eligible after physical verification; VM is explicitly pageable and cannot be described as nonpageable physical AWE memory. New managed directory mounts default to AWE. Setup requiring administration occurs once; boot-time waiting, reattestation and scratch/ACL reconstruction are automatic. Never format, detach or silently recreate an adopted volume. Legacy verified directory mounts remain supported as explicit mappings. Safe online resizing is optional only when driver capability and volume quiescence are demonstrated; otherwise use the existing fixed volume and visible resource holds without repeated user setup.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/ramdisk.py",
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_ramdisk.py",
+        "pipeline_tests/test_deployment.py"
+      ],
+      "owner_decisions": [
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-RAM-002",
+      "chapter": "09: RAM workspaces and persistent state",
+      "requirement": "For new controller-managed directory mounts, preserve original persistent contents before mounting, require an empty validated target and reject unknown reparse points. The owner-authorized existing R: drive is an explicit adoption case: physically attest it, preserve its contents and establish the protected lifecycle ledger without recreating it. Per-slot workspaces and caches live on RAM with exact worker ACLs; persistent provider login profiles and controller state remain outside scratch. Never treat a path string, junction or driver name alone as backing evidence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/ramdisk.py",
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_ramdisk.py",
+        "pipeline_tests/test_deployment.py"
+      ],
+      "owner_decisions": [
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-RAM-003",
+      "chapter": "09: RAM workspaces and persistent state",
+      "requirement": "Bind native working directories, temporary files and selected large mutable Claude project caches to owned RAM scratch while preserving persistent configuration/subscription credentials. Confirm native cache configuration and actual observed writes; do not assert all SSD writes are eliminated. Deliver prompts through the protected transport rather than a RAM-file path vulnerable to CLI realpath policy.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/ramdisk.py",
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_ramdisk.py",
+        "pipeline_tests/test_deployment.py"
+      ],
+      "owner_decisions": [
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-RAM-004",
+      "chapter": "09: RAM workspaces and persistent state",
+      "requirement": "Destroy/recycle scratch only after verified old-process cleanup and descriptor reattestation. RAM loss cannot erase accepted artifacts, leases, policies or repair budgets. Startup/reboot reconciles durable ownership before cleaning slots; preserve operator files on unknown paths. Defender/indexer exclusions must be read back on real roots/new entries.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/ramdisk.py",
+        "src/cochem_pipeline/windows.py",
+        "src/cochem_pipeline/deployment.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_ramdisk.py",
+        "pipeline_tests/test_deployment.py"
+      ],
+      "owner_decisions": [
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-009",
+      "chapter": "09: RAM workspaces and persistent state",
+      "requirement": "Display measured RAM-volume occupancy and scratch ages. Record observed disk-write reduction only when an actual baseline/counter supports it; otherwise mark it unmeasured. Adopt the existing 8 GiB R: volume with one-time setup and automated startup, not repeated manual resizing.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/ramdisk.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_ramdisk.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-001",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Maintain a persistent prepared-container pool managed by the protected controller. Cold `create`/`start` occurs only in bounded background replenishment. Normal test jobs acquire a previously verified, unused matching prepared container; an empty pool records a wait/request and cannot fall back to inline cold creation. Prepared means actual running readiness plus exact image/policy/ownership attestation, not a registry label alone.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-002",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Durable pool transitions are reservation→`PREPARING`→prepared/`WARM`→assigned/`ACTIVE`→cleanup→released; failed/uncertain creation enters quarantine until exact physical reconciliation. Persist bounded FIFO profile requests and replenish under shared admission. Preserve healthy unused prepared containers across controller restart/graceful stop, but reattest engine identity, ownership, policy, readiness and expiry before adoption. Remove incompatible/expired/orphaned entries. Idle warm inventory must yield seats to runnable native work so it cannot monopolize all configured capacity.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-003",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "A prepared container serves one attempt only. After source injection/execution, remove it and its scratch; never return a contaminated instance to the pool. Replenishment uses the exact immutable allowlisted image SHA and captured policy. Prepared, preparing and active containers count against the same hardware/seat budget as native jobs.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-004",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Enforce offline `--network none`, read-only root, nonroot execution, 2 GiB `/tmp` tmpfs, 4 GiB memory, two CPUs, 512 PIDs, dropped capabilities and no-new-privileges by default. No host source bind, Docker socket, auth directory or private state enters the container. Transfer only a bounded, validated source snapshot and collect bounded physical results. Inspect actual limits; arguments alone do not prove enforcement.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-005",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Verify exact source/image/policy/test identities, physical exit/results, log limits and cleanup before acceptance. OOM records exit 137 plus available memory evidence and isolates the offending attempt. Timeout/cancel/engine loss must not free an uncertain seat. Census/reap only owned objects at intervals no greater than 60 seconds; never global-prune operator containers.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DOCKER-006",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Record background preparation duration separately from queue wait, handoff and test-ready latency. Retain original request time; never reset clocks to hide a miss. Warm startup ≤1.5 seconds remains the optimization target; the accepted historical 4.85-second cold creation belongs to replenishment, not the foreground job path. See Chapter 16 for acceptance disposition.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py",
+        "src/cochem_pipeline/container_policy.py",
+        "src/cochem_pipeline/admission.py",
+        "src/cochem_pipeline/runtime.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py",
+        "pipeline_tests/test_container_policy.py",
+        "pipeline_tests/test_execution_integration.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-010",
+      "chapter": "10: Prepared Docker pool",
+      "requirement": "Use durable recent per-profile demand to recommend bounded prepared-pool targets. Fixed targets are the default until sufficient real handoff measurements justify enabling adaptation. Target tuning never raises shared hardware admission or bypasses FIFO/native fairness.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/containers.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_containers.py"
+      ],
+      "owner_decisions": [
+        "Persistent prepared pool; cold creation only during background maintenance."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-KNOW-001",
+      "chapter": "11: Knowledge and retrieval",
+      "requirement": "Maintain immutable exact UTF-8 `.sources` captures, separately ratified `wiki` content, a hash/line-count catalog and SQLite FTS5/BM25 section index. Preserve scientific text such as `Ψ(r)` and `ΔG°` losslessly. Source capture does not make obsolete statements authoritative; current answers and readiness use Chapter 01 precedence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/knowledge_mcp.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_knowledge.py"
+      ],
+      "owner_decisions": [
+        "Authority badges distinguish normative decisions from historical snippets."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-KNOW-002",
+      "chapter": "11: Knowledge and retrieval",
+      "requirement": "Validate zero broken relative Markdown links across ratified wiki chapters, every SRS/wiki chapter ≤400 lines, catalog synchronization and protected root/source ownership before indexing. Exact source captures retain their original reference context. Reject corrupted/changed source pins. Support incremental updates, atomic full-index generations and corruption rebuild from verified sources; concurrent readers see one complete generation.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/knowledge_mcp.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_knowledge.py"
+      ],
+      "owner_decisions": [
+        "Authority badges distinguish normative decisions from historical snippets."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-KNOW-003",
+      "chapter": "11: Knowledge and retrieval",
+      "requirement": "Expose authenticated search/read/status/refresh interfaces with bounded inputs/results. Workers cannot mutate the corpus or index authority. Use bounded read-only SQLite connections/cache, retain authentication/TLS/proxy boundaries, and never optimize by accepting untrusted refresh/write requests or serving an index detached from its registered generation.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/knowledge_mcp.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_knowledge.py"
+      ],
+      "owner_decisions": [
+        "Authority badges distinguish normative decisions from historical snippets."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-KNOW-004",
+      "chapter": "11: Knowledge and retrieval",
+      "requirement": "On a representative ≥10,000-section corpus, record backend search, authenticated service transport and MCP wrapper timings separately with query/result counts, corpus/index hashes and size, connection/warmup policy and process RSS. Index ≤4× raw corpus and MCP daemon <256 MiB remain requirements. Backend/authenticated <5 ms is an optimization target under the owner amendment; the prior 7.731 ms authenticated mean is accepted.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/knowledge_mcp.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_knowledge.py"
+      ],
+      "owner_decisions": [
+        "Authority badges distinguish normative decisions from historical snippets."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OPS-011",
+      "chapter": "11: Knowledge and retrieval",
+      "requirement": "Label retrieval results as current normative, owner decision, historical source or explicitly unclassified using reviewed hash-bound catalog metadata. Historical text cannot promote itself to governing authority.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/knowledge.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_knowledge.py"
+      ],
+      "owner_decisions": [
+        "Authority badges distinguish normative decisions from historical snippets."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-CLI-001",
+      "chapter": "12: Native CLI and MCP interfaces",
+      "requirement": "Native provider adapters must discover/check their configured executable and supported headless/login/model/effort contract, then invoke actual CLI processes without shell interpolation. Codex GPT-6 Astra/Sol/Luna, Claude Fable/Opus/Sonnet/Haiku and Agy Gemini models use exact supported IDs. Unsupported `ultra`, unsupported headless Agy or absent model/login is a visible compatibility/auth hold, never remapped silently.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_evidence.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_native_evidence.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_service.py"
+      ],
+      "owner_decisions": [
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CLI-002",
+      "chapter": "12: Native CLI and MCP interfaces",
+      "requirement": "Successful native evidence includes reserved provider/model/effort, job/workflow/attempt/fence/seat, process identity and creation time, native session/thread identity, subscription verification, physical exit and exact output hash. Reported identities must match requested identities when available. A model's first-person claim or a helper/emulator fixture cannot establish provider execution.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_evidence.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_native_evidence.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_service.py"
+      ],
+      "owner_decisions": [
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CLI-003",
+      "chapter": "12: Native CLI and MCP interfaces",
+      "requirement": "Bound stdout/stderr, deadlines and context before paid dispatch; count all prompt components and reserved Oracle directives. Cancellation terminates the managed descendants, confirms cleanup and revokes lease authority. Persistent login/configuration remains separate from ephemeral cwd/cache; no API-key fallback or worker authority over controller state.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_evidence.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_native_evidence.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_service.py"
+      ],
+      "owner_decisions": [
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-CLI-004",
+      "chapter": "12: Native CLI and MCP interfaces",
+      "requirement": "Authenticated HTTP/MCP/CLI surfaces support submission, status, artifacts, cancellation and eligible reason-bearing resumes. Provider-named compatibility tools forward to authenticated controller workflows; model pinning and direct inference bypasses are rejected. Coding requires an exact registered project mapping. Structured-node submission creates a complete routed planning DAG and cannot directly mutate or complete a node. Antigravity status must expose queued, waiting, attempted, accepted and integrated states distinctly.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_evidence.py",
+        "src/cochem_pipeline/server.py",
+        "src/cochem_pipeline/service.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_worker_contract.py",
+        "pipeline_tests/test_native_evidence.py",
+        "pipeline_tests/test_inference_policy.py",
+        "pipeline_tests/test_service.py"
+      ],
+      "owner_decisions": [
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-012",
+      "chapter": "12: Native CLI and MCP interfaces",
+      "requirement": "Provide manual bounded provider preflight: inspect each configured CLI authentication/capabilities without inference, then submit any model probes through Chapter 06. Record only providers/models actually executed. A manual invocation submits one probe job with at most one accepted result and a finite dispatch/deadline budget; availability attempts still follow Chapter 06; unavailable route coverage remains explicit, with no fake holds or fixed-model exception to force coverage.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/preflight.py",
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/worker.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_repair_job_board.py",
+        "pipeline_tests/test_store.py"
+      ],
+      "owner_decisions": [
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OBS-001",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "State-transition telemetry is committed atomically with the transition. Record event/job/attempt/fence, observation and transition timestamps, duration, actual selected provider/model/effort, available native usage and resource scope. Missing metrics stay null with an availability reason; host CPU is not mislabeled process CPU. Public evidence may redact authority/secrets while retaining exact receipt commitments.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/crash.py",
+        "src/cochem_pipeline/diagnostics.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_diagnostics.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OBS-002",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "Preserve `emit_recovery_event(conn=None, event_data=None) -> int`: accept sole dictionary, injected connection, string/Path, keyword and default calls; reject invalid falsy connections. Auto-create `recovery_telemetry(id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT NOT NULL DEFAULT(datetime('now')), tier INTEGER NOT NULL, action TEXT NOT NULL, details TEXT NOT NULL)`. Return a positive monotonically increasing inserted ID.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/crash.py",
+        "src/cochem_pipeline/diagnostics.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_diagnostics.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OBS-003",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "Missing/explicit-null tier/action normalize to `1`/`unspecified_recovery`; otherwise apply int/string conversion. Serialize the entire unmodified payload, nested/custom keys included, with UTF-8/`ensure_ascii=False`. Commit explicitly. Never close an injected connection; always close owned connections in `finally`, including failure. WAL/5-second busy timeout apply to on-disk databases; no slow external work in the write transaction.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/crash.py",
+        "src/cochem_pipeline/diagnostics.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_diagnostics.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OBS-004",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "Real SQLite tests cover all six dossier acceptance areas. The telemetry sink contains no mocks, `pass` stubs or `NotImplementedError`. The dossier's exclusions concern that API only; they do not delete separately specified recovery, Docker or hardware work.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/crash.py",
+        "src/cochem_pipeline/diagnostics.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_diagnostics.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OBS-005",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "Capture bounded private PEP 657 crash envelopes (≤64 KiB, ≤32 frames, basename/function/line/end-line/columns, PID/creation time), omitting locals/source/prompt/exception values. Diagnostic SQLite backups are real WAL-consistent bounded private snapshots with hashes; only safe projections reach repair prompts. Failure to obtain evidence must be explicit, not fabricated.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/store.py",
+        "src/cochem_pipeline/crash.py",
+        "src/cochem_pipeline/diagnostics.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_diagnostics.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OPS-013",
+      "chapter": "13: Telemetry and diagnostics",
+      "requirement": "Define a reviewed retention/archive policy with storage forecasts and hash manifests for telemetry/immutable receipts. Archive only verified bounded snapshots; preserve originals and acceptance references by default. No automatic pruning occurs without an explicit reviewed retention policy and verified archive.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Reviewed archive policy preserves originals and verified hashes."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-SRE-001",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Run an out-of-pipeline read-only detector in a sterile process (`-I -S`, protected exact observer modules, standard library and `psutil`, no pipeline application imports/site hooks). Separate privileged recovery actuators from observation. Every 30 seconds inspect process death/orphans, leases overdue by 60 seconds, actual SQLite header/structural integrity, and measured RSS/handle leak trends using PID plus creation time.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-002",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Apply amended FR009: non-running rows retaining lease authority or pending jobs with exhausted ordinary-failure budgets establish structural collapse. Ordinary historical `FAILED` rows, cancellation and explicit task holds do not freeze unrelated work. Contain confirmed structural failure and preserve immutable diagnostic evidence before bounded recovery.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-003",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Independently check authenticated service health against heartbeat PID/instance, actual queue completion progress, immutable claim age/phase deadline, engine/container health, WAL size (default maximum 256 MiB), disk reserves and hardware holds. A renewed heartbeat does not prove useful work. Missing environment/auth/resources causes a hold; it cannot alone authorize paid code repair.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-004",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Diagnose before restarting the failing component. Component recovery requires three failing observations and at least 30 seconds; preserve its one-attempt ledger across healthy samples/restarts/upgrades. The fixed Docker service start is distinct from verified engine health. Do not restart unrelated services, erase data or invoke legacy destructive Hyper-V actions for the current WSL2 topology.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-005",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "For a repairable code defect, verify cleanup and attempt one bounded Warden restart. Submit repair to an independent durable repair job board with the same captured Chapter 06 complexity scoring, tier chains and spillover/backoff policy. The independent board remains usable when the primary database is broken; quiesce and physically reconcile primary inference before launching repair so boards cannot oversubscribe resources or Claude. Charge durable paid-launch budgets before inference: at most two repairs per incident, four per day and 30-minute cooldown. Preserve spent budgets across upgrade; availability waits neither consume a paid launch nor authorize repair of a healthy queue.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-006",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Repair identity cannot edit protected supervisor, tests, dependencies/schema or acceptance authority. Build a frozen candidate; run regressions plus a trusted outer verifier that imports no candidate, owns private assertions/report and independently checks bounded child operations and physical DB/files after cleanup. Candidate-written JUnit/PASS is diagnostic only. Before promotion, a separately routed reviewer excluding the producing provider SHALL reconcile exact protected SRS/owner amendments and repair WBS/requirements against the candidate diff, regressions and independent outer evidence. It cannot edit the candidate or reuse a generic PASS. Charge this paid review against the same durable incident/day budgets as generation. Promotion requires exact candidate hashes, reconciliation verdict, outer verdict and an authenticated live native handoff smoke. The smoke is a separate single Chapter 06 board job with at most three dispatches and a finite deadline per deployment journal; reuse its durable workflow ID on recovery so retries never reset that acceptance budget. Generation/review retain their separate two-per-incident/four-per-day budget. Record both scopes and every actual model attempt; never present unknown currency as a measured charge. Failed smoke restores the previous release using the durable journal.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-SRE-007",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Automatic SYSTEM startup/restart resilience covers Warden and supervisor. Observation SHALL finish within one second per 30-second cycle and containment/self-heal initiation within five seconds of confirmation; retain actual timing events. PID reuse, uncertain same-boot ownership, reboot and partial deployment must not bypass cleanup or consume unrecorded paid attempts.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/engine.py",
+        "src/cochem_supervisor/job_board.py",
+        "src/cochem_supervisor/runner.py",
+        "src/cochem_supervisor/replay.py",
+        "src/cochem_supervisor/probes.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_engine.py",
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_runner.py",
+        "supervisor_tests/test_reconciliation.py",
+        "supervisor_tests/test_review_continuation.py",
+        "supervisor_tests/test_repair_artifacts.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-014",
+      "chapter": "14: Independent detection and repair",
+      "requirement": "Provide dry-run detector/repair-policy incident replay using saved redacted evidence, deterministic captured inputs and no subscription/process launch, with projected actions/budgets clearly distinguished from performed recovery.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_supervisor/replay.py"
+      ],
+      "verification_tests": [
+        "supervisor_tests/test_repair_job_board.py",
+        "supervisor_tests/test_replay_budget.py"
+      ],
+      "owner_decisions": [
+        "Independent detection and board-routed bounded repair are required."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-AC-001",
+      "chapter": "15: Evidence and acceptance",
+      "requirement": "Every release publishes exact source revision, dependency lock/image identities, test commands/counts/skips, evidence hashes and platform. Distinguish portable units, real SQLite/Git/process/Docker checks, storage receipt fixtures, live native inference and target-host acceptance. Tests or code presence cannot certify an unexecuted environment; skipped native tests remain outstanding.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/performance_acceptance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_acceptance.py",
+        "pipeline_tests/test_performance_acceptance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Full acceptance requires physical evidence for every applicable platform."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-AC-002",
+      "chapter": "15: Evidence and acceptance",
+      "requirement": "Use real physical behavior for security/state/data assertions; prohibit mocks/unfinished stubs in generated production acceptance tests. Exercise stale fences, duplicate completion, receipt/model mismatch, sibling access/submission, invalid plans, self-review, forged JUnit, zero/skipped/collection-only tests, source mutation, budget reset, timeout/OOM and cleanup uncertainty. A successful process exit alone is never completion evidence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/performance_acceptance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_acceptance.py",
+        "pipeline_tests/test_performance_acceptance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Full acceptance requires physical evidence for every applicable platform."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-AC-003",
+      "chapter": "15: Evidence and acceptance",
+      "requirement": "Required Windows launch evidence: SYSTEM/worker/repair identities and ACLs; real RAM backing/mapping; Docker pipe/backend denial; subscription retention; exact CLI capabilities; six-chapter native DAG; a complete coding workflow; stress at the configured shared capacity including replenishment, plus the separate exact four-worker Windows queue benchmark; Oracle storm/reaper; cancellation/crash/reboot; independent repair/promotion/rollback; hardware/desktop-heap/48-hour monitoring.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/performance_acceptance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_acceptance.py",
+        "pipeline_tests/test_performance_acceptance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Full acceptance requires physical evidence for every applicable platform."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-AC-004",
+      "chapter": "15: Evidence and acceptance",
+      "requirement": "Automated repair acceptance uses externally owned finite challenges plus regression diagnostics and genuine live smoke, never candidate-controlled self-certification. Full product acceptance includes Chapter 04/05 complete workflows and Chapter 16 performance disposition. Unsupported/missing environmental prerequisites remain visible holds; removing a phantom prerequisite cannot conceal a real one.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/coding_acceptance.py",
+        "src/cochem_pipeline/performance_acceptance.py",
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_coding_acceptance.py",
+        "pipeline_tests/test_performance_acceptance.py",
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Full acceptance requires physical evidence for every applicable platform."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-015",
+      "chapter": "15: Evidence and acceptance",
+      "requirement": "Expose one acceptance dashboard containing every mandatory requirement, latest exact artifact hash, platform, revision and outstanding action. Missing, stale, unexecuted or wrong-platform evidence prevents aggregate full acceptance.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "Full acceptance requires physical evidence for every applicable platform."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-PERF-001",
+      "chapter": "16: Performance acceptance",
+      "requirement": "The owner accepts the reported measurements as useful operating ranges: ten-process queue acquisition maximum **29.347 ms**, knowledge authenticated MCP mean **7.731 ms** (backend mean **4.100 ms**) and historical cold Docker creation **4.85 seconds**. These are accepted observations, not invented universal maxima, percentile promises or native Windows certification. The old 5 ms/1.5-second values remain optimization targets with the scopes below.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/queue_launch.py",
+        "src/cochem_pipeline/queue_profile.py",
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_queue_launch.py",
+        "pipeline_tests/test_knowledge.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PERF-002",
+      "chapter": "16: Performance acceptance",
+      "requirement": "Queue performance is **conditionally accepted pending launch measurement on the exact Windows production topology**: four workers, actual configured local database/WAL location, realistic mix of claims, heartbeats, Oracle writes, routing waits and completions. Record storage/OS/config hashes, workload/sample counts, acquired/empty/failed claims, median/p95/max and zero-duplicate/four-seat invariants. Benchmark first; only redesign the queue if this measurement still misses the 5 ms objective. A missed objective opens measured remediation, not permission to weaken durability.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/queue_launch.py",
+        "src/cochem_pipeline/queue_profile.py",
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_queue_launch.py",
+        "pipeline_tests/test_knowledge.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PERF-003",
+      "chapter": "16: Performance acceptance",
+      "requirement": "Profile the ~3.6 ms knowledge gap using the same corpus/query sequence and separate backend SQL/result shaping, HTTP authentication/dispatch/serialization/transport, and MCP wrapper overhead. Retain distributions, warmup/connection reuse and memory/index measurements. Optimize the observed dominant component while preserving authentication and results; record before/after. The accepted 7.731 ms result is no longer a release failure by itself.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/queue_launch.py",
+        "src/cochem_pipeline/queue_profile.py",
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_queue_launch.py",
+        "pipeline_tests/test_knowledge.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PERF-004",
+      "chapter": "16: Performance acceptance",
+      "requirement": "Cold Docker preparation is accepted maintenance overhead. Normal jobs SHALL use the persistent prepared pool; no inline cold fallback. Record queue/request-to-test and prepared-handoff timing honestly; a pool miss is visible waiting, not a fake ≤1.5-second success. Improve warm handoff toward ≤1.5 seconds while preserving configured hardware admission, resource and isolation gates. The prior 0.486536-second warm fixture is evidence for that fixture only.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/queue_launch.py",
+        "src/cochem_pipeline/queue_profile.py",
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_queue_launch.py",
+        "pipeline_tests/test_knowledge.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-PERF-005",
+      "chapter": "16: Performance acceptance",
+      "requirement": "The owner amendment does not waive ≤30-second test+collection, knowledge index ≤4×/RSS <256 MiB, Warden 50 MiB/5%, native desktop heap <15%, 48-hour handle stability, or independent observation/recovery timing. Each needs its own measured disposition. Do not interpret “these numbers are acceptable” as a blanket exemption from other requirements.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/queue_launch.py",
+        "src/cochem_pipeline/queue_profile.py",
+        "src/cochem_pipeline/knowledge.py",
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_queue_launch.py",
+        "pipeline_tests/test_knowledge.py",
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-016",
+      "chapter": "16: Performance acceptance",
+      "requirement": "Calculate per-workload observed latency distributions and error-budget usage, separating interactive and background work. Choose production p95/error targets from post-launch evidence; unmeasured objectives remain provisional. Correctness, containment and the 30-second test deadline remain hard gates.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operations_policy.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operations_policy.py"
+      ],
+      "owner_decisions": [
+        "Historical latencies accepted; Windows queue acceptance remains conditional."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Collect Windows launch distributions; ratify per-workload p95/error objectives against real measurements."
+    },
+    {
+      "id": "S427-DEPLOY-001",
+      "chapter": "17: Installation, upgrade and rollback",
+      "requirement": "Reproducibly install pinned Python/dependencies, native CLI paths, reviewed local image SHA, knowledge corpus/index policy, authenticated MCP/service configuration, SYSTEM scheduled tasks and isolated identities. Preflight actual host capabilities/sensors, WSL2 resource caps, Docker engine/pipe authority, RAM driver/mount and account logins. A generated example is not an installed system.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/deployment_revision.py",
+        "src/cochem_pipeline/upgrade_preview.py",
+        "src/cochem_supervisor/upgrade.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_deployment_revision.py",
+        "pipeline_tests/test_upgrade_preview.py",
+        "supervisor_tests/test_budget_upgrade.py"
+      ],
+      "owner_decisions": [
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DEPLOY-002",
+      "chapter": "17: Installation, upgrade and rollback",
+      "requirement": "Upgrades preserve private database/WAL/artifacts, immutable attempts/fences/receipts, worker identities/authentication, quarantine, supervisor and component recovery ledgers. Use consistent backups and durable migration/release journals; do not purge historical rows or adopt old destructive task-count recipes. Stage new protected code/config separately, verify hashes/ACLs, drain/fence/reconcile old processes, then atomically switch the reviewed release pointer.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/deployment_revision.py",
+        "src/cochem_pipeline/upgrade_preview.py",
+        "src/cochem_supervisor/upgrade.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_deployment_revision.py",
+        "pipeline_tests/test_upgrade_preview.py",
+        "supervisor_tests/test_budget_upgrade.py"
+      ],
+      "owner_decisions": [
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DEPLOY-003",
+      "chapter": "17: Installation, upgrade and rollback",
+      "requirement": "New canonical planning contract applies to fresh requests. A never-run phantom-only hold can explicitly migrate with original baseline/history and authenticated reason; already executed workflows retain captured policy/contract unless a separately validated migration preserves all evidence. Do not convert a failed/no-progress plan to PASS. Existing deployed knowledge is not overwritten by installer samples; new corpus provisioning validates trust before copying.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/deployment_revision.py",
+        "src/cochem_pipeline/upgrade_preview.py",
+        "src/cochem_supervisor/upgrade.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_deployment_revision.py",
+        "pipeline_tests/test_upgrade_preview.py",
+        "supervisor_tests/test_budget_upgrade.py"
+      ],
+      "owner_decisions": [
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-DEPLOY-004",
+      "chapter": "17: Installation, upgrade and rollback",
+      "requirement": "Validate protected outer acceptance and real live smoke before automatic repair promotion. Rollback restores the prior code/config pointer and reconciles in-flight/new requests without losing work or refunding paid budgets. Keep failed candidate/evidence privately for diagnosis. Reboot recovery reattests engine, RAM mounts, process creation identities and reservations before dispatch.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/deployment.py",
+        "src/cochem_pipeline/deployment_revision.py",
+        "src/cochem_pipeline/upgrade_preview.py",
+        "src/cochem_supervisor/upgrade.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_deployment.py",
+        "pipeline_tests/test_deployment_revision.py",
+        "pipeline_tests/test_upgrade_preview.py",
+        "supervisor_tests/test_budget_upgrade.py"
+      ],
+      "owner_decisions": [
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+      ],
+      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "required_platforms": [
+        "Linux-portable",
+        "Windows-native"
+      ],
+      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+    },
+    {
+      "id": "S427-OPS-017",
+      "chapter": "17: Installation, upgrade and rollback",
+      "requirement": "Provide a read-only upgrade preview enumerating exact protected path, identity, schema, captured-workflow and configuration changes, with backups, retained credentials, rollback prerequisites and genuine migration holds exposed before deployment.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/upgrade_preview.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_upgrade_preview.py"
+      ],
+      "owner_decisions": [
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-TRACE-001",
+      "chapter": "18: Traceability and remediation",
+      "requirement": "This specification is the ordered active baseline; the [4.2.6 clause ledger](docs/REQUIREMENTS_4.2.6.md) remains detailed historical trace evidence with current owner amendments overriding its phantom-blocker/performance-failure conclusions. Every release must update the current evidence ledger and source-precedence record; never rewrite old test counts or mark unresolved target-host work complete.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py",
+        "pipeline_tests/test_planning_governance.py"
+      ],
+      "owner_decisions": [
+        "All accepted improvements are tracked as mandatory requirements."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-TRACE-002",
+      "chapter": "18: Traceability and remediation",
+      "requirement": "Ordered remediation work packages: **W1** replace phantom gating with the executable contract and safe legacy-hold migration; **W2** enforce persistent single-use prepared pool and maintenance-only cold creation; **W3** profile authenticated knowledge overhead and retain before/after evidence; **W4** provide/run the exact Windows four-worker queue benchmark before considering redesign; **W5** close native usage/process-creation receipt gaps and complete identities/ACL/RAM/CLI/Docker/Oracle/governor acceptance; **W6** run native planning/coding and independent repair/rollback; **W7** complete 48-hour resource/handle monitoring and publish a per-requirement closure ledger. Each package closes only with its linked physical evidence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py",
+        "pipeline_tests/test_planning_governance.py"
+      ],
+      "owner_decisions": [
+        "All accepted improvements are tracked as mandatory requirements."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-TRACE-003",
+      "chapter": "18: Traceability and remediation",
+      "requirement": "Every chapter's improvement insert is open for owner comment. Suggestions become mandatory only through a recorded amendment with implementation and acceptance criteria. Current gaps are categorized as code work, conditional acceptance or unverified host evidence; a suggestion, an unexecuted script and a model statement are never closure evidence.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py",
+        "src/cochem_pipeline/planning_governance.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py",
+        "pipeline_tests/test_planning_governance.py"
+      ],
+      "owner_decisions": [
+        "All accepted improvements are tracked as mandatory requirements."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    },
+    {
+      "id": "S427-OPS-018",
+      "chapter": "18: Traceability and remediation",
+      "requirement": "Maintain a machine-readable per-requirement release/remediation checklist and owner decisions next to each chapter, with permanent hash-bound closure artifacts. Distinguish implemented, portable-tested, native-tested and pending acceptance; never collapse them into an unsupported all-green claim.",
+      "mandatory": true,
+      "code": [
+        "src/cochem_pipeline/operator_views.py"
+      ],
+      "verification_tests": [
+        "pipeline_tests/test_operator_views.py"
+      ],
+      "owner_decisions": [
+        "All accepted improvements are tracked as mandatory requirements."
+      ],
+      "implementation": "portable_checks_passed",
+      "required_platforms": [
+        "Linux-portable"
+      ],
+      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+    }
+  ]
+}

@@ -1077,8 +1077,8 @@ def main() -> None:
     parser.add_argument("operation", choices=("provision", "validate", "login"))
     parser.add_argument("--private-root")
     parser.add_argument("--workers-root")
-    parser.add_argument("--slots", type=int, default=6, choices=range(1, 65),
-                        help="Dedicated identity pool size; runtime concurrency remains capped at four")
+    parser.add_argument("--slots", type=int, default=6, choices=range(1, 257),
+                        help="Dedicated identity pool size; configured hardware admission and provider routing govern concurrency")
     parser.add_argument("--operator-name")
     parser.add_argument("--controller-token")
     parser.add_argument("--layout-output")

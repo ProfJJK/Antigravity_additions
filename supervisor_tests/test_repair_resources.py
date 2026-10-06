@@ -83,3 +83,38 @@ def test_actual_repair_child_receipt_contains_read_back_native_limits(actual_win
     finally:
         if logs.exists():
             shutil.rmtree(logs)
+
+
+def test_repair_admission_uses_all_configured_hardware_gates_without_native_claim():
+    from copy import deepcopy
+    from pipeline_tests.test_hardware_guard import policy_case
+    from cochem_supervisor.windows import assess_repair_resources
+    measured=policy_case()
+    limits=ResourceLimits()
+    healthy=assess_repair_resources(measured,{},limits)
+    assert healthy['capacity']==1 and healthy['scope'].startswith('one independent repair')
+    for section, key, value in [('cpu','temperature_celsius',96),('cpu','percent',99),
+                               ('cpu','physical_count_available',False),('memory','available_mb',200),
+                               ('commit','free_mb',100)]:
+        pressure=deepcopy(measured)
+        pressure[section][key]=value
+        with pytest.raises(ResourcePolicyError,match='Repair hardware admission held'):
+            assess_repair_resources(pressure,{},limits)
+    hot_gpu=deepcopy(measured)
+    hot_gpu['gpus']['devices'][0]['temperature_celsius']=95
+    with pytest.raises(ResourcePolicyError,match='Repair hardware admission held'):
+        assess_repair_resources(hot_gpu,{},limits)
+    saturated_disk=deepcopy(measured)
+    saturated_disk['disks']['io']['total_iops']=5000
+    with pytest.raises(ResourcePolicyError,match='Repair hardware admission held'):
+        assess_repair_resources(saturated_disk,{},limits)
+
+
+def test_repair_admission_respects_current_protected_stricter_policy():
+    from pipeline_tests.test_hardware_guard import policy_case
+    from cochem_supervisor.windows import assess_repair_resources
+    measured=policy_case()
+    with pytest.raises(ResourcePolicyError,match='Repair hardware admission held'):
+        assess_repair_resources(measured,{'hardware':{'min_free_memory_mb':24000}},ResourceLimits())
+    with pytest.raises(ResourcePolicyError,match='Repair hardware admission held'):
+        assess_repair_resources(measured,{'hardware':{'cpu_temperature_pause_c':45}},ResourceLimits())

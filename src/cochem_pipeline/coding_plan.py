@@ -137,8 +137,8 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
         size=item.get('estimated_context_lines',item.get('estimated_changed_lines'))
         if 'estimated_context_lines' in item and 'estimated_changed_lines' in item and item['estimated_changed_lines']!=size:
             raise ValueError('Conflicting planned context estimates')
-        if type(size) is not int or not 20<=size<=100:
-            raise ValueError('A fracture leaf must plan a 20–100 line context window')
+        if type(size) is not int or not 1<=size<=10000:
+            raise ValueError('A fracture leaf must provide a positive bounded context estimate')
         refs=_ids(item.get('requirement_ids'),'leaf requirements',requirement_map)
         ac=_ids(item.get('criteria_ids'),'leaf criteria',criteria)
         if any(not set(criteria[criterion]['requirement_ids']).issubset(refs) for criterion in ac):
@@ -166,24 +166,27 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
            'edges':[[dependency,item['id']] for item in canonical_leaves for dependency in item['dependencies']]}
     mermaid='flowchart TD\n'+'\n'.join('  '+name for name in ordered)+'\n'
     mermaid+=''.join('  '+left+' --> '+right+'\n' for left,right in graph['edges'])
-    batches=[]
-    for offset in range(0,len(ordered),20):
-        batch={'schema':'4.1.1-wbs-node/1','id':f'B{offset//20+1:02d}','leaf_ids':ordered[offset:offset+20]}
-        batches.append(batch)
+    # WBS grouping is independent of provider admission. Only Claude has the
+    # owner-specified twenty-concurrent-agent ceiling; it is never a leaf limit.
+    batches=[{'schema':'4.2.7-wbs-node/2','id':'B01','leaf_ids':ordered}]
+    for batch in batches:
         text=json.dumps(batch,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
         artifacts[f"wbs/batches/{batch['id']}.json"]=text
         artifacts[f"WBS_Micro_Prompts/{batch['id']}.json"]=text
-    fracture={'schema':'4.2.5-fracture-manifest/1','N':1,'max_tasks_per_batch':20,'chunk_lines':[20,100],
+    fracture={'schema':'4.2.7-fracture-manifest/2','N':1,'chunk_lines':[20,100],
               'leaves':canonical_leaves,'topological_order':ordered,'graph':graph,'mermaid':mermaid,'batches':batches}
     artifacts['graph.json']=json.dumps(graph,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     artifacts['graph.mmd']=mermaid
+    from .coding_reconciliation import estimate_leaf_sizes
+    estimates=estimate_leaf_sizes(canonical_leaves,source_files,raw_leaves=list(leaves.values()))
+    artifacts['LeafSizeEstimates.json']=json.dumps(estimates,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     artifacts['FractureManifest.json']=json.dumps(fracture,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     from .planning_governance import validate_registration, execution_contract
     registration = validate_registration(project.planning, source_files)
     artifacts['ExecutionContract.json'] = json.dumps(execution_contract(), ensure_ascii=False, sort_keys=True, indent=2) + '\n'
     result={'schema':'4.2.7-coding-plan/1','goal':goal,'requirements':requirement_map,
             'srs':{'skeleton':skeleton,'chapters':canonical_chapters},'acceptance_criteria':canonical_criteria,
-            'test_cases':canonical_tests,'fracture_manifest':fracture,'phases':[{'id':key,'name':name} for key,name in TDD_PHASES],
+            'test_cases':canonical_tests,'fracture_manifest':fracture,'leaf_size_estimates':estimates,'phases':[{'id':key,'name':name} for key,name in TDD_PHASES],
             'artifacts':artifacts,'artifact_hashes':{name:hashlib.sha256(text.encode()).hexdigest() for name,text in artifacts.items()}}
     result['planning_registration'] = registration
     result['plan_sha256']=digest(result)

@@ -43,6 +43,8 @@ def _finite(value: Any, name: str, minimum: float = 0, maximum: float | None = N
 def _cpu(sample_seconds: float) -> dict[str, Any]:
     result: dict[str, Any] = {
         "available": False, "count": None, "percent": None,
+        "physical_count": None, "physical_count_available": False,
+        "physical_count_source": "psutil.cpu_count(logical=False)", "physical_count_error": None,
         "source": "psutil.cpu_count/cpu_affinity/cpu_percent",
         "temperature_available": False, "temperature_celsius": None,
         "temperature_source": None, "temperature_error": None, "error": None,
@@ -58,6 +60,14 @@ def _cpu(sample_seconds: float) -> dict[str, Any]:
                 raise ValueError("OS reported no CPUs in process affinity")
             count = min(count, len(affinity))
         result["count"] = count
+        try:
+            physical = psutil.cpu_count(logical=False)
+            if type(physical) is not int or physical < 1:
+                raise ValueError('OS did not report a usable physical CPU count')
+            result['physical_count'] = physical
+            result['physical_count_available'] = True
+        except _PROBE_ERRORS as exc:
+            result['physical_count_error'] = _error(exc)
         result["percent"] = _finite(psutil.cpu_percent(interval=sample_seconds), "CPU utilization", maximum=100)
         result["available"] = True
     except _PROBE_ERRORS as exc:

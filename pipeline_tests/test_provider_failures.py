@@ -104,3 +104,14 @@ def test_plain_native_messages_outside_allowlist_remain_execution_failures():
     failure = parse_native_failure('codex',json.dumps({'type':'turn.failed','error':{'message':'Internal tool diagnostic with private details'}}),'',1)
     assert failure.category == 'code'
     assert 'private details' not in str(failure)
+
+
+@pytest.mark.parametrize('provider,record', [
+    ('codex', {'type': 'turn.failed', 'error': {'code': 'model_not_found'}}),
+    ('claude', {'type': 'error', 'error': {'type': 'unsupported_model'}}),
+    ('gemini', {'error': {'code': 'model_not_available'}}),
+])
+def test_exact_native_unavailable_model_code_allows_canonical_fallback(provider, record):
+    failure = parse_native_failure(provider, json.dumps(record), '', 1)
+    assert failure.category == 'compatibility' and failure.hold_scope == 'model'
+    assert 'model_not_available' not in str(failure)

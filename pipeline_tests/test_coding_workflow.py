@@ -125,14 +125,14 @@ class CodingFixture:
                                       'requirement_ids': ['R1'], 'test_ids': ['T1']}],
             'test_cases': [{'id': 'T1', 'name': 'test_regression', 'asserts': 'ANSWER equals 42.', 'criteria_ids': ['AC1']}],
             'leaves': [{'id': 'L1', 'objective': 'Correct the answer in its existing module', 'file_targets': ['src/answer.py'],
-                         'estimated_changed_lines': 20, 'requirement_ids': ['R1'], 'criteria_ids': ['AC1'], 'dependencies': []}]}
+                         'estimated_changed_lines': 20, 'estimated_added_deleted_lines':7, 'requirement_ids': ['R1'], 'criteria_ids': ['AC1'], 'dependencies': []}]}
         if self.two_leaves:
             output['acceptance_criteria'].append({'id': 'AC2', 'statement': 'The helper equals one.',
                                                   'requirement_ids': ['R1'], 'test_ids': ['T2']})
             output['test_cases'].append({'id': 'T2', 'name': 'test_helper_regression', 'asserts': 'HELPER equals one.',
                                          'criteria_ids': ['AC2']})
             output['leaves'].append({'id': 'L2', 'objective': 'Enable the helper after the answer is corrected',
-                'file_targets': ['src/helper.py'], 'estimated_changed_lines': 20, 'requirement_ids': ['R1'],
+                'file_targets': ['src/helper.py'], 'estimated_changed_lines': 20, 'estimated_added_deleted_lines':7, 'requirement_ids': ['R1'],
                 'criteria_ids': ['AC2'], 'dependencies': ['L1']})
         plan = validate_plan(output, self.project, self.snapshot.files, ['REQ-1'])
         self.complete_native(node, output, {'plan': plan})
@@ -210,6 +210,22 @@ class CodingFixture:
         return node
 
     def review_output(self, node, *, approved=True, objective_satisfied=True):
+        if node['payload'].get('review_scope')=='srs_wbs_reconciliation':
+            manifest=node['payload']['reconciliation_manifest']
+            rows=[]
+            for requirement in manifest['requirements']:
+                criteria=sorted(item['id'] for item in manifest['acceptance_criteria'] if requirement in item['requirement_ids'])
+                rows.append({'requirement_id':requirement,
+                    'chapter_ids':sorted(item['id'] for item in manifest['srs_chapters'] if requirement in item['requirement_ids']),
+                    'criteria_ids':criteria,
+                    'test_ids':sorted(item['id'] for item in manifest['test_cases'] if set(item['criteria_ids']) & set(criteria)),
+                    'wbs_leaf_ids':sorted(item['id'] for item in manifest['wbs_leaves'] if requirement in item['requirement_ids']),
+                    'wbs_leaf_id':sorted(item['id'] for item in manifest['wbs_leaves'] if requirement in item['requirement_ids'])[0],
+                    'status':'SATISFIED' if approved and objective_satisfied else 'DIVERGED',
+                    'rationale':'Storage fixture joins the captured requirement to the exact SRS chapter, WBS leaf and physical test commitment.'})
+            return {'approved':approved and objective_satisfied,'requirements_traced':['REQ-1'],
+                'reconciliation_manifest_sha256':digest(manifest),'requirements_checked':rows,
+                'divergences':[] if approved and objective_satisfied else ['Storage fixture reports a concrete SRS/WBS divergence.']}
         change = node['payload']['file']
         return {'path': change['path'], 'file_sha256': change['after_sha256'], 'diff_sha256': change['diff_sha256'],
             'test_receipt_sha256': node['payload']['test_receipt_sha256'], 'approved': approved,
@@ -256,7 +272,8 @@ class CodingFixture:
         result = self.stager.integrate(baseline, staged, auto_integrate=auto,
             cas_guard=lambda: self.store.coding_cas_guard(node))
         evidence = {'staged': staged, 'integration': result, 'source_snapshot_sha256': self.state()['current_snapshot'],
-                    'reviews_sha256': node['payload']['reviews_sha256'], 'test_receipt_sha256': node['payload']['test_receipt_sha256']}
+                    'reviews_sha256': node['payload']['reviews_sha256'],
+                    'reconciliation_sha256':node['payload']['reconciliation_sha256'], 'test_receipt_sha256': node['payload']['test_receipt_sha256']}
         if acknowledge:
             self.complete_controller(node, {'status': result['status'], 'result_commit': staged['result_commit']}, evidence)
         return staged, result, evidence
@@ -488,6 +505,7 @@ def test_integration_claim_without_applied_intent_cannot_complete(tmp_path):
     evidence = {'staged': staged, 'integration': {'status': 'INTEGRATED'},
                 'source_snapshot_sha256': case.state()['current_snapshot'],
                 'reviews_sha256': node['payload']['reviews_sha256'],
+                'reconciliation_sha256':node['payload']['reconciliation_sha256'],
                 'test_receipt_sha256': node['payload']['test_receipt_sha256']}
     with pytest.raises(ValueError, match='CAS receipt'):
         case.complete_controller(node, {'status': 'INTEGRATED'}, evidence)
@@ -657,14 +675,14 @@ def test_late_container_startup_records_event_bound_to_immutable_attempt_receipt
             conn.execute('UPDATE coding_attempt_evidence SET evidence_json=? WHERE job_id=?',('{}',node['job_id']))
 
 
-def test_controller_and_native_jobs_share_four_worker_global_cap(tmp_path):
+def test_controller_and_native_jobs_share_configured_worker_global_cap(tmp_path):
     case = CodingFixture(tmp_path)
     case.author()
     for index in range(5):
         case.store.submit('Document a simple note', ['REQ-1'], 1, workflow_id=f'planning-{index}')
     active = []
     for index in range(5):
-        node = case.store.claim(f'owner-{index}', worker_slot=f'worker-{index}', max_workers=64)
+        node = case.store.claim(f'owner-{index}', worker_slot=f'worker-{index}', max_workers=4)
         if node is not None:
             active.append(node)
     assert len(active) == 4

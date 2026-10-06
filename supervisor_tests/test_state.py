@@ -297,3 +297,22 @@ def test_durable_event_lookup_outlives_bounded_history_and_filters_exact_scope(t
     assert not restarted.has_event("NEVER_RECORDED")
     with pytest.raises(ValueError, match="nonempty"):
         restarted.has_event("")
+
+
+def test_asymmetric_review_charges_original_incident_and_daily_model_budget(tmp_path):
+    ledger=Ledger(tmp_path/'ledger.db')
+    ledger.observe('repair','code',{},now=1000)
+    attempt=ledger.reserve('repair',max_per_incident=2,max_per_day=2,cooldown_seconds=0,now=1000)
+    review=ledger.reserve_additional_model_call(attempt['attempt_id'],'a'*64,now=1001)
+    assert review is not None and ledger.get_incident('repair')['model_calls']==2
+    assert ledger.reserve_additional_model_call(attempt['attempt_id'],'b'*64,now=1002) is None
+    ledger.finish(attempt['attempt_id'],'FAILED',{'review':'rejected'},now=1003)
+    assert ledger.get_incident('repair')['status']=='EXHAUSTED'
+    assert ledger.reserve('repair',max_per_incident=50,max_per_day=50,cooldown_seconds=0,now=1004) is None
+    ledger.observe('different','code',{},now=1004)
+    assert ledger.reserve('different',max_per_incident=2,max_per_day=50,cooldown_seconds=0,now=1004) is None
+    restored=Ledger(ledger.path)
+    assert restored.get_incident('repair')['model_calls']==2
+    with restored._connection() as db:
+        with pytest.raises(Exception,match='refunded'):
+            db.execute('DELETE FROM supervisor_model_calls')

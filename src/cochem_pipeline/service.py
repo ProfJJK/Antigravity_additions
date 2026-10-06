@@ -8,7 +8,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 import threading
-from urllib.parse import urlsplit
+import time
+import uuid
+from urllib.parse import parse_qs, urlsplit
 
 
 def redact(value):
@@ -47,6 +49,8 @@ class ControlServer(ThreadingHTTPServer):
         if len(token)<32:
             raise ValueError('Controller token must contain at least 32 random characters')
         self.runtime,self.token = runtime,token
+        from .operator_views import OperatorViewHistory
+        self.operator_history=OperatorViewHistory()
         self._requests = threading.BoundedSemaphore(16)
         super().__init__(('127.0.0.1',runtime.config.port),Handler)
 
@@ -87,6 +91,11 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header('Content-Length',str(len(payload)))
         self.end_headers()
         self.wfile.write(payload)
+        objectives=getattr(self.server.runtime,'objectives',None)
+        started=getattr(self,'_observed_started',None)
+        if started is not None and objectives is not None and hasattr(objectives,'record_async'):
+            objectives.record_async('interactive',self._observed_operation,time.monotonic()-started,
+                                    code<400,uuid.uuid4().hex)
 
     def do_GET(self):
         self.dispatch()
@@ -95,6 +104,8 @@ class Handler(BaseHTTPRequestHandler):
         self.dispatch()
 
     def dispatch(self):
+        started=time.monotonic()
+        self._observed_started=None
         supplied=self.headers.get('Authorization','')
         if not hmac.compare_digest(supplied.encode('utf-8'),('Bearer '+self.server.token).encode('utf-8')):
             self.close_connection=True
@@ -102,18 +113,40 @@ class Handler(BaseHTTPRequestHandler):
             return
         runtime=self.server.runtime
         path=urlsplit(self.path).path
+        # Record only a bounded route name, never a query, workflow ID, bearer
+        # token, request body or returned artifact. The bounded async writer
+        # exposes dropped samples and keeps SQLite writes off the HTTP path.
+        self._observed_started=started
+        self._observed_operation=(path if path in {'/health','/operator','/knowledge/status',
+            '/knowledge/search','/knowledge/read','/knowledge/refresh','/coding/projects',
+            '/submit','/preflight','/cancel','/routing/resume','/coding/submit','/coding/cancel','/coding/resume'}
+            else '/operator/workflow' if path.startswith('/operator/workflow/')
+            else '/operator/job' if path.startswith('/operator/job/')
+            else '/coding/workflow' if path.startswith('/coding/workflow/')
+            else '/workflow' if path.startswith('/workflow/') else '/unknown')
         try:
             if self.command=='GET' and path=='/health':
                 self.reply(200,redact(runtime.status()))
+            elif self.command=='GET' and (path=='/operator' or path.startswith('/operator/workflow/') or path.startswith('/operator/job/')):
+                from .operator_views import operator_snapshot
+                workflow_id=path[len('/operator/workflow/'):] if path.startswith('/operator/workflow/') else None
+                job_id=path[len('/operator/job/'):] if path.startswith('/operator/job/') else None
+                query=parse_qs(urlsplit(self.path).query,keep_blank_values=True,max_num_fields=1)
+                if set(query)-{'after_event_id'}:
+                    raise ValueError('Operator view accepts only the after_event_id cursor')
+                cursor=int(query['after_event_id'][0]) if 'after_event_id' in query else None
+                self.reply(200,redact(operator_snapshot(runtime,workflow_id,job_id=job_id,after_event_id=cursor,
+                                                        history=self.server.operator_history)))
             elif self.command=='GET' and path=='/knowledge/status':
-                self.reply(200,runtime.knowledge.status())
+                self.reply(200,runtime.knowledge_authority.status() if hasattr(runtime,'knowledge_authority')
+                           else runtime.knowledge.status())
             elif self.command=='GET' and path=='/coding/projects':
                 self.reply(200,{'projects':sorted(runtime.config.coding_projects)})
             elif self.command=='GET' and path.startswith('/coding/workflow/'):
                 self.reply(200,public_workflow(runtime.coding_workflow(path[len('/coding/workflow/'):])) )
             elif self.command=='GET' and path.startswith('/workflow/'):
                 self.reply(200,public_workflow(runtime.store.workflow(path[len('/workflow/'):])) )
-            elif self.command=='POST' and path in ('/submit','/cancel','/routing/resume',
+            elif self.command=='POST' and path in ('/submit','/preflight','/cancel','/routing/resume',
                                                   '/coding/submit','/coding/cancel','/coding/resume',
                                                   '/knowledge/search','/knowledge/read','/knowledge/refresh'):
                 size=int(self.headers.get('Content-Length','0'))
@@ -122,7 +155,11 @@ class Handler(BaseHTTPRequestHandler):
                 data=json.loads(self.rfile.read(size))
                 if not isinstance(data,dict):
                     raise ValueError('Request must be a JSON object')
-                if path=='/knowledge/search':
+                if path=='/preflight':
+                    if set(data)-{'workflow_id'}:
+                        raise ValueError('Preflight accepts only an optional workflow_id; Chapter 06 assigns its model')
+                    self.reply(202,public_workflow(runtime.store.submit_preflight(data.get('workflow_id'))))
+                elif path=='/knowledge/search':
                     self.reply(200,{'results':runtime.knowledge.search(data['query'],data.get('limit',5))})
                 elif path=='/knowledge/read':
                     self.reply(200,runtime.knowledge.read(data['doc_path']))

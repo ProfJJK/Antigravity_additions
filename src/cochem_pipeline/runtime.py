@@ -95,24 +95,31 @@ class Runtime:
         identities = {slot:WorkerIdentity(**value) for slot,value in config.workers.items()}
         validate_layout(config.private_root,config.slot_roots,identities,require_defender=True)
         self.config = config
+        from .planning_governance import canonical_authority
+        self.canonical_authority = canonical_authority()
         from .knowledge import KnowledgeService
         self.knowledge = KnowledgeService(config.knowledge)
         knowledge_evidence = self.knowledge.refresh()
         if not knowledge_evidence['index_size_sla_met']:
             raise RuntimeError('Knowledge index exceeds the SRS four-times-corpus storage bound')
         self._last_knowledge_refresh = time.monotonic()
+        from .knowledge_authority import KnowledgeAuthority
+        self.knowledge_authority = KnowledgeAuthority(self.knowledge,self.canonical_authority)
+        self.knowledge_authority.status(force=True)
+        from .operations_policy import WorkloadObjectives
+        self.objectives = WorkloadObjectives(config.private_root/'operations')
         self.boot_id = current_boot_identity()
         self.containment_id = os.environ.get('COCHEM_WARDEN_CONTAINMENT_ID')
         if self.containment_id is not None and not re.fullmatch(r'[0-9a-f]{32}',self.containment_id):
             raise RuntimeError('Invalid privileged launcher containment identity')
         self.store = JobStore(config.job_db,max_attempts=config.max_attempts,routing_policy=config.routing,
-                              cleanup_boot_id=self.boot_id)
+                              cleanup_boot_id=self.boot_id,governing_requirements=self.canonical_authority)
         self.store.recover_execution_quarantines_after_boot(self.boot_id)
         previous_cleanup = self.store.quarantine_unclosed_executions('Warden restarted before native cleanup was confirmed')
         execution_policy = effective_execution_policy(getattr(config,'hardware',None),
             config.execution_limits.memory_limit_mb,
             config.docker.memory_mb if getattr(config,'docker',None) and config.docker.enabled else 0)
-        self.guard = HardwareGuard(max_agents=len(config.workers),workspace=config.private_root,
+        self.guard = HardwareGuard(max_agents=min(getattr(config,'max_execution_slots',4),len(config.workers)),workspace=config.private_root,
                                    policy=execution_policy,
                                    workspaces=[config.private_root, *config.slot_roots.values()])
         rules = list(BASELINE)
@@ -157,11 +164,11 @@ class Runtime:
             from .ramdisk import RamdiskManager
             self.ramdisk = RamdiskManager(config.ramdisk, config.private_root, identities)
             self.ramdisk.ensure()
-            self.guard = HardwareGuard(max_agents=len(config.workers),workspace=config.private_root,
+            self.guard = HardwareGuard(max_agents=min(getattr(config,'max_execution_slots',4),len(config.workers)),workspace=config.private_root,
                 policy=execution_policy,workspaces=[config.private_root,*config.slot_roots.values(),
                                                   *(self.ramdisk.workspace(slot).root for slot in config.workers)])
         from .admission import JointAdmission
-        self.admission=JointAdmission(self.store,self.docker,capacity=0)
+        self.admission=JointAdmission(self.store,self.docker,capacity=0,max_capacity=min(getattr(config,'max_execution_slots',4),len(config.workers)))
         if getattr(config, 'coding_projects', None) and self.ramdisk is not None and self.docker is not None:
             from .coding import CodingCoordinator
             self.coding = CodingCoordinator(config, self.store, self.runner, self.ramdisk,host_boot_id=self.boot_id)
@@ -175,7 +182,7 @@ class Runtime:
         self.event_cursor = 0
         self.last_capacity = 0
         self.heartbeat = Heartbeat(config.private_root,__version__)
-        self.pool = ThreadPoolExecutor(max_workers=min(4,len(config.workers)),thread_name_prefix='pipeline')
+        self.pool = ThreadPoolExecutor(max_workers=min(getattr(config,'max_execution_slots',4),len(config.workers)),thread_name_prefix='pipeline')
         for slot,root in config.slot_roots.items():
             # Windows Job Object kill-on-close terminates former workers after service death.
             # This step must happen before any new identity can execute.
@@ -247,6 +254,8 @@ class Runtime:
     def _execute(self,node,slot):
         job_id = node['job_id']
         observer = Observer()
+        observed_start = time.monotonic()
+        observed_success = False
         try:
             # Each attempt owns its watcher. Stop it before supervisor cleanup,
             # so cleanup events cannot trip a completed job or a later occupant.
@@ -302,6 +311,7 @@ class Runtime:
                                                evidence=evidence,files=files)
                 else:
                     self.store.complete(job_id,node['attempt_id'],node['fencing_token'],output,receipt)
+                observed_success = self.store.get(job_id)['status'] == 'COMPLETED'
         except Exception as exc:
             if node['kind']=='CODE_TEST' and self.docker is not None and not isinstance(exc,WorkerCleanupError):
                 try:
@@ -337,6 +347,12 @@ class Runtime:
                             LOG.error('Slot %s cleanup receipt failed: %s',slot,exc)
                     active['cleanup_verified'] = slot not in self.quarantined
                     active['cleaned'].set()
+            if hasattr(self,'objectives'):
+                try:
+                    self.objectives.record('background', node['kind'], time.monotonic()-observed_start,
+                        observed_success and slot not in self.quarantined, node['attempt_id'])
+                except Exception as exc:
+                    LOG.error('Operational objective evidence could not be recorded: %s', type(exc).__name__)
             if hasattr(self,'admission'):
                 # Refill prepared capacity as soon as execution releases a seat.
                 self.admission.maintenance_requested.set()
@@ -385,8 +401,8 @@ class Runtime:
             except Exception:
                 LOG.error('Private crash metadata could not be persisted')
             emit_recovery_event(self.config.job_db,{
-                'tier':1,'action':('routing_hold' if hold_scope=='job' or category in ('configuration','compatibility')
-                    else 'provider_unavailable' if category in ('quota','auth','busy','context','provider','backlog','resource') else 'worker_failure'),
+                'tier':1,'action':('routing_hold' if hold_scope=='job' or category=='configuration'
+                    else 'provider_unavailable' if category in ('quota','auth','busy','context','provider','backlog','resource','compatibility') else 'worker_failure'),
                 'job_id':job_id,'attempt_id':node['attempt_id'],'category':category,
                 'reason':str(exc),'retry_requested':retry,'retry_after_seconds':retry_after,
                 'hold_scope':hold_scope})
@@ -425,12 +441,14 @@ class Runtime:
             emit_recovery_event(self.config.job_db,{'tier':1,'action':'lease_reaper','job_id':node['job_id']})
         decision = self.guard.evaluate() if hasattr(self.guard,'evaluate') else {'capacity':self.guard.capacity()}
         if getattr(self,'knowledge',None) is not None:
-            knowledge = self.knowledge.status()
+            knowledge = self.knowledge_authority.status() if hasattr(self,'knowledge_authority') else self.knowledge.status()
             self.components['knowledge'] = {'required':True,'checked_at':time.time(),
                 'state':'healthy' if knowledge['ready'] else 'unhealthy','evidence':knowledge}
             if not knowledge['ready']:
                 decision = {**decision,'capacity':0,
-                    'reasons':[*decision.get('reasons',[]),'Registered knowledge corpus/index is not ready']}
+                    'state':decision.get('state') if decision.get('action')=='terminate_active' else 'paused',
+                    'action':decision.get('action') if decision.get('action')=='terminate_active' else 'pause_admission',
+                    'reasons':[*decision.get('reasons',[]),knowledge.get('authority_reason') or 'Registered knowledge corpus/index is not ready']}
         if hasattr(self,'controller_monitor'):
             controller = self.controller_monitor.sample()
             self.components['warden_controller'] = {'required':True,
@@ -556,11 +574,13 @@ class Runtime:
             active = [{'job_id':key,'slot':value['slot'],'pid':value['pid'],
                        'route':value['node'].get('route')} for key,value in self.active.items()]
         return {'version':__version__,'service_identity':'SYSTEM','hardware':self.guard.latest_snapshot() if hasattr(self.guard,'latest_snapshot') else self.guard.snapshot(),
+                'admission':self.store.transition_telemetry,'admission_capacity':self.last_capacity,
                 'active':active,'quarantined_slots':dict(self.quarantined),
                 'trip_errors':self.oracle.trip_errors,'pid':os.getpid(),
                 'instance_id':self.heartbeat.instance_id,'process_started_at':self.heartbeat.started_at,
                 'routing':self.store.routing_status(),'components':dict(self.components),'execution_bounds':self.execution_bounds(),
-                'knowledge':self.knowledge.status() if getattr(self,'knowledge',None) is not None else {'ready':False},
+                'knowledge':self.knowledge_authority.status() if hasattr(self,'knowledge_authority') else
+                    self.knowledge.status() if getattr(self,'knowledge',None) is not None else {'ready':False},
                 'planning':planning_readiness(getattr(self.config,'coding_projects',{})),
                 'source_root':str(Path(__file__).resolve().parents[2])}
 
@@ -598,6 +618,12 @@ class Runtime:
             for job_id in ids:
                 self.runner.terminate(job_id)
             self.pool.shutdown(wait=True)
+            if getattr(self,'objectives',None) is not None:
+                try:
+                    self.objectives.close()
+                except Exception as error:
+                    # Lost metric samples must not prevent containment cleanup.
+                    LOG.error('Operational observation queue could not drain: %s',type(error).__name__)
             if self._maintenance_thread is not None:
                 self._maintenance_thread.join(timeout=120)
             if self.docker is not None:

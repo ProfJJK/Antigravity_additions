@@ -136,3 +136,77 @@ def test_external_guard_cannot_use_a_different_controller_or_boot_stop_proof(tmp
     with sqlite3.connect(case.store.path) as db:
         exists=db.execute("SELECT 1 FROM sqlite_schema WHERE name='pipeline_execution_owner_stops'").fetchone()
         assert not exists or db.execute('SELECT count(*) FROM pipeline_execution_owner_stops').fetchone()[0]==0
+
+
+def test_external_quiescence_rejects_assertions_without_stopped_scheduler():
+    from cochem_supervisor.cleanup import quiesce_external_container_runner
+    from cochem_pipeline.containers import ContainerCleanupError
+    for proof in ({}, {'tree_exit_verified': True}, {'tree_exit_verified': 1, 'scheduling_disabled': True}):
+        with pytest.raises(ContainerCleanupError, match='verified stopped'):
+            quiesce_external_container_runner(None, stop_receipt=proof)
+
+
+def test_external_quiescence_requires_actual_windows_for_production_entrypoint():
+    import os
+    if os.name == 'nt':
+        pytest.skip('This check exercises the real non-Windows rejection path')
+    from cochem_supervisor.cleanup import ensure_external_containers_quiescent
+    from cochem_pipeline.windows import WindowsIsolationError
+    with pytest.raises(WindowsIsolationError, match='real Windows SYSTEM'):
+        ensure_external_containers_quiescent({}, stop_receipt=receipt())
+
+
+def test_real_docker_quiescence_drains_registered_active_and_prepared_only(tmp_path):
+    import os
+    from cochem_pipeline.containers import DockerRunner
+    from pipeline_tests.test_containers import policy
+    from cochem_supervisor.cleanup import quiesce_external_container_runner
+    image = os.environ.get('COCHEM_TEST_DOCKER_IMAGE')
+    if not image:
+        pytest.skip('Set COCHEM_TEST_DOCKER_IMAGE for physical external-container cleanup')
+    owned = DockerRunner(policy(image), tmp_path/'owned')
+    foreign = DockerRunner(policy(image), tmp_path/'foreign')
+    try:
+        owned.prepare_pool(target=2)
+        foreign_id = foreign.prepare_pool(target=1)['prepared'][0]
+        owned.reserve_attempt('interrupted-test', 'interrupted-attempt')
+        before = owned.census()
+        assert before['active'] == before['warm'] == 1
+        result = quiesce_external_container_runner(owned, stop_receipt=receipt())
+        assert result['cleanup_verified'] and result['previous_owned'] == 2
+        assert result['remaining_owned'] == result['published_capacity'] == 0
+        assert result['prepared_pool_drained'] == 1
+        assert owned.census()['owned'] == 0
+        assert foreign._json(['inspect', foreign_id])[0]['State']['Running'] is True
+        with owned._connect() as database:
+            assert database.execute("SELECT count(*) FROM containers WHERE status='REMOVED'").fetchone()[0] == 2
+        # Native stop metadata above is an explicit storage fixture. This test
+        # proves actual Docker cleanup, not native Windows containment shutdown.
+    finally:
+        owned.reap_orphans(set(), include_warm=True)
+        foreign.reap_orphans(set(), include_warm=True)
+
+
+def test_real_docker_quiescence_holds_unknown_owner_label_without_deleting_it(tmp_path):
+    import os
+    import uuid
+    from cochem_pipeline.containers import DockerRunner, ContainerCleanupError
+    from pipeline_tests.test_containers import policy
+    from cochem_supervisor.cleanup import quiesce_external_container_runner
+    image = os.environ.get('COCHEM_TEST_DOCKER_IMAGE')
+    if not image:
+        pytest.skip('Set COCHEM_TEST_DOCKER_IMAGE for physical external ownership verification')
+    runner = DockerRunner(policy(image), tmp_path/'owned')
+    nonce = uuid.uuid4().hex
+    record = {'name': 'cochem-unregistered-' + nonce, 'lease': nonce, 'job_id': 'unknown-object'}
+    created = runner._call(runner.create_arguments(record))
+    assert created.returncode == 0
+    identifier = created.stdout.decode().strip()
+    try:
+        with pytest.raises(ContainerCleanupError, match='Unknown external Docker ownership'):
+            quiesce_external_container_runner(runner, stop_receipt=receipt())
+        assert runner._json(['inspect', identifier])[0]['Id'] == identifier
+        assert runner.census()['unknown_owned'] == 1
+    finally:
+        # The test, which created this exact isolated object, owns its cleanup.
+        assert runner._call(['rm', '--force', identifier]).returncode == 0

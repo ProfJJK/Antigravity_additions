@@ -24,6 +24,10 @@ DEFAULTS = {'poll_seconds':10,'startup_grace_seconds':120,'heartbeat_timeout':30
                             'pipeline_tests/test_coding_plan.py',
                             'pipeline_tests/test_coding_workflow.py','pipeline_tests/test_coding_boundaries.py',
                             'pipeline_tests/test_coding_acceptance.py','pipeline_tests/test_diagnostics.py',
+                            'pipeline_tests/test_coding_reconciliation.py','pipeline_tests/test_operator_views.py',
+                            'pipeline_tests/test_document_governance.py',
+                            'pipeline_tests/test_operations_policy.py','pipeline_tests/test_runtime_knowledge_authority.py',
+                            'pipeline_tests/test_upgrade_preview.py','pipeline_tests/test_deployment_revision.py',
                             'pipeline_tests/test_coding_srs_gates.py','pipeline_tests/test_knowledge.py',
                             'pipeline_tests/test_prompt_transport.py','pipeline_tests/test_crash_envelope.py',
                             'pipeline_tests/test_native_output_bounds.py','pipeline_tests/test_controller_guard.py',
@@ -62,9 +66,9 @@ def load_config(filename: str | Path) -> dict:
     for key,value in DEFAULTS.items():
         if type(value) is int:
             supplied=result[key]
-            low=1024 if key=='max_log_bytes' else 0 if key=='maximum_skipped_tests' else 1
+            low=1024 if key=='max_log_bytes' else 0 if key=='maximum_skipped_tests' else 1800 if key=='cooldown_seconds' else 1
             high=(67108864 if key=='max_log_bytes' else
-                  1000 if key in ('max_per_incident','max_per_day') else
+                  2 if key=='max_per_incident' else 4 if key=='max_per_day' else
                   86400 if key in ('repair_timeout_seconds','test_timeout_seconds') else 864000)
             if type(supplied) is not int or not low<=supplied<=high:
                 raise ValueError(f'Invalid bounded integer: {key}')
@@ -78,14 +82,21 @@ def load_config(filename: str | Path) -> dict:
         not isinstance(value,str) or not value.strip() or '\x00' in value for value in worker.values()):
         raise ValueError('repair_worker requires its dedicated name and Credential Manager target')
     providers=result.get('providers')
-    if not isinstance(providers,list) or not 1<=len(providers)<=2:
-        raise ValueError('Configure one or two repair provider specifications')
+    if not isinstance(providers,list) or not 1<=len(providers)<=3:
+        raise ValueError('Configure one to three repair provider CLI specifications')
     seen=set()
     for spec in providers:
-        expected={'codex':'gpt-6-astra','claude':'claude-fable-5-1'}
-        if (not isinstance(spec,dict) or not isinstance(spec.get('provider'),str)
-                or spec['provider'] not in expected or spec.get('model')!=expected[spec['provider']]):
-            raise ValueError('Repair providers must select GPT-6 Astra or Claude Fable 5.1 explicitly')
+        from .runner import validate_provider_spec
+        try:
+            validate_provider_spec(spec)
+        except (ValueError, TypeError) as exc:
+            if isinstance(spec,dict) and spec.get('provider')=='gemini':
+                result.setdefault('provider_contract_errors',{})['gemini']=str(exc)
+                if 'gemini' in seen:
+                    raise ValueError('Repair providers must be distinct')
+                seen.add('gemini')
+                continue
+            raise ValueError('Repair providers require exact Chapter 06 models and native CLI contracts') from exc
         if spec['provider'] in seen:
             raise ValueError('Repair providers must be distinct')
         seen.add(spec['provider'])
@@ -115,6 +126,14 @@ def load_config(filename: str | Path) -> dict:
     result['pipeline_providers']=pipeline.get('providers',{})
     if not isinstance(result['pipeline_providers'],dict):
         raise ValueError('Pipeline providers must be an object')
+    if 'gemini' not in seen and isinstance(result['pipeline_providers'].get('gemini'),dict):
+        gemini={**result['pipeline_providers']['gemini'],'provider':'gemini'}
+        if all(key in gemini for key in ('executable','arguments','protocol','subscription_probe')):
+            try:
+                validate_provider_spec(gemini)
+            except (ValueError,TypeError) as exc:
+                result.setdefault('provider_contract_errors',{})['gemini']=str(exc)
+            result['providers'].append(gemini)
     result['pipeline_routing']=deepcopy(pipeline.get('routing',{}))
     # Independent parsing must remain usable when candidate pipeline imports
     # are broken; this reads only the protected policy, never a model module.

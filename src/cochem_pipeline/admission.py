@@ -15,12 +15,15 @@ from .container_policy import DockerPolicy
 from .containers import DockerRunner,ContainerCapacityError,ContainerCleanupError
 from .coding_store import CODING_KINDS
 
-_NATIVE_KINDS=tuple(kind for kind in ('MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS',*CODING_KINDS)
+_NATIVE_KINDS=tuple(kind for kind in ('MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','PREFLIGHT_REQUEST',*CODING_KINDS)
                     if kind not in {'CODE_REQUEST','CODE_TEST'})
 
 
 class JointAdmission:
-    def __init__(self,store,docker,capacity=0,*,lock=None):
+    def __init__(self,store,docker,capacity=0,*,lock=None,max_capacity=4):
+        if type(max_capacity) is not int or not 1 <= max_capacity <= 256:
+            raise ValueError('Configured joint capacity must be in 1..256')
+        self.max_capacity=max_capacity
         self.store,self.docker=store,docker
         self.lock=lock if lock is not None else threading.Lock()
         self._budget_lock=threading.RLock()
@@ -45,8 +48,8 @@ class JointAdmission:
 
     def update_capacity(self,capacity):
         """Publish pressure immediately, without waiting for slow pool creation."""
-        if type(capacity) is not int or not 0<=capacity<=4:
-            raise ValueError('Joint admission capacity must be an integer from zero through four')
+        if type(capacity) is not int or not 0<=capacity<=self.max_capacity:
+            raise ValueError('Joint admission capacity must respect the configured execution ceiling')
         with self._budget_lock:
             changed=capacity!=self._capacity
             self._capacity=capacity

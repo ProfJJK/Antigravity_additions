@@ -17,9 +17,11 @@ $Config = (Resolve-Path -LiteralPath $Config).Path
 if (-not $Python.StartsWith($env:ProgramFiles.TrimEnd('\') + '\', [StringComparison]::OrdinalIgnoreCase)) {
     throw 'Use the protected pipeline Python under Program Files.'
 }
-# Python verifies executable/ancestor ACLs, exact mount reparse data, the ImDisk
-# kernel backing flags, actual NTFS and worker isolation. Existing files are
-# moved into a same-volume before-ramdisk backup before any mount is created.
+# Python verifies executable/ancestor ACLs, exact DOS-device or mount reparse
+# data, ImDisk kernel backing flags, actual NTFS and worker isolation. Existing
+# R: volumes are adopted at their reviewed 8 GiB capacity, never formatted or
+# resized. Their existing Windows startup task remains the volume owner.
+# Legacy managed directory mounts preserve files in an atomic backup first.
 # No credential/home directories are read, copied or redirected.
 & $Python -I -m cochem_pipeline.ramdisk --config $Config
 if ($LASTEXITCODE -ne 0) { throw 'RAM disk provisioning or native verification failed; dispatch remains disabled.' }

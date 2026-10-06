@@ -71,6 +71,7 @@ class DockerPolicy:
     tmpfs_mb: int = 2048
     max_containers: int = 4
     warm_pool_size: int = 4
+    adaptive_pool_enabled: bool = False
     max_source_mb: int = 128
     max_source_files: int = 20000
     output_limit_bytes: int = 1048576
@@ -82,6 +83,9 @@ class DockerPolicy:
         raw = {} if raw is None else raw
         if not isinstance(raw, dict) or set(raw) - set(cls.__dataclass_fields__):
             raise ValueError('Unknown Docker policy fields')
+        adaptive = raw.get('adaptive_pool_enabled', False)
+        if type(adaptive) is not bool:
+            raise ValueError('adaptive_pool_enabled must be boolean')
         enabled = raw.get('enabled', False)
         if type(enabled) is not bool:
             raise ValueError('docker.enabled must be boolean')
@@ -124,8 +128,8 @@ class DockerPolicy:
         numeric = {}
         for key, default, low, high in (
             ('memory_mb', 4096, 64, 4096), ('pids_limit', 512, 16, 512),
-            ('tmpfs_mb', 2048, 16, 2048), ('max_containers', 4, 1, 4),
-            ('warm_pool_size', 4, 0, 4),
+            ('tmpfs_mb', 2048, 16, 2048), ('max_containers', 4, 1, 256),
+            ('warm_pool_size', 4, 0, 256),
             ('max_source_mb', 128, 1, 512), ('max_source_files', 20000, 1, 100000),
             ('output_limit_bytes', 1048576, 1024, 8388608),
             ('junit_limit_bytes', 4194304, 1024, 16777216),
@@ -136,7 +140,7 @@ class DockerPolicy:
         if numeric['warm_pool_size'] > numeric['max_containers']:
             raise ValueError('Warm pool cannot exceed the global container ceiling')
         return cls(enabled, image, tuple(allowed), commands, executable, endpoint,
-                   cpus=float(cpus), pipe_server_executables=tuple(pipe_servers), **numeric)
+                   cpus=float(cpus), pipe_server_executables=tuple(pipe_servers), adaptive_pool_enabled=adaptive, **numeric)
 
     def as_dict(self):
         return {name: [command.as_dict() for command in self.commands] if name == 'commands'

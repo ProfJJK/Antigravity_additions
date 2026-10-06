@@ -207,3 +207,11 @@ def test_workspaces_must_be_a_nonempty_sequence(workspaces: object) -> None:
 def test_nvidia_executable_is_one_nonempty_argument(tmp_path: Path, executable: object) -> None:
     with pytest.raises(ValueError, match="nvidia_smi"):
         collect_resources([tmp_path], nvidia_smi=executable)
+
+
+def test_cpu_physical_count_is_actual_and_distinct_from_affinity_logical_count(tmp_path):
+    cpu=collect_resources([tmp_path],sample_seconds=.01)['cpu']
+    actual=psutil.cpu_count(logical=False)
+    assert cpu['physical_count_available'] is (type(actual) is int and actual>0)
+    assert cpu['physical_count']==actual
+    assert cpu['physical_count_source']=='psutil.cpu_count(logical=False)'

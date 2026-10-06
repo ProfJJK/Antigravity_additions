@@ -73,7 +73,8 @@ def test_quota_and_auth_advance_without_consuming_task_failure_budget(tmp_path):
 
 
 def test_model_pool_reservations_are_atomic_under_real_threads(tmp_path):
-    selected = policy()
+    selected = policy(model_limits={target['key']: 1 for score in (1, 4, 7, 10)
+                                   for target in [item.as_dict() for item in policy().candidates(score)]})
     store = JobStore(tmp_path / "routes.db", routing_policy=selected)
     workflows = [store.submit("Document a note", ["REQ-1"], 1) for _ in range(4)]
     gate = threading.Barrier(4)
@@ -120,7 +121,7 @@ def test_policy_snapshot_and_sql_route_identity_cannot_be_reinterpreted(tmp_path
     old_policy = policy()
     store, workflow_id, job_id = submitted(tmp_path, old_policy)
     revised = old_policy.as_dict()
-    revised["tiers"]["1-3"] = list(reversed(revised["tiers"]["1-3"]))
+    revised["model_limits"]["gemini:gemini-3.8-flash"] = 2
     reopened = JobStore(store.path, routing_policy=load_routing_policy(revised))
     node = reopened.claim("changed-policy", worker_slot="identity")
     assert node["route"]["provider"] == "gemini"
@@ -209,6 +210,7 @@ def test_real_lease_expiry_consumes_failure_budget_and_releases_occupancy(tmp_pa
 
 def test_legacy_live_attempt_is_not_given_a_fabricated_route_and_new_claims_wait(tmp_path):
     legacy = JobStore(tmp_path / 'routes.db')
+    legacy.routing_policy = None  # Explicit old-version storage fixture, never a native dispatch.
     first = legacy.submit('Legacy task', ['REQ-1'], 1)
     legacy.submit('Queued legacy task', ['REQ-1'], 1)
     running = legacy.claim('legacy-process', worker_slot='legacy-slot')
@@ -271,17 +273,25 @@ def test_direct_sql_cannot_swap_astra_effort_in_reserved_completion(tmp_path):
     assert store.workflow(workflow['workflow_id'])['status']=='IN_PROGRESS'
 
 
-def test_global_four_cap_cannot_be_raised_by_a_claim_caller(tmp_path):
-    generous = policy().as_dict()
-    generous['model_limits']={key:64 for key in generous['model_limits']}
-    generous['provider_limits']={key:{**value,'max_concurrency':64} for key,value in generous['provider_limits'].items()}
-    generous['quota_pool_limits']={key:64 for key in generous['quota_pool_limits']}
-    store = JobStore(tmp_path/'routes.db',routing_policy=load_routing_policy(generous))
-    for _ in range(5):
-        store.submit('Document a note',['REQ-1'],1)
-    assert all(store.claim(f'owner-{index}',worker_slot=f's-{index}',max_workers=64) for index in range(4))
-    assert store.claim('fifth',worker_slot='s-4',max_workers=64) is None
-    assert len(store.active_jobs())==len(store.routing_status()['active_reservations'])==4
+def test_configured_hardware_capacity_is_separate_from_provider_caps(tmp_path):
+    store = JobStore(tmp_path/'routes.db')
+    for _ in range(65):
+        store.submit('Document a note', ['REQ-1'], 1)
+    nodes = [store.claim(f'owner-{index}', worker_slot=f's-{index}', max_workers=128) for index in range(65)]
+    assert all(node and node['route']['provider'] == 'gemini' for node in nodes)
+    assert len(store.active_jobs()) == len(store.routing_status()['active_reservations']) == 65
+    # An independently configured hardware bound still refuses excess work.
+    store.submit('One more note', ['REQ-1'], 1)
+    assert store.claim('hardware-bound', worker_slot='s-65', max_workers=65) is None
+
+
+def test_claude_twenty_concurrent_reservations_spill_over_atomically(tmp_path):
+    store = JobStore(tmp_path/'routes.db')
+    for _ in range(22):
+        store.submit('Document authentication', ['REQ-1'], 1)
+    nodes = [store.claim(f'owner-{index}', worker_slot=f's-{index}', max_workers=64) for index in range(22)]
+    assert [node['route']['provider'] for node in nodes] == ['claude'] * 20 + ['codex'] * 2
+    assert all(node['route']['score'] == 4 for node in nodes)
 
 
 @pytest.mark.parametrize('ending',['cancel','fatal_sibling'])
@@ -361,6 +371,7 @@ def test_reboot_proof_distinguishes_known_unknown_and_legacy_observed_boot(tmp_p
     assert len(store.execution_quarantines())==1
 
     legacy = JobStore(tmp_path/'legacy.db')
+    legacy.routing_policy = None  # Explicit old-version storage fixture, never a native dispatch.
     legacy.submit('Legacy task',['REQ-1'],1)
     old = legacy.claim('unknown-original-boot',worker_slot='legacy',lease_seconds=.02)
     migrated = JobStore(legacy.path,routing_policy=policy(),cleanup_boot_id=400)
@@ -385,3 +396,22 @@ def test_startup_quarantines_unexpired_guard_before_any_workspace_reuse(tmp_path
     assert len(held)==1 and held[0]['attempt_id']==node['attempt_id']
     assert held[0]['quarantined']==1
     assert restarted.claim('cannot-reuse-live-workspace',worker_slot='another') is None
+
+
+def test_current_admission_can_release_legacy_caps_without_rewriting_captured_routes(tmp_path):
+    constrained = policy(model_limits={'gemini:gemini-3.8-flash': 1},
+                         provider_limits={'gemini': {'max_concurrency': 1}},
+                         quota_pool_limits={'gemini': 1, 'codex': None, 'claude': None})
+    store = JobStore(tmp_path/'relax.db', routing_policy=constrained)
+    store.submit('First note', ['REQ-1'], 1)
+    store.submit('Second note', ['REQ-1'], 1)
+    first = store.claim('first', worker_slot='one')
+    current = policy()
+    reopened = JobStore(store.path, routing_policy=current)
+    second = reopened.claim('second', worker_slot='two')
+    assert first['route']['provider'] == second['route']['provider'] == 'gemini'
+    assert first['route']['policy_digest'] == second['route']['policy_digest'] == constrained.digest
+    assert first['route']['admission_policy_digest'] == constrained.digest
+    assert second['route']['admission_policy_digest'] == current.digest
+    assert second['route']['max_concurrency'] == 1  # Original task authority remains unchanged.
+    assert reopened.get(first['job_id'])['route'] == first['route']

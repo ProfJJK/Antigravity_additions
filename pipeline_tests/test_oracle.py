@@ -460,3 +460,23 @@ def test_shutdown_validation_and_closed_calls(private_db):
         oracle.record("task", "c", now=2)
     with pytest.raises(RuntimeError, match="closed"):
         oracle.drain(now=2)
+
+
+def test_protected_decision_log_preserves_reactivated_generations_and_omits_prompt_bodies(private_db):
+    with Oracle(core_engine(),private_db,lambda task:None) as oracle:
+        for event_at, text in ((1,'sqlite private-secret-prompt'), (2,'other private-secret-prompt'), (3,'sqlite private-secret-prompt')):
+            oracle.record('job',text,facets=('database',),now=event_at)
+            result=oracle.drain(now=event_at+.5)[0]
+            oracle.ack('job',result['watermark'],result['delivery_id'])
+        log=oracle.decision_log('job')
+        entries=log['entries']
+        assert [entry['delivery_generation'] for entry in entries]==[1,2,3]
+        assert entries[0]['watermark']==entries[2]['watermark']!=entries[1]['watermark']
+        assert all(entry['ack_generation']==entry['delivery_generation'] for entry in entries)
+        assert all(entry['selected_at']<=entry['acknowledged_at'] for entry in entries)
+        assert all(0<entry['budget_used']<=entry['budget_limit'] for entry in entries)
+        assert 'private-secret-prompt' not in json.dumps(log)
+        assert 'Preserve evidence' not in json.dumps(log)
+        assert [entry['delivery_generation'] for entry in oracle.decision_log(after_id=1,limit=1)['entries']]==[2]
+    with Oracle(core_engine(),private_db,lambda task:None) as reopened:
+        assert reopened.decision_log()==log

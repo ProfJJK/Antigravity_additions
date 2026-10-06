@@ -40,7 +40,22 @@ def main():
         if name=='resume':
             command.add_argument('--fingerprint',required=True)
             command.add_argument('--reason',default='Operator confirmed prerequisite restored')
+    replay=commands.add_parser('replay-incident')
+    replay.add_argument('--input',required=True)
+    replay.add_argument('--config',help='Read current routing and repair budgets without changing the ledger')
+    preflight=commands.add_parser('preflight')
+    preflight.add_argument('--config',required=True)
+    preflight.add_argument('--model-probe',action='store_true')
+    preflight.add_argument('--timeout-seconds',type=int,default=120)
     args=parser.parse_args()
+    if args.command=='replay-incident':
+        from .replay import replay_file
+        replay_config=load_config(args.config) if args.config else None
+        print(json.dumps(replay_file(args.input,
+            replay_config.get('pipeline_routing') if replay_config else None,
+            config=replay_config,ledger_path=Path(replay_config['private_root'])/'supervisor.db' if replay_config else None),
+            ensure_ascii=False,indent=2))
+        return
     config=load_config(args.config)
     private=Path(config['private_root'])
     if args.command in ('status','request-update','resume'):
@@ -75,7 +90,11 @@ def main():
             supervisor.runner.terminate()
         signal.signal(signal.SIGINT,stop)
         signal.signal(signal.SIGTERM,stop)
-        if args.command=='daemon':
+        if args.command=='preflight':
+            from .preflight import run_preflight
+            print(json.dumps(run_preflight(supervisor,model_probe=args.model_probe,
+                timeout_seconds=args.timeout_seconds),ensure_ascii=False,indent=2))
+        elif args.command=='daemon':
             supervisor.run()
         elif args.command=='recover':
             print(json.dumps(supervisor.recover(),ensure_ascii=False,indent=2))

@@ -1,4 +1,4 @@
-"""Measured host admission and emergency policy for the four-worker pipeline.
+"""Measured host admission and emergency policy for the configured execution capacity.
 
 Telemetry is collected from the host; ``assess_resources`` is a pure decision
 function so boundary cases can be tested without claiming invented readings
@@ -16,7 +16,7 @@ from typing import Any, Mapping, Sequence
 
 from .resource_telemetry import collect_resources
 
-_HARD_MAX_AGENTS = 4
+_MAX_CONFIGURED_AGENTS = 256
 
 
 def _number(value: Any) -> bool:
@@ -33,6 +33,7 @@ class HardwarePolicy:
     historical SRS temperature specifications.
     """
     gpu_required: bool = True
+    physical_cpu_count_required: bool = True
     windows_commit_required: bool = True
     cpu_temperature_required: bool = True
     disk_io_required: bool = True
@@ -68,7 +69,7 @@ class HardwarePolicy:
                 if type(value) is not bool:
                     raise ValueError(f'{field.name} must be a boolean')
             elif field.name in {'recovery_samples', 'ramp_up_step'}:
-                if type(value) is not int or not 1 <= value <= (1000 if field.name == 'recovery_samples' else 4):
+                if type(value) is not int or not 1 <= value <= (1000 if field.name == 'recovery_samples' else 256):
                     raise ValueError(f'{field.name} has an invalid integer bound')
             elif not _number(value) or value < 0 or value > 1e9:
                 raise ValueError(f'{field.name} must be a bounded finite nonnegative number')
@@ -133,9 +134,9 @@ def assess_resources(measurements: dict, policy: HardwarePolicy, max_agents: int
     """
     if not isinstance(policy, HardwarePolicy) or not isinstance(measurements, dict):
         raise ValueError('Resource assessment requires HardwarePolicy and measurement objects')
-    if type(max_agents) is not int or max_agents < 0:
-        raise ValueError('max_agents must be a nonnegative integer')
-    ceiling = min(_HARD_MAX_AGENTS, max_agents)
+    if type(max_agents) is not int or not 0 <= max_agents <= _MAX_CONFIGURED_AGENTS:
+        raise ValueError('max_agents must be an integer in 0..256')
+    ceiling = max_agents
     capacity = ceiling
     reasons, alerts, emergencies, sustained = [], [], [], []
 
@@ -163,6 +164,12 @@ def assess_resources(measurements: dict, policy: HardwarePolicy, max_agents: int
         pause('CPU count/utilization telemetry is unavailable or invalid')
     if not memory_ok:
         pause('Physical memory telemetry is unavailable or invalid')
+    physical_ok = (isinstance(cpu,dict) and cpu.get('physical_count_available') is True
+                   and type(cpu.get('physical_count')) is int and cpu['physical_count']>0)
+    if not physical_ok and policy.physical_cpu_count_required:
+        pause('Required physical CPU count telemetry is unavailable or invalid')
+    elif not physical_ok:
+        alerts.append('Physical CPU count unavailable; explicitly configured logical-CPU fallback')
     if cpu_ok and memory_ok:
         percent, available = cpu['percent'], memory['available_mb']
         if percent < 30 and available > 16384:
@@ -177,7 +184,8 @@ def assess_resources(measurements: dict, policy: HardwarePolicy, max_agents: int
             band = 0
             pause('CPU/RAM pressure is outside the safe historical admission bands')
         memory_slots = max(0, math.floor((available-policy.min_free_memory_mb)/policy.per_agent_memory_mb))
-        capacity = min(capacity, cpu['count'], band, memory_slots)
+        processor_slots = min(cpu['count'],cpu['physical_count']) if physical_ok else cpu['count']
+        capacity = min(capacity, processor_slots, band, memory_slots)
         if memory_slots == 0:
             pause('Available memory cannot accommodate a worker and the configured reserve')
     # Missing unrelated telemetry must not mask an independently measured
@@ -319,8 +327,8 @@ class HardwareGuard:
                  min_free_disk_mb: float | None = None, workspace: Path | None = None,
                  per_agent_memory_mb: float | None = None, max_cpu_percent: float | None = None,
                  *, workspaces: Sequence[Path] | None = None, policy: HardwarePolicy | Mapping | None = None):
-        if type(max_agents) is not int or max_agents < 0:
-            raise ValueError('max_agents must be a nonnegative integer')
+        if type(max_agents) is not int or not 0 <= max_agents <= _MAX_CONFIGURED_AGENTS:
+            raise ValueError('max_agents must be an integer in 0..256')
         configured = policy if isinstance(policy, HardwarePolicy) else HardwarePolicy.from_dict(policy)
         overrides = {key:value for key,value in (('min_free_memory_mb',min_free_memory_mb),
             ('min_free_disk_mb',min_free_disk_mb),('per_agent_memory_mb',per_agent_memory_mb),
@@ -358,10 +366,10 @@ class HardwareGuard:
             cpu, memory, disks = measured.get('cpu',{}), measured.get('memory',{}), measured.get('disks',{})
             volumes = disks.get('volumes',[])
             result = {**decision, 'measured_at':time.time(), 'workspace':str(self.workspace),
-                'workspaces':[str(path) for path in self.workspaces], 'max_agents':self.max_agents, 'hard_max_agents':4,
+                'workspaces':[str(path) for path in self.workspaces], 'max_agents':self.max_agents, 'hard_max_agents':self.max_agents,
                 'policy':self.policy.as_dict(), 'measurements':measured,
                 # Stable API aliases remain genuine readings, never fabricated defaults.
-                'cpu_count':cpu.get('count'), 'cpu_percent':cpu.get('percent'),
+                'cpu_count':cpu.get('count'), 'cpu_physical_count':cpu.get('physical_count'), 'cpu_percent':cpu.get('percent'),
                 'memory_total_mb':memory.get('total_mb'), 'memory_available_mb':memory.get('available_mb'),
                 'disk_total_mb':volumes[0].get('total_mb') if volumes else None,
                 'disk_free_mb':volumes[0].get('free_mb') if volumes else None,
@@ -390,7 +398,7 @@ class HardwareGuard:
                 'action':'pause_admission','measured_at':None,'measurements':{},
                 'reasons':['Required hardware telemetry has not completed its first sample'],
                 'alerts':[],'critical_reasons':[],'sustained_critical':[],
-                'max_agents':self.max_agents,'hard_max_agents':4,'policy':self.policy.as_dict()}
+                'max_agents':self.max_agents,'hard_max_agents':self.max_agents,'policy':self.policy.as_dict()}
 
     def capacity(self) -> int:
         return self.evaluate()['capacity']

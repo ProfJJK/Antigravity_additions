@@ -83,7 +83,33 @@ CREATE TABLE IF NOT EXISTS supervisor_events (
     attempt_id TEXT REFERENCES supervisor_attempts(attempt_id),
     details_json TEXT NOT NULL CHECK(json_valid(details_json))
 );
+CREATE TABLE IF NOT EXISTS supervisor_model_calls (
+    call_id TEXT PRIMARY KEY,
+    attempt_id TEXT NOT NULL REFERENCES supervisor_attempts(attempt_id),
+    fingerprint TEXT NOT NULL REFERENCES supervisor_incidents(fingerprint),
+    budget_day TEXT NOT NULL,
+    reserved_at REAL NOT NULL,
+    role TEXT NOT NULL,
+    route_digest TEXT NOT NULL UNIQUE,
+    max_per_day INTEGER NOT NULL CHECK(max_per_day>0)
+);
+CREATE TRIGGER IF NOT EXISTS supervisor_model_call_no_update BEFORE UPDATE ON supervisor_model_calls
+BEGIN SELECT RAISE(ABORT,'Additional model-call budget reservations are immutable'); END;
+CREATE TRIGGER IF NOT EXISTS supervisor_model_call_no_delete BEFORE DELETE ON supervisor_model_calls
+BEGIN SELECT RAISE(ABORT,'Additional model-call spend cannot be refunded'); END;
 CREATE INDEX IF NOT EXISTS supervisor_event_lookup ON supervisor_events(event,fingerprint,attempt_id);
+CREATE TABLE IF NOT EXISTS supervisor_review_checkpoints (
+    attempt_id TEXT PRIMARY KEY REFERENCES supervisor_attempts(attempt_id),
+    fingerprint TEXT NOT NULL REFERENCES supervisor_incidents(fingerprint),
+    created_at REAL NOT NULL,
+    checkpoint_json TEXT NOT NULL CHECK(json_valid(checkpoint_json)),
+    status TEXT NOT NULL CHECK(status IN ('PENDING','COMPLETE'))
+);
+CREATE TRIGGER IF NOT EXISTS supervisor_review_checkpoint_identity BEFORE UPDATE OF
+    attempt_id,fingerprint,created_at,checkpoint_json ON supervisor_review_checkpoints
+BEGIN SELECT RAISE(ABORT,'Repair review checkpoint authority is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS supervisor_review_checkpoint_no_delete BEFORE DELETE ON supervisor_review_checkpoints
+BEGIN SELECT RAISE(ABORT,'Repair review checkpoints cannot be deleted'); END;
 CREATE TRIGGER IF NOT EXISTS supervisor_event_no_update BEFORE UPDATE ON supervisor_events
 BEGIN SELECT RAISE(ABORT,'supervisor history is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS supervisor_event_no_delete BEFORE DELETE ON supervisor_events
@@ -133,7 +159,9 @@ class Ledger:
     @staticmethod
     def _incident(connection: sqlite3.Connection, fingerprint: str) -> dict:
         row = connection.execute("""SELECT i.*,
-            (SELECT count(*) FROM supervisor_attempts a WHERE a.fingerprint=i.fingerprint) AS attempts
+            (SELECT count(*) FROM supervisor_attempts a WHERE a.fingerprint=i.fingerprint) AS attempts,
+            ((SELECT count(*) FROM supervisor_attempts a WHERE a.fingerprint=i.fingerprint)+
+             (SELECT count(*) FROM supervisor_model_calls m WHERE m.fingerprint=i.fingerprint)) AS model_calls
             FROM supervisor_incidents i WHERE i.fingerprint=?""", (fingerprint,)).fetchone()
         if row is None:
             raise ValueError("Unknown incident fingerprint")
@@ -187,8 +215,9 @@ class Ledger:
         connection.execute("""UPDATE supervisor_attempts SET status=?,finished_at=?,lease_expires_at=NULL,
             details_json=? WHERE attempt_id=? AND status='RUNNING'""",
                            (status, timestamp, details_json, attempt["attempt_id"]))
+        connection.execute("UPDATE supervisor_review_checkpoints SET status='COMPLETE' WHERE attempt_id=?",(attempt['attempt_id'],))
         incident = self._incident(connection, attempt["fingerprint"])
-        exhausted = incident["attempts"] >= attempt["max_per_incident"]
+        exhausted = incident["model_calls"] >= attempt["max_per_incident"]
         incident_status = ("RESOLVED" if status == "SUCCEEDED" else "BLOCKED" if status == "BLOCKED"
                            else "EXHAUSTED" if exhausted else "OPEN")
         connection.execute("UPDATE supervisor_incidents SET status=?,resolved_at=? WHERE fingerprint=?",
@@ -197,7 +226,8 @@ class Ledger:
         return self._attempt(connection, attempt["attempt_id"])
 
     def _recover(self, connection: sqlite3.Connection, timestamp: float) -> list[dict]:
-        rows = connection.execute("SELECT attempt_id FROM supervisor_attempts WHERE status='RUNNING' AND lease_expires_at<=?", (timestamp,)).fetchall()
+        rows = connection.execute("""SELECT attempt_id FROM supervisor_attempts a WHERE status='RUNNING' AND lease_expires_at<=?
+            AND NOT EXISTS (SELECT 1 FROM supervisor_review_checkpoints r WHERE r.attempt_id=a.attempt_id AND r.status='PENDING')""", (timestamp,)).fetchall()
         recovered = []
         for row in rows:
             attempt = self._attempt(connection, row["attempt_id"])
@@ -229,13 +259,15 @@ class Ledger:
                 return None
             prior_limit = connection.execute("SELECT min(max_per_incident) FROM supervisor_attempts WHERE fingerprint=?", (fingerprint,)).fetchone()[0]
             incident_budget = min(max_per_incident, prior_limit) if prior_limit is not None else max_per_incident
-            if incident["attempts"] >= incident_budget:
+            if incident["model_calls"] >= incident_budget:
                 connection.execute("UPDATE supervisor_incidents SET status='EXHAUSTED' WHERE fingerprint=?", (fingerprint,))
                 return None
             if connection.execute("SELECT 1 FROM supervisor_attempts WHERE status='RUNNING'").fetchone():
                 return None
             spent, prior_daily_limit = connection.execute("SELECT count(*),min(max_per_day) FROM supervisor_attempts WHERE budget_day=?", (day,)).fetchone()
-            daily_budget = min(max_per_day, prior_daily_limit) if prior_daily_limit is not None else max_per_day
+            extra_spent, extra_limit = connection.execute("SELECT count(*),min(max_per_day) FROM supervisor_model_calls WHERE budget_day=?", (day,)).fetchone()
+            spent += extra_spent
+            daily_budget = min(value for value in (max_per_day,prior_daily_limit,extra_limit) if value is not None)
             if spent >= daily_budget:
                 return None
             latest = connection.execute("SELECT started_at,cooldown_seconds FROM supervisor_attempts ORDER BY started_at DESC,attempt_id DESC LIMIT 1").fetchone()
@@ -256,6 +288,87 @@ class Ledger:
             attempt = self._attempt(connection, attempt_id)
             attempt["incident"] = self._incident(connection, fingerprint)
             return attempt
+
+    def reserve_additional_model_call(self, attempt_id: str, route_digest: str, *, role='asymmetric_review', now=None):
+        """Charge an additional inference under an active repair, without refund.
+
+        The original attempt reservation already pays for generation. Every
+        reviewer dispatch (including failed/quota/crashed native invocations)
+        consumes one additional unit from those same captured incident/day caps.
+        """
+        _text(attempt_id,'attempt_id');_text(route_digest,'route_digest');_text(role,'role')
+        timestamp=_timestamp(now)
+        day=datetime.fromtimestamp(timestamp,timezone.utc).date().isoformat()
+        with self._write() as connection:
+            self._recover(connection,timestamp)
+            attempt=self._attempt(connection,attempt_id)
+            if attempt['status']!='RUNNING' or attempt['lease_expires_at']<=timestamp:
+                return None
+            existing=connection.execute('SELECT * FROM supervisor_model_calls WHERE route_digest=?',(route_digest,)).fetchone()
+            if existing is not None:
+                raise ValueError('One routing reservation cannot authorize a repeated paid model call')
+            incident=self._incident(connection,attempt['fingerprint'])
+            if incident['model_calls']>=attempt['max_per_incident']:
+                return None
+            spent,old_limit=connection.execute('SELECT count(*),min(max_per_day) FROM supervisor_attempts WHERE budget_day=?',(day,)).fetchone()
+            extra,extra_limit=connection.execute('SELECT count(*),min(max_per_day) FROM supervisor_model_calls WHERE budget_day=?',(day,)).fetchone()
+            limit=min(value for value in (attempt['max_per_day'],old_limit,extra_limit) if value is not None)
+            if spent+extra>=limit:
+                return None
+            identifier=uuid.uuid4().hex
+            connection.execute('INSERT INTO supervisor_model_calls VALUES(?,?,?,?,?,?,?,?)',
+                (identifier,attempt_id,attempt['fingerprint'],day,timestamp,role,route_digest,limit))
+            result={'call_id':identifier,'attempt_id':attempt_id,'fingerprint':attempt['fingerprint'],
+                'budget_day':day,'reserved_at':timestamp,'role':role,'route_digest':route_digest,
+                'max_per_day':limit,'max_per_incident':attempt['max_per_incident']}
+            self._event(connection,'MODEL_CALL_RESERVED',_json(result),timestamp,attempt['fingerprint'],attempt_id)
+            return result
+
+    def save_review_checkpoint(self,attempt_id,checkpoint,now=None):
+        """Preserve the validated candidate before an independently routed review.
+
+        This does not reserve or refund inference. The original charged attempt
+        remains fenced; only verified process cleanup permits lease resumption.
+        """
+        if not isinstance(checkpoint,dict):
+            raise ValueError('Review checkpoint must be a controller-authored object')
+        data=_json(checkpoint);timestamp=_timestamp(now)
+        with self._write() as connection:
+            attempt=self._attempt(connection,attempt_id)
+            if attempt['status']!='RUNNING' or attempt['lease_expires_at']<=timestamp:
+                raise ValueError('Only an active charged repair can checkpoint its review')
+            old=connection.execute('SELECT checkpoint_json,status FROM supervisor_review_checkpoints WHERE attempt_id=?',(attempt_id,)).fetchone()
+            if old is not None:
+                if old['checkpoint_json']!=data or old['status']!='PENDING':
+                    raise ValueError('Captured repair review checkpoint cannot change')
+                return
+            connection.execute('INSERT INTO supervisor_review_checkpoints VALUES(?,?,?,?,?)',
+                (attempt_id,attempt['fingerprint'],timestamp,data,'PENDING'))
+            self._event(connection,'REVIEW_CHECKPOINT_SAVED',_json({'candidate_preserved':True}),timestamp,attempt['fingerprint'],attempt_id)
+
+    def review_checkpoint(self,attempt_id):
+        with self._connection() as connection:
+            row=connection.execute("SELECT * FROM supervisor_review_checkpoints WHERE attempt_id=? AND status='PENDING'",(attempt_id,)).fetchone()
+            if row is None:return None
+            return {**dict(row),'checkpoint':json.loads(row['checkpoint_json'])}
+
+    def pending_reviews(self):
+        with self._connection() as connection:
+            rows=connection.execute("SELECT * FROM supervisor_review_checkpoints WHERE status='PENDING' ORDER BY created_at,attempt_id").fetchall()
+            return [{**dict(row),'checkpoint':json.loads(row['checkpoint_json'])} for row in rows]
+
+    def resume_review(self,attempt_id,*,cleanup_verified,lease_seconds=180,now=None):
+        if cleanup_verified is not True:
+            raise ValueError('Review lease continuation requires verified physical cleanup')
+        timestamp=_timestamp(now);duration=_duration(lease_seconds,'lease_seconds')
+        with self._write() as connection:
+            attempt=self._attempt(connection,attempt_id)
+            checkpoint=connection.execute("SELECT 1 FROM supervisor_review_checkpoints WHERE attempt_id=? AND status='PENDING'",(attempt_id,)).fetchone()
+            if checkpoint is None or attempt['status']!='RUNNING':
+                raise ValueError('Only a pending original repair may resume its review lease')
+            connection.execute('UPDATE supervisor_attempts SET lease_expires_at=? WHERE attempt_id=?',(timestamp+duration,attempt_id))
+            self._event(connection,'REVIEW_LEASE_RESUMED',_json({'cleanup_verified':True,'charged_generation_unchanged':True}),timestamp,attempt['fingerprint'],attempt_id)
+            return self._attempt(connection,attempt_id)
 
     def finish(self, attempt_id: str, status: str, details: dict, now: float | None = None) -> dict:
         _text(attempt_id, "attempt_id")

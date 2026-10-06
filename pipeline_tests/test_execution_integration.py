@@ -124,7 +124,7 @@ def test_aborted_state_change_cannot_leave_detached_transition_telemetry(tmp_pat
         assert db.execute("SELECT count(*) FROM pipeline_events WHERE event='CONTRACT_ABORTED_TRANSITION'").fetchone()[0]==0
 
 
-def test_real_shared_job_board_never_allocates_a_fifth_native_or_controller_stage(tmp_path):
+def test_real_shared_job_board_preserves_configured_four_seat_native_and_controller_ceiling(tmp_path):
     store=JobStore(tmp_path/'job_board.db')
     workflows=[store.submit('Bound live controller work',['REQ-1'],1) for _ in range(4)]
     # Actual controller-stage SQL records exercise the same production atomic
@@ -134,7 +134,7 @@ def test_real_shared_job_board_never_allocates_a_fifth_native_or_controller_stag
             store._insert(db,f'controller-{index}',workflow['workflow_id'],workflow['workflow_id'],
                           'CODE_TEST','PENDING',{'phase':'integration-contract'})
     def acquire(index):
-        return JobStore(store.path).claim(f'owner-{index}',max_workers=64,worker_slot=f'slot-{index}')
+        return JobStore(store.path).claim(f'owner-{index}',max_workers=4,worker_slot=f'slot-{index}')
     with ThreadPoolExecutor(max_workers=12) as pool:
         allocated=[item for item in pool.map(acquire,range(16)) if item is not None]
     assert len(allocated)==4
