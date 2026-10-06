@@ -1,0 +1,336 @@
+"""Contract fixtures and real HTTP transport tests; no Windows/LLM validation.
+
+The local HTTP fixture controller below supplies explicitly synthetic receipt
+metadata for validator tests. It never represents a real model run.
+"""
+from __future__ import annotations
+
+from copy import deepcopy
+import hashlib
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import json
+from pathlib import Path
+import secrets
+import threading
+import time
+
+import pytest
+
+from cochem_supervisor.probes import ControllerClient, run_smoke_workflow, verify_smoke_workflow, wait_for_health
+
+MODELS = {"codex": "gpt-6-astra", "claude": "claude-fable-5-1", "gemini": "gemini-3.1-pro"}
+
+
+def digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+
+
+def workflow_fixture(workflow_id="contract-only-fixture"):
+    root = {"job_id": workflow_id, "workflow_id": workflow_id, "kind": "MACRO_PLANNING_REQUEST",
+            "status": "COMPLETED", "attempts": 0, "max_attempts": 1,
+            "payload": {"chapter_count": 2, "requirements": ["SUPERVISOR-1", "SUPERVISOR-2"]}}
+    jobs, artifacts = [root], []
+
+    def job(kind, provider, output, chapter_id=None, index=None):
+        index_suffix = str(index) if index is not None else kind
+        identity = workflow_id + "-" + index_suffix
+        receipt = {"provider": provider, "subscription_verified": True, "pid": 123,
+                   "exit_code": 0, "session_id": "synthetic-contract-fixture-not-live",
+                   "requested_model": MODELS[provider], "reported_model": MODELS[provider],
+                   "output_sha256": digest(output), "stdout_sha256": "a"*64}
+        record = {"job_id": identity, "workflow_id": workflow_id, "parent_job_id": workflow_id,
+                  "kind": kind, "status": "COMPLETED", "attempts": 1, "max_attempts": 1,
+                  "chapter_id": chapter_id, "payload": {}, "output": output,
+                  "receipt": receipt, "output_sha256": digest(output)}
+        if index is not None:
+            record["payload"] = {"chapter_index": index, "requirements": [f"SUPERVISOR-{index+1}"]}
+        if "artifact_text" in output:
+            sha = hashlib.sha256(output["artifact_text"].encode()).hexdigest()
+            record["artifact_sha256"] = sha
+            artifacts.append({"job_id": identity, "workflow_id": workflow_id,
+                              "chapter_id": chapter_id or "synthesis",
+                              "artifact_uri": f"db://{workflow_id}/{chapter_id or 'synthesis'}",
+                              "artifact_text": output["artifact_text"], "sha256": sha})
+        jobs.append(record)
+        return record
+
+    job("MANIFEST_GENERATOR", "codex", {"chapters": [{"chapter_id": "startup"}, {"chapter_id": "shutdown"}]})
+    chapter_hashes = {}
+    for index, name in enumerate(("startup", "shutdown")):
+        record = job("CHAPTER_DRAFT", ("codex", "claude")[index], {
+            "chapter_id": name, "requirements_traced": [f"SUPERVISOR-{index+1}"],
+            "wbs_tasks_defined": [{"id": name+"-task", "description": "Explicit contract fixture"}],
+            "artifact_uri": f"db://{workflow_id}/{name}", "artifact_text": "# Fixture " + name,
+        }, name, index)
+        chapter_hashes[name] = record["artifact_sha256"]
+    job("SYNTHESIS", "gemini", {"artifact_text": "# Synthetic contract-test master", "chapter_hashes": chapter_hashes})
+    return {"workflow_id": workflow_id, "status": "COMPLETED", "root": root, "jobs": jobs, "artifacts": artifacts}
+
+
+def test_complete_contract_fixture_has_consistent_receipts_and_artifacts():
+    result = verify_smoke_workflow(workflow_fixture(), MODELS)
+    assert result["passed"] is True
+    assert [row["provider"] for row in result["process_receipts"]] == ["codex", "codex", "claude", "gemini"]
+    assert result["model_identity_verified"] is True
+    assert "artifact_text" not in json.dumps(result)
+
+
+def test_missing_codex_model_metadata_is_reported_honestly():
+    fixture = workflow_fixture()
+    fixture["jobs"][1]["receipt"]["reported_model"] = None
+    result = verify_smoke_workflow(fixture, MODELS)
+    assert result["unverified_model_providers"] == ["codex"]
+    assert result["model_identity_verified"] is False
+
+
+def test_real_job_store_public_projection_matches_independent_smoke_validator(tmp_path):
+    # This is an actual SQLite DAG/public-API projection integration check.
+    # Receipts are explicit contract fixture metadata, not real CLI evidence.
+    from cochem_pipeline.service import public_workflow
+    from cochem_pipeline.store import JobStore
+
+    store = JobStore(tmp_path / "job_board.db")
+    workflow = store.submit("Contract fixture only", ["SUPERVISOR-1", "SUPERVISOR-2"], 2, max_attempts=1)
+    identifier = workflow["workflow_id"]
+    fixture = workflow_fixture(identifier)
+    manifest = {"chapters": [
+        {"chapter_id": "startup", "title": "Startup", "requirements": ["SUPERVISOR-1"]},
+        {"chapter_id": "shutdown", "title": "Shutdown", "requirements": ["SUPERVISOR-2"]},
+    ]}
+    while (node := store.claim("explicit-contract-fixture-controller")) is not None:
+        if node["kind"] == "MANIFEST_GENERATOR":
+            reference, output = fixture["jobs"][1], manifest
+        elif node["kind"] == "CHAPTER_DRAFT":
+            reference = fixture["jobs"][2 + node["payload"]["chapter_index"]]
+            output = reference["output"]
+        else:
+            reference, output = fixture["jobs"][-1], fixture["jobs"][-1]["output"]
+        receipt = {**reference["receipt"], "output_sha256": digest(output)}
+        store.complete(node["job_id"], node["attempt_id"], node["fencing_token"], output, receipt)
+    public = public_workflow(store.workflow(identifier))
+    assert all("attempt_id" not in job for job in public["jobs"])
+    result = verify_smoke_workflow(public, MODELS)
+    assert result["passed"] is True
+    assert len(result["process_receipts"]) == 4
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda w: w.update(status="IN_PROGRESS"),
+    lambda w: w["jobs"].pop(),
+    lambda w: w["jobs"][1].update(attempts=2),
+    lambda w: w["jobs"][1].update(max_attempts=3),
+    lambda w: w["jobs"][1].update(max_attempts=True),
+    lambda w: w["jobs"][1]["receipt"].update(provider="claude"),
+    lambda w: w["jobs"][3]["receipt"].update(provider="codex"),
+    lambda w: w["jobs"][1]["receipt"].update(subscription_verified=False),
+    lambda w: w["jobs"][1]["receipt"].update(execution_kind="emulator"),
+    lambda w: w["jobs"][1]["receipt"].update(pid=True),
+    lambda w: w["jobs"][1]["receipt"].update(pid=0x100000000),
+    lambda w: w["jobs"][1]["receipt"].update(exit_code=1),
+    lambda w: w["jobs"][1]["receipt"].update(session_id=""),
+    lambda w: w["jobs"][1]["receipt"].update(requested_model="other"),
+    lambda w: w["jobs"][1]["receipt"].update(reported_model="other"),
+    lambda w: w["jobs"][-1]["receipt"].update(reported_model=None),
+    lambda w: w["jobs"][1]["receipt"].update(output_sha256="0"*64),
+    lambda w: w["jobs"][1]["receipt"].update(stdout_sha256=""),
+    lambda w: w["artifacts"][0].update(sha256="0"*64),
+    lambda w: w["artifacts"][0].update(artifact_uri="db://foreign/chapter"),
+    lambda w: w["artifacts"][0].update(job_id=["invalid"]),
+    lambda w: w["artifacts"][0].update(artifact_text="Changed after acceptance"),
+    lambda w: w["jobs"][-1]["output"]["chapter_hashes"].update(startup="0"*64),
+])
+def test_inconsistent_or_unverified_fixture_cannot_pass(mutation):
+    fixture = workflow_fixture()
+    mutation(fixture)
+    with pytest.raises(ValueError):
+        verify_smoke_workflow(fixture, MODELS)
+
+
+class ContractFixtureHandler(BaseHTTPRequestHandler):
+    """HTTP fixture controller; its synthetic workflow is not native evidence."""
+
+    def log_message(self, *_):
+        pass
+
+    def do_GET(self):
+        self.respond()
+
+    def do_POST(self):
+        self.respond()
+
+    def respond(self):
+        state = self.server.state
+        if self.headers.get("Authorization") != "Bearer " + state["token"]:
+            code, value = 401, {"error": "DO-NOT-ECHO-SECRET-" + state["token"]}
+        elif state.get("forced_status"):
+            code, value = state["forced_status"], {"error": "DO-NOT-ECHO-SECRET-" + state["token"]}
+        else:
+            data = json.loads(self.rfile.read(int(self.headers.get("Content-Length", "0")))) if self.command == "POST" else None
+            state["calls"].append((self.path, data))
+            code = 200
+            if self.path == "/health":
+                value = dict(state["health"])
+            elif self.path == "/submit":
+                state["submitted"] = data
+                value = workflow_fixture(data["workflow_id"])
+                if state["pending"]:
+                    value = {"workflow_id": data["workflow_id"], "status": "IN_PROGRESS"}
+                if state.get("failure_error"):
+                    value = {"workflow_id": data["workflow_id"], "status": "FAILED", "jobs": [
+                        {"kind": "CHAPTER_DRAFT", "status": "FAILED", "error": state["failure_error"]},
+                        {"kind": "SYNTHESIS", "status": "FAILED", "error": "Upstream job failed"},
+                    ]}
+                state["workflow"] = value
+            elif self.path == "/cancel":
+                value = {"status": "FAILED"}
+            else:
+                value = state["workflow"]
+        body = json.dumps(value).encode()
+        self.send_response(code)
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+@pytest.fixture
+def endpoint(tmp_path):
+    token = secrets.token_urlsafe(48)
+    token_path = tmp_path / "token"
+    token_path.write_text(token, encoding="ascii")
+    server = ThreadingHTTPServer(("127.0.0.1", 0), ContractFixtureHandler)
+    server.state = {"token": token, "calls": [], "health": {}, "pending": False}
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield server.state, ControllerClient(server.server_port, token_path), tmp_path
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
+def test_client_real_loopback_authentication_does_not_echo_remote_error_secret(endpoint):
+    state, client, directory = endpoint
+    client.token_file.write_text("x"*48, encoding="ascii")
+    with pytest.raises(RuntimeError, match="401") as error:
+        client.call("/health")
+    assert state["token"] not in str(error.value)
+
+
+@pytest.mark.parametrize("operation", ["https://example.com/", "//remote", "/workflow/../../token", "/claim", "/health\r\nAuthorization: bad"])
+def test_client_rejects_arbitrary_urls_and_control_operations(endpoint, operation):
+    _, client, _ = endpoint
+    with pytest.raises(ValueError):
+        client.call(operation)
+
+
+def test_smoke_transport_submits_exactly_once_with_retry_disabled_and_persists_safe_report(endpoint):
+    state, client, directory = endpoint
+    report_file = directory / "report.json"
+    result = run_smoke_workflow({"pipeline_providers": MODELS}, client, report_file)
+    assert result["passed"] is True  # Contract fixture only; never a live-provider claim.
+    assert [path for path, _ in state["calls"]] == ["/submit"]
+    assert state["submitted"]["chapter_count"] == 2
+    assert state["submitted"]["max_attempts"] == 1
+    assert state["submitted"]["requirements"] == ["SUPERVISOR-1", "SUPERVISOR-2"]
+    assert json.loads(report_file.read_text()) == result
+    assert state["token"] not in report_file.read_text()
+
+
+def test_timed_out_real_http_workflow_is_cancelled_without_resubmission(endpoint):
+    state, client, directory = endpoint
+    state["pending"] = True
+    result = run_smoke_workflow({"pipeline_providers": MODELS, "smoke_timeout_seconds": .03}, client, directory / "timeout.json")
+    assert result["passed"] is False
+    assert result["unfinished_work_cancelled"] is True
+    assert result["failure_category"] == "provider"
+    assert [path for path, _ in state["calls"]].count("/submit") == 1
+    assert state["calls"][-1] == ("/cancel", {"workflow_id": state["submitted"]["workflow_id"]})
+
+
+@pytest.mark.parametrize("error,category,repairable", [
+    ("Subscription login unverified token=secret-token", "auth", False),
+    ("HTTP429 quota exceeded", "quota", False),
+    ("Provider service unavailable", "provider", False),
+    ("No space left on device", "resource", False),
+    ("Required executable not found", "configuration", False),
+    ("Unspecified native failure", "configuration", False),
+    ("TypeError: scheduler state is invalid", "code", True),
+    ("Unknown option --headless", "compatibility", True),
+])
+def test_failed_smoke_preserves_actual_job_category_to_prevent_paid_retry_for_blockers(endpoint, error, category, repairable):
+    state, client, directory = endpoint
+    state["failure_error"] = error
+    result = run_smoke_workflow({"pipeline_providers": MODELS}, client, directory / "failure.json")
+    assert result["passed"] is False
+    assert result["failure_category"] == category
+    assert result["failure_repairable"] is repairable
+    assert len(result["failure_evidence"]) == 1
+    assert result["unfinished_work_cancelled"] is True
+    assert "secret-token" not in json.dumps(result)
+
+
+def test_unknown_controller_failure_is_a_configuration_hold(endpoint):
+    state, client, directory = endpoint
+    state["forced_status"] = 500
+    result = run_smoke_workflow({"pipeline_providers": MODELS}, client, directory / "controller-failure.json")
+    assert result["passed"] is False
+    assert result["failure_category"] == "configuration"
+    assert result["failure_repairable"] is False
+    assert state["token"] not in json.dumps(result)
+
+
+def test_lost_supervisor_ownership_prevents_submission(endpoint):
+    state, client, directory = endpoint
+    result = run_smoke_workflow({"pipeline_providers": MODELS}, client, directory / "lost.json", heartbeat=lambda: False)
+    assert result["passed"] is False
+    assert state["calls"] == []
+
+
+def write_health(state, directory, *, sequence=1, started=None, source=None):
+    started = time.time()-1 if started is None else started
+    source = str(directory) if source is None else str(source)
+    value = {"instance_id": "explicit-test-instance", "pid": 1234, "process_started_at": started,
+             "sequence": sequence, "timestamp": time.time(), "source_root": source, "version": "4.2.3", "status": {}}
+    state["health"] = {**value, "service_identity": "SYSTEM", "quarantined_slots": {}, "trip_errors": {}}
+    path = directory / "supervisor_status.json"
+    temp = directory / "heartbeat-next.json"
+    temp.write_text(json.dumps(value), encoding="utf-8")
+    temp.replace(path)
+    return value
+
+
+def test_health_requires_two_physical_heartbeat_sequence_updates_and_matching_api(endpoint):
+    state, client, directory = endpoint
+    started = time.time()
+    write_health(state, directory, started=started)
+    stop = threading.Event()
+
+    def publish():
+        sequence = 1
+        while not stop.wait(.05):
+            sequence += 1
+            write_health(state, directory, started=started, sequence=sequence)
+
+    writer = threading.Thread(target=publish)
+    writer.start()
+    try:
+        assert wait_for_health(directory, client, directory, started_after=started, timeout_seconds=1)
+    finally:
+        stop.set()
+        writer.join(timeout=2)
+
+
+@pytest.mark.parametrize("failure", ["frozen", "old-process", "wrong-source", "wrong-pid", "quarantine", "trip-error"])
+def test_unhealthy_or_old_release_cannot_pass_health(endpoint, failure):
+    state, client, directory = endpoint
+    started = time.time()
+    write_health(state, directory, started=started-100 if failure == "old-process" else started,
+                 source=directory / "other" if failure == "wrong-source" else directory)
+    if failure == "wrong-pid":
+        state["health"]["pid"] = 999
+    elif failure == "quarantine":
+        state["health"]["quarantined_slots"] = {"slot": "cleanup failed"}
+    elif failure == "trip-error":
+        state["health"]["trip_errors"] = {"job": "reaper failed"}
+    assert not wait_for_health(directory, client, directory, started_after=started, timeout_seconds=.03)

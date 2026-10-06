@@ -254,13 +254,16 @@ class JobStore:
                      (job_id, workflow_id, parent, kind, status, chapter_id, canonical_json(payload), timestamp, timestamp, max_attempts))
 
     def submit(self, objective: str, requirements: list[str], chapter_count: int = 6,
-               workflow_id: str | None = None) -> dict:
+               workflow_id: str | None = None, *, max_attempts: int | None = None) -> dict:
         if not isinstance(objective, str) or not objective.strip():
             raise ValueError("objective must be nonempty")
         _strings(requirements, "requirements")
         if type(chapter_count) is not int or not 1 <= chapter_count <= 64:
             raise ValueError("chapter_count must be an integer from 1 to 64")
         workflow_id = _identifier(workflow_id or uuid.uuid4().hex, "workflow_id")
+        budget = self.max_attempts if max_attempts is None else max_attempts
+        if type(budget) is not int or not 1 <= budget <= self.max_attempts:
+            raise ValueError('Workflow max_attempts may only lower the configured execution budget')
         payload = {"objective": objective, "requirements": requirements, "chapter_count": chapter_count}
         with self._write() as conn:
             existing = conn.execute("SELECT job_id FROM pipeline_jobs WHERE job_id=?", (workflow_id,)).fetchone()
@@ -268,10 +271,12 @@ class JobStore:
                 root = self._get(conn, workflow_id)
                 if root["kind"] != "MACRO_PLANNING_REQUEST" or root["payload"] != payload:
                     raise ValueError("workflow_id already belongs to a different request")
+                if max_attempts is not None and root['max_attempts']!=budget:
+                    raise ValueError('Existing workflow attempt budget is immutable')
             else:
-                self._insert(conn, workflow_id, workflow_id, None, "MACRO_PLANNING_REQUEST", "IN_PROGRESS", payload, max_attempts=self.max_attempts)
-                self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "MANIFEST_GENERATOR", "PENDING", payload, max_attempts=self.max_attempts)
-                self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "SYNTHESIS", "BLOCKED", payload, max_attempts=self.max_attempts)
+                self._insert(conn, workflow_id, workflow_id, None, "MACRO_PLANNING_REQUEST", "IN_PROGRESS", payload, max_attempts=budget)
+                self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "MANIFEST_GENERATOR", "PENDING", payload, max_attempts=budget)
+                self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "SYNTHESIS", "BLOCKED", payload, max_attempts=budget)
                 self._event(conn, self._get(conn, workflow_id), "WORKFLOW_SUBMITTED", chapter_count=chapter_count)
         return self.workflow(workflow_id)
 

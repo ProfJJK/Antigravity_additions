@@ -1,4 +1,31 @@
-# Antigravity additions 4.2.2
+# Antigravity additions 4.2.3
+
+4.2.3 adds a separate supervisor for the Windows planning pipeline. It observes
+native heartbeat and database progress, attempts one restart for heartbeat
+failures, and can request a repair through the configured native Codex or Claude subscription
+CLI. Candidate changes must pass protected external acceptance checks before
+the supervisor activates a versioned release; failed health checks trigger
+rollback. Repair budgets and incident history are durable.
+
+Operator update requests use the same repair and acceptance limits. The
+supervisor cannot update itself or its dependencies through that path;
+database migration is outside its code-release mechanism.
+
+See the [4.2.3 supervisor guide](docs/SUPERVISOR_4.2.3.md) and
+[release notes](docs/RELEASE_4.2.3.md). The supervisor has its own protected
+installation, environment and ledger, keeping candidate pipeline changes out
+of the observer runtime. **Windows/live-provider repair acceptance is
+not yet verified.** The unresolved native Agy contract from 4.2.2 also remains
+a prerequisite for real Gemini synthesis; a supervisor does not supply missing
+CLI capabilities or authentication.
+
+The 4.2.3 integrated Linux run completed with **866 passed, 7 skipped** and two
+Authlib deprecation warnings; the skipped cases require native Windows. The
+4.2.3 wheel build passed. Codex 0.142.0 and Claude 2.1.101 version/help contracts
+were checked without inference; these results do not establish live repair
+or Windows acceptance.
+
+## Planning pipeline inherited from 4.2.2
 
 4.2.2 adds the planning controller specified by the four supplied SRS/architecture
 documents: one request creates a SQLite DAG, Codex generates the manifest,
@@ -13,9 +40,10 @@ result contract must be confirmed before a full workflow can complete. Linux
 component tests establish local behavior; they do not prove Windows isolation
 or live provider execution.
 
-The integrated Linux suite reports **420 passed, 3 skipped**; the Windows
-security/process tests are the skipped cases. Frozen dependency synchronization
-and the 4.2.2 wheel build also passed.
+The 4.2.2 release recorded **420 passed, 3 skipped** in its integrated Linux
+suite; Windows security/process tests were the skipped cases. Its frozen
+dependency synchronization and wheel build also passed. These are historical
+4.2.2 results, not evidence of live 4.2.3 repairs.
 
 - [4.2.2 Windows installation and workflow guide](docs/PIPELINE_4.2.2.md):
   protected SYSTEM controller, six dedicated identities by default, native
@@ -78,7 +106,7 @@ during this check because only one instance can own its provider state directory
 
 ```powershell
 .\.venv-mcp\Scripts\python.exe -m pip install pytest
-.\.venv-mcp\Scripts\python.exe -m pytest mcp_tests pipeline_tests -q
+.\.venv-mcp\Scripts\python.exe -m pytest mcp_tests pipeline_tests supervisor_tests -q
 ```
 
 See [the bridge source](src/cochem_mcp/), [MCP tests](mcp_tests/), and

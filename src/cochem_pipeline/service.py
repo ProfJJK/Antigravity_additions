@@ -102,7 +102,7 @@ class Handler(BaseHTTPRequestHandler):
                     if type(count) is not int or not 1<=count<=len(runtime.config.workers):
                         raise ValueError('chapter_count must fit the provisioned distinct worker identity pool')
                     workflow=runtime.store.submit(data['objective'],data.get('requirements',['REQ-001']),
-                                                  count,data.get('workflow_id'))
+                                                  count,data.get('workflow_id'),max_attempts=data.get('max_attempts'))
                     self.reply(202,public_workflow(workflow))
                 else:
                     runtime.cancel(data['workflow_id'])

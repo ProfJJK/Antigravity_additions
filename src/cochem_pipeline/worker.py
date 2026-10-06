@@ -265,7 +265,10 @@ class NativeRunner:
                 out.seek(0)
                 raw = out.read().decode('utf-8','replace')
                 if code != 0:
-                    raise RuntimeError(f'{provider} CLI exited {code}; logs retained at {log_dir}')
+                    from .failures import native_failure_summary
+                    err.seek(0)
+                    summary=native_failure_summary(err.read(16384).decode('utf-8','replace'))
+                    raise RuntimeError(f'{provider} CLI exited {code}: {summary}; logs retained at {log_dir}')
                 parsed = parse_result(provider,raw) if provider!='gemini' else parse_gemini(raw,spec['protocol'],model)
                 if parsed.get('reported_model') is not None and parsed['reported_model']!=model:
                     raise ValueError('Native result reported a different model than configured')

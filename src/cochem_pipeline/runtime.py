@@ -4,6 +4,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 import json
 import logging
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -19,6 +20,8 @@ from .hardware_guard import HardwareGuard
 from .oracle import ContextEngine, Oracle, Rule
 from .store import JobStore
 from .worker import NativeRunner, WorkerCleanupError
+from .heartbeat import Heartbeat
+from . import __version__
 
 LOG = logging.getLogger(__name__)
 BASELINE = (
@@ -80,6 +83,8 @@ class Runtime:
         self.stop_event = threading.Event()
         self.owner = 'warden-'+uuid.uuid4().hex
         self.event_cursor = 0
+        self.last_capacity = 0
+        self.heartbeat = Heartbeat(config.private_root,__version__)
         self.pool = ThreadPoolExecutor(max_workers=min(4,len(config.workers)),thread_name_prefix='pipeline')
         for slot,root in config.slot_roots.items():
             # Windows Job Object kill-on-close terminates former workers after service death.
@@ -163,7 +168,8 @@ class Runtime:
             retry = int(node['fencing_token']) < self.config.max_attempts and not self.stop_event.is_set()
             with self.lock:
                 retry = retry and not self.active[job_id].get('tripped',False)
-            self.store.fail(job_id,node['attempt_id'],node['fencing_token'],str(exc),retry=retry)
+            self.store.fail(job_id,node['attempt_id'],node['fencing_token'],
+                            f'{type(exc).__name__}: {exc}',retry=retry)
             emit_recovery_event(self.config.job_db,{'tier':1,'action':'worker_failure','job_id':job_id,
                                 'attempt_id':node['attempt_id'],'reason':str(exc),'retry':retry})
             LOG.error('Job %s failed: %s',job_id,exc)
@@ -200,6 +206,7 @@ class Runtime:
         for node in self.store.reap_expired():
             emit_recovery_event(self.config.job_db,{'tier':1,'action':'lease_reaper','job_id':node['job_id']})
         ceiling = self.guard.capacity()
+        self.last_capacity = ceiling
         if ceiling<=0:
             return
         with self.lock:
@@ -219,9 +226,11 @@ class Runtime:
     def status(self):
         with self.lock:
             active = [{'job_id':key,'slot':value['slot'],'pid':value['pid']} for key,value in self.active.items()]
-        return {'version':'4.2.2','service_identity':'SYSTEM','hardware':self.guard.snapshot(),
+        return {'version':__version__,'service_identity':'SYSTEM','hardware':self.guard.snapshot(),
                 'active':active,'quarantined_slots':dict(self.quarantined),
-                'trip_errors':self.oracle.trip_errors}
+                'trip_errors':self.oracle.trip_errors,'pid':os.getpid(),
+                'instance_id':self.heartbeat.instance_id,'process_started_at':self.heartbeat.started_at,
+                'source_root':str(Path(__file__).resolve().parents[2])}
 
     def cancel(self,workflow_id):
         with self.lock:
@@ -239,6 +248,9 @@ class Runtime:
         try:
             while not self.stop_event.is_set():
                 self.tick()
+                self.heartbeat.completed_tick({'capacity':self.last_capacity,
+                                               'active_count':len(self.active),
+                                               'quarantined_count':len(self.quarantined)})
                 self.stop_event.wait(.1)
         finally:
             self.stop_event.set()
