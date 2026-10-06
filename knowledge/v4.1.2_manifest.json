@@ -1,7 +1,11 @@
 {
-  "manifest_version": "4.2.6",
-  "provenance": "Exact supplied source captures and explicit owner decisions; no invented stage definitions",
+  "manifest_version": "4.2.7",
+  "provenance": "Active canonical 4.2.7 plus owner amendments and four original primary source captures; prior corpus archived outside retrieval",
   "documents": [
+    {
+      "path": ".sources/4.2.7_SRS.md",
+      "sha256": "8611c07f12752e6269971aa4b160eb527b3075fca0bfe921b69196f6b95bdc98"
+    },
     {
       "path": ".sources/Oracle_SRS_WBS.md",
       "sha256": "5a852cf5c51519bf8ce4625723fe4b77608ad9278b2038c9e8a24c091f9b9440"
@@ -11,48 +15,8 @@
       "sha256": "68ca91fffb6874c3d5da298ebc701f602a8638d390e3cc0da2055923f46fed7f"
     },
     {
-      "path": ".sources/RAM_Disk_Reparse_Point_Standard.md",
-      "sha256": "675326235be79c6f862aef4207a5cbcc91ae70d268e12b7fcecef1a4a82efaed"
-    },
-    {
-      "path": ".sources/TEST_INFRA.md",
-      "sha256": "baf6d4222e938a26a7c8a867d767fd31337e395a0e95dd592a48701c1457a859"
-    },
-    {
-      "path": ".sources/V4_CORE_MODIFICATION_AUTHORIZATION.md",
-      "sha256": "3651fc6cb6f884f361660fa5218c09fc7b0ff9a8906b4e7b1c04354af1fee433"
-    },
-    {
-      "path": ".sources/ch01_host_warden.md",
-      "sha256": "ca4898d49365066a0a6eb7b5004b7edf1b3cf110f493e4186bac2ae60b737b8b"
-    },
-    {
-      "path": ".sources/ch02_quarantine_vm.md",
-      "sha256": "9fa09d1766f34f8bd2597953bde7ee190733e6d7ee55d33575bc256717e82f78"
-    },
-    {
-      "path": ".sources/ch03_concurrency_layers.md",
-      "sha256": "e403d176e85781c218a79f90a135f424907b2a96035e633c125486bd8981bd6f"
-    },
-    {
-      "path": ".sources/ch04_task_matrix_blackboard.md",
-      "sha256": "9a91b04ba77c13af723b9b154adb0c2c518b8d3cf121c14b706381aca7e8e3cd"
-    },
-    {
-      "path": ".sources/ch05_research_tdd_pivot.md",
-      "sha256": "8130f75d11e492219470ee9beec72e5dc984ddc099f1657bfda46d29f4165193"
-    },
-    {
-      "path": ".sources/ch06_dual_wiki_rag.md",
-      "sha256": "69065154d50ce03b792c54ca5b7d8e8b10236effda94b0627e0af059732721a8"
-    },
-    {
-      "path": ".sources/ch07_dsp_domain_pipelines.md",
-      "sha256": "1c18c0ef29b2cc86581b1c480259c1a0ab5deb41e60a14567a0ab83fe48559a5"
-    },
-    {
-      "path": ".sources/ch08_watchdog_sre.md",
-      "sha256": "d3bfe4b7645118cc35437b63c0646b8b41bc0d304e20bde875c05da27b7e9683"
+      "path": ".sources/SRS_ADDENDUM_4.2.7.md",
+      "sha256": "b54f75981458d96f3cb04809bdb74a06beae8228da0ecb78b8660c76e97568f9"
     },
     {
       "path": ".sources/full_dossier.md",
@@ -63,36 +27,27 @@
       "sha256": "3741396e172e1ce2e1b50fc4b69cec7f0bdbf1d0ca3db84eb3aeefefec27c7ca"
     },
     {
-      "path": ".sources/v4_pipeline_reconstruction_plan.md",
-      "sha256": "a5cfb25724d2c76291dd90a3b936783b2197f90cd8b2ba6f5bb8289734439030"
+      "path": "wiki/00_skeleton.md",
+      "sha256": "0d8b4315eccd78ee7d785f1acecd881f189db0b0d3ba1e6da3e0c8e5eb5765d4"
     },
     {
-      "path": "wiki/00_skeleton.md",
-      "sha256": "c5dc74c1a044b9a89faad0afa017ab2a69689e1a204ec13f26bdbfd670e11c59"
+      "path": "wiki/4.2.7_SRS.md",
+      "sha256": "2bcc7be44e8425b04dfde1fbddc70682644fbbc0f49dcfedb486f1579822ffee"
     },
     {
       "path": "wiki/owner_decisions.md",
-      "sha256": "17b34dc7a9c145afaa890e69bc3df9b4c37843d0669448111ded011da72ecd00"
+      "sha256": "730951e80b5c42cb6febfca51a65c03688c8a5a0e0a4bde04cfb53e78217aa6a"
     }
   ],
   "srs_documents": [
+    ".sources/4.2.7_SRS.md",
     ".sources/Oracle_SRS_WBS.md",
     ".sources/Pipeline_4_2_0_Architecture.md",
-    ".sources/RAM_Disk_Reparse_Point_Standard.md",
-    ".sources/TEST_INFRA.md",
-    ".sources/V4_CORE_MODIFICATION_AUTHORIZATION.md",
-    ".sources/ch01_host_warden.md",
-    ".sources/ch02_quarantine_vm.md",
-    ".sources/ch03_concurrency_layers.md",
-    ".sources/ch04_task_matrix_blackboard.md",
-    ".sources/ch05_research_tdd_pivot.md",
-    ".sources/ch06_dual_wiki_rag.md",
-    ".sources/ch07_dsp_domain_pipelines.md",
-    ".sources/ch08_watchdog_sre.md",
+    ".sources/SRS_ADDENDUM_4.2.7.md",
     ".sources/full_dossier.md",
     ".sources/full_dossier_untruncated.md",
-    ".sources/v4_pipeline_reconstruction_plan.md",
     "wiki/00_skeleton.md",
+    "wiki/4.2.7_SRS.md",
     "wiki/owner_decisions.md"
   ]
 }

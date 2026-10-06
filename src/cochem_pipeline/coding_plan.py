@@ -178,18 +178,14 @@ def validate_plan(plan: dict, project: CodingProject, source_files: Mapping[str,
     artifacts['graph.json']=json.dumps(graph,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
     artifacts['graph.mmd']=mermaid
     artifacts['FractureManifest.json']=json.dumps(fracture,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
-    registration=None
-    if project.planning:
-        from .planning_governance import validate_registration,method_matrix_artifact
-        registration=validate_registration(project.planning,source_files)
-        matrix=method_matrix_artifact(plan.get('method_matrix'),registration,artifacts,requirement_map)
-        artifacts['MethodMatrix.json']=json.dumps(matrix,ensure_ascii=False,sort_keys=True,indent=2)+'\n'
-    result={'schema':'4.2.5-coding-plan/1','goal':goal,'requirements':requirement_map,
+    from .planning_governance import validate_registration, execution_contract
+    registration = validate_registration(project.planning, source_files)
+    artifacts['ExecutionContract.json'] = json.dumps(execution_contract(), ensure_ascii=False, sort_keys=True, indent=2) + '\n'
+    result={'schema':'4.2.7-coding-plan/1','goal':goal,'requirements':requirement_map,
             'srs':{'skeleton':skeleton,'chapters':canonical_chapters},'acceptance_criteria':canonical_criteria,
             'test_cases':canonical_tests,'fracture_manifest':fracture,'phases':[{'id':key,'name':name} for key,name in TDD_PHASES],
             'artifacts':artifacts,'artifact_hashes':{name:hashlib.sha256(text.encode()).hexdigest() for name,text in artifacts.items()}}
-    if registration is not None:
-        result['planning_registration']=registration
+    result['planning_registration'] = registration
     result['plan_sha256']=digest(result)
     return result
 

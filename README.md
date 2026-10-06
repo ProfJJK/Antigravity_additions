@@ -1,22 +1,28 @@
-# Antigravity additions 4.2.6
+# Antigravity additions 4.2.7
 
-4.2.6 corrects additional SRS gaps found in the Oracle, coding gates, native
-process handling, knowledge service and independent repair supervisor. See the
-[requirements ledger](docs/REQUIREMENTS_4.2.6.md),
-[upgrade guide](docs/EXECUTION_4.2.6.md) and
-[release evidence](docs/RELEASE_4.2.6.md).
+The [canonical 4.2.7 SRS](4.2.7_SRS.md) is the active pipeline specification.
+Its 18 ordered chapters define execution states, requirement IDs, current gaps,
+remediation plans and inline improvement inserts with space for owner comments.
+The [owner-approved addendum](docs/SRS_ADDENDUM_4.2.7.md) records the accepted
+performance observations and withdrawal of the phantom planning prerequisites.
 
-**Complete SRS compliance is not yet certified.** Native Windows/live-provider
-acceptance, sustained host performance and the referenced but missing canonical
-seven-stage planning/Method Matrix definitions remain outstanding. Production
-coding returns `PLANNING_HOLD`: the exact stage binding remains unimplemented
-until those definitions are available. Readiness reports this blocker explicitly.
-Prior passing test counts
-did not establish these requirements or prevent candidate-forged JUnit reports.
-The repair gate now uses a trusted outer verifier in addition to regression and
-live smoke checks; finite contract checks are not a proof of arbitrary code.
+4.2.7 replaces the obsolete seven-stage/agentic Method Matrix hold with an
+executable controller contract. Actual source/artifact/receipt bindings,
+asymmetric review, physical RED/GREEN tests and fenced integration remain
+required. Real provider, hardware, research and safety holds are preserved.
+See [planning and legacy-hold migration](docs/PLANNING_PREREQUISITES.md).
 
-The user-corrected model matrix remains authoritative:
+Normal Docker jobs use a persistent prepared pool; cold creation belongs to
+replenishment. Knowledge MCP overhead is profiled without weakening
+authentication. Queue performance is conditionally accepted pending observation
+of the real Windows controller, four workers and production database/workload;
+the queue design is unchanged. See [upgrade and launch](docs/EXECUTION_4.2.7.md)
+and [release evidence](docs/RELEASE_4.2.7.md).
+
+**Windows/live-model and sustained host acceptance remain unverified.**
+Removing obsolete requirements does not establish those deployment results.
+The active knowledge corpus uses this clean authority; the exact older corpus
+is preserved under `docs/archive/knowledge_4.2.6`, outside active retrieval.
 
 | Complexity | Route order |
 | --- | --- |
@@ -25,12 +31,10 @@ The user-corrected model matrix remains authoritative:
 | 7–9 | Claude Opus 5.5 → GPT-6 Astra, low effort → Gemini 3.1 Pro |
 | 10 | Claude Fable 5.1 → GPT-6 Astra, ultra effort; only two routes |
 
-The pipeline's four-seat ceiling, controller-owned leases/fencing, chapter isolation,
-Oracle safeguards and Gemini 3.1 Pro synthesis remain required. The
-[4.2.4 routing guide](docs/ROUTING_4.2.4.md) records the inherited routing
-contract. This upgrade requires a fresh protected 4.2.6 supervisor and
-acceptance snapshot; the old frozen validator cannot approve changed execution
-contracts. Preserve native credentials, task identities and repair budgets.
+The shared four-seat ceiling, Windows Python subscription CLIs, controller-owned
+leases/fencing, isolation, Oracle safeguards and exact Gemini 3.1 Pro synthesis
+remain mandatory. Preserve native credentials, persistent state and recovery
+budgets when upgrading the protected pipeline and supervisor installations.
 
 ## Supervisor inherited from 4.2.3
 

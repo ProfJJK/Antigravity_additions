@@ -1,19 +1,19 @@
 {
-  "private_root": "C:\\ProgramData\\CoChemPipeline426\\private",
+  "private_root": "C:\\ProgramData\\CoChemPipeline427\\private",
   "knowledge": {
     "enabled": true,
-    "source_root": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\.sources",
-    "wiki_root": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\wiki",
-    "manifest_path": "C:\\Program Files\\CoChem\\Knowledge4.2.6\\v4.1.2_manifest.json",
-    "state_root": "C:\\ProgramData\\CoChemPipeline426\\private\\knowledge"
+    "source_root": "C:\\Program Files\\CoChem\\Knowledge4.2.7\\.sources",
+    "wiki_root": "C:\\Program Files\\CoChem\\Knowledge4.2.7\\wiki",
+    "manifest_path": "C:\\Program Files\\CoChem\\Knowledge4.2.7\\v4.1.2_manifest.json",
+    "state_root": "C:\\ProgramData\\CoChemPipeline427\\private\\knowledge"
   },
   "slot_roots": {
-    "slot1": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot1",
-    "slot2": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot2",
-    "slot3": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot3",
-    "slot4": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot4",
-    "slot5": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot5",
-    "slot6": "C:\\ProgramData\\CoChemPipeline426\\workers\\slot6"
+    "slot1": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot1",
+    "slot2": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot2",
+    "slot3": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot3",
+    "slot4": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot4",
+    "slot5": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot5",
+    "slot6": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot6"
   },
   "workers": {
     "slot1": {

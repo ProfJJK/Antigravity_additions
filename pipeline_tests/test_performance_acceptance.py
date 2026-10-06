@@ -33,6 +33,8 @@ def test_ten_actual_sqlite_claimers_report_measured_latency_and_four_seats(tmp_p
     assert report['four_seat_invariant_verified'] is True
     assert report['maximum_acquisition_ms']>0
     assert report['passed']==(report['maximum_acquisition_ms']<5)
+    assert report['native_windows_acceptance'] is False
+    assert report['acceptance_status']=='diagnostic_only_pending_actual_windows_launch'
     assert json.loads((tmp_path/'queue'/'queue-performance.json').read_text())==report
 
 
@@ -42,6 +44,8 @@ def test_ten_separate_processes_preserve_actual_four_seat_admission(tmp_path):
     assert len({row['job_id'] for row in report['samples'] if row['acquired']})==4
     assert report['maximum_all_claims_ms']>=report['maximum_acquisition_ms']>0
     assert report['passed']==(report['maximum_acquisition_ms']<5)
+    assert report['native_windows_acceptance'] is False
+    assert 'single-controller/four-worker' in report['acceptance_scope']
     with sqlite3.connect(tmp_path/'process-queue'/'queue-0.db') as connection:
         rows=connection.execute("SELECT fencing_token,lease_expires_at-updated_at FROM pipeline_jobs "
             "WHERE status='IN_PROGRESS' AND kind='MANIFEST_GENERATOR'").fetchall()

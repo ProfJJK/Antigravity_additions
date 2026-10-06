@@ -111,11 +111,8 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
             'and tests, and an acyclic FractureManifest of N=1 leaves, each with 20–100 real context lines. '
             'The full source-plus-test Git diff for a leaf is at most 100 added-plus-deleted lines. '
             'Use only registered source paths. The controller checks all traces and independently reviews this plan.')
-        if payload.get('planning_evidence'):
-            contract['method_matrix']=[{'id':f'M-{index}','artifacts':['srs/ch01.md'],
-                                       'requirement_ids':['R1']} for index in range(1,9)]
-            instruction += (' Apply the exact registered Method Matrix clause texts in planning_evidence. '
-                            'Link each clause to actual generated artifacts and requirements; do not invent clause meanings.')
+        instruction += (' Follow the controller-supplied COCHEM-4.2.7 execution contract. '
+                        'The controller generates and hashes ExecutionContract.json; do not invent additional stage counts or agentic Method Matrix clauses.')
         if payload.get('previous_plan'):
             instruction += (' Revise the supplied previous_plan using every artifact-bound planning_feedback finding. '
                             'Preserve correct material. Every cited artifact group must contain an actual substantive change; '
@@ -208,7 +205,7 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
                        'The controller verifies every quotation and binds your dossier to the three failed attempts.')
     else:
         raise ValueError(f'Unsupported executable node kind: {kind}')
-    if kind=='CODE_RESEARCH' and payload.get('planning_evidence'):
+    if kind=='CODE_RESEARCH' and payload.get('planning_evidence', {}).get('external_sources'):
         contract['external_sources']=[{'source_id':'registered-source-id','quote':'Exact relevant fetched source passage',
                                       'requirement_ids':['R1']}]
         instruction += (' Cite at least two distinct controller-fetched external_sources in planning_evidence and trace '
@@ -248,17 +245,21 @@ def parse_gemini(raw: str, protocol: str, requested_model: str) -> dict:
         stats = data.get('stats',{})
         models = stats.get('models',{}) if isinstance(stats,dict) else {}
         model = next(iter(models)) if isinstance(models,dict) and len(models)==1 else None
+        model_stats = models.get(model, {}) if model is not None else {}
+        usage = model_stats.get('tokens', {}) if isinstance(model_stats, dict) else {}
     elif protocol == 'terminal-json':
         if data.get('type')!='result' or data.get('subtype')!='success' or data.get('is_error') is not False:
             raise ValueError('Gemini did not report terminal success')
         content, model = data.get('result'), data.get('model')
+        usage = data.get('usage', {})
     else:
         raise ValueError('Unsupported Gemini native result protocol')
     if not isinstance(data.get('session_id'),str) or not data['session_id'].strip() or not isinstance(content,str) or not content.strip():
         raise ValueError('Gemini must return a native session ID and nonempty result')
     if model != requested_model:
         raise ValueError('Gemini native model metadata must match the selected model; identity is unverified')
-    return {'content':content,'session_id':data['session_id'],'reported_model':model,'terminal_success':True}
+    return {'content':content,'session_id':data['session_id'],'reported_model':model,
+            'usage':usage if isinstance(usage, dict) else {},'terminal_success':True}
 
 
 def subscription_status(provider: str, stdout: str, stderr: str, exit_code: int) -> bool:
@@ -770,6 +771,10 @@ class NativeRunner:
                 except (ValueError,TypeError) as exc:
                     raise ProviderFailure('protocol') from exc
             receipt = {'provider':provider,'pid':process.pid,'exit_code':code,'session_id':parsed['session_id'],
+                       'execution_kind':'native_cli',
+                       'process_creation_time':process.creation_time,
+                       'process_creation_filetime':process.creation_time_filetime,
+                       'process_identity_source':'owned_windows_process_handle',
                        'requested_model':model,'reported_model':parsed.get('reported_model'),
                        'requested_effort':reasoning_effort,'reported_effort':reported_effort,
                        'attempt_id':node['attempt_id'],'output_sha256':output_digest(output),
@@ -783,6 +788,8 @@ class NativeRunner:
                        'prompt_bytes':len(prompt.encode('utf-8')),
                        'started_at':started,'finished_at':time.time(),'worker_account':identity.name,
                        'subscription_verified':True}
+            from .native_evidence import native_usage
+            receipt['usage'] = native_usage(provider, parsed.get('usage'))
             receipt['docker_denial'] = process.docker_denial_evidence
             if inference_evidence is not None:
                 inference_evidence['source_context_sha256'] = source_context_sha256

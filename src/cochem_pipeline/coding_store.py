@@ -183,7 +183,7 @@ class CodingStoreMixin:
     def _coding_job(self, conn, root, state, kind, **payload):
         identifier = uuid.uuid4().hex
         task = {'objective': root['payload']['objective'], 'requirements': root['payload']['requirements'],
-                'project_id': root['payload']['project_id'], 'cycle': state['cycle'],
+                'project_id': root['payload']['project_id'], 'cycle': state['cycle'], 'leaf_index': state['leaf_index'],
                 'snapshot_sha256': state['current_snapshot'], 'strategy': state.get('strategy', ''), **payload}
         if state.get('planning_evidence') and kind in ('CODE_PLAN','CODE_PLAN_REVIEW','CODE_RESEARCH'):
             task['planning_evidence']=state['planning_evidence']
@@ -199,6 +199,23 @@ class CodingStoreMixin:
             # Capture this leaf's sealed definitions before later leaves replace
             # the current state. Public acceptance can then bind exact identities.
             task['test_identities']=json.loads(json.dumps(state.get('test_identities',{})))
+        from .planning_governance import SPECIFICATION_ID, execution_contract, validate_dispatch
+        previous_id = state.get('last_completed_job_id')
+        previous = None if previous_id is None else conn.execute(
+            "SELECT j.job_id,j.kind,p.receipt_json,e.sha256 FROM pipeline_jobs j "
+            "JOIN pipeline_outputs p USING(job_id) JOIN coding_evidence e USING(job_id) "
+            "WHERE j.workflow_id=? AND j.status='COMPLETED' AND j.job_id=?",
+            (root['workflow_id'], previous_id)).fetchone()
+        if previous_id is not None and previous is None:
+            raise ValueError('Canonical dispatch predecessor has no completed physical evidence')
+        predecessor = None if previous is None else {'job_id': previous['job_id'], 'kind': previous['kind'],
+            'receipt_sha256': digest(json.loads(previous['receipt_json'])), 'evidence_sha256': previous['sha256']}
+        transition = {'specification_id': SPECIFICATION_ID, 'contract_sha256': digest(execution_contract()),
+            'kind': kind, 'from_state': state['status'], 'cycle': task['cycle'], 'leaf_index': state['leaf_index'], 'phase': task.get('phase'),
+            'snapshot_sha256': task['snapshot_sha256'], 'leaf_id': task.get('active_leaf', {}).get('id'),
+            'predecessor': predecessor}
+        validate_dispatch(transition, kind, task)
+        task['execution_transition'] = transition
         self._insert(conn, identifier, root['workflow_id'], root['workflow_id'], kind, 'PENDING', task,
                      max_attempts=self.max_attempts)
         self._event(conn, root, 'CODING_STAGE_CREATED', kind=kind, stage_job_id=identifier, cycle=state['cycle'])
@@ -244,13 +261,15 @@ class CodingStoreMixin:
         _strings(requirements, 'requirements')
         if planning_blocker is not None and (not isinstance(planning_blocker,str) or not planning_blocker.strip()):
             raise ValueError('Planning prerequisite hold requires a concrete reason')
-        if project.planning and planning_blocker is None:
-            from .planning_governance import validate_registration
-            registration=validate_registration(project.planning,snapshot.files)
-            if (not isinstance(planning_evidence,dict) or
-                    any(planning_evidence.get(key)!=value for key,value in registration.items()) or
-                    not planning_evidence.get('external_sources')):
-                raise ValueError('Registered planning requires controller-collected source evidence')
+        from .planning_governance import validate_registration
+        registration = validate_registration(project.planning, snapshot.files)
+        if planning_evidence is None:
+            planning_evidence = registration
+        if (not isinstance(planning_evidence, dict)
+                or any(planning_evidence.get(key) != value for key, value in registration.items())):
+            raise ValueError('Planning admission requires the captured source and canonical execution contract')
+        if project.planning.get('research_sources') and planning_blocker is None and not planning_evidence.get('external_sources'):
+            raise ValueError('Registered research requires controller-collected source evidence')
         if sum(len(text.splitlines()) for text in [objective, *requirements]) > 400:
             raise ValueError('A coding request SRS may contain at most 400 lines; split larger requests')
         identifier = _identifier(workflow_id or uuid.uuid4().hex, 'workflow_id')
@@ -437,6 +456,20 @@ class CodingStoreMixin:
             root = self._get(conn, job['workflow_id'])
             state = self._coding_state(conn, job['workflow_id'])
             kind = job['kind']
+            from .planning_governance import validate_dispatch
+            transition = validate_dispatch(job['payload'].get('execution_transition'), kind, job['payload'], current_state=state['status'])
+            if (transition['cycle'] != state['cycle'] or transition['leaf_index'] != state['leaf_index']):
+                raise ValueError('Coding completion is detached from its current leaf and cycle')
+            predecessor = transition['predecessor']
+            if predecessor is not None:
+                parent = conn.execute("SELECT j.kind,j.status,p.receipt_json,e.evidence_json,e.sha256 "
+                    "FROM pipeline_jobs j JOIN pipeline_outputs p USING(job_id) JOIN coding_evidence e USING(job_id) "
+                    "WHERE j.workflow_id=? AND j.job_id=?", (job['workflow_id'], predecessor['job_id'])).fetchone()
+                if (parent is None or parent['status'] != 'COMPLETED' or parent['kind'] != predecessor['kind']
+                        or digest(json.loads(parent['receipt_json'])) != predecessor['receipt_sha256']
+                        or parent['sha256'] != predecessor['evidence_sha256']
+                        or digest(json.loads(parent['evidence_json'])) != predecessor['evidence_sha256']):
+                    raise ValueError('Coding completion is detached from its physical predecessor evidence')
             if job['payload']['snapshot_sha256'] != state['current_snapshot']:
                 raise ValueError('Coding source changed after this stage was queued')
             if files is not None:
@@ -459,6 +492,7 @@ class CodingStoreMixin:
             conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_owner=NULL,lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
             routes.release(conn, job_id, 'completed', 'COMPLETED')
             self._event(conn, job, 'COMPLETED', evidence_sha256=digest(evidence), output_sha256=digest(output))
+            state['last_completed_job_id'] = job_id
             if kind == 'CODE_PLAN':
                 plan = evidence['plan']
                 if plan.get('plan_sha256')!=digest({key:value for key,value in plan.items() if key!='plan_sha256'}):
@@ -658,10 +692,10 @@ class CodingStoreMixin:
                             self._coding_job(conn, root, state, 'CODE_INTEGRATE', done=final_leaf,
                                              reviews_sha256=digest(state['reviews']), test_receipt_sha256=digest(state['last_test']))
             elif kind == 'CODE_RESEARCH':
-                if state['project'].get('planning'):
+                if state['project'].get('planning', {}).get('research_sources'):
                     from .planning_governance import validate_external_research
                     verified=validate_external_research(output,state['planning_evidence']['external_sources'],
-                        [f'R{index}' for index in range(1,len(job['payload']['requirements'])+1)])
+                        job['payload'].get('active_leaf', {}).get('requirement_ids') or [f'R{index}' for index in range(1,len(job['payload']['requirements'])+1)])
                     if any(evidence.get(key)!=value for key,value in verified.items()):
                         raise ValueError('Research confidence must match controller-verified external source evidence')
                 if job['payload'].get('research_phase')=='initial':
@@ -755,12 +789,43 @@ class CodingStoreMixin:
             self._save_coding(conn, root['workflow_id'], state)
             return self._get(conn, job_id)
 
-    def resume_coding(self, workflow_id, reason):
+    def resume_coding(self, workflow_id, reason, *, planning_evidence=None):
         if not isinstance(reason, str) or not reason.strip():
             raise ValueError('Coding resume requires an operator reason')
         with self._write() as conn:
             root = self._get(conn, workflow_id)
             state = self._coding_state(conn, workflow_id)
+            from .planning_governance import LEGACY_PHANTOM_HOLDS, validate_registration, normalize_policy
+            if state['status'] == 'PLANNING_HOLD' and state.get('planning_hold') in LEGACY_PHANTOM_HOLDS:
+                stage_count = conn.execute("SELECT COUNT(*) FROM pipeline_jobs WHERE workflow_id=? AND kind!='CODE_REQUEST'", (workflow_id,)).fetchone()[0]
+                if (root['status'] != 'BLOCKED' or stage_count or state.get('planning_history') or state.get('phase_ledger')
+                        or state.get('planning_revision', 0) or state.get('failures') or state.get('pivots')
+                        or state.get('cycle') != 1 or state.get('current_snapshot') != state.get('original_snapshot')
+                        or conn.execute('SELECT 1 FROM coding_integration_intents i JOIN pipeline_jobs j USING(job_id) WHERE j.workflow_id=? LIMIT 1', (workflow_id,)).fetchone()):
+                    raise ValueError('Withdrawn-spec migration requires an untouched held workflow; executed evidence cannot be reset')
+                policy = normalize_policy(state['project'].get('planning'))
+                registration = validate_registration(policy, self.coding_files(state['original_snapshot']))
+                if planning_evidence is None and not policy.get('research_sources'):
+                    planning_evidence = registration
+                if (not isinstance(planning_evidence, dict)
+                        or any(planning_evidence.get(key) != value for key, value in registration.items())
+                        or policy.get('research_sources') and not planning_evidence.get('external_sources')):
+                    raise ValueError('Withdrawn-spec migration requires fresh controller-collected registered research evidence')
+                state.setdefault('planning_migrations', []).append({'from_status': 'PLANNING_HOLD',
+                    'withdrawn_reason': state['planning_hold'], 'previous_project': state['project'],
+                    'previous_planning_evidence': state.get('planning_evidence'), 'reason': reason,
+                    'baseline_commit': state['baseline_commit'], 'source_snapshot_sha256': state['original_snapshot'],
+                    'recorded_at': time.time(), 'to_specification': registration['specification_id']})
+                state['project'] = {**state['project'], 'planning': policy}
+                state['planning_evidence'] = planning_evidence
+                state['status'] = 'PLANNING'
+                state.pop('planning_hold')
+                conn.execute("UPDATE pipeline_jobs SET status='IN_PROGRESS',error=NULL,updated_at=? WHERE job_id=?", (time.time(), workflow_id))
+                self._coding_job(conn, root, state, 'CODE_PLAN', allowed_paths=state['project']['allowed_paths'])
+                self._save_coding(conn, workflow_id, state)
+                self._event(conn, root, 'WITHDRAWN_PLANNING_HOLD_MIGRATED', reason=reason,
+                            evidence_sha256=digest(state['planning_migrations'][-1]))
+                return {'workflow_id': workflow_id, 'status': 'IN_PROGRESS', 'coding': state}
             if state['status']=='RESEARCH_HOLD' and root['status']=='BLOCKED':
                 if state['pivots']>=3 or state['cycle']>=10:
                     raise ValueError('Research or repair budget is exhausted; resume cannot reset it')

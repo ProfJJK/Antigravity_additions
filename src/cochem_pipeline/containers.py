@@ -59,6 +59,14 @@ def _digest(data):
     return hashlib.sha256(data).hexdigest()
 
 
+def _prepared_provenance(record, *, as_of):
+    """Check real preparation clocks; legacy pool rows are never backfilled."""
+    prepared, duration = record.get('prepared_at'), record.get('preparation_seconds')
+    return (all(type(value) in (int, float) and math.isfinite(value)
+                for value in (prepared, duration, as_of))
+            and 0 < prepared <= as_of and duration >= 0)
+
+
 def _ordinary(path, *, directory=False):
     info = path.lstat()
     if (stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400
@@ -321,13 +329,18 @@ class DockerRunner:
                 lease TEXT PRIMARY KEY,name TEXT UNIQUE NOT NULL,container_id TEXT,
                 image TEXT NOT NULL,job_id TEXT NOT NULL,attempt_id TEXT NOT NULL,
                 created_at REAL NOT NULL,deadline REAL NOT NULL,status TEXT NOT NULL);
+              CREATE TABLE IF NOT EXISTS preparation_requests(
+                sequence INTEGER PRIMARY KEY AUTOINCREMENT,
+                profile_digest TEXT UNIQUE NOT NULL,job_id TEXT NOT NULL,
+                requested_at REAL NOT NULL);
             ''')
             columns = {row[1] for row in db.execute('PRAGMA table_info(containers)')}
             for name, declaration in (('policy_digest', 'TEXT'), ('label_job_hash', 'TEXT'),
                                       ('memory_mb', 'INTEGER'), ('pool_digest', 'TEXT'), ('endpoint', 'TEXT'),
                                       ('creation_uncertain', 'INTEGER NOT NULL DEFAULT 0'),
                                       ('creation_boot_id', 'TEXT'), ('creation_daemon_id', 'TEXT'),
-                                      ('request_started_at','REAL'),('reservation_started_at','REAL')):
+                                      ('request_started_at','REAL'),('reservation_started_at','REAL'),
+                                      ('prepared_at', 'REAL'), ('preparation_seconds', 'REAL')):
                 if name not in columns:
                     db.execute('ALTER TABLE containers ADD COLUMN ' + name + ' ' + declaration)
             db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('owner', uuid.uuid4().hex))
@@ -399,9 +412,11 @@ class DockerRunner:
             if total > effective_limit:
                 raise ContainerCapacityError('Stricter current ceiling requires idle-pool drainage first')
             if not preparing:
-                warm = db.execute("SELECT * FROM containers WHERE status='WARM' AND pool_digest=? "
-                                  'AND deadline>? ORDER BY created_at LIMIT 1',
-                                  (self.policy.pool_digest, now)).fetchone()
+                candidates = db.execute("SELECT * FROM containers WHERE status='WARM' AND pool_digest=? "
+                                        'AND deadline>? ORDER BY created_at LIMIT 4',
+                                        (self.policy.pool_digest, now)).fetchall()
+                warm = next((dict(row) for row in candidates
+                             if _prepared_provenance(dict(row), as_of=now)), None)
                 if warm is not None:
                     claimed = dict(warm)
                     claimed.update(job_id=job_id, attempt_id=attempt_id,
@@ -595,6 +610,13 @@ class DockerRunner:
                         # proof, never from a supplied worker ID or a 404.
                         db.execute("UPDATE containers SET status='QUARANTINED',deadline=0,container_id=?,creation_uncertain=0 "
                                    "WHERE lease=? AND status='REMOVED'", (identifier, record['lease']))
+                        if (not owned.get('State', {}).get('Running')
+                                or not _prepared_provenance(record, as_of=time.time())):
+                            # Stopped or legacy/invalid prepared instances are
+                            # unavailable even before idle TTL expiry. Drain
+                            # before replenishing; never invent old timing.
+                            db.execute("UPDATE containers SET status='DRAINING',deadline=0 "
+                                       "WHERE lease=? AND status='WARM'", (record['lease'],))
                         db.commit()
                 except Exception as error:
                     unknown += 1
@@ -621,9 +643,13 @@ class DockerRunner:
             records = [dict(row) for row in db.execute("SELECT * FROM containers WHERE status!='REMOVED'")]
         removed, failures = [], []
         for record in records:
-            if not include_warm and record['status'] in ('WARM', 'PREPARING') and record['deadline'] > now:
+            invalid_prepared = (record['status']=='WARM'
+                                and not _prepared_provenance(record, as_of=now))
+            if (not include_warm and not invalid_prepared
+                    and record['status'] in ('WARM', 'PREPARING') and record['deadline'] > now):
                 continue
             if (record['deadline'] > now and (active_attempt_ids is None or record['attempt_id'] in active_attempt_ids)
+                    and not invalid_prepared
                     and not (include_warm and record['status'] in ('WARM', 'PREPARING'))):
                 continue
             try:
@@ -678,9 +704,11 @@ class DockerRunner:
             records = [dict(row) for row in db.execute("SELECT * FROM containers WHERE status!='REMOVED'")]
             published = int(db.execute("SELECT value FROM metadata WHERE key='capacity'").fetchone()[0])
             unknown = int(db.execute("SELECT value FROM metadata WHERE key='unknown_owned'").fetchone()[0])
+            requests = db.execute('SELECT count(*) FROM preparation_requests').fetchone()[0]
         return {'owned': len(records) + unknown, 'limit': min(self.policy.max_containers, published),
                 'published_capacity': published,
                 'unknown_owned': unknown,
+                'pending_profiles': requests,
                 'warm': sum(row['status'] == 'WARM' for row in records),
                 'preparing': sum(row['status'] == 'PREPARING' for row in records),
                 'active': sum(row['status'] in ('ACTIVE', 'INTENT', 'BOUND', 'EXECUTING') for row in records),
@@ -688,11 +716,50 @@ class DockerRunner:
                 'reserved_memory_mb': unknown * self.policy.memory_mb + sum(row['memory_mb'] or self.policy.memory_mb for row in records),
                 'containers': records}
 
-    def reserve_attempt(self, job_id, attempt_id, *, retire_incompatible=True,
-                        require_warm=False, request_started_at=None):
-        """Bind one physical slot under the controller's shared admission lock."""
+    def request_preparation(self, profile_digest, job_id):
+        """Persist bounded FIFO demand; policy is reloaded from the trusted job.
+
+        No worker-supplied image or command is stored here. Restart reconstructs
+        the policy from the protected coding workflow and rechecks the current
+        operator bounds before replenishing its matching profile.
+        """
+        if (not isinstance(profile_digest, str) or not re.fullmatch('[0-9a-f]{64}', profile_digest)
+                or not isinstance(job_id, str) or not 0 < len(job_id) <= 256 or '\0' in job_id):
+            raise ValueError('Prepared-pool demand requires bounded job and profile identities')
+        with closing(self._connect()) as db:
+            db.execute('BEGIN IMMEDIATE')
+            if db.execute('SELECT 1 FROM preparation_requests WHERE profile_digest=?', (profile_digest,)).fetchone():
+                return True
+            if db.execute('SELECT count(*) FROM preparation_requests').fetchone()[0] >= 64:
+                return False
+            db.execute('INSERT INTO preparation_requests(profile_digest,job_id,requested_at) VALUES(?,?,?)',
+                       (profile_digest, job_id, time.time()))
+            db.commit()
+            return True
+
+    def preparation_requests(self):
+        with closing(self._connect()) as db:
+            return [dict(row) for row in db.execute('SELECT * FROM preparation_requests ORDER BY sequence LIMIT 64')]
+
+    def complete_preparation_request(self, profile_digest):
+        with closing(self._connect()) as db:
+            db.execute('DELETE FROM preparation_requests WHERE profile_digest=?', (profile_digest,))
+            db.commit()
+
+    def reserve_attempt(self, job_id, attempt_id, *, retire_incompatible=False,
+                        require_warm=True, request_started_at=None):
+        """Bind an unused prepared slot; requests never create containers.
+
+        Only background ``prepare_pool`` may create a physical container. A
+        depleted or incompatible pool produces a bounded scheduler hold while
+        that service replenishes; there is deliberately no cold-start fallback.
+        """
         if not self.policy.enabled:
             raise ContainerError('Docker execution is disabled')
+        if require_warm is not True:
+            raise ValueError('Job requests require prepared containers; cold creation belongs to pool replenishment')
+        if self.policy.warm_pool_size <= 0:
+            raise ContainerCapacityError('Prepared-container pool is disabled; no job may cold-create a container')
         try:
             record = self._reserve(job_id, attempt_id,require_warm=require_warm,
                                    request_started_at=request_started_at)
@@ -719,6 +786,10 @@ class DockerRunner:
             if any(record.get(key) != value for key, value in expected.items()) or any(
                     reservation.get(key) != record.get(key) for key in ('job_id','attempt_id','policy_digest','image','container_id','name','endpoint')):
                 raise ContainerError('Docker reservation was replaced, consumed, or belongs to another attempt')
+            if not isinstance(record['container_id'], str) or not re.fullmatch('[0-9a-f]{64}', record['container_id']):
+                raise ContainerError('Execution requires a physically prepared single-use container')
+            if not _prepared_provenance(record, as_of=record.get('reservation_started_at')):
+                raise ContainerError('Prepared-container timing provenance is missing or invalid; replenish before execution')
             published = int(db.execute("SELECT value FROM metadata WHERE key='capacity'").fetchone()[0])
             owned = db.execute("SELECT count(*) FROM containers WHERE status!='REMOVED'").fetchone()[0]
             unknown = int(db.execute("SELECT value FROM metadata WHERE key='unknown_owned'").fetchone()[0])
@@ -783,6 +854,7 @@ class DockerRunner:
             except ContainerCapacityError:
                 break
             try:
+                preparation_started = time.monotonic()
                 self._begin_creation(record)
                 result = self._call(['run', '--detach', *self.create_arguments(record)[1:]], timeout=60)
                 container_id = result.stdout.decode().strip()
@@ -802,7 +874,9 @@ class DockerRunner:
                     admitted = (state is not None and state[0] == 'PREPARING'
                                 and owned <= min(self.policy.max_containers, published))
                     if admitted:
-                        db.execute("UPDATE containers SET status='WARM',deadline=? WHERE lease=?", (time.time() + 3600, record['lease']))
+                        prepared_at = time.time()
+                        db.execute("UPDATE containers SET status='WARM',deadline=?,prepared_at=?,preparation_seconds=? WHERE lease=?",
+                                   (prepared_at + 3600, prepared_at, time.monotonic() - preparation_started, record['lease']))
                     db.commit()
                 if not admitted:
                     self._remove(record)
@@ -824,7 +898,8 @@ class DockerRunner:
             if census['owned']>target:
                 return {'ready':False,'reason':'pressure_requires_active_seat_drain','census':census}
         if any(row['status']=='WARM' and row['pool_digest']==self.policy.pool_digest
-               and row['deadline']>time.time() for row in census['containers']):
+               and row['deadline']>time.time() and _prepared_provenance(row, as_of=time.time())
+               for row in census['containers']):
             return {'ready':True,'census':census}
         if capacity<=0 or self.policy.warm_pool_size<=0 or census['quarantined']:
             return {'ready':False,'reason':'preallocated_capacity_unavailable','census':census}
@@ -833,6 +908,7 @@ class DockerRunner:
         self.prepare_pool(target=min(target,self.census()['owned']+1))
         census=self.census()
         return {'ready':any(row['status']=='WARM' and row['pool_digest']==self.policy.pool_digest
+                           and _prepared_provenance(row, as_of=time.time())
                            for row in census['containers']),'census':census}
 
     def health(self):
@@ -900,7 +976,10 @@ class DockerRunner:
         receipt.update(request_started_at=requested,reservation_started_at=reserved,
                        execution_started_at=request_started,
                        queue_wait_seconds=max(0,reserved-requested),
-                       handoff_wait_seconds=max(0,request_started-reserved))
+                       handoff_wait_seconds=max(0,request_started-reserved),
+                       container_creation_path='background_pool_replenishment',
+                       prepared_at=record.get('prepared_at'),
+                       preparation_seconds=record.get('preparation_seconds'))
         cycle_started = None
         def remaining_cycle_seconds():
             remaining = 30. - (time.monotonic() - cycle_started)
@@ -915,18 +994,8 @@ class DockerRunner:
                                              ramdisk_workspace=ramdisk_workspace, source_modes=source_modes)
             receipt['source'] = source
             self.preflight()
-            receipt['warm_pool_used'] = bool(record.get('warm_claimed'))
-            if record.get('warm_claimed'):
-                container_id = record['container_id']
-            else:
-                arguments = self.create_arguments(record)
-                self._begin_creation(record)
-                result = self._call(['run', '--detach', *arguments[1:]])
-                container_id = result.stdout.decode().strip()
-                if result.returncode != 0 or not re.fullmatch('[0-9a-f]{64}', container_id):
-                    raise ContainerError('Docker container creation failed: ' + result.stderr.decode(errors='replace')[:512])
-                record['container_id'] = container_id
-                self._set(record['lease'], container_id=container_id, status='EXECUTING', creation_uncertain=0)
+            receipt['warm_pool_used'] = True
+            container_id = record['container_id']
             receipt['container_id'] = container_id
             inspected = self._inspect_owned(record)
             receipt['limits'] = self._verify_limits(inspected)

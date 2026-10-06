@@ -189,6 +189,7 @@ def _api():
             "AssignProcessToJobObject": (BOOL, [HANDLE, HANDLE]), "TerminateJobObject": (BOOL, [HANDLE, C.c_uint]),
             "TerminateProcess": (BOOL, [HANDLE, C.c_uint]), "ResumeThread": (DWORD, [HANDLE]),
             "WaitForSingleObject": (DWORD, [HANDLE, DWORD]), "GetExitCodeProcess": (BOOL, [HANDLE, C.POINTER(DWORD)]),
+            "GetProcessTimes": (BOOL, [HANDLE, C.POINTER(_FILETIME), C.POINTER(_FILETIME), C.POINTER(_FILETIME), C.POINTER(_FILETIME)]),
             "DuplicateHandle": (BOOL, [HANDLE, HANDLE, HANDLE, C.POINTER(HANDLE), DWORD, BOOL, DWORD]),
             "InitializeProcThreadAttributeList": (BOOL, [HANDLE, DWORD, DWORD, C.POINTER(SIZE_T)]),
             "UpdateProcThreadAttribute": (BOOL, [HANDLE, DWORD, SIZE_T, HANDLE, SIZE_T, HANDLE, HANDLE]),
@@ -772,16 +773,39 @@ def _worker_environment(token, overrides: Mapping[str, str] | None, *, ramdisk_w
     return C.create_unicode_buffer("\x00".join(f"{key}={value}" for key, value in sorted(environment.items())) + "\x00\x00")
 
 
+def filetime_unix_seconds(ticks: int) -> float:
+    """Convert a physical Windows creation timestamp, retaining ticks separately."""
+    if type(ticks) is not int or not 116444736000000000 < ticks < 2**64:
+        raise WindowsIsolationError('Windows process creation timestamp is invalid')
+    return (ticks - 116444736000000000) / 10_000_000
+
+
+def process_creation_filetime(process_handle) -> int:
+    """Read the creation time through an owned handle even after process exit."""
+    created, exited, kernel, user = (_FILETIME() for _ in range(4))
+    _check(_api()['kernel32'].GetProcessTimes(process_handle, C.byref(created), C.byref(exited),
+                                            C.byref(kernel), C.byref(user)),
+           'Read owned worker process creation time')
+    ticks = (created.dwHighDateTime << 32) | created.dwLowDateTime
+    filetime_unix_seconds(ticks)
+    return ticks
+
+
 class WindowsProcess:
     """Native child plus owned Job Object, profile and logon token handles."""
 
     def __init__(self, process, job, token, profile, pid: int, argv: list[str], slot_lock=None,
-                 resource_limits_evidence=None):
+                 resource_limits_evidence=None, creation_time_filetime=None):
         self._process, self._job, self._token, self._profile = process, job, token, profile
         self.pid, self.args, self.returncode = pid, argv, None
         self._lock = threading.RLock()
         self._slot_lock = slot_lock
         self.resource_limits_evidence = resource_limits_evidence
+        # Capture from the owned process handle, not a later PID lookup that
+        # can race process exit/reuse. Keep exact 100 ns ticks in the receipt.
+        self.creation_time_filetime = (process_creation_filetime(process)
+                                       if creation_time_filetime is None else creation_time_filetime)
+        self.creation_time = filetime_unix_seconds(self.creation_time_filetime)
 
     def poll(self) -> int | None:
         with self._lock:
@@ -1005,11 +1029,12 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
             _check(api["advapi32"].CreateProcessAsUserW(token, argv[0], command, None, None, True, flags,
                                                         environment, str(directory), C.byref(startup), C.byref(process)), "Create suspended worker")
             _check(api["kernel32"].AssignProcessToJobObject(job, process.hProcess), "Assign suspended worker to Job Object")
+            creation_time_filetime = process_creation_filetime(process.hProcess)
             if api["kernel32"].ResumeThread(process.hThread) == 0xFFFFFFFF:
                 raise WindowsIsolationError("Could not resume supervised worker")
         _close(process.hThread)
         return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock,
-                              resource_evidence)
+                              resource_evidence, creation_time_filetime)
     except BaseException as launch_error:
         try:
             _cleanup_failed_launch(process, job, token, profile, slot_lock)

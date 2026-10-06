@@ -275,6 +275,9 @@ class Runtime:
             def launched(pid):
                 with self.lock:
                     self.active[job_id]['pid'] = pid
+                observer = getattr(self,'queue_launch_observer',None)
+                if observer is not None:
+                    observer.observe_native_launch(node,slot,pid)
             coding = node['kind'].startswith('CODE_')
             if coding:
                 if self.coding is None:
@@ -334,6 +337,9 @@ class Runtime:
                             LOG.error('Slot %s cleanup receipt failed: %s',slot,exc)
                     active['cleanup_verified'] = slot not in self.quarantined
                     active['cleaned'].set()
+            if hasattr(self,'admission'):
+                # Refill prepared capacity as soon as execution releases a seat.
+                self.admission.maintenance_requested.set()
 
     def _record_failure(self,node,slot,exc):
         """Report one finished dispatch; durable scheduling owns all retry budgets."""
@@ -540,7 +546,9 @@ class Runtime:
         return self.store.coding_workflow(workflow_id)
 
     def resume_coding(self, workflow_id, reason):
-        return self.store.resume_coding(workflow_id,reason)
+        if self.coding is None:
+            raise ValueError('Coding is unavailable until verified RAM and Docker deployment prerequisites pass')
+        return self.coding.resume(workflow_id,reason)
 
     def status(self):
         from .planning_governance import planning_readiness
@@ -593,7 +601,10 @@ class Runtime:
             if self._maintenance_thread is not None:
                 self._maintenance_thread.join(timeout=120)
             if self.docker is not None:
-                self.docker.reap_orphans(active_attempt_ids=set(),include_warm=True)
+                # Prepared, unused containers survive controller restarts. The
+                # durable pool reconciles their actual identity and health on
+                # the next startup; active/orphan attempts are still removed.
+                self.docker.reap_orphans(active_attempt_ids=set(),include_warm=False)
             self.oracle.close()
             if getattr(self,'knowledge',None) is not None:
                 self.knowledge.close()

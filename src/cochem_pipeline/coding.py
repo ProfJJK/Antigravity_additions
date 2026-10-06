@@ -316,18 +316,25 @@ class CodingCoordinator:
         snapshot = capture_repository(project.repository, project.branch, git_executable=getattr(self.config,'git_executable',None))
         validate_project_files(snapshot.files)
         from .planning_governance import validate_registration,collect_external_sources
-        try:
-            planning_evidence=validate_registration(project.planning,snapshot.files)
-        except ValueError as exc:
-            return self.store.submit_coding_snapshot(project,objective,requirements,snapshot,
-                self.config.docker,workflow_id,planning_blocker=str(exc))
-        if not planning_evidence['stage_execution_verified']:
-            return self.store.submit_coding_snapshot(project,objective,requirements,snapshot,
-                self.config.docker,workflow_id,planning_evidence=planning_evidence,
-                planning_blocker='Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding')
-        planning_evidence['external_sources']=collect_external_sources(project.planning)
+        planning_evidence = validate_registration(project.planning, snapshot.files)
+        if project.planning.get('research_sources'):
+            planning_evidence['external_sources'] = collect_external_sources(project.planning)
         return self.store.submit_coding_snapshot(project, objective, requirements, snapshot,
-                                                 self.config.docker, workflow_id,planning_evidence=planning_evidence)
+                                                 self.config.docker, workflow_id, planning_evidence=planning_evidence)
+
+    def resume(self, workflow_id, reason):
+        """Rebind only a never-executed withdrawn-spec hold, retaining its archive."""
+        from .planning_governance import LEGACY_PHANTOM_HOLDS, validate_registration, collect_external_sources
+        workflow = self.store.coding_workflow(workflow_id)
+        state = workflow['coding']
+        evidence = None
+        if state.get('status') == 'PLANNING_HOLD' and state.get('planning_hold') in LEGACY_PHANTOM_HOLDS:
+            root = next(job for job in workflow['jobs'] if job['kind'] == 'CODE_REQUEST')
+            project = CodingProject.from_dict(root['payload']['project_id'], state['project'])
+            evidence = validate_registration(project.planning, self.store.coding_files(state['original_snapshot']))
+            if project.planning.get('research_sources'):
+                evidence['external_sources'] = collect_external_sources(project.planning)
+        return self.store.resume_coding(workflow_id, reason, planning_evidence=evidence)
 
     def run(self, node, slot, context, heartbeat, launched, cancel_event, *, on_native_start=None,on_native_end=None,container_reservation=None):
         from .coding_git import RepositorySnapshot
@@ -493,8 +500,8 @@ class CodingCoordinator:
             if (job_phase:=node['payload'].get('research_phase'))!='initial' and (not any(item['path']=='$test_receipt' for item in verified) or not any(item['path']!='$test_receipt' for item in verified)):
                 raise ValueError('Research must examine actual test diagnostics and project technical sources')
             evidence['verified_sources'] = verified
-            if project.planning:
+            if project.planning.get('research_sources'):
                 from .planning_governance import validate_external_research
                 evidence.update(validate_external_research(output,state['planning_evidence']['external_sources'],
-                    [f'R{index}' for index in range(1,len(node['payload']['requirements'])+1)]))
+                    node['payload'].get('active_leaf', {}).get('requirement_ids') or [f'R{index}' for index in range(1,len(node['payload']['requirements'])+1)]))
         return output, receipt, evidence, None

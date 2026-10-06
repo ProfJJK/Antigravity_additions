@@ -1,5 +1,9 @@
 # 4.2.6 upgrade and acceptance
 
+> Historical 4.2.6 record. The [4.2.7 canonical SRS](../4.2.7_SRS.md) and
+> [owner addendum](SRS_ADDENDUM_4.2.7.md) supersede its phantom planning
+> prerequisites and latency-failure conclusions; executed test history is unchanged.
+
 This release closes additional code gaps found by comparing the original SRS
 with actual behavior. It does **not** certify every SRS clause. The current
 [requirements ledger](REQUIREMENTS_4.2.6.md) records unresolved definitions and

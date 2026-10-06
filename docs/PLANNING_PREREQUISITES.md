@@ -1,76 +1,19 @@
-# Planning evidence and unresolved canonical specification
+# Planning admission and recovery — 4.2.7
 
-Production coding submissions require registered planning specifications. They
-capture the actual Git baseline and return a durable `PLANNING_HOLD`, with no
-runnable planning or implementation jobs, when those prerequisites are missing.
-HTTP `/coding/submit` and MCP `pipeline_code` return that state; the workflow's
-`coding.planning_hold` records the concrete reason. Registration does not assert
-that any stage executed.
+The owner withdrew the obsolete seven-stage bullet and agentic Method Matrix requirements. The Method Matrix describes chemical calculation tiers; it does not define agent execution. [4.2.7_SRS.md](../4.2.7_SRS.md), especially Chapters 03–05, is the clean canonical authority. A project does not need to copy that SRS, invent seven stages or register M-1–M-8 quotations.
 
-Runtime `/status` exposes the `planning` readiness diagnostic. Native
-`execution-readiness` includes the same check and cannot report a ready coding
-deployment while the execution binding is missing. Readiness distinguishes
-configured source registration from physical source verification; submission
-performs the latter against the captured Git bytes.
-The production acceptance verifier also requires an implemented controller
-binding. A completed component workflow, registered source, or supplied
-`stage_execution_verified` boolean cannot bypass that prerequisite.
+A registered coding submission captures its real Git baseline, source manifest, project and Docker policy, and the controller's executable `cochem-planning/4.2.7` contract. It creates one runnable `CODE_PLAN`. The controller includes `ExecutionContract.json` in the generated plan's immutable, independently audited artifact set. Every next stage captures its permitted prior workflow state, phase, leaf, cycle, source snapshot and exact completed predecessor receipt/evidence identities. Completion and final acceptance recheck those relationships. Neither a configured flag nor a model claim proves execution.
 
-The missing sources are:
+The coding path is plan → independent plan audit → per-leaf verified research → sealed regression tests → physical assertion RED → bounded source edit → Docker tests → independent per-file audits → bounded improvement/refinement/final tests and audits → fenced Git integration. The P1–P10 evidence ledger, N=1 fracture/DAG, independent model reviews, 20–100-line physical context, 100-line combined change ceiling and immutable repair budgets remain enforced. The separate document-planning manifest/chapter/synthesis workflow remains distinct.
 
-- The original `v2/task_planning_orchestra.py`, whose seven-stage flow must be
-  preserved under `V4_CORE_MODIFICATION_AUTHORIZATION.md:49–57`. Its contents and
-  stage definitions are absent from the checkout and available Git history.
-- The actual Method Matrix M-1 through M-8 definitions. `v4.1.2/TEST_INFRA.md:107`
-  requires their audit but does not supply their text. A filename reference or a
-  historical claim that the file existed does not supply those definitions.
+`planning` may be omitted. Optional policy fields are `max_revisions` (1–10; default five) and `research_sources` (two to eight registered literal HTTPS sources when enabled). Source quotations from the actual project are mandatory research evidence. Configured external research additionally requires controller-fetched bytes, intact hashes, literal quotations, distinct sources and requirement coverage. Legacy `protocol` and `method_matrix` configuration fields are ignored as withdrawn agentic constraints; historical workflow records retain their original values.
 
-The source registry is implemented; the exact seven-stage transition binding is
-not implemented because its defining source is missing. A registered source
-therefore still produces a production hold until its execution transitions have
-been implemented and verified. `stage_execution_verified: false` is explicit in
-registration evidence. The existing ten-phase TDD sequence is a separate workflow
-and is not counted as seven-stage planning compliance.
+## Recover a 4.2.6 phantom hold
 
-`CodingProject.planning` accepts this operator-owned structure:
+Use the existing authenticated `pipeline_code_resume` tool or `/coding/resume` API with the old workflow ID and an operator reason such as “Apply the owner-approved 4.2.7 Alternative Path.” The controller migrates only the exact former missing-protocol/transition hold when its workflow is still blocked, has no execution stages, no planning/phase history, no changed source snapshot and no consumed revision, cycle or pivot budget. It preserves the original baseline, prior policy, hold reason and planning evidence in `planning_migrations`, then dispatches exactly one `CODE_PLAN`. Registered external research is fetched before the migration commits. A repeated resume cannot create a second plan.
 
-| Field | Required content |
-| --- | --- |
-| `protocol` | `path`, `sha256`, and seven ordered `clauses`, each with its actual `id` and verbatim `quote`. |
-| `method_matrix` | `path`, `sha256`, and eight `clauses`, identified exactly `M-1` through `M-8`, with verbatim `quote`. |
-| `research_sources` | Two to eight distinct records containing `id` and an exact public HTTPS `url`. |
-| `max_revisions` | Integer 1–10; defaults to five. |
+Cancellation, no-progress planning, exhausted revisions, real research holds, executed workflows and changed snapshots cannot enter this migration. Use their existing supported recovery controls; do not modify SQLite to reset history. If a historical record fails these checks, submit a new workflow explicitly after reviewing and retaining the old one. New submission captures the then-current baseline and does not erase the earlier evidence.
 
-Specification paths are contained relative paths in the captured Git snapshot,
-including tracked hidden directories. Source bytes must match the registered
-SHA256, every quotation must occur in those bytes, and stage quotations must
-retain their source order. No substitute stage names or Method Matrix meanings
-are supplied by the controller.
+## Acceptance boundaries
 
-For registered plans, every Method Matrix clause must link to declared
-requirements and actual generated artifacts. `MethodMatrix.json` retains the
-source hash, clause quotes, links, and linked artifact hashes. Its own hash is
-included in the independent planning audit's complete artifact set.
-
-`collect_external_sources` fetches the registered URLs with system TLS trust and
-the inherited policy proxy. It rejects redirects and private-address direct
-destinations, bounds each response to 64 KiB and the collection to a 30-second
-budget, and retains actual text, SHA256, byte count, URL, and retrieval timestamp.
-The research validator checks exact quotations against those bytes, at least two
-distinct source URLs, and full declared-requirement coverage. Its confidence
-record measures evidence coverage; it is not a scientific probability and ignores
-any confidence score supplied by a model. Network denial remains a prerequisite
-failure and does not authorize bypassing the proxy or TLS verification.
-
-Smart planning revisions operate independently of TDD. An authenticated native
-planning audit may return `FAIL` or `REVISE` with artifact-bound findings. The
-controller persists that outcome and creates a revised `CODE_PLAN` job carrying
-the previous plan and findings. Revisions must change each cited artifact group;
-unchanged resubmissions and exhausted revision budgets produce `PLANNING_HOLD`.
-Only a final independent `PASS` records TDD phase P1 or permits the subsequent
-research stage. All prior native outputs and receipt hashes remain in SQLite's
-immutable job records and `coding.planning_history`.
-
-The direct `JobStore` component interface remains usable without production
-registration for isolated storage tests. Such tests establish transactional
-behavior only; they cannot establish production readiness or native inference.
+Portable tests execute the actual Git/SQLite controller transitions, validate canonical policy/dispatch/evidence relationships and reject forged source, receipt, predecessor and state bindings. Their native-completion metadata is explicitly a storage-contract fixture and remains rejected by live acceptance. A Windows subscription-model workflow through plan/review/RED/GREEN/audit/CAS is still required for target-host acceptance. RAM, identity, credentials, Docker, cleanup and physical test prerequisites remain effective; removing the phantom hold does not assert that those deployment prerequisites have passed.

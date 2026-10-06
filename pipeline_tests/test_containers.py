@@ -27,6 +27,16 @@ def policy(image=IMAGE, **changes):
         'commands': [{'name': 'unit', 'argv': ['python','-m','pytest','-q']}], **changes})
 
 
+def prepared_metadata(runner):
+    """Explicit registry fixture; no physical or performance claim is made."""
+    record=runner._reserve('_warm_','metadata-preparation',preparing=True)
+    runner._set(record['lease'],status='WARM',container_id='b'*64)
+    with runner._connect() as db:
+        db.execute('UPDATE containers SET prepared_at=?,preparation_seconds=0 WHERE lease=?',
+                   (time.time(),record['lease']))
+    return record
+
+
 def test_snapshot_content_digest_is_independent_of_timestamps_and_archive_bytes(tmp_path):
     (tmp_path/'module.py').write_text('answer=42\n')
     archive, first = source_snapshot(tmp_path, policy())
@@ -124,6 +134,7 @@ def real_run(tmp_path, image, source, **changes):
     for name,text in source.items():
         (root/name).write_text(text)
     runner=DockerRunner(policy(image,**changes),tmp_path/'private')
+    runner.prepare_pool(target=1)
     receipt=runner.run(root,job_id='test-job',attempt_id='real-attempt')
     assert receipt['cleanup_verified'], receipt
     assert runner.census()['owned']==0
@@ -346,8 +357,13 @@ def test_real_incompatible_idle_profile_cannot_starve_pending_job(tmp_path,docke
     second=DockerRunner(policy(docker_image,max_containers=1,memory_mb=256,tmpfs_mb=128),tmp_path/'private')
     prepared=first.prepare_pool(target=1)
     try:
+        with pytest.raises(ContainerCapacityError):
+            second.run(source,job_id='other-profile',attempt_id='waiting-profile')
+        assert first.census()['warm']==1  # A request never drains or cold-creates.
+        replenished=second.prepare_requested_profile(1)
+        assert replenished['ready']
         receipt=second.run(source,job_id='other-profile',attempt_id='other-attempt')
-        assert receipt['passed'] and not receipt['warm_pool_used'],receipt
+        assert receipt['passed'] and receipt['warm_pool_used'],receipt
         assert receipt['container_id']!=prepared['prepared'][0]
         assert second.census()['owned']==0
     finally:
@@ -373,6 +389,7 @@ def test_windows_mode_manifest_controls_archive_executable_bit(tmp_path):
 def test_durable_capacity_closes_cross_instance_cold_and_warm_reservation_races(tmp_path):
     first=DockerRunner(policy(),tmp_path);second=DockerRunner(policy(),tmp_path)
     first.set_capacity(1)
+    prepared_metadata(first)
     record=first.reserve_attempt('job','attempt')
     with pytest.raises(ContainerCapacityError):second.reserve_attempt('next','next')
     with pytest.raises(ContainerCapacityError):second._reserve('_warm_','warm',preparing=True)
@@ -384,6 +401,7 @@ def test_durable_capacity_closes_cross_instance_cold_and_warm_reservation_races(
 
 def test_reserved_attempt_is_bound_to_identity_and_consumable_only_once(tmp_path):
     runner=DockerRunner(policy(),tmp_path)
+    prepared_metadata(runner)
     reservation=runner.reserve_attempt('job','attempt')
     with pytest.raises(ContainerError):runner._consume_reservation(reservation,'job','other')
     result=runner._consume_reservation(reservation,'job','attempt')
@@ -413,12 +431,216 @@ def test_real_capacity_zero_during_preparation_removes_late_container(tmp_path,d
 
 def test_capacity_revoked_between_reservation_and_execution_keeps_bound_cleanup_hold(tmp_path):
     runner=DockerRunner(policy(),tmp_path)
+    prepared_metadata(runner)
     reservation=runner.reserve_attempt('job','attempt')
     runner.set_capacity(0)
     with pytest.raises(ContainerCapacityError,match='revoked'):
         runner._consume_reservation(reservation,'job','attempt')
     assert runner.census()['containers'][0]['status']=='BOUND'
     assert runner.census()['owned']==1
+
+
+def test_depleted_pool_never_launches_docker_or_leaves_job_intent(tmp_path,monkeypatch):
+    runner=DockerRunner(policy(),tmp_path/'state')
+    source=tmp_path/'source';source.mkdir();(source/'test_unit.py').write_text('def test_unit(): assert True\n')
+    def forbidden_command(*args,**kwargs):
+        raise AssertionError('A depleted request must not invoke Docker')
+    monkeypatch.setattr(runner,'_call',forbidden_command)
+    with pytest.raises(ContainerCapacityError,match='preallocated'):
+        runner.run(source,job_id='waiting-job',attempt_id='waiting-attempt')
+    with pytest.raises(ValueError,match='replenishment'):
+        runner.reserve_attempt('cold-bypass','cold-bypass',require_warm=False)
+    assert runner.census()['owned']==0
+
+
+def test_unprepared_bound_record_cannot_restore_inline_cold_creation(tmp_path):
+    runner=DockerRunner(policy(),tmp_path)
+    record=runner._reserve('old-job','old-attempt')
+    runner._set(record['lease'],status='BOUND')
+    record['status']='BOUND'
+    with pytest.raises(ContainerError,match='physically prepared'):
+        runner._consume_reservation(record,'old-job','old-attempt')
+    assert runner.census()['containers'][0]['status']=='BOUND'
+
+
+@pytest.mark.parametrize('prepared,duration',[(None,None),(1,float('inf')),(1,-1),
+    (float('inf'),1),(float('nan'),1),(time.time()+86400,1)])
+def test_missing_or_invalid_pool_provenance_holds_before_dispatch(tmp_path,prepared,duration):
+    runner=DockerRunner(policy(),tmp_path)
+    record=prepared_metadata(runner)
+    with runner._connect() as db:
+        db.execute('UPDATE containers SET prepared_at=?,preparation_seconds=? WHERE lease=?',
+                   (prepared,duration,record['lease']))
+    with pytest.raises(ContainerCapacityError,match='preallocated'):
+        runner.reserve_attempt('must-not-start','must-not-start')
+    census=runner.census()
+    assert census['owned']==1 and census['warm']==1 and census['active']==0
+
+
+def test_preparation_provenance_revoked_after_binding_cannot_reach_execution(tmp_path):
+    runner=DockerRunner(policy(),tmp_path)
+    prepared_metadata(runner)
+    reservation=runner.reserve_attempt('bound-job','bound-attempt')
+    with runner._connect() as db:
+        db.execute('UPDATE containers SET prepared_at=NULL WHERE lease=?',(reservation['lease'],))
+    with pytest.raises(ContainerError,match='timing provenance'):
+        runner._consume_reservation(reservation,'bound-job','bound-attempt')
+    assert runner.census()['containers'][0]['status']=='BOUND'
+
+
+def test_real_legacy_pool_schema_upgrades_by_drain_and_fresh_replenishment(tmp_path,docker_image):
+    first=DockerRunner(policy(docker_image,max_containers=1),tmp_path)
+    old_id=first.prepare_pool(target=1)['prepared'][0]
+    # Recreate the physical 4.2.6 schema while retaining the actual unused
+    # running container. Migration must not manufacture historical clocks.
+    with first._connect() as db:
+        db.execute('ALTER TABLE containers DROP COLUMN prepared_at')
+        db.execute('ALTER TABLE containers DROP COLUMN preparation_seconds')
+    upgraded=DockerRunner(policy(docker_image,max_containers=1),tmp_path)
+    try:
+        legacy=upgraded.census()['containers'][0]
+        assert legacy['prepared_at'] is None and legacy['preparation_seconds'] is None
+        with pytest.raises(ContainerCapacityError,match='preallocated'):
+            upgraded.reserve_attempt('legacy-cannot-start','legacy-cannot-start')
+        assert upgraded.census()['owned']==1
+        drained=upgraded.reap_orphans()  # Also covers maintenance without an active-set argument.
+        assert drained=={'removed':[legacy['lease']],'quarantined':[]}
+        assert upgraded._inspect_owned(legacy) is None
+        replacement=upgraded.prepare_pool(target=1)
+        assert replacement['prepared'][0]!=old_id
+        current=upgraded.census()['containers'][0]
+        assert current['prepared_at']>0 and current['preparation_seconds']>=0
+        reservation=upgraded.reserve_attempt('upgraded-job','upgraded-attempt')
+        assert upgraded._consume_reservation(reservation,'upgraded-job','upgraded-attempt')['warm_claimed']
+    finally:
+        upgraded.reap_orphans(set(),include_warm=True)
+
+
+def test_preparation_fifo_is_durable_bounded_and_deduplicated_across_instances(tmp_path):
+    first=DockerRunner(policy(),tmp_path)
+    digest='c'*64
+    assert first.request_preparation(digest,'first-job')
+    second=DockerRunner(policy(),tmp_path)
+    assert second.request_preparation(digest,'later-job')
+    for index in range(63):
+        assert second.request_preparation(f'{index:064x}',f'job-{index}')
+    assert not first.request_preparation('f'*64,'overflow')
+    rows=first.preparation_requests()
+    assert len(rows)==64 and rows[0]['job_id']=='first-job'
+    assert [row['sequence'] for row in rows]==sorted(row['sequence'] for row in rows)
+    assert second.census()['pending_profiles']==64
+    second.complete_preparation_request(digest)
+    assert first.preparation_requests()[0]['job_id']=='job-0'
+
+
+def test_real_prepared_pool_survives_controller_restart_and_never_reuses_consumed_tree(tmp_path,docker_image,monkeypatch):
+    source=tmp_path/'source';source.mkdir()
+    (source/'test_clean.py').write_text('from pathlib import Path\ndef test_clean():\n p=Path("/tmp/once"); assert not p.exists(); p.write_text("used")\n')
+    first=DockerRunner(policy(docker_image),tmp_path/'state')
+    prepared=first.prepare_pool(target=1)
+    original_id=prepared['prepared'][0]
+    restarted=DockerRunner(policy(docker_image),tmp_path/'state')
+    try:
+        reconciled=restarted.reap_orphans(set())
+        assert reconciled=={'removed':[],'quarantined':[]}
+        assert restarted.census()['warm']==1
+        original_call=restarted._call
+        def request_only(arguments,**kwargs):
+            assert arguments[0] not in ('run','create','start'), 'Job path must never cold-create/start'
+            return original_call(arguments,**kwargs)
+        monkeypatch.setattr(restarted,'_call',request_only)
+        receipt=restarted.run(source,job_id='restarted-job',attempt_id='restarted-attempt')
+        assert receipt['passed'] and receipt['cleanup_verified'],receipt
+        assert receipt['container_id']==original_id and receipt['warm_pool_used']
+        assert 0<receipt['prepared_at']<=receipt['request_started_at']
+        assert receipt['preparation_seconds']>0
+        assert receipt['container_creation_path']=='background_pool_replenishment'
+        with pytest.raises(ContainerCapacityError):
+            restarted.run(source,job_id='next-job',attempt_id='depleted')
+        monkeypatch.setattr(restarted,'_call',original_call)
+        replenished=restarted.prepare_pool(target=1)
+        assert replenished['prepared'][0]!=original_id
+        second_receipt=restarted.run(source,job_id='second-job',attempt_id='second-attempt')
+        assert second_receipt['passed'] and second_receipt['cleanup_verified'],second_receipt
+        assert restarted.census()['owned']==0
+    finally:
+        restarted.reap_orphans(set(),include_warm=True)
+
+
+def test_real_restart_reaps_stopped_prepared_container_before_replenishment(tmp_path,docker_image):
+    first=DockerRunner(policy(docker_image),tmp_path)
+    old_id=first.prepare_pool(target=1)['prepared'][0]
+    try:
+        assert first._call(['kill',old_id]).returncode==0
+        restarted=DockerRunner(policy(docker_image),tmp_path)
+        result=restarted.reap_orphans(set())
+        assert len(result['removed'])==1 and result['quarantined']==[]
+        assert restarted.census()['owned']==0
+        new_id=restarted.prepare_pool(target=1)['prepared'][0]
+        assert new_id!=old_id and restarted.census()['warm']==1
+    finally:
+        first.reap_orphans(set(),include_warm=True)
+
+
+def test_real_profile_demand_survives_restart_and_stale_demand_cannot_block_native_work(tmp_path,docker_image):
+    from cochem_pipeline.admission import JointAdmission
+    from cochem_pipeline.store import JobStore
+    store=JobStore(tmp_path/'jobs.db')
+    current=policy(docker_image,max_containers=1)
+    captured=policy(docker_image,max_containers=1,memory_mb=256,tmpfs_mb=128)
+    first=DockerRunner(current,tmp_path/'containers')
+    with store._write() as db:
+        store._insert(db,'pool-flow','pool-flow',None,'CODE_REQUEST','IN_PROGRESS',{})
+        db.execute('INSERT INTO coding_workflows VALUES(?,?)',('pool-flow',json.dumps({'docker':captured.as_dict()})))
+        store._insert(db,'pool-test','pool-flow','pool-flow','CODE_TEST','PENDING',{'phase':'pool-contract'})
+    original=JointAdmission(store,first,1)
+    try:
+        original_id=first.prepare_pool(target=1)['prepared'][0]
+        assert original.claim('first-owner',worker_slot='slot1') is None
+        requests=first.preparation_requests()
+        assert len(requests)==1 and requests[0]['profile_digest']==captured.pool_digest
+        # A new controller loses every in-memory object but keeps protected
+        # databases. Its first maintenance pass must honor the captured FIFO.
+        restarted=DockerRunner(current,tmp_path/'containers')
+        admission=JointAdmission(store,restarted,1)
+        result=admission.maintenance()
+        assert result['ready'] and result['requested_profile']==captured.pool_digest
+        rows=restarted.census()['containers']
+        assert len(rows)==1 and rows[0]['pool_digest']==captured.pool_digest
+        assert rows[0]['container_id']!=original_id
+        assert restarted.preparation_requests()==requests
+        # Cancel the durable root using the controller's store API. Maintenance
+        # removes its demand instead of indefinitely reserving native capacity.
+        store.cancel_workflow('pool-flow')
+        admission.maintenance()
+        assert restarted.preparation_requests()==[]
+        store.submit('A real native seat after cancelled profile demand',['REQ-1'],1)
+        assert admission.claim('native-owner',worker_slot='slot1') is None
+        admission.maintenance()
+        node,reservation=admission.claim('native-owner',worker_slot='slot1')
+        assert node['kind']=='MANIFEST_GENERATOR' and reservation is None
+        assert admission._native_active()+restarted.census()['owned']==1
+    finally:
+        first.reap_orphans(set(),include_warm=True)
+
+
+def test_real_refill_keeps_vacant_native_seat_instead_of_cold_create_drain_churn(tmp_path,docker_image,monkeypatch):
+    from cochem_pipeline.admission import JointAdmission
+    from cochem_pipeline.store import JobStore
+    store=JobStore(tmp_path/'jobs.db')
+    runner=DockerRunner(policy(docker_image,max_containers=1),tmp_path/'containers')
+    admission=JointAdmission(store,runner,1)
+    store.submit('Pending native work owns the available seat',['REQ-1'],1)
+    original=runner._call
+    def no_useless_creation(arguments,**kwargs):
+        assert arguments[0] not in ('run','create','start')
+        return original(arguments,**kwargs)
+    monkeypatch.setattr(runner,'_call',no_useless_creation)
+    result=admission.maintenance()
+    assert result['prepared']==[] and runner.census()['owned']==0
+    node,reservation=admission.claim('native-owner',worker_slot='slot1')
+    assert node['kind']=='MANIFEST_GENERATOR' and reservation is None
+    assert runner.census()['published_capacity']==0
 
 
 def test_windows_attestation_precedes_every_docker_command_and_failure_never_launches_client(tmp_path,monkeypatch):
@@ -593,6 +815,7 @@ def test_real_pytest_controller_rootdir_seals_nested_junit_module_and_class(tmp_
     runner=DockerRunner(policy(docker_image,commands=[{
         'name':'nested','argv':['python','-m','pytest','-q','tests/nested',
                               '--rootdir=/work/source/tests/nested']}]),tmp_path/'containers')
+    runner.prepare_pool(target=1)
     receipt=runner.run(source,job_id='canonical-root',attempt_id='actual-pytest')
     assert receipt['passed'] and receipt['source_verified'] and receipt['cleanup_verified'],receipt
     command=receipt['commands'][0]

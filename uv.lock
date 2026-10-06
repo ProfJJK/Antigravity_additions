@@ -346,7 +346,7 @@ wheels = [
 
 [[package]]
 name = "cochem"
-version = "4.2.6"
+version = "4.2.7"
 source = { editable = "." }
 dependencies = [
     { name = "ase" },
@@ -389,7 +389,7 @@ requires-dist = [
     { name = "h5py" },
     { name = "hdf5plugin" },
     { name = "mace-torch", marker = "extra == 'ml'" },
-    { name = "mcp", marker = "extra == 'mcp'", specifier = ">=1.26,<2" },
+    { name = "mcp", marker = "extra == 'mcp'", specifier = ">=1.30,<2" },
     { name = "mendeleev", specifier = ">=0.15" },
     { name = "mypy", marker = "extra == 'dev'" },
     { name = "numpy" },

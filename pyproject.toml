@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cochem"
-version = "4.2.6"
+version = "4.2.7"
 description = "Autonomous Molecular Engineering Engine and High-Throughput Quantum Chemistry Automation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,7 +26,7 @@ dependencies = [
 
 [project.optional-dependencies]
 mcp = [
-    "mcp>=1.26,<2",
+    "mcp>=1.30,<2",
     "fastmcp>=2.14,<3",
 ]
 gpu = [

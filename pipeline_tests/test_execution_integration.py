@@ -188,6 +188,9 @@ def test_joint_test_claim_transfers_compatible_warm_metadata_to_exact_attempt_wi
     # WARM metadata is an explicit protocol fixture; no container ID/process
     # exists and this test makes no warm-start timing or isolation claim.
     docker._set(record['lease'],status='WARM')
+    with docker._connect() as db:
+        db.execute('UPDATE containers SET prepared_at=?,preparation_seconds=0 WHERE lease=?',
+                   (time.time(),record['lease']))
     test_stage(store,docker.policy)
     node,reservation=admission.claim('test-owner',worker_slot='test-slot')
     assert node['kind']=='CODE_TEST'
@@ -206,6 +209,9 @@ def test_concurrent_claims_transfer_at_most_four_prepared_seats_without_counting
     for index in range(4):
         record=docker._reserve('_warm_',f'concurrent-warm-{index}',preparing=True)
         docker._set(record['lease'],status='WARM')
+        with docker._connect() as db:
+            db.execute('UPDATE containers SET prepared_at=?,preparation_seconds=0 WHERE lease=?',
+                       (time.time(),record['lease']))
     for index in range(12):
         test_stage(store,docker.policy,f'controller-contract-{index}')
     def acquire(index):
@@ -279,3 +285,19 @@ def test_changed_operator_container_bounds_hold_captured_test_before_any_contain
     assert docker.census()['owned']==0
     assert store.get('controller-contract-test')['status']=='BLOCKED'
     assert store.execution_quarantines()==[]
+
+
+def test_full_preparation_fifo_keeps_unregistered_demand_held_without_cold_fallback(tmp_path):
+    store=JobStore(tmp_path/'job_board.db')
+    docker=DockerRunner(registry_policy(),tmp_path/'containers')
+    admission=JointAdmission(store,docker,4)
+    for index in range(64):
+        assert docker.request_preparation(f'{index:064x}',f'earlier-profile-{index}')
+    test_stage(store,docker.policy)
+    assert admission.claim('held-owner',worker_slot='slot1') is None
+    node=store.get('controller-contract-test')
+    assert node['status']=='PENDING_RETRY'
+    assert '64 profiles' in node['error']
+    assert docker.census()['owned']==0 and docker.census()['pending_profiles']==64
+    assert store.execution_quarantines()==[]
+    assert admission.maintenance_requested.is_set()

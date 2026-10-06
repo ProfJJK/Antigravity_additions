@@ -244,8 +244,25 @@ def test_real_authenticated_http_mcp_and_cli_retrieval(corpus,tmp_path):
             async with create_connected_server_and_client_session(create_knowledge_server(client)) as session:
                 tools=await session.list_tools()
                 assert {tool.name for tool in tools.tools}=={'knowledge_search','knowledge_read','knowledge_status'}
+                # The optimized result envelope must keep the public schema and
+                # both MCP representations, including literal scientific UTF-8.
+                for tool in tools.tools:
+                    assert tool.outputSchema=={'additionalProperties':True,
+                        'title':tool.name+'DictOutput','type':'object'}
                 result=await session.call_tool('knowledge_search',{'query':'fencing'})
                 assert not result.isError and result.structuredContent['results']
+                assert json.loads(result.content[0].text)==result.structuredContent
+                read=await session.call_tool('knowledge_read',{'doc_path':'.sources/reference.md'})
+                assert json.loads(read.content[0].text)==read.structuredContent
+                assert 'Ψ(r), ΔG°, kJ·mol⁻¹' in read.content[0].text
+                token_file.write_text('invalid-token',encoding='utf-8')
+                denied=await session.call_tool('knowledge_search',{'query':'fencing'})
+                assert denied.isError and 'Unauthorized' in denied.content[0].text
+                token_file.write_text(token,encoding='utf-8')
+                restored=await session.call_tool('knowledge_search',{'query':'fencing'})
+                assert not restored.isError and restored.structuredContent['results']
+                bounded=await session.call_tool('knowledge_search',{'query':'fencing','limit':21})
+                assert bounded.isError
         asyncio.run(scenario())
         config=tmp_path/'client.json';config.write_text(json.dumps({'port':server.server_address[1],'token_file':str(token_file)}),encoding='utf-8')
         environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parents[1]/'src')}

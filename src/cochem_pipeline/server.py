@@ -2,11 +2,24 @@
 from __future__ import annotations
 import asyncio
 from contextlib import asynccontextmanager
-from typing import Any
+import json
+from typing import Annotated, Any
 from mcp.server.fastmcp import FastMCP
-from mcp.types import ToolAnnotations
+from mcp.types import CallToolResult, TextContent, ToolAnnotations
 from .service import ControlClient
 from . import __version__
+
+
+KnowledgeResult = Annotated[CallToolResult, dict[str,Any]]
+
+
+def _knowledge_result(value:dict[str,Any])->CallToolResult:
+    # The SDK validates structuredContent with the declared Pydantic output
+    # model and publishes the same JSON output schema to clients. Supplying the
+    # supported result envelope avoids its second server-side schema check and
+    # pretty-print conversion on every read. Authentication remains in HTTP.
+    return CallToolResult(content=[TextContent(type='text',text=json.dumps(value,
+        ensure_ascii=False,separators=(',',':'),allow_nan=False))],structuredContent=value)
 
 
 def client_lifespan(client):
@@ -22,19 +35,19 @@ def client_lifespan(client):
 def register_knowledge_tools(server,client):
     read=ToolAnnotations(readOnlyHint=True,idempotentHint=True,openWorldHint=False)
     @server.tool(annotations=read)
-    async def knowledge_search(query:str,limit:int=5)->dict[str,Any]:
+    async def knowledge_search(query:str,limit:int=5)->KnowledgeResult:
         """Search the ratified .sources/wiki catalog using literal terms and BM25; returns indexed evidence."""
-        return await asyncio.to_thread(client.call,'/knowledge/search',{'query':query,'limit':limit})
+        return _knowledge_result(await asyncio.to_thread(client.call,'/knowledge/search',{'query':query,'limit':limit}))
 
     @server.tool(annotations=read)
-    async def knowledge_read(doc_path:str)->dict[str,Any]:
+    async def knowledge_read(doc_path:str)->KnowledgeResult:
         """Read a catalog Markdown document with verified UTF-8 bytes and SHA-256; host paths are forbidden."""
-        return await asyncio.to_thread(client.call,'/knowledge/read',{'doc_path':doc_path})
+        return _knowledge_result(await asyncio.to_thread(client.call,'/knowledge/read',{'doc_path':doc_path}))
 
     @server.tool(annotations=read)
-    async def knowledge_status()->dict[str,Any]:
+    async def knowledge_status()->KnowledgeResult:
         """Inspect actual knowledge generation, index-size evidence and background refresh failures."""
-        return await asyncio.to_thread(client.call,'/knowledge/status')
+        return _knowledge_result(await asyncio.to_thread(client.call,'/knowledge/status'))
 
 
 def create_knowledge_server(client:ControlClient):

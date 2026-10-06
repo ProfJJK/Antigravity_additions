@@ -205,7 +205,13 @@ def transition_evidence(conn,job,*,event_name=None):
             'elapsed_seconds':max(0.,receipt.get('finished_at',time.time())-started) if started is not None else None,
             'elapsed_scope':elapsed_scope,'requested_provider':route.get('provider'),'requested_model':route.get('model'),
             'native_provider':receipt.get('provider'),'native_reported_model':receipt.get('reported_model'),
-            'native_requested_model':receipt.get('requested_model'),'pid':receipt.get('pid')}
+            'native_requested_model':receipt.get('requested_model'),'pid':receipt.get('pid'),
+            'process_creation_time':receipt.get('process_creation_time'),
+            'process_creation_filetime':receipt.get('process_creation_filetime'),
+            'requested_effort':route.get('reasoning_effort'),
+            'native_reported_effort':receipt.get('reported_effort'),
+            'native_usage':receipt.get('usage'),
+            'native_usage_unavailable':None if receipt.get('usage') else 'no_retained_native_usage'}
 
 
 def event(conn, job, name, **details):

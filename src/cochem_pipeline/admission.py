@@ -27,7 +27,6 @@ class JointAdmission:
         self._capacity=0
         self._pending_native=0
         self._drain_target=None
-        self._warm_requests={}
         self.maintenance_requested=threading.Event()
         self.update_capacity(capacity)
 
@@ -139,8 +138,9 @@ class JointAdmission:
                         reservation=runner.reserve_attempt(node['job_id'],node['attempt_id'],retire_incompatible=False,
                             require_warm=True,request_started_at=node['created_at'])
                     except ContainerCapacityError as exc:
-                        if len(self._warm_requests)<64 or runner.policy.pool_digest in self._warm_requests:
-                            self._warm_requests.setdefault(runner.policy.pool_digest,(runner,node['job_id']))
+                        if not self.docker.request_preparation(runner.policy.pool_digest,node['job_id']):
+                            exc=ContainerCapacityError('Prepared-container request queue is full (64 profiles); '
+                                'job remains held until FIFO capacity is available')
                         self._unstarted_failure(node,exc)
                         self.maintenance_requested.set()
                         return None
@@ -149,11 +149,10 @@ class JointAdmission:
                         return None
                     with self._budget_lock:
                         self._drain_target=None
-                    self._warm_requests.pop(runner.policy.pool_digest,None)
-                    if self._warm_requests:
-                        self.maintenance_requested.set()
+                    self.docker.complete_preparation_request(runner.policy.pool_digest)
+                    self.maintenance_requested.set()
                     return node,reservation
-                if self._warm_requests:
+                if self.docker.preparation_requests():
                     # Preserve the first queued profile's seat through its
                     # retry delay instead of letting native traffic evict it.
                     return None
@@ -203,12 +202,25 @@ class JointAdmission:
             if self.docker.census()['quarantined']:
                 self.docker.set_capacity(0)
                 return {'blocked':'unverified_container_cleanup','census':self.docker.census()}
-            while self._warm_requests:
-                digest,(runner,job_id)=next(iter(self._warm_requests.items()))
-                job=self.store.get(job_id)
-                if job['status'] not in ('PENDING','PENDING_RETRY','IN_PROGRESS'):
-                    self._warm_requests.pop(digest)
+            # Reconstruct the FIFO from protected persistent state on every
+            # pass. Never replay a stored executable policy or a cancelled job.
+            pending=[]
+            for request in self.docker.preparation_requests():
+                digest,job_id=request['profile_digest'],request['job_id']
+                try:
+                    job=self.store.get(job_id)
+                    if (job['status'] not in ('PENDING','PENDING_RETRY','IN_PROGRESS')
+                            or self.store.get(job['workflow_id'])['status']!='IN_PROGRESS'):
+                        raise ValueError('Prepared-pool request no longer has live work')
+                    runner=self._captured_runner(job)
+                    if runner.policy.pool_digest!=digest:
+                        raise ValueError('Prepared-pool request contradicts the captured policy')
+                except (KeyError,ValueError):
+                    self.docker.complete_preparation_request(digest)
                     continue
+                pending.append((digest,runner))
+            if pending:
+                digest,runner=pending[0]
                 # Keep this FIFO request until its prepared slot is handed off.
                 # Otherwise a later incompatible profile could immediately
                 # evict the first one before its controlled retry becomes due.
@@ -216,6 +228,11 @@ class JointAdmission:
                 if result['ready']:
                     self.maintenance_requested.clear()
                 return {'requested_profile':digest,**result}
+            if self._native_pending():
+                # Do not cold-create an idle tree only to drain it on the very
+                # next native claim. Actual eligible work keeps one vacant seat;
+                # each further claim can request another bounded idle drain.
+                target=min(target,max(0,residual-1))
             result=self.docker.prepare_pool(target=target)
             with self._budget_lock:
                 # A pressure update while Docker was working must request a

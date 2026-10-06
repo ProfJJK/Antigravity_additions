@@ -419,3 +419,44 @@ def test_red_evidence_cannot_count_failed_lint_as_a_planned_assertion_failure():
     arguments=red_contract_case(); value=arguments[3]['test-stage']['evidence']
     value['commands'][0]['kind']='lint'
     with pytest.raises(ValueError,match='non-test command'): validate_red_test(value)
+
+
+def prepared_startup_case():
+    # Physical-receipt shape tests only, never a native/container acceptance claim.
+    jobs = [{'job_id': 'test-stage', 'kind': 'CODE_TEST', 'status': 'COMPLETED', 'payload': {'phase': 'final'}}]
+    receipt = {'warm_pool_used': True, 'container_creation_path': 'background_pool_replenishment',
+        'container_id': 'a' * 64, 'prepared_at': 14.85, 'preparation_seconds': 4.85,
+        'request_started_at': 10., 'reservation_started_at': 15., 'execution_started_at': 15.2,
+        'queue_wait_seconds': 5., 'handoff_wait_seconds': .2, 'execution_startup_seconds': .3,
+        'startup_seconds': 5.5, 'startup_sla_seconds': 1.5, 'startup_sla_met': False}
+    return jobs, {'test-stage': {'sha256': 'b' * 64, 'evidence': receipt}}
+
+
+def test_owner_accepted_measured_latency_is_nonblocking_with_real_prepared_pool_fields():
+    from cochem_pipeline.coding_acceptance import validate_startup_acceptance
+    jobs, evidence = prepared_startup_case()
+    observations = validate_startup_acceptance(jobs, evidence)
+    assert len(observations) == 1
+    assert observations[0]['reason'] == 'request_to_test_ready_exceeded_1_5_seconds'
+    assert observations[0]['startup_seconds'] == 5.5
+    assert evidence['test-stage']['evidence']['preparation_seconds'] == 4.85
+
+
+@pytest.mark.parametrize('mutation', ['flag_only', 'cold_path', 'missing_prepared_time', 'future_prepared_time',
+                                     'negative_duration', 'nan_duration', 'invalid_container', 'hidden_queue_wait',
+                                     'hidden_startup', 'false_target_claim'])
+def test_prepared_pool_claim_requires_provenance_and_honest_clocks(mutation):
+    from cochem_pipeline.coding_acceptance import validate_startup_acceptance
+    jobs, evidence = prepared_startup_case(); receipt = evidence['test-stage']['evidence']
+    if mutation == 'flag_only':
+        evidence['test-stage']['evidence'] = {'warm_pool_used': True}
+    elif mutation == 'cold_path': receipt['container_creation_path'] = 'job_cold_create'
+    elif mutation == 'missing_prepared_time': receipt.pop('prepared_at')
+    elif mutation == 'future_prepared_time': receipt['prepared_at'] = 16.
+    elif mutation == 'negative_duration': receipt['preparation_seconds'] = -1.
+    elif mutation == 'nan_duration': receipt['preparation_seconds'] = float('nan')
+    elif mutation == 'invalid_container': receipt['container_id'] = 'model-asserted-container'
+    elif mutation == 'hidden_queue_wait': receipt['queue_wait_seconds'] = 0.
+    elif mutation == 'hidden_startup': receipt['startup_seconds'] = .3
+    else: receipt['startup_sla_met'] = True
+    with pytest.raises(ValueError): validate_startup_acceptance(jobs, evidence)

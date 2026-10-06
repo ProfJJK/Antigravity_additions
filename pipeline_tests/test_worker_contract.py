@@ -182,7 +182,8 @@ def test_gemini_parser_uses_native_model_and_session_metadata(protocol):
     data = gemini_response(protocol)
     parsed = parse_gemini(json.dumps(data), protocol, "gemini-3.1-pro")
     assert parsed == {"content": '{"artifact_text":"Synthesis"}', "session_id": "native-gemini-session",
-                      "reported_model": "gemini-3.1-pro", "terminal_success": True}
+                      "reported_model": "gemini-3.1-pro", "terminal_success": True,
+                      "usage": {"input": 10, "output": 20} if protocol == "gemini-json" else {}}
     assert parse_payload(parsed["content"])["artifact_text"] == "Synthesis"
 
 

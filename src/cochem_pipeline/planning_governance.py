@@ -1,8 +1,8 @@
-"""Source-bound planning policy and controller-collected research evidence.
+"""Canonical 4.2.7 execution contracts and controller-collected research.
 
-The missing historical stage names and Method Matrix clauses are never invented.
-Production projects register their exact source text in the captured Git tree.
-Registration proves the specification available, not that its stages executed.
+The owner withdrew phantom seven-stage and agentic Method Matrix requirements.
+The actual planning/TDD state machine is enforced with captured source bytes,
+controller dispatch records, native receipts, independent audits and Git evidence.
 """
 from __future__ import annotations
 
@@ -27,49 +27,78 @@ def _text(value,label,maximum=16000):
     return value
 
 
+SPECIFICATION_ID = 'COCHEM-4.2.7'
+# This executable contract defines dispatch eligibility. Physical evidence and
+# independent audits below remain necessary; a schema label cannot prove work.
+_DISPATCH_STATES = {
+    'CODE_PLAN': ('PLANNING', 'REVISING_PLAN'),
+    'CODE_PLAN_REVIEW': ('REVIEWING_PLAN',),
+    'CODE_RESEARCH': ('RESEARCHING', 'RESEARCH_REQUIRED'),
+    'CODE_TEST_AUTHOR': ('AUTHORING_TESTS', 'EDITING'),
+    'CODE_EDIT': ('EDITING', 'IMPROVING', 'REFINING'),
+    'CODE_TEST': ('TESTING_PRECODE', 'TESTING', 'FINAL_TESTING'),
+    'CODE_REVIEW': ('REVIEWING',),
+    'CODE_INTEGRATE': ('STAGING_GIT',),
+}
+_PREDECESSORS = {
+    'CODE_PLAN': ('CODE_PLAN_REVIEW',),
+    'CODE_PLAN_REVIEW': ('CODE_PLAN',),
+    'CODE_RESEARCH': ('CODE_PLAN_REVIEW', 'CODE_TEST', 'CODE_REVIEW', 'CODE_EDIT', 'CODE_INTEGRATE', 'CODE_RESEARCH'),
+    'CODE_TEST_AUTHOR': ('CODE_RESEARCH', 'CODE_TEST'),
+    'CODE_EDIT': ('CODE_TEST', 'CODE_REVIEW', 'CODE_EDIT', 'CODE_RESEARCH'),
+    'CODE_TEST': ('CODE_TEST_AUTHOR', 'CODE_EDIT', 'CODE_REVIEW'),
+    'CODE_REVIEW': ('CODE_TEST',),
+    'CODE_INTEGRATE': ('CODE_REVIEW', 'CODE_INTEGRATE'),
+}
+LEGACY_PHANTOM_HOLDS = frozenset({
+    'Production planning requires the canonical seven-stage protocol, Method Matrix M-1..M-8, and registered external research sources',
+    'Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding',
+    'Registered protocol source is absent or its captured Git bytes changed',
+    'Registered method_matrix source is absent or its captured Git bytes changed',
+    'Registered protocol clause is absent from its physical source',
+    'Registered method_matrix clause is absent from its physical source',
+    'Seven-stage registration must preserve the source order',
+})
+
+
+def execution_contract():
+    return {'schema': 'cochem-planning/4.2.7', 'specification_id': SPECIFICATION_ID,
+            'specification_path': '4.2.7_SRS.md#chapter-05-coding-execution',
+            'dispatch_states': {kind: list(states) for kind, states in _DISPATCH_STATES.items()},
+            'predecessor_kinds': {kind: list(kinds) for kind, kinds in _PREDECESSORS.items()},
+            'initial_stage': 'CODE_PLAN', 'planning_revision_limit': [1, 10],
+            'leaf_cycle_limit': 10, 'methodological_pivot_limit': 3,
+            'evidence_gates': ['source-bound-plan', 'independent-plan-audit', 'verified-research',
+                'sealed-assertion-red', 'bounded-source-and-test-diff', 'physical-green',
+                'independent-file-audits', 'ordered-phase-ledger', 'fenced-git-cas']}
+
+
 def normalize_policy(raw):
-    if raw is None or raw=={}:
+    if raw is None or raw == {}:
         return {}
-    if not isinstance(raw,dict) or set(raw)-{'protocol','method_matrix','research_sources','max_revisions'}:
+    if not isinstance(raw, dict) or set(raw) - {'protocol', 'method_matrix', 'research_sources', 'max_revisions'}:
         raise ValueError('Invalid registered planning policy')
-    result=deepcopy(raw)
-    for key,count in (('protocol',7),('method_matrix',8)):
-        spec=result.get(key)
-        if not isinstance(spec,dict) or set(spec)!={'path','sha256','clauses'}:
-            raise ValueError(key+' requires its exact source path, SHA256 and clause quotations')
-        from .coding import safe_path
-        safe_path(spec['path'])
-        if not isinstance(spec['sha256'],str) or not re.fullmatch('[0-9a-f]{64}',spec['sha256']):
-            raise ValueError('Planning source requires its full SHA256')
-        clauses=spec['clauses']
-        if not isinstance(clauses,list) or len(clauses)!=count:
-            raise ValueError(key+' requires exactly '+str(count)+' registered clauses')
-        seen=set()
-        for clause in clauses:
-            if not isinstance(clause,dict) or set(clause)!={'id','quote'}:
-                raise ValueError('Planning clauses require identifiers and verbatim source quotations')
-            identifier=_text(clause['id'],'clause ID',128)
-            if identifier in seen or len(_text(clause['quote'],'clause quotation'))<12:
-                raise ValueError('Planning clauses must be distinct and substantive')
-            seen.add(identifier)
-        if key=='method_matrix' and seen!={f'M-{number}' for number in range(1,9)}:
-            raise ValueError('Method Matrix requires the actual M-1 through M-8 definitions')
-    sources=result.get('research_sources')
-    if not isinstance(sources,list) or not 2<=len(sources)<=8:
-        raise ValueError('Register two to eight external research sources')
-    ids=set(); urls=set()
+    # Owner amendment S427-GOV-001 withdraws the phantom agentic definitions.
+    # Preserve them only in historical workflow evidence, never as executable
+    # policy or chemical-calculation semantics. Legacy configs still load.
+    result = {key: deepcopy(value) for key, value in raw.items() if key not in {'protocol', 'method_matrix'}}
+    sources = result.get('research_sources', [])
+    if not isinstance(sources, list) or sources and not 2 <= len(sources) <= 8:
+        raise ValueError('Register two to eight external research sources when enabled')
+    ids = set(); urls = set()
     for source in sources:
-        if not isinstance(source,dict) or set(source)!={'id','url'}:
+        if not isinstance(source, dict) or set(source) != {'id', 'url'}:
             raise ValueError('Research source registration requires id and exact URL')
-        identifier=_text(source['id'],'source ID',128)
-        url=validate_url(source['url'])
+        identifier = _text(source['id'], 'source ID', 128)
+        url = validate_url(source['url'])
         if identifier in ids or url in urls:
             raise ValueError('Research source registrations must be distinct')
         ids.add(identifier); urls.add(url)
-    revisions=result.get('max_revisions',5)
-    if type(revisions) is not int or not 1<=revisions<=10:
+    revisions = result.get('max_revisions', 5)
+    if type(revisions) is not int or not 1 <= revisions <= 10:
         raise ValueError('Planning revision budget must be within 1..10')
-    result['max_revisions']=revisions
+    if result:
+        result['max_revisions'] = revisions
     return result
 
 
@@ -90,56 +119,109 @@ def validate_url(url):
     return url
 
 
-def validate_registration(policy,files):
-    policy=normalize_policy(policy)
-    if not policy:
-        raise ValueError('Production planning requires the canonical seven-stage protocol, Method Matrix M-1..M-8, and registered external research sources')
-    documents={}
-    for key in ('protocol','method_matrix'):
-        spec=policy[key]; raw=files.get(spec['path'])
-        if not isinstance(raw,bytes) or hashlib.sha256(raw).hexdigest()!=spec['sha256']:
-            raise ValueError('Registered '+key+' source is absent or its captured Git bytes changed')
-        text=raw.decode('utf-8')
-        positions=[]
-        for clause in spec['clauses']:
-            if clause['quote'] not in text:
-                raise ValueError('Registered '+key+' clause is absent from its physical source')
-            positions.append(text.index(clause['quote']))
-        if key=='protocol' and positions!=sorted(set(positions)):
-            raise ValueError('Seven-stage registration must preserve the source order')
-        documents[key]=deepcopy(spec)
-    return {'schema':'planning-source-registration/1','policy_sha256':digest(policy),
-            'documents':documents,'registration_verified':True,'stage_execution_verified':False}
-
-
-def seven_stage_execution_binding():
-    """No controller binding exists until the canonical stage definitions arrive.
-
-    A source registration or caller-supplied boolean cannot install executable
-    transition semantics. This must be replaced by the verified implementation,
-    not by a configuration switch or a model assertion.
-    """
-    return None
+def validate_registration(policy, files):
+    """Bind executable policy and actual captured source; never claim execution."""
+    policy = normalize_policy(policy)
+    from .coding import manifest
+    contract = execution_contract()
+    return {'schema': 'planning-source-registration/2', 'specification_id': SPECIFICATION_ID,
+            'policy_sha256': digest(policy), 'source_manifest_sha256': digest(manifest(files)),
+            'contract_sha256': digest(contract), 'contract': contract}
 
 
 def planning_readiness(projects):
-    """Report the missing production transition binding without inferring execution.
+    records = []
+    for project_id, project in sorted(projects.items()):
+        policy = normalize_policy(project.planning)
+        records.append({'project_id': project_id, 'ready': True,
+                        'specification_id': SPECIFICATION_ID,
+                        'external_research_required': bool(policy.get('research_sources')),
+                        'source_bytes_verified': False,
+                        'reason': 'Executable planning contract is installed; submission captures project bytes and execution still requires physical evidence'})
+    return {'ready': True, 'required': bool(records), 'projects': records,
+            'specification_id': SPECIFICATION_ID, 'contract_sha256': digest(execution_contract()),
+            'specification_blockers': []}
 
-    This inexpensive diagnostic only inspects configuration. Submission checks
-    source bytes against the actual captured Git baseline before recording a hold.
-    """
-    records=[]
-    for project_id,project in sorted(projects.items()):
-        registered=bool(project.planning)
-        records.append({'project_id':project_id,'ready':False,
-            'source_registration_configured':registered,'source_bytes_verified':False,
-            'stage_execution_verified':False,
-            'reason':('Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding'
-                      if registered else 'Production planning requires the canonical seven-stage protocol, Method Matrix M-1..M-8, and registered external research sources')})
-    return {'ready':not records,'required':bool(records),'projects':records,
-            'stage_execution_verified':False,'specification_blockers':[
-                'Canonical v2/task_planning_orchestra.py seven-stage definitions are unavailable',
-                'Canonical Method Matrix M-1 through M-8 definitions are unavailable']}
+
+def validate_dispatch(transition, kind, payload, *, current_state=None):
+    """Check controller dispatch against executable state/phase/parent rules."""
+    if (not isinstance(transition, dict) or transition.get('specification_id') != SPECIFICATION_ID
+            or transition.get('contract_sha256') != digest(execution_contract())
+            or kind not in _DISPATCH_STATES or transition.get('kind') != kind
+            or transition.get('from_state') not in _DISPATCH_STATES[kind]
+            or type(transition.get('cycle')) is not int or not 1 <= transition['cycle'] <= 10
+            or transition.get('cycle') != payload.get('cycle')
+            or type(transition.get('leaf_index')) is not int or not 0 <= transition['leaf_index'] < 200
+            or transition.get('leaf_index') != payload.get('leaf_index')
+            or transition.get('snapshot_sha256') != payload.get('snapshot_sha256')
+            or transition.get('phase') != payload.get('phase')
+            or transition.get('leaf_id') != payload.get('active_leaf', {}).get('id')):
+        raise ValueError('Coding dispatch violates the canonical execution contract')
+    if current_state is not None and transition['from_state'] != current_state:
+        raise ValueError('Coding completion is detached from its captured execution state')
+    state = transition['from_state']; phase = payload.get('phase')
+    if kind == 'CODE_TEST' and not (
+            state == 'TESTING_PRECODE' and phase == 'precode'
+            or state == 'TESTING' and phase in ('postedit', 'final')
+            or state == 'FINAL_TESTING' and phase == 'final'):
+        raise ValueError('Coding test phase is not permitted in the captured execution state')
+    if kind == 'CODE_EDIT' and not (
+            state == 'EDITING' and phase in (None, 'P4', 'P7', 'P9')
+            or state == 'IMPROVING' and phase == 'P7'
+            or state == 'REFINING' and phase == 'P9'):
+        raise ValueError('Coding edit phase is not permitted in the captured execution state')
+    if kind == 'CODE_RESEARCH' and ((state == 'RESEARCHING') != (payload.get('research_phase') == 'initial')):
+        raise ValueError('Coding research phase is not permitted in the captured execution state')
+    predecessor = transition.get('predecessor')
+    if predecessor is None:
+        if kind != 'CODE_PLAN' or state != 'PLANNING':
+            raise ValueError('Only initial planning may dispatch without a completed predecessor')
+    elif (not isinstance(predecessor, dict) or predecessor.get('kind') not in _PREDECESSORS[kind]
+            or not isinstance(predecessor.get('job_id'), str)
+            or any(not isinstance(predecessor.get(key), str) or not re.fullmatch('[0-9a-f]{64}', predecessor[key])
+                   for key in ('receipt_sha256', 'evidence_sha256'))):
+        raise ValueError('Coding dispatch has no permitted completed physical predecessor')
+    return transition
+
+
+def validate_execution_history(jobs, evidence):
+    """Join dispatch records to completed controller receipts; no status toggle."""
+    stages = [job for job in jobs if job.get('kind') in _DISPATCH_STATES]
+    index = {job['job_id']: job for job in stages}
+    if len(index) != len(stages) or not stages:
+        raise ValueError('Canonical execution requires distinct physical stage jobs')
+    roots = []
+    for job in stages:
+        payload = job.get('payload', {})
+        transition = validate_dispatch(payload.get('execution_transition'), job['kind'], payload)
+        predecessor = transition['predecessor']
+        if predecessor is None:
+            roots.append(job['job_id']); continue
+        parent = index.get(predecessor['job_id'])
+        receipt = (parent or {}).get('receipt') or {}
+        receipt_sha = (parent or {}).get('receipt_sha256') or digest(receipt)
+        parent_evidence = evidence.get(predecessor['job_id'], {})
+        # Authenticated public views intentionally remove lease authority from
+        # receipts/Docker evidence. Join their original controller commitments;
+        # recompute full private bytes only when the private receipt is present.
+        if (parent is None or parent.get('status') != 'COMPLETED' or parent['kind'] != predecessor['kind']
+                or receipt_sha != predecessor['receipt_sha256']
+                or parent_evidence.get('sha256') != predecessor['evidence_sha256']
+                or ('receipt_sha256' not in parent and digest(parent_evidence.get('evidence')) != predecessor['evidence_sha256'])
+                or parent.get('updated_at', float('inf')) > job.get('created_at', -1)):
+            raise ValueError('Canonical transition is detached from its completed predecessor receipt')
+    if len(roots) != 1:
+        raise ValueError('Canonical execution requires exactly one initial planning stage')
+    # Parent timestamps alone cannot rule out equal-timestamp cycles.
+    for job in stages:
+        seen = set(); cursor = job
+        while cursor['payload']['execution_transition']['predecessor'] is not None:
+            if cursor['job_id'] in seen:
+                raise ValueError('Canonical execution predecessor graph contains a cycle')
+            seen.add(cursor['job_id'])
+            cursor = index[cursor['payload']['execution_transition']['predecessor']['job_id']]
+    return {'specification_id': SPECIFICATION_ID, 'contract_sha256': digest(execution_contract()),
+            'stage_count': len(stages), 'initial_job_id': roots[0]}
 
 
 class _NoRedirect(HTTPRedirectHandler):
@@ -218,20 +300,3 @@ def validate_external_research(output,sources,requirements):
     if not passed:
         raise ValueError('Deterministic research confidence gate lacks distinct sources or requirement coverage')
     return {'verified_external_sources':verified,'research_confidence':confidence}
-
-
-def method_matrix_artifact(links,registration,artifacts,requirements):
-    if not isinstance(links,list) or len(links)!=8:
-        raise ValueError('Planning must link all eight registered Method Matrix clauses')
-    expected={clause['id'] for clause in registration['documents']['method_matrix']['clauses']}; seen=set()
-    for item in links:
-        if not isinstance(item,dict) or item.get('id') not in expected or item['id'] in seen:
-            raise ValueError('Method Matrix linkage is missing or duplicates a registered clause')
-        paths=item.get('artifacts'); refs=item.get('requirement_ids')
-        if (not isinstance(paths,list) or not paths or any(path not in artifacts for path in paths)
-                or not isinstance(refs,list) or not refs or any(ref not in requirements for ref in refs)):
-            raise ValueError('Method Matrix evidence must bind actual plan artifacts and requirement IDs')
-        seen.add(item['id'])
-    return {'source':registration['documents']['method_matrix'],'links':deepcopy(links),
-            'linked_artifact_hashes':{name:hashlib.sha256(artifacts[name].encode()).hexdigest()
-                                    for item in links for name in item['artifacts']}}

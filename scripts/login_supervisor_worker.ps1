@@ -4,7 +4,7 @@
 param(
     [Parameter(Mandatory=$true)][ValidateSet('codex','claude')][string]$Provider,
     [Parameter(Mandatory=$true)][string]$Executable,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.6"
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.7"
 )
 $Slot = 'repair'
 $ErrorActionPreference = 'Stop'

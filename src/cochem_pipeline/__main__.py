@@ -1,7 +1,7 @@
 """Warden service and unprivileged client commands."""
 from __future__ import annotations
 import argparse
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 import json
 import logging
 from logging.handlers import RotatingFileHandler
@@ -31,7 +31,7 @@ def service_lock(path:Path):
         handle.close()
 
 
-def daemon(filename):
+def daemon(filename, queue_launch_output=None):
     from .windows import WorkerIdentity,require_system,validate_private_directory,validate_controller_token
     from .runtime import Runtime
     from .service import ControlServer
@@ -64,12 +64,27 @@ def daemon(filename):
             signal.signal(signal.SIGTERM,stop)
             thread=threading.Thread(target=server.serve_forever,daemon=True,name='warden-control')
             thread.start()
+            runtime_started = False
             try:
-                runtime.run()
+                if queue_launch_output is not None:
+                    from .queue_launch import QueueLaunchObserver
+                    observation = QueueLaunchObserver(runtime, queue_launch_output)
+                else:
+                    observation = nullcontext()
+                with observation:
+                    runtime_started = True
+                    runtime.run()
             finally:
-                server.shutdown()
-                server.server_close()
-                thread.join(timeout=10)
+                try:
+                    if not runtime_started:
+                        # An invalid observation destination must not leave the
+                        # already constructed runtime's resources alive.
+                        runtime.stop_event.set()
+                        runtime.run()
+                finally:
+                    server.shutdown()
+                    server.server_close()
+                    thread.join(timeout=10)
     except Exception as exc:
         try:
             record_crash(config.private_root, exc, getattr(exc, 'category', 'code'))
@@ -86,6 +101,7 @@ def main():
     commands=parser.add_subparsers(dest='command',required=True)
     service=commands.add_parser('daemon')
     service.add_argument('--config',required=True)
+    service.add_argument('--queue-launch-output',help='New protected evidence directory for real Windows launch queue observations')
     for name in ('doctor','provision-execution'):
         deployment=commands.add_parser(name)
         deployment.add_argument('--config',required=True)
@@ -116,7 +132,7 @@ def main():
     args=parser.parse_args()
     logging.basicConfig(level=logging.INFO,stream=sys.stderr)
     if args.command=='daemon':
-        daemon(args.config)
+        daemon(args.config,queue_launch_output=args.queue_launch_output)
         return
     if args.command in ('doctor','provision-execution'):
         from .deployment import execution_readiness

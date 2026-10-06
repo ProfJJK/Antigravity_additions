@@ -5,7 +5,7 @@ param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$Uv = "$env:ProgramFiles\uv\uv.exe",
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.6",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.7",
     [string]$DataRoot = "$env:ProgramData\CoChemPipeline422",
     [string]$TokenFile = "$env:USERPROFILE\CoChem422\controller.token",
     [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
@@ -55,7 +55,7 @@ function Assert-ReviewedExecutionPolicy {
 
 function Invoke-ExecutionProvision {
     param([string]$ConfigPath)
-    $taskName = 'CoChem-4.2.6-Execution-Provision'
+    $taskName = 'CoChem-4.2.7-Execution-Provision'
     $script = Join-Path $InstallRoot 'execution-provision-task.ps1'
     $log = Join-Path $InstallRoot 'execution-provision.log'
     $values = @('-I','-m','cochem_pipeline','provision-execution','--config',$ConfigPath)

@@ -2,3 +2,5 @@
 knowledge/** -text
 # Preserve whitespace in the supplied source captures (including Markdown breaks).
 knowledge/.sources/** -whitespace
+# Retained 4.2.6 knowledge history also preserves exact source bytes.
+docs/archive/knowledge_4.2.6/** -text -whitespace

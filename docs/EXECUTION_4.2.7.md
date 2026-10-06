@@ -1,0 +1,109 @@
+# 4.2.7 upgrade and launch
+
+Read the [canonical SRS](../4.2.7_SRS.md) and
+[owner addendum](SRS_ADDENDUM_4.2.7.md) first. This release implements the
+Alternative Path; the obsolete seven-stage and agentic Method Matrix references
+are not production prerequisites. Chemical method selection remains a domain
+concern, not a universal agent workflow gate.
+
+## Preserve deployment state
+
+Stage new protected `Pipeline4.2.7` and `Supervisor4.2.7` code/environments.
+Use the supplied Windows installers only after merging the actual deployment
+configuration. The example's paths identify a fresh installation; copying them
+over a running configuration does not migrate its database, accounts or logins.
+Keep the existing private job database, native credentials, task identities,
+quarantine and immutable evidence. Back up active SQLite consistently.
+
+Preserve both `supervisor.db` and `component-recovery.db` through the existing
+SYSTEM migration helper. The supervisor installer's previous-data default is
+4.2.6; set it to the real previous deployment if different. Paid repair budgets
+and component recovery budgets must not reset. A new protected acceptance
+snapshot is required because the execution contract changed.
+
+Drain/stop the old daemon before activating the new installation. Its exclusive
+service lock prevents running a second Warden against the same private state.
+Windows SYSTEM, identity/ACL, real RAM backing, Docker pipe/backend, native
+subscription and Agy capability checks remain mandatory. The sample contains
+explicit rejected Agy placeholders; this release does not invent native flags.
+
+## Activate the clean knowledge corpus
+
+The supplied `knowledge/` corpus contains the new canonical SRS, owner addendum,
+current owner decisions and exact captures of the four primary documents.
+The exact 4.2.6 corpus is retained under `docs/archive/knowledge_4.2.6`; it is
+outside the active source/wiki collections so obsolete snippets are not retrieved
+as current instructions. Original repository documents also remain available.
+
+Provision a fresh protected corpus location such as `Knowledge4.2.7` and a
+dedicated private knowledge-index directory, then point the reviewed knowledge
+configuration there. The installer only seeds an absent destination; it preserves
+an existing corpus. Do not silently overwrite an operator's custom corpus or
+delete its immutable pins. Merge desired domain sources deliberately and ratify
+the complete physical inventory/hashes before indexing. The historical manifest
+basename `v4.1.2_manifest.json` is retained for parser compatibility; its version
+and contents identify 4.2.7.
+
+## Planning and held requests
+
+Fresh coding requests capture the controller-owned `cochem-planning/4.2.7`
+contract and proceed to actual `CODE_PLAN` work when real deployment prerequisites
+are satisfied. Plan review, real research, test-first RED, source-only changes,
+GREEN, independent audit and fenced Git integration remain evidence-gated.
+
+Use authenticated `code-resume` with the original workflow ID and a reason to
+migrate an eligible untouched phantom-only hold. Migration must retain its
+original Git baseline and record why the old prerequisite was withdrawn.
+Already executed, cancelled, exhausted, research-failed or no-progress workflows
+cannot masquerade as an untouched hold or reset their budgets. See
+[planning prerequisites](PLANNING_PREREQUISITES.md) for exact eligibility.
+
+## Prepared containers
+
+Prepared pool members are persistent across controller restart but single-use
+after receiving work. Background maintenance creates compatible containers,
+records preparation provenance and reconciles actual engine identity/health.
+Normal request execution cannot fall back to cold creation. Empty or incompatible
+capacity is an explicit resource wait; durable profile demand requests
+replenishment. Consumed/dead containers are removed with verified cleanup.
+
+Native attempts, preparation, unused prepared members and active containers all
+remain within the shared four-seat/resource ceiling. A pool cannot reserve four
+idle seats indefinitely while starving eligible native work. Refill is triggered
+on handoff and released capacity. Record preparation, request/queue and prepared
+handoff times separately; the accepted cold preparation observation is not a
+promise of instant response when the pool is empty.
+
+## Windows queue launch observation
+
+Queue performance is conditionally accepted. Do not redesign based on the prior
+Linux ten-contender result. At launch, enable the optional queue observer on the
+existing Warden, using a new protected evidence directory under the actual
+private deployment root:
+
+```powershell
+& $PipelinePython -m cochem_pipeline daemon --config $PipelineConfig --queue-launch-output $NewPrivateEvidenceDirectory
+```
+
+Run this through the configured SYSTEM startup mechanism after draining the
+previous daemon, not beside it. Submit representative ordinary work through the
+normal authenticated interface, exercising the four-worker topology, heartbeats,
+Oracle writes, routing waits and completions. The observer measures existing
+operations on the actual configured database; it does not inject synthetic jobs
+or grant worker database access. Stop/drain normally to seal the observation.
+See [queue launch evidence](QUEUE_LAUNCH_4.2.7.md) for coverage and interpretation.
+
+Record storage/OS/configuration, workload and claim timing distributions. Only
+the actual Windows run can close conditional acceptance. Missing four-worker
+coverage, native receipts, meaningful workload or successful invariant checks
+remains pending. If the 5 ms objective is still missed, investigate the observed
+cause before changing the queue; correctness and durability stay mandatory.
+
+## Remaining acceptance
+
+Run the existing native identity/RAM/Docker/governor/Oracle tests, full planning
+and coding workflows, and independent repair/promotion/rollback with actual
+subscription CLIs. Complete the genuine 48-hour resource/handle observation and
+desktop-heap measurement. Linux checks, PowerShell parsing and offline provider
+help/version probes do not establish those results. Current executed evidence
+belongs in [the release record](RELEASE_4.2.7.md).

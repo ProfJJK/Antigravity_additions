@@ -16,70 +16,42 @@ from pipeline_tests.test_coding_workflow import CodingFixture,git
 
 
 def registered(tmp_path):
-    """Explicit source-registration fixture; these are not missing canonical clauses."""
-    documents={}; policy={}
-    for name,count in (('protocol',7),('method_matrix',8)):
-        clauses=[{'id':f'Fixture-stage-{i}' if name=='protocol' else f'M-{i}',
-                  'quote':f'Fixture {name} source clause {i}: verify the declared artifact.'}
-                 for i in range(1,count+1)]
-        text='\n'.join(clause['quote'] for clause in clauses)+'\n'
-        path=tmp_path/'.planning'/f'{name}.md'; path.parent.mkdir(exist_ok=True)
-        path.write_text(text,encoding='utf-8')
-        relative=path.relative_to(tmp_path).as_posix()
-        documents[relative]=path.read_bytes()
-        policy[name]={'path':relative,'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'clauses':clauses}
-    policy['research_sources']=[{'id':'source-a','url':'https://www.python.org/doc/'},
-                                {'id':'source-b','url':'https://docs.pytest.org/en/stable/'}]
-    return normalize_policy(policy),documents
+    # Obsolete keys may survive an upgrade but have no agentic authority.
+    policy = {'protocol': {'obsolete': True}, 'method_matrix': {'chemical_tiers_only': True},
+              'research_sources': [{'id': 'source-a', 'url': 'https://www.python.org/doc/'},
+                                   {'id': 'source-b', 'url': 'https://docs.pytest.org/en/stable/'}]}
+    return normalize_policy(policy), {}
 
 
-def test_registered_stage_order_and_method_clauses_bind_hidden_physical_source_bytes(tmp_path):
-    policy,files=registered(tmp_path)
-    result=validate_registration(policy,files)
-    assert result['registration_verified'] is True
-    assert result['stage_execution_verified'] is False
-    assert len(result['documents']['protocol']['clauses'])==7
-    files[policy['method_matrix']['path']]+=b'altered source'
-    with pytest.raises(ValueError,match='bytes changed'):
-        validate_registration(policy,files)
+def test_clean_contract_binds_real_sources_without_phantom_documents(tmp_path):
+    from cochem_pipeline.planning_governance import execution_contract
+    files = {'src/real.py': b'ANSWER = 42\n'}
+    result = validate_registration({}, files)
+    assert result['specification_id'] == 'COCHEM-4.2.7'
+    assert result['contract'] == execution_contract()
+    assert 'stage_execution_verified' not in result
+    files['src/real.py'] += b'# A real change\n'
+    assert validate_registration({}, files)['source_manifest_sha256'] != result['source_manifest_sha256']
 
 
-def test_production_acceptance_cannot_promote_component_or_source_registration_to_execution(tmp_path):
-    from cochem_pipeline.coding_acceptance import validate_production_planning
-    with pytest.raises(ValueError,match='canonical seven-stage protocol'):
-        validate_production_planning({'project':{}},{})
-    policy,files=registered(tmp_path)
-    state={'project':{'planning':policy},'planning_evidence':validate_registration(policy,files)}
-    with pytest.raises(ValueError,match='no verified controller binding'):
-        validate_production_planning(state,{})
-    assert state['planning_evidence']['stage_execution_verified'] is False
+def test_legacy_phantom_policy_is_ignored_without_weakening_real_research():
+    policy = normalize_policy({'protocol': {'path': '../legacy'}, 'method_matrix': 'obsolete',
+                               'max_revisions': 3})
+    assert policy == {'max_revisions': 3}
+    assert normalize_policy({'protocol': False, 'method_matrix': None}) == {}
+    with pytest.raises(ValueError, match='two to eight'):
+        normalize_policy({'research_sources': [{'id': 'one', 'url': 'https://example.com/'}]})
 
 
-@pytest.mark.parametrize('mutation',[
-    lambda p:p['protocol']['clauses'].reverse(),
-    lambda p:p['protocol']['clauses'][0].update(quote='This invented clause is not present in the source.'),
-    lambda p:p['method_matrix']['clauses'][0].update(id='M-9'),
-    lambda p:p['protocol'].update(path='../outside.md'),
-])
-def test_source_registration_rejects_invented_reordered_or_escaping_clauses(tmp_path,mutation):
-    policy,files=registered(tmp_path); mutation(policy)
-    with pytest.raises(ValueError):
-        validate_registration(policy,files)
-
-
-def test_method_matrix_links_actual_plan_artifacts_and_is_in_the_audited_hash_set(tmp_path):
-    project,files,raw,requirements=inputs(tmp_path)
-    policy,documents=registered(tmp_path); files.update(documents)
-    project=replace(project,planning=policy)
-    raw['method_matrix']=[{'id':f'M-{i}','artifacts':['srs/ch01.md'],'requirement_ids':['R1']} for i in range(1,9)]
-    plan=validate_plan(raw,project,files,requirements)
-    matrix=json.loads(plan['artifacts']['MethodMatrix.json'])
-    assert matrix['source']['sha256']==policy['method_matrix']['sha256']
-    assert matrix['linked_artifact_hashes']['srs/ch01.md']==plan['artifact_hashes']['srs/ch01.md']
-    assert 'MethodMatrix.json' in plan['artifact_hashes']
-    raw['method_matrix'][0]['artifacts']=['nonexistent.md']
-    with pytest.raises(ValueError,match='actual plan artifacts'):
-        validate_plan(raw,project,files,requirements)
+def test_plan_has_audited_canonical_contract_not_agentic_method_matrix(tmp_path):
+    from cochem_pipeline.planning_governance import execution_contract
+    project, files, raw, requirements = inputs(tmp_path)
+    raw['method_matrix'] = 'obsolete content does not add execution semantics'
+    plan = validate_plan(raw, project, files, requirements)
+    assert json.loads(plan['artifacts']['ExecutionContract.json']) == execution_contract()
+    assert 'MethodMatrix.json' not in plan['artifacts']
+    assert plan['artifact_hashes']['ExecutionContract.json'] == hashlib.sha256(
+        plan['artifacts']['ExecutionContract.json'].encode()).hexdigest()
 
 
 @pytest.mark.parametrize('url',['http://example.com/','https://user:secret@example.com/',
@@ -124,30 +96,80 @@ def test_forged_research_quote_or_changed_bytes_cannot_pass_a_confident_answer()
         validate_external_research(output,sources,['R1'])
 
 
-@pytest.mark.parametrize('register',[False,True])
-def test_production_submission_requires_sources_and_verified_seven_stage_binding(tmp_path,register):
-    fixture=CodingFixture(tmp_path)
-    if register:
-        git(fixture.repository,'checkout','delivery')
-        policy,_=registered(fixture.repository)
-        git(fixture.repository,'add','.planning')
-        git(fixture.repository,'commit','-m','Explicit source-registration fixture')
-        fixture.project=replace(fixture.project,planning=policy)
-    coordinator=CodingCoordinator.__new__(CodingCoordinator)
-    coordinator.config=SimpleNamespace(coding_projects={'project':fixture.project},
-        ramdisk=SimpleNamespace(enabled=True),docker=fixture.docker,git_executable=fixture.git_executable)
-    coordinator.store=fixture.store
-    held=coordinator.submit('project','A production request',['REQ-1'])
-    assert held['status']=='BLOCKED'
-    assert held['coding']['status']=='PLANNING_HOLD'
-    assert ('verified controller binding' if register else 'canonical seven-stage protocol') in held['coding']['planning_hold']
-    assert not any(job['kind']=='CODE_PLAN' for job in held['jobs'])
-    assert len(fixture.store.list_workflows())==2
-    readiness=planning_readiness(coordinator.config.coding_projects)
-    assert readiness['ready'] is False
-    assert readiness['projects'][0]['source_registration_configured'] is register
-    assert readiness['projects'][0]['stage_execution_verified'] is False
-    assert readiness['projects'][0]['reason']==held['coding']['planning_hold']
+def production_coordinator(fixture):
+    coordinator = CodingCoordinator.__new__(CodingCoordinator)
+    coordinator.config = SimpleNamespace(coding_projects={'project': fixture.project},
+        ramdisk=SimpleNamespace(enabled=True), docker=fixture.docker, git_executable=fixture.git_executable)
+    coordinator.store = fixture.store
+    return coordinator
+
+
+def test_production_submission_creates_runnable_plan_without_phantom_registration(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    coordinator = production_coordinator(fixture)
+    workflow = coordinator.submit('project', 'A production request', ['REQ-1'])
+    assert workflow['status'] == 'IN_PROGRESS'
+    assert workflow['coding']['status'] == 'PLANNING'
+    stages = [job for job in workflow['jobs'] if job['kind'] == 'CODE_PLAN']
+    assert len(stages) == 1 and stages[0]['status'] == 'PENDING'
+    assert stages[0]['payload']['execution_transition']['from_state'] == 'PLANNING'
+    assert workflow['coding']['planning_evidence']['specification_id'] == 'COCHEM-4.2.7'
+    readiness = planning_readiness(coordinator.config.coding_projects)
+    assert readiness['ready'] is True and readiness['specification_blockers'] == []
+    assert readiness['projects'][0]['source_bytes_verified'] is False
+    assert workflow['evidence'] == []
+
+
+def test_production_submission_does_not_skip_operator_registered_external_research(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    policy, _ = registered(tmp_path)
+    fixture.project = replace(fixture.project, planning=policy)
+    # Direct store admission cannot fabricate collected registered research.
+    with pytest.raises(ValueError, match='controller-collected'):
+        fixture.store.submit_coding_snapshot(fixture.project, 'Request', ['REQ-1'], fixture.snapshot, fixture.docker)
+
+
+def legacy_hold(fixture, *, reason=None):
+    from cochem_pipeline.planning_governance import LEGACY_PHANTOM_HOLDS
+    reason = reason or sorted(LEGACY_PHANTOM_HOLDS)[0]
+    return fixture.store.submit_coding_snapshot(fixture.project, 'Legacy request', ['REQ-1'],
+        fixture.snapshot, fixture.docker, workflow_id='legacy-held', planning_blocker=reason)
+
+
+def test_explicit_resume_migrates_only_untouched_phantom_hold_and_retains_evidence(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    original = legacy_hold(fixture)
+    result = production_coordinator(fixture).resume('legacy-held', 'Apply owner-approved Alternative Path')
+    assert result['status'] == 'IN_PROGRESS' and result['coding']['status'] == 'PLANNING'
+    current = fixture.store.coding_workflow('legacy-held')
+    migration = current['coding']['planning_migrations'][0]
+    assert migration['withdrawn_reason'] == original['coding']['planning_hold']
+    assert migration['previous_planning_evidence'] == original['coding']['planning_evidence']
+    assert migration['baseline_commit'] == current['coding']['baseline_commit']
+    assert current['coding']['cycle'] == 1 and current['coding']['planning_revision'] == 0
+    assert current['coding']['original_snapshot'] == original['coding']['original_snapshot']
+    assert len([job for job in current['jobs'] if job['kind'] == 'CODE_PLAN']) == 1
+    with pytest.raises(ValueError, match='no operator-held'):
+        production_coordinator(fixture).resume('legacy-held', 'Repeated resume is not duplicate dispatch')
+
+
+@pytest.mark.parametrize('kind', ['revision_hold', 'cancelled', 'executed', 'budget', 'empty_reason'])
+def test_legacy_migration_cannot_erase_real_execution_or_holds(tmp_path, kind):
+    fixture = CodingFixture(tmp_path)
+    legacy_hold(fixture, reason='Planning revision did not change every cited artifact group' if kind == 'revision_hold' else None)
+    if kind == 'cancelled':
+        fixture.store.cancel_workflow('legacy-held')
+    if kind in ('executed', 'budget'):
+        with fixture.store._write() as conn:
+            state = fixture.store._coding_state(conn, 'legacy-held')
+            if kind == 'executed': state['planning_history'] = [{'retained': 'actual prior execution'}]
+            else: state['cycle'] = 2
+            fixture.store._save_coding(conn, 'legacy-held', state)
+    before = fixture.store.coding_workflow('legacy-held')
+    with pytest.raises(ValueError):
+        production_coordinator(fixture).resume('legacy-held', '' if kind == 'empty_reason' else 'Must not reset')
+    assert fixture.store.coding_workflow('legacy-held') == before
+
 
 
 def first_plan(fixture,tmp_path):
@@ -246,3 +268,165 @@ def test_planning_revision_budget_ends_in_hold_with_all_native_history_retained(
     assert fixture.state()['status']=='PLANNING_HOLD'
     assert len(fixture.state()['planning_history'])==12
     assert fixture.state()['phase_ledger']==[]
+
+
+def completed_contract_case(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    fixture.integration(fixture.ready())
+    return fixture
+
+
+def test_completed_portable_workflow_passes_canonical_contract_without_native_claim(tmp_path):
+    from cochem_pipeline.coding_acceptance import validate_production_planning, validate_coding_workflow
+    from cochem_pipeline.service import public_workflow
+    fixture = completed_contract_case(tmp_path)
+    for workflow in (fixture.store.coding_workflow(fixture.workflow_id),
+                     public_workflow(fixture.store.coding_workflow(fixture.workflow_id))):
+        state = workflow['coding']
+        evidence = {row['job_id']: row for row in workflow['evidence']}
+        result = validate_production_planning(state, state['plan'], workflow['jobs'], evidence)
+        assert result['specification_id'] == 'COCHEM-4.2.7'
+        assert result['stage_count'] == len(workflow['jobs']) - 1
+        assert 'accepted' not in result
+        with pytest.raises(ValueError, match='fixtures are not live'):
+            validate_coding_workflow(workflow)
+
+
+@pytest.mark.parametrize('mutation', ['wrong_state', 'wrong_contract', 'missing_predecessor',
+                                     'wrong_receipt', 'wrong_evidence', 'foreign_predecessor',
+                                     'fake_execution_boolean', 'detached_source'])
+def test_canonical_acceptance_rejects_forged_transition_and_source_evidence(tmp_path, mutation):
+    from cochem_pipeline.coding_acceptance import validate_production_planning
+    fixture = completed_contract_case(tmp_path)
+    workflow = fixture.store.coding_workflow(fixture.workflow_id)
+    state = workflow['coding']; jobs = workflow['jobs']
+    node = next(job for job in jobs if job['kind'] == 'CODE_EDIT')
+    transition = node['payload']['execution_transition']
+    if mutation == 'wrong_state': transition['from_state'] = 'COMPLETED'
+    elif mutation == 'wrong_contract': transition['contract_sha256'] = 'a' * 64
+    elif mutation == 'missing_predecessor': transition['predecessor'] = None
+    elif mutation == 'wrong_receipt': transition['predecessor']['receipt_sha256'] = 'a' * 64
+    elif mutation == 'wrong_evidence': transition['predecessor']['evidence_sha256'] = 'a' * 64
+    elif mutation == 'foreign_predecessor': transition['predecessor']['job_id'] = 'other-workflow'
+    elif mutation == 'fake_execution_boolean':
+        state['planning_evidence'] = {'stage_execution_verified': True, 'registration_verified': True}
+    else: state['planning_evidence']['source_manifest_sha256'] = 'a' * 64
+    with pytest.raises(ValueError):
+        validate_production_planning(state, state['plan'], jobs,
+                                     {row['job_id']: row for row in workflow['evidence']})
+
+
+def test_completion_rejects_tampered_workflow_state_before_accepting_output(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    (tmp_path / 'plan-input').mkdir()
+    _, _, raw, _ = inputs(tmp_path / 'plan-input')
+    raw['leaves'][0]['file_targets'] = ['src/answer.py']
+    node = fixture.claim('CODE_PLAN')
+    plan = validate_plan(raw, fixture.project, fixture.snapshot.files, ['REQ-1'])
+    with fixture.store._write() as conn:
+        state = fixture.store._coding_state(conn, fixture.workflow_id)
+        state['status'] = 'EDITING'
+        fixture.store._save_coding(conn, fixture.workflow_id, state)
+    with pytest.raises(ValueError, match='captured execution state'):
+        fixture.complete_native(node, raw, {'plan': plan})
+    assert fixture.store.get(node['job_id'])['status'] == 'IN_PROGRESS'
+    assert fixture.store.coding_workflow(fixture.workflow_id)['evidence'] == []
+
+
+@pytest.mark.parametrize('stage', ['CODE_TEST_AUTHOR', 'CODE_EDIT', 'CODE_REVIEW'])
+def test_three_native_code_failures_research_from_actual_last_successful_evidence(tmp_path, stage):
+    from cochem_pipeline.planning_governance import validate_execution_history
+    fixture = CodingFixture(tmp_path)
+    fixture.plan(); fixture.initial_research()
+    if stage != 'CODE_TEST_AUTHOR':
+        fixture.author(); fixture.test(passed=False)
+    if stage == 'CODE_REVIEW':
+        fixture.edit(); fixture.test(passed=True)
+    for failure in range(3):
+        node = fixture.claim(stage if failure == 0 else ('CODE_TEST_AUTHOR' if stage == 'CODE_TEST_AUTHOR' else 'CODE_EDIT'))
+        assert fixture.store.fail(node['job_id'], node['attempt_id'], node['fencing_token'],
+                                  'Recorded native implementation failure', retry=True, category='code')
+    assert fixture.state()['status'] == 'RESEARCH_REQUIRED'
+    workflow = fixture.store.coding_workflow(fixture.workflow_id)
+    validate_execution_history(workflow['jobs'], {row['job_id']: row for row in workflow['evidence']})
+    assert fixture.claim('CODE_RESEARCH')['payload']['failure_evidence_sha256']
+
+
+@pytest.mark.parametrize('reason', [
+    'Production planning requires the canonical seven-stage protocol, Method Matrix M-1..M-8, and registered external research sources',
+    'Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding',
+    'Registered protocol source is absent or its captured Git bytes changed',
+    'Registered method_matrix source is absent or its captured Git bytes changed',
+    'Registered protocol clause is absent from its physical source',
+    'Registered method_matrix clause is absent from its physical source',
+    'Seven-stage registration must preserve the source order',
+])
+def test_withdrawn_legacy_phantom_source_errors_can_explicitly_migrate(tmp_path, reason):
+    fixture = CodingFixture(tmp_path)
+    legacy_hold(fixture, reason=reason)
+    result = production_coordinator(fixture).resume('legacy-held', 'Withdraw obsolete agentic source registration')
+    assert result['coding']['status'] == 'PLANNING'
+    assert result['coding']['planning_migrations'][0]['withdrawn_reason'] == reason
+
+
+def test_completion_rechecks_physical_predecessor_before_publishing_any_output(tmp_path):
+    fixture = CodingFixture(tmp_path)
+    fixture.plan()
+    node = fixture.claim('CODE_RESEARCH')
+    with fixture.store._write() as conn:
+        task = deepcopy(node['payload'])
+        task['execution_transition']['predecessor']['evidence_sha256'] = 'a' * 64
+        conn.execute('UPDATE pipeline_jobs SET payload_json=? WHERE job_id=?', (json.dumps(task), node['job_id']))
+    with pytest.raises(ValueError, match='physical predecessor evidence'):
+        fixture.complete_native(node, {'strategy': 'Must not be accepted'}, {})
+    assert fixture.store.get(node['job_id'])['status'] == 'IN_PROGRESS'
+    assert all(row['job_id'] != node['job_id'] for row in fixture.store.coding_workflow(fixture.workflow_id)['evidence'])
+
+
+@pytest.mark.parametrize('reason', ['No external research policy is registered',
+    'Research lacks verified HTTPS evidence', 'Planning exhausted its immutable revision budget',
+    'Canonical seven-stage source is registered, but its exact execution transitions have no verified controller binding; unresolved source mutation'])
+def test_migration_never_broadly_matches_phantom_words_or_real_research_hold(tmp_path, reason):
+    fixture = CodingFixture(tmp_path)
+    legacy_hold(fixture, reason=reason)
+    before = fixture.store.coding_workflow('legacy-held')
+    with pytest.raises(ValueError, match='Only a reviewed integration hold'):
+        production_coordinator(fixture).resume('legacy-held', 'Do not erase genuine hold')
+    assert fixture.store.coding_workflow('legacy-held') == before
+
+
+@pytest.mark.parametrize('last_success', ['improvement', 'partial_audit'])
+def test_native_failure_research_preserves_successful_improvement_or_partial_audit_predecessor(tmp_path, last_success):
+    from cochem_pipeline.coding import observed_changes, manifest, digest
+    from cochem_pipeline.planning_governance import validate_execution_history
+    fixture = CodingFixture(tmp_path)
+    fixture.author(); fixture.test(passed=False); fixture.edit(); fixture.test(passed=True)
+    if last_success == 'improvement':
+        fixture.reviews(minor_findings=['Clarify the first source comment'])
+        prior = fixture.claim('CODE_EDIT')
+        assert prior['payload']['phase'] == 'P7'
+        before = fixture.store.coding_files(fixture.state()['current_snapshot'])
+        after = dict(before)
+        after['src/answer.py'] = after['src/answer.py'].replace(
+            b'# Existing documentation line 0\n', b'# Clarified answer documentation\n')
+        baseline = fixture.store.coding_files(fixture.state()['review_base_snapshot'])
+        fixture.complete_native(prior, {'done': True, 'requirements_traced': ['REQ-1']},
+            {'changes': observed_changes(baseline, after, fixture.snapshot.files, fixture.project),
+             'snapshot_sha256': digest(manifest(after))}, after)
+        next_kind = 'CODE_EDIT'
+    else:
+        prior = fixture.claim('CODE_REVIEW')
+        fixture.complete_native(prior, fixture.review_output(prior),
+                                {'source_snapshot_sha256': fixture.state()['current_snapshot']})
+        next_kind = 'CODE_REVIEW'
+    for index in range(3):
+        node = fixture.claim(next_kind if index == 0 else 'CODE_EDIT')
+        if index == 0 and last_success == 'improvement': assert node['payload']['phase'] == 'P9'
+        assert fixture.store.fail(node['job_id'], node['attempt_id'], node['fencing_token'],
+                                  'Native code failure after real accepted predecessor', retry=True, category='code')
+    assert fixture.state()['status'] == 'RESEARCH_REQUIRED'
+    assert fixture.state()['consecutive_failures'] == 3
+    node = fixture.claim('CODE_RESEARCH')
+    assert node['payload']['execution_transition']['predecessor']['job_id'] == prior['job_id']
+    workflow = fixture.store.coding_workflow(fixture.workflow_id)
+    validate_execution_history(workflow['jobs'], {row['job_id']: row for row in workflow['evidence']})

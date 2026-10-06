@@ -1,5 +1,9 @@
 # 4.2.6 requirements and evidence ledger
 
+> Historical 4.2.6 record. The [4.2.7 canonical SRS](../4.2.7_SRS.md) and
+> [owner addendum](SRS_ADDENDUM_4.2.7.md) supersede its phantom planning
+> prerequisites and latency-failure conclusions; executed test history is unchanged.
+
 This ledger maps the active 4.2.6 implementation to the supplied requirements
 and identifies the evidence and remaining limits for each clause. Code,
 portable tests and actual Linux Docker execution do not establish native

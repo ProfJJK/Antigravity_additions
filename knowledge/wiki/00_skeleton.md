@@ -1,25 +1,19 @@
-# Pipeline specification catalog
+# Active pipeline specification catalog
 
-These are exact captures of specifications supplied in the owner's repository.
-The complete telemetry dossier supplies the section explicitly truncated in the
-shorter dossier. Historical requirements retain their original text. Current
-owner decisions in [routing and failure policy](owner_decisions.md) take
-precedence over conflicting historical model registries and FR009 wording.
-This catalog adds no missing planning-stage or Method Matrix definitions.
+The [ratified canonical 4.2.7 SRS](4.2.7_SRS.md) and its
+[exact source capture](../.sources/4.2.7_SRS.md) define the ordered execution
+baseline. [Owner decisions](owner_decisions.md) and the
+[SRS addendum](../.sources/SRS_ADDENDUM_4.2.7.md) supersede obsolete planning
+prerequisites and the historical latency-failure interpretation.
 
-- [Oracle_SRS_WBS.md](../.sources/Oracle_SRS_WBS.md)
-- [Pipeline_4_2_0_Architecture.md](../.sources/Pipeline_4_2_0_Architecture.md)
-- [RAM_Disk_Reparse_Point_Standard.md](../.sources/RAM_Disk_Reparse_Point_Standard.md)
-- [TEST_INFRA.md](../.sources/TEST_INFRA.md)
-- [V4_CORE_MODIFICATION_AUTHORIZATION.md](../.sources/V4_CORE_MODIFICATION_AUTHORIZATION.md)
-- [ch01_host_warden.md](../.sources/ch01_host_warden.md)
-- [ch02_quarantine_vm.md](../.sources/ch02_quarantine_vm.md)
-- [ch03_concurrency_layers.md](../.sources/ch03_concurrency_layers.md)
-- [ch04_task_matrix_blackboard.md](../.sources/ch04_task_matrix_blackboard.md)
-- [ch05_research_tdd_pivot.md](../.sources/ch05_research_tdd_pivot.md)
-- [ch06_dual_wiki_rag.md](../.sources/ch06_dual_wiki_rag.md)
-- [ch07_dsp_domain_pipelines.md](../.sources/ch07_dsp_domain_pipelines.md)
-- [ch08_watchdog_sre.md](../.sources/ch08_watchdog_sre.md)
-- [full_dossier.md](../.sources/full_dossier.md)
-- [full_dossier_untruncated.md](../.sources/full_dossier_untruncated.md)
-- [v4_pipeline_reconstruction_plan.md](../.sources/v4_pipeline_reconstruction_plan.md)
+Primary source captures retained in this active corpus:
+
+- [4.2.0 planner architecture](../.sources/Pipeline_4_2_0_Architecture.md)
+- [Oracle SRS/WBS](../.sources/Oracle_SRS_WBS.md)
+- [Complete telemetry dossier](../.sources/full_dossier_untruncated.md)
+- [Short telemetry dossier](../.sources/full_dossier.md)
+
+The original 4.2.6 corpus is preserved byte-for-byte in the repository archive
+at docs/archive/knowledge_4.2.6. It is outside this active retrieval collection.
+Historical snippets cannot create new execution gates. The manifest filename
+is retained for parser compatibility; its contents identify the active version.

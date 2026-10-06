@@ -47,9 +47,9 @@ def startup_performance_failures(jobs,evidence):
             measured_total=None
         consistent=(measured and measured_total is not None and clocks[1]>=clocks[0] and clocks[2]>=0
                     and abs(measured_total-seconds)<=1e-6)
-        reason=('request_to_test_ready_exceeded_1_5_seconds' if measured and seconds>1.5 else
-                'missing_or_inconsistent_startup_measurement' if not consistent or
-                receipt.get('startup_sla_met') is not True or receipt.get('startup_sla_seconds')!=1.5 else None)
+        reason=('missing_or_inconsistent_startup_measurement' if not consistent or
+                receipt.get('startup_sla_met') is not (seconds<=1.5) or receipt.get('startup_sla_seconds')!=1.5 else
+                'request_to_test_ready_exceeded_1_5_seconds' if seconds>1.5 else None)
         if reason:
             keys=('startup_seconds','startup_sla_seconds','queue_wait_seconds','handoff_wait_seconds','execution_startup_seconds')
             timings={key:value if type(value:=receipt.get(key)) in (int,float) and math.isfinite(value) else None for key in keys}
@@ -57,6 +57,34 @@ def startup_performance_failures(jobs,evidence):
                 'reason':reason,'measured_request_to_ready_seconds':measured_total,
                 'evidence_sha256':evidence.get(job['job_id'],{}).get('sha256'),**timings})
     return failures
+
+
+def validate_startup_acceptance(jobs, evidence):
+    """Require actual prepared-pool provenance; measured latency is an observation."""
+    for job in jobs:
+        if job.get('kind') != 'CODE_TEST' or job.get('status') != 'COMPLETED':
+            continue
+        receipt = evidence.get(job['job_id'], {}).get('evidence', {})
+        values = [receipt.get(key) for key in ('prepared_at', 'preparation_seconds',
+                   'request_started_at', 'reservation_started_at', 'execution_started_at')]
+        finite = all(type(value) in (int, float) and math.isfinite(value) for value in values)
+        require(receipt.get('warm_pool_used') is True
+                and receipt.get('container_creation_path') == 'background_pool_replenishment'
+                and isinstance(receipt.get('container_id'), str)
+                and re.fullmatch('[0-9a-f]{64}', receipt['container_id'])
+                and finite and values[0] > 0 and values[1] >= 0
+                and values[0] <= values[3] <= values[4] and values[2] <= values[3],
+                'Coding execution has no verified prepared-container pool provenance')
+        require(all(type(receipt.get(key)) in (int, float) and math.isfinite(receipt[key])
+                    and abs(receipt[key] - expected) <= 1e-6 for key, expected in (
+                        ('queue_wait_seconds', values[3] - values[2]),
+                        ('handoff_wait_seconds', values[4] - values[3]))),
+                'Coding prepared-pool wait timings are missing or inconsistent')
+    observations = startup_performance_failures(jobs, evidence)
+    invalid = [item for item in observations if item['reason'] == 'missing_or_inconsistent_startup_measurement']
+    if invalid:
+        raise CodingPerformanceError(invalid)
+    return observations
 
 
 def reject_fixture_evidence(value):
@@ -376,27 +404,39 @@ def validate_phase_tests(final_phases,jobs,evidence):
                     'Final leaf did not execute every exact sealed planned test')
 
 
-def validate_production_planning(state,plan):
-    """A completed component workflow is not a verified seven-stage execution."""
-    from .planning_governance import normalize_policy,seven_stage_execution_binding,method_matrix_artifact
-    policy=normalize_policy(state.get('project',{}).get('planning'))
-    require(policy, 'Production acceptance requires the canonical seven-stage protocol and Method Matrix M-1..M-8')
-    require(seven_stage_execution_binding() is not None,
-            'Canonical seven-stage execution transitions have no verified controller binding; production acceptance is blocked')
-    registration=state.get('planning_evidence') or {}
-    require(registration.get('registration_verified') is True and
-            registration.get('stage_execution_verified') is True and
-            registration.get('policy_sha256')==digest(policy),
-            'Production acceptance requires verified seven-stage execution evidence')
-    expected={key:registration[key] for key in ('schema','policy_sha256','documents',
-                                              'registration_verified','stage_execution_verified')}
-    require(plan.get('planning_registration')==expected, 'Final plan is detached from registered planning evidence')
-    artifacts=plan.get('artifacts',{})
-    require('MethodMatrix.json' in artifacts, 'Final planning audit has no Method Matrix evidence')
-    matrix=json.loads(artifacts['MethodMatrix.json'])
-    linked=method_matrix_artifact(matrix.get('links'),registration,
-        {name:text for name,text in artifacts.items() if name!='MethodMatrix.json'},plan.get('requirements',{}))
-    require(matrix==linked, 'Method Matrix links are detached from the final audited artifacts')
+def validate_production_planning(state, plan, jobs, evidence):
+    """Verify the installed 4.2.7 contract through real stage and artifact joins."""
+    from .planning_governance import normalize_policy, execution_contract, validate_execution_history
+    policy = normalize_policy(state.get('project', {}).get('planning'))
+    registration = state.get('planning_evidence') or {}
+    contract = execution_contract()
+    require(registration.get('schema') == 'planning-source-registration/2'
+            and registration.get('specification_id') == contract['specification_id']
+            and registration.get('contract') == contract
+            and registration.get('contract_sha256') == digest(contract)
+            and registration.get('policy_sha256') == digest(policy)
+            and registration.get('source_manifest_sha256') == state.get('original_snapshot'),
+            'Production acceptance requires source-bound canonical execution policy')
+    expected = {key: value for key, value in registration.items() if key != 'external_sources'}
+    require(plan.get('planning_registration') == expected,
+            'Final plan is detached from its captured source and execution contract')
+    artifacts = plan.get('artifacts', {})
+    require('ExecutionContract.json' in artifacts and json.loads(artifacts['ExecutionContract.json']) == contract,
+            'Final planning audit has no exact canonical execution contract')
+    require(plan.get('artifact_hashes', {}).get('ExecutionContract.json') ==
+            hashlib.sha256(artifacts['ExecutionContract.json'].encode()).hexdigest(),
+            'Canonical execution contract is outside the audited artifact hash set')
+    if policy.get('research_sources'):
+        from .planning_governance import validate_external_research
+        sources = registration.get('external_sources', [])
+        for job in jobs:
+            if job.get('kind') == 'CODE_RESEARCH' and job.get('status') == 'COMPLETED':
+                refs = job['payload'].get('active_leaf', {}).get('requirement_ids') or ['R' + str(index) for index in range(1, len(job['payload']['requirements']) + 1)]
+                verified = validate_external_research(job.get('output', {}), sources, refs)
+                actual = evidence.get(job['job_id'], {}).get('evidence', {})
+                require(all(actual.get(key) == value for key, value in verified.items()),
+                        'Research evidence is detached from registered HTTPS sources')
+    return validate_execution_history(jobs, evidence)
 
 
 def validate_coding_workflow(workflow):
@@ -471,15 +511,15 @@ def validate_coding_workflow(workflow):
                 and item.get('test_sha256')==evidence[test_job['job_id']]['sha256']
                 and item.get('reviews_sha256')==digest(state.get('reviews'))
                 for item in workflow.get('integration_intents',[])), 'Final Git CAS has no durable applied receipt')
-    validate_production_planning(state,plan)
-    performance_failures=startup_performance_failures(workflow.get('jobs',[]),evidence)
-    if performance_failures:
-        raise CodingPerformanceError(performance_failures)
+    execution = validate_production_planning(state, plan, workflow.get('jobs', []), evidence)
+    performance_failures = validate_startup_acceptance(workflow.get('jobs', []), evidence)
     return {'schema':1,'scope':'one completed coding workflow','workflow_id':workflow['workflow_id'],
             'verified_at':time.time(),'accepted':True,'workflow_sha256':digest(workflow),
             'plan_sha256':plan['plan_sha256'],'completed_leaves':leaves,'result_commit':commit,
             'native_executions':native,'final_test_receipt_sha256':digest(test),
-            'functional_workflow_completed':True,'performance_failures':[],
+            'functional_workflow_completed':True, 'execution_contract':execution,
+            'performance_failures':[], 'performance_observations':performance_failures,
+            'performance_acceptance':'S427-PERF owner amendment: valid measured latency is nonblocking; Windows launch benchmark pending',
             'native_evidence_source':'authenticated controller receipts; private stdout is hash-retained',
             'entire_host_certified':False}
 

@@ -1,5 +1,9 @@
 # 4.2.6: Further SRS corrections and explicit acceptance blockers
 
+> Historical 4.2.6 record. The [4.2.7 canonical SRS](../4.2.7_SRS.md) and
+> [owner addendum](SRS_ADDENDUM_4.2.7.md) supersede its phantom planning
+> prerequisites and latency-failure conclusions; executed test history is unchanged.
+
 The second implementation audit found genuine gaps beyond Windows validation.
 This release corrects those behaviors and retracts the stronger compliance
 implications of the 4.2.5 ledger. **The complete SRS is still not certified.**

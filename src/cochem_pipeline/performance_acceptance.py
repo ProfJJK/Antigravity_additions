@@ -132,7 +132,9 @@ def benchmark_queue(output, *, rounds=20, concurrency='threads'):
             'p50_acquisition_ms':statistics.median(acquired),
             'p95_acquisition_ms':sorted(acquired)[max(0,math.ceil(.95*len(acquired))-1)],
             'passed':max(acquired)<5,
-            'native_windows_acceptance':os.name=='nt' and concurrency=='processes' and max(acquired)<5}
+            'native_windows_acceptance':False,
+            'acceptance_status':'diagnostic_only_pending_actual_windows_launch',
+            'acceptance_scope':'Ten-contender storage stress is not the deployed single-controller/four-worker topology; use the actual Warden queue launch observer for Windows acceptance'}
     (output/'queue-performance.json').write_text(json.dumps(result,indent=2),encoding='utf-8')
     return result
 
@@ -259,6 +261,9 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--queue-rounds',type=int)
     parser.add_argument('--queue-concurrency',choices=('threads','processes'),default='threads')
+    parser.add_argument('--queue-launch-config', type=Path,
+        help='Synthetic four-worker storage profile beside the deployed configured database; not live Windows acceptance')
+    parser.add_argument('--queue-workflows', type=int, default=12)
     parser.add_argument('--run-native',action='store_true')
     parser.add_argument('--heartbeat',type=Path)
     parser.add_argument('--duration-seconds',type=float,default=172800)
@@ -266,14 +271,17 @@ def main():
     parser.add_argument('--supervisor-database',type=Path)
     parser.add_argument('--desktop-heap-report',type=Path)
     args=parser.parse_args()
-    if args.queue_rounds is not None and not args.run_native:
+    if args.queue_launch_config is not None and args.queue_rounds is None and not args.run_native:
+        from .queue_profile import benchmark_configured_queue
+        result = benchmark_configured_queue(args.queue_launch_config, args.output, workflows=args.queue_workflows)
+    elif args.queue_rounds is not None and not args.run_native and args.queue_launch_config is None:
         result=benchmark_queue(args.output,rounds=args.queue_rounds,concurrency=args.queue_concurrency)
-    elif args.run_native and args.heartbeat is not None and args.queue_rounds is None:
+    elif args.run_native and args.heartbeat is not None and args.queue_rounds is None and args.queue_launch_config is None:
         result=observe_native(args.heartbeat,args.output,duration_seconds=args.duration_seconds,
             interval_seconds=args.interval_seconds,supervisor_database=args.supervisor_database,
             desktop_heap_report=args.desktop_heap_report)
     else:
-        parser.error('Select --queue-rounds or explicit --run-native with --heartbeat')
+        parser.error('Select --queue-rounds, --queue-launch-config, or explicit --run-native with --heartbeat')
     print(json.dumps({key:value for key,value in result.items() if key!='samples'},indent=2))
     return 0 if result['passed'] else 1
 

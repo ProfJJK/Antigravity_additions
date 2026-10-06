@@ -21,7 +21,7 @@ def main():
                         else 'npipe:////./pipe/docker_engine')
     parser.add_argument('--base-image', default='python:3.12.11-slim-bookworm')
     parser.add_argument('--ca-bundle', type=Path)
-    parser.add_argument('--tag', default='cochem-pipeline-tests:4.2.6')
+    parser.add_argument('--tag', default='cochem-pipeline-tests:4.2.7')
     args = parser.parse_args()
     prefix = [args.docker, '--host', args.endpoint]
     env = dict(os.environ)
