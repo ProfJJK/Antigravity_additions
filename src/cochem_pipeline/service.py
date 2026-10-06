@@ -1,6 +1,7 @@
 """Narrow authenticated loopback API. Workers have no claim or completion endpoint."""
 from __future__ import annotations
 import hmac
+import hashlib
 from copy import deepcopy
 import http.client
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -12,9 +13,17 @@ from urllib.parse import urlsplit
 
 def redact(value):
     if isinstance(value,dict):
-        return {key:(deepcopy(item) if key in ('payload','output','artifacts') else redact(item))
+        public = {key:(deepcopy(item) if key in ('payload','output','artifacts') else redact(item))
                 for key,item in value.items()
-                if key not in ('fencing_token','attempt_id','lease_owner','owner')}
+                if key not in ('fencing_token','attempt_id','lease_owner','owner',
+                               'reservation_id','route_reservation_id')}
+        # Keep a verifiable join between an assignment and its native receipt
+        # without publishing the private database reservation identifier.
+        for source, target in (('reservation_id','reservation_sha256'),
+                               ('route_reservation_id','route_reservation_sha256')):
+            if isinstance(value.get(source),str) and value[source]:
+                public[target] = hashlib.sha256(value[source].encode('utf-8')).hexdigest()
+        return public
     if isinstance(value,list):
         return [redact(item) for item in value]
     return value
@@ -87,10 +96,10 @@ class Handler(BaseHTTPRequestHandler):
         path=urlsplit(self.path).path
         try:
             if self.command=='GET' and path=='/health':
-                self.reply(200,runtime.status())
+                self.reply(200,redact(runtime.status()))
             elif self.command=='GET' and path.startswith('/workflow/'):
                 self.reply(200,public_workflow(runtime.store.workflow(path[len('/workflow/'):])) )
-            elif self.command=='POST' and path in ('/submit','/cancel'):
+            elif self.command=='POST' and path in ('/submit','/cancel','/routing/resume'):
                 size=int(self.headers.get('Content-Length','0'))
                 if not 1<=size<=4*1024*1024:
                     raise ValueError('Request body must be 1..4194304 bytes')
@@ -102,11 +111,18 @@ class Handler(BaseHTTPRequestHandler):
                     if type(count) is not int or not 1<=count<=len(runtime.config.workers):
                         raise ValueError('chapter_count must fit the provisioned distinct worker identity pool')
                     workflow=runtime.store.submit(data['objective'],data.get('requirements',['REQ-001']),
-                                                  count,data.get('workflow_id'),max_attempts=data.get('max_attempts'))
+                                                  count,data.get('workflow_id'),max_attempts=data.get('max_attempts'),
+                                                  max_dispatches=data.get('max_dispatches'))
                     self.reply(202,public_workflow(workflow))
-                else:
+                elif path=='/cancel':
                     runtime.cancel(data['workflow_id'])
                     self.reply(200,public_workflow(runtime.store.workflow(data['workflow_id'])))
+                else:
+                    reason=data.get('reason')
+                    if not isinstance(reason,str) or not reason.strip() or len(reason)>512 or '\x00' in reason:
+                        raise ValueError('Routing resume requires a nonempty operator reason of at most 512 characters')
+                    job=runtime.store.resume_routing(data['job_id'],reason=reason.strip())
+                    self.reply(200,public_workflow(runtime.store.workflow(job['workflow_id'])))
             else:
                 self.reply(404,{'error':'Unknown operation; claim and completion are private to the Warden'})
         except (ValueError,KeyError,TypeError) as exc:

@@ -4,9 +4,11 @@
 param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.2",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.4",
     [string]$DataRoot = "$env:ProgramData\CoChemPipeline422",
     [string]$TokenFile = "$env:USERPROFILE\CoChem422\controller.token",
+    [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
+    [string]$SupervisorTaskName = 'CoChem-4.2.3-Supervisor',
     [ValidateRange(1,64)][int]$Slots = 6,
     [string]$Config,
     [switch]$RegisterDaemon
@@ -87,6 +89,19 @@ function Protect-InstalledTree {
 if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) {
     throw 'This installer requires Windows and an elevated administrator PowerShell.'
 }
+foreach ($name in @($WardenTaskName,$SupervisorTaskName)) {
+    if ($name -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$') { throw 'Scheduled task names must be literal names in the root task folder.' }
+    $existingTask = Get-ScheduledTask -TaskName $name -TaskPath '\' -ErrorAction SilentlyContinue
+    if ($null -ne $existingTask) {
+        $scheduler = New-Object -ComObject 'Schedule.Service'
+        $scheduler.Connect()
+        $registeredTask = $scheduler.GetFolder('\').GetTask($name)
+        $runningInstances = $registeredTask.GetInstances(0).Count
+        if ($runningInstances -gt 0 -or $existingTask.State -in @('Running','Queued') -or $existingTask.Settings.Enabled) {
+            throw "Stop and disable managed task $name before provisioning or changing its protected deployment. Preserve existing worker credentials and state."
+        }
+    }
+}
 $repo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $Python = (Resolve-Path -LiteralPath $Python).Path
 $InstallRoot = [IO.Path]::GetFullPath($InstallRoot).TrimEnd('\')
@@ -101,7 +116,7 @@ if (-not $InstallRoot.StartsWith($programFilesPrefix, [StringComparison]::Ordina
 }
 Assert-ProtectedAncestors -Path (Split-Path -Parent $Python)
 foreach ($item in (Get-TreeWithoutLinks -Path (Split-Path -Parent $Python))) { Assert-ProtectedItem -Path $item.FullName }
-Invoke-Checked -Executable $Python -Arguments @('-c','import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))')
+Invoke-Checked -Executable $Python -Arguments @('-I','-c','import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))')
 
 $installedPython = Join-Path $InstallRoot '.venv\Scripts\python.exe'
 $sourceRoot = Join-Path $InstallRoot 'source'
@@ -113,6 +128,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_pipeline; raise SystemExit(tuple(map(int,cochem_pipeline.__version__.split(chr(46)))) != (4,2,4))')
     Write-Host "Preserving existing protected installation: $InstallRoot"
 }
 else {
@@ -125,14 +141,18 @@ else {
     New-Item -ItemType Directory -Path $sourceRoot -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $repo 'src') -Destination (Join-Path $sourceRoot 'src') -Recurse
     Copy-Item -LiteralPath (Join-Path $repo 'pyproject.toml'),(Join-Path $repo 'README.md') -Destination $sourceRoot
-    Invoke-Checked -Executable $Python -Arguments @('-m','venv','--copies',(Join-Path $InstallRoot '.venv'))
-    Invoke-Checked -Executable $installedPython -Arguments @('-m','pip','install',($sourceRoot + '[mcp]'))
+    foreach ($item in (Get-TreeWithoutLinks -Path $sourceRoot | Sort-Object { $_.FullName.Length } -Descending)) {
+        if ($item.Name -eq '__pycache__') { Remove-Item -LiteralPath $item.FullName -Recurse -Force }
+        elseif (-not $item.PSIsContainer -and $item.Extension -eq '.pyc') { Remove-Item -LiteralPath $item.FullName -Force }
+    }
+    Invoke-Checked -Executable $Python -Arguments @('-I','-m','venv','--copies',(Join-Path $InstallRoot '.venv'))
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-m','pip','install',($sourceRoot + '[mcp]'))
     # All code, packages and task helpers are machine protected. No editable
     # installation points the SYSTEM interpreter back into the user checkout.
     Protect-InstalledTree -Path $InstallRoot
 }
 
-$provisionArgs = @('-m','cochem_pipeline.windows','provision',
+$provisionArgs = @('-I','-m','cochem_pipeline.windows','provision',
     '--private-root',(Join-Path $DataRoot 'private'),'--workers-root',(Join-Path $DataRoot 'workers'),
     '--slots',"$Slots",'--operator-name',$OperatorName,'--controller-token',$TokenFile,'--layout-output',$layoutFile)
 $provisionScript = Join-Path $InstallRoot 'provision-task.ps1'
@@ -164,6 +184,7 @@ if ($RegisterDaemon) {
     if (-not $Config) { throw '-RegisterDaemon requires a reviewed -Config JSON file with real native CLI paths and model IDs.' }
     $configSource = (Resolve-Path -LiteralPath $Config).Path
     $configTarget = Join-Path $InstallRoot 'pipeline.json'
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$configSource)
     if (Test-Path -LiteralPath $configTarget) {
         if ((Get-FileHash -LiteralPath $configSource).Hash -ne (Get-FileHash -LiteralPath $configTarget).Hash) {
             throw 'Existing installed pipeline.json differs. Review it explicitly; this installer does not overwrite configuration.'
@@ -171,10 +192,12 @@ if ($RegisterDaemon) {
     }
     else { Copy-Item -LiteralPath $configSource -Destination $configTarget }
     Protect-InstalledTree -Path $InstallRoot
-    $daemonAction = New-ScheduledTaskAction -Execute $installedPython -Argument ('-m cochem_pipeline daemon --config ' + (Quote-TaskArgument $configTarget)) -WorkingDirectory $InstallRoot
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$configTarget)
+    $daemonAction = New-ScheduledTaskAction -Execute $installedPython -Argument ('-I -m cochem_pipeline daemon --config ' + (Quote-TaskArgument $configTarget)) -WorkingDirectory $InstallRoot
     $daemonSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
-    Register-ScheduledTask -TaskName 'CoChem-4.2.2-Warden' -Action $daemonAction -Principal $principal -Settings $daemonSettings -Trigger (New-ScheduledTaskTrigger -AtStartup) -Force | Out-Null
-    Write-Host 'Registered SYSTEM Warden task. After per-worker logins and config review, start it and run the native Windows acceptance tests: Start-ScheduledTask CoChem-4.2.2-Warden'
+    Register-ScheduledTask -TaskName $WardenTaskName -Action $daemonAction -Principal $principal -Settings $daemonSettings -Trigger (New-ScheduledTaskTrigger -AtStartup) -Force | Out-Null
+    Disable-ScheduledTask -TaskName $WardenTaskName -TaskPath '\' | Out-Null
+    Write-Host "Registered SYSTEM Warden task $WardenTaskName, stopped and disabled. After all configuration and supervisor installation is complete, enable it and perform a full Windows Restart."
 }
 else {
     Write-Host 'Daemon registration is pending: merge windows-layout.json into the reviewed pipeline config, then rerun with -Config PATH -RegisterDaemon.'

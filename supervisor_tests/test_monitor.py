@@ -204,6 +204,158 @@ def test_current_active_count_takes_precedence_over_legacy_list(tmp_path):
     assert result["incidents"][0]["category"] == "resource"
 
 
+def routing_wait(path, *, state="WAITING", due=NOW+30, reason="Provider quota limit", job_id="job-1"):
+    with sqlite3.connect(path) as conn:
+        conn.execute("""CREATE TABLE IF NOT EXISTS pipeline_routing_jobs(job_id TEXT PRIMARY KEY,
+            state TEXT,next_eligible_at REAL,expires_at REAL,cycle INTEGER,wait_reason TEXT)""")
+        conn.execute("INSERT INTO pipeline_routing_jobs VALUES(?,?,?,?,?,?)", (job_id,state,due,None,2,reason))
+
+
+@pytest.mark.parametrize("status,reason,category", [
+    ("PENDING", "Provider busy", "provider"),
+    ("PENDING_RETRY", "Provider quota limit", "quota"),
+    ("PENDING", "Model backlog capacity limit", "provider"),
+])
+def test_planned_routing_wait_is_visible_without_authorizing_paid_code_repair(tmp_path, status, reason, category):
+    path = board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path, status=status, error="TypeError: old failed attempt", updated_at=1)
+    routing_wait(path, reason=reason)
+    result = read_observation(tmp_path, now=NOW)
+    assert result["incidents"] == []
+    assert result["health"]["state"] == "waiting"
+    assert result["health"]["routing_wait_count"] == 1
+    assert result["health"]["routing_waits"] == [{"kind":"CHAPTER_DRAFT", "state":"WAITING",
+        "category":category, "next_eligible_at":NOW+30, "retry_in_seconds":30, "cycle":2}]
+    assert "RAW-PROMPT" not in json.dumps(result)
+
+
+def test_just_due_queue_gets_progress_grace_then_abandoned_wait_is_detected(tmp_path):
+    path = board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path, status="PENDING", error=None, attempts=0, updated_at=1)
+    routing_wait(path, due=NOW-5)
+    assert read_observation(tmp_path, now=NOW)["incidents"] == []
+    heartbeat(tmp_path, timestamp=NOW+700)
+    result = read_observation(tmp_path, now=NOW+700)
+    assert result["incidents"][0]["category"] == "code"
+    assert result["incidents"][0]["repairable"] is True
+
+
+def test_operator_routing_limit_is_blocked_without_code_repair(tmp_path):
+    path = board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path, status="BLOCKED", error=None, updated_at=1)
+    routing_wait(path, state="BLOCKED", due=None)
+    result = read_observation(tmp_path, now=NOW)
+    assert result["health"]["state"] == "blocked"
+    assert result["incidents"][0]["category"] == "configuration"
+    assert result["incidents"][0]["repairable"] is False
+
+
+def test_planned_wait_cannot_hide_an_expired_active_process_lease(tmp_path):
+    path = board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path, status="IN_PROGRESS", error=None, lease_expires_at=NOW-10)
+    routing_wait(path)
+    result = read_observation(tmp_path, now=NOW)
+    assert "lease expired" in result["incidents"][0]["summary"]
+
+
+def cleanup_guard(path, *, quarantined=0, cleared_at=None):
+    """Physical SQLite contract rows; no claim of a native process launch."""
+    with sqlite3.connect(path) as conn:
+        conn.executescript("""
+            ALTER TABLE pipeline_jobs ADD COLUMN attempt_id TEXT;
+            ALTER TABLE pipeline_jobs ADD COLUMN fencing_token INTEGER;
+            CREATE TABLE pipeline_execution_cleanup(job_id TEXT,attempt_id TEXT,fencing_token INTEGER,
+                worker_slot TEXT,pid INTEGER,reason TEXT,quarantined INTEGER,created_at REAL,cleared_at REAL);
+            UPDATE pipeline_jobs SET attempt_id='PRIVATE-ATTEMPT-AUTHORITY',fencing_token=5;
+        """)
+        conn.execute("INSERT INTO pipeline_execution_cleanup VALUES(?,?,?,?,?,?,?,?,?)",
+            ('job-1','PRIVATE-ATTEMPT-AUTHORITY',5,'PRIVATE-WORKER',123,
+             'SECRET-CLEANUP-REASON prompt=PRIVATE-CONTENT',quarantined,NOW-10,cleared_at))
+
+
+@pytest.mark.parametrize('status,lease', [('PENDING',None),('PENDING_RETRY',None),('IN_PROGRESS',NOW-1)])
+def test_unconfirmed_cleanup_blocks_paid_job_repairs_and_exposes_only_bounded_metadata(tmp_path,status,lease):
+    path=board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path,status=status,updated_at=1,lease_expires_at=lease)
+    cleanup_guard(path)
+    observed=read_observation(tmp_path,now=NOW)
+    assert observed['health']['state']=='blocked'
+    assert observed['health']['execution_cleanup_hold']=={
+        'state':'BLOCKED','sampled_holds':1,'sample_truncated':False,'oldest_hold_age_seconds':10}
+    assert any(item['category']=='configuration' and 'cleanup' in item['summary'] for item in observed['incidents'])
+    assert not any(item['repairable'] for item in observed['incidents'])
+    serialized=json.dumps(observed)
+    for private in ('PRIVATE-ATTEMPT','PRIVATE-WORKER','SECRET-CLEANUP','PRIVATE-CONTENT','RAW-PROMPT'):
+        assert private not in serialized
+
+
+def test_normal_owned_live_execution_guard_does_not_create_cleanup_hold(tmp_path):
+    path=board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path,status='IN_PROGRESS',error=None,lease_expires_at=NOW+60)
+    cleanup_guard(path)
+    observed=read_observation(tmp_path,now=NOW)
+    assert observed['health']['execution_cleanup_hold'] is None
+    assert observed['health']['state']=='healthy'
+    assert observed['incidents']==[]
+
+
+@pytest.mark.parametrize('field,value',[('attempt_id','different-private-attempt'),('fencing_token',6)])
+def test_unrelated_current_lease_cannot_hide_prior_execution_cleanup(tmp_path,field,value):
+    path=board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path,status='IN_PROGRESS',error=None,lease_expires_at=NOW+60)
+    cleanup_guard(path)
+    with sqlite3.connect(path) as conn:
+        conn.execute(f'UPDATE pipeline_jobs SET {field}=?',(value,))
+    observed=read_observation(tmp_path,now=NOW)
+    assert observed['health']['execution_cleanup_hold']['sampled_holds']==1
+    assert not any(incident['repairable'] for incident in observed['incidents'])
+
+
+def test_explicit_quarantine_blocks_even_a_current_lease_then_verified_clear_releases_monitor(tmp_path):
+    path=board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path,status='IN_PROGRESS',error=None,lease_expires_at=NOW+60)
+    cleanup_guard(path,quarantined=1)
+    assert read_observation(tmp_path,now=NOW)['health']['state']=='blocked'
+    with sqlite3.connect(path) as conn:
+        conn.execute('UPDATE pipeline_execution_cleanup SET cleared_at=?',(NOW,))
+    observed=read_observation(tmp_path,now=NOW)
+    assert observed['health']['execution_cleanup_hold'] is None
+    assert observed['incidents']==[]
+
+
+def test_cleanup_hold_preserves_stale_heartbeat_restart_evidence(tmp_path):
+    path=board(tmp_path)
+    heartbeat(tmp_path,timestamp=NOW-100)
+    insert(path,status='PENDING',updated_at=1)
+    cleanup_guard(path,quarantined=1)
+    observed=read_observation(tmp_path,now=NOW)
+    repairable=[incident for incident in observed['incidents'] if incident['repairable']]
+    assert len(repairable)==1 and 'heartbeat is stale' in repairable[0]['summary']
+    assert observed['health']['execution_cleanup_hold']['state']=='BLOCKED'
+
+
+def test_cleanup_hold_sampling_is_bounded(tmp_path):
+    path=board(tmp_path)
+    heartbeat(tmp_path)
+    insert(path,status='PENDING',error=None,updated_at=1)
+    cleanup_guard(path,quarantined=1)
+    with sqlite3.connect(path) as conn:
+        conn.executemany('INSERT INTO pipeline_execution_cleanup(job_id,quarantined,created_at) VALUES(?,1,?)',
+                         [(f'old-{index}',NOW-20) for index in range(300)])
+    observed=read_observation(tmp_path,now=NOW)
+    assert observed['health']['execution_cleanup_hold']['sampled_holds']==256
+    assert observed['health']['execution_cleanup_hold']['sample_truncated'] is True
+    assert len(observed['incidents'])==1
+
+
 def test_expired_execution_is_detected_from_real_database_lease_metadata(tmp_path):
     path = board(tmp_path)
     heartbeat(tmp_path)

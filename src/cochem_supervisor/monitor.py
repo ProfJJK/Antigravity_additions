@@ -29,6 +29,7 @@ _CATEGORIES = (
     ("provider", False, "Provider or network availability prevents execution", (
         r"\b(?:service unavailable|bad gateway|gateway timeout|provider unavailable|overloaded|temporarily unavailable|connection refused|connection reset|connectionerror|connection timed out|network unreachable|dns|name resolution|502|503|504)\b",
         r"\b(?:provider|api|upstream)\b.{0,40}\b(?:outage|unavailable|timeout|timed out)\b",
+        r"\b(?:provider|model|subscription)\b.{0,30}\b(?:busy|backlog|capacity limit)\b",
     )),
     ("resource", False, "Host resources or a resource admission limit prevent execution", (
         r"\b(?:out of memory|memoryerror|cannot allocate memory|no space left|disk full|free disk|free memory|insufficient memory|resource exhausted|too many open files|cpu utilization|database is locked|database is busy|quotaexceedederror)\b",
@@ -170,7 +171,8 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
     heartbeat, incidents = _heartbeat(root, observed, heartbeat_timeout)
     health = {"state": "healthy", "heartbeat": heartbeat["state"], "database": "missing",
               "observed_at": observed, "heartbeat_age_seconds": heartbeat["age_seconds"],
-              "hardware_capacity": heartbeat["capacity"], "job_counts": {}}
+              "hardware_capacity": heartbeat["capacity"], "job_counts": {}, "routing_waits": [],
+              "execution_cleanup_hold": None}
     database = root / "job_board.db"
     if not database.is_file() or database.is_symlink():
         incidents.append(_incident("configuration", False, "The configured pipeline job database is unavailable",
@@ -181,14 +183,39 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                 conn.execute("PRAGMA query_only=ON")
                 conn.row_factory = sqlite3.Row
                 conn.execute("BEGIN")
+                cleanup_rows = []
+                if conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pipeline_execution_cleanup'").fetchone():
+                    # Match the admission barrier without selecting lease
+                    # authority, process identifiers, payloads or free text.
+                    # Normal owned live executions are not cleanup holds.
+                    cleanup_rows = conn.execute("""SELECT c.created_at,c.quarantined
+                        FROM pipeline_execution_cleanup c
+                        WHERE c.cleared_at IS NULL AND (c.quarantined=1 OR NOT EXISTS (
+                          SELECT 1 FROM pipeline_jobs j WHERE j.job_id=c.job_id AND j.status='IN_PROGRESS'
+                          AND j.attempt_id=c.attempt_id AND j.fencing_token=c.fencing_token AND j.lease_expires_at>?))
+                        ORDER BY c.created_at LIMIT ?""",(observed,_MAX_ROWS+1)).fetchall()
+                if cleanup_rows:
+                    created = [row['created_at'] for row in cleanup_rows[:_MAX_ROWS] if _number(row['created_at'])]
+                    health['execution_cleanup_hold'] = {
+                        'state':'BLOCKED', 'sampled_holds':min(len(cleanup_rows),_MAX_ROWS),
+                        'sample_truncated':len(cleanup_rows)>_MAX_ROWS,
+                        'oldest_hold_age_seconds':max(0,observed-min(created)) if created else None}
+                    incidents.append(_incident('configuration',False,
+                        'Native process cleanup is unverified; admission and paid job repair are held',
+                        dict(health['execution_cleanup_hold']), 'unverified native execution cleanup'))
                 # Neither payload/output/receipt JSON nor artifact tables are queried.
                 counts = conn.execute("SELECT status,count(*) FROM pipeline_jobs WHERE kind<>'MACRO_PLANNING_REQUEST' GROUP BY status").fetchall()
                 health["job_counts"] = {str(row[0]): row[1] for row in counts if row[0] in {
                     "PENDING", "PENDING_RETRY", "IN_PROGRESS", "FAILED", "BLOCKED", "COMPLETED"}}
-                rows = conn.execute("""SELECT kind,status,attempts,updated_at,lease_expires_at,
-                    substr(error,1,?) AS error FROM pipeline_jobs
-                    WHERE kind<>'MACRO_PLANNING_REQUEST' AND status IN ('FAILED','PENDING','PENDING_RETRY','IN_PROGRESS')
-                    ORDER BY updated_at DESC LIMIT ?""", (_MAX_ERROR, _MAX_ROWS)).fetchall()
+                has_routing = conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='pipeline_routing_jobs'").fetchone() is not None
+                route_fields = ("r.state AS routing_state,r.next_eligible_at,r.expires_at,r.cycle,"
+                                "substr(r.wait_reason,1,256) AS wait_reason" if has_routing else
+                                "NULL AS routing_state,NULL AS next_eligible_at,NULL AS expires_at,NULL AS cycle,NULL AS wait_reason")
+                route_join = " LEFT JOIN pipeline_routing_jobs r ON r.job_id=j.job_id" if has_routing else ""
+                rows = conn.execute("SELECT j.kind,j.status,j.attempts,j.updated_at,j.lease_expires_at,"
+                    "substr(j.error,1,?) AS error," + route_fields + " FROM pipeline_jobs j" + route_join +
+                    " WHERE j.kind<>'MACRO_PLANNING_REQUEST' AND j.status IN ('FAILED','BLOCKED','PENDING','PENDING_RETRY','IN_PROGRESS')"
+                    " ORDER BY j.updated_at DESC LIMIT ?", (_MAX_ERROR, _MAX_ROWS)).fetchall()
                 # Events provide bounded scheduler activity evidence without
                 # reading details_json, which may contain arbitrary payloads.
                 events = conn.execute("SELECT event,timestamp FROM pipeline_events ORDER BY id DESC LIMIT ?", (_MAX_ROWS,)).fetchall()
@@ -203,6 +230,27 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                 age = observed - row["updated_at"] if _number(row["updated_at"]) else None
                 error = row["error"]
                 classification = None
+                route_state, eligible = row["routing_state"], row["next_eligible_at"]
+                if route_state == "BLOCKED":
+                    incidents.append(_incident("configuration", False,
+                        "Routing is blocked pending operator action",
+                        {"kind": kind, "routing_state": "BLOCKED"}, "routing operator limit"))
+                    continue
+                if status in {"PENDING", "PENDING_RETRY"} and route_state == "WAITING" and _number(eligible):
+                    if eligible > observed:
+                        classification = classify_error(row["wait_reason"] or "Provider busy")
+                        health["routing_waits"].append({"kind": kind, "state": "WAITING",
+                            "category": classification["category"], "next_eligible_at": eligible,
+                            "retry_in_seconds": round(eligible-observed, 3),
+                            "cycle": row["cycle"] if type(row["cycle"]) is int and row["cycle"] >= 0 else None})
+                        # A persisted scheduler delay is progress, not a code
+                        # failure. Do not turn old quota retries into repairs.
+                        continue
+                    # The progress timer starts when a planned delay ends.
+                    # A genuinely abandoned due queue still becomes detectable.
+                    age = min(age, observed-eligible) if age is not None else observed-eligible
+                if status == "BLOCKED":
+                    continue  # Normal unreleased synthesis/manifest barrier.
                 if status in ("FAILED", "PENDING_RETRY"):
                     error = error if isinstance(error, str) and error.strip() else "Failure did not include a diagnostic"
                     classification = classify_error(error)
@@ -214,6 +262,11 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
                         entry["latest_failure_at"] = max(entry["latest_failure_at"] or 0, row["updated_at"])
                     if kind in {"MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS"}:
                         entry["kinds"].add(kind)
+                if cleanup_rows:
+                    # A fenced lease may outlive its physical process tree.
+                    # Until termination is proven, apparent stalled queues or
+                    # leases are expected admission holds, not code repairs.
+                    continue
                 if status == "IN_PROGRESS" and _number(row["lease_expires_at"]) and row["lease_expires_at"] < observed:
                     incidents.append(_incident("code", True, "An execution lease expired without scheduler recovery",
                         {"kind": kind, "expired_seconds": round(observed - row["lease_expires_at"], 3)}, "expired execution lease"))
@@ -228,9 +281,11 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
             for signature, entry in groups.items():
                 classification = entry["classification"]
                 repeats = max(entry["count"], entry["attempts"])
-                repairable = classification["repairable"] and repeats >= repeated_failures
+                repairable = classification["repairable"] and repeats >= repeated_failures and not cleanup_rows
                 summary = classification["summary"]
-                if classification["repairable"] and not repairable:
+                if classification["repairable"] and cleanup_rows:
+                    summary += "; paid repair is held until native process cleanup is verified"
+                elif classification["repairable"] and not repairable:
                     summary += "; waiting for repeated evidence before authorizing repair"
                 incidents.append(_incident(classification["category"], repairable, summary,
                     {"observed_jobs": entry["count"], "attempts": entry["attempts"], "required_repetitions": repeated_failures,
@@ -248,4 +303,7 @@ def read_observation(private_root: str | Path, now: float | None = None, heartbe
     incidents = list(unique.values())
     if incidents:
         health["state"] = "degraded" if any(incident["repairable"] for incident in incidents) else "blocked"
+    elif health["routing_waits"]:
+        health["state"] = "waiting"
+    health["routing_wait_count"] = len(health["routing_waits"])
     return {"health": health, "incidents": incidents}

@@ -6,7 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from cochem_pipeline.config import load_config
+from cochem_pipeline.config import PipelineConfig, load_config
+from cochem_pipeline.routing import RoutingPolicy
 
 
 def config_document(tmp_path, slots=6):
@@ -44,6 +45,8 @@ def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
     assert config.lease_seconds == 30
     assert config.max_attempts == 3
     assert config.providers["gemini"]["model"] == "gemini-3.1-pro"
+    assert isinstance(config.routing, RoutingPolicy)
+    assert config.routing.candidates(10)[1].reasoning_effort == "ultra"
     assert not config.private_root.exists(), "Loading configuration must not provision privileged paths"
 
 
@@ -122,7 +125,8 @@ def test_gemini_argv_requires_verified_complete_placeholder_free_configuration(t
         load_config(write_config(tmp_path, raw))
 
 
-@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-flash", "gemini-3-pro"])
+@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-flash", "gemini-3-pro",
+                                 "gemini-3.1-pro-preview", "pretend-gemini-3.1-pro"])
 def test_synthesis_requires_gemini_31_pro(tmp_path, model):
     raw = config_document(tmp_path, 1)
     raw["providers"]["gemini"]["model"] = model
@@ -188,3 +192,33 @@ def test_exact_line_subscription_probe_loads_without_guessing_native_schema(tmp_
     probe = {"arguments": ["fixture-status"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"}
     raw["providers"]["gemini"]["subscription_probe"] = probe
     assert load_config(write_config(tmp_path, raw)).providers["gemini"]["subscription_probe"] == probe
+
+
+def test_manual_pipeline_config_constructors_receive_independent_default_routing(tmp_path):
+    values = dict(private_root=tmp_path, slot_roots={}, workers={}, providers={}, rules=[],
+                  token_file=tmp_path / "token", operator_name="operator")
+    first, second = PipelineConfig(**values), PipelineConfig(**values)
+    assert isinstance(first.routing, RoutingPolicy) and first.routing == second.routing
+    assert first.routing is not second.routing
+
+
+def test_config_captures_model_routing_independently_of_provider_default_model(tmp_path):
+    raw = config_document(tmp_path)
+    raw["routing"] = {"model_limits": {"codex:gpt-6-astra:ultra": 2},
+                      "failure_cooldowns": {"quota": 60}, "backoff_jitter_fraction": 0}
+    configured = load_config(write_config(tmp_path, raw))
+    assert configured.providers["codex"]["model"] == "gpt-6.1"
+    assert configured.routing.candidates(10)[1].model == "gpt-6-astra"
+    assert configured.routing.candidates(10)[1].max_concurrency == 2
+    assert configured.routing.failure_cooldowns["quota"] == 60
+    raw["routing"]["model_limits"]["codex:gpt-6-astra:ultra"] = 63
+    assert configured.routing.candidates(10)[1].max_concurrency == 2
+
+
+@pytest.mark.parametrize("routing", [[], {"tiers": {}}, {"backoff_max_seconds": 601},
+                                     {"max_routing_cycles": -1}, {"provider_limits": {"api": {}}}])
+def test_invalid_routing_policy_is_rejected_before_runtime(tmp_path, routing):
+    raw = config_document(tmp_path)
+    raw["routing"] = routing
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))

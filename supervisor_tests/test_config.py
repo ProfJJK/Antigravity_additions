@@ -38,6 +38,7 @@ def test_defaults_native_paths_and_pipeline_settings_are_loaded_without_provisio
     assert result["pipeline_token_file"] == str(tmp_path / "operator" / "token")
     assert result["pipeline_port"] == 47824
     assert result["pipeline_providers"]["gemini"]["model"] == "gemini-3.1-pro"
+    assert result["pipeline_routing"]["tiers"]["10"][1]["reasoning_effort"] == "ultra"
     assert result["providers"][1]["model"] == "claude-fable-5-1"
     assert not Path(result["private_root"]).exists()
     assert result["allowed_paths"] == DEFAULT_ALLOWED
@@ -185,4 +186,15 @@ def test_unhashable_provider_input_is_rejected_as_configuration(tmp_path, provid
     raw = document(tmp_path)
     raw["providers"][0]["provider"] = provider
     with pytest.raises(ValueError, match="Repair providers"):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize("policy", [[], {"tiers": {}}, {"tiers": {"1-4": []}}])
+def test_pipeline_routing_contract_rejects_wrong_matrix(tmp_path, policy):
+    raw = document(tmp_path)
+    path = Path(raw["pipeline_config"])
+    pipeline = json.loads(path.read_text(encoding="utf-8"))
+    pipeline["routing"] = policy
+    path.write_text(json.dumps(pipeline), encoding="utf-8")
+    with pytest.raises(ValueError, match="Routing policy"):
         load_config(write_config(tmp_path, raw))

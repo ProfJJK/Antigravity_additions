@@ -6,6 +6,7 @@ import json
 import logging
 import os
 from pathlib import Path
+import re
 import shutil
 import sys
 import threading
@@ -19,7 +20,8 @@ from cochem.warden.ladder import emit_recovery_event
 from .hardware_guard import HardwareGuard
 from .oracle import ContextEngine, Oracle, Rule
 from .store import JobStore
-from .worker import NativeRunner, WorkerCleanupError
+from .worker import NativeRunner, WorkerCleanupError, ExecutionRevokedError
+from .failures import ProviderFailure
 from .heartbeat import Heartbeat
 from . import __version__
 
@@ -57,14 +59,21 @@ def clear_slot(path: Path) -> None:
 
 class Runtime:
     def __init__(self, config):
-        from .windows import WorkerIdentity, require_system, validate_layout, validate_code_path
+        from .windows import WorkerIdentity, require_system, validate_layout, validate_code_path, current_boot_identity
         require_system()
         validate_code_path(Path(__file__))
         validate_code_path(Path(sys.executable))
         identities = {slot:WorkerIdentity(**value) for slot,value in config.workers.items()}
         validate_layout(config.private_root,config.slot_roots,identities,require_defender=True)
         self.config = config
-        self.store = JobStore(config.job_db, max_attempts=config.max_attempts)
+        self.boot_id = current_boot_identity()
+        self.containment_id = os.environ.get('COCHEM_WARDEN_CONTAINMENT_ID')
+        if self.containment_id is not None and not re.fullmatch(r'[0-9a-f]{32}',self.containment_id):
+            raise RuntimeError('Invalid privileged launcher containment identity')
+        self.store = JobStore(config.job_db,max_attempts=config.max_attempts,routing_policy=config.routing,
+                              cleanup_boot_id=self.boot_id)
+        self.store.recover_execution_quarantines_after_boot(self.boot_id)
+        previous_cleanup = self.store.quarantine_unclosed_executions('Warden restarted before native cleanup was confirmed')
         self.guard = HardwareGuard(max_agents=len(config.workers),workspace=config.private_root,
                                    min_free_memory_mb=config.min_free_memory_mb,
                                    min_free_disk_mb=config.min_free_disk_mb)
@@ -79,7 +88,11 @@ class Runtime:
         self.runner = NativeRunner(config)
         self.lock = threading.RLock()
         self.active = {}
-        self.quarantined = {}
+        self.quarantined = {row['worker_slot']:row.get('reason') or 'Previous native cleanup is unverified' for row in previous_cleanup
+                            if row['worker_slot'] in config.slot_roots}
+        if any(row['worker_slot'] not in config.slot_roots for row in previous_cleanup):
+            self.quarantined.update({slot:'Previous native cleanup has unknown worker ownership'
+                                     for slot in config.slot_roots})
         self.stop_event = threading.Event()
         self.owner = 'warden-'+uuid.uuid4().hex
         self.event_cursor = 0
@@ -89,7 +102,8 @@ class Runtime:
         for slot,root in config.slot_roots.items():
             # Windows Job Object kill-on-close terminates former workers after service death.
             # This step must happen before any new identity can execute.
-            clear_slot(root)
+            if slot not in self.quarantined:
+                clear_slot(root)
 
     def trip(self,job_id: str) -> None:
         # Kill independently of a scheduler lock that may be awaiting SQLite.
@@ -120,7 +134,7 @@ class Runtime:
         self.oracle.record(node['job_id'],json.dumps(node['payload'],ensure_ascii=False),facets=(node['kind'],))
         # Watermarks are checked only after the prescribed trailing debounce interval.
         if self.stop_event.wait(.5):
-            raise RuntimeError('Warden is shutting down')
+            raise ExecutionRevokedError('Warden is shutting down')
         deadline = time.monotonic()+3
         while time.monotonic()<deadline:
             self.drain_context()
@@ -128,7 +142,7 @@ class Runtime:
             if context is not None and not self.oracle.has_pending(node['job_id']):
                 return context['xml']
             if self.stop_event.wait(.025):
-                raise RuntimeError('Warden is shutting down')
+                raise ExecutionRevokedError('Warden is shutting down')
         raise RuntimeError('Oracle did not durably deliver core context after debounce')
 
     def drain_context(self):
@@ -158,21 +172,13 @@ class Runtime:
                     self.active[job_id]['pid'] = pid
             output,receipt = self.runner.run(node,slot,context,heartbeat,launched)
             with self.lock:
+                self.store.clear_execution_quarantine(job_id,node['attempt_id'],node['fencing_token'])
+                self.active[job_id]['process_cleanup_verified'] = True
                 if self.active[job_id].get('tripped') or job_id in self.oracle.tripped_tasks:
-                    raise RuntimeError('Breaker revoked this attempt')
+                    raise ExecutionRevokedError('Breaker revoked this attempt')
                 self.store.complete(job_id,node['attempt_id'],node['fencing_token'],output,receipt)
         except Exception as exc:
-            if isinstance(exc,WorkerCleanupError):
-                with self.lock:
-                    self.quarantined[slot] = str(exc)
-            retry = int(node['fencing_token']) < self.config.max_attempts and not self.stop_event.is_set()
-            with self.lock:
-                retry = retry and not self.active[job_id].get('tripped',False)
-            self.store.fail(job_id,node['attempt_id'],node['fencing_token'],
-                            f'{type(exc).__name__}: {exc}',retry=retry)
-            emit_recovery_event(self.config.job_db,{'tier':1,'action':'worker_failure','job_id':job_id,
-                                'attempt_id':node['attempt_id'],'reason':str(exc),'retry':retry})
-            LOG.error('Job %s failed: %s',job_id,exc)
+            self._record_failure(node,slot,exc)
         finally:
             try:
                 observer.stop()
@@ -188,8 +194,62 @@ class Runtime:
             with self.lock:
                 active = self.active.pop(job_id,None)
                 if active is not None:
+                    if active.get('process_cleanup_verified',False):
+                        try:
+                            self.store.clear_execution_quarantine(job_id,node['attempt_id'],node['fencing_token'])
+                        except Exception as exc:
+                            self.quarantined[slot] = 'Durable native cleanup confirmation could not be saved'
+                            LOG.error('Slot %s cleanup receipt failed: %s',slot,exc)
                     active['cleanup_verified'] = slot not in self.quarantined
                     active['cleaned'].set()
+
+    def _record_failure(self,node,slot,exc):
+        """Report one finished dispatch; durable scheduling owns all retry budgets."""
+        job_id = node['job_id']
+        with self.lock:
+            active = self.active.get(job_id,{})
+            if isinstance(exc,WorkerCleanupError):
+                self.quarantined[slot] = str(exc)
+                active['process_cleanup_verified'] = False
+                self.store.quarantine_execution(job_id,node['attempt_id'],node['fencing_token'],slot,
+                                                str(exc),pid=active.get('pid'))
+            else:
+                # NativeRunner either never launched, or finished its managed
+                # close before returning/raising. This exact proof must precede
+                # DB release so cancellation/reaper cannot free phantom capacity.
+                self.store.clear_execution_quarantine(job_id,node['attempt_id'],node['fencing_token'])
+                active['process_cleanup_verified'] = True
+            retry = not (self.stop_event.is_set() or active.get('tripped',False)
+                         or slot in self.quarantined or isinstance(exc,ExecutionRevokedError))
+        category = exc.category if isinstance(exc,ProviderFailure) else 'code'
+        retry_after = exc.retry_after_seconds if isinstance(exc,ProviderFailure) else None
+        hold_scope = exc.hold_scope if isinstance(exc,ProviderFailure) else None
+        accepted = self.store.fail(job_id,node['attempt_id'],node['fencing_token'],
+                                   f'{type(exc).__name__}: {exc}',retry=retry,
+                                   category=category,retry_after_seconds=retry_after,hold_scope=hold_scope)
+        # A cancelled/reaped attempt can no longer mutate its job or trigger
+        # another dispatch. Its stale failure is not a fresh recovery incident.
+        if accepted:
+            emit_recovery_event(self.config.job_db,{
+                'tier':1,'action':('routing_hold' if category in ('configuration','compatibility')
+                    else 'provider_unavailable' if isinstance(exc,ProviderFailure)
+                    and category in ('quota','auth','busy','context','provider','backlog') else 'worker_failure'),
+                'job_id':job_id,'attempt_id':node['attempt_id'],'category':category,
+                'reason':str(exc),'retry_requested':retry,'retry_after_seconds':retry_after,
+                'hold_scope':hold_scope})
+            LOG.error('Job %s failed (%s): %s',job_id,category,exc)
+        return accepted
+
+    def _terminate_fenced_attempts(self):
+        """Stop local trees whose durable leases were cancelled or failed elsewhere."""
+        with self.lock:
+            claimed = [dict(value['node']) for value in self.active.values()]
+        for previous in claimed:
+            current = self.store.get(previous['job_id'])
+            if (current['status'] != 'IN_PROGRESS' or current['attempt_id'] != previous['attempt_id']
+                    or current['fencing_token'] != previous['fencing_token']
+                    or current['lease_expires_at'] is None or current['lease_expires_at'] <= time.time()):
+                self.runner.terminate(previous['job_id'])
 
     def tick(self):
         for event in self.store.event_batch(self.event_cursor):
@@ -200,6 +260,7 @@ class Runtime:
                                    facets=(node['kind'],event['event']))
         self.drain_context()
         # Terminate old local processes before the database makes their work eligible again.
+        self._terminate_fenced_attempts()
         for node in self.store.active_jobs():
             if node['lease_expires_at'] <= time.time():
                 self.runner.terminate(node['job_id'])
@@ -216,20 +277,25 @@ class Runtime:
                 if len(self.active)>=ceiling:
                     break
                 node = self.store.claim(self.owner,self.config.lease_seconds,max_workers=ceiling,
-                                        exclude_job_ids=tuple(self.active),worker_slot=slot)
+                                        exclude_job_ids=tuple(self.active),worker_slot=slot,
+                                        requires_cleanup=True,cleanup_boot_id=self.boot_id,
+                                        containment_id=self.containment_id)
                 if node is None:
                     continue
                 self.active[node['job_id']] = {'node':node,'slot':slot,'pid':None,'tripped':False,
-                                              'cleaned':threading.Event(),'cleanup_verified':False}
+                                              'cleaned':threading.Event(),'cleanup_verified':False,
+                                              'process_cleanup_verified':False}
                 self.pool.submit(self._execute,node,slot)
 
     def status(self):
         with self.lock:
-            active = [{'job_id':key,'slot':value['slot'],'pid':value['pid']} for key,value in self.active.items()]
+            active = [{'job_id':key,'slot':value['slot'],'pid':value['pid'],
+                       'route':value['node'].get('route')} for key,value in self.active.items()]
         return {'version':__version__,'service_identity':'SYSTEM','hardware':self.guard.snapshot(),
                 'active':active,'quarantined_slots':dict(self.quarantined),
                 'trip_errors':self.oracle.trip_errors,'pid':os.getpid(),
                 'instance_id':self.heartbeat.instance_id,'process_started_at':self.heartbeat.started_at,
+                'routing':self.store.routing_status(),
                 'source_root':str(Path(__file__).resolve().parents[2])}
 
     def cancel(self,workflow_id):

@@ -7,8 +7,10 @@ independent of whichever pipeline release the Warden currently runs.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import ctypes as C
 from functools import lru_cache
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -17,7 +19,8 @@ import subprocess
 import sys
 import tempfile
 import time
-from typing import Mapping
+from typing import Callable, Mapping
+import uuid
 
 from cochem_pipeline import windows as native
 
@@ -156,11 +159,19 @@ def _task_operation(name: str, operation: str) -> dict:
     native.require_system()
     name = _task_name(name)
     commands = {
-        "start": "Start-ScheduledTask -InputObject $task;",
+        "snapshot": "",
+        "disable": "Disable-ScheduledTask -InputObject $task | Out-Null;",
+        "enable": "Enable-ScheduledTask -InputObject $task | Out-Null;",
+        "start": (
+            "if (-not $task.Settings.Enabled) { throw 'Administrator-disabled task cannot be started without owned enable intent' }; "
+            "if ($registered.GetInstances(0).Count -eq 0) { Start-ScheduledTask -InputObject $task };"
+        ),
         "stop": (
+            "if ($task.Settings.Enabled) { throw 'Disable task scheduling before confirming process-tree stop' }; "
             "Stop-ScheduledTask -InputObject $task; $deadline=(Get-Date).AddSeconds(30); "
             "do { $task=Get-ScheduledTask -TaskName $data.name -TaskPath '\\'; "
-            "if ($task.State -notin @('Running','Queued')) { break }; "
+            "if ($task.Settings.Enabled) { throw 'Task scheduling was enabled during controlled stop' }; "
+            "if ($registered.GetInstances(0).Count -eq 0 -and $task.State -notin @('Running','Queued')) { break }; "
             "if ((Get-Date) -gt $deadline) { throw 'Managed task did not stop within thirty seconds' }; "
             "Start-Sleep -Milliseconds 100 } while ($true);"
         ),
@@ -171,11 +182,109 @@ def _task_operation(name: str, operation: str) -> dict:
         "$task=Get-ScheduledTask -TaskName $data.name -TaskPath '\\' -ErrorAction Stop; "
         "if ($task.Principal.UserId -notin @('SYSTEM','NT AUTHORITY\\SYSTEM','S-1-5-18')) "
         "{ throw 'Managed task must run as SYSTEM' }; "
+        "$service=New-Object -ComObject 'Schedule.Service'; $service.Connect(); "
+        "$registered=$service.GetFolder('\\').GetTask($data.name); "
         + commands[operation]
         + "$task=Get-ScheduledTask -TaskName $data.name -TaskPath '\\'; "
-        "@{name=$task.TaskName;state=[string]$task.State;operation=$data.operation} | ConvertTo-Json -Compress"
+        "@{name=$task.TaskName;state=[string]$task.State;enabled=[bool]$task.Settings.Enabled;"
+        "instances=[int]$registered.GetInstances(0).Count;operation=$data.operation} | ConvertTo-Json -Compress"
     )
-    return json.loads(native._powershell(script, {"name": name, "operation": operation}))
+    result = _validate_task_snapshot(json.loads(native._powershell(script, {"name": name, "operation": operation})))
+    if operation == "disable" and result["enabled"]:
+        raise native.WindowsIsolationError("Task scheduling could not be disabled")
+    if operation == "enable" and not result["enabled"]:
+        raise native.WindowsIsolationError("Owned task scheduling could not be restored")
+    if operation == "stop" and (result["enabled"] or _task_active(result)):
+        raise native.WindowsCleanupError("Managed task scheduling or instances remain active after stop")
+    return result
+
+
+def _validate_task_snapshot(value: object) -> dict:
+    if (not isinstance(value, dict) or type(value.get("enabled")) is not bool
+            or type(value.get("instances")) is not int or value["instances"] < 0
+            or value.get("state") not in ("Ready", "Running", "Queued", "Disabled")):
+        raise native.WindowsIsolationError("Scheduled Task did not return a reliable state/instance snapshot")
+    return dict(value)
+
+
+def _task_active(snapshot: dict) -> bool:
+    snapshot = _validate_task_snapshot(snapshot)
+    return snapshot["instances"] > 0 or snapshot["state"] in {"Running", "Queued"}
+
+
+def _validate_task_marker(value: object, name: str) -> dict:
+    expected = {"schema", "task_name", "original_enabled", "phase"}
+    if (not isinstance(value, dict) or set(value) != expected or type(value["schema"]) is not int
+            or value["schema"] != 1 or value["task_name"] != _task_name(name)
+            or type(value["original_enabled"]) is not bool
+            or value["phase"] not in ("DISABLING", "DISABLED", "STOPPED", "STARTING")):
+        raise native.WindowsIsolationError("Invalid protected Scheduled Task control intent")
+    return dict(value)
+
+
+def _stop_intent(name: str, snapshot: dict, existing: dict | None = None) -> dict:
+    """Persist the first observed enabled intent across interrupted stop retries."""
+    snapshot = _validate_task_snapshot(snapshot)
+    if existing is not None:
+        original = _validate_task_marker(existing, name)["original_enabled"]
+    else:
+        original = snapshot["enabled"]
+    return {"schema": 1, "task_name": _task_name(name), "original_enabled": original, "phase": "DISABLING"}
+
+
+def _start_intent(name: str, snapshot: dict, marker: dict | None) -> bool:
+    """Return whether this controlled start owns authority to enable scheduling."""
+    snapshot = _validate_task_snapshot(snapshot)
+    if marker is None:
+        if not snapshot["enabled"]:
+            raise native.WindowsIsolationError("Warden task is administrator-disabled; no supervisor stop intent permits enabling it")
+        return False
+    marker = _validate_task_marker(marker, name)
+    if not marker["original_enabled"]:
+        raise native.WindowsIsolationError("Warden task was administrator-disabled before the controlled stop; enabling requires operator action")
+    if marker["phase"] not in {"STOPPED", "STARTING"}:
+        raise native.WindowsCleanupError("Complete the interrupted controlled stop before restoring task scheduling")
+    if snapshot["enabled"] or _task_active(snapshot):
+        raise native.WindowsCleanupError("Owned task scheduling changed before controlled start; repeat the disabled stop proof")
+    return True
+
+
+def _read_task_marker(path: Path, name: str) -> dict | None:
+    if not path.exists() and not path.is_symlink():
+        return None
+    native.validate_private_path(path)
+    if path.is_symlink() or not path.is_file() or path.stat().st_nlink != 1 or path.stat().st_size > 4096:
+        raise native.WindowsIsolationError("Scheduled Task intent must be a bounded private ordinary file")
+    return _validate_task_marker(json.loads(path.read_text(encoding="utf-8")), name)
+
+
+def _write_task_marker(path: Path, name: str, marker: dict) -> None:
+    _write_control(path, _validate_task_marker(marker, name))
+
+
+@contextmanager
+def _task_control_lock(name: str):
+    """Serialize independent privileged callers; an abandoned owner is recoverable."""
+    native.require_system()
+    api = native._api()["kernel32"]
+    identifier = hashlib.sha256(_task_name(name).casefold().encode("utf-8")).hexdigest()
+    lock = native._check(api.CreateMutexW(None, False, "Global\\CoChemTaskControl-" + identifier), "Open task control mutex")
+    acquired = False
+    try:
+        status = api.WaitForSingleObject(lock, 30000)
+        if status not in (0, 0x80):
+            raise native.WindowsIsolationError("Another controller still owns Scheduled Task lifecycle control")
+        acquired = True
+        yield
+    finally:
+        try:
+            if acquired:
+                release = api.ReleaseMutex
+                release.restype = native.BOOL
+                release.argtypes = [native.HANDLE]
+                native._check(release(lock), "Release task control mutex")
+        finally:
+            native._close(lock)
 
 
 def _process_creation_time(handle) -> int:
@@ -191,14 +300,7 @@ def _process_creation_time(handle) -> int:
 @lru_cache(maxsize=1)
 def _current_boot_id() -> int:
     """Use trusted Windows boot metadata, never a clock/uptime approximation."""
-    native.require_system()
-    data = json.loads(native._powershell(
-        "$boot=(Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime; "
-        "@{boot_id=$boot.ToFileTimeUtc()} | ConvertTo-Json -Compress"))
-    boot = data.get("boot_id")
-    if type(boot) is not int or boot <= 0:
-        raise native.WindowsIsolationError("Windows did not report a reliable boot identity")
-    return boot
+    return native.current_boot_identity()
 
 
 def _record_exited(record: dict, current_boot: int) -> bool:
@@ -216,7 +318,25 @@ def _read_control(path: Path) -> dict:
             or any(type(data.get(key)) is not int or data[key] <= 0 for key in ("pid", "created", "job_handle", "boot_id"))
             or type(data.get("closed")) is not bool or type(data.get("contained")) is not bool):
         raise native.WindowsIsolationError("Invalid Warden process ownership record")
+    _validate_containment_id(data.get("containment_id"))
     return data
+
+
+def _validate_containment_id(value: object) -> str | None:
+    # Old records intentionally have no same-boot guard-clearing authority.
+    if value is not None and (not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{32}", value) is None):
+        raise native.WindowsIsolationError("Invalid protected Warden containment identity")
+    return value
+
+
+def _warden_environment(containment_id: str | None, inherited: Mapping[str, str]) -> str:
+    """Bind exactly this launcher-owned Job Object, never an inherited scope."""
+    _validate_containment_id(containment_id)
+    environment = {key: value for key, value in inherited.items()
+                   if key.upper() != "COCHEM_WARDEN_CONTAINMENT_ID"}
+    if containment_id is not None:
+        environment["COCHEM_WARDEN_CONTAINMENT_ID"] = containment_id
+    return "\x00".join(f"{key}={value}" for key, value in sorted(environment.items(), key=lambda item: item[0].upper())) + "\x00\x00"
 
 
 def _write_control(path: Path, data: dict) -> None:
@@ -273,31 +393,54 @@ def _wait_job_empty(job, timeout: float = 30) -> None:
 
 
 def _task_state(name: str) -> str:
-    return json.loads(native._powershell(
-        "$task=Get-ScheduledTask -TaskName $data.name -TaskPath '\\' -ErrorAction Stop; "
-        "if ($task.Principal.UserId -notin @('SYSTEM','NT AUTHORITY\\SYSTEM','S-1-5-18')) { throw 'Managed task must run as SYSTEM' }; "
-        "@{state=[string]$task.State} | ConvertTo-Json -Compress", {"name": _task_name(name)}))["state"]
+    return _task_operation(name, "snapshot")["state"]
 
 
-def stop_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
-    native.require_system()
+def _task_control_paths(pointer_file: str | Path | None) -> tuple[Path, Path]:
     if pointer_file is None:
-        raise native.WindowsIsolationError("Confirmed Warden stop requires its protected release pointer")
+        raise native.WindowsIsolationError("Controlled Warden start/stop requires its protected release pointer")
     native.validate_private_path(pointer_file)
-    control = Path(pointer_file).parent / "warden-process.json"
-    state = _task_state(name)
+    root = Path(pointer_file).parent
+    native.validate_private_directory(root)
+    return root / "warden-process.json", root / "warden-task-control.json"
+
+
+def _can_finish_without_retained_job(snapshot: dict, record: dict | None, current_boot: int) -> bool:
+    """A closed old record is useful only after all scheduling is disabled."""
+    snapshot = _validate_task_snapshot(snapshot)
+    if snapshot["enabled"] or _task_active(snapshot):
+        return False
+    return record is None or _record_exited(record, current_boot)
+
+
+def _stop_task_locked(name: str, control: Path, marker_path: Path) -> dict:
+    snapshot = _task_operation(name, "snapshot")
+    marker = _stop_intent(name, snapshot, _read_task_marker(marker_path, name))
+    # Write intent before changing Task Scheduler. If either process crashes,
+    # the next controller retains the original enabled state and finishes stop.
+    _write_task_marker(marker_path, name, marker)
+    _task_operation(name, "disable")
+    marker = {**marker, "phase": "DISABLED"}
+    _write_task_marker(marker_path, name, marker)
     current_boot = _current_boot_id()
     deadline = time.monotonic() + 10
     record = None
     job = None
     while job is None:
+        # Disabling prevents the restart/trigger race between this snapshot and
+        # Stop-ScheduledTask. GetInstances also sees a running instance when the
+        # disabled registration's displayed state alone is not informative.
+        snapshot = _task_operation(name, "snapshot")
+        if snapshot["enabled"]:
+            raise native.WindowsCleanupError("Task scheduling was reenabled during controlled stop")
         if control.exists():
             record = _read_control(control)
             exited = _record_exited(record, current_boot)
-            if exited and state in {"Running", "Queued"}:
-                state = _task_state(name)
-            if exited and state not in {"Running", "Queued"}:
-                return {**_task_operation(name, "stop"), "tree_exit_verified": True}
+            if _can_finish_without_retained_job(snapshot, record, current_boot):
+                result = _task_operation(name, "stop")
+                _write_task_marker(marker_path, name, {**marker, "phase": "STOPPED"})
+                return {**result, "tree_exit_verified": True, "scheduling_disabled": True,
+                        "original_enabled": marker["original_enabled"]}
             # Do not kill the launcher in the CreateProcess/AssignProcess gap.
             # It publishes containment before resuming the suspended child.
             if not exited and record["contained"]:
@@ -307,8 +450,11 @@ def stop_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
                 except native.WindowsIsolationError:
                     if time.monotonic() >= deadline:
                         raise native.WindowsCleanupError("Warden ownership is stale or unavailable; process-tree exit cannot be confirmed") from None
-        elif state not in {"Running", "Queued"}:
-            return {**_task_operation(name, "stop"), "tree_exit_verified": True}
+        elif _can_finish_without_retained_job(snapshot, None, current_boot):
+            result = _task_operation(name, "stop")
+            _write_task_marker(marker_path, name, {**marker, "phase": "STOPPED"})
+            return {**result, "tree_exit_verified": True, "scheduling_disabled": True,
+                    "original_enabled": marker["original_enabled"]}
         if time.monotonic() >= deadline:
             raise native.WindowsCleanupError("Running Warden did not publish a verifiable process-tree ownership record")
         time.sleep(0.05)
@@ -319,21 +465,115 @@ def stop_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
             native._check(native._api()["kernel32"].TerminateJobObject(job, 1), "Terminate retained Warden process tree")
             _wait_job_empty(job)
             _write_control(control, {**record, "closed": True})
-        return {**result, "tree_exit_verified": True}
+        _write_task_marker(marker_path, name, {**marker, "phase": "STOPPED"})
+        result = {**result, "tree_exit_verified": True, "scheduling_disabled": True,
+                  "original_enabled": marker["original_enabled"]}
+        # Only this path retained the actual Job Object and measured it empty.
+        # Closed-file records alone never authorize same-boot guard recovery.
+        if record.get("containment_id") is not None:
+            result.update(stopped_containment_id=record["containment_id"], stopped_boot_id=record["boot_id"])
+        return result
     finally:
         native._close(job)
 
 
-def start_task(name: str) -> dict:
-    return _task_operation(name, "start")
+def stop_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
+    """Disable future scheduling first, then prove the current process tree empty.
+
+    The durable private marker deliberately remains after success. Only a
+    subsequent controlled start may restore the previous enabled intent.
+    """
+    native.require_system()
+    name = _task_name(name)
+    control, marker_path = _task_control_paths(pointer_file)
+    with _task_control_lock(name):
+        return _stop_task_locked(name, control, marker_path)
+
+
+def start_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
+    """Restore only scheduling disabled by our stop, never an admin-disabled task."""
+    native.require_system()
+    name = _task_name(name)
+    control, marker_path = _task_control_paths(pointer_file)
+    with _task_control_lock(name):
+        marker = _read_task_marker(marker_path, name)
+        snapshot = _task_operation(name, "snapshot")
+        if marker is not None:
+            if not marker["original_enabled"]:
+                raise native.WindowsIsolationError("Warden task was administrator-disabled before controlled stop; operator action is required")
+            # An interrupted enable/start may already have launched a process.
+            # Repeat the disabled stop proof instead of assuming it never ran.
+            _stop_task_locked(name, control, marker_path)
+            marker = _read_task_marker(marker_path, name)
+            snapshot = _task_operation(name, "snapshot")
+        enable = _start_intent(name, snapshot, marker)
+        if marker is not None:
+            _write_task_marker(marker_path, name, {**marker, "phase": "STARTING"})
+        if enable:
+            _task_operation(name, "enable")
+        result = _task_operation(name, "start")
+        if marker is not None:
+            native.validate_private_path(marker_path)
+            marker_path.unlink()
+        return {**result, "scheduling_restored": enable}
 
 
 def restart_task(name: str, *, pointer_file: str | Path | None = None) -> dict:
     stop_task(name, pointer_file=pointer_file)
-    return start_task(name)
+    return start_task(name, pointer_file=pointer_file)
 
 
-def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Path | None = None) -> int:
+def _matching_fresh_upgrade_receipt(value: object, source: Path, target: Path) -> bool:
+    """A previous reviewed fresh install may repeat without inventing history."""
+    return (isinstance(value, dict)
+            and set(value) == {"source_private", "target_private", "status", "quarantine_preserved"}
+            and value.get("status") == "NO_PRIOR_LEDGER"
+            and value.get("quarantine_preserved") is False
+            and value.get("source_private") == str(source.absolute())
+            and value.get("target_private") == str(target.absolute()))
+
+
+def migrate_ledger(source_private: str | Path, target_private: str | Path, supervisor_task: str) -> dict:
+    """Administrator upgrade gate: preserve budgets, never resume an old daemon."""
+    native.require_system()
+    native.validate_private_directory(target_private)
+    source = Path(source_private)
+    target = Path(target_private)
+    if source.exists() or source.is_symlink():
+        native.validate_private_directory(source)
+        for filename in ('supervisor.db', 'supervisor.db-wal', 'supervisor.db-shm',
+                         'repair-quarantine.json', 'release-journal.json'):
+            item = source / filename
+            if item.exists() or item.is_symlink():
+                native.validate_private_path(item)
+    prior_fresh = False
+    receipt = target / "budget-upgrade.json"
+    source_ledger_exists = (source / "supervisor.db").exists()
+    if not source_ledger_exists and (receipt.exists() or receipt.is_symlink()):
+        native.validate_private_path(receipt)
+        if receipt.is_symlink() or not receipt.is_file() or receipt.stat().st_nlink != 1 or receipt.stat().st_size > 16384:
+            raise native.WindowsIsolationError("Budget upgrade receipt must be a bounded private ordinary file")
+        prior_fresh = _matching_fresh_upgrade_receipt(json.loads(receipt.read_text(encoding="utf-8")), source, target)
+    native._powershell(
+        "$service=New-Object -ComObject 'Schedule.Service'; $service.Connect(); "
+        "$registered=$null; foreach ($candidate in $service.GetFolder('\\').GetTasks(1)) { "
+        "if ($candidate.Name -eq $data.name) { $registered=$candidate; break } }; "
+        "if ($null -ne $registered) { "
+        "if (-not $data.source_ledger_exists -and -not $data.prior_fresh) { throw 'Existing supervisor task requires the actual previous supervisor.db budget ledger or its exact prior fresh-install receipt; refusing to assume zero historical spend' }; "
+        "if ($registered.GetInstances(0).Count -gt 0 -or $registered.State -in @(2,4) -or $registered.Enabled) "
+        "{ throw 'Stop and disable the previous supervisor task before copying its budget ledger' } }",
+        {'name': _task_name(supervisor_task), 'source_ledger_exists': source_ledger_exists, 'prior_fresh': prior_fresh})
+    from .upgrade import migrate_budget_state
+    result = migrate_budget_state(source, Path(target_private))
+    for filename in ('supervisor.db', 'repair-quarantine.json', 'budget-upgrade.json'):
+        item = Path(target_private) / filename
+        if item.exists():
+            native.validate_private_path(item)
+    return result
+
+
+def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Path | None = None,
+                     on_tree_exit: Callable[[dict], None] | None = None) -> int:
     """Run the launcher's already-verified pipeline release in a kill-on-close job.
 
     This is not a repair/test entrypoint. The caller must verify its protected
@@ -342,6 +582,8 @@ def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Pa
     its pipeline child and nested worker process trees.
     """
     native.require_system()
+    if on_tree_exit is not None and not callable(on_tree_exit):
+        raise ValueError("Tree-exit reconciliation must be a trusted callable")
     if not argv or any(not isinstance(arg, str) or "\x00" in arg for arg in argv):
         raise ValueError("System child requires an explicit argv without NULs")
     native.validate_code_path(argv[0])
@@ -360,6 +602,7 @@ def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Pa
     job = native._check(api["kernel32"].CreateJobObjectW(None, None), "Create launcher process-tree job")
     process = native._PROCESS_INFORMATION()
     record = None
+    containment_id = uuid.uuid4().hex if control is not None else None
     try:
         limit = native._EXTENDED_LIMIT()
         limit.BasicLimitInformation.LimitFlags = 0x2000
@@ -367,11 +610,13 @@ def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Pa
                       "Enable launcher kill-on-close containment")
         if control is not None:
             record = {"schema": 1, "pid": os.getpid(), "created": _process_creation_time(api["kernel32"].GetCurrentProcess()),
-                      "job_handle": int(job), "closed": False, "contained": False, "boot_id": _current_boot_id()}
+                      "job_handle": int(job), "closed": False, "contained": False, "boot_id": _current_boot_id(),
+                      "containment_id": containment_id}
             _write_control(control, record)
         startup = native._STARTUPINFOW(cb=C.sizeof(native._STARTUPINFOW))
         command = C.create_unicode_buffer(subprocess.list2cmdline(argv))
-        native._check(create(argv[0], command, None, None, False, 0x4 | 0x08000000, None, str(cwd),
+        environment = C.create_unicode_buffer(_warden_environment(containment_id, os.environ))
+        native._check(create(argv[0], command, None, None, False, 0x4 | 0x400 | 0x08000000, environment, str(cwd),
                              C.byref(startup), C.byref(process)), "Create suspended verified Warden")
         native._check(api["kernel32"].AssignProcessToJobObject(job, process.hProcess), "Contain verified Warden before resume")
         if control is not None and record is not None:
@@ -408,6 +653,13 @@ def run_system_child(argv: list[str], cwd: str | Path, *, control_file: str | Pa
             if process.hProcess and api["kernel32"].WaitForSingleObject(process.hProcess, 10000) != 0:
                 raise native.WindowsCleanupError("Verified Warden process termination was not confirmed")
             if control is not None and record is not None:
+                # Reconcile at the actual live-handle proof, including ordinary
+                # Warden crashes before Task Scheduler starts a new instance.
+                # A later reader of a closed JSON record has no such authority.
+                if on_tree_exit is not None:
+                    on_tree_exit({"stopped_containment_id": record["containment_id"],
+                                  "stopped_boot_id": record["boot_id"],
+                                  "tree_exit_verified": True, "launcher_exit_verified": True})
                 _write_control(control, {**record, "closed": True})
         finally:
             native._close(job)
@@ -487,6 +739,10 @@ def configure_tasks(config_file: str | Path, previous_source: str | Path) -> dic
         "$service=New-Object -ComObject 'Schedule.Service'; $service.Connect(); $folder=$service.GetFolder('\\'); "
         "foreach ($name in @($data.warden,$data.supervisor)) { "
         "$folder.GetTask($name).SetSecurityDescriptor('O:SYG:SYD:P(A;;GA;;;SY)(A;;GA;;;BA)',0) }; "
+        # This is an administrator-reviewed action replacement. The installer
+        # requires the previous Warden disabled during upgrade; restore that
+        # registration only after both replacement actions and ACLs are ready.
+        "Enable-ScheduledTask -TaskName $data.warden -TaskPath '\\' | Out-Null; "
         "} catch { "
         "$failure=$_; Register-ScheduledTask -TaskName $data.warden -TaskPath '\\' -Xml $previousWarden -Force | Out-Null; "
         "if ($null -ne $previousSupervisor) { "
@@ -495,7 +751,14 @@ def configure_tasks(config_file: str | Path, previous_source: str | Path) -> dic
         "Unregister-ScheduledTask -TaskName $data.supervisor -TaskPath '\\' -Confirm:$false }; throw $failure }; "
         "@{warden=$data.warden;supervisor=$data.supervisor;started=$false;rollback_xml=$data.backup} | ConvertTo-Json -Compress"
     )
-    return json.loads(native._powershell(script, task_data))
+    result = json.loads(native._powershell(script, task_data))
+    # A reviewed configure operation is explicit operator authorization to
+    # enable the new action, unlike an automatic recovery start. It supersedes
+    # the old scheduling intent but never deletes process-tree ownership proof.
+    marker = private / "warden-task-control.json"
+    if _read_task_marker(marker, task_data["warden"]) is not None:
+        marker.unlink()
+    return result
 
 
 def main() -> None:
@@ -512,6 +775,10 @@ def main() -> None:
     configure = sub.add_parser("configure")
     configure.add_argument("--config", required=True)
     configure.add_argument("--previous-source", required=True)
+    migrate = sub.add_parser("migrate-ledger")
+    migrate.add_argument("--source-private", required=True)
+    migrate.add_argument("--target-private", required=True)
+    migrate.add_argument("--supervisor-task", required=True)
     args = parser.parse_args()
     if args.operation == "provision":
         result = provision_supervisor(args.private_root, args.repair_workspace, args.operator_name, args.login_log_root)
@@ -520,6 +787,8 @@ def main() -> None:
         output.write_text(json.dumps(result, indent=2), encoding="utf-8")
     elif args.operation == "configure":
         result = configure_tasks(args.config, args.previous_source)
+    elif args.operation == "migrate-ledger":
+        result = migrate_ledger(args.source_private, args.target_private, args.supervisor_task)
     else:
         native.validate_code_path(args.config)
         from .config import load_config

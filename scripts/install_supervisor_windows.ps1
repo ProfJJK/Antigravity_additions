@@ -4,10 +4,12 @@
 param(
     [Parameter(Mandatory=$true)][string]$Python,
     [string]$OperatorName = [Security.Principal.WindowsIdentity]::GetCurrent().Name,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.3",
-    [string]$PipelineRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.2",
-    [string]$DataRoot = "$env:ProgramData\CoChemSupervisor423",
-    [string]$ReleaseRoot = "$env:ProgramFiles\CoChem\PipelineReleases423",
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Supervisor4.2.4",
+    [string]$PipelineRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.4",
+    [string]$PipelineConfig,
+    [string]$DataRoot = "$env:ProgramData\CoChemSupervisor424",
+    [string]$PreviousDataRoot = "$env:ProgramData\CoChemSupervisor423",
+    [string]$ReleaseRoot = "$env:ProgramFiles\CoChem\PipelineReleases424",
     [string]$LoginLogRoot = "$env:USERPROFILE\CoChem423\native-login-logs",
     [string]$WardenTaskName = 'CoChem-4.2.2-Warden',
     [string]$SupervisorTaskName = 'CoChem-4.2.3-Supervisor',
@@ -88,7 +90,7 @@ function Protect-InstalledTree {
 
 function Invoke-SystemSetup {
     param([string]$Mode, [string[]]$Arguments)
-    $taskName = "CoChem-4.2.3-Supervisor-$Mode"
+    $taskName = "CoChem-4.2.4-Supervisor-$Mode"
     $script = Join-Path $InstallRoot "$Mode-task.ps1"
     $log = Join-Path $InstallRoot "$Mode.log"
     $quoted = ($Arguments | ForEach-Object { "'" + $_.Replace("'","''") + "'" }) -join ','
@@ -118,6 +120,7 @@ $PipelineRoot = (Resolve-Path -LiteralPath $PipelineRoot).Path
 $InstallRoot = [IO.Path]::GetFullPath($InstallRoot).TrimEnd('\')
 $ReleaseRoot = [IO.Path]::GetFullPath($ReleaseRoot).TrimEnd('\')
 $DataRoot = [IO.Path]::GetFullPath($DataRoot).TrimEnd('\')
+$PreviousDataRoot = [IO.Path]::GetFullPath($PreviousDataRoot).TrimEnd('\')
 $LoginLogRoot = [IO.Path]::GetFullPath($LoginLogRoot)
 $programFilesPrefix = [IO.Path]::GetFullPath($env:ProgramFiles).TrimEnd('\') + '\'
 foreach ($path in @($Python,$PipelineRoot,$InstallRoot,$ReleaseRoot)) {
@@ -132,15 +135,28 @@ foreach ($name in @($WardenTaskName,$SupervisorTaskName)) {
     if ($name -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,99}$') { throw 'Scheduled task names must be literal names in the root task folder.' }
 }
 if ($WardenTaskName -eq $SupervisorTaskName) { throw 'Supervisor and Warden must be separate Scheduled Tasks.' }
+if ($DataRoot -eq $PreviousDataRoot) { throw '4.2.4 requires a fresh supervisor state root; preserve the previous ledger and pointer for migration.' }
+foreach ($name in @($WardenTaskName,$SupervisorTaskName)) {
+    $existingTask = Get-ScheduledTask -TaskName $name -TaskPath '\' -ErrorAction SilentlyContinue
+    if ($null -ne $existingTask) {
+        $scheduler = New-Object -ComObject 'Schedule.Service'
+        $scheduler.Connect()
+        $registeredTask = $scheduler.GetFolder('\').GetTask($name)
+        $runningInstances = $registeredTask.GetInstances(0).Count
+        if ($runningInstances -gt 0 -or $existingTask.State -in @('Running','Queued') -or $existingTask.Settings.Enabled) {
+            throw "Stop and disable managed task $name before upgrading. Activation is performed after a full Windows Restart; this installer does not terminate an uncertain process tree."
+        }
+    }
+}
 Assert-ProtectedAncestors -Path (Split-Path -Parent $Python)
 foreach ($item in (Get-TreeWithoutLinks -Path (Split-Path -Parent $Python))) { Assert-ProtectedItem -Path $item.FullName }
 Assert-ProtectedAncestors -Path $PipelineRoot
 foreach ($item in (Get-TreeWithoutLinks -Path $PipelineRoot)) { Assert-ProtectedItem -Path $item.FullName }
 Invoke-Checked -Executable $Python -Arguments @('-I','-c','import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))')
 $pipelinePython = Join-Path $PipelineRoot '.venv\Scripts\python.exe'
-$pipelineConfig = Join-Path $PipelineRoot 'pipeline.json'
+$pipelineConfigSource = if ($PipelineConfig) { (Resolve-Path -LiteralPath $PipelineConfig).Path } else { Join-Path $PipelineRoot 'pipeline.json' }
 $previousSource = Join-Path $PipelineRoot 'source'
-foreach ($required in @($pipelinePython,$pipelineConfig,$previousSource)) {
+foreach ($required in @($pipelinePython,$pipelineConfigSource,$previousSource)) {
     if (-not (Test-Path -LiteralPath $required)) { throw "Existing managed pipeline deployment is incomplete: $required" }
 }
 $sourceRoot = Join-Path $InstallRoot 'source'
@@ -148,6 +164,7 @@ $acceptanceRoot = Join-Path $InstallRoot 'acceptance'
 $installedPython = Join-Path $InstallRoot '.venv\Scripts\python.exe'
 $layoutFile = Join-Path $InstallRoot 'windows-layout.json'
 $generatedConfig = Join-Path $InstallRoot 'supervisor.generated.json'
+$pipelineConfig = Join-Path $InstallRoot 'pipeline.reviewed.json'
 
 if (Test-Path -LiteralPath $InstallRoot) {
     foreach ($required in @($installedPython,(Join-Path $acceptanceRoot 'pipeline_tests'),(Join-Path $acceptanceRoot 'mcp_tests'),(Join-Path $acceptanceRoot 'pytest.ini'))) {
@@ -155,6 +172,7 @@ if (Test-Path -LiteralPath $InstallRoot) {
     }
     Assert-ProtectedAncestors -Path $InstallRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $InstallRoot)) { Assert-ProtectedItem -Path $item.FullName }
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import cochem_supervisor; raise SystemExit(tuple(map(int,cochem_supervisor.__version__.split(chr(46)))) != (4,2,4))')
     Write-Host "Preserving independent supervisor code and acceptance snapshot: $InstallRoot"
 }
 else {
@@ -186,6 +204,20 @@ else {
     Protect-InstalledTree -Path $InstallRoot
 }
 
+$reviewedPipeline = Get-Content -LiteralPath $pipelineConfigSource -Raw | ConvertFrom-Json
+if ($null -eq $reviewedPipeline.PSObject.Properties['routing']) {
+    throw 'The reviewed 4.2.4 pipeline configuration must include routing. Copy and review the current example; the installer does not invent or overwrite routing policy.'
+}
+Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$pipelineConfigSource)
+if (Test-Path -LiteralPath $pipelineConfig) {
+    if ((Get-FileHash -LiteralPath $pipelineConfigSource).Hash -ne (Get-FileHash -LiteralPath $pipelineConfig).Hash) {
+        throw 'Existing protected pipeline.reviewed.json differs; preserve it and choose a fresh reviewed installation.'
+    }
+}
+else { Copy-Item -LiteralPath $pipelineConfigSource -Destination $pipelineConfig }
+Protect-InstalledTree -Path $InstallRoot
+Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_pipeline.config import load_config; load_config(sys.argv[1])',$pipelineConfig)
+
 if (Test-Path -LiteralPath $ReleaseRoot) {
     Assert-ProtectedAncestors -Path $ReleaseRoot
     foreach ($item in (Get-TreeWithoutLinks -Path $ReleaseRoot)) { Assert-ProtectedItem -Path $item.FullName }
@@ -199,6 +231,9 @@ else {
 Invoke-SystemSetup -Mode 'Provision' -Arguments @('-I','-m','cochem_supervisor.windows','provision',
     '--private-root',(Join-Path $DataRoot 'private'),'--repair-workspace',(Join-Path $DataRoot 'workers\repair'),
     '--operator-name',$OperatorName,'--layout-output',$layoutFile,'--login-log-root',$LoginLogRoot)
+Invoke-SystemSetup -Mode 'MigrateLedger' -Arguments @('-I','-m','cochem_supervisor.windows','migrate-ledger',
+    '--source-private',(Join-Path $PreviousDataRoot 'private'),'--target-private',(Join-Path $DataRoot 'private'),
+    '--supervisor-task',$SupervisorTaskName)
 if (-not (Test-Path -LiteralPath $generatedConfig)) {
     $pipeline = Get-Content -LiteralPath $pipelineConfig -Raw | ConvertFrom-Json
     $generated = [ordered]@{
@@ -231,12 +266,37 @@ if (-not (Test-Path -LiteralPath $generatedConfig)) {
 else { Write-Host "Preserved generated review configuration: $generatedConfig" }
 Write-Host "Independent repair identity layout: $layoutFile"
 Write-Host "Review configuration and native repair-provider access: $generatedConfig"
+Write-Host "The 4.2.4 supervisor uses a fresh protected source/test snapshot and state root. Prior ledger history is migrated through SQLite backup; previous state remains at $PreviousDataRoot."
 Write-Host 'CoChem423Repair account password remains in SYSTEM Credential Manager; no pipeline worker identity or subscription credential was copied.'
 Write-Host "Use login_supervisor_worker.ps1 for each configured repair provider. Native login logs may be placed in $LoginLogRoot"
 
 if ($RegisterSupervisor) {
     if (-not $Config) { throw '-RegisterSupervisor requires an explicit reviewed -Config JSON file.' }
     $candidateConfig = (Resolve-Path -LiteralPath $Config).Path
+    Invoke-Checked -Executable $installedPython -Arguments @('-I','-c','import sys; from cochem_supervisor.config import load_config; load_config(sys.argv[1])',$candidateConfig)
+    $reviewedSupervisor = Get-Content -LiteralPath $candidateConfig -Raw | ConvertFrom-Json
+    $expectedPaths = [ordered]@{
+        private_root = (Join-Path $DataRoot 'private')
+        repair_workspace = (Join-Path $DataRoot 'workers\repair')
+        release_root = $ReleaseRoot
+        baseline_source = $sourceRoot
+        acceptance_root = $acceptanceRoot
+        pipeline_python = $pipelinePython
+        pipeline_config = $pipelineConfig
+        pointer_file = (Join-Path $DataRoot 'private\active-release.json')
+        test_python = $installedPython
+    }
+    foreach ($entry in $expectedPaths.GetEnumerator()) {
+        $property = $reviewedSupervisor.PSObject.Properties[$entry.Key]
+        if ($null -eq $property -or $property.Value -isnot [string] -or
+            [IO.Path]::GetFullPath($property.Value).TrimEnd('\') -ne [IO.Path]::GetFullPath($entry.Value).TrimEnd('\')) {
+            throw "Reviewed $($entry.Key) must match this fresh protected deployment. Preserve policy paths from supervisor.generated.json."
+        }
+    }
+    if ($reviewedSupervisor.warden_task -ne $WardenTaskName -or $reviewedSupervisor.supervisor_task -ne $SupervisorTaskName -or
+        $reviewedSupervisor.repair_worker.name -ne 'CoChem423Repair' -or $reviewedSupervisor.repair_worker.credential_target -ne 'CoChem423/repair') {
+        throw 'Reviewed configuration must preserve the provisioned repair identity and selected existing task names.'
+    }
     $installedConfig = Join-Path $InstallRoot 'supervisor.json'
     if (Test-Path -LiteralPath $installedConfig) {
         if ((Get-FileHash -LiteralPath $candidateConfig).Hash -ne (Get-FileHash -LiteralPath $installedConfig).Hash) {
@@ -246,8 +306,8 @@ if ($RegisterSupervisor) {
     else { Copy-Item -LiteralPath $candidateConfig -Destination $installedConfig }
     Protect-InstalledTree -Path $InstallRoot
     Invoke-SystemSetup -Mode 'Configure' -Arguments @('-I','-m','cochem_supervisor.windows','configure','--config',$installedConfig,'--previous-source',$previousSource)
-    Write-Host 'Registered independent SYSTEM supervisor and migrated the Warden task to the protected release-pointer launcher.'
+    Write-Host 'Registered the 4.2.4 SYSTEM supervisor under the preserved task identity and migrated the Warden to the fresh protected release pointer.'
     Write-Host "Original Warden task XML and source hash are retained under $DataRoot\private\installation-rollback. The old pipeline installation remains intact."
-    Write-Host 'No model or service was started. A running old Warden keeps its old process until its next restart. At a safe boundary, restart the migrated Warden and start the Supervisor after repair-account logins and configuration review.'
+    Write-Host 'Reviewed Warden and supervisor actions are registered and enabled; no model or service was started. Perform a full Windows Restart after configuration and login review. Keep old code, pointers and a compatible database recovery plan for administrator rollback; do not edit frozen acceptance tests in place.'
 }
 else { Write-Host 'Next: authenticate the dedicated repair account, review generated config, then rerun with -Config PATH -RegisterSupervisor.' }

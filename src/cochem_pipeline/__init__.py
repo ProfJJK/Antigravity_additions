@@ -1,2 +1,2 @@
-"""CoChem 4.2.2: privileged, fenced planning workflows."""
-__version__ = "4.2.3"
+"""CoChem privileged, fenced planning workflows with persisted model routing."""
+__version__ = "4.2.4"

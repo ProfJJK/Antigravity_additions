@@ -1,4 +1,4 @@
-"""4.2.2 Warden service and unprivileged client commands."""
+"""Warden service and unprivileged client commands."""
 from __future__ import annotations
 import argparse
 from contextlib import contextmanager
@@ -62,7 +62,7 @@ def daemon(filename):
 
 
 def main():
-    parser=argparse.ArgumentParser(description='CoChem 4.2.2 privileged planning pipeline')
+    parser=argparse.ArgumentParser(description=f'CoChem {__version__} privileged planning pipeline')
     parser.add_argument('--version',action='version',version=__version__)
     commands=parser.add_subparsers(dest='command',required=True)
     service=commands.add_parser('daemon')

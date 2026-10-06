@@ -1,4 +1,24 @@
-# Antigravity additions 4.2.3
+# Antigravity additions 4.2.4
+
+4.2.4 adds persisted complexity-based model routing for planning work. The
+user-corrected matrix is authoritative:
+
+| Complexity | Route order |
+| --- | --- |
+| 1–3 | Gemini 3.8 Flash → Claude Haiku 4.5 → GPT-6 Luna |
+| 4–6 | Claude Sonnet 5.5 → GPT-6 Sol → Gemini 3.1 Pro |
+| 7–9 | Claude Opus 5.5 → GPT-6 Astra, low effort → Gemini 3.1 Pro |
+| 10 | Claude Fable 5.1 → GPT-6 Astra, ultra effort; only two routes |
+
+The four-worker ceiling, controller-owned leases/fencing, chapter isolation,
+Oracle safeguards and Gemini 3.1 Pro synthesis remain required. See the
+[4.2.4 routing and deployment guide](docs/ROUTING_4.2.4.md) and
+[release notes](docs/RELEASE_4.2.4.md). A fresh protected 4.2.4 supervisor and
+acceptance snapshot are required for this upgrade; the frozen 4.2.3 validator
+must not be reused to approve changed routing contracts. Native Windows and
+live-provider acceptance, including the Agy contract, remain unverified.
+
+## Supervisor inherited from 4.2.3
 
 4.2.3 adds a separate supervisor for the Windows planning pipeline. It observes
 native heartbeat and database progress, attempts one restart for heartbeat

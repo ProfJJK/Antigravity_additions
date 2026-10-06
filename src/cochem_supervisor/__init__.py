@@ -1,2 +1,2 @@
 """Independent failure detection, bounded native repair, and verified rollback."""
-__version__ = '4.2.3'
+__version__ = '4.2.4'

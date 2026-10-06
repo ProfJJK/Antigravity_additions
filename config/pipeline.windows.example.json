@@ -72,5 +72,126 @@
   "reserved_fraction": 0.25,
   "min_free_memory_mb": 1024,
   "min_free_disk_mb": 512,
-  "rules": []
+  "rules": [],
+  "routing": {
+    "backlog_threshold": 8,
+    "backoff_base_seconds": 30.0,
+    "backoff_jitter_fraction": 0.2,
+    "backoff_max_seconds": 600.0,
+    "failure_cooldowns": {
+      "auth": 300.0,
+      "backlog": 30.0,
+      "busy": 30.0,
+      "code": 0.0,
+      "compatibility": 300.0,
+      "configuration": 300.0,
+      "context": 0.0,
+      "protocol": 30.0,
+      "provider": 30.0,
+      "quota": 300.0,
+      "resource": 30.0,
+      "timeout": 30.0,
+      "unknown": 30.0
+    },
+    "max_dispatches": 0,
+    "max_routing_cycles": 0,
+    "max_routing_seconds": 0.0,
+    "model_limits": {
+      "claude:claude-fable-5-1": 1,
+      "claude:claude-haiku-4-5": 1,
+      "claude:claude-opus-5-5": 1,
+      "claude:claude-sonnet-5-5": 1,
+      "codex:gpt-6-astra:low": 1,
+      "codex:gpt-6-astra:ultra": 1,
+      "codex:gpt-6-luna": 1,
+      "codex:gpt-6-sol": 1,
+      "gemini:gemini-3.1-pro": 1,
+      "gemini:gemini-3.8-flash": 1
+    },
+    "policy_version": 1,
+    "provider_limits": {
+      "claude": {
+        "max_concurrency": 2,
+        "quota_pool": "claude"
+      },
+      "codex": {
+        "max_concurrency": 2,
+        "quota_pool": "codex"
+      },
+      "gemini": {
+        "max_concurrency": 2,
+        "quota_pool": "gemini"
+      }
+    },
+    "quota_pool_limits": {
+      "claude": 2,
+      "codex": 2,
+      "gemini": 2
+    },
+    "tiers": {
+      "1-3": [
+        {
+          "model": "gemini-3.8-flash",
+          "provider": "gemini",
+          "reasoning_effort": null
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6-luna",
+          "provider": "codex",
+          "reasoning_effort": null
+        }
+      ],
+      "10": [
+        {
+          "model": "claude-fable-5-1",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6-astra",
+          "provider": "codex",
+          "reasoning_effort": "ultra"
+        }
+      ],
+      "4-6": [
+        {
+          "model": "claude-sonnet-5-5",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6-sol",
+          "provider": "codex",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gemini-3.1-pro",
+          "provider": "gemini",
+          "reasoning_effort": null
+        }
+      ],
+      "7-9": [
+        {
+          "model": "claude-opus-5-5",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6-astra",
+          "provider": "codex",
+          "reasoning_effort": "low"
+        },
+        {
+          "model": "gemini-3.1-pro",
+          "provider": "gemini",
+          "reasoning_effort": null
+        }
+      ]
+    }
+  }
 }

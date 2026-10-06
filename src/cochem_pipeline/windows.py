@@ -506,6 +506,19 @@ def _powershell(script: str, data=None):
     return completed.stdout.strip()
 
 
+@lru_cache(maxsize=1)
+def current_boot_identity() -> int:
+    """Read trusted native boot metadata once; never infer reboot from a clock."""
+    require_system()
+    data = json.loads(_powershell(
+        "$boot=(Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime; "
+        "@{boot_id=$boot.ToFileTimeUtc()} | ConvertTo-Json -Compress"))
+    boot = data.get("boot_id") if isinstance(data, dict) else None
+    if type(boot) is not int or boot <= 0:
+        raise WindowsIsolationError("Windows did not report a reliable boot identity")
+    return boot
+
+
 def defender_exclusions() -> set[str]:
     require_system()
     raw = _powershell("ConvertTo-Json -InputObject @((Get-MpPreference -ErrorAction Stop).ExclusionPath) -Compress")
@@ -829,6 +842,60 @@ class WindowsProcess:
         self.close()
 
 
+def _cleanup_failed_launch(process, job, token, profile, slot_lock) -> None:
+    """Prove exit even when assignment/resume failed before a wrapper existed.
+
+    An explicit process handle covers the suspended CreateProcess/Assign gap.
+    A successful wait and empty Job Object establish teardown even if a
+    termination request races an already exited process. On unverified tree or
+    profile cleanup, retain the native identity reservation and ownership
+    handles: the caller must persist quarantine instead of admitting a retry.
+    """
+    api = _api()
+    failures = []
+    try:
+        if process.hProcess:
+            try:
+                _check(api["kernel32"].TerminateProcess(process.hProcess, 1), "Terminate failed-launch worker")
+            except WindowsIsolationError:
+                # An already exited process can reject termination; the actual
+                # process wait below determines whether exit is proven.
+                pass
+        if job:
+            try:
+                _check(api["kernel32"].TerminateJobObject(job, 1), "Terminate failed-launch worker tree")
+            except WindowsIsolationError:
+                # Query the retained job even when the termination request
+                # fails. Never treat the request itself as proof of exit.
+                pass
+        if process.hProcess and api["kernel32"].WaitForSingleObject(process.hProcess, 10000) != 0:
+            failures.append("worker process exit was not confirmed")
+        if job:
+            deadline = time.monotonic() + 10
+            while True:
+                accounting = _BASIC_ACCOUNTING()
+                if not api["kernel32"].QueryInformationJobObject(job, 1, C.byref(accounting), C.sizeof(accounting), None):
+                    failures.append("worker descendant count could not be verified")
+                    break
+                if accounting.ActiveProcesses == 0:
+                    break
+                if time.monotonic() >= deadline:
+                    failures.append("worker descendants remain active")
+                    break
+                time.sleep(.02)
+        if failures:
+            raise WindowsCleanupError("Failed launch left tree cleanup unverified; quarantine this identity: " + "; ".join(failures))
+        # Do not unload a profile while any process using it may still run.
+        if profile.hProfile and not api["userenv"].UnloadUserProfile(token, profile.hProfile):
+            raise WindowsCleanupError("Failed launch left profile cleanup unverified; quarantine this identity")
+        _close(job)
+        _close(process.hProcess)
+        _close(token)
+        _close(slot_lock)
+    finally:
+        _close(process.hThread)
+
+
 def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
                   stdin_file: BinaryIO | TextIO | Path, stdout_file: BinaryIO | TextIO | Path,
                   stderr_file: BinaryIO | TextIO | Path, env_overrides: Mapping[str, str] | None = None) -> WindowsProcess:
@@ -902,18 +969,13 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
                 raise WindowsIsolationError("Could not resume supervised worker")
         _close(process.hThread)
         return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock)
-    except BaseException:
-        if process.hProcess:
-            api["kernel32"].TerminateProcess(process.hProcess, 1)
-            api["kernel32"].WaitForSingleObject(process.hProcess, 10000)
-        if job:
-            _close(job)
-        _close(process.hThread)
-        _close(process.hProcess)
-        if profile.hProfile:
-            api["userenv"].UnloadUserProfile(token, profile.hProfile)
-        _close(token)
-        _close(slot_lock)
+    except BaseException as launch_error:
+        try:
+            _cleanup_failed_launch(process, job, token, profile, slot_lock)
+        except WindowsCleanupError as cleanup_error:
+            raise cleanup_error from launch_error
+        except BaseException as cleanup_error:
+            raise WindowsCleanupError("Failed launch cleanup could not be verified; quarantine this identity") from cleanup_error
         raise
 
 

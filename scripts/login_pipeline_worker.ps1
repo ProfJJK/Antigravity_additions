@@ -5,7 +5,7 @@ param(
     [Parameter(Mandatory=$true)][ValidatePattern('^slot([1-9]|[1-5][0-9]|6[0-4])$')][string]$Slot,
     [Parameter(Mandatory=$true)][ValidateSet('codex','claude')][string]$Provider,
     [Parameter(Mandatory=$true)][string]$Executable,
-    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.2"
+    [string]$InstallRoot = "$env:ProgramFiles\CoChem\Pipeline4.2.4"
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest

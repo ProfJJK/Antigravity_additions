@@ -17,6 +17,9 @@ DEFAULTS = {'poll_seconds':10,'startup_grace_seconds':120,'heartbeat_timeout':30
             'test_targets':['pipeline_tests/test_config.py','pipeline_tests/test_hardware_guard.py',
                             'pipeline_tests/test_oracle.py','pipeline_tests/test_recovery_telemetry.py',
                             'pipeline_tests/test_runtime_monitor.py','pipeline_tests/test_service.py',
+                            'pipeline_tests/test_routing_policy.py','pipeline_tests/test_routing_store.py',
+                            'pipeline_tests/test_routing_integration.py','pipeline_tests/test_runtime_routing.py',
+                            'pipeline_tests/test_provider_failures.py',
                             'pipeline_tests/test_store.py','pipeline_tests/test_windows_contract.py',
                             'pipeline_tests/test_worker_contract.py','mcp_tests/test_config.py',
                             'mcp_tests/test_providers.py',
@@ -96,4 +99,9 @@ def load_config(filename: str | Path) -> dict:
     result['pipeline_providers']=pipeline.get('providers',{})
     if not isinstance(result['pipeline_providers'],dict):
         raise ValueError('Pipeline providers must be an object')
+    result['pipeline_routing']=deepcopy(pipeline.get('routing',{}))
+    # Independent parsing must remain usable when candidate pipeline imports
+    # are broken; this reads only the protected policy, never a model module.
+    from .probes import configured_routing_policy
+    result['pipeline_routing']=configured_routing_policy(result['pipeline_routing'])
     return result

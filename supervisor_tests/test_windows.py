@@ -116,12 +116,18 @@ def test_actual_system_child_exit_and_descendant_containment(actual_windows_supe
         f"pathlib.Path({str(marker)!r}).write_text(str(child.pid),encoding='utf-8'); "
         "raise SystemExit(17)"
     )
+    proofs = []
     try:
-        assert run_system_child([sys.executable, "-I", "-c", code], config["baseline_source"], control_file=control) == 17
+        assert run_system_child([sys.executable, "-I", "-c", code], config["baseline_source"],
+                                control_file=control, on_tree_exit=proofs.append) == 17
         child_pid = int(marker.read_text(encoding="utf-8"))
         assert not psutil.pid_exists(child_pid)
         from cochem_supervisor.windows import _read_control
-        assert _read_control(control)["closed"] is True
+        record = _read_control(control)
+        assert record["closed"] is True
+        assert proofs == [{"stopped_containment_id": record["containment_id"],
+                           "stopped_boot_id": record["boot_id"],
+                           "tree_exit_verified": True, "launcher_exit_verified": True}]
     finally:
         marker.unlink(missing_ok=True)
         control.unlink(missing_ok=True)

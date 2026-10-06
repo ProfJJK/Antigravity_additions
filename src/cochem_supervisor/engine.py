@@ -58,7 +58,11 @@ class Supervisor:
 
     def _stop(self):
         from .windows import stop_task
-        stop_task(self.config['warden_task'],pointer_file=self.config['pointer_file'])
+        from .cleanup import reconcile_stopped_containment
+        receipt=stop_task(self.config['warden_task'],pointer_file=self.config['pointer_file'])
+        cleared=reconcile_stopped_containment(Path(self.config['pipeline_private_root'])/'job_board.db',receipt)
+        if cleared:
+            self.ledger.record_event('WARDEN_EXECUTION_CLEANUP_VERIFIED',{'cleared_guards':cleared})
         return True
 
     def _clear_workspace(self):
@@ -89,7 +93,7 @@ class Supervisor:
     def _start(self,source):
         from .windows import start_task
         self.start_requested_at=time.time()
-        start_task(self.config['warden_task'])
+        start_task(self.config['warden_task'],pointer_file=self.config['pointer_file'])
         return True
 
     def _probe(self,source):

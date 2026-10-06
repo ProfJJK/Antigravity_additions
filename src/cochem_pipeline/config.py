@@ -1,11 +1,13 @@
 """Deployment configuration; privileged execution has no permissive fallback."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 import math
 import re
 from pathlib import Path
 from typing import Any
+
+from .routing import RoutingPolicy, SYNTHESIS_MODEL, load_routing_policy
 
 
 def validate_subscription_probe(spec: Any) -> None:
@@ -60,6 +62,7 @@ class PipelineConfig:
     reserved_fraction: float = 0.25
     min_free_memory_mb: int = 1024
     min_free_disk_mb: int = 512
+    routing: RoutingPolicy = field(default_factory=RoutingPolicy)
 
     @property
     def job_db(self) -> Path:
@@ -108,8 +111,8 @@ def load_config(filename: str) -> PipelineConfig:
         raise ValueError('Select a supported Gemini native result protocol: gemini-json or terminal-json')
     validate_subscription_probe(gemini.get('subscription_probe'))
     # This is required by the architecture, not an inferred alias/provider swap.
-    if '3.1' not in gemini['model'].lower() or 'pro' not in gemini['model'].lower():
-        raise ValueError('The SRS requires Gemini 3.1 Pro for synthesis')
+    if gemini['model'] != SYNTHESIS_MODEL:
+        raise ValueError(f'The SRS synthesis route requires exact native model {SYNTHESIS_MODEL}; aliases are not remapped')
     values = {}
     for key, default, low, high in [
         ('port',47824,1024,65535), ('timeout_seconds',1800,1,14400),
@@ -143,5 +146,6 @@ def load_config(filename: str) -> PipelineConfig:
             Rule(**rule)
         except (TypeError,ValueError) as exc:
             raise ValueError(f'Invalid rule configuration: {exc}') from exc
+    routing = load_routing_policy(raw.get('routing'))
     return PipelineConfig(private.resolve(), {k:v.resolve() for k,v in roots.items()}, workers,
-                          providers, rules, token, operator, reserved_fraction=fraction, **values)
+                          providers, rules, token, operator, reserved_fraction=fraction, routing=routing, **values)

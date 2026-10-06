@@ -17,6 +17,8 @@ import time
 from typing import Any, Iterable, Iterator
 import uuid
 
+from . import routing_store as routes
+
 
 def canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
@@ -171,10 +173,15 @@ def _identifier(value: Any, label: str) -> str:
 
 
 class JobStore:
-    def __init__(self, path: str | Path, max_attempts: int = 3):
+    def __init__(self, path: str | Path, max_attempts: int = 3, *, routing_policy=None,
+                 cleanup_boot_id: int | None = None):
         if type(max_attempts) is not int or not 1 <= max_attempts <= 100:
             raise ValueError("max_attempts must be an integer from 1 to 100")
         self.max_attempts = max_attempts
+        self.routing_policy = routes.policy_dict(routing_policy) if routing_policy is not None else None
+        if cleanup_boot_id is not None and (type(cleanup_boot_id) is not int or cleanup_boot_id<=0):
+            raise ValueError('cleanup_boot_id must be a positive trusted Windows boot identity')
+        self.cleanup_boot_id = cleanup_boot_id
         if str(path) == ":memory:":
             raise ValueError("A durable on-disk SQLite path is required")
         self.path = Path(path).expanduser().resolve()
@@ -182,6 +189,7 @@ class JobStore:
         with self._connection() as conn:
             conn.execute("PRAGMA journal_mode=WAL")
             conn.executescript(SCHEMA)
+            conn.executescript(routes.SCHEMA)
             # Older 4.2.2 draft databases predate a durable execution budget.
             # Migrate under the write lock so concurrently starting workers
             # cannot both attempt to add the same column.
@@ -194,6 +202,23 @@ class JobStore:
                 if "max_attempts" not in columns:
                     conn.execute("ALTER TABLE pipeline_jobs ADD COLUMN max_attempts INTEGER NOT NULL DEFAULT 3 CHECK(max_attempts>=1)")
                     conn.execute("UPDATE pipeline_jobs SET max_attempts=?", (max_attempts,))
+                cleanup_columns = {row['name'] for row in conn.execute('PRAGMA table_info(pipeline_execution_cleanup)')}
+                if 'boot_id' not in cleanup_columns:
+                    conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN boot_id INTEGER CHECK(boot_id IS NULL OR boot_id>0)')
+                if 'observed_boot_id' not in cleanup_columns:
+                    conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN observed_boot_id INTEGER CHECK(observed_boot_id IS NULL OR observed_boot_id>0)')
+                if 'containment_id' not in cleanup_columns:
+                    conn.execute('ALTER TABLE pipeline_execution_cleanup ADD COLUMN containment_id TEXT')
+                # Capture policy for legacy active workflows without changing a
+                # live legacy attempt. Pending jobs adopt it only when claimed.
+                if self.routing_policy is not None:
+                    for root in conn.execute("SELECT job_id FROM pipeline_jobs WHERE kind='MACRO_PLANNING_REQUEST' AND status='IN_PROGRESS'").fetchall():
+                        routes.capture_workflow(conn, root['job_id'], self.routing_policy)
+                    for row in conn.execute('''SELECT j.job_id FROM pipeline_jobs j LEFT JOIN pipeline_route_reservations r
+                        ON r.job_id=j.job_id AND r.attempt_id=j.attempt_id WHERE j.status='IN_PROGRESS'
+                        AND j.kind<>'MACRO_PLANNING_REQUEST' AND r.reservation_id IS NULL''').fetchall():
+                        legacy = self._get(conn,row['job_id'])
+                        routes.guard_execution(conn,legacy,legacy['worker_slot'],observed_boot_id=self.cleanup_boot_id)
                 conn.commit()
             except BaseException:
                 conn.rollback()
@@ -237,6 +262,11 @@ class JobStore:
             WHERE job_id IN (?,?) ORDER BY CASE WHEN job_id=? THEN 0 ELSE 1 END LIMIT 1""",
                                (job_id, result["workflow_id"], job_id)).fetchone()
         result["context"] = dict(context) if context is not None else None
+        result['routing'] = routes.get_state(conn, job_id)
+        result['routing_policy'] = result['routing']['policy'] if result['routing'] is not None else None
+        result['route'] = routes.get_route(conn, job_id)
+        if result['route'] is not None and result['worker_slot'] is None:
+            result['worker_slot'] = result['route'].get('worker_slot')
         return result
 
     @staticmethod
@@ -252,9 +282,11 @@ class JobStore:
         conn.execute("""INSERT INTO pipeline_jobs(job_id,workflow_id,parent_job_id,kind,status,chapter_id,
             payload_json,created_at,updated_at,max_attempts) VALUES(?,?,?,?,?,?,?,?,?,?)""",
                      (job_id, workflow_id, parent, kind, status, chapter_id, canonical_json(payload), timestamp, timestamp, max_attempts))
+        routes.ensure_job(conn, job_id)
 
     def submit(self, objective: str, requirements: list[str], chapter_count: int = 6,
-               workflow_id: str | None = None, *, max_attempts: int | None = None) -> dict:
+               workflow_id: str | None = None, *, max_attempts: int | None = None,
+               max_dispatches: int | None = None) -> dict:
         if not isinstance(objective, str) or not objective.strip():
             raise ValueError("objective must be nonempty")
         _strings(requirements, "requirements")
@@ -264,6 +296,11 @@ class JobStore:
         budget = self.max_attempts if max_attempts is None else max_attempts
         if type(budget) is not int or not 1 <= budget <= self.max_attempts:
             raise ValueError('Workflow max_attempts may only lower the configured execution budget')
+        if max_dispatches is not None and (type(max_dispatches) is not int or not 1 <= max_dispatches <= 1000000):
+            raise ValueError('max_dispatches must be an integer from 1 to 1000000')
+        # A caller explicitly requesting the new all-dispatch cap opts into
+        # routing even when using the backwards-compatible constructor.
+        requested_policy = self.routing_policy if self.routing_policy is not None else ({} if max_dispatches is not None else None)
         payload = {"objective": objective, "requirements": requirements, "chapter_count": chapter_count}
         with self._write() as conn:
             existing = conn.execute("SELECT job_id FROM pipeline_jobs WHERE job_id=?", (workflow_id,)).fetchone()
@@ -273,8 +310,10 @@ class JobStore:
                     raise ValueError("workflow_id already belongs to a different request")
                 if max_attempts is not None and root['max_attempts']!=budget:
                     raise ValueError('Existing workflow attempt budget is immutable')
+                routes.capture_workflow(conn, workflow_id, requested_policy, max_dispatches)
             else:
                 self._insert(conn, workflow_id, workflow_id, None, "MACRO_PLANNING_REQUEST", "IN_PROGRESS", payload, max_attempts=budget)
+                routes.capture_workflow(conn, workflow_id, requested_policy, max_dispatches)
                 self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "MANIFEST_GENERATOR", "PENDING", payload, max_attempts=budget)
                 self._insert(conn, uuid.uuid4().hex, workflow_id, workflow_id, "SYNTHESIS", "BLOCKED", payload, max_attempts=budget)
                 self._event(conn, self._get(conn, workflow_id), "WORKFLOW_SUBMITTED", chapter_count=chapter_count)
@@ -287,21 +326,37 @@ class JobStore:
         return float(value)
 
     def _reap(self, conn: sqlite3.Connection) -> list[dict]:
-        expired = conn.execute("""SELECT job_id FROM pipeline_jobs WHERE kind<>'MACRO_PLANNING_REQUEST'
-            AND ((status='IN_PROGRESS' AND lease_expires_at<=?)
-              OR (status IN ('PENDING','PENDING_RETRY') AND attempts>=max_attempts))""", (time.time(),)).fetchall()
+        expired = conn.execute("""SELECT j.job_id FROM pipeline_jobs j LEFT JOIN pipeline_routing_jobs r USING(job_id)
+            WHERE j.kind<>'MACRO_PLANNING_REQUEST'
+            AND ((j.status='IN_PROGRESS' AND j.lease_expires_at<=?)
+              OR (j.status IN ('PENDING','PENDING_RETRY') AND
+                 ((r.job_id IS NULL AND j.attempts>=j.max_attempts) OR
+                  (r.job_id IS NOT NULL AND (r.failure_count>=j.max_attempts OR
+                   (r.max_dispatches IS NOT NULL AND r.dispatches>=r.max_dispatches))))))""", (time.time(),)).fetchall()
         results = []
         for row in expired:
             previous = self._get(conn, row["job_id"])
             if previous["status"] == "FAILED":
                 continue  # Another exhausted sibling in this transaction fenced it.
             root = self._get(conn, previous["workflow_id"])
-            exhausted = previous["attempts"] >= previous["max_attempts"]
+            if previous['status']=='IN_PROGRESS' and previous.get('routing') is None and self.routing_policy is not None:
+                routes.guard_execution(conn,previous,previous['worker_slot'],observed_boot_id=self.cleanup_boot_id)
+            state = previous.get('routing')
+            if state is not None and previous['status']=='IN_PROGRESS':
+                state = routes.failed(conn, previous, 'lease_expired')
+            exhausted = ((state['failure_count']>=previous['max_attempts'] or
+                          (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
+                         if state is not None else previous["attempts"] >= previous["max_attempts"])
             status = "FAILED" if exhausted or root["status"] == "FAILED" else "PENDING_RETRY"
             error = f"Attempt budget exhausted ({previous['max_attempts']} executions)" if exhausted else "Execution lease expired"
+            if exhausted and state is not None:
+                error = (f"Dispatch budget exhausted ({state['max_dispatches']} reservations)"
+                         if state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches'] else
+                         f"Task failure budget exhausted ({previous['max_attempts']} failures)")
             conn.execute("""UPDATE pipeline_jobs SET status=?,attempt_id=NULL,lease_owner=NULL,
                 lease_expires_at=NULL,error=?,updated_at=? WHERE job_id=?""",
                          (status, error, time.time(), previous["job_id"]))
+            routes.release(conn, previous['job_id'], 'lease_expired', 'FAILED' if status=='FAILED' else 'READY')
             self._event(conn, previous, "ATTEMPT_BUDGET_EXHAUSTED" if exhausted else "LEASE_EXPIRED",
                         attempt_id=previous["attempt_id"], fencing_token=previous["fencing_token"],
                         attempts=previous["attempts"], max_attempts=previous["max_attempts"])
@@ -315,12 +370,21 @@ class JobStore:
             return self._reap(conn)
 
     def claim(self, owner: str, lease_seconds: float = 60, max_workers: int = 4, *,
-              exclude_job_ids: Iterable[str] = (), worker_slot: str | None = None) -> dict | None:
+              exclude_job_ids: Iterable[str] = (), worker_slot: str | None = None,
+              requires_cleanup: bool = False, cleanup_boot_id: int | None = None,
+              containment_id: str | None = None) -> dict | None:
         if not isinstance(owner, str) or not owner.strip():
             raise ValueError("owner must be nonempty")
         duration = self._lease_seconds(lease_seconds)
         if type(max_workers) is not int or not 1 <= max_workers <= 64:
             raise ValueError("max_workers must be an integer from 1 to 64")
+        max_workers = min(max_workers, 4)
+        if type(requires_cleanup) is not bool:
+            raise ValueError('requires_cleanup must be a boolean')
+        if cleanup_boot_id is not None and (type(cleanup_boot_id) is not int or cleanup_boot_id<=0):
+            raise ValueError('cleanup_boot_id must be a positive trusted Windows boot identity')
+        if containment_id is not None and (not isinstance(containment_id,str) or not re.fullmatch(r'[0-9a-f]{32}',containment_id)):
+            raise ValueError('containment_id must be the trusted 32-character launch nonce')
         if isinstance(exclude_job_ids, (str, bytes)):
             raise ValueError("exclude_job_ids must be an iterable of job IDs")
         excluded = tuple(sorted({_identifier(value, "excluded job_id") for value in exclude_job_ids}))
@@ -342,17 +406,39 @@ class JobStore:
             parameters.extend((worker_slot, worker_slot))
         with self._write() as conn:
             self._reap(conn)
+            if routes.cleanup_barriers(conn):
+                return None
             active = conn.execute("SELECT count(*) FROM pipeline_jobs WHERE status='IN_PROGRESS' AND kind<>'MACRO_PLANNING_REQUEST'").fetchone()[0]
             if active >= max_workers:
                 return None
-            row = conn.execute("""SELECT j.job_id FROM pipeline_jobs j JOIN pipeline_jobs root ON root.job_id=j.workflow_id
-                WHERE j.status IN ('PENDING','PENDING_RETRY') AND j.kind<>'MACRO_PLANNING_REQUEST'
-                AND j.attempts<j.max_attempts
-                AND root.status='IN_PROGRESS'""" + exclusion + binding_filter
-                               + " ORDER BY j.created_at,j.job_id LIMIT 1", parameters).fetchone()
-            if row is None:
+            if self.routing_policy is not None and conn.execute('''SELECT 1 FROM pipeline_jobs j
+                LEFT JOIN pipeline_route_reservations r ON r.job_id=j.job_id AND r.attempt_id=j.attempt_id
+                WHERE j.status='IN_PROGRESS' AND j.kind<>'MACRO_PLANNING_REQUEST' AND r.reservation_id IS NULL LIMIT 1''').fetchone():
+                # Legacy active executions have no proven routing reservation.
+                # Wait for their fenced completion/reaping and OS cleanup rather
+                # than inventing a target or ignoring their resource occupancy.
                 return None
-            selected = self._get(conn, row["job_id"])
+            rows = conn.execute("""SELECT j.job_id FROM pipeline_jobs j JOIN pipeline_jobs root ON root.job_id=j.workflow_id
+                WHERE j.status IN ('PENDING','PENDING_RETRY') AND j.kind<>'MACRO_PLANNING_REQUEST'
+                AND root.status='IN_PROGRESS'""" + exclusion + binding_filter
+                               + " ORDER BY j.created_at,j.job_id", parameters).fetchall()
+            selected, selection = None, None
+            for row in rows:
+                candidate = self._get(conn, row['job_id'])
+                if candidate['status'] not in ('PENDING','PENDING_RETRY') or self._get(conn,candidate['workflow_id'])['status']!='IN_PROGRESS':
+                    continue
+                choice, routed = routes.select(conn, candidate, self.routing_policy)
+                if routed and choice is None:
+                    continue
+                if routed and choice.get('exhausted'):
+                    self._fail_workflow(conn, candidate['workflow_id'], choice['exhausted'])
+                    continue
+                if not routed and candidate['attempts']>=candidate['max_attempts']:
+                    continue
+                selected, selection = candidate, choice
+                break
+            if selected is None:
+                return None
             if selected["kind"] == "CHAPTER_DRAFT" and worker_slot is not None and selected["worker_slot"] is None:
                 conn.execute("""INSERT INTO pipeline_worker_ownership(workflow_id,chapter_id,slot,job_id,created_at)
                     VALUES(?,?,?,?,?)""", (selected["workflow_id"], selected["chapter_id"], worker_slot, selected["job_id"], time.time()))
@@ -361,6 +447,12 @@ class JobStore:
                 lease_owner=?,lease_expires_at=?,updated_at=?,error=NULL WHERE job_id=?""",
                          (uuid.uuid4().hex, owner, timestamp + duration, timestamp, row["job_id"]))
             job = self._get(conn, row["job_id"])
+            if selection is not None:
+                routes.reserve(conn, job, selection, worker_slot)
+                job = self._get(conn, row['job_id'])
+            if requires_cleanup:
+                routes.guard_execution(conn,job,worker_slot,cleanup_boot_id if cleanup_boot_id is not None else self.cleanup_boot_id,
+                                       containment_id=containment_id)
             self._event(conn, job, "CLAIMED", attempt_id=job["attempt_id"], fencing_token=job["fencing_token"],
                         owner=owner, worker_slot=worker_slot)
             return job
@@ -454,6 +546,25 @@ class JobStore:
                 return job
             if not self._owned(job, attempt_id, fencing_token):
                 raise ValueError("Stale or unowned attempt cannot complete a job")
+            if job['routing'] is not None:
+                route = job['route']
+                required = {'provider': route['provider'], 'requested_model': route['model'],
+                            'route_reservation_id': route['reservation_id'], 'attempt_id': attempt_id,
+                            'fencing_token': fencing_token, 'worker_slot': job['worker_slot'],
+                            'job_id': job_id, 'workflow_id': job['workflow_id']}
+                if any(receipt.get(key) != value for key,value in required.items()):
+                    raise ValueError('Completion receipt does not match the reserved model/attempt/identity')
+                if type(receipt.get('fencing_token')) is not int:
+                    raise ValueError('Completion receipt requires an integer fencing token')
+                if receipt.get('reported_model') not in (None,route['model']):
+                    raise ValueError('Completion receipt reports a different native model')
+                effort = route.get('reasoning_effort')
+                if receipt.get('requested_effort') != effort:
+                    raise ValueError('Completion receipt does not match requested reasoning effort')
+                if effort is not None and receipt.get('reported_effort') not in (None,effort):
+                    raise ValueError('Completion receipt reports a different reasoning effort')
+                if effort is not None and receipt.get('selected_route',{}).get('reasoning_effort') != effort:
+                    raise ValueError('Completion receipt does not match reserved reasoning effort')
             chapters = None
             if job["kind"] == "MANIFEST_GENERATOR":
                 chapters = self._manifest(job, output)
@@ -483,6 +594,7 @@ class JobStore:
                              (job_id, job["workflow_id"], chapter_id, f"db://{job['workflow_id']}/{chapter_id}",
                               output["artifact_text"], artifact_digest(output["artifact_text"]), time.time()))
             conn.execute("UPDATE pipeline_jobs SET status='COMPLETED',lease_expires_at=NULL,updated_at=? WHERE job_id=?", (time.time(), job_id))
+            routes.release(conn, job_id, 'completed', 'COMPLETED')
             self._event(conn, job, "COMPLETED", attempt_id=attempt_id, fencing_token=fencing_token, output_sha256=output_digest(output))
             if chapters is not None:
                 for chapter_index, chapter in enumerate(chapters):
@@ -516,7 +628,9 @@ class JobStore:
         if changed:
             self._event(conn, root, "SYNTHESIS_RELEASED", chapter_hashes=payload["chapter_hashes"])
 
-    def fail(self, job_id: str, attempt_id: str, fencing_token: int, error: str, retry: bool = False) -> bool:
+    def fail(self, job_id: str, attempt_id: str, fencing_token: int, error: str, retry: bool = False,
+             *, category: str = 'code', retry_after_seconds: float | None = None,
+             hold_scope: str | None = None) -> bool:
         if not isinstance(error, str) or not error.strip():
             raise ValueError("error must be nonempty")
         with self._write() as conn:
@@ -524,14 +638,25 @@ class JobStore:
             if not self._owned(job, attempt_id, fencing_token):
                 self._reap(conn)
                 return False
-            exhausted = job["attempts"] >= job["max_attempts"]
+            state = routes.failed(conn, job, category, retry_after_seconds, hold_scope,self.routing_policy)
+            exhausted = ((state['failure_count']>=job['max_attempts'] or
+                          (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']))
+                         if state is not None else job["attempts"] >= job["max_attempts"])
             status = "PENDING_RETRY" if retry and not exhausted else "FAILED"
+            if state is not None and state['state']=='BLOCKED' and retry and not exhausted:
+                status = 'BLOCKED'
             if retry and exhausted:
-                error = f"Attempt budget exhausted ({job['max_attempts']} executions): {error}"
+                if state is None:
+                    error = f"Attempt budget exhausted ({job['max_attempts']} executions): {error}"
+                elif state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']:
+                    error = f"Dispatch budget exhausted ({state['max_dispatches']} reservations): {error}"
+                else:
+                    error = f"Task failure budget exhausted ({job['max_attempts']} failures): {error}"
             conn.execute("""UPDATE pipeline_jobs SET status=?,lease_owner=NULL,lease_expires_at=NULL,
                 error=?,updated_at=? WHERE job_id=?""", (status, error, time.time(), job_id))
             self._event(conn, job, status, attempt_id=attempt_id, fencing_token=fencing_token, error=error)
             if status == "FAILED":
+                routes.release(conn, job_id, error, 'FAILED')
                 self._fail_workflow(conn, job["workflow_id"], error)
             return True
 
@@ -541,6 +666,7 @@ class JobStore:
         conn.execute("""UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,
             lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=?
             WHERE workflow_id=? AND status NOT IN ('COMPLETED','FAILED')""", (error, time.time(), workflow_id))
+        routes.release_workflow(conn, workflow_id, error)
 
     def get(self, job_id: str) -> dict:
         with self._connection() as conn:
@@ -566,6 +692,7 @@ class JobStore:
             conn.execute("""UPDATE pipeline_jobs SET status='FAILED',attempt_id=NULL,fencing_token=fencing_token+1,
                 lease_owner=NULL,lease_expires_at=NULL,error=?,updated_at=?
                 WHERE workflow_id=? AND status NOT IN ('COMPLETED','FAILED')""", (error, time.time(), workflow_id))
+            routes.release_workflow(conn, workflow_id, error)
             self._event(conn, root, "WORKFLOW_CANCELLED", error=error, active_job_ids=[job["job_id"] for job in active])
             return active
 
@@ -638,3 +765,95 @@ class JobStore:
 
     def get_context(self, job_id: str) -> dict | None:
         return self.get(job_id)["context"]
+
+    def set_route_hold(self, scope: str, key: str, seconds: float, reason: str = 'busy') -> None:
+        """Record controller-observed availability without creating an execution."""
+        with self._write() as conn:
+            routes.set_hold(conn, scope, key, seconds, reason)
+
+    def routing_status(self) -> dict:
+        with self._connection() as conn:
+            conn.execute('BEGIN')
+            return {'holds': [dict(row) for row in conn.execute('SELECT * FROM pipeline_route_holds WHERE until_at>? ORDER BY scope,resource_key',(time.time(),))],
+                    'active_reservations': [json.loads(row['route_json']) for row in conn.execute('SELECT route_json FROM pipeline_route_reservations WHERE released_at IS NULL ORDER BY reserved_at')],
+                    'execution_quarantines': routes.cleanup_barriers(conn),
+                    'counts': {row['state']:row['n'] for row in conn.execute('SELECT state,count(*) AS n FROM pipeline_routing_jobs GROUP BY state')}}
+
+    def quarantine_execution(self, job_id: str, attempt_id: str, fencing_token: int,
+                             worker_slot: str | None, reason: str, pid: int | None = None) -> bool:
+        """Persist an unresolved native process/profile cleanup; admission fails closed."""
+        with self._write() as conn:
+            job = self._get(conn,job_id)
+            return routes.quarantine_execution(conn,job,attempt_id,fencing_token,worker_slot,reason,pid)
+
+    def clear_execution_quarantine(self, job_id: str, attempt_id: str, fencing_token: int) -> bool:
+        """Trusted owner acknowledgement after verified OS process-tree/profile closure.
+
+        This method is deliberately absent from the public controller API. An
+        expired lease, elapsed time, restart, or model assertion is not proof.
+        """
+        with self._write() as conn:
+            return routes.clear_execution(conn,self._get(conn,job_id),attempt_id,fencing_token)
+
+    confirm_execution_cleanup = clear_execution_quarantine
+
+    def execution_quarantines(self) -> list[dict]:
+        with self._connection() as conn:
+            return routes.cleanup_barriers(conn)
+
+    def quarantine_unclosed_executions(self, reason: str = 'Warden restarted before native cleanup proof') -> list[dict]:
+        """Startup-only controller barrier before touching any former workspace."""
+        if not isinstance(reason,str) or not reason.strip() or '\x00' in reason:
+            raise ValueError('Execution quarantine requires a nonempty reason')
+        with self._write() as conn:
+            rows = [dict(row) for row in conn.execute('SELECT * FROM pipeline_execution_cleanup WHERE cleared_at IS NULL')]
+            for row in rows:
+                routes.quarantine_execution(conn,self._get(conn,row['job_id']),row['attempt_id'],
+                                            row['fencing_token'],row['worker_slot'],reason,row['pid'])
+            return routes.cleanup_barriers(conn)
+
+    def recover_execution_quarantines_after_boot(self, current_boot_id: int) -> list[dict]:
+        """Trusted native controller proof: previous boot's processes cannot survive.
+
+        Only the Windows kernel boot identity may be supplied. Daemon start
+        times/PIDs and absent in-memory handles do not establish process death.
+        For legacy attempts, observed_boot_id records when uncertainty was
+        witnessed; it does not claim to know the original execution boot.
+        A later different Windows boot also proves those observed processes
+        cannot remain. Rows without either witness require verified closure.
+        """
+        if type(current_boot_id) is not int or current_boot_id<=0:
+            raise ValueError('current_boot_id must be a positive trusted Windows boot identity')
+        with self._write() as conn:
+            rows = [dict(row) for row in conn.execute('''SELECT * FROM pipeline_execution_cleanup
+                WHERE cleared_at IS NULL AND ((boot_id IS NOT NULL AND boot_id<>?) OR
+                 (boot_id IS NULL AND observed_boot_id IS NOT NULL AND observed_boot_id<>?))''',(current_boot_id,current_boot_id))]
+            for row in rows:
+                job = self._get(conn,row['job_id'])
+                routes.clear_execution(conn,job,row['attempt_id'],row['fencing_token'])
+                routes.event(conn,job,'EXECUTION_CLEANUP_VERIFIED_AFTER_REBOOT',attempt_id=row['attempt_id'],
+                             previous_boot_id=row['boot_id'],observed_boot_id=row['observed_boot_id'],current_boot_id=current_boot_id)
+            return rows
+
+    def resume_routing(self, job_id: str, reason: str) -> dict:
+        """Resume an operator-held route without replacing captured policy or budgets."""
+        if not isinstance(reason,str) or not reason.strip() or '\x00' in reason:
+            raise ValueError('Routing resume requires a nonempty reason without NUL characters')
+        with self._write() as conn:
+            job = self._get(conn, job_id)
+            if job['routing'] is None or job['routing']['state'] != 'BLOCKED' or job['status'] != 'BLOCKED':
+                raise ValueError('Only operator-held routing jobs can be resumed')
+            if self._get(conn,job['workflow_id'])['status']!='IN_PROGRESS':
+                raise ValueError('Cannot resume routing in a finished workflow')
+            state = job['routing']
+            now = time.time()
+            cycle_limit = state['policy']['max_routing_cycles']
+            if ((cycle_limit and state['cycle']>=cycle_limit) or
+                (state['expires_at'] is not None and now>=state['expires_at']) or
+                (state['max_dispatches'] is not None and state['dispatches']>=state['max_dispatches']) or
+                state['failure_count']>=job['max_attempts']):
+                raise ValueError('Captured routing or execution limit is exhausted; resume cannot reset budgets')
+            conn.execute("UPDATE pipeline_routing_jobs SET state='READY',next_eligible_at=0,wait_reason='operator_resume' WHERE job_id=?",(job_id,))
+            conn.execute("UPDATE pipeline_jobs SET status='PENDING_RETRY',error=NULL,updated_at=? WHERE job_id=?",(time.time(),job_id))
+            routes.event(conn,job,'ROUTING_RESUMED',reason=reason)
+            return self._get(conn,job_id)

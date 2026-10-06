@@ -14,6 +14,7 @@ import subprocess
 import sys
 
 import pytest
+from cochem_pipeline.routing import load_routing_policy, score_task
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_pipeline_acceptance.py"
@@ -36,14 +37,25 @@ def document_contract():
                 "jobs": [root], "artifacts": [], "events": []}
 
     def completed(job_id, kind, provider, output, started, finished, index=None):
+        policy = load_routing_policy()
+        payload = {"chapter_index":index,"requirements":["REQ-1"]}
+        scoring = score_task(kind,payload)
+        candidates = [target.as_dict() for target in policy.candidates(scoring['score'],kind)]
+        selected = 0 if kind=="SYNTHESIS" else 2 if provider=="codex" else 1
+        route = {**candidates[selected],"score":scoring['score'],"tier":scoring['tier'],"candidate_index":selected,"cycle":0,
+                 "policy_digest":policy.digest,"reservation_sha256":"b"*64}
+        model = route["model"]
         receipt = {"provider": provider, "pid": 100 + len(workflow["jobs"]), "exit_code": 0,
                    "subscription_verified": True, "session_id": f"fixture-session-{job_id}",
-                   "requested_model": providers[provider]["model"], "reported_model": providers[provider]["model"],
+                   "requested_model": model, "reported_model": model,
+                   "requested_effort":route["reasoning_effort"],"route_reservation_sha256":"b"*64,
                    "output_sha256": digest(output), "stdout_sha256": "a" * 64,
                    "started_at": started, "finished_at": finished,
                    "worker_account": f"fixture-account-{index}"}
         job = {"job_id": job_id, "kind": kind, "status": "COMPLETED", "output": output, "receipt": receipt,
-               "output_sha256": digest(output), "payload": {"chapter_index": index, "requirements": ["REQ-1"]}}
+               "route":route,"routing":{"policy":policy.as_dict(),"policy_hash":policy.digest,
+                   "score_details":scoring,"candidates":candidates},
+               "output_sha256": digest(output), "payload": payload}
         if index is not None:
             job.update(chapter_id=f"chapter-{index}", worker_slot=f"slot-{index}")
         if "artifact_text" in output:
@@ -89,7 +101,7 @@ def test_pure_report_checks_hashes_routing_identity_barrier_and_overlap(document
     ("exit_code", 1, "exit successfully"),
     ("session_id", "", "session ID"),
     ("output_sha256", "0" * 64, "output hash"),
-    ("provider", "claude", "unexpected provider"),
+    ("provider", "claude", "selected routing provider"),
     ("reported_model", "pretend-model", "different model"),
     ("subscription_verified", False, "subscription verification"),
     ("execution_kind", "test-emulator", "test/emulator"),

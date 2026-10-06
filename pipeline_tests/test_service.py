@@ -43,7 +43,7 @@ def test_actual_pipeline_mcp_session_creates_and_cancels_real_dag(endpoint):
         async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
             tools = await client.list_tools()
             assert {tool.name for tool in tools.tools} == {
-                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel'}
+                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing'}
             response = await client.call_tool('pipeline_submit',{
                 'objective':'Create a six-chapter SRS/WBS', 'requirements':['REQ-1'], 'chapter_count':6})
             assert not response.isError
@@ -68,7 +68,8 @@ class DatabaseController:
         self.store = JobStore(directory / "http-test.db")
 
     def status(self):
-        return {"test_kind": "http-and-sqlite", "active_jobs": len(self.store.active_jobs())}
+        return {"test_kind": "http-and-sqlite", "active_jobs": len(self.store.active_jobs()),
+                "routing": self.store.routing_status()}
 
     def cancel(self, workflow_id):
         return self.store.cancel_workflow(workflow_id)
@@ -162,6 +163,78 @@ def test_public_api_hides_real_claim_authority(endpoint):
         assert "fencing_token" not in item
         assert "lease_owner" not in item
     assert endpoint.controller.store.get(claimed["job_id"])["attempt_id"] == claimed["attempt_id"]
+
+
+def test_routing_submission_budget_and_real_assignment_survive_safe_api_projection(endpoint):
+    endpoint.client.call('/submit', {'objective':'A short operational checklist', 'chapter_count':2,
+        'workflow_id':'routed-workflow','max_attempts':1,'max_dispatches':1})
+    claimed=endpoint.controller.store.claim('private-routing-controller')
+    public=endpoint.client.call('/workflow/routed-workflow')
+    job=next(row for row in public['jobs'] if row['job_id']==claimed['job_id'])
+    assert job['max_attempts']==job['routing']['dispatches']==job['routing']['max_dispatches']==1
+    assert job['routing']['score_details']['score']==claimed['routing']['score_details']['score']
+    assert job['route']['provider']==claimed['route']['provider']
+    assert job['route']['reservation_sha256']==claimed['route']['reservation_sha256']
+    health=endpoint.client.call('/health')
+    assert health['routing']['active_reservations'][0]['reservation_sha256']==job['route']['reservation_sha256']
+    serialized=json.dumps([public,health])
+    assert claimed['attempt_id'] not in serialized
+    assert claimed['route']['reservation_id'] not in serialized
+    assert 'fencing_token' not in serialized
+    assert 'private-routing-controller' not in serialized
+
+
+@pytest.mark.parametrize('value',[True,0,-1,'1',1000001])
+def test_invalid_dispatch_budget_cannot_create_workflow(endpoint,value):
+    status,_=request(endpoint,'POST','/submit',{'objective':'Budget validation','chapter_count':2,'max_dispatches':value},
+                     authorization='Bearer '+endpoint.token)
+    assert status==400
+    assert endpoint.controller.store.list_workflows()==[]
+
+
+def operator_held_job(endpoint, *, max_dispatches=3):
+    endpoint.client.call('/submit', {'objective':'Operator hold fixture','chapter_count':2,
+        'workflow_id':'held-workflow','max_dispatches':max_dispatches})
+    job=endpoint.controller.store.claim('private-hold-controller')
+    assert endpoint.controller.store.fail(job['job_id'],job['attempt_id'],job['fencing_token'],
+        'Native CLI model configuration requires operator correction',retry=True,category='configuration',hold_scope='job')
+    held=endpoint.controller.store.get(job['job_id'])
+    assert held['status']==('FAILED' if max_dispatches==1 else 'BLOCKED')
+    return held
+
+
+def test_explicit_routing_resume_requires_auth_and_preserves_budgets_and_policy(endpoint):
+    held=operator_held_job(endpoint)
+    data={'job_id':held['job_id'],'reason':'Corrected the configured native CLI prerequisite'}
+    assert request(endpoint,'POST','/routing/resume',data)[0]==401
+    assert endpoint.controller.store.get(held['job_id'])['status']=='BLOCKED'
+    public=endpoint.client.call('/routing/resume',data)
+    resumed=next(job for job in public['jobs'] if job['job_id']==held['job_id'])
+    assert resumed['status']=='PENDING_RETRY'
+    assert resumed['attempts']==held['attempts']
+    for field in ('failure_count','dispatches','max_dispatches','cycle','expires_at','score_details','policy','candidates'):
+        assert resumed['routing'][field]==held['routing'][field]
+    event=next(event for event in public['events'] if event['event']=='ROUTING_RESUMED')
+    assert event['details']['reason']==data['reason']
+
+
+@pytest.mark.parametrize('reason',[None,'','  ',42,'x'*513,'bad\x00reason'])
+def test_resume_without_bounded_operator_reason_cannot_change_job(endpoint,reason):
+    held=operator_held_job(endpoint)
+    status,_=request(endpoint,'POST','/routing/resume',{'job_id':held['job_id'],'reason':reason},
+                     authorization='Bearer '+endpoint.token)
+    assert status==400
+    assert endpoint.controller.store.get(held['job_id'])['status']=='BLOCKED'
+
+
+def test_operator_resume_cannot_reset_an_exhausted_dispatch_budget(endpoint):
+    held=operator_held_job(endpoint,max_dispatches=1)
+    status,value=request(endpoint,'POST','/routing/resume',{'job_id':held['job_id'],'reason':'Retry anyway'},
+                         authorization='Bearer '+endpoint.token)
+    assert status==400
+    unchanged=endpoint.controller.store.get(held['job_id'])
+    assert unchanged['routing']['dispatches']==unchanged['routing']['max_dispatches']==1
+    assert unchanged['status']=='FAILED'
 
 
 def test_actual_cancellation_fences_a_live_database_lease(endpoint):

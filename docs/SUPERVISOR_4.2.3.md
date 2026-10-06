@@ -1,5 +1,8 @@
 # 4.2.3 supervisor: bounded recovery outside the pipeline
 
+> Historical 4.2.3 deployment instructions. Current installer defaults and the
+> budget-preserving upgrade are documented in [the 4.2.4 guide](ROUTING_4.2.4.md).
+
 The supervisor observes and recovers the planning pipeline from a separate
 protected Windows installation and Python environment. Its SQLite incident
 ledger and repair limits remain independent of the pipeline's job board.

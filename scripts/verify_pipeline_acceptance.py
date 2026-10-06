@@ -19,6 +19,7 @@ import uuid
 
 from cochem_pipeline.service import ControlClient
 from cochem_pipeline.store import artifact_digest, output_digest
+from cochem_supervisor.probes import configured_tiers, verify_routing_assignment
 
 
 def require(condition, message: str) -> None:
@@ -26,7 +27,7 @@ def require(condition, message: str) -> None:
         raise ValueError(message)
 
 
-def validate_workflow(workflow: dict, providers: dict) -> dict:
+def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | None = None) -> dict:
     """Check a controller snapshot; this pure function does not execute models.
 
     Provider identity is taken from trusted process receipts, never generated
@@ -70,7 +71,8 @@ def validate_workflow(workflow: dict, providers: dict) -> dict:
             "Expected exactly six immutable chapter artifacts and one final document")
     by_job = {artifact.get("job_id"): artifact for artifact in artifacts}
     require(len(by_job) == 7, "Multiple artifacts claim the same job")
-    intervals, accounts, sessions, unreported, counts = [], [], [], [], Counter()
+    intervals, accounts, sessions, unreported, counts, routing_decisions = [], [], [], [], Counter(), []
+    unreported_effort = []
     for job in [*manifests, *chapters, *syntheses]:
         job_id, kind = job["job_id"], job["kind"]
         require(job.get("status") == "COMPLETED", f"Job {job_id} is not completed")
@@ -78,20 +80,19 @@ def validate_workflow(workflow: dict, providers: dict) -> dict:
         require(isinstance(output, dict) and isinstance(receipt, dict), f"Job {job_id} lacks an output/receipt")
         require("execution_kind" not in receipt, f"Job {job_id} has a test/emulator receipt, not a live receipt")
         require(receipt.get("subscription_verified") is True, f"Job {job_id} lacks native subscription verification")
-        expected_provider = "gemini" if kind == "SYNTHESIS" else "codex"
-        if kind == "CHAPTER_DRAFT":
-            expected_provider = "codex" if job["payload"]["chapter_index"] % 2 == 0 else "claude"
-        require(receipt.get("provider") == expected_provider, f"Job {job_id} used an unexpected provider")
-        model = providers.get(expected_provider, {}).get("model")
-        require(isinstance(model, str) and bool(model), f"Missing configured model for {expected_provider}")
-        require(receipt.get("requested_model") == model, f"Job {job_id} requested a different configured model")
+        assignment = verify_routing_assignment(job, routing_policy)
+        expected_provider, model = assignment["provider"], assignment["model"]
+        require(expected_provider in providers, f"Missing configured CLI provider for {expected_provider}")
+        routing_decisions.append({"job_id":job_id, **assignment})
         reported = receipt.get("reported_model")
         require(reported in (None, model), f"Job {job_id} reported a different model")
         if expected_provider == "gemini":
-            require(reported == model, "Gemini synthesis must report the configured model")
+            require(reported == model, "Gemini must report the assigned configured model")
         if reported is None:
             unreported.append(job_id)
-        require(type(receipt.get("pid")) is int and receipt["pid"] > 0, f"Job {job_id} lacks a physical PID")
+        if assignment['reasoning_effort'] is not None and receipt.get('reported_effort') is None:
+            unreported_effort.append(job_id)
+        require(type(receipt.get("pid")) is int and 0 < receipt["pid"] <= 0xFFFFFFFF, f"Job {job_id} lacks a physical PID")
         require(type(receipt.get("exit_code")) is int and receipt["exit_code"] == 0, f"Job {job_id} did not exit successfully")
         session = receipt.get("session_id")
         require(isinstance(session, str) and bool(session.strip()), f"Job {job_id} lacks a native session ID")
@@ -149,6 +150,8 @@ def validate_workflow(workflow: dict, providers: dict) -> dict:
     return {"verified": True, "workflow_id": workflow["workflow_id"], "chapter_artifacts": 6,
             "synthesis_artifacts": 1, "validated_process_receipts": 8, "accepted_chapter_peak": peak,
             "provider_counts": dict(counts), "jobs_without_reported_model_metadata": unreported,
+            "routing_decisions": routing_decisions,
+            "jobs_without_reported_effort_metadata": unreported_effort,
             "stdout_content_independently_recomputed": False,
             "verification_scope": "Controller process receipts, canonical output/artifact hashes, identity bindings, event ledger and accepted execution overlap"}
 
@@ -193,6 +196,8 @@ def main(argv=None) -> int:
         config = json.loads(Path(args.config).read_text(encoding="utf-8-sig"))
         providers = config["providers"]
         require(all(isinstance(providers.get(name, {}).get("model"), str) for name in ("codex", "claude", "gemini")), "Configure all three provider models")
+        routing_policy = config.get("routing", {})
+        configured_tiers(routing_policy)
         client = ControlClient(args.port or config.get("port", 47824), args.token_file or config["token_file"])
         report["health_before"] = client.call("/health")
         identifier = "acceptance-" + uuid.uuid4().hex
@@ -218,7 +223,7 @@ def main(argv=None) -> int:
                 raise TimeoutError("Live workflow exceeded the verification timeout")
             time.sleep(min(args.poll_seconds, max(0, deadline - time.monotonic())))
             workflow = client.call("/workflow/" + identifier)
-        report["validation"] = validate_workflow(workflow, providers)
+        report["validation"] = validate_workflow(workflow, providers, routing_policy)
         confirmation = client.call("/workflow/" + identifier)
         require(confirmation["artifacts"] == workflow["artifacts"], "Completed artifacts changed between reads")
         report["status"] = "PASSED"

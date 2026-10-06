@@ -16,13 +16,32 @@ import time
 
 import pytest
 
-from cochem_supervisor.probes import ControllerClient, run_smoke_workflow, verify_smoke_workflow, wait_for_health
+from cochem_supervisor.probes import (ControllerClient, configured_routing_policy, configured_tiers, run_smoke_workflow,
+    score_routing_task, verify_routing_assignment, verify_smoke_workflow, wait_for_health)
 
 MODELS = {"codex": "gpt-6-astra", "claude": "claude-fable-5-1", "gemini": "gemini-3.1-pro"}
 
 
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+
+
+def routing_fixture(kind, payload, index=0):
+    """Synthetic contract metadata only; not a physical scheduler decision."""
+    policy = configured_routing_policy()
+    scoring = score_routing_task(kind,payload)
+    score,tier = scoring["score"],scoring["tier"]
+    candidates = ([{"provider":"gemini","model":"gemini-3.1-pro","reasoning_effort":None}]
+                  if kind == "SYNTHESIS" else deepcopy(policy["tiers"][tier]))
+    for target in candidates:
+        key = target["provider"]+":"+target["model"]+(":"+target["reasoning_effort"] if target["reasoning_effort"] else "")
+        target.update(key=key,max_concurrency=policy["model_limits"][key],
+                      quota_pool=policy["provider_limits"][target["provider"]]["quota_pool"])
+    routing = {"policy":policy,"policy_hash":digest(policy),"score_details":scoring,
+               "candidates":candidates,"dispatches":1,"max_dispatches":1}
+    route = {**candidates[index],"score":score,"tier":tier,"candidate_index":index,"cycle":0,
+             "policy_digest":digest(policy),"reservation_sha256":"b"*64}
+    return routing, route
 
 
 def workflow_fixture(workflow_id="contract-only-fixture"):
@@ -34,16 +53,19 @@ def workflow_fixture(workflow_id="contract-only-fixture"):
     def job(kind, provider, output, chapter_id=None, index=None):
         index_suffix = str(index) if index is not None else kind
         identity = workflow_id + "-" + index_suffix
+        payload = {"chapter_index":index,"requirements":[f"SUPERVISOR-{index+1}"]} if index is not None else {}
+        candidate_index = 0 if kind == "SYNTHESIS" else 2 if provider == "codex" else 1
+        routing, route = routing_fixture(kind, payload, candidate_index)
         receipt = {"provider": provider, "subscription_verified": True, "pid": 123,
                    "exit_code": 0, "session_id": "synthetic-contract-fixture-not-live",
-                   "requested_model": MODELS[provider], "reported_model": MODELS[provider],
+                   "requested_model": route["model"], "reported_model": route["model"],
+                   "requested_effort": route["reasoning_effort"],
+                   "route_reservation_sha256": route["reservation_sha256"],
                    "output_sha256": digest(output), "stdout_sha256": "a"*64}
         record = {"job_id": identity, "workflow_id": workflow_id, "parent_job_id": workflow_id,
                   "kind": kind, "status": "COMPLETED", "attempts": 1, "max_attempts": 1,
-                  "chapter_id": chapter_id, "payload": {}, "output": output,
-                  "receipt": receipt, "output_sha256": digest(output)}
-        if index is not None:
-            record["payload"] = {"chapter_index": index, "requirements": [f"SUPERVISOR-{index+1}"]}
+                  "chapter_id": chapter_id, "payload": payload, "output": output,
+                  "receipt": receipt, "output_sha256": digest(output), "routing":routing,"route":route}
         if "artifact_text" in output:
             sha = hashlib.sha256(output["artifact_text"].encode()).hexdigest()
             record["artifact_sha256"] = sha
@@ -90,7 +112,8 @@ def test_real_job_store_public_projection_matches_independent_smoke_validator(tm
     from cochem_pipeline.store import JobStore
 
     store = JobStore(tmp_path / "job_board.db")
-    workflow = store.submit("Contract fixture only", ["SUPERVISOR-1", "SUPERVISOR-2"], 2, max_attempts=1)
+    workflow = store.submit("Contract fixture only", ["SUPERVISOR-1", "SUPERVISOR-2"], 2,
+                            max_attempts=1,max_dispatches=1)
     identifier = workflow["workflow_id"]
     fixture = workflow_fixture(identifier)
     manifest = {"chapters": [
@@ -105,7 +128,12 @@ def test_real_job_store_public_projection_matches_independent_smoke_validator(tm
             output = reference["output"]
         else:
             reference, output = fixture["jobs"][-1], fixture["jobs"][-1]["output"]
-        receipt = {**reference["receipt"], "output_sha256": digest(output)}
+        route = node["route"]
+        receipt = {**reference["receipt"], "output_sha256": digest(output),
+            "provider":route["provider"],"requested_model":route["model"],"reported_model":route["model"],
+            "requested_effort":route["reasoning_effort"],
+            "route_reservation_id":route["reservation_id"],"route_reservation_sha256":route["reservation_sha256"],
+            **{key:node[key] for key in ("job_id","workflow_id","worker_slot","attempt_id","fencing_token")}}
         store.complete(node["job_id"], node["attempt_id"], node["fencing_token"], output, receipt)
     public = public_workflow(store.workflow(identifier))
     assert all("attempt_id" not in job for job in public["jobs"])
@@ -114,12 +142,99 @@ def test_real_job_store_public_projection_matches_independent_smoke_validator(tm
     assert len(result["process_receipts"]) == 4
 
 
+@pytest.mark.parametrize("policy", [None, {"model_limits":{"codex:gpt-6-astra:ultra":2}},
+    {"failure_cooldowns":{"quota":600},"max_routing_seconds":3600,"max_dispatches":4},
+    {"provider_limits":{"claude":{"quota_pool":"shared"},"codex":{"quota_pool":"shared"}},
+     "quota_pool_limits":{"shared":3,"gemini":2}},
+])
+def test_independent_policy_normalization_matches_actual_pipeline_contract(policy):
+    from cochem_pipeline.routing import load_routing_policy
+    expected = load_routing_policy(policy)
+    observed = configured_routing_policy(policy)
+    assert observed == expected.as_dict()
+    assert digest(observed) == expected.digest
+
+
+@pytest.mark.parametrize('kind',['MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS'])
+@pytest.mark.parametrize('payload',[{}, {'objective':'Unicode β safety check','requirements':['A','B']},
+    {'objective':'security migration concurrency','requirements':[str(index) for index in range(12)],
+     'dependencies':['one'],'chapter_count':3},
+    {'objective':'security migration concurrency '+'analysis '*4500,
+     'requirements':[str(index) for index in range(12)],'dependencies':list(range(4)),'chapter_count':8},
+    {'objective':'A small item','scope':{'score':10,'model':'gpt-6-astra','provider':'codex'},'routing':{'score':10}},
+])
+def test_frozen_supervisor_scoring_matches_actual_task_content_contract(kind,payload):
+    from cochem_pipeline.routing import score_task
+    assert score_routing_task(kind,payload)==score_task(kind,payload)
+
+
+@pytest.mark.parametrize('large,effort',[(False,'low'),(True,'ultra')])
+def test_astra_effort_is_bound_to_score_band_and_missing_native_metadata_is_honest(large,effort):
+    workflow=workflow_fixture()
+    manifest=workflow['jobs'][1]
+    # Deliberately complex contract payload exercises both Astra effort bands.
+    manifest['payload']={'objective':'security migration concurrency',
+                         'requirements':[str(index) for index in range(12)]}
+    if large:
+        manifest['payload']['objective']+=' analysis'*4500
+        manifest['payload']['dependencies']=list(range(4))
+    manifest['routing'],manifest['route']=routing_fixture('MANIFEST_GENERATOR',manifest['payload'],1)
+    assert manifest['route']['reasoning_effort']==effort
+    manifest['receipt'].update(requested_model='gpt-6-astra',reported_model='gpt-6-astra',requested_effort=effort)
+    result=verify_smoke_workflow(workflow,MODELS)
+    assert result['unverified_effort_providers']==['codex']
+    assert result['effort_identity_verified'] is False
+    manifest['receipt']['reported_effort']=effort
+    assert verify_smoke_workflow(workflow,MODELS)['effort_identity_verified'] is True
+    manifest['receipt']['reported_effort']='ultra' if effort=='low' else 'low'
+    with pytest.raises(ValueError,match='reasoning effort'):
+        verify_smoke_workflow(workflow,MODELS)
+
+
+def test_dynamic_assignment_accepts_gemini_chapter_instead_of_fixed_codex_parity():
+    workflow = workflow_fixture()
+    chapter = workflow["jobs"][2]
+    chapter["routing"],chapter["route"] = routing_fixture("CHAPTER_DRAFT",chapter["payload"])
+    chapter["receipt"].update(provider="gemini",requested_model="gemini-3.8-flash",
+        reported_model="gemini-3.8-flash",requested_effort=None)
+    result = verify_smoke_workflow(workflow,MODELS)
+    assert result["process_receipts"][1]["provider"] == "gemini"
+    assert result["process_receipts"][1]["routing"]["tier"] == "1-3"
+
+
+def test_fixed_synthesis_cannot_use_an_ordinary_score_band_fallback():
+    workflow = workflow_fixture()
+    synthesis = workflow["jobs"][-1]
+    synthesis["routing"]["candidates"][0]["model"]="gemini-3.8-flash"
+    synthesis["route"]["model"]="gemini-3.8-flash"
+    synthesis["receipt"].update(requested_model="gemini-3.8-flash",reported_model="gemini-3.8-flash")
+    with pytest.raises(ValueError,match="candidates differ"):
+        verify_smoke_workflow(workflow,MODELS)
+
+
+def test_mismatched_operator_policy_cannot_be_hidden_by_self_consistent_route_digest():
+    workflow = workflow_fixture()
+    with pytest.raises(ValueError,match="configured policy"):
+        verify_smoke_workflow(workflow,MODELS,{"backlog_threshold":2})
+
+
 @pytest.mark.parametrize("mutation", [
     lambda w: w.update(status="IN_PROGRESS"),
     lambda w: w["jobs"].pop(),
     lambda w: w["jobs"][1].update(attempts=2),
     lambda w: w["jobs"][1].update(max_attempts=3),
     lambda w: w["jobs"][1].update(max_attempts=True),
+    lambda w: w["jobs"][1]["routing"].update(dispatches=2),
+    lambda w: w["jobs"][1]["routing"].update(max_dispatches=True),
+    lambda w: w["jobs"][1]["routing"].update(max_dispatches=2),
+    lambda w: w["jobs"][1]["routing"].update(policy_hash="0"*64),
+    lambda w: w["jobs"][1]["route"].update(candidate_index=0),
+    lambda w: w["jobs"][1]["route"].update(score=5),
+    lambda w: w["jobs"][1]["receipt"].update(requested_effort="low"),
+    lambda w: w["jobs"][1]["receipt"].update(reported_effort="ultra"),
+    lambda w: w["jobs"][1]["payload"].update(objective="security migration concurrency"),
+    lambda w: w["jobs"][1]["routing"]["score_details"]["rationale"][0].update(points=2),
+    lambda w: w["jobs"][1]["receipt"].update(route_reservation_sha256="c"*64),
     lambda w: w["jobs"][1]["receipt"].update(provider="claude"),
     lambda w: w["jobs"][3]["receipt"].update(provider="codex"),
     lambda w: w["jobs"][1]["receipt"].update(subscription_verified=False),
@@ -232,6 +347,7 @@ def test_smoke_transport_submits_exactly_once_with_retry_disabled_and_persists_s
     assert [path for path, _ in state["calls"]] == ["/submit"]
     assert state["submitted"]["chapter_count"] == 2
     assert state["submitted"]["max_attempts"] == 1
+    assert state["submitted"]["max_dispatches"] == 1
     assert state["submitted"]["requirements"] == ["SUPERVISOR-1", "SUPERVISOR-2"]
     assert json.loads(report_file.read_text()) == result
     assert state["token"] not in report_file.read_text()
