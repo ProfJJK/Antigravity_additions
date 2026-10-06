@@ -1,6 +1,0 @@
-{
-    "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_srs/SRS_Chunk_Proposal_Daemon_Resiliency_And_Parser_Hardening_Architectural_Review.md",
-    "agent_name": "cochem-coder",
-    "prompt": "IMPLEMENTATION TASK 1.4:\nHarden `kanban_v2_daemon.py` and `task_work_loop.py` with pre-flight payload existence and non-emptiness verification, quarantining corrupt tasks and preventing empty-prompt agent executions.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
-    "task_id": "20260919_151927_SRS_Chunk_Proposal_Daemon_Resiliency_And_Parser_Hardening_Architectural_Review_1.4"
-}

@@ -1,6 +1,0 @@
-{
-  "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_code/SRS_Chunk_BSOD_0x00000050_Architectural_Review.md",
-  "agent_name": "cochem-coder",
-  "prompt": "IMPLEMENTATION TASK 3.01:\nStorage I/O Guardrail Implementation   - **Action:** Implement `src/cochem_platform/io_guardrail.py` measuring disk queue depth and write latency with adaptive yield logic.   - **Verification:** Unit tests confirm `wait_for_storage_headroom()` yields when simulated queue depth exceeds 8.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
-  "task_id": "193.01"
-}

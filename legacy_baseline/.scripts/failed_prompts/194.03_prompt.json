@@ -1,6 +1,0 @@
-{
-  "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_code/SRS_Chunk_BSOD_0x00000050_Architectural_Review.md",
-  "agent_name": "cochem-coder",
-  "prompt": "IMPLEMENTATION TASK 4.03:\nDebounced SwarmStateManager   - **Action:** Implement `SwarmStateManager` with atomic temp-file replace and 15-second mirror sync debouncing.   - **Verification:** 100 rapid state updates generate $\\le 7$ physical disk writes.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
-  "task_id": "194.03"
-}

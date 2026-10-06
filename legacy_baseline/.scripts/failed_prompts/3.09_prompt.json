@@ -1,6 +1,0 @@
-{
-    "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_srs/SRS_Chunk_Proposal_CoChem_ML_RL_Architecture_Proposal_Architectural_Review.md",
-    "agent_name": "cochem-coder",
-    "prompt": "IMPLEMENTATION TASK 3.09:\nConstruct experience replay buffer storing transition tuples $(\\mathbf{s}_t, \\mathbf{a}_t, r_t, \\mathbf{s}_{t+1})$ in Parquet format.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
-    "task_id": "3.09"
-}

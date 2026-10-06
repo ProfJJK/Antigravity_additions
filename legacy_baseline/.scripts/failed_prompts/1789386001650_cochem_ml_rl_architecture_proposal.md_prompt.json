@@ -1,6 +1,0 @@
-{
-    "kanban_source": "C:/Users/ansac/.gemini/antigravity/brain/226adbd6-db7c-42cd-a5fd-eac63cbafc22/scratch/cochem_ml_rl_architecture_proposal.md",
-    "agent_name": "g-coder",
-    "prompt": "Execute Architectural Review on target codebase at C:\\Users\\ansac\\.gemini\\antigravity\\brain\\226adbd6-db7c-42cd-a5fd-eac63cbafc22\\scratch\\cochem_ml_rl_architecture_proposal.md. You are EXEMPT from physical codebase mutation mandates. Your job is strictly to write markdown improvement vectors. Analyze the codebase and save a structured Markdown chunk proposal directly to the dropzone directory: D:/__CoChem/__agentic/dropzones/inbox_srs CRITICAL: You must use the `write_to_file` tool to save the markdown file directly to the disk so the kanban watcher can pick it up. Do NOT just output the text in chat, or you will fail the physical audit. DO NOT USE MCP TOOLS to trigger further workflows.",
-    "task_id": null
-}

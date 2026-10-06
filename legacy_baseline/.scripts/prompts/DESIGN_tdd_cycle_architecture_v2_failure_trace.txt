@@ -1,3 +1,0 @@
-claude CLI failed (rc=1):
-STDERR: 
-STDOUT: Failed to authenticate. API Error: 401 OAuth access token has expired. Re-authenticate to continue.

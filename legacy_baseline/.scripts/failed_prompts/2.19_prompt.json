@@ -1,6 +1,0 @@
-{
-    "kanban_source": "D:/__CoChem/__agentic/dropzones/inbox_srs/SRS_Chunk_Proposal_CoChem_ML_RL_Architecture_Proposal_Architectural_Review.md",
-    "agent_name": "cochem-coder",
-    "prompt": "IMPLEMENTATION TASK 2.19:\nConduct benchmark verifying state rollback and reconstitution latency remains $< 500\\text{ ms}$.\n\nYou must strictly adhere to the Anti-Spoofing and Zero-Mock Protocols.",
-    "task_id": "2.19"
-}

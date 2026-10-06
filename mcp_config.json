@@ -1,0 +1,89 @@
+{
+  "mcpServers": {
+    "antigravity-rl": {
+      "args": [
+        "C:\\Users\\ansac\\.gemini\\config\\plugins\\antigravity-rl\\rl_mcp_server.py"
+      ],
+      "command": "C:\\Python314\\python.exe",
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "brightdata": {
+      "args": [
+        "-y",
+        "@brightdata/mcp"
+      ],
+      "command": "npx.cmd",
+      "env": {
+        "API_TOKEN": "991de8c7-4076-4d05-95fb-cdc2f0963b98"
+      }
+    },
+    "cochem-kanban": {
+      "args": [
+        "D:\\__agentic\\mcp\\cochem_kanban_mcp.py"
+      ],
+      "command": "C:\\Python314\\python.exe",
+      "env": {
+        "PYTHONPATH": "D:\\__CoChem\\__agentic\\v4.1.2\\src;D:\\__CoChem\\__agentic\\v4.1.2"
+      }
+    },
+    "consensus": {
+      "headers": {
+        "Authorization": "Bearer ak_38ZC3AGZRJMMNYNFPGWY74H6657CRF1Q"
+      },
+      "serverUrl": "https://mcp.consensus.app/mcp"
+    },
+    "cu-syllabus": {
+      "args": [
+        "run",
+        "--with",
+        "mcp",
+        "d:/Gdrive/__agentic/.sources/CU_sources/cu_syllabus_mcp.py"
+      ],
+      "command": "uv"
+    },
+    "grade-sorting": {
+      "args": [
+        "D:\\__agentic\\tools\\grade_sorting\\mcp_server.py"
+      ],
+      "command": "C:\\Python314\\python.exe"
+    },
+    "rexams-mcp": {
+      "args": [
+        "D:\\Gdrive\\__agentic\\.sources\\r_exams\\mcp\\rexams_mcp.py"
+      ],
+      "command": "C:\\Python314\\python.exe"
+    },
+    "cochem-warden": {
+      "serverUrl": "http://127.0.0.1:47821/sse"
+    },
+    "cochem-dsp": {
+      "serverUrl": "http://127.0.0.1:47822/sse"
+    },
+    "cochem-knowledge": {
+      "serverUrl": "http://127.0.0.1:47823/sse"
+    },
+    "cochem-auto-architect": {
+      "args": [
+        "D:\\__CoChem\\__agentic\\v4.2.0\\auto_architect_mcp.py"
+      ],
+      "command": "C:\\Python314\\python.exe"
+    },
+    "claude": {
+      "command": "C:\\Python314\\python.exe",
+      "args": [
+        "D:\\__agentic\\mcp\\claude_wrapper.py"
+      ]
+    },
+    "codex-headless": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "mcp",
+        "D:\\__agentic\\mcp\\codex_headless_mcp.py"
+      ]
+    }
+  }
+}
