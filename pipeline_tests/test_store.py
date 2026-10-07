@@ -23,18 +23,26 @@ import pytest
 from cochem_pipeline.store import JobStore, artifact_digest, canonical_json, output_digest
 
 
-def receipt(output, provider="codex"):
+def receipt(output, provider=None, job=None):
     # A physical Python process hashes the exact bytes; it is explicitly NOT an LLM.
     proc = subprocess.run(
         [sys.executable, "-c", "import hashlib,json,os,sys; raw=sys.stdin.buffer.read(); print(json.dumps({'pid':os.getpid(),'output_sha256':hashlib.sha256(raw).hexdigest()}))"],
         input=canonical_json(output), capture_output=True, text=True, encoding="utf-8", check=True,
     )
-    return {**json.loads(proc.stdout), "provider": provider, "exit_code": proc.returncode,
-            "session_id": "deterministic-contract-test", "execution_kind": "python-storage-contract-test"}
+    result = {**json.loads(proc.stdout), "provider": provider or "codex", "exit_code": proc.returncode,
+              "session_id": "deterministic-contract-test", "execution_kind": "python-storage-contract-test"}
+    if job is not None and job.get('route'):
+        route = job['route']
+        result.update(provider=provider or route['provider'], requested_model=route['model'],
+                      requested_effort=route.get('reasoning_effort'), selected_route=route,
+                      route_reservation_id=route['reservation_id'], attempt_id=job['attempt_id'],
+                      fencing_token=job['fencing_token'], worker_slot=job['worker_slot'],
+                      job_id=job['job_id'], workflow_id=job['workflow_id'])
+    return result
 
 
-def finish(store, job, output, provider="codex"):
-    return store.complete(job["job_id"], job["attempt_id"], job["fencing_token"], output, receipt(output, provider))
+def finish(store, job, output, provider=None):
+    return store.complete(job["job_id"], job["attempt_id"], job["fencing_token"], output, receipt(output, provider, job))
 
 
 def manifest(count=6):
@@ -79,6 +87,7 @@ def test_submit_is_durable_idempotent_and_preserves_legacy_tables(tmp_path):
     with store._connection() as conn:
         assert conn.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         assert conn.execute("PRAGMA busy_timeout").fetchone()[0] == 5000
+        assert conn.execute("PRAGMA synchronous").fetchone()[0] == 1
 
 
 @pytest.mark.parametrize("bad", [
@@ -131,11 +140,11 @@ def test_six_chapter_scatter_with_four_worker_limit_and_real_overlap(tmp_path):
     assert len([j for j in workflow["jobs"] if j["kind"] == "SYNTHESIS"]) == 1
     assert len([e for e in store.events(workflow_id) if e["event"] == "SYNTHESIS_RELEASED"]) == 1
     assert workflow["root"]["status"] == "IN_PROGRESS"
-    synthesis = store.claim("gemini-synthesis")
+    synthesis = store.claim("synthesis-controller")
     assert synthesis["kind"] == "SYNTHESIS"
     assert len(synthesis["payload"]["chapter_hashes"]) == 6
     output = {"artifact_text": "# Complete SRS/WBS", "chapter_hashes": synthesis["payload"]["chapter_hashes"]}
-    finish(store, synthesis, output, "gemini")
+    finish(store, synthesis, output)
     final = store.workflow(workflow_id)
     assert final["root"]["status"] == "COMPLETED"
     assert len(final["artifacts"]) == 7
@@ -155,7 +164,7 @@ def test_chapter_ownership_enforced_in_python_and_database_trigger(tmp_path):
         with pytest.raises(sqlite3.IntegrityError, match="ownership"):
             conn.execute("""INSERT INTO pipeline_outputs VALUES(?,?,?,?,?,?,?,?)""",
                          (first["job_id"], first["attempt_id"], first["fencing_token"],
-                          second["chapter_id"], canonical_json(wrong), "{}", output_digest(wrong), time.time()))
+                          second["chapter_id"], canonical_json(wrong), canonical_json(receipt(wrong, job=first)), output_digest(wrong), time.time()))
     assert store.workflow(workflow_id)["artifacts"] == []
 
 
@@ -163,7 +172,7 @@ def test_artifacts_and_outputs_immutable_and_identical_completion_idempotent(tmp
     store, _ = seeded(tmp_path, 1)
     job = store.claim("chapter-owner")
     output = chapter(job)
-    process_receipt = receipt(output)
+    process_receipt = receipt(output, job=job)
     before = store.complete(job["job_id"], job["attempt_id"], job["fencing_token"], output, process_receipt)
     again = store.complete(job["job_id"], job["attempt_id"], job["fencing_token"], output, process_receipt)
     assert again == before
@@ -178,18 +187,18 @@ def test_artifacts_and_outputs_immutable_and_identical_completion_idempotent(tmp
         finish(store, job, changed)
 
 
-def test_synthesis_rejects_wrong_hashes_or_non_gemini_receipt(tmp_path):
+def test_synthesis_rejects_wrong_hashes_or_unreserved_provider_receipt(tmp_path):
     store, workflow_id = seeded(tmp_path, 1)
     drafting = store.claim("chapter-owner")
     finish(store, drafting, chapter(drafting))
     synthesis = store.claim("synthesis-owner")
     output = {"artifact_text": "Complete document", "chapter_hashes": synthesis["payload"]["chapter_hashes"]}
-    with pytest.raises(ValueError, match="Gemini"):
-        finish(store, synthesis, output, "claude")
+    with pytest.raises(ValueError, match="receipt"):
+        finish(store, synthesis, output, "codex" if synthesis["route"]["provider"] != "codex" else "claude")
     with pytest.raises(ValueError, match="hashes"):
-        finish(store, synthesis, {**output, "chapter_hashes": {drafting["chapter_id"]: "f" * 64}}, "gemini")
+        finish(store, synthesis, {**output, "chapter_hashes": {drafting["chapter_id"]: "f" * 64}})
     assert store.workflow(workflow_id)["root"]["status"] == "IN_PROGRESS"
-    finish(store, synthesis, output, "gemini")
+    finish(store, synthesis, output)
     assert store.workflow(workflow_id)["status"] == "COMPLETED"
 
 
@@ -197,7 +206,7 @@ def test_crash_expiry_reclaims_lease_and_fences_old_attempt(tmp_path):
     store, _ = seeded(tmp_path, 1)
     old = store.claim("old-process", lease_seconds=0.08)
     output = chapter(old)
-    process_receipt = receipt(output)
+    process_receipt = receipt(output, job=old)
     time.sleep(0.12)
     reaped = store.reap_expired()
     assert [job["job_id"] for job in reaped] == [old["job_id"]]
@@ -210,7 +219,7 @@ def test_crash_expiry_reclaims_lease_and_fences_old_attempt(tmp_path):
     with pytest.raises(ValueError, match="Stale"):
         store.complete(old["job_id"], old["attempt_id"], old["fencing_token"], output, process_receipt)
     with sqlite3.connect(store.path) as conn:
-        with pytest.raises(sqlite3.IntegrityError, match="stale"):
+        with pytest.raises(sqlite3.IntegrityError, match="stale|reserved route"):
             conn.execute("INSERT INTO pipeline_outputs VALUES(?,?,?,?,?,?,?,?)",
                          (old["job_id"], old["attempt_id"], old["fencing_token"], old["chapter_id"],
                           canonical_json(output), canonical_json(process_receipt), output_digest(output), time.time()))
@@ -252,7 +261,7 @@ def test_receipt_must_bind_successful_real_process_metadata_and_output(tmp_path)
     store, _ = seeded(tmp_path, 1)
     job = store.claim("owner")
     output = chapter(job)
-    valid = receipt(output)
+    valid = receipt(output, job=job)
     for patch in ({"pid": 0}, {"pid": True}, {"exit_code": 1}, {"session_id": ""},
                   {"provider": "pretend-codex"}, {"output_sha256": "0" * 64}):
         with pytest.raises(ValueError, match="receipt"):
@@ -365,7 +374,7 @@ def test_worker_slot_and_exclusion_parameters_are_validated(tmp_path):
         store.claim("owner", exclude_job_ids="not-a-list")
 
 
-def test_three_expired_leases_exhaust_persistent_budget_and_fail_barrier(tmp_path):
+def test_three_expired_leases_exhaust_persistent_budget_and_block_barrier(tmp_path):
     store, workflow_id = seeded(tmp_path, 2)
     original_id = None
     for attempt in range(1, 4):
@@ -379,10 +388,11 @@ def test_three_expired_leases_exhaust_persistent_budget_and_fail_barrier(tmp_pat
         assert job["max_attempts"] == 3
         time.sleep(0.07)
         expired = store.reap_expired()
-        assert expired[0]["status"] == ("FAILED" if attempt == 3 else "PENDING_RETRY")
+        assert expired[0]["status"] == ("BLOCKED" if attempt == 3 else "PENDING_RETRY")
     result = store.workflow(workflow_id)
-    assert result["status"] == "FAILED"
-    assert all(job["status"] in {"FAILED", "COMPLETED"} for job in result["jobs"])
+    assert result["status"] == "BLOCKED"
+    assert all(job["status"] in {"BLOCKED", "COMPLETED"} for job in result["jobs"])
+    assert all(job['lease_owner'] is None and job['lease_expires_at'] is None for job in result['jobs'])
     assert store.claim("fourth-attempt", worker_slot="same-worker") is None
     assert "budget exhausted" in store.get(original_id)["error"]
     assert any(event["event"] == "ATTEMPT_BUDGET_EXHAUSTED" for event in store.events(workflow_id))
@@ -396,8 +406,8 @@ def test_retry_true_cannot_exceed_attempt_budget_and_expired_fail_reaps(tmp_path
     last = store.claim("last-attempt", lease_seconds=0.04)
     time.sleep(0.07)
     assert store.fail(last["job_id"], last["attempt_id"], last["fencing_token"], "expired retry", retry=True) is False
-    assert store.get(last["job_id"])["status"] == "FAILED"
-    assert store.workflow(workflow_id)["status"] == "FAILED"
+    assert store.get(last["job_id"])["status"] == "BLOCKED"
+    assert store.workflow(workflow_id)["status"] == "BLOCKED"
     assert store.claim("cannot-bypass") is None
 
 
@@ -407,8 +417,8 @@ def test_current_attempt_retry_request_becomes_terminal_at_budget(tmp_path):
     for number in range(1, 3):
         job = store.claim(f"attempt-{number}")
         assert store.fail(job["job_id"], job["attempt_id"], job["fencing_token"], "transient", retry=True)
-        assert store.get(job["job_id"])["status"] == ("PENDING_RETRY" if number == 1 else "FAILED")
-    assert store.workflow(workflow_id)["status"] == "FAILED"
+        assert store.get(job["job_id"])["status"] == ("PENDING_RETRY" if number == 1 else "BLOCKED")
+    assert store.workflow(workflow_id)["status"] == "BLOCKED"
 
 
 def test_budget_is_inherited_at_scatter_and_old_database_migrates_attempt_count(tmp_path):
@@ -435,10 +445,11 @@ def test_event_batch_is_bounded_ordered_cross_workflow_and_read_only(tmp_path):
     assert len(initial) == 1
     following = store.event_batch(initial[0]["id"], limit=2)
     assert len(following) == 2
-    combined = initial + following
+    remaining = store.event_batch(following[-1]["id"])
+    combined = initial + following + remaining
     assert [event["id"] for event in combined] == sorted(event["id"] for event in combined)
     assert {event["workflow_id"] for event in combined} == {first, second}
-    assert store.event_batch(following[-1]["id"]) == []
+    assert store.event_batch(combined[-1]["id"]) == []
     assert {key: store.workflow(key) for key in (first, second)} == before
     assert before[first]["events"] == store.events(first)
     for after, limit in ((-1, 1), (True, 1), (0, 0), (0, 1001), (0, True)):
@@ -454,3 +465,100 @@ def test_context_updates_do_not_feed_oracle_event_stream(tmp_path):
         store.set_context(workflow_id, xml, artifact_digest(xml))
     assert store.event_batch(0) == before
     assert "Second" in store.get_context(workflow_id)["xml"]
+
+
+def test_synthesis_coverage_is_controller_computed_hashed_and_records_overlaps(tmp_path):
+    store, workflow_id = seeded(tmp_path, 2)
+    for owner in ('first', 'second'):
+        job = store.claim(owner)
+        finish(store, job, chapter(job))
+    synthesis = store.claim('synthesis')
+    coverage = synthesis['payload']['coverage_report']
+    assert coverage['complete'] is True and coverage['gaps'] == []
+    assert coverage['overlaps'] == ['REQ-1']
+    assert coverage['requirements'] == [{'requirement': 'REQ-1',
+        'owning_chapters': ['ch-0', 'ch-1'], 'traced_by_chapters': ['ch-0', 'ch-1'],
+        'overlap': True, 'gap': False}]
+    assert coverage['chapter_hashes'] == synthesis['payload']['chapter_hashes']
+    assert output_digest(coverage) == synthesis['payload']['coverage_report_sha256']
+    event = next(item for item in store.events(workflow_id) if item['event'] == 'SYNTHESIS_RELEASED')
+    assert event['details']['coverage_report_sha256'] == output_digest(coverage)
+
+
+def test_document_governing_requirements_are_captured_once_and_inherited(tmp_path):
+    governance = {'specification_id': 'COCHEM-4.2.7', 'specification_sha256': 'a' * 64,
+                  'owner_amendments': ['all-model-jobs-use-Chapter-06']}
+    store = JobStore(tmp_path/'governed.db', governing_requirements=governance)
+    workflow = store.submit('One bounded chapter', ['REQ-1'], 1, workflow_id='governed')
+    governance['owner_amendments'].clear()
+    current = JobStore(store.path, governing_requirements={**governance, 'specification_sha256': 'b' * 64})
+    again = current.submit('One bounded chapter', ['REQ-1'], 1, workflow_id='governed')
+    assert again == workflow
+    assert all(job['payload']['governing_requirements']['specification_sha256'] == 'a' * 64 for job in again['jobs'])
+    job = current.claim('manifest')
+    finish(current, job, manifest(1))
+    child = current.claim('chapter')
+    assert child['payload']['governing_requirements']['owner_amendments'] == ['all-model-jobs-use-Chapter-06']
+    assert child['route'] is not None
+
+
+def test_legacy_single_model_synthesis_is_amended_without_mutating_captured_history(tmp_path):
+    from cochem_pipeline.routing import load_routing_policy, score_task
+    # Historical fixed-model synthesis used catalogue v1. Do not derive its
+    # identity from today's catalogue, where the medium Gemini route is Flash.
+    captured = load_routing_policy({'policy_version': 1})
+    store = JobStore(tmp_path / 'job_board.db', routing_policy=captured)
+    workflow_id = store.submit('Create an SRS and WBS', ['REQ-1'], 1)['workflow_id']
+    finish(store, store.claim('manifest-worker'), manifest(1))
+    job = store.claim('chapter')
+    finish(store, job, chapter(job))
+    synthesis = next(item for item in store.workflow(workflow_id)['jobs'] if item['kind'] == 'SYNTHESIS')
+    old_candidate = next(value.as_dict() for value in captured.candidates(4) if value.provider == 'gemini')
+    old = [old_candidate]
+    score = score_task('SYNTHESIS', synthesis['payload'])
+    # A physical historical database record, not a native-model execution.
+    with store._write() as conn:
+        conn.execute('''INSERT INTO pipeline_routing_jobs(job_id,policy_json,score_json,candidates_json,
+            cursor,cycle,failure_count,dispatches,state,created_at) VALUES(?,?,?,?,1,2,1,3,'READY',?)''',
+            (synthesis['job_id'], canonical_json(captured.as_dict()), canonical_json(score), canonical_json(old), time.time()))
+    # Reopen the real database under the current deployment catalogue. The
+    # amendment must retain the old authority, ordering and spent budgets.
+    store = JobStore(store.path)
+    dispatched = store.claim('new-controller')
+    assert dispatched['route']['candidate_index'] == 0
+    assert dispatched['route']['model'] == captured.candidates(score['score'], 'SYNTHESIS')[0].model
+    assert dispatched['routing']['captured_candidates'] == old
+    assert dispatched['routing']['dispatches'] == 4
+    assert dispatched['routing']['failure_count'] == 1 and dispatched['routing']['cycle'] == 2
+    with sqlite3.connect(store.path) as conn:
+        assert json.loads(conn.execute('SELECT policy_json FROM pipeline_routing_workflows WHERE workflow_id=?',
+                                       (workflow_id,)).fetchone()[0]) == captured.as_dict()
+        assert json.loads(conn.execute('SELECT candidates_json FROM pipeline_routing_jobs WHERE job_id=?',
+                                       (synthesis['job_id'],)).fetchone()[0]) == old
+        with pytest.raises(sqlite3.IntegrityError, match='immutable'):
+            conn.execute("UPDATE pipeline_routing_amendments SET reason='erase-history'")
+    amendments = [event for event in store.events(workflow_id) if event['event'] == 'UNIVERSAL_ROUTING_AMENDED']
+    assert len(amendments) == 1 and amendments[0]['details']['preserved_dispatches'] == 3
+
+
+def test_manual_preflight_is_one_routed_readonly_model_job_with_finite_fallback(tmp_path):
+    store = JobStore(tmp_path/'preflight.db')
+    workflow = store.submit_preflight('probe-one')
+    assert store.submit_preflight('probe-one') == workflow
+    native = [job for job in workflow['jobs'] if job['kind'] != 'MACRO_PLANNING_REQUEST']
+    assert len(native) == 1 and native[0]['kind'] == 'PREFLIGHT_REQUEST'
+    assert native[0]['routing']['max_dispatches'] == 3
+    assert 0 < native[0]['routing']['expires_at'] - time.time() <= 300
+    first = store.claim('probe', worker_slot='identity')
+    assert first['route']['provider'] == 'gemini'
+    assert store.fail(first['job_id'], first['attempt_id'], first['fencing_token'],
+                      'Native quota unavailable', retry=True, category='quota')
+    second = store.claim('probe-fallback', worker_slot='identity')
+    assert second['route']['provider'] == 'claude'
+    with pytest.raises(ValueError, match='exact bounded'):
+        finish(store, second, {'ready': True, 'fabricated_all_providers_verified': True})
+    finish(store, second, {'ready': True})
+    final = store.workflow('probe-one')
+    assert final['status'] == 'COMPLETED'
+    assert len(final['jobs']) == 2 and final['artifacts'] == []
+    assert store.claim('extra-paid-job') is None

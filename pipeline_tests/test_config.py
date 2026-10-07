@@ -6,7 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from cochem_pipeline.config import load_config
+from cochem_pipeline.config import PipelineConfig, load_config
+from cochem_pipeline.routing import RoutingPolicy
 
 
 def config_document(tmp_path, slots=6):
@@ -21,7 +22,12 @@ def config_document(tmp_path, slots=6):
                        "arguments": ["--headless", "--output-format", "json", "--model", "{model}", "--workspace", "{workspace}"],
                        # Synthetic parser contract only; these are not proposed Agy flags/fields.
                        "subscription_probe": {"arguments": ["fixture-status", "--json"], "protocol": "json-fields",
-                                              "expected": {"fixture.login": True, "fixture.billing": "subscription"}}},
+                                              "expected": {"fixture.login": True, "fixture.billing": "subscription"}},
+                       "inference_only": {"arguments":["fixture-no-tools","{model}"],"version_arguments":["fixture-version"],
+                                          "executable_sha256":"a"*64,"version":"fixture-version",
+                                          "capability_reference":"configuration parser fixture; not a native contract",
+                                          "disables_tools":True,"disables_mcp":True,"disables_hooks":True,
+                                          "disables_subagents":True,"disables_model_fallback":True}},
         },
         "rules": [], "token_file": str(tmp_path / "operator" / "controller.token"), "operator_name": "ExampleOperator",
     }
@@ -41,25 +47,57 @@ def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
     assert config.job_db == config.private_root / "job_board.db"
     assert config.context_budget == 16384
     assert config.reserved_fraction == .25
-    assert config.lease_seconds == 30
+    assert config.lease_seconds == 1800
+    assert config.heartbeat_seconds == 5
     assert config.max_attempts == 3
     assert config.providers["gemini"]["model"] == "gemini-3.1-pro"
+    assert isinstance(config.routing, RoutingPolicy)
+    assert config.routing.candidates(10)[1].reasoning_effort == "ultra"
     assert not config.private_root.exists(), "Loading configuration must not provision privileged paths"
 
 
-@pytest.mark.parametrize("slots", [1, 64])
+def test_deployment_requires_explicit_migration_of_legacy_routing_configuration(tmp_path):
+    raw = config_document(tmp_path)
+    raw['routing'] = {'policy_version': 1}
+    filename = write_config(tmp_path, raw)
+    before = Path(filename).read_bytes()
+    with pytest.raises(ValueError, match='routing policy_version 2; migrate configuration explicitly'):
+        load_config(filename)
+    assert Path(filename).read_bytes() == before
+    assert not Path(raw['private_root']).exists()
+    raw['routing'] = {'policy_version': 2}
+    assert load_config(write_config(tmp_path, raw)).routing.as_dict()['policy_version'] == 2
+
+
+@pytest.mark.parametrize("slots", [1, 64, 256])
 def test_supported_slot_capacity_boundaries(tmp_path, slots):
     assert len(load_config(write_config(tmp_path, config_document(tmp_path, slots))).slot_roots) == slots
 
 
-@pytest.mark.parametrize("slots", [0, 65])
+@pytest.mark.parametrize('lease,heartbeat',[(1800,5),(3600,5),(5,1)])
+def test_lease_and_heartbeat_can_be_configured_with_renewal_headroom(tmp_path,lease,heartbeat):
+    raw = config_document(tmp_path)
+    raw.update(lease_seconds=lease,heartbeat_seconds=heartbeat)
+    config = load_config(write_config(tmp_path,raw))
+    assert (config.lease_seconds,config.heartbeat_seconds)==(lease,heartbeat)
+
+
+def test_heartbeat_must_fit_the_configured_lease(tmp_path):
+    raw = config_document(tmp_path)
+    raw.update(lease_seconds=5,heartbeat_seconds=5)
+    with pytest.raises(ValueError,match='three heartbeats'):
+        load_config(write_config(tmp_path,raw))
+
+
+@pytest.mark.parametrize("slots", [0, 257])
 def test_invalid_slot_capacity_boundaries(tmp_path, slots):
     with pytest.raises(ValueError):
         load_config(write_config(tmp_path, config_document(tmp_path, slots)))
 
 
 @pytest.mark.parametrize("key,value", [("port", True), ("port", 1023), ("port", 65536),
-    ("timeout_seconds", 0), ("timeout_seconds", 14401), ("lease_seconds", 4),
+    ("timeout_seconds", 0), ("timeout_seconds", 14401), ("lease_seconds", 4), ("lease_seconds", 3601),
+    ("heartbeat_seconds", 0), ("heartbeat_seconds", 6), ("heartbeat_seconds", True),
     ("max_attempts", 0), ("context_budget", 1023), ("context_budget", 1048577),
     ("min_free_memory_mb", -1), ("min_free_disk_mb", 1.5),
     ("reserved_fraction", True), ("reserved_fraction", float("nan")), ("reserved_fraction", 0),
@@ -122,12 +160,13 @@ def test_gemini_argv_requires_verified_complete_placeholder_free_configuration(t
         load_config(write_config(tmp_path, raw))
 
 
-@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-flash", "gemini-3-pro"])
-def test_synthesis_requires_gemini_31_pro(tmp_path, model):
+@pytest.mark.parametrize("model", ["gemini-3.8-flash", "gemini-3.1-pro"])
+def test_provider_default_model_does_not_override_dynamic_synthesis(tmp_path, model):
     raw = config_document(tmp_path, 1)
     raw["providers"]["gemini"]["model"] = model
-    with pytest.raises(ValueError):
-        load_config(write_config(tmp_path, raw))
+    configured = load_config(write_config(tmp_path, raw))
+    assert configured.providers['gemini']['model'] == model
+    assert [target.provider for target in configured.routing.candidates(10, 'SYNTHESIS')] == ['claude', 'codex']
 
 
 def test_unknown_gemini_result_protocol_is_rejected(tmp_path):
@@ -188,3 +227,91 @@ def test_exact_line_subscription_probe_loads_without_guessing_native_schema(tmp_
     probe = {"arguments": ["fixture-status"], "protocol": "exact-line", "success_line": "TEST_SUBSCRIPTION_CONFIRMED"}
     raw["providers"]["gemini"]["subscription_probe"] = probe
     assert load_config(write_config(tmp_path, raw)).providers["gemini"]["subscription_probe"] == probe
+
+
+def test_manual_pipeline_config_constructors_receive_independent_default_routing(tmp_path):
+    values = dict(private_root=tmp_path, slot_roots={}, workers={}, providers={}, rules=[],
+                  token_file=tmp_path / "token", operator_name="operator")
+    first, second = PipelineConfig(**values), PipelineConfig(**values)
+    assert isinstance(first.routing, RoutingPolicy) and first.routing == second.routing
+    assert first.routing is not second.routing
+
+
+def test_config_captures_model_routing_independently_of_provider_default_model(tmp_path):
+    raw = config_document(tmp_path)
+    raw["routing"] = {"model_limits": {"codex:gpt-6-astra:ultra": 2},
+                      "failure_cooldowns": {"quota": 60}, "backoff_jitter_fraction": 0}
+    configured = load_config(write_config(tmp_path, raw))
+    assert configured.providers["codex"]["model"] == "gpt-6.1"
+    assert configured.routing.candidates(10)[1].model == "gpt-6-astra"
+    assert configured.routing.candidates(10)[1].max_concurrency == 2
+    assert configured.routing.failure_cooldowns["quota"] == 60
+    raw["routing"]["model_limits"]["codex:gpt-6-astra:ultra"] = 63
+    assert configured.routing.candidates(10)[1].max_concurrency == 2
+
+
+@pytest.mark.parametrize("routing", [[], {"tiers": {}}, {"backoff_max_seconds": 601},
+                                     {"max_routing_cycles": -1}, {"provider_limits": {"api": {}}}])
+def test_invalid_routing_policy_is_rejected_before_runtime(tmp_path, routing):
+    raw = config_document(tmp_path)
+    raw["routing"] = routing
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def coding_config_document(tmp_path):
+    raw = config_document(tmp_path)
+    raw['ramdisk'] = {'enabled': True}
+    raw['docker'] = {'enabled': True, 'image': 'sha256:'+'a'*64,
+                     'allowed_images': ['sha256:'+'a'*64],
+                     'commands': [{'name':'tests','argv':['python','-m','pytest','tests']}]}
+    raw['coding_projects'] = {'sample': {'repository':str(tmp_path/'repository'),
+                                       'branch':'pipeline/accepted','allowed_paths':['src'],
+                                       'test_paths':['tests'],'auto_integrate':True}}
+    return raw
+
+
+def test_coding_configuration_captures_explicit_execution_policy(tmp_path):
+    config = load_config(write_config(tmp_path, coding_config_document(tmp_path)))
+    assert config.coding_projects['sample'].auto_integrate is True
+    assert config.docker.enabled and config.ramdisk.enabled
+    assert config.execution_limits.cpu_rate_percent == 20
+    assert config.hardware.gpu_required is True
+
+
+@pytest.mark.parametrize('component', ['ramdisk','docker'])
+def test_coding_projects_cannot_run_without_required_execution_plane(tmp_path, component):
+    raw = coding_config_document(tmp_path)
+    raw[component] = {'enabled': False}
+    with pytest.raises(ValueError, match='RAM workspaces and enabled Docker'):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize('location', ['private','private/nested','slots/0','slots/0/nested','operator','operator/controller.token'])
+def test_coding_project_registry_cannot_expose_control_or_identity_data(tmp_path, location):
+    raw = coding_config_document(tmp_path)
+    raw['coding_projects']['sample']['repository'] = str(tmp_path/location)
+    with pytest.raises(ValueError, match='disjoint'):
+        load_config(write_config(tmp_path, raw))
+
+
+@pytest.mark.parametrize('component', ['hardware','execution_limits','ramdisk','docker'])
+def test_unknown_execution_settings_fail_instead_of_silent_configuration_drift(tmp_path, component):
+    raw = config_document(tmp_path)
+    raw[component] = {'misspelled_limit': 1}
+    with pytest.raises(ValueError):
+        load_config(write_config(tmp_path, raw))
+
+
+def test_configured_sixty_four_execution_slots_require_sixty_four_isolated_identities(tmp_path):
+    raw = config_document(tmp_path, 64)
+    raw['max_execution_slots'] = 64
+    assert load_config(write_config(tmp_path,raw)).max_execution_slots == 64
+    raw['max_execution_slots'] = 65
+    with pytest.raises(ValueError,match='isolated worker'):
+        load_config(write_config(tmp_path,raw))
+
+
+def test_execution_capacity_default_remains_four_without_raising_small_deployments(tmp_path):
+    assert load_config(write_config(tmp_path,config_document(tmp_path,64))).max_execution_slots == 4
+    assert load_config(write_config(tmp_path,config_document(tmp_path,1))).max_execution_slots == 1

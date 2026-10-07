@@ -14,6 +14,7 @@ import subprocess
 import sys
 
 import pytest
+from cochem_pipeline.routing import load_routing_policy, score_task
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts/verify_pipeline_acceptance.py"
@@ -33,17 +34,31 @@ def document_contract():
     root = {"job_id": workflow_id, "kind": "MACRO_PLANNING_REQUEST", "status": "COMPLETED",
             "payload": {"requirements": ["REQ-1"], "chapter_count": 6}}
     workflow = {"workflow_id": workflow_id, "status": "COMPLETED", "root": root,
-                "jobs": [root], "artifacts": [], "events": []}
+                "jobs": [root], "artifacts": [], "events": [],
+                "acceptance_admission":{"configured_max_execution_slots":4,"configured_worker_count":6,
+                    "controller_hardware_max_agents":4,"configuration_sha256":"c"*64,
+                    "controller_instance_id":"contract-fixture-controller"}}
 
     def completed(job_id, kind, provider, output, started, finished, index=None):
-        receipt = {"provider": provider, "pid": 100 + len(workflow["jobs"]), "exit_code": 0,
+        policy = load_routing_policy()
+        payload = {"chapter_index":index,"requirements":["REQ-1"]}
+        scoring = score_task(kind,payload)
+        candidates = [target.as_dict() for target in policy.candidates(scoring['score'],kind)]
+        selected = next(index for index,target in enumerate(candidates) if target["provider"]==provider)
+        route = {**candidates[selected],"score":scoring['score'],"tier":scoring['tier'],"candidate_index":selected,"cycle":0,
+                 "policy_digest":policy.digest,"reservation_sha256":"b"*64}
+        model = route["model"]
+        receipt = {"execution_kind":"native_cli", "provider": provider, "pid": 100 + len(workflow["jobs"]), "exit_code": 0,
                    "subscription_verified": True, "session_id": f"fixture-session-{job_id}",
-                   "requested_model": providers[provider]["model"], "reported_model": providers[provider]["model"],
+                   "requested_model": model, "reported_model": model,
+                   "requested_effort":route["reasoning_effort"],"route_reservation_sha256":"b"*64,
                    "output_sha256": digest(output), "stdout_sha256": "a" * 64,
                    "started_at": started, "finished_at": finished,
                    "worker_account": f"fixture-account-{index}"}
         job = {"job_id": job_id, "kind": kind, "status": "COMPLETED", "output": output, "receipt": receipt,
-               "output_sha256": digest(output), "payload": {"chapter_index": index, "requirements": ["REQ-1"]}}
+               "route":route,"routing":{"policy":policy.as_dict(),"policy_hash":policy.digest,
+                   "score_details":scoring,"candidates":candidates},
+               "output_sha256": digest(output), "payload": payload}
         if index is not None:
             job.update(chapter_id=f"chapter-{index}", worker_slot=f"slot-{index}")
         if "artifact_text" in output:
@@ -75,7 +90,7 @@ def document_contract():
 def test_pure_report_checks_hashes_routing_identity_barrier_and_overlap(document_contract):
     workflow, providers = document_contract
     workflow["jobs"][1]["receipt"]["reported_model"] = None
-    report = acceptance.validate_workflow(workflow, providers)
+    report = acceptance.validate_workflow(workflow, providers,admission=workflow["acceptance_admission"])
     assert report["verified"] is True
     assert report["accepted_chapter_peak"] == 4
     assert report["validated_process_receipts"] == 8
@@ -89,7 +104,7 @@ def test_pure_report_checks_hashes_routing_identity_barrier_and_overlap(document
     ("exit_code", 1, "exit successfully"),
     ("session_id", "", "session ID"),
     ("output_sha256", "0" * 64, "output hash"),
-    ("provider", "claude", "unexpected provider"),
+    ("provider", "claude", "selected routing provider"),
     ("reported_model", "pretend-model", "different model"),
     ("subscription_verified", False, "subscription verification"),
     ("execution_kind", "test-emulator", "test/emulator"),
@@ -98,7 +113,7 @@ def test_pure_report_rejects_invalid_process_receipts(document_contract, field, 
     workflow, providers = document_contract
     workflow["jobs"][1]["receipt"][field] = value
     with pytest.raises(ValueError, match=reason):
-        acceptance.validate_workflow(workflow, providers)
+        acceptance.validate_workflow(workflow, providers,admission=workflow["acceptance_admission"])
 
 
 def test_pure_report_rejects_mutated_artifacts_duplicate_identity_and_barrier(document_contract):
@@ -106,25 +121,25 @@ def test_pure_report_rejects_mutated_artifacts_duplicate_identity_and_barrier(do
     changed = copy.deepcopy(original)
     changed["artifacts"][0]["artifact_text"] = "Replacement"
     with pytest.raises(ValueError, match="artifact text"):
-        acceptance.validate_workflow(changed, providers)
+        acceptance.validate_workflow(changed, providers,admission=changed["acceptance_admission"])
     changed = copy.deepcopy(original)
     changed["jobs"][3]["worker_slot"] = changed["jobs"][2]["worker_slot"]
     with pytest.raises(ValueError, match="distinct persistent"):
-        acceptance.validate_workflow(changed, providers)
+        acceptance.validate_workflow(changed, providers,admission=changed["acceptance_admission"])
     changed = copy.deepcopy(original)
     changed["events"].append(changed["events"][-1])
     with pytest.raises(ValueError, match="one synthesis barrier"):
-        acceptance.validate_workflow(changed, providers)
+        acceptance.validate_workflow(changed, providers,admission=changed["acceptance_admission"])
 
 
 @pytest.mark.parametrize("serialized", [True, False])
-def test_pure_report_rejects_serial_or_more_than_four_concurrent_chapters(document_contract, serialized):
+def test_pure_report_rejects_serial_or_above_configured_capacity_chapters(document_contract, serialized):
     workflow, providers = document_contract
     for index, job in enumerate(job for job in workflow["jobs"] if job["kind"] == "CHAPTER_DRAFT"):
         job["receipt"]["started_at"] = 100 + index if serialized else 100
         job["receipt"]["finished_at"] = 100.5 + index if serialized else 103
     with pytest.raises(ValueError, match="overlap"):
-        acceptance.validate_workflow(workflow, providers)
+        acceptance.validate_workflow(workflow, providers,admission=workflow["acceptance_admission"])
 
 
 def test_script_requires_explicit_live_flag_before_reading_config_or_creating_report(tmp_path):
@@ -149,3 +164,51 @@ def test_failure_report_is_preserved_when_configuration_is_unavailable(tmp_path)
     assert saved["status"] == "FAILED"
     assert saved["workflow_id"] is None
     assert "FileNotFoundError" in saved["error"]
+
+
+def test_all_six_chapters_can_overlap_when_captured_hardware_capacity_permits(document_contract):
+    workflow,providers=document_contract
+    admission=workflow['acceptance_admission']
+    admission.update(configured_max_execution_slots=64,controller_hardware_max_agents=6)
+    for job in workflow['jobs']:
+        if job['kind']=='CHAPTER_DRAFT':
+            job['receipt'].update(started_at=100,finished_at=103)
+    report=acceptance.validate_workflow(workflow,providers,admission=admission)
+    assert report['accepted_chapter_peak']==6
+    assert report['concurrency']['configured_hardware_ceiling']==6
+
+
+@pytest.mark.parametrize('provider', ['codex','gemini'])
+def test_sixty_one_non_claude_agents_are_permitted_by_configured_hardware_capacity(provider):
+    intervals=[(provider,10.,11.) for _ in range(61)]
+    assert acceptance.validate_execution_overlap(intervals,64)['native_peak']==61
+
+
+def test_claude_twenty_agent_ceiling_remains_independent_of_larger_host_capacity():
+    intervals=[('claude',10.,11.) for _ in range(21)]
+    with pytest.raises(ValueError,match='Claude CLI'):
+        acceptance.validate_execution_overlap(intervals,64)
+
+
+def test_unbound_or_mismatched_hardware_capacity_cannot_pass_acceptance(document_contract):
+    workflow,providers=document_contract
+    with pytest.raises(ValueError,match='captured configured'):
+        acceptance.validate_workflow(workflow,providers)
+    evidence=copy.deepcopy(workflow['acceptance_admission'])
+    evidence['controller_hardware_max_agents']=64
+    with pytest.raises(ValueError,match='authenticated controller'):
+        acceptance.validate_workflow(workflow,providers,admission=evidence)
+
+
+@pytest.mark.parametrize('provider',['codex','claude'])
+def test_synthesis_acceptance_uses_its_actual_complexity_route_not_a_fixed_gemini_model(document_contract,provider):
+    workflow,providers=document_contract
+    synthesis=next(job for job in workflow['jobs'] if job['kind']=='SYNTHESIS')
+    candidates=synthesis['routing']['candidates']
+    index=next(index for index,target in enumerate(candidates) if target['provider']==provider)
+    target=candidates[index]
+    synthesis['route'].update(target,candidate_index=index)
+    synthesis['receipt'].update(provider=provider,requested_model=target['model'],reported_model=target['model'],
+                                requested_effort=target['reasoning_effort'])
+    report=acceptance.validate_workflow(workflow,providers,admission=workflow['acceptance_admission'])
+    assert report['routing_decisions'][-1]['provider']==provider

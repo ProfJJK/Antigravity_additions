@@ -123,7 +123,14 @@ def subscription_env(provider: str) -> dict[str, str]:
 
 
 def build_command(provider: str, prefix: list[str], model: str, workspace: str) -> list[str]:
-    """Build a bounded-permission headless invocation reading its prompt on stdin."""
+    """Build a bounded-permission headless invocation reading its prompt on stdin.
+
+    Claude's supported ``--print`` mode handles tool requests without an
+    interactive approval dialog. ``acceptEdits`` permits native file edits;
+    other unapproved tools are denied and the terminal permission_denials are
+    rejected by parse_result. Do not add the unsupported --permission-prompts
+    option or replace this policy with blanket permission bypass.
+    """
     _provider(provider)
     if not prefix or any(not isinstance(arg, str) or not arg or "\x00" in arg for arg in prefix):
         raise ValueError("Executable prefix must contain nonempty argv strings")
@@ -141,7 +148,7 @@ def build_command(provider: str, prefix: list[str], model: str, workspace: str) 
         ]
     return [
         *prefix, "--print", "--output-format", "json", "--model", model,
-        "--permission-mode", "acceptEdits", "--permission-prompts", "none",
+        "--permission-mode", "acceptEdits",
         *_CLAUDE_SETTINGS_ARGS, "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}',
     ]
 

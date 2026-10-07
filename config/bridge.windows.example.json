@@ -1,17 +1,35 @@
 {
-  "workspace_roots": ["D:\\__CoChem\\__agentic"],
+  "workspace_roots": [
+    "D:\\GitHub-Repo"
+  ],
   "providers": {
     "codex": {
       "default_model": "sol",
-      "models": {"astra": "gpt-6-astra", "sol": "gpt-6-sol", "luna": "gpt-6-luna"},
+      "models": {
+        "astra": "gpt-6-astra",
+        "sol": "gpt-6.1-sol",
+        "luna": "gpt-6-luna"
+      },
       "timeout_seconds": 1800,
       "max_workers": 1
     },
     "claude": {
       "default_model": "sonnet",
-      "models": {"fable": "claude-fable-5-1", "opus": "claude-opus-5-5", "sonnet": "claude-sonnet-5-5", "haiku": "claude-haiku-4-5"},
+      "models": {
+        "fable": "claude-fable-5-1",
+        "opus": "claude-opus-5-5",
+        "sonnet": "claude-sonnet-5-5",
+        "haiku": "claude-haiku-4-5"
+      },
       "timeout_seconds": 1800,
       "max_workers": 1
+    }
+  },
+  "controller": {
+    "port": 47824,
+    "token_file": "C:\\Users\\YOUR_WINDOWS_USER\\CoChem422\\controller.token",
+    "projects": {
+      "D:\\GitHub-Repo\\YOUR_PROJECT": "example-project"
     }
   }
 }

@@ -31,6 +31,9 @@ def test_public_redaction_preserves_hashable_user_artifacts():
     public = public_workflow(snapshot)
     assert public['jobs'][0]['output']==output
     assert public['jobs'][0]['receipt']=={}
+    from cochem_pipeline.coding import digest
+    assert public['jobs'][0]['receipt_sha256']==digest(snapshot['jobs'][0]['receipt'])
+    assert public['jobs'][0]['receipt_sha256']!=digest(public['jobs'][0]['receipt'])
     assert public['events'][0]['details']=={}
     assert snapshot['jobs'][0]['attempt_id']=='private-attempt'
 
@@ -43,7 +46,9 @@ def test_actual_pipeline_mcp_session_creates_and_cancels_real_dag(endpoint):
         async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
             tools = await client.list_tools()
             assert {tool.name for tool in tools.tools} == {
-                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel'}
+                'pipeline_submit','pipeline_status','pipeline_health','pipeline_cancel','pipeline_resume_routing','pipeline_operator_view','pipeline_provider_preflight_submit',
+                'knowledge_search','knowledge_read','knowledge_status',
+                'pipeline_projects','pipeline_code','pipeline_code_status','pipeline_code_cancel','pipeline_code_resume'}
             response = await client.call_tool('pipeline_submit',{
                 'objective':'Create a six-chapter SRS/WBS', 'requirements':['REQ-1'], 'chapter_count':6})
             assert not response.isError
@@ -64,11 +69,12 @@ class DatabaseController:
     """Minimal controller for exercising the real HTTP-to-database boundary."""
 
     def __init__(self, directory: Path):
-        self.config = SimpleNamespace(port=0, workers={f"slot-{number}": {} for number in range(6)})
+        self.config = SimpleNamespace(port=0, workers={f"slot-{number}": {} for number in range(6)}, coding_projects={})
         self.store = JobStore(directory / "http-test.db")
 
     def status(self):
-        return {"test_kind": "http-and-sqlite", "active_jobs": len(self.store.active_jobs())}
+        return {"test_kind": "http-and-sqlite", "active_jobs": len(self.store.active_jobs()),
+                "routing": self.store.routing_status()}
 
     def cancel(self, workflow_id):
         return self.store.cancel_workflow(workflow_id)
@@ -164,6 +170,78 @@ def test_public_api_hides_real_claim_authority(endpoint):
     assert endpoint.controller.store.get(claimed["job_id"])["attempt_id"] == claimed["attempt_id"]
 
 
+def test_routing_submission_budget_and_real_assignment_survive_safe_api_projection(endpoint):
+    endpoint.client.call('/submit', {'objective':'A short operational checklist', 'chapter_count':2,
+        'workflow_id':'routed-workflow','max_attempts':1,'max_dispatches':1})
+    claimed=endpoint.controller.store.claim('private-routing-controller')
+    public=endpoint.client.call('/workflow/routed-workflow')
+    job=next(row for row in public['jobs'] if row['job_id']==claimed['job_id'])
+    assert job['max_attempts']==job['routing']['dispatches']==job['routing']['max_dispatches']==1
+    assert job['routing']['score_details']['score']==claimed['routing']['score_details']['score']
+    assert job['route']['provider']==claimed['route']['provider']
+    assert job['route']['reservation_sha256']==claimed['route']['reservation_sha256']
+    health=endpoint.client.call('/health')
+    assert health['routing']['active_reservations'][0]['reservation_sha256']==job['route']['reservation_sha256']
+    serialized=json.dumps([public,health])
+    assert claimed['attempt_id'] not in serialized
+    assert claimed['route']['reservation_id'] not in serialized
+    assert 'fencing_token' not in serialized
+    assert 'private-routing-controller' not in serialized
+
+
+@pytest.mark.parametrize('value',[True,0,-1,'1',1000001])
+def test_invalid_dispatch_budget_cannot_create_workflow(endpoint,value):
+    status,_=request(endpoint,'POST','/submit',{'objective':'Budget validation','chapter_count':2,'max_dispatches':value},
+                     authorization='Bearer '+endpoint.token)
+    assert status==400
+    assert endpoint.controller.store.list_workflows()==[]
+
+
+def operator_held_job(endpoint, *, max_dispatches=3):
+    endpoint.client.call('/submit', {'objective':'Operator hold fixture','chapter_count':2,
+        'workflow_id':'held-workflow','max_dispatches':max_dispatches})
+    job=endpoint.controller.store.claim('private-hold-controller')
+    assert endpoint.controller.store.fail(job['job_id'],job['attempt_id'],job['fencing_token'],
+        'Native CLI model configuration requires operator correction',retry=True,category='configuration',hold_scope='job')
+    held=endpoint.controller.store.get(job['job_id'])
+    assert held['status']==('FAILED' if max_dispatches==1 else 'BLOCKED')
+    return held
+
+
+def test_explicit_routing_resume_requires_auth_and_preserves_budgets_and_policy(endpoint):
+    held=operator_held_job(endpoint)
+    data={'job_id':held['job_id'],'reason':'Corrected the configured native CLI prerequisite'}
+    assert request(endpoint,'POST','/routing/resume',data)[0]==401
+    assert endpoint.controller.store.get(held['job_id'])['status']=='BLOCKED'
+    public=endpoint.client.call('/routing/resume',data)
+    resumed=next(job for job in public['jobs'] if job['job_id']==held['job_id'])
+    assert resumed['status']=='PENDING_RETRY'
+    assert resumed['attempts']==held['attempts']
+    for field in ('failure_count','dispatches','max_dispatches','cycle','expires_at','score_details','policy','candidates'):
+        assert resumed['routing'][field]==held['routing'][field]
+    event=next(event for event in public['events'] if event['event']=='ROUTING_RESUMED')
+    assert event['details']['reason']==data['reason']
+
+
+@pytest.mark.parametrize('reason',[None,'','  ',42,'x'*513,'bad\x00reason'])
+def test_resume_without_bounded_operator_reason_cannot_change_job(endpoint,reason):
+    held=operator_held_job(endpoint)
+    status,_=request(endpoint,'POST','/routing/resume',{'job_id':held['job_id'],'reason':reason},
+                     authorization='Bearer '+endpoint.token)
+    assert status==400
+    assert endpoint.controller.store.get(held['job_id'])['status']=='BLOCKED'
+
+
+def test_operator_resume_cannot_reset_an_exhausted_dispatch_budget(endpoint):
+    held=operator_held_job(endpoint,max_dispatches=1)
+    status,value=request(endpoint,'POST','/routing/resume',{'job_id':held['job_id'],'reason':'Retry anyway'},
+                         authorization='Bearer '+endpoint.token)
+    assert status==400
+    unchanged=endpoint.controller.store.get(held['job_id'])
+    assert unchanged['routing']['dispatches']==unchanged['routing']['max_dispatches']==1
+    assert unchanged['status']=='FAILED'
+
+
 def test_actual_cancellation_fences_a_live_database_lease(endpoint):
     submitted(endpoint)
     claimed = endpoint.controller.store.claim("private-test-controller")
@@ -245,3 +323,103 @@ def test_client_surfaces_authentication_error_without_token_disclosure(endpoint,
     with pytest.raises(RuntimeError, match="Unauthorized") as error:
         ControlClient(endpoint.port, token_file).call("/health")
     assert endpoint.token not in str(error.value)
+
+
+@pytest.mark.parametrize('operation', ['/coding/projects','/coding/workflow/unknown'])
+def test_coding_reads_require_real_http_authentication(endpoint, operation):
+    assert request(endpoint,'GET',operation,authorization=None)[0] == 401
+
+
+@pytest.mark.parametrize('operation', ['/coding/submit','/coding/cancel','/coding/resume'])
+def test_coding_mutations_require_real_http_authentication(endpoint, operation):
+    assert request(endpoint,'POST',operation,{'objective':'unauthorized'},authorization=None)[0] == 401
+    assert endpoint.controller.store.list_workflows() == []
+
+
+def test_projects_endpoint_returns_only_registered_identifiers(endpoint):
+    endpoint.controller.config.coding_projects = {'registered-project': {'repository':'private-location'}}
+    assert endpoint.client.call('/coding/projects') == {'projects':['registered-project']}
+
+
+@pytest.fixture
+def coding_endpoint(endpoint, tmp_path):
+    """Actual Git/SQLite submission only; this fixture never simulates inference."""
+    import subprocess
+    from cochem_pipeline.coding import CodingCoordinator, CodingProject
+    from cochem_pipeline.container_policy import DockerPolicy
+    from cochem_pipeline.ramdisk import RamdiskConfig
+    repository = tmp_path/'registered-repository'
+    repository.mkdir()
+    def git(*args):
+        return subprocess.run(['git','-C',str(repository),*args],check=True,
+                              capture_output=True,text=True).stdout.strip()
+    git('init','-b','pipeline/accepted')
+    (repository/'src').mkdir(); (repository/'src'/'calculation.py').write_text('VALUE = 1\n')
+    git('add','src'); git('-c','user.name=API Test','-c','user.email=test@localhost','commit','-m','baseline')
+    controller = endpoint.controller
+    controller.config.private_root = tmp_path/'private'
+    controller.config.private_root.mkdir()
+    import os
+    controller.config.git_executable = r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git'
+    controller.config.ramdisk = RamdiskConfig(enabled=True)
+    controller.config.docker = DockerPolicy.from_dict({'enabled':True,'image':'sha256:'+'a'*64,
+        'allowed_images':['sha256:'+'a'*64],'commands':[{'name':'tests','argv':['python','-m','pytest','tests']}]})
+    controller.config.coding_projects = {'sample':CodingProject.from_dict('sample',{
+        'repository':str(repository),'branch':'pipeline/accepted','allowed_paths':['src']})}
+    coding = CodingCoordinator(controller.config,controller.store,None,None)
+    controller.submit_coding = coding.submit
+    controller.coding_workflow = controller.store.coding_workflow
+    def cancel(identifier):
+        controller.store.cancel_workflow(identifier)
+        return controller.store.coding_workflow(identifier)
+    controller.cancel_coding = cancel
+    controller.resume_coding = controller.store.resume_coding
+    return endpoint
+
+
+def test_real_http_coding_submission_captures_baseline_and_dispatches_canonical_plan_idempotently(coding_endpoint):
+    endpoint = coding_endpoint
+    data = {'project_id':'sample','objective':'Add a bounded numeric check','requirements':['R1'],
+            'workflow_id':'coding-api-test'}
+    first = endpoint.client.call('/coding/submit',data)
+    second = endpoint.client.call('/coding/submit',data)
+    assert first['workflow_id'] == second['workflow_id'] == 'coding-api-test'
+    assert len(first['coding']['baseline_commit']) == 40
+    assert first['status']=='IN_PROGRESS'
+    assert first['coding']['status'] == 'PLANNING'
+    assert first['coding']['planning_evidence']['specification_id'] == 'COCHEM-4.2.7'
+    assert len([node for node in first['jobs'] if node['kind']=='CODE_PLAN']) == 1
+    assert first['evidence'] == []  # Submission cannot fabricate execution evidence.
+    assert endpoint.client.call('/coding/workflow/coding-api-test') == second
+    status, _ = request(endpoint,'POST','/coding/submit',{**data,'objective':'A different request'},
+                        authorization='Bearer '+endpoint.token)
+    assert status == 400
+    cancelled = endpoint.client.call('/coding/cancel',{'workflow_id':'coding-api-test'})
+    assert cancelled['status'] == 'FAILED'
+    status, _ = request(endpoint,'POST','/coding/resume',{'workflow_id':'coding-api-test','reason':'retry'},
+                        authorization='Bearer '+endpoint.token)
+    assert status == 400  # Cancellation is not a hidden budget-reset operation.
+
+
+def test_actual_mcp_coding_tool_creates_only_a_registered_real_workflow(coding_endpoint):
+    from mcp.shared.memory import create_connected_server_and_client_session
+    from cochem_pipeline.server import create_server
+    endpoint = coding_endpoint
+    async def scenario():
+        async with create_connected_server_and_client_session(create_server(endpoint.client)) as client:
+            projects = await client.call_tool('pipeline_projects',{})
+            assert projects.structuredContent == {'projects':['sample']}
+            denied = await client.call_tool('pipeline_code',{'project_id':'unregistered','objective':'No access'})
+            assert denied.isError
+            assert endpoint.controller.store.list_workflows() == []
+            result = await client.call_tool('pipeline_code',{'project_id':'sample','objective':'Implement the check',
+                                                           'workflow_id':'mcp-coding'})
+            assert not result.isError
+            assert result.structuredContent['coding']['status'] == 'PLANNING'
+            assert result.structuredContent['status']=='IN_PROGRESS'
+            assert result.structuredContent['coding']['planning_evidence']['specification_id'] == 'COCHEM-4.2.7'
+            status = await client.call_tool('pipeline_code_status',{'workflow_id':'mcp-coding'})
+            assert status.structuredContent['evidence'] == []
+            result = await client.call_tool('pipeline_code_cancel',{'workflow_id':'mcp-coding'})
+            assert result.structuredContent['status'] == 'FAILED'
+    asyncio.run(scenario())

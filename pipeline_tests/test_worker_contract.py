@@ -2,10 +2,14 @@
 from __future__ import annotations
 
 import json
+from copy import deepcopy
+from types import SimpleNamespace
 
 import pytest
 
-from cochem_pipeline.worker import NativeRunner, node_prompt, parse_gemini, parse_payload, subscription_status, subscription_probe_status
+from cochem_pipeline.worker import NativeRunner, node_prompt, parse_gemini, parse_payload, subscription_status, subscription_probe_status, provider_command, native_reported_effort
+from cochem_pipeline.routing import load_routing_policy, tier_for_score
+from cochem_pipeline.failures import ProviderFailure
 
 
 def test_manifest_prompt_contains_full_assignment_without_controller_secrets():
@@ -60,17 +64,91 @@ def test_unknown_node_kind_is_rejected_in_prompt_and_routing():
         NativeRunner(None).route(node)
 
 
-def test_routes_are_deterministic_and_never_provider_fallbacks():
-    runner = NativeRunner(None)
-    assert runner.route({"kind": "MANIFEST_GENERATOR"}) == "codex"
-    assert runner.route({"kind": "SYNTHESIS"}) == "gemini"
-    assert [runner.route({"kind": "CHAPTER_DRAFT", "payload": {"chapter_index": index}}) for index in range(6)] == ["codex", "claude"] * 3
+def selected_route_fixture(score=8,index=0,kind='CHAPTER_DRAFT'):
+    """Parser fixture only; real persistence is covered by Store integration tests."""
+    policy = load_routing_policy()
+    target = policy.candidates(score,kind)[index]
+    node = {'kind':kind,'attempt_id':'fixture-attempt','fencing_token':1,'worker_slot':'slot1',
+            'routing_policy':policy.as_dict(),'payload':{'chapter_index':0},
+            'route':{**target.as_dict(),'score':score,'tier':tier_for_score(score),
+                     'policy_digest':policy.digest,'candidate_index':index,'cycle':1,
+                     'reservation_id':'fixture-reservation','attempt_id':'fixture-attempt','fencing_token':1,'worker_slot':'slot1'}}
+    return NativeRunner(SimpleNamespace(routing=policy)),node
 
 
-@pytest.mark.parametrize("index", [-1, True, "1", 1.5])
-def test_invalid_chapter_routing_index_fails_closed(index):
+def test_runner_uses_one_persisted_selection_without_recomputing_or_fallback():
+    runner,node = selected_route_fixture()
+    node['payload'].update(score=1,provider='gemini',model='gemini-3.8-flash',chapter_index=999)
+    assert runner.route(node) == node['route']
+    assert runner.route(node)['model'] == 'gpt-6.1-sol'
+    assert runner.route(node)['reasoning_effort'] == 'high'
+
+
+@pytest.mark.parametrize('kind',['MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS'])
+def test_execution_without_a_durable_controller_route_is_rejected(kind):
+    with pytest.raises(ValueError,match='persisted controller route'):
+        NativeRunner(None).route({'kind':kind})
+
+
+@pytest.mark.parametrize('change', [{'reservation_id':''},{'attempt_id':'other-attempt'},
+                                   {'fencing_token':2},{'fencing_token':True},{'model':'gpt-6-sol'},
+                                   {'reasoning_effort':'ultra'},{'candidate_index':True},{'worker_slot':'slot2'}])
+def test_selected_route_identity_and_fence_must_match(change):
+    runner,node = selected_route_fixture()
+    node['route'].update(change)
     with pytest.raises(ValueError):
-        NativeRunner(None).route({"kind": "CHAPTER_DRAFT", "payload": {"chapter_index": index}})
+        runner.route(node)
+
+
+def test_existing_route_preserves_captured_policy_after_current_capacity_changes():
+    runner,node = selected_route_fixture()
+    changed = runner.config.routing.as_dict()
+    changed['model_limits']['codex:gpt-6.1-sol:high'] = 2
+    runner.config.routing = load_routing_policy(changed)
+    assert runner.config.routing.digest != node['route']['policy_digest']
+    assert runner.route(node)['candidate_index'] == 0
+    assert runner.route(node)['max_concurrency'] is None
+
+
+def test_conflicting_captured_policy_copies_are_rejected():
+    runner,node = selected_route_fixture()
+    node['routing'] = {'policy':deepcopy(node['routing_policy'])}
+    node['routing']['policy']['tiers']['7-9'].reverse()
+    with pytest.raises(ValueError,match='Conflicting captured'):
+        runner.route(node)
+
+
+def test_unratified_current_model_substitution_is_rejected_before_dispatch():
+    runner,node = selected_route_fixture()
+    changed = runner.config.routing.as_dict()
+    changed['tiers']['7-9'][1] = {'provider':'codex','model':'gpt-6-sol','reasoning_effort':None}
+    with pytest.raises(ValueError, match='canonical Chapter 06'):
+        load_routing_policy(changed)
+    assert runner.route(node)['model'] == 'gpt-6.1-sol'
+
+
+@pytest.mark.parametrize('effort',['low','medium','high','ultra'])
+def test_native_codex_command_preserves_exact_selected_reasoning_effort(effort):
+    argv = provider_command('codex',['native-codex'],'gpt-6-astra','worker-slot',{},effort)
+    assert ['-c','model_reasoning_effort='+json.dumps(effort)] == argv[-3:-1]
+    assert argv[-1] == '-'
+    assert argv[argv.index('--model')+1] == 'gpt-6-astra'
+    assert '--ephemeral' in argv and '--skip-git-repo-check' in argv
+
+
+@pytest.mark.parametrize(('provider','effort'), [('codex','xhigh'),('codex','max'),('claude','ultra'),('gemini','low')])
+def test_command_cannot_silently_alias_or_cross_provider_reasoning_effort(provider,effort):
+    with pytest.raises(ValueError,match='reasoning effort'):
+        provider_command(provider,['native-cli'],'model','worker-slot',{},effort)
+
+
+def test_reported_effort_requires_actual_native_metadata_not_agent_prose():
+    prose = json.dumps({'type':'item.completed','item':{'type':'agent_message','text':'I used ultra reasoning_effort'}})
+    assert native_reported_effort('codex',prose) is None
+    assert native_reported_effort('codex',json.dumps({'type':'thread.started','thread_id':'fixture','reasoning_effort':'ultra'})) == 'ultra'
+    conflicting = '\n'.join(json.dumps({'type':'turn.completed','reasoning_effort':value}) for value in ('low','ultra'))
+    with pytest.raises(ValueError,match='conflicting'):
+        native_reported_effort('codex',conflicting)
 
 
 def test_payload_parser_accepts_single_object_and_supported_json_fence():
@@ -100,7 +178,8 @@ def test_gemini_parser_uses_native_model_and_session_metadata(protocol):
     data = gemini_response(protocol)
     parsed = parse_gemini(json.dumps(data), protocol, "gemini-3.1-pro")
     assert parsed == {"content": '{"artifact_text":"Synthesis"}', "session_id": "native-gemini-session",
-                      "reported_model": "gemini-3.1-pro", "terminal_success": True}
+                      "reported_model": "gemini-3.1-pro", "terminal_success": True,
+                      "usage": {"input": 10, "output": 20} if protocol == "gemini-json" else {}}
     assert parse_payload(parsed["content"])["artifact_text"] == "Synthesis"
 
 

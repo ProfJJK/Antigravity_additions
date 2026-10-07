@@ -1,5 +1,8 @@
 # Pipeline 4.2.2: controller, Oracle and Windows execution
 
+> Historical 4.2.2 deployment instructions. Current routing, installer defaults
+> and upgrades are documented in [the 4.2.4 guide](ROUTING_4.2.4.md).
+
 This pipeline turns one planning request into a manifest, concurrent chapter
 jobs, and a final Gemini 3.1 Pro synthesis. The Windows controller owns the job
 board, execution leases and output validation. Antigravity's interface agent

@@ -257,13 +257,17 @@ def build_claude_command(
     claude_exe: Path, system_prompt_file: Path, *, model: Optional[str] = None,
     output_format: str = "json",
 ) -> list[str]:
-    """Headless coding with native tools, edit approval, native auth, and stdin input."""
+    """Use native print mode, edit approval, subscription auth, and finite stdin.
+
+    Print mode has no interactive approval dialog. Unapproved operations remain
+    permission denials and are rejected by the result parser; no blanket bypass
+    or unsupported permission-prompts flag is needed.
+    """
     _require_native_path(str(claude_exe))
     _require_native_binary(claude_exe)
     system_path = str(system_prompt_file)
     cmd = [
         str(claude_exe), "--print", "--permission-mode", "acceptEdits",
-        "--permission-prompts", "none",
         "--setting-sources", "", "--strict-mcp-config", "--mcp-config", '{"mcpServers":{}}',
         "--append-system-prompt-file", system_path, "--output-format", output_format,
         "--no-session-persistence",

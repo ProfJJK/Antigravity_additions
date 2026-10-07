@@ -20,6 +20,7 @@ from cochem_pipeline.windows import (
     WorkerIdentity, WindowsIsolationError, _layout_paths, launch_worker,
     require_system, validate_layout, validate_private_directory,
     validate_controller_token, protect_controller_token,
+    current_boot_identity,
 )
 
 
@@ -46,6 +47,8 @@ def test_layout_rejects_shared_identities_and_nested_workspaces(tmp_path):
 def test_nonwindows_does_not_claim_system_or_windows_isolation(tmp_path):
     with pytest.raises(WindowsIsolationError, match="real Windows SYSTEM"):
         require_system()
+    with pytest.raises(WindowsIsolationError, match="real Windows SYSTEM"):
+        current_boot_identity()
     with pytest.raises(WindowsIsolationError, match="real Windows SYSTEM"):
         validate_private_directory(tmp_path)
     with pytest.raises(WindowsIsolationError, match="real Windows SYSTEM"):
@@ -77,6 +80,65 @@ def test_real_windows_layout_and_controller_acl(native_windows_layout):
     validate_private_directory(data["private_root"])
     validate_controller_token(data["token_file"], data["operator_name"], identities)
     assert len(roots) == len({identity.name for identity in identities.values()})
+    boot = current_boot_identity()
+    assert type(boot) is int and boot > 0 and current_boot_identity() == boot
+
+
+@pytest.mark.parametrize("failure", ["invalid_environment", "duplicate_output"])
+def test_real_failed_launch_releases_profile_and_identity_only_after_cleanup(native_windows_layout, failure):
+    data, roots, identities = native_windows_layout
+    slot = next(iter(roots))
+    directory = Path(data["private_root"]) / ("launch-failure-check-" + uuid.uuid4().hex)
+    directory.mkdir()
+    try:
+        with tempfile.TemporaryFile(mode="w+b") as prompt:
+            expected = ValueError if failure == "invalid_environment" else FileExistsError
+            overrides = {"FORBIDDEN_VARIABLE": "rejected"} if failure == "invalid_environment" else None
+            with pytest.raises(expected):
+                # Both triggers occur after LoadUserProfile. The duplicate
+                # output path also occurs after real Job Object creation.
+                launch_worker(identities[slot], [sys.executable, "-I", "-c", "raise SystemExit(9)"], roots[slot],
+                              prompt, directory / "duplicate", directory / "duplicate", overrides)
+            with launch_worker(identities[slot], [sys.executable, "-I", "-c", "raise SystemExit(0)"], roots[slot],
+                               prompt, directory / "stdout", directory / "stderr") as process:
+                # A second real launch cannot acquire the exclusive identity
+                # reservation unless verified failure cleanup released it.
+                assert process.wait(30) == 0
+    finally:
+        for child in directory.iterdir():
+            child.unlink()
+        directory.rmdir()
+
+
+def test_real_failed_assignment_cleanup_kills_unassigned_suspended_process(native_windows_layout):
+    """Exercise the actual CreateProcess/Assign gap without fake Win32 results."""
+    import ctypes as C
+    import psutil
+    from cochem_pipeline import windows as native
+    data, roots, identities = native_windows_layout
+    api = native._api()["kernel32"]
+    create = api.CreateProcessW
+    create.restype = native.BOOL
+    create.argtypes = [native.LPWSTR, native.LPWSTR, native.HANDLE, native.HANDLE, native.BOOL,
+                       native.DWORD, native.HANDLE, native.LPWSTR, C.POINTER(native._STARTUPINFOW),
+                       C.POINTER(native._PROCESS_INFORMATION)]
+    process = native._PROCESS_INFORMATION()
+    startup = native._STARTUPINFOW(cb=C.sizeof(native._STARTUPINFOW))
+    command = C.create_unicode_buffer(subprocess.list2cmdline([sys.executable, "-I", "-c", "import time; time.sleep(120)"]))
+    native._check(create(sys.executable, command, None, None, False, 0x4 | 0x08000000, None,
+                         str(next(iter(roots.values()))), C.byref(startup), C.byref(process)), "Create real suspended cleanup test child")
+    pid = process.dwProcessId
+    try:
+        assert psutil.pid_exists(pid)
+        native._cleanup_failed_launch(process, None, None, native._PROFILEINFOW(), None)
+        process.hProcess = process.hThread = None
+        assert not psutil.pid_exists(pid)
+    finally:
+        if process.hProcess:
+            api.TerminateProcess(process.hProcess, 1)
+            api.WaitForSingleObject(process.hProcess, 10000)
+        native._close(process.hThread)
+        native._close(process.hProcess)
 
 
 def test_real_worker_cannot_read_private_state_or_sibling_root(native_windows_layout):
@@ -147,4 +209,61 @@ def test_real_windows_job_object_kills_descendant_before_close_returns(native_wi
     finally:
         for path in directory.iterdir():
             path.unlink()
+        directory.rmdir()
+
+
+def test_real_low_privilege_worker_inherits_large_prompt_pipe_and_eof(native_windows_layout):
+    import hashlib
+    import psutil
+    from cochem_pipeline.transport import PromptPipe
+    data,roots,identities=native_windows_layout
+    slot=next(iter(roots))
+    directory=Path(data['private_root'])/('worker-stdin-check-'+uuid.uuid4().hex)
+    directory.mkdir()
+    payload=os.urandom(2*1024*1024+37)
+    script=('import sys,hashlib,json; data=sys.stdin.buffer.read(); '
+            'print(json.dumps({"bytes":len(data),"sha256":hashlib.sha256(data).hexdigest(),'
+            '"eof":sys.stdin.buffer.read(1)==b""}),flush=True)')
+    try:
+        with PromptPipe(payload) as pipe:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c',script],roots[slot],
+                               pipe.reader,directory/'stdout',directory/'stderr') as process:
+                assert psutil.Process(process.pid).username().split('\\')[-1].casefold()==identities[slot].name.casefold()
+                pipe.start()
+                assert process.wait(30)==0
+                pipe.verify_delivered()
+            assert process.poll() is not None
+        result=json.loads((directory/'stdout').read_text())
+        assert result=={'bytes':len(payload),'sha256':hashlib.sha256(payload).hexdigest(),'eof':True}
+    finally:
+        for path in directory.iterdir(): path.unlink()
+        directory.rmdir()
+
+
+def test_real_low_privilege_nonreader_pipe_cancellation_releases_identity(native_windows_layout):
+    import psutil
+    from cochem_pipeline.transport import PromptPipe,MAX_PROMPT_BYTES
+    data,roots,identities=native_windows_layout
+    slot=next(iter(roots))
+    directory=Path(data['private_root'])/('worker-stdin-cancel-'+uuid.uuid4().hex)
+    directory.mkdir()
+    try:
+        with PromptPipe(b'x'*MAX_PROMPT_BYTES) as pipe:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c','import time;time.sleep(120)'],
+                               roots[slot],pipe.reader,directory/'stdout',directory/'stderr') as process:
+                assert psutil.Process(process.pid).username().split('\\')[-1].casefold()==identities[slot].name.casefold()
+                pipe.start()
+                started=time.monotonic()
+                process.terminate()
+            pipe.close()
+            assert time.monotonic()-started<5
+            assert not pipe.delivered
+            assert not psutil.pid_exists(process.pid)
+        # Reacquisition proves the real profile and identity guard were released.
+        with tempfile.TemporaryFile('w+b') as empty:
+            with launch_worker(identities[slot],[sys.executable,'-I','-c','pass'],roots[slot],
+                               empty,directory/'second.out',directory/'second.err') as second:
+                assert second.wait(30)==0
+    finally:
+        for path in directory.iterdir(): path.unlink()
         directory.rmdir()

@@ -15,6 +15,8 @@ import xml.etree.ElementTree as ET
 import pytest
 
 from cochem_pipeline.oracle import AhoCorasick, ContextEngine, Oracle, Rule
+from cochem_pipeline.runtime import Runtime
+from cochem_pipeline.store import JobStore
 
 
 def core_engine():
@@ -164,6 +166,118 @@ def test_same_payload_idempotency_survives_restart_and_is_per_task(private_db):
     assert row_count(private_db) == 2
 
 
+def test_return_to_prior_rules_updates_sqlite_context_after_restart(private_db):
+    store = JobStore(private_db.parent / "jobs.db")
+    workflow = store.submit("Audit context reactivation", ["REQ-1"], chapter_count=1)
+    task_id = workflow["workflow_id"]
+    deliveries = []
+    for text in ("sqlite", "other", "sqlite"):
+        # Reopening also proves the current selection is durable, rather than
+        # an in-memory last-seen optimization.
+        with Oracle(core_engine(), private_db, [].append) as oracle:
+            oracle.record(task_id, text, ("database",), now=0)
+            contexts = oracle.drain(now=.5)
+            assert len(contexts) == 1
+            context = contexts[0]
+            deliveries.append(context)
+            store.set_context(task_id, context["xml"], context["watermark"])
+            oracle.ack(task_id, context["watermark"], context["delivery_id"])
+            assert store.get_context(task_id)["xml"] == core_engine().render(text, ("database",))["xml"]
+            oracle.record(task_id, text, ("database",), now=1)
+            assert oracle.drain(now=1.5) == []
+    assert deliveries[0]["watermark"] == deliveries[2]["watermark"]
+    assert deliveries[0]["delivery_id"] < deliveries[1]["delivery_id"] < deliveries[2]["delivery_id"]
+    assert row_count(private_db) == 2
+
+
+def test_old_ack_cannot_consume_reactivated_rules_and_replay_keeps_order(private_db):
+    with Oracle(core_engine(), private_db, [].append) as oracle:
+        oracle.record("task", "sqlite", ("database",), now=0)
+        old = oracle.drain(now=.5)[0]
+        oracle.ack("task", old["watermark"], old["delivery_id"])
+        oracle.record("task", "other", now=1)
+        middle = oracle.drain(now=1.5)[0]
+        # Leave B pending at the crash boundary before generating A again.
+        oracle.record("task", "sqlite", ("database",), now=2)
+        pending = oracle.drain(now=2.5)
+        assert [entry["rule_ids"] for entry in pending] == [["core"], ["core", "sqlite"]]
+        assert pending[0] == middle
+        oracle.ack("task", old["watermark"], old["delivery_id"])
+        assert oracle.drain(now=3) == pending
+        with pytest.raises(ValueError, match="delivery_id"):
+            oracle.ack("task", old["watermark"])
+    with Oracle(core_engine(), private_db, [].append) as oracle:
+        assert oracle.drain(now=0) == pending
+        for context in pending:
+            oracle.ack("task", context["watermark"], context["delivery_id"])
+        assert oracle.drain(now=0) == []
+
+
+def test_upgrade_preserves_legacy_acknowledged_and_pending_contexts(private_db):
+    with Oracle(core_engine(), private_db, [].append) as oracle:
+        oracle.record("acknowledged", "sqlite", ("database",), now=0)
+        old = oracle.drain(now=.5)[0]
+        oracle.ack(old["task_id"], old["watermark"])
+        oracle.record("pending", "other", now=1)
+        pending = oracle.drain(now=1.5)[0]
+    # Reconstruct the actual previous schema with real SQLite, preserving its
+    # durable watermark flags and payloads.
+    with sqlite3.connect(private_db) as connection:
+        connection.execute("DROP TABLE _oracle_deliveries")
+    connection.close()
+    with Oracle(core_engine(), private_db, [].append) as oracle:
+        assert oracle.drain(now=0) == [pending]
+        oracle.record("acknowledged", "sqlite", ("database",), now=0)
+        assert oracle.drain(now=.5) == [pending]
+        oracle.ack(pending["task_id"], pending["watermark"], pending["delivery_id"])
+        assert oracle.drain(now=1) == []
+
+
+def test_runtime_context_delivery_stays_ordered_while_job_board_is_locked(private_db):
+    store = JobStore(private_db.parent / "jobs.db")
+    task_id = store.submit("Concurrent context delivery", ["REQ-1"], chapter_count=1)["workflow_id"]
+    with Oracle(core_engine(), private_db, [].append) as oracle:
+        # Exercise actual runtime delivery with real SQLite and threads. Native
+        # process construction is deliberately outside this portable boundary.
+        runtime = Runtime.__new__(Runtime)
+        runtime.store, runtime.oracle = store, oracle
+        runtime._context_drain_lock = threading.Lock()
+        oracle.record(task_id, "sqlite", ("database",), now=time.monotonic() - .6)
+        blocker = sqlite3.connect(store.path)
+        blocker.execute("BEGIN IMMEDIATE")
+        second_started = threading.Event()
+
+        def second_drain():
+            second_started.set()
+            runtime.drain_context()
+
+        try:
+            with ThreadPoolExecutor(max_workers=2) as workers:
+                first = workers.submit(runtime.drain_context)
+                try:
+                    deadline = time.monotonic() + 2
+                    while oracle.has_pending(task_id) and time.monotonic() < deadline:
+                        time.sleep(.005)
+                    assert not oracle.has_pending(task_id), "First delivery must have reached the locked job board"
+                    oracle.record(task_id, "other", now=time.monotonic() - .6)
+                    second = workers.submit(second_drain)
+                    assert second_started.wait(2)
+                    # While A cannot be committed, another runtime drainer must
+                    # not generate/ack B and later allow A to overwrite it.
+                    deadline = time.monotonic() + .2
+                    while oracle.has_pending(task_id) and time.monotonic() < deadline:
+                        time.sleep(.005)
+                    assert oracle.has_pending(task_id)
+                finally:
+                    blocker.commit()
+                first.result(timeout=5)
+                second.result(timeout=5)
+        finally:
+            blocker.close()
+        assert store.get_context(task_id)["xml"] == core_engine().render("other")["xml"]
+        assert oracle.drain() == []
+
+
 def test_durable_outbox_replays_after_crash_boundary_until_ack(private_db):
     with Oracle(core_engine(), private_db, [].append) as oracle:
         oracle.record("task", "sqlite", ("database",), now=0)
@@ -197,8 +311,11 @@ def test_ack_rejects_unknown_watermarks_and_corrupt_outbox_fails(private_db):
             connection.commit()
         finally:
             connection.close()
+        oracle.record("task", "a new event", now=.6)
+        # Even replay integrity checking must wait for the fresh quiet window.
+        assert oracle.drain(now=.7) == []
         with pytest.raises(RuntimeError, match="watermark integrity"):
-            oracle.drain(now=1)
+            oracle.drain(now=1.1)
 
 
 def test_velocity_trips_immediately_before_debounce_and_reaps_real_child(private_db):
@@ -343,3 +460,23 @@ def test_shutdown_validation_and_closed_calls(private_db):
         oracle.record("task", "c", now=2)
     with pytest.raises(RuntimeError, match="closed"):
         oracle.drain(now=2)
+
+
+def test_protected_decision_log_preserves_reactivated_generations_and_omits_prompt_bodies(private_db):
+    with Oracle(core_engine(),private_db,lambda task:None) as oracle:
+        for event_at, text in ((1,'sqlite private-secret-prompt'), (2,'other private-secret-prompt'), (3,'sqlite private-secret-prompt')):
+            oracle.record('job',text,facets=('database',),now=event_at)
+            result=oracle.drain(now=event_at+.5)[0]
+            oracle.ack('job',result['watermark'],result['delivery_id'])
+        log=oracle.decision_log('job')
+        entries=log['entries']
+        assert [entry['delivery_generation'] for entry in entries]==[1,2,3]
+        assert entries[0]['watermark']==entries[2]['watermark']!=entries[1]['watermark']
+        assert all(entry['ack_generation']==entry['delivery_generation'] for entry in entries)
+        assert all(entry['selected_at']<=entry['acknowledged_at'] for entry in entries)
+        assert all(0<entry['budget_used']<=entry['budget_limit'] for entry in entries)
+        assert 'private-secret-prompt' not in json.dumps(log)
+        assert 'Preserve evidence' not in json.dumps(log)
+        assert [entry['delivery_generation'] for entry in oracle.decision_log(after_id=1,limit=1)['entries']]==[2]
+    with Oracle(core_engine(),private_db,lambda task:None) as reopened:
+        assert reopened.decision_log()==log

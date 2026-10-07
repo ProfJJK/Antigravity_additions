@@ -1,102 +1,89 @@
-# Antigravity additions 4.2.2
+# Antigravity additions 4.2.7
 
-4.2.2 adds the planning controller specified by the four supplied SRS/architecture
-documents: one request creates a SQLite DAG, Codex generates the manifest,
-Codex/Claude draft isolated chapters within a four-worker ceiling, and Gemini
-3.1 Pro receives accepted chapter hashes for synthesis. The controller also
-provides the debounced Oracle, fenced retries, immutable artifacts and recovery
-telemetry.
+The [canonical SRS](4.2.7_SRS.md), revision `model-routing-2026-10-07`, governs
+this pipeline. All 18 improvement inserts are accepted requirements. The
+[owner addendum](docs/SRS_ADDENDUM_4.2.7.md) records the corrections and accepted
+performance observations; [source precedence](docs/SOURCE_PRECEDENCE_4.2.7.md)
+separates these decisions from historical architecture and debug material.
 
-**Windows deployment and live Gemini/Agy synthesis are not yet verified.** The
-installed Agy CLI's actual headless arguments, authentication and structured
-result contract must be confirmed before a full workflow can complete. Linux
-component tests establish local behavior; they do not prove Windows isolation
-or live provider execution.
+Every model job goes through a durable job board and this complexity policy:
 
-The integrated Linux suite reports **420 passed, 3 skipped**; the Windows
-security/process tests are the skipped cases. Frozen dependency synchronization
-and the 4.2.2 wheel build also passed.
+| Complexity | Assignment order |
+| --- | --- |
+| 1–3 | Gemini 3.8 Flash, default → Claude Haiku 4.5, default → GPT-6 Luna, low |
+| 4–6 | Claude Sonnet 5.5, default → GPT-6.1 Sol, medium → Gemini 3.8 Flash, Extended |
+| 7–9 | GPT-6.1 Sol, high → Claude Opus 5.5, Extended → Gemini 3.1 Pro Preview, high |
+| 10 | Claude Fable 5.1, Extended → GPT-6 Astra, ultra |
 
-- [4.2.2 Windows installation and workflow guide](docs/PIPELINE_4.2.2.md):
-  protected SYSTEM controller, six dedicated identities by default, native
-  account logins, and an unprivileged Antigravity MCP frontend.
-- [Requirements and evidence map](docs/REQUIREMENTS_4.2.2.md): all four source
-  specifications, test evidence and remaining host acceptance checks.
-- [4.2.2 release notes](docs/RELEASE_4.2.2.md) and
-  [audit of the earlier 4.2.0 components](docs/4.2.0_COMPONENT_AUDIT.md).
+Sol effort choices are latency/quota hypotheses, not a demonstrated equivalence
+to Opus. Extended requires a protected, reviewed native CLI profile; it is not a
+guessed command-line flag. Missing support produces compatibility holds and
+normal spillover. See [research and exact identifiers](docs/ROUTING_RESEARCH_2026-10-07.md).
+The [native effort guide](docs/NATIVE_EFFORT_4.2.7.md) documents the protected
+bindings required for Claude Extended and Agy High/Extended profiles.
 
-The standalone MCP bridges introduced in 4.2.1 remain available. They connect
-Antigravity's Gemini interface agents to real,
-headless **Codex CLI** and **Claude CLI** processes using their native subscription
-logins. Each provider has its own MCP server and job receipts. A submitted job is
-not a completed job, and an unavailable provider never falls back to another.
+This applies to planning, synthesis, coding, research, reviews, model preflight
+and independent repairs. Busy/unavailable/quota-limited candidates spill over
+in order; exhausted tiers wait with durable backoff, then restart at the
+preferred model. Claude alone has a provider ceiling of 20 concurrent agents.
+Codex and Agy have no assumed provider ceiling. Hardware admission is configured
+separately, starting conservatively at four seats until the host is measured.
+The [13700K/64 GB guide](docs/WORKSTATION_13700K_4.2.7.md) recommends measuring six
+then eight seats after preflight, with sufficient identities and memory headroom.
+New tasks capture catalogue version 2; score algorithm version 1 is unchanged.
+Older captures/receipts remain immutable; retired targets hold at new dispatch
+and spill over within their captured chain without silent model substitution.
 
-The primary setup uses **Windows 11, Windows Python 3.12+, and native Windows
-CLIs**, with Antigravity 2.0 as the GUI. A separate WSL2 setup is documented for
-native Linux Codex. For these standalone bridges, Gemini and Agy remain the
-interface/orchestration layer. The full 4.2.2 pipeline instead uses the protected
-Windows deployment described above, including a configured native Gemini runner.
+Antigravity 2.0 is the primary GUI. The protected Windows Python controller
+launches native subscription CLIs; WSL2/Linux containers run generated code and
+tests. New work uses the pipeline MCP. Provider-named Codex/Claude MCP tools are
+compatibility front ends to the same board and reject fixed-model requests.
+No API-key inference fallback or model-written completion claim is accepted.
 
-## Standalone bridge setup
+Coding preserves physical RED/GREEN tests, the ten-phase evidence sequence,
+bounded changes and fenced Git integration. Before final approval a separately
+routed, different-provider review reconciles the exact SRS chapters and WBS
+requirements with the implementation, tests and audits. Missing or divergent
+evidence blocks integration. The obsolete agentic seven-stage/Method Matrix
+prerequisites remain withdrawn.
 
-1. Install Python 3.12+ and the official Codex and Claude CLIs on Windows.
-2. Sign in as the Windows user who runs Antigravity: `codex login` and
-   `claude auth login`. Select subscription authentication.
-3. From a PowerShell terminal in this checkout, run:
+The existing ImDisk `R:` 8 GiB volume is adopted without formatting or repeated
+manual setup. Automatic startup waits and reattests it. Normal Docker tests
+consume persistent prepared single-use containers; cold creation is background
+pool replenishment. Fixed pool targets remain the default until measured demand
+supports adaptation.
 
-   ```powershell
-   .\scripts\install_mcp_windows.ps1
-   ```
+`pipeline_operator_view` exposes authenticated governance, prerequisite and
+routing views, measured hardware plots, RAM occupancy, Oracle decision history,
+pool demand, storage forecasts, workload objectives and per-requirement
+acceptance. Knowledge results carry reviewed authority badges.
 
-4. Edit the generated `config/bridge.local.json`. Confirm workspace directories
-   and replace example model IDs with IDs actually available to each CLI account.
-5. Run the [health checks and live CLI verification](docs/MCP_4.2.1.md#3-check-each-provider-then-connect-antigravity)
-   while the MCP servers are stopped. The live checks consume subscription quota.
-6. In Antigravity's MCP configuration editor, merge the two `mcpServers` entries
-   from the generated `config/antigravity.local.json`, preserving unrelated
-   entries, then reload the MCP servers.
-7. Perform the [Antigravity handoff acceptance test](docs/MCP_4.2.1.md#4-verify-one-real-codex-job-then-one-real-claude-job).
+- [Upgrade and launch](docs/EXECUTION_4.2.7.md)
+- [Continue in a Windows Codex session](docs/WINDOWS_CODEX_HANDOFF_4.2.7.md)
+- [Amendment operations and commands](docs/OPERATIONS_4.2.7-r2.md)
+- [Requirement ledger](docs/requirements_4.2.7.json)
+- [Acceptance evidence](docs/acceptance_4.2.7.json)
+- [Amendment release record](docs/RELEASE_4.2.7-r2.md)
+- [Windows queue observation](docs/QUEUE_LAUNCH_4.2.7.md)
 
-The installer preserves existing local configuration and never edits Antigravity's
-configuration automatically. The requested Astra/Sol/Luna and
-Fable/Opus/Sonnet/Haiku names are configurable aliases; the example IDs are not
-proof that those models are available.
+The [current routing validation](docs/evidence/VALIDATION_model-routing-2026-10-07.json)
+records **2,597 passed tests and 35 Windows-only skips**, with real Linux Docker
+execution, offline CLI checks and exact tested-source hashes. No paid native
+inference was performed. The initial historical-fixture failure and its
+correction remain in the evidence history. The [public knowledge snapshot](docs/evidence/KNOWLEDGE_model-routing-2026-10-07.json)
+contains 11 documents and 126 sections; it does not update the protected Windows index.
 
-After health succeeds, the live checker starts an actual MCP server and CLI,
-requests a unique file in a temporary workspace, and independently verifies its
-contents. Run Codex first, then Claude, with configured model aliases:
+**The nine findings in the [4.2.7-r2 audit](docs/AUDIT_4.2.7-r2.md) are not closed
+by this routing update. Windows/live-subscription and 48-hour acceptance remain
+pending actual host evidence.** Portable test results do not certify those conditions. Preserve
+existing jobs, accounts, subscription logins and recovery budgets on upgrade.
+Use distinct `4.2.7-r2` code/corpus directories; preserve the original `v4.2.7`
+tag and immutable source captures. The routing amendment retains version 4.2.7
+and existing installation paths; it does not change a historical release tag.
+The active `knowledge/` corpus and exported
+FTS5 snapshot contain the amended specification. Archived corpora stay outside
+active retrieval.
 
-```powershell
-.\.venv-mcp\Scripts\python.exe .\scripts\verify_cli_mcp.py --provider codex --config .\config\bridge.local.json --model sol
-.\.venv-mcp\Scripts\python.exe .\scripts\verify_cli_mcp.py --provider claude --config .\config\bridge.local.json --model sonnet
-```
-
-Git must be on PATH. Keep the corresponding Antigravity MCP server stopped
-during this check because only one instance can own its provider state directory.
-
-## Development and migration
-
-```powershell
-.\.venv-mcp\Scripts\python.exe -m pip install pytest
-.\.venv-mcp\Scripts\python.exe -m pytest mcp_tests pipeline_tests -q
-```
-
-See [the bridge source](src/cochem_mcp/), [MCP tests](mcp_tests/), and
-[Windows/WSL2 configuration and troubleshooting](docs/MCP_4.2.1.md).
-Tests with fixture CLIs establish process and protocol behavior; a real
-Antigravity/Windows subscription handoff still needs the acceptance test on the
-target machine. The Linux development attempt initialized MCP and launched an
-actual Codex process, which exited with code 1 before inference because its
-cloud runtime/CODEX_HOME was read-only. No successful backend inference or
-Windows execution is claimed. See the [4.2.1 release notes](docs/RELEASE_4.2.1.md).
-
-The legacy CoChem scientific package and archived workflows remain in this
-repository. The older `cochem_kanban_mcp.py` now starts without the optional
-`v3.submit_v3` module, but v3 submission reports an explicit error when that
-module is absent. Use `cochem-pipeline` for the full 4.2.2 planning workflow or
-the independent bridge entries for individual Codex/Claude jobs.
-
-The proposed [cloud setup recipe](config/cloud-environment.proposed.json) is
-saved in the repository. Applying it to the current environment draft failed
-with `stale_base`; a new setup chat is needed only to save that environment
-recipe against a fresh draft.
+Earlier release records remain available under `docs/`; their fixed-model
+assignments, leaf limits and old deployment examples are historical and are
+superseded by the canonical SRS and current owner decisions.

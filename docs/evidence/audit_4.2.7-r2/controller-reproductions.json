@@ -1,0 +1,83 @@
+{
+  "commit": "af4e335945fbd5d25198166e16ca32323df65bcb",
+  "work": "/tmp/cochem427-audit-repros-5j_8uf7y",
+  "scope": "Physical SQLite/Git/pytest, controller protocol fixtures, Git source inspection; no native models or Windows execution",
+  "checks": {
+    "planning_wbs": {
+      "manifest_without_wbs_accepted": "COMPLETED",
+      "chapter_structured_wbs_saved": [
+        {
+          "description": "UNIQUE_WBS_MUST_REACH_SYNTHESIS",
+          "task_id": "unique-wbs"
+        }
+      ],
+      "gather_contains_structured_wbs": false,
+      "unique_wbs_present_anywhere_in_gather_payload": false,
+      "coverage_binds_full_output_hash": false,
+      "coverage_binds_artifact_text_hash": true
+    },
+    "nonassertion_red": {
+      "pytest_exit_code": 1,
+      "physical_junit": "/tmp/cochem427-audit-repros-5j_8uf7y/runtime-error.xml",
+      "parsed_junit": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 1
+      },
+      "cases": [
+        {
+          "name": "test_existing",
+          "class_name": "tests.test_existing",
+          "status": "passed",
+          "message": "",
+          "diagnostic": ""
+        },
+        {
+          "name": "test_regression",
+          "class_name": "tests.test_regression",
+          "status": "failed",
+          "message": "RuntimeError: audit: infrastructure failure before requirement assertion",
+          "diagnostic": "def test_regression():\n>       raise RuntimeError(\"audit: infrastructure failure before requirement assertion\")\nE       RuntimeError: audit: infrastructure failure before requirement assertion\n\ntests/test_regression.py:4: RuntimeError"
+        }
+      ],
+      "state_after_completion": "EDITING",
+      "expected": "Refuse assertion-RED because planned test raised RuntimeError before its assertion",
+      "native_receipt_scope": "Explicit controller storage fixture; physical pytest XML is real"
+    },
+    "dashboard_stale_source": {
+      "before": {
+        "mandatory": 110,
+        "verified": 35,
+        "unverified": 75
+      },
+      "after": {
+        "mandatory": 110,
+        "verified": 35,
+        "unverified": 75
+      },
+      "source_file_changed": "src/cochem_pipeline/store.py",
+      "all_requirement_statuses_unchanged": true
+    },
+    "readonly_preview": {
+      "files_before": [
+        "board.db",
+        "board.db-shm",
+        "board.db-wal"
+      ],
+      "files_after": [
+        "board.db",
+        "board.db-shm",
+        "board.db-wal"
+      ],
+      "created_files": [],
+      "main_database_unchanged": true
+    },
+    "worker_login": {
+      "exit_code": 2,
+      "rejects_gemini": true,
+      "message": "windows.py: error: argument --provider: invalid choice: 'gemini' (choose from codex, claude)"
+    }
+  }
+}

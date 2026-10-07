@@ -1,0 +1,17 @@
+{
+  "root": "/tmp/cochem-outer427r2-2t3z_6vi",
+  "revision": "owner-amendment-2026-10-06",
+  "candidate_source_manifest_sha256": "861dba227e6783ebd502f0f3ba6a3c78de2d405adb2aa15d77cc994e154f2211",
+  "verdict_path": "/tmp/cochem-outer427r2-2t3z_6vi/private/verdict.json",
+  "scope": "trusted outer process against copied source; POSIX process groups, no Windows ACL claim",
+  "passed": true,
+  "checks": [
+    "planning stale fence and forged receipt leave physical state unchanged",
+    "chapter ownership, exact artifact hashes, immutability and single synthesis barrier",
+    "exact synthesis tracing and provider contract gate DAG completion",
+    "physical coding baseline, reserved model receipt, asymmetric plan review and ordered stages"
+  ],
+  "executions": 24,
+  "protected_trees_unchanged": true,
+  "verdict_sha256": "978ade4ee0622b9f19dc6643087b2795a073a6382051c4d41eb3a54d4e701b50"
+}

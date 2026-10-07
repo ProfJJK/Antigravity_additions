@@ -13,4 +13,4 @@ os.environ["HDF5_USE_FILE_LOCKING"] = "FALSE"
 
 __path__ = extend_path(__path__, __name__)
 
-__version__ = "4.2.2"
+__version__ = "4.2.7"

@@ -37,7 +37,8 @@ assert "--print" in argv
 assert "--dangerously-skip-permissions" not in argv
 assert "--tools" not in argv
 assert argv[argv.index("--permission-mode") + 1] == "acceptEdits"
-assert argv[argv.index("--permission-prompts") + 1] == "none"
+assert "--permission-prompts" not in argv
+assert "--bare" not in argv
 assert argv[argv.index("--setting-sources") + 1] == ""
 assert json.loads(argv[argv.index("--mcp-config") + 1]) == {"mcpServers": {}}
 assert "ANTHROPIC_AUTH_TOKEN" not in os.environ

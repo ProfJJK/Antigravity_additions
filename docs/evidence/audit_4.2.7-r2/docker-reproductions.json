@@ -1,0 +1,38 @@
+{
+  "scope": "Real Linux Docker and SQLite; no Windows/native inference",
+  "image": "sha256:a3d8c8a1b836c46ffda919139a3d42b7214fe1e8b6603d584bb58b8aa4a589f5",
+  "work": "/tmp/cochem427-audit-docker-rt6m1wci",
+  "admission_during_replenishment": {
+    "observed": {
+      "warm": 1,
+      "preparing": 1,
+      "capacity": 4,
+      "native_active": 0,
+      "claim_during_preparation": null,
+      "lock_held": true
+    },
+    "claim_after_replenishment": "MANIFEST_GENERATOR",
+    "maintenance_seconds": 1.340736669008038,
+    "error": null
+  },
+  "warm_policy_restart": {
+    "changed_container_id": "e4504ccc6d3e332b2155686d18ac2677c20bedc7974b9a42d484501c04336182",
+    "actual_memory_mb": 512.0,
+    "expected_memory_mb": 4096,
+    "would_fail_limit_verification": true,
+    "retained_as_warm": true,
+    "reap_result": {
+      "removed": [],
+      "quarantined": []
+    },
+    "scope_note": "Execution checks limits again before source injection; this is an adoption/readiness gap, not proof of sandbox escape."
+  },
+  "cleanup": {
+    "removed": [
+      "5c4257b87c5549fdac13e004e28b7967",
+      "3d8450c90fdf40008c1950878d9dc58a"
+    ],
+    "quarantined": []
+  },
+  "remaining_owned": 0
+}

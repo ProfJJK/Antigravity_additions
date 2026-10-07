@@ -1,0 +1,53 @@
+{
+  "manifest_version": "4.2.7",
+  "provenance": "Active canonical 4.2.7 plus owner amendments and four original primary source captures; prior corpus archived outside retrieval",
+  "documents": [
+    {
+      "path": ".sources/4.2.7_SRS.md",
+      "sha256": "8611c07f12752e6269971aa4b160eb527b3075fca0bfe921b69196f6b95bdc98"
+    },
+    {
+      "path": ".sources/Oracle_SRS_WBS.md",
+      "sha256": "5a852cf5c51519bf8ce4625723fe4b77608ad9278b2038c9e8a24c091f9b9440"
+    },
+    {
+      "path": ".sources/Pipeline_4_2_0_Architecture.md",
+      "sha256": "68ca91fffb6874c3d5da298ebc701f602a8638d390e3cc0da2055923f46fed7f"
+    },
+    {
+      "path": ".sources/SRS_ADDENDUM_4.2.7.md",
+      "sha256": "b54f75981458d96f3cb04809bdb74a06beae8228da0ecb78b8660c76e97568f9"
+    },
+    {
+      "path": ".sources/full_dossier.md",
+      "sha256": "eaa191a9c83c6149827c9bcfa758864858447bc67164fe0168e0746599e11c6e"
+    },
+    {
+      "path": ".sources/full_dossier_untruncated.md",
+      "sha256": "3741396e172e1ce2e1b50fc4b69cec7f0bdbf1d0ca3db84eb3aeefefec27c7ca"
+    },
+    {
+      "path": "wiki/00_skeleton.md",
+      "sha256": "0d8b4315eccd78ee7d785f1acecd881f189db0b0d3ba1e6da3e0c8e5eb5765d4"
+    },
+    {
+      "path": "wiki/4.2.7_SRS.md",
+      "sha256": "2bcc7be44e8425b04dfde1fbddc70682644fbbc0f49dcfedb486f1579822ffee"
+    },
+    {
+      "path": "wiki/owner_decisions.md",
+      "sha256": "730951e80b5c42cb6febfca51a65c03688c8a5a0e0a4bde04cfb53e78217aa6a"
+    }
+  ],
+  "srs_documents": [
+    ".sources/4.2.7_SRS.md",
+    ".sources/Oracle_SRS_WBS.md",
+    ".sources/Pipeline_4_2_0_Architecture.md",
+    ".sources/SRS_ADDENDUM_4.2.7.md",
+    ".sources/full_dossier.md",
+    ".sources/full_dossier_untruncated.md",
+    "wiki/00_skeleton.md",
+    "wiki/4.2.7_SRS.md",
+    "wiki/owner_decisions.md"
+  ]
+}

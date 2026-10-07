@@ -1,0 +1,223 @@
+{
+  "release": "4.2.7",
+  "recorded_at": "2026-10-06T12:48:24.569912-05:00",
+  "baseline_commit": "9b05dc82029dff6dbc33da9eb68df5dc89d85312",
+  "complete_target_host_acceptance_certified": false,
+  "environment": {
+    "os": "Linux",
+    "python": "3.12.14",
+    "docker": "28.4.0",
+    "docker_storage_driver": "vfs"
+  },
+  "full_suite": {
+    "tests": 2230,
+    "passed": 2195,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 35,
+    "skip_reasons": {
+      "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Requires a real Win32 process handle; no emulation": 1,
+      "Real Windows console allocation requires a native Windows process": 1,
+      "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1": 1,
+      "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+      "Requires actual Windows; no Win32 emulation used": 8,
+      "Requires real Windows SYSTEM, repair identity and Docker API ACLs": 1,
+      "Requires real Windows and SYSTEM; no Win32 emulation used": 5,
+      "Requires real Windows SYSTEM and explicit disposable-task test opt-in": 1
+    },
+    "seconds": 406.495,
+    "junit_sha256": "530bb581eca933f967c56cc0341f51fd5d00badc818120d41cca9417e83d9e22",
+    "process_exit_code": 0,
+    "command": "python -m pytest -q --junitxml=/tmp/cochem-427-final.xml",
+    "actual_docker_execution_enabled": true,
+    "native_codex_and_claude_offline_probes_enabled": true,
+    "native_subscription_inference_executed": false,
+    "source_and_tests_unchanged_during_run": true
+  },
+  "earlier_integration_run": {
+    "tests": 2203,
+    "passed": 2168,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 35,
+    "skip_reasons": {
+      "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Requires a real Win32 process handle; no emulation": 1,
+      "Real Windows console allocation requires a native Windows process": 1,
+      "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1": 1,
+      "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+      "Requires actual Windows; no Win32 emulation used": 8,
+      "Requires real Windows SYSTEM, repair identity and Docker API ACLs": 1,
+      "Requires real Windows and SYSTEM; no Win32 emulation used": 5,
+      "Requires real Windows SYSTEM and explicit disposable-task test opt-in": 1
+    },
+    "seconds": 386.747,
+    "junit_sha256": "76c8683b5c87a91b69d90c688936a273b92ab531374f7cad6bc3b60a36ee9ef7",
+    "scope": "Before final queue receipt attestation and recovery-edge refinements; not final release validation"
+  },
+  "source_python_sha256": "f440306d86224494a04e1dc0442edbb1e9feb9d8fa33694f82487bc53b5e3b9d",
+  "source_hash_algorithm": "SHA256 of compact sorted JSON mapping src/**/*.py relative path to byte SHA256",
+  "protected_regression": {
+    "evidence_boundary": "Linux read-only snapshot regression gate; no Windows ACL or live subscription attestation",
+    "exit_code": 0,
+    "junit": {
+      "tests": 1409,
+      "passed": 1352,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 57,
+      "skip_reasons": {
+        "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+        "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+        "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+        "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+        "Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1": 1,
+        "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+        "Set COCHEM_TEST_DOCKER_IMAGE to run actual local Docker acceptance": 30,
+        "Real Windows console allocation requires a native Windows process": 1,
+        "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+        "Requires actual Windows; no Win32 emulation used": 8
+      },
+      "seconds": 97.312,
+      "junit_sha256": "22bae45848aead75208b68d8566026d1d2372c4e75888982f346558801b275d8"
+    },
+    "protected_trees_unchanged": true,
+    "targets": 43,
+    "candidate_source_matches_release": true,
+    "actual_docker_execution_enabled": false,
+    "diagnostic_only": true
+  },
+  "independent_outer_verifier": {
+    "scope": "trusted outer process against copied source; POSIX process groups, no Windows ACL claim",
+    "passed": true,
+    "checks": [
+      "planning stale fence and forged receipt leave physical state unchanged",
+      "chapter ownership, exact artifact hashes, immutability and single synthesis barrier",
+      "exact synthesis tracing and provider contract gate DAG completion",
+      "physical coding baseline, reserved model receipt, asymmetric plan review and ordered stages"
+    ],
+    "executions": 24,
+    "protected_trees_unchanged": true,
+    "verdict_sha256": "285854c7fb1da76d5336243825a520e88ee5a51b779efcd1d65db57bee2889cb",
+    "candidate_source_matches_release": true
+  },
+  "wheel": {
+    "filename": "cochem-4.2.7-py3-none-any.whl",
+    "sha256": "441a3e2d5e55d09458ed524a07297166c97574e619a189fdf2c0db1cf210affd",
+    "python_modules": 122,
+    "all_python_modules_match_tested_source": true,
+    "isolated_imports_passed": true
+  },
+  "frozen_dependency_check": {
+    "passed": true,
+    "packages": 193,
+    "installed_version": "4.2.7",
+    "mcp_minimum": "1.30"
+  },
+  "powershell": {
+    "scripts_parsed": 7,
+    "syntax_errors": 0,
+    "windows_provisioning_executed": false,
+    "report_sha256": "67aec82e4bc500b70fb640e30a19e91879f37fb9134138848b7165bd9589a9b4"
+  },
+  "canonical_specification": {
+    "path": "4.2.7_SRS.md",
+    "sha256": "8611c07f12752e6269971aa4b160eb527b3075fca0bfe921b69196f6b95bdc98",
+    "chapters": 18,
+    "unique_requirement_ids": 91,
+    "improvement_comment_inserts": 18,
+    "current_gap_remediation_sections": 18,
+    "lines": 260
+  },
+  "owner_addendum": {
+    "path": "docs/SRS_ADDENDUM_4.2.7.md",
+    "sha256": "b54f75981458d96f3cb04809bdb74a06beae8228da0ecb78b8660c76e97568f9",
+    "phantom_agentic_requirements_withdrawn": true,
+    "historical_queue_max_ms_accepted_conditionally": 29.347,
+    "historical_knowledge_mean_ms_accepted": 7.731,
+    "historical_cold_preparation_seconds_accepted": 4.85,
+    "queue_redesign_performed": false
+  },
+  "active_knowledge_corpus": {
+    "generation": "g-acecd09f8298479985423ec71e1e850e",
+    "manifest_sha256": "3767a0ba7d7f810c12818c5f67a771f3677cf47139495b345b657bb59a19c0cf",
+    "document_count": 9,
+    "section_count": 100,
+    "corpus_bytes": 157643,
+    "index_bytes": 339968,
+    "index_ratio": 2.1565689564395503,
+    "index_size_sla_met": true,
+    "relative_links_checked": 15,
+    "updated_at": 1791308904.4252143,
+    "changed_documents": 9,
+    "removed_documents": 0,
+    "rebuilt_corruption": false
+  },
+  "previous_corpus_archive": {
+    "path": "docs/archive/knowledge_4.2.6",
+    "documents": 18,
+    "all_original_document_hashes_preserved": true
+  },
+  "knowledge_profile": {
+    "path": "docs/KNOWLEDGE_PROFILE_4.2.7.json",
+    "sha256": "51d597cd0b69c5c237968375d5ef0a2d624fb0a6dbcde9e9e753f4000e2f1bed",
+    "iterations_per_variant": 900,
+    "all_structured_results_equal": true,
+    "summary_latency": {
+      "before": {
+        "count": 900,
+        "mean_ms": 6.997128635509095,
+        "median_ms": 4.636527999537066,
+        "p95_ms": 14.61224500235403,
+        "max_ms": 41.10307399969315
+      },
+      "after": {
+        "count": 900,
+        "mean_ms": 6.549960783377173,
+        "median_ms": 3.8929739966988564,
+        "p95_ms": 13.946598002803512,
+        "max_ms": 143.36661600100342
+      }
+    },
+    "observed_mean_reduction_percent": 6.390733619825573,
+    "limitations": "Instrumented Linux HTTP/in-process MCP; worse maximum retained; no native Windows/GUI/stdio guarantee"
+  },
+  "queue_measurement": {
+    "native_windows_acceptance": false,
+    "status": "conditionally_accepted_pending_actual_windows_launch",
+    "observer_implemented": true,
+    "requires_receipt_attested_overlapping_native_workers": true,
+    "synthetic_diagnostic": {
+      "report_sha256": "02b3a1ae1b528013817dd169f9e85022a4be898e37bd9d286eeb55e478cc8276",
+      "scope": "Linux synthetic controller-owned SQLite and four child workers; not Windows launch acceptance",
+      "worker_processes": 4,
+      "claim_acquisition": {
+        "count": 20,
+        "p50_ms": 1.803307000955101,
+        "p95_ms": 49.847200003569014,
+        "p99_ms": 53.11954299395438,
+        "maximum_ms": 53.11954299395438
+      },
+      "passed": true,
+      "production_database_mutated": false
+    }
+  },
+  "docker_test_image": "sha256:a3d8c8a1b836c46ffda919139a3d42b7214fe1e8b6603d584bb58b8aa4a589f5",
+  "remaining_acceptance": [
+    "Actual Windows controller/four-worker/deployed-database representative queue observation before redesign",
+    "Windows SYSTEM/worker/repair identities, ACLs, owned process handles and native pipe/Docker API isolation",
+    "Physical ImDisk/AWE RAM, WSL2/Docker/backend/sensors and restart/reboot adoption",
+    "Actual installed Agy capabilities and native subscription/model availability",
+    "Live planning/coding, Oracle breaker/reaper, independent repair/promotion/rollback",
+    "48-hour handle/resource stability, actual desktop heap, controller limits and observation/recovery timing"
+  ]
+}

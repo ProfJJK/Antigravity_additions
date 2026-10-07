@@ -1,0 +1,21 @@
+{
+  "generation": "g-2c46c2974dff4a8cbad8154830be1d42",
+  "manifest_sha256": "c3be35cb9604ffb2043a5131125b9ae8aa42375f308646d04bbc6be8c0baad4b",
+  "document_count": 9,
+  "section_count": 101,
+  "corpus_bytes": 188150,
+  "index_bytes": 385024,
+  "index_ratio": 2.0463672601647622,
+  "index_size_sla_met": true,
+  "relative_links_checked": 15,
+  "updated_at": 1791327795.8027582,
+  "changed_documents": 9,
+  "removed_documents": 0,
+  "rebuilt_corruption": false,
+  "schema": "cochem-public-knowledge-export/1",
+  "snapshot_file": "knowledge_4.2.7-r2.sqlite3",
+  "snapshot_sha256": "582ead150c4572e48781c025382f06757fa9d535e09571c5babdc1b7ca35c202",
+  "snapshot_bytes": 385024,
+  "windows_deployment_updated": false,
+  "scope": "Public ratified corpus only; protected deployed index is rebuilt locally"
+}

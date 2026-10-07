@@ -2,7 +2,10 @@
 [CmdletBinding()]
 param(
     [string]$Python = 'py.exe',
-    [string[]]$PythonArgs = @('-3.12')
+    [string[]]$PythonArgs = @('-3.12'),
+    [Parameter(Mandatory=$true)][string]$PipelineClientConfig,
+    [string]$ProjectId,
+    [string]$Workspace
 )
 
 $ErrorActionPreference = 'Stop'
@@ -14,18 +17,6 @@ function Invoke-NativeChecked {
     if ($LASTEXITCODE -ne 0) {
         throw "$Executable exited with code $LASTEXITCODE. Installation stopped."
     }
-}
-
-function Find-NativeCli {
-    param([string[]]$Names)
-    foreach ($name in $Names) {
-        $found = Get-Command -Name $name -CommandType Application -ErrorAction SilentlyContinue |
-            Select-Object -First 1
-        if ($null -ne $found) {
-            return $found.Source
-        }
-    }
-    return $null
 }
 
 function Write-NewJson {
@@ -53,14 +44,29 @@ function Write-NewJson {
 }
 
 if ([System.Environment]::OSVersion.Platform -ne [System.PlatformID]::Win32NT) {
-    throw 'Run this installer with Windows PowerShell or PowerShell on Windows. See docs/MCP_4.2.1.md for WSL.'
+    throw 'Run this installer with Windows Python and PowerShell. See docs/EXECUTION_4.2.7.md for the protected pipeline prerequisites.'
+}
+
+$PipelineClientConfig = (Resolve-Path -LiteralPath $PipelineClientConfig).Path
+$client = Get-Content -LiteralPath $PipelineClientConfig -Raw | ConvertFrom-Json
+if ($null -eq $client.PSObject.Properties['port'] -or ($client.port -isnot [int] -and $client.port -isnot [long]) -or $client.port -lt 1024 -or $client.port -gt 65535 -or
+    $null -eq $client.PSObject.Properties['token_file'] -or $client.token_file -isnot [string] -or $client.token_file -notmatch '^[A-Za-z]:[\\/]') {
+    throw 'PipelineClientConfig requires a reviewed local controller port and an absolute operator token_file path. Token contents are never copied.'
+}
+if ([bool]$ProjectId -ne [bool]$Workspace) {
+    throw 'Compatibility Codex/Claude tool names require both -ProjectId and -Workspace for one registered pipeline project. Omit both to use the primary pipeline MCP.'
+}
+if ($ProjectId) {
+    if ($ProjectId -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$') { throw 'ProjectId must identify an existing controller-registered project.' }
+    $Workspace = (Resolve-Path -LiteralPath $Workspace).Path
+    if (-not (Test-Path -LiteralPath $Workspace -PathType Container)) { throw 'Workspace must be the registered project directory.' }
 }
 
 $repo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $venv = Join-Path $repo '.venv-mcp'
 $venvPython = Join-Path $venv 'Scripts\python.exe'
-$bridgePath = Join-Path $repo 'config\bridge.local.json'
-$antigravityPath = Join-Path $repo 'config\antigravity.local.json'
+$bridgePath = Join-Path $repo 'config\bridge.4.2.7-r2.local.json'
+$antigravityPath = Join-Path $repo 'config\antigravity.4.2.7-r2.local.json'
 $examplePath = Join-Path $repo 'config\bridge.windows.example.json'
 
 if (-not (Test-Path -LiteralPath $examplePath -PathType Leaf)) {
@@ -83,30 +89,35 @@ try {
     Invoke-NativeChecked -Executable $venvPython -Arguments @('-m', 'pip', 'install', '-e', '.[mcp]')
     Invoke-NativeChecked -Executable $venvPython -Arguments @('-m', 'cochem_mcp', '--version')
 
-    if (-not (Test-Path -LiteralPath $bridgePath)) {
+    # The primary client carries no native execution authority. Optional old
+    # provider tool names are registered only against an authenticated existing
+    # controller project, and still forward every job through Chapter 06.
+    if ($ProjectId -and -not (Test-Path -LiteralPath $bridgePath)) {
+        $verifyProject = 'import json,sys; from cochem_pipeline.service import ControlClient; c=json.load(open(sys.argv[1],encoding="utf-8-sig")); client=ControlClient(c["port"],c["token_file"]); projects=client.call("/coding/projects")["projects"]; client.close(); sys.exit(0 if sys.argv[2] in projects else "ProjectId is not registered by the protected controller")'
+        Invoke-NativeChecked -Executable $venvPython -Arguments @('-c',$verifyProject,$PipelineClientConfig,$ProjectId)
         $bridge = Get-Content -LiteralPath $examplePath -Raw | ConvertFrom-Json
-        $bridge.workspace_roots = @($repo)
-        foreach ($provider in @('codex', 'claude')) {
-            $names = if ($provider -eq 'codex') { @('codex.exe', 'codex.cmd') } else { @('claude.exe') }
-            $executable = Find-NativeCli -Names $names
-            if ($null -ne $executable) {
-                $bridge.providers.$provider | Add-Member -MemberType NoteProperty -Name 'executable' -Value $executable -Force
-            }
-            else {
-                Write-Warning "$provider was not found in Windows PATH. Install its native CLI and log in before running health checks."
-            }
-        }
+        $bridge.workspace_roots = @($Workspace)
+        $mapping = @{}
+        $mapping[$Workspace] = $ProjectId
+        $bridge.controller = [ordered]@{port=$client.port; token_file=$client.token_file; projects=$mapping}
         Write-NewJson -Path $bridgePath -Value $bridge
     }
-    else {
+    elseif ($ProjectId) {
         Write-Host "Preserved existing configuration: $bridgePath"
     }
 
-    $servers = [ordered]@{}
-    foreach ($provider in @('codex', 'claude')) {
-        $servers["cochem-$provider"] = [ordered]@{
-            command = $venvPython
-            args = @('-m', 'cochem_mcp', '--provider', $provider, '--config', $bridgePath)
+    $servers = [ordered]@{'cochem-pipeline' = [ordered]@{
+        command=$venvPython
+        args=@('-m','cochem_pipeline','mcp','--client-config',$PipelineClientConfig)
+    }}
+    if ($ProjectId) {
+        foreach ($provider in @('codex', 'claude')) {
+            $checkBridge = 'import sys; from cochem_mcp.config import load_settings; s=load_settings(sys.argv[1],sys.argv[2]); sys.exit(0 if s.controller_port and s.controller_token_file and s.project(sys.argv[3])==sys.argv[4] else "Preserved bridge does not match this registered project/controller; review its configuration")'
+            Invoke-NativeChecked -Executable $venvPython -Arguments @('-c',$checkBridge,$bridgePath,$provider,$Workspace,$ProjectId)
+            $servers["cochem-$provider"] = [ordered]@{
+                command = $venvPython
+                args = @('-m', 'cochem_mcp', '--provider', $provider, '--config', $bridgePath)
+            }
         }
     }
     Write-NewJson -Path $antigravityPath -Value ([ordered]@{ mcpServers = $servers })
@@ -115,8 +126,8 @@ finally {
     Pop-Location
 }
 
-Write-Host 'Bridge installed. Review model IDs and workspace roots in config\bridge.local.json.'
-Write-Host 'Use codex login and claude auth login as the Windows user who runs Antigravity.'
-Write-Host 'Run both --health checks from docs\MCP_4.2.1.md before starting the MCP servers.'
-Write-Host 'Merge the two entries from config\antigravity.local.json into Antigravity using its GUI.'
-Write-Host 'Existing Antigravity settings have not been modified. Follow the real handoff acceptance tests in the guide.'
+Write-Host 'Pipeline MCP client installed. Every model task is routed by the protected controller job board.'
+Write-Host 'Native subscription logins belong to the isolated pipeline worker accounts; use login_pipeline_worker.ps1 and the reviewed Agy login contract.'
+Write-Host 'The primary cochem-pipeline entry uses your existing PipelineClientConfig. Optional provider-named entries do not pin a model.'
+Write-Host "Merge the reviewed entries from $antigravityPath into Antigravity using its GUI. Existing local configuration files are preserved."
+Write-Host 'Follow docs\EXECUTION_4.2.7.md for actual Windows and native model acceptance; client installation alone does not prove inference.'

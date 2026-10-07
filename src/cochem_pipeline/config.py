@@ -1,11 +1,19 @@
 """Deployment configuration; privileged execution has no permissive fallback."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import json
 import math
+import os
 import re
 from pathlib import Path
 from typing import Any
+
+from .routing import RoutingPolicy, load_current_routing_policy
+from .hardware_guard import HardwarePolicy
+from .resource_limits import ResourceLimits
+from .ramdisk import RamdiskConfig
+from .container_policy import DockerPolicy
+from .knowledge import KnowledgeConfig
 
 
 def validate_subscription_probe(spec: Any) -> None:
@@ -54,12 +62,22 @@ class PipelineConfig:
     operator_name: str
     port: int = 47824
     timeout_seconds: int = 1800
-    lease_seconds: int = 30
+    lease_seconds: int = 1800
+    heartbeat_seconds: int = 5
     max_attempts: int = 3
+    max_execution_slots: int = 4
     context_budget: int = 16384
     reserved_fraction: float = 0.25
     min_free_memory_mb: int = 1024
     min_free_disk_mb: int = 512
+    routing: RoutingPolicy = field(default_factory=RoutingPolicy)
+    hardware: HardwarePolicy = field(default_factory=HardwarePolicy)
+    execution_limits: ResourceLimits = field(default_factory=ResourceLimits)
+    ramdisk: RamdiskConfig = field(default_factory=RamdiskConfig)
+    docker: DockerPolicy = field(default_factory=DockerPolicy)
+    coding_projects: dict[str, Any] = field(default_factory=dict)
+    knowledge: KnowledgeConfig = field(default_factory=KnowledgeConfig)
+    git_executable: str = field(default_factory=lambda: r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
 
     @property
     def job_db(self) -> Path:
@@ -71,8 +89,8 @@ def load_config(filename: str) -> PipelineConfig:
     private = Path(raw['private_root']).expanduser()
     roots = {key: Path(value).expanduser() for key, value in raw['slot_roots'].items()}
     workers = raw['workers']
-    if not private.is_absolute() or not roots or len(roots) > 64:
-        raise ValueError('private_root must be absolute; configure one to 64 worker identities (at most four active)')
+    if not private.is_absolute() or not roots or len(roots) > 256:
+        raise ValueError('private_root must be absolute; configure one to 256 isolated worker identities')
     if set(workers) != set(roots):
         raise ValueError('workers and slot_roots must have identical keys')
     paths = [private.resolve(), *(root.resolve() for root in roots.values())]
@@ -107,20 +125,28 @@ def load_config(filename: str) -> PipelineConfig:
     if gemini.get('protocol') not in ('gemini-json', 'terminal-json'):
         raise ValueError('Select a supported Gemini native result protocol: gemini-json or terminal-json')
     validate_subscription_probe(gemini.get('subscription_probe'))
-    # This is required by the architecture, not an inferred alias/provider swap.
-    if '3.1' not in gemini['model'].lower() or 'pro' not in gemini['model'].lower():
-        raise ValueError('The SRS requires Gemini 3.1 Pro for synthesis')
+    from .inference_policy import gemini_inference_arguments
+    inference_args = gemini_inference_arguments(gemini)
+    if inference_args.count('{model}') != 1 or any(
+            re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}')
+            for arg in inference_args):
+        raise ValueError('Gemini inference-only arguments require exactly one separate {model} entry and supported placeholders')
     values = {}
     for key, default, low, high in [
         ('port',47824,1024,65535), ('timeout_seconds',1800,1,14400),
-        ('lease_seconds',30,5,600), ('max_attempts',3,1,10),
+        ('lease_seconds',1800,5,3600), ('heartbeat_seconds',5,1,5), ('max_attempts',3,1,10),
         ('context_budget',16384,1024,1048576), ('min_free_memory_mb',1024,0,1048576),
-        ('min_free_disk_mb',512,0,1048576),
+        ('min_free_disk_mb',512,0,1048576), ('max_execution_slots',4,1,256),
     ]:
         value = raw.get(key,default)
         if type(value) is not int or not low <= value <= high:
             raise ValueError(f'{key} must be an integer in {low}..{high}')
         values[key] = value
+    if 'max_execution_slots' in raw and values['max_execution_slots'] > len(roots):
+        raise ValueError('max_execution_slots cannot exceed the isolated worker identities configured')
+    values['max_execution_slots'] = min(values['max_execution_slots'], len(roots))
+    if values['heartbeat_seconds'] * 3 > values['lease_seconds']:
+        raise ValueError('heartbeat_seconds must allow at least three heartbeats per lease')
     fraction = raw.get('reserved_fraction',.25)
     if type(fraction) not in (float,int) or not 0 < fraction <= 1:
         raise ValueError('reserved_fraction must be in (0,1]')
@@ -143,5 +169,43 @@ def load_config(filename: str) -> PipelineConfig:
             Rule(**rule)
         except (TypeError,ValueError) as exc:
             raise ValueError(f'Invalid rule configuration: {exc}') from exc
+    routing = load_current_routing_policy(raw.get('routing'))
+    hardware = HardwarePolicy.from_dict(raw.get('hardware'))
+    execution_limits = ResourceLimits.from_dict(raw.get('execution_limits'))
+    ramdisk = RamdiskConfig.from_dict(raw.get('ramdisk'))
+    docker = DockerPolicy.from_dict(raw.get('docker'))
+    knowledge = KnowledgeConfig.from_dict(raw.get('knowledge'))
+    git_executable = raw.get('git_executable',r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git')
+    if (not isinstance(git_executable,str) or not git_executable.strip() or '\x00' in git_executable
+            or (os.name=='nt' and not Path(git_executable).is_absolute())):
+        raise ValueError('git_executable must be one explicit absolute executable on Windows')
+    projects = raw.get('coding_projects',{})
+    if not isinstance(projects,dict):
+        raise ValueError('coding_projects must be an operator-owned project registry')
+    if projects:
+        if not ramdisk.enabled or not docker.enabled:
+            raise ValueError('Coding projects require verified RAM workspaces and enabled Docker testing')
+        from .coding import validate_coding_projects
+        projects = validate_coding_projects(projects)
+        # The source registry cannot turn protected control state or another
+        # worker's scratch into material provided to a coding model.
+        protected = [private.resolve(), token.resolve(), *(root.resolve() for root in roots.values())]
+        if ramdisk.enabled:
+            protected.append(Path(ramdisk.mount_root).resolve())
+        for project in projects.values():
+            repository = project.repository.resolve()
+            if any(repository == path or repository in path.parents or path in repository.parents
+                   for path in protected):
+                raise ValueError('Coding repositories must be disjoint from control state, tokens and execution workspaces')
+    if ramdisk.enabled:
+        mount = Path(ramdisk.mount_root).resolve()
+        durable = [private.resolve(), token.resolve(), *(root.resolve() for root in roots.values())]
+        if any(mount == path or mount in path.parents or path in mount.parents for path in durable):
+            raise ValueError('RAM storage must be disjoint from persistent control state, tokens and identity roots')
+    knowledge.validate_placement(private,[token,*roots.values(),
+        *(project.repository for project in projects.values()),
+        *([Path(ramdisk.mount_root)] if ramdisk.enabled else [])])
     return PipelineConfig(private.resolve(), {k:v.resolve() for k,v in roots.items()}, workers,
-                          providers, rules, token, operator, reserved_fraction=fraction, **values)
+                          providers, rules, token, operator, reserved_fraction=fraction, routing=routing,
+                          hardware=hardware,execution_limits=execution_limits,ramdisk=ramdisk,
+                          docker=docker,coding_projects=projects,knowledge=knowledge,git_executable=git_executable, **values)

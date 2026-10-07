@@ -1,0 +1,96 @@
+{
+  "release": "4.2.5",
+  "recorded_at": "2026-10-06T13:51:59.223999+00:00",
+  "baseline_commit": "191a97556e7ed529276c5aa96a7d0b6cc6df4fa0",
+  "environment": {
+    "os": "Linux",
+    "python": "3.12.14",
+    "docker": "28.4.0",
+    "docker_storage_driver": "vfs",
+    "codex": "0.159.0-alpha.3",
+    "claude": "2.1.291",
+    "powershell_parser": "7.4.13"
+  },
+  "full_suite": {
+    "command": "python -m pytest -q --junitxml=results.xml",
+    "native_codex_and_claude_offline_probes_enabled": true,
+    "actual_docker_execution_enabled": true,
+    "process_exit_code": 0,
+    "tests": 1855,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 29,
+    "passed": 1826,
+    "junit_sha256": "243f684234c5843086ec1170c2c32e46482bcbaac71d2123287bc46362bcd528",
+    "skip_reasons": {
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+      "Requires actual Windows; no Win32 emulation used": 6,
+      "Requires real Windows SYSTEM, repair identity and Docker API ACLs": 1,
+      "Requires real Windows and SYSTEM; no Win32 emulation used": 5,
+      "Requires real Windows SYSTEM and explicit disposable-task test opt-in": 1
+    }
+  },
+  "protected_acceptance": {
+    "targets": 35,
+    "separate_candidate_tests_and_bootstrap": true,
+    "all_three_trees_unchanged": true,
+    "candidate_python_sources_match_release": true,
+    "actual_docker_execution_enabled": false,
+    "process_exit_code": 0,
+    "scope": "Linux read-only snapshot gate; no Windows ACL attestation",
+    "tests": 1147,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 45,
+    "passed": 1102,
+    "junit_sha256": "06f8e2af031c44c012bee2e62cc577d9903ee49b9fd600a1fb2642273841e3eb",
+    "skip_reasons": {
+      "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+      "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Set COCHEM_TEST_DOCKER_IMAGE to run actual local Docker acceptance": 23,
+      "Requires actual Windows; no Win32 emulation used": 6
+    }
+  },
+  "wheel": {
+    "filename": "cochem-4.2.5-py3-none-any.whl",
+    "sha256": "7691c1789f398673e6a4329455a11d49e021e28344128203ba6291f3d9618721",
+    "python_modules": 103,
+    "all_python_modules_match_tested_source": true,
+    "isolated_imports_passed": true
+  },
+  "source_python_sha256": "4c7290d346e02439bc47d73242ab2608f4ea500a7d95beeba3f1daa60b66f1f6",
+  "docker_test_image": "sha256:a3d8c8a1b836c46ffda919139a3d42b7214fe1e8b6603d584bb58b8aa4a589f5",
+  "powershell": {
+    "scripts_parsed": 7,
+    "syntax_errors": 0,
+    "windows_provisioning_executed": false
+  },
+  "frozen_dependency_check": {
+    "passed": true,
+    "packages": 193
+  },
+  "native_subscription_inference_executed": false,
+  "windows_host_acceptance_completed": false,
+  "remaining_acceptance": [
+    "Windows SYSTEM, ACL, Job Object, Docker pipe and native process containment",
+    "Physical ImDisk/AWE RAM backing and cache/auth retention on the target host",
+    "Target-host hardware sensors, E-core limits and emergency behavior",
+    "Verified Agy headless/auth/model contract and actual subscription-model availability",
+    "Live planning overlap/synthesis and complete coding/repair workflows",
+    "Representative-load latency and 48-hour stability"
+  ],
+  "startup_measurements": {
+    "scope": "earlier real Linux Docker single-use fixture measurements, not target-host certification",
+    "warm_seconds": 0.4446,
+    "cold_seconds": 4.85,
+    "target_seconds": 1.5,
+    "cold_target_met": false
+  }
+}

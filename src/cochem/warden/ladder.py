@@ -26,7 +26,9 @@ def emit_recovery_event(
     A sole dictionary argument is the event and uses ``DEFAULT_DB_PATH``.
     Injected connections remain open; internally opened connections always
     close. An injected connection should be dedicated to telemetry because the
-    contract explicitly commits its transaction.
+    contract explicitly commits its transaction. A pre-existing transaction is
+    committed before journal configuration: SQLite cannot enable WAL while a
+    read transaction is open and can silently retain DELETE during a write.
     """
     if isinstance(conn, dict) and event_data is None:
         event_data = conn
@@ -57,7 +59,15 @@ def emit_recovery_event(
         owns_connection = True
     try:
         active_conn.execute("PRAGMA busy_timeout=5000")
-        active_conn.execute("PRAGMA journal_mode=WAL")
+        if active_conn.in_transaction:
+            active_conn.commit()
+        journal_mode = active_conn.execute("PRAGMA journal_mode=WAL").fetchone()[0]
+        # SQLite's transient in-memory databases cannot use WAL. Disk-backed
+        # connections must actually enter WAL rather than merely accept PRAGMA.
+        main_path = next(row[2] for row in active_conn.execute("PRAGMA database_list") if row[1] == "main")
+        if journal_mode.lower() != "wal" and not (journal_mode.lower() == "memory" and not main_path):
+            raise RuntimeError("Recovery telemetry requires WAL for an on-disk database")
+        active_conn.execute("PRAGMA synchronous=NORMAL")
         active_conn.execute(
             """CREATE TABLE IF NOT EXISTS recovery_telemetry (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,

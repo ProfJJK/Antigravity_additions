@@ -70,7 +70,8 @@ def test_claude_command_keeps_tools_enabled_without_permission_bypass():
     assert "--print" in command
     assert command[command.index("--output-format") + 1] == "json"
     assert command[command.index("--permission-mode") + 1] == "acceptEdits"
-    assert command[command.index("--permission-prompts") + 1] == "none"
+    assert "--permission-prompts" not in command
+    assert "--bare" not in command  # --bare disables native subscription OAuth.
     assert command[command.index("--setting-sources") + 1] == ""
     assert "--strict-mcp-config" in command
     assert json.loads(command[command.index("--mcp-config") + 1]) == {"mcpServers": {}}

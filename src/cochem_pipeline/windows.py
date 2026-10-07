@@ -189,6 +189,7 @@ def _api():
             "AssignProcessToJobObject": (BOOL, [HANDLE, HANDLE]), "TerminateJobObject": (BOOL, [HANDLE, C.c_uint]),
             "TerminateProcess": (BOOL, [HANDLE, C.c_uint]), "ResumeThread": (DWORD, [HANDLE]),
             "WaitForSingleObject": (DWORD, [HANDLE, DWORD]), "GetExitCodeProcess": (BOOL, [HANDLE, C.POINTER(DWORD)]),
+            "GetProcessTimes": (BOOL, [HANDLE, C.POINTER(_FILETIME), C.POINTER(_FILETIME), C.POINTER(_FILETIME), C.POINTER(_FILETIME)]),
             "DuplicateHandle": (BOOL, [HANDLE, HANDLE, HANDLE, C.POINTER(HANDLE), DWORD, BOOL, DWORD]),
             "InitializeProcThreadAttributeList": (BOOL, [HANDLE, DWORD, DWORD, C.POINTER(SIZE_T)]),
             "UpdateProcThreadAttribute": (BOOL, [HANDLE, DWORD, SIZE_T, HANDLE, SIZE_T, HANDLE, HANDLE]),
@@ -506,6 +507,19 @@ def _powershell(script: str, data=None):
     return completed.stdout.strip()
 
 
+@lru_cache(maxsize=1)
+def current_boot_identity() -> int:
+    """Read trusted native boot metadata once; never infer reboot from a clock."""
+    require_system()
+    data = json.loads(_powershell(
+        "$boot=(Get-CimInstance -ClassName Win32_OperatingSystem -ErrorAction Stop).LastBootUpTime; "
+        "@{boot_id=$boot.ToFileTimeUtc()} | ConvertTo-Json -Compress"))
+    boot = data.get("boot_id") if isinstance(data, dict) else None
+    if type(boot) is not int or boot <= 0:
+        raise WindowsIsolationError("Windows did not report a reliable boot identity")
+    return boot
+
+
 def defender_exclusions() -> set[str]:
     require_system()
     raw = _powershell("ConvertTo-Json -InputObject @((Get-MpPreference -ErrorAction Stop).ExclusionPath) -Compress")
@@ -690,7 +704,7 @@ def provision_layout(private_root: str | Path, slot_roots: Mapping[str, Path], w
     return validate_layout(private, roots, worker_identities, require_defender=add_defender)
 
 
-def _worker_environment(token, overrides: Mapping[str, str] | None) -> C.Array:
+def _worker_environment(token, overrides: Mapping[str, str] | None, *, ramdisk_workspace=None, limits=None) -> C.Array:
     api = _api()["userenv"]
     block = HANDLE()
     _check(api.CreateEnvironmentBlock(C.byref(block), token, False), "Create native worker environment")
@@ -740,17 +754,58 @@ def _worker_environment(token, overrides: Mapping[str, str] | None) -> C.Array:
                        APPDATA=str(Path(profile.value) / "AppData" / "Roaming"),
                        TEMP=str(Path(profile.value) / "AppData" / "Local" / "Temp"),
                        TMP=str(Path(profile.value) / "AppData" / "Local" / "Temp"))
+    from .resource_limits import node_heap_options
+    # Never preserve arbitrary inherited --require/--import injection options.
+    # Node children honor this 512 MiB old-space bound (560 MiB total V8 heap
+    # with the explicit 16 MiB semi-space setting); Rust/Bun native executables
+    # remain governed by their independently verified aggregate Job limits.
+    environment["NODE_OPTIONS"] = node_heap_options(limits)
+    if ramdisk_workspace is not None:
+        # RAM overrides come only from a controller-owned descriptor whose
+        # mount, driver, directory path and ACLs are rechecked here. Arbitrary
+        # caller overrides still cannot alter HOME or native CLI auth stores.
+        from .ramdisk import RamWorkspace, exclude_tree_from_indexing
+        if not isinstance(ramdisk_workspace, RamWorkspace):
+            raise WindowsIsolationError("RAM environment requires a verified workspace descriptor")
+        environment.update(ramdisk_workspace.environment())
+        ramdisk_workspace.bind_native_caches(Path(profile.value))
+        exclude_tree_from_indexing(ramdisk_workspace.root)
     return C.create_unicode_buffer("\x00".join(f"{key}={value}" for key, value in sorted(environment.items())) + "\x00\x00")
+
+
+def filetime_unix_seconds(ticks: int) -> float:
+    """Convert a physical Windows creation timestamp, retaining ticks separately."""
+    if type(ticks) is not int or not 116444736000000000 < ticks < 2**64:
+        raise WindowsIsolationError('Windows process creation timestamp is invalid')
+    return (ticks - 116444736000000000) / 10_000_000
+
+
+def process_creation_filetime(process_handle) -> int:
+    """Read the creation time through an owned handle even after process exit."""
+    created, exited, kernel, user = (_FILETIME() for _ in range(4))
+    _check(_api()['kernel32'].GetProcessTimes(process_handle, C.byref(created), C.byref(exited),
+                                            C.byref(kernel), C.byref(user)),
+           'Read owned worker process creation time')
+    ticks = (created.dwHighDateTime << 32) | created.dwLowDateTime
+    filetime_unix_seconds(ticks)
+    return ticks
 
 
 class WindowsProcess:
     """Native child plus owned Job Object, profile and logon token handles."""
 
-    def __init__(self, process, job, token, profile, pid: int, argv: list[str], slot_lock=None):
+    def __init__(self, process, job, token, profile, pid: int, argv: list[str], slot_lock=None,
+                 resource_limits_evidence=None, creation_time_filetime=None):
         self._process, self._job, self._token, self._profile = process, job, token, profile
         self.pid, self.args, self.returncode = pid, argv, None
         self._lock = threading.RLock()
         self._slot_lock = slot_lock
+        self.resource_limits_evidence = resource_limits_evidence
+        # Capture from the owned process handle, not a later PID lookup that
+        # can race process exit/reuse. Keep exact 100 ns ticks in the receipt.
+        self.creation_time_filetime = (process_creation_filetime(process)
+                                       if creation_time_filetime is None else creation_time_filetime)
+        self.creation_time = filetime_unix_seconds(self.creation_time_filetime)
 
     def poll(self) -> int | None:
         with self._lock:
@@ -829,9 +884,64 @@ class WindowsProcess:
         self.close()
 
 
+def _cleanup_failed_launch(process, job, token, profile, slot_lock) -> None:
+    """Prove exit even when assignment/resume failed before a wrapper existed.
+
+    An explicit process handle covers the suspended CreateProcess/Assign gap.
+    A successful wait and empty Job Object establish teardown even if a
+    termination request races an already exited process. On unverified tree or
+    profile cleanup, retain the native identity reservation and ownership
+    handles: the caller must persist quarantine instead of admitting a retry.
+    """
+    api = _api()
+    failures = []
+    try:
+        if process.hProcess:
+            try:
+                _check(api["kernel32"].TerminateProcess(process.hProcess, 1), "Terminate failed-launch worker")
+            except WindowsIsolationError:
+                # An already exited process can reject termination; the actual
+                # process wait below determines whether exit is proven.
+                pass
+        if job:
+            try:
+                _check(api["kernel32"].TerminateJobObject(job, 1), "Terminate failed-launch worker tree")
+            except WindowsIsolationError:
+                # Query the retained job even when the termination request
+                # fails. Never treat the request itself as proof of exit.
+                pass
+        if process.hProcess and api["kernel32"].WaitForSingleObject(process.hProcess, 10000) != 0:
+            failures.append("worker process exit was not confirmed")
+        if job:
+            deadline = time.monotonic() + 10
+            while True:
+                accounting = _BASIC_ACCOUNTING()
+                if not api["kernel32"].QueryInformationJobObject(job, 1, C.byref(accounting), C.sizeof(accounting), None):
+                    failures.append("worker descendant count could not be verified")
+                    break
+                if accounting.ActiveProcesses == 0:
+                    break
+                if time.monotonic() >= deadline:
+                    failures.append("worker descendants remain active")
+                    break
+                time.sleep(.02)
+        if failures:
+            raise WindowsCleanupError("Failed launch left tree cleanup unverified; quarantine this identity: " + "; ".join(failures))
+        # Do not unload a profile while any process using it may still run.
+        if profile.hProfile and not api["userenv"].UnloadUserProfile(token, profile.hProfile):
+            raise WindowsCleanupError("Failed launch left profile cleanup unverified; quarantine this identity")
+        _close(job)
+        _close(process.hProcess)
+        _close(token)
+        _close(slot_lock)
+    finally:
+        _close(process.hThread)
+
+
 def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
                   stdin_file: BinaryIO | TextIO | Path, stdout_file: BinaryIO | TextIO | Path,
-                  stderr_file: BinaryIO | TextIO | Path, env_overrides: Mapping[str, str] | None = None) -> WindowsProcess:
+                  stderr_file: BinaryIO | TextIO | Path, env_overrides: Mapping[str, str] | None = None,
+                  *, limits=None, ramdisk_workspace=None) -> WindowsProcess:
     """Create suspended under a separate logon; assign to kill-on-close job before resume.
 
     Streams are open file objects or paths. Path outputs use exclusive creation.
@@ -842,7 +952,18 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
     if not argv or any(not isinstance(arg, str) or "\x00" in arg for arg in argv) or not Path(argv[0]).is_absolute():
         raise ValueError("Worker argv must begin with an absolute native executable and contain no NULs")
     validate_code_path(argv[0])
-    directory = Path(cwd).resolve(strict=True)
+    if ramdisk_workspace is not None:
+        from .ramdisk import RamWorkspace
+        if not isinstance(ramdisk_workspace, RamWorkspace):
+            raise WindowsIsolationError("RAM execution requires a verified workspace descriptor")
+        # Preserve the adopted directory mount path: resolve() would change it
+        # into a kernel volume path rejected by native CLI workspace policies.
+        directory = Path(os.path.abspath(cwd))
+        ramdisk_workspace.validate(identity=identity.name, cwd=directory)
+    else:
+        from .ramdisk import ordinary_tree
+        ordinary_tree(Path(cwd))
+        directory = Path(cwd).resolve(strict=True)
     sid = _sid_text(_account_sid(identity.name))
     _validate_worker_directory(directory, sid)
     api = _api()
@@ -861,11 +982,18 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
     job, process = None, _PROCESS_INFORMATION()
     try:
         _check(api["userenv"].LoadUserProfileW(token, C.byref(profile)), "Load native worker profile")
-        environment = _worker_environment(token, env_overrides)
+        environment = _worker_environment(token, env_overrides, ramdisk_workspace=ramdisk_workspace, limits=limits)
         job = _check(api["kernel32"].CreateJobObjectW(None, None), "Create worker Job Object")
-        limit = _EXTENDED_LIMIT()
-        limit.BasicLimitInformation.LimitFlags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
-        _check(api["kernel32"].SetInformationJobObject(job, 9, C.byref(limit), C.sizeof(limit)), "Enable Job Object kill-on-close")
+        resource_evidence = None
+        if limits is not None:
+            from .resource_limits import apply_job_limits
+            resource_evidence = apply_job_limits(job, limits)
+        else:
+            limit = _EXTENDED_LIMIT()
+            limit.BasicLimitInformation.LimitFlags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
+            _check(api["kernel32"].SetInformationJobObject(job, 9, C.byref(limit), C.sizeof(limit)), "Enable Job Object kill-on-close")
+        from .resource_limits import launch_delay_seconds
+        time.sleep(launch_delay_seconds(limits))
         import msvcrt
         with _SPAWN_LOCK, ExitStack() as stack:
             duplicates = []
@@ -894,26 +1022,26 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
             startup.StartupInfo.hStdInput, startup.StartupInfo.hStdOutput, startup.StartupInfo.hStdError = duplicates
             startup.lpAttributeList = C.addressof(attributes)
             command = C.create_unicode_buffer(subprocess.list2cmdline(argv))
-            flags = 0x4 | 0x400 | 0x80000 | 0x08000000  # suspended, Unicode env, extended startup, no window
+            # Suspended, Unicode env, extended startup, no window, a distinct
+            # process group and BelowNormal priority; Job Object ownership
+            # remains the descendant boundary, independent of console groups.
+            flags = 0x4 | 0x400 | 0x80000 | 0x08000000 | 0x200 | 0x4000
             _check(api["advapi32"].CreateProcessAsUserW(token, argv[0], command, None, None, True, flags,
                                                         environment, str(directory), C.byref(startup), C.byref(process)), "Create suspended worker")
             _check(api["kernel32"].AssignProcessToJobObject(job, process.hProcess), "Assign suspended worker to Job Object")
+            creation_time_filetime = process_creation_filetime(process.hProcess)
             if api["kernel32"].ResumeThread(process.hThread) == 0xFFFFFFFF:
                 raise WindowsIsolationError("Could not resume supervised worker")
         _close(process.hThread)
-        return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock)
-    except BaseException:
-        if process.hProcess:
-            api["kernel32"].TerminateProcess(process.hProcess, 1)
-            api["kernel32"].WaitForSingleObject(process.hProcess, 10000)
-        if job:
-            _close(job)
-        _close(process.hThread)
-        _close(process.hProcess)
-        if profile.hProfile:
-            api["userenv"].UnloadUserProfile(token, profile.hProfile)
-        _close(token)
-        _close(slot_lock)
+        return WindowsProcess(process.hProcess, job, token, profile.hProfile, process.dwProcessId, list(argv), slot_lock,
+                              resource_evidence, creation_time_filetime)
+    except BaseException as launch_error:
+        try:
+            _cleanup_failed_launch(process, job, token, profile, slot_lock)
+        except WindowsCleanupError as cleanup_error:
+            raise cleanup_error from launch_error
+        except BaseException as cleanup_error:
+            raise WindowsCleanupError("Failed launch cleanup could not be verified; quarantine this identity") from cleanup_error
         raise
 
 
@@ -949,8 +1077,8 @@ def main() -> None:
     parser.add_argument("operation", choices=("provision", "validate", "login"))
     parser.add_argument("--private-root")
     parser.add_argument("--workers-root")
-    parser.add_argument("--slots", type=int, default=6, choices=range(1, 65),
-                        help="Dedicated identity pool size; runtime concurrency remains capped at four")
+    parser.add_argument("--slots", type=int, default=6, choices=range(1, 257),
+                        help="Dedicated identity pool size; configured hardware admission and provider routing govern concurrency")
     parser.add_argument("--operator-name")
     parser.add_argument("--controller-token")
     parser.add_argument("--layout-output")
