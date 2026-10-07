@@ -59,6 +59,7 @@ pool demand, storage forecasts, workload objectives and per-requirement
 acceptance. Knowledge results carry reviewed authority badges.
 
 - [Upgrade and launch](docs/EXECUTION_4.2.7.md)
+- [Continue in a Windows Codex session](docs/WINDOWS_CODEX_HANDOFF_4.2.7.md)
 - [Amendment operations and commands](docs/OPERATIONS_4.2.7-r2.md)
 - [Requirement ledger](docs/requirements_4.2.7.json)
 - [Acceptance evidence](docs/acceptance_4.2.7.json)
