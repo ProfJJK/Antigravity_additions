@@ -7,7 +7,7 @@
       "default_model": "sol",
       "models": {
         "astra": "gpt-6-astra",
-        "sol": "gpt-6-sol",
+        "sol": "gpt-6.1-sol",
         "luna": "gpt-6-luna"
       },
       "timeout_seconds": 1800,

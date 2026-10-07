@@ -92,6 +92,13 @@ class LocalProtocolDriver:
             "proposal":{"summary":"controlled fixture change","files":{"src/cochem_pipeline/runtime.py":"# controlled fixture change\n"}},
             "route_reservation_sha256":evidence["route_reservation"]["reservation_sha256"]}
 
+    def preflight_selected_spec(self, spec, identity, workspace, log_dir, heartbeat):
+        """Explicit offline native boundary fixture; no model or Windows claim."""
+        assert heartbeat() is True
+        return {'provider':spec['provider'], 'model':spec['model'],
+                'requested_effort':spec.get('reasoning_effort'), 'paid_inference':False,
+                'mode':'offline-capability', 'test_driver':'local protocol fixture'}
+
     def terminate(self):
         self.terminated = True
 

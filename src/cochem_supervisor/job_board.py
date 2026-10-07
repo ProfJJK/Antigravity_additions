@@ -15,7 +15,7 @@ import sqlite3
 import time
 import uuid
 
-from .probes import configured_routing_policy, score_routing_task
+from .probes import configured_routing_policy, configured_current_routing_policy, score_routing_task
 
 
 def canonical(value):
@@ -115,8 +115,11 @@ class RepairJobBoard:
                 raise ValueError('Unknown repair job')
             return self.decode(row)
 
-    def claim(self, job_id, available_providers, *, primary_cleanup_verified, now=None):
+    def claim(self, job_id, available_providers, *, primary_cleanup_verified, now=None, current_policy=None):
         timestamp = time.time() if now is None else now
+        current = configured_current_routing_policy(current_policy)
+        enabled = {(entry['provider'], entry['model'], entry.get('reasoning_effort'))
+                   for targets in current['tiers'].values() for entry in targets}
         with self.connection(True) as db:
             job = self.decode(db.execute('SELECT * FROM repair_jobs WHERE job_id=?', (job_id,)).fetchone())
             if job['status'] not in ('PENDING', 'PENDING_RETRY') or job['next_eligible'] > timestamp:
@@ -137,9 +140,19 @@ class RepairJobBoard:
                 target = targets[index]
                 key = target['provider']+':'+target['model']+(':'+target['reasoning_effort'] if target['reasoning_effort'] else '')
                 pool = policy['provider_limits'][target['provider']]['quota_pool']
+                current_pool = current['provider_limits'][target['provider']]['quota_pool']
+                if (target['provider'], target['model'], target.get('reasoning_effort')) not in enabled:
+                    # Preserve the captured policy, original order and all
+                    # spend counters. This check precedes both reservation and
+                    # the engine's independent monetary budget charge.
+                    self.event(db, job_id, 'CANDIDATE_SKIPPED', {'index':index, 'key':key,
+                        'reason':'retired_target', 'category':'compatibility',
+                        'captured_policy_version':policy['policy_version'],
+                        'current_policy_version':current['policy_version']}, timestamp)
+                    continue
                 hold = db.execute('SELECT category,until_time FROM repair_route_holds WHERE until_time>? AND '
-                    "((scope='provider' AND target=?) OR (scope='route' AND target=?) OR (scope='pool' AND target=?))",
-                    (timestamp, target['provider'], key, pool)).fetchone()
+                    "((scope='provider' AND target=?) OR (scope='route' AND target=?) OR (scope='pool' AND target IN (?,?)))",
+                    (timestamp, target['provider'], key, pool, current_pool)).fetchone()
                 excluded=job['payload'].get('excluded_providers',[])
                 if target['provider'] in excluded or target['provider'] not in available_providers or hold:
                     self.event(db, job_id, 'CANDIDATE_SKIPPED', {'index':index, 'key':key,
@@ -148,6 +161,7 @@ class RepairJobBoard:
                 if primary_cleanup_verified is not True:
                     raise ValueError('Independent repair dispatch requires verified primary containment cleanup')
                 reservation = {**target, 'key':key, 'quota_pool':pool,
+                    'admission_quota_pool':current_pool,
                     'max_concurrency':policy['model_limits'][key], 'candidate_index':index,
                     'cycle':job['cycle'], 'score':scoring['score'], 'tier':scoring['tier'],
                     'policy_digest':digest(policy), 'job_id':job_id, 'kind':job['kind'],
@@ -193,8 +207,16 @@ class RepairJobBoard:
                     if category!='context':
                         scope='pool' if category in ('quota','auth') else 'route'
                         target=reservation['quota_pool'] if scope=='pool' else reservation['key']
-                        db.execute('INSERT INTO repair_route_holds VALUES(?,?,?,?) ON CONFLICT(scope,target) DO UPDATE SET until_time=max(until_time,excluded.until_time),category=excluded.category',
-                                   (scope,target,timestamp+delay,category))
+                        # Preserve captured identity while sharing a new quota
+                        # exhaustion/auth hold with the pool actually admitted
+                        # under the current deployment policy. Old reservations
+                        # without this field remain valid and immutable.
+                        targets = {target}
+                        if scope == 'pool':
+                            targets.add(reservation.get('admission_quota_pool', target))
+                        for held_target in targets:
+                            db.execute('INSERT INTO repair_route_holds VALUES(?,?,?,?) ON CONFLICT(scope,target) DO UPDATE SET until_time=max(until_time,excluded.until_time),category=excluded.category',
+                                       (scope,held_target,timestamp+delay,category))
                 db.execute('UPDATE repair_jobs SET status=?,candidate_index=?,next_eligible=?,reservation=NULL WHERE job_id=?',
                            (status,index,eligible,job['job_id']))
                 self.event(db,job['job_id'],'ATTEMPT_FAILED',{'category':category,'hold_scope':scope,
@@ -220,8 +242,47 @@ class RepairJobBoard:
             job=self.decode(db.execute('SELECT * FROM repair_jobs WHERE job_id=?',(reservation['job_id'],)).fetchone())
             if job['status']!='IN_PROGRESS' or job['reservation']!=reservation:
                 raise ValueError('Stale unspent repair reservation')
+            self._require_unspent(db, reservation)
             db.execute("UPDATE repair_jobs SET status='PENDING',reservation=NULL,dispatches=dispatches-1 WHERE job_id=?",(job['job_id'],))
             self.event(db,job['job_id'],'BUDGET_HOLD_NO_INFERENCE',{},timestamp)
+
+    @staticmethod
+    def _require_unspent(db, reservation):
+        if db.execute("SELECT 1 FROM repair_route_events WHERE job_id=? AND event='BUDGET_ATTACHED' "
+                      "AND json_extract(details,'$.reservation_id')=?",
+                      (reservation['job_id'], reservation['reservation_id'])).fetchone():
+            raise ValueError('A charged reservation cannot be refunded as unspent')
+
+    def reject_unspent(self, reservation, *, failure='compatibility', now=None):
+        """Reject an offline capability probe before any model budget is charged.
+
+        Compatibility advances to the next original candidate with a durable
+        hold. Unknown/configuration failures block rather than enabling retries.
+        The decrement cancels only this unspent reservation; history is retained.
+        """
+        if failure not in ('compatibility', 'configuration'):
+            raise ValueError('Unspent rejection requires a capability or configuration failure')
+        timestamp = time.time() if now is None else now
+        with self.connection(True) as db:
+            job = self.decode(db.execute('SELECT * FROM repair_jobs WHERE job_id=?', (reservation['job_id'],)).fetchone())
+            if job['status'] != 'IN_PROGRESS' or job['reservation'] != reservation:
+                raise ValueError('Stale unspent repair reservation')
+            self._require_unspent(db, reservation)
+            status = 'PENDING_RETRY' if failure == 'compatibility' else 'BLOCKED'
+            index = reservation['candidate_index'] + (1 if failure == 'compatibility' else 0)
+            if failure == 'compatibility':
+                until = timestamp + max(1., job['policy']['failure_cooldowns']['compatibility'])
+                db.execute('INSERT INTO repair_route_holds VALUES(?,?,?,?) ON CONFLICT(scope,target) '
+                           'DO UPDATE SET until_time=max(until_time,excluded.until_time),category=excluded.category',
+                           ('route', reservation['key'], until, failure))
+            else:
+                until = None
+            db.execute('UPDATE repair_jobs SET status=?,candidate_index=?,next_eligible=0,reservation=NULL,'
+                       'dispatches=dispatches-1 WHERE job_id=?', (status, index, job['job_id']))
+            self.event(db, job['job_id'], 'PREFLIGHT_REJECTED_NO_INFERENCE', {
+                'reservation_id': reservation['reservation_id'], 'key': reservation['key'],
+                'category': failure, 'next_candidate_index': index, 'until': until,
+                'paid_inference': False}, timestamp)
 
     def bind_budget(self, reservation, attempt_id):
         with self.connection(True) as db:

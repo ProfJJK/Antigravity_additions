@@ -19,16 +19,16 @@ import pytest
 from cochem_supervisor.probes import (ControllerClient, configured_routing_policy, configured_tiers, run_smoke_workflow,
     score_routing_task, verify_routing_assignment, verify_smoke_workflow, wait_for_health)
 
-MODELS = {"codex": "gpt-6-astra", "claude": "claude-fable-5-1", "gemini": "gemini-3.1-pro"}
+MODELS = {"codex": "gpt-6-astra", "claude": "claude-fable-5-1", "gemini": "gemini-3.1-pro-preview"}
 
 
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
 
 
-def routing_fixture(kind, payload, index=0):
+def routing_fixture(kind, payload, index=0, policy=None):
     """Synthetic contract metadata only; not a physical scheduler decision."""
-    policy = configured_routing_policy()
+    policy = configured_routing_policy(policy)
     scoring = score_routing_task(kind,payload)
     score,tier = scoring["score"],scoring["tier"]
     candidates = deepcopy(policy["tiers"][tier])
@@ -59,6 +59,7 @@ def workflow_fixture(workflow_id="contract-only-fixture"):
                    "exit_code": 0, "session_id": "synthetic-contract-fixture-not-live",
                    "requested_model": route["model"], "reported_model": route["model"],
                    "requested_effort": route["reasoning_effort"],
+                   "reported_effort": route["reasoning_effort"],
                    "route_reservation_sha256": route["reservation_sha256"],
                    "output_sha256": digest(output), "stdout_sha256": "a"*64}
         record = {"job_id": identity, "workflow_id": workflow_id, "parent_job_id": workflow_id,
@@ -130,7 +131,7 @@ def test_real_job_store_public_projection_matches_independent_smoke_validator(tm
         route = node["route"]
         receipt = {**reference["receipt"], "output_sha256": digest(output),
             "provider":route["provider"],"requested_model":route["model"],"reported_model":route["model"],
-            "requested_effort":route["reasoning_effort"],
+            "requested_effort":route["reasoning_effort"],"reported_effort":route["reasoning_effort"],
             "route_reservation_id":route["reservation_id"],"route_reservation_sha256":route["reservation_sha256"],
             **{key:node[key] for key in ("job_id","workflow_id","worker_slot","attempt_id","fencing_token")}}
         store.complete(node["job_id"], node["attempt_id"], node["fencing_token"], output, receipt)
@@ -167,27 +168,252 @@ def test_frozen_supervisor_scoring_matches_actual_task_content_contract(kind,pay
     assert score_routing_task(kind,payload)==score_task(kind,payload)
 
 
-@pytest.mark.parametrize('large,effort',[(False,'low'),(True,'ultra')])
-def test_astra_effort_is_bound_to_score_band_and_missing_native_metadata_is_honest(large,effort):
+@pytest.mark.parametrize('large,model,effort,candidate_index',[
+    (False,'gpt-6.1-sol','high',0),
+    (True,'gpt-6-astra','ultra',1),
+])
+def test_codex_effort_is_bound_to_score_band_and_missing_native_metadata_is_honest(
+        large,model,effort,candidate_index):
     workflow=workflow_fixture()
     manifest=workflow['jobs'][1]
-    # Deliberately complex contract payload exercises both Astra effort bands.
+    # Complex contract payloads exercise Sol High and Astra Ultra, respectively.
     manifest['payload']={'objective':'security migration concurrency',
                          'requirements':[str(index) for index in range(12)]}
     if large:
         manifest['payload']['objective']+=' analysis'*4500
         manifest['payload']['dependencies']=list(range(4))
-    manifest['routing'],manifest['route']=routing_fixture('MANIFEST_GENERATOR',manifest['payload'],1)
+    manifest['routing'],manifest['route']=routing_fixture('MANIFEST_GENERATOR',manifest['payload'],candidate_index)
+    assert manifest['route']['model']==model
     assert manifest['route']['reasoning_effort']==effort
-    manifest['receipt'].update(requested_model='gpt-6-astra',reported_model='gpt-6-astra',requested_effort=effort)
+    manifest['receipt'].update(requested_model=model,reported_model=model,
+                               requested_effort=effort,reported_effort=None)
     result=verify_smoke_workflow(workflow,MODELS)
     assert result['unverified_effort_providers']==['codex']
     assert result['effort_identity_verified'] is False
     manifest['receipt']['reported_effort']=effort
     assert verify_smoke_workflow(workflow,MODELS)['effort_identity_verified'] is True
-    manifest['receipt']['reported_effort']='ultra' if effort=='low' else 'low'
+    manifest['receipt']['reported_effort']='ultra' if effort=='high' else 'high'
     with pytest.raises(ValueError,match='reasoning effort'):
         verify_smoke_workflow(workflow,MODELS)
+
+
+def reviewed_profile_fixture(provider="claude", tier="7-9", *, workflow_id="contract-only-fixture"):
+    """Synthetic protected config and receipts, never native capability evidence."""
+    workflow = workflow_fixture(workflow_id)
+    manifest = workflow["jobs"][1]
+    manifest["payload"] = {"objective": "security"}
+    if tier in ("7-9", "10"):
+        manifest["payload"] = {"objective": "security migration concurrency",
+                               "requirements": [str(index) for index in range(12)]}
+    if tier == "10":
+        manifest["payload"]["objective"] += " analysis" * 4500
+        manifest["payload"]["dependencies"] = list(range(4))
+    index = 2 if provider == "gemini" else 0 if tier == "10" else 1
+    manifest["routing"], manifest["route"] = routing_fixture("MANIFEST_GENERATOR", manifest["payload"], index)
+    route = manifest["route"]
+    assert route["provider"] == provider and route["tier"] == tier
+    model, effort = route["model"], route["reasoning_effort"]
+    native = "max" if provider == "claude" else "HIGH"
+    contract = {
+        "arguments": ["--effort", native] if provider == "claude" else ["--thinking-level", native],
+        "version_arguments": ["--version"], "executable_sha256": "d" * 64,
+        "version": "explicit-profile-contract-fixture-v1",
+        "capability_reference": "Synthetic validator fixture only; no native capability claim",
+        "thinking_enabled": True if provider == "claude" else None,
+        "native_metadata": {"path": ["metadata", "thinking_level"], "value": native},
+    }
+    providers = {name: {"model": value} for name, value in MODELS.items()}
+    spec = providers[provider]
+    spec["effort_contracts"] = {model + ":" + effort: contract}
+    if provider == "gemini":
+        spec["inference_only"] = {
+            "arguments": ["--model", "{model}"],
+            **{key: contract[key] for key in ("version_arguments", "executable_sha256", "version", "capability_reference")},
+            "disables_tools": True, "disables_mcp": True, "disables_hooks": True,
+            "disables_subagents": True, "disables_model_fallback": True}
+    proof = {
+        "requested_profile": effort, "model": model, "verified_profile": effort,
+        **{key: contract[key] for key in ("executable_sha256", "version", "capability_reference", "native_metadata")},
+        "contract_sha256": digest(contract), "native_metadata_path": contract["native_metadata"]["path"],
+        "observed_native_value": native, "reported_effort": None}
+    inference = {"mode": "inference-only", "provider": provider, "reasoning_effort": proof,
+        "probes": [{"probe": "verify_reviewed_effort_version", "pid": 124, "exit_code": 0,
+                    "stdout_sha256": "e" * 64, "stderr_sha256": "f" * 64}]}
+    if provider == "claude":
+        inference.update(tools=[], mcp_servers=[], hooks_disabled=True)
+    else:
+        inference.update(tools_disabled=True, mcp_disabled=True, hooks_disabled=True,
+            subagents_disabled=True, model_fallback_disabled=True,
+            **{key: spec["inference_only"][key] for key in ("executable_sha256", "version", "capability_reference")})
+    manifest["receipt"].update(provider=provider, requested_model=model, reported_model=model,
+        requested_effort=effort, reported_effort=None, inference_policy=inference)
+    return workflow, providers, contract, proof
+
+
+@pytest.mark.parametrize("provider,tier", [
+    ("claude", "7-9"), ("claude", "10"), ("gemini", "4-6"), ("gemini", "7-9")])
+def test_reviewed_profile_proof_verifies_without_relabeling_native_effort(provider, tier):
+    workflow, providers, _, proof = reviewed_profile_fixture(provider, tier)
+    result = verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+    assert result["effort_identity_verified"] is True
+    assert result["unverified_effort_providers"] == []
+    receipt = result["process_receipts"][0]
+    assert receipt["effort_profile_verified"] is True
+    assert receipt["reported_effort"] is None
+    assert proof["observed_native_value"] in ("max", "HIGH")
+    assert proof["observed_native_value"] != receipt["requested_effort"]
+
+
+@pytest.mark.parametrize("missing", ["protected_config", "inference_policy", "reasoning_effort"])
+def test_missing_profile_provenance_is_unverified(missing):
+    workflow, providers, _, _ = reviewed_profile_fixture()
+    receipt = workflow["jobs"][1]["receipt"]
+    if missing == "inference_policy":
+        receipt.pop("inference_policy")
+    elif missing == "reasoning_effort":
+        receipt["inference_policy"].pop("reasoning_effort")
+    result = verify_smoke_workflow(workflow, MODELS,
+        provider_config=None if missing == "protected_config" else providers)
+    assert result["effort_identity_verified"] is False
+    assert result["unverified_effort_providers"] == ["claude"]
+
+
+def test_raw_extended_string_without_protected_proof_cannot_verify_profile():
+    workflow, providers, _, _ = reviewed_profile_fixture()
+    receipt = workflow["jobs"][1]["receipt"]
+    receipt.pop("inference_policy")
+    receipt["reported_effort"] = "extended"
+    result = verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+    assert result["effort_identity_verified"] is False
+
+
+@pytest.mark.parametrize("provider", ["claude", "gemini"])
+def test_reviewed_cli_without_native_effort_metadata_stays_unverified(provider):
+    workflow, providers, contract, proof = reviewed_profile_fixture(provider)
+    contract["native_metadata"] = None
+    proof.update(contract_sha256=digest(contract), native_metadata=None,
+        verified_profile=None, native_metadata_path=None, observed_native_value=None,
+        observation_status="not_reported_by_reviewed_cli")
+    result = verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+    assert result["passed"] is True
+    assert result["effort_identity_verified"] is False
+    assert result["unverified_effort_providers"] == [provider]
+    # A valid invocation binding cannot justify an invented native observation.
+    proof["verified_profile"] = proof["requested_profile"]
+    with pytest.raises(ValueError, match="profile proof"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize("field,value", [
+    ("requested_profile", "high"), ("verified_profile", "high"), ("model", "different-model"),
+    ("executable_sha256", "0" * 64), ("version", "changed-binary-version"),
+    ("capability_reference", "different-provenance"), ("contract_sha256", "0" * 64),
+    ("native_metadata", {"path": ["metadata", "thinking_level"], "value": "high"}),
+    ("native_metadata_path", ["result", "thinking_level"]), ("observed_native_value", "high"),
+    ("reported_effort", "extended"), ("unreviewed_field", True),
+])
+def test_changed_profile_proof_cannot_pass(field, value):
+    workflow, providers, _, proof = reviewed_profile_fixture()
+    proof[field] = value
+    with pytest.raises(ValueError, match="profile proof"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda spec: spec.pop("effort_contracts"),
+    lambda spec: spec["effort_contracts"].clear(),
+    lambda spec: next(iter(spec["effort_contracts"].values())).update(version="new-reviewed-version"),
+    lambda spec: next(iter(spec["effort_contracts"].values())).update(executable_sha256="0" * 64),
+])
+def test_old_profile_proof_cannot_verify_against_changed_protected_config(mutation):
+    workflow, providers, _, _ = reviewed_profile_fixture()
+    mutation(providers["claude"])
+    with pytest.raises(ValueError, match="profile"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize("provider,field,value", [
+    ("claude", "arguments", ["--model", "different-model"]),
+    ("claude", "arguments", ["--effort", "extended"]),
+    ("claude", "thinking_enabled", False),
+    ("claude", "version_arguments", ["--prompt", "paid call"]),
+    ("claude", "native_metadata", {"path": ["result", "thinking_level"], "value": "max"}),
+    ("claude", "native_metadata", {"path": ["metadata", "content", "thinking_level"], "value": "max"}),
+    ("claude", "native_metadata", {"path": [], "value": "max"}),
+    ("claude", "native_metadata", {"path": ["metadata"], "value": {"self_asserted": True}}),
+    ("gemini", "arguments", ["--approval-mode", "yolo"]),
+    ("gemini", "arguments", ["--thinking-budget", "131073"]),
+    ("gemini", "arguments", ["--thinking-level", "extended"]),
+    ("gemini", "thinking_enabled", True),
+])
+def test_self_consistent_hash_does_not_authorize_unsafe_profile_contract(provider, field, value):
+    workflow, providers, contract, proof = reviewed_profile_fixture(provider)
+    contract[field] = value
+    proof["contract_sha256"] = digest(contract)
+    with pytest.raises(ValueError, match="profile"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize('arguments,metadata',[
+    (['--thinking-level','low'],{'path':['thinking_level'],'value':'low'}),
+    (['--thinking-level','medium'],{'path':['thinking_level'],'value':'medium'}),
+    (['--thinking-budget','1024'],{'path':['thinking_level'],'value':'high'}),
+    (['--thinking-level','HIGH'],{'path':['thinking_enabled'],'value':True}),
+    (['--thinking-level','HIGH'],{'path':['metadata','enabled'],'value':'HIGH'}),
+    (['--thinking-level','HIGH'],{'path':['thinking_level'],'value':'low'}),
+])
+def test_protected_high_profile_cannot_claim_weaker_or_unrelated_native_thinking(arguments,metadata):
+    workflow, providers, contract, proof = reviewed_profile_fixture('gemini')
+    contract.update(arguments=arguments,native_metadata=metadata)
+    proof.update(contract_sha256=digest(contract),native_metadata=metadata,
+        native_metadata_path=metadata['path'],observed_native_value=metadata['value'])
+    with pytest.raises(ValueError,match='High reasoning profile'):
+        verify_smoke_workflow(workflow,MODELS,provider_config=providers)
+
+
+@pytest.mark.parametrize('tier',['4-6','7-9'])
+def test_reviewed_profile_cannot_disable_native_thinking_with_zero_budget(tier):
+    workflow, providers, contract, proof = reviewed_profile_fixture('gemini',tier)
+    contract['arguments'] = ['--thinking-budget','0']
+    proof['contract_sha256'] = digest(contract)
+    with pytest.raises(ValueError,match='thinking-only selector'):
+        verify_smoke_workflow(workflow,MODELS,provider_config=providers)
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda policy: policy.update(mode="native-tools"),
+    lambda policy: policy.update(provider="gemini"),
+    lambda policy: policy.update(tools=["Shell"]),
+    lambda policy: policy.update(mcp_servers=["unreviewed"]),
+    lambda policy: policy.update(hooks_disabled=False),
+    lambda policy: policy.pop("probes"),
+    lambda policy: policy["probes"][0].update(exit_code=1),
+    lambda policy: policy["probes"][0].update(pid=True),
+    lambda policy: policy["probes"][0].update(stdout_sha256="not-a-digest"),
+])
+def test_profile_proof_requires_successful_inference_only_native_provenance(mutation):
+    workflow, providers, _, _ = reviewed_profile_fixture()
+    mutation(workflow["jobs"][1]["receipt"]["inference_policy"])
+    with pytest.raises(ValueError, match="profile"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize("field", ["disables_tools", "disables_mcp", "disables_hooks",
+                                    "disables_subagents", "disables_model_fallback"])
+def test_agy_profile_requires_each_protected_inference_guard(field):
+    workflow, providers, _, _ = reviewed_profile_fixture("gemini")
+    providers["gemini"]["inference_only"][field] = False
+    with pytest.raises(ValueError, match="profile"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
+
+
+@pytest.mark.parametrize("field", ["tools_disabled", "mcp_disabled", "hooks_disabled",
+                                    "subagents_disabled", "model_fallback_disabled"])
+def test_agy_profile_requires_each_observed_inference_guard(field):
+    workflow, providers, _, _ = reviewed_profile_fixture("gemini")
+    workflow["jobs"][1]["receipt"]["inference_policy"].pop(field)
+    with pytest.raises(ValueError, match="profile"):
+        verify_smoke_workflow(workflow, MODELS, provider_config=providers)
 
 
 def test_dynamic_assignment_accepts_gemini_chapter_instead_of_fixed_codex_parity():
@@ -195,7 +421,7 @@ def test_dynamic_assignment_accepts_gemini_chapter_instead_of_fixed_codex_parity
     chapter = workflow["jobs"][2]
     chapter["routing"],chapter["route"] = routing_fixture("CHAPTER_DRAFT",chapter["payload"])
     chapter["receipt"].update(provider="gemini",requested_model="gemini-3.8-flash",
-        reported_model="gemini-3.8-flash",requested_effort=None)
+        reported_model="gemini-3.8-flash",requested_effort=None,reported_effort=None)
     result = verify_smoke_workflow(workflow,MODELS)
     assert result["process_receipts"][1]["provider"] == "gemini"
     assert result["process_receipts"][1]["routing"]["tier"] == "1-3"
@@ -229,7 +455,7 @@ def test_mismatched_operator_policy_cannot_be_hidden_by_self_consistent_route_di
     lambda w: w["jobs"][1]["routing"].update(policy_hash="0"*64),
     lambda w: w["jobs"][1]["route"].update(candidate_index=0),
     lambda w: w["jobs"][1]["route"].update(score=5),
-    lambda w: w["jobs"][1]["receipt"].update(requested_effort="low"),
+    lambda w: w["jobs"][1]["receipt"].update(requested_effort="high"),
     lambda w: w["jobs"][1]["receipt"].update(reported_effort="ultra"),
     lambda w: w["jobs"][1]["payload"].update(objective="security migration concurrency"),
     lambda w: w["jobs"][1]["routing"]["score_details"]["rationale"][0].update(points=2),
@@ -287,6 +513,8 @@ class ContractFixtureHandler(BaseHTTPRequestHandler):
             elif self.path == "/submit":
                 state["submitted"] = data
                 value = workflow_fixture(data["workflow_id"])
+                if state.get("profile_provider"):
+                    value = reviewed_profile_fixture(state["profile_provider"], workflow_id=data["workflow_id"])[0]
                 if state["pending"]:
                     value = {"workflow_id": data["workflow_id"], "status": "IN_PROGRESS"}
                 if state.get("failure_error"):
@@ -350,6 +578,18 @@ def test_smoke_transport_submits_exactly_once_with_retry_disabled_and_persists_s
     assert state["submitted"]["requirements"] == ["SUPERVISOR-1", "SUPERVISOR-2"]
     assert json.loads(report_file.read_text()) == result
     assert state["token"] not in report_file.read_text()
+
+
+@pytest.mark.parametrize("provider", ["claude", "gemini"])
+def test_smoke_transport_supplies_protected_provider_contract_for_profile_verification(endpoint, provider):
+    state, client, directory = endpoint
+    state["profile_provider"] = provider
+    _, providers, _, _ = reviewed_profile_fixture(provider)
+    result = run_smoke_workflow({"pipeline_providers": providers}, client, directory / "profile.json")
+    assert result["passed"] is True
+    assert result["effort_identity_verified"] is True
+    assert result["process_receipts"][0]["effort_profile_verified"] is True
+    assert result["process_receipts"][0]["reported_effort"] is None
 
 
 def test_timed_out_real_http_workflow_is_cancelled_without_resubmission(endpoint):
@@ -451,9 +691,9 @@ def test_unhealthy_or_old_release_cannot_pass_health(endpoint, failure):
     assert not wait_for_health(directory, client, directory, started_after=started, timeout_seconds=.03)
 
 
-def preflight_contract_fixture(identifier):
+def preflight_contract_fixture(identifier, candidate_index=0):
     payload={'objective':'Respond ready without external actions.'}
-    routing,route=routing_fixture('PREFLIGHT_REQUEST',payload)
+    routing,route=routing_fixture('PREFLIGHT_REQUEST',payload,candidate_index,{'max_routing_seconds':300})
     routing.update(max_dispatches=3,dispatches=2)
     output={'ready':True}
     root={'job_id':identifier,'workflow_id':identifier,'status':'COMPLETED','kind':'MACRO_PLANNING_REQUEST'}
@@ -467,6 +707,122 @@ def preflight_contract_fixture(identifier):
         'status':'COMPLETED','payload':payload,'output':output,'output_sha256':digest(output),
         'routing':routing,'route':route,'receipt':receipt}
     return {'workflow_id':identifier,'root':root,'jobs':[root,job],'status':'COMPLETED','artifacts':[]}
+
+
+def profiled_preflight_contract_fixture(identifier, provider):
+    """Exercise single-task acceptance with an explicitly synthetic routed profile."""
+    profile_workflow, providers, contract, proof = reviewed_profile_fixture(provider)
+    reference = profile_workflow['jobs'][1]
+    workflow = preflight_contract_fixture(identifier)
+    job = workflow['jobs'][1]
+    job['payload'] = reference['payload']
+    job['routing'],job['route'] = routing_fixture('PREFLIGHT_REQUEST',job['payload'],
+        reference['route']['candidate_index'],{'max_routing_seconds':300})
+    job['routing'].update(max_dispatches=3,dispatches=2)
+    receipt = job['receipt']
+    for field in ('provider','requested_model','reported_model','requested_effort',
+                  'reported_effort','inference_policy'):
+        receipt[field] = reference['receipt'][field]
+    receipt['route_reservation_sha256'] = job['route']['reservation_sha256']
+    return workflow,providers,contract,proof
+
+
+@pytest.mark.parametrize('reported,verified',[(None,False),('low',True)])
+def test_single_task_preflight_reports_missing_codex_effort_honestly(reported,verified):
+    from cochem_supervisor.probes import verify_acceptance_preflight
+    # This is the actual lightweight score band, spilling over to Luna Low.
+    workflow = preflight_contract_fixture('codex-preflight-contract',candidate_index=2)
+    receipt = workflow['jobs'][1]['receipt']
+    assert receipt['requested_model'] == 'gpt-6-luna' and receipt['requested_effort'] == 'low'
+    receipt['reported_effort'] = reported
+    result = verify_acceptance_preflight(workflow)
+    assert result['passed'] is True
+    assert result['effort_identity_verified'] is verified
+    assert result['unverified_effort_providers'] == ([] if verified else ['codex'])
+    assert result['receipt']['reported_effort'] == reported
+    receipt['reported_effort'] = 'high'
+    with pytest.raises(ValueError,match='reasoning effort'):
+        verify_acceptance_preflight(workflow)
+
+
+@pytest.mark.parametrize('configured_deadline,expected_deadline',[(0,300),(120,120),(600,300)])
+def test_real_preflight_store_projection_verifies_its_independently_bounded_policy(
+        tmp_path,configured_deadline,expected_deadline):
+    # Actual SQLite capture/claim/completion/public projection; process metadata
+    # is an explicit receipt fixture and does not establish native execution.
+    from cochem_pipeline.routing import load_routing_policy
+    from cochem_pipeline.service import public_workflow
+    from cochem_pipeline.store import JobStore
+    from cochem_supervisor.probes import verify_acceptance_preflight
+    configured = {'max_routing_seconds':configured_deadline}
+    store = JobStore(tmp_path/'real-preflight.db',routing_policy=load_routing_policy(configured))
+    workflow = store.submit_preflight()
+    node = store.claim('explicit-storage-contract-fixture',worker_slot='slot1')
+    assert node['routing']['policy']['max_routing_seconds'] == expected_deadline
+    route = node['route']
+    output = {'ready':True}
+    receipt = {
+        'provider':route['provider'],'requested_model':route['model'],'reported_model':route['model'],
+        'requested_effort':route['reasoning_effort'],'reported_effort':None,
+        'route_reservation_id':route['reservation_id'],'route_reservation_sha256':route['reservation_sha256'],
+        'selected_route':route,'execution_kind':'native_cli','subscription_verified':True,
+        'pid':123,'exit_code':0,'session_id':'explicit-storage-receipt-fixture-not-native-execution',
+        'stdout_sha256':'a'*64,'output_sha256':digest(output),'process_creation_filetime':1000,
+        'process_identity_source':'owned_windows_process_handle',
+        **{key:node[key] for key in ('job_id','workflow_id','worker_slot','attempt_id','fencing_token')}}
+    store.complete(node['job_id'],node['attempt_id'],node['fencing_token'],output,receipt)
+    public = public_workflow(store.workflow(workflow['workflow_id']))
+    assert verify_acceptance_preflight(public,configured)['passed'] is True
+    assert configured == {'max_routing_seconds':configured_deadline}
+    # Even an internally self-consistent digest cannot lengthen the independent
+    # acceptance deadline beyond the protected policy's bounded value.
+    child = next(job for job in public['jobs'] if job['kind']=='PREFLIGHT_REQUEST')
+    child['routing']['policy']['max_routing_seconds'] = expected_deadline+1
+    altered_hash = digest(child['routing']['policy'])
+    child['routing']['policy_hash'] = child['route']['policy_digest'] = altered_hash
+    with pytest.raises(ValueError,match='configured policy'):
+        verify_acceptance_preflight(public,configured)
+
+
+@pytest.mark.parametrize('provider',['claude','gemini'])
+@pytest.mark.parametrize('evidence',['observed','no_config','missing_proof','not_reported','changed_proof'])
+def test_current_preflight_transport_verifies_protected_profile_or_records_limit(endpoint,provider,evidence):
+    from cochem_supervisor.probes import run_acceptance_preflight
+    state,client,directory = endpoint
+    transaction = 'c'*32
+    workflow,providers,contract,proof = profiled_preflight_contract_fixture('repair-smoke-'+transaction,provider)
+    config = {'pipeline_providers':providers}
+    if evidence == 'no_config':
+        config = {}
+    elif evidence == 'missing_proof':
+        workflow['jobs'][1]['receipt']['inference_policy'].pop('reasoning_effort')
+    elif evidence == 'not_reported':
+        contract['native_metadata'] = None
+        proof.update(contract_sha256=digest(contract),native_metadata=None,verified_profile=None,
+            native_metadata_path=None,observed_native_value=None,observation_status='not_reported_by_reviewed_cli')
+    elif evidence == 'changed_proof':
+        proof['contract_sha256'] = '0'*64
+    state['workflow'] = workflow
+    report = directory/'profile-preflight.json'
+    result = run_acceptance_preflight(config,client,report,transaction)
+    assert [path for path,_ in state['calls']] == ['/preflight']
+    assert json.loads(report.read_text()) == result
+    if evidence == 'changed_proof':
+        assert result['passed'] is False
+        assert result['failure_category'] == 'compatibility'
+        return
+    assert result['passed'] is True
+    verified = evidence == 'observed'
+    assert result['effort_identity_verified'] is verified
+    assert result['unverified_effort_providers'] == ([] if verified else [provider])
+    assert result['receipt']['effort_profile_verified'] is verified
+    assert result['receipt']['reported_effort'] is None
+    assert result['receipt']['requested_effort'] == workflow['jobs'][1]['route']['reasoning_effort']
+    # Validating again after restart must not launch or refund another inference.
+    resumed = run_acceptance_preflight(config,client,report,transaction)
+    assert resumed['effort_identity_verified'] is verified
+    assert resumed['native_dispatches'] == result['native_dispatches'] == 2
+    assert [path for path,_ in state['calls']] == ['/preflight','/workflow/'+workflow['workflow_id']]
 
 
 def test_live_preflight_restart_reuses_one_durable_workflow_and_spent_dispatches(endpoint):

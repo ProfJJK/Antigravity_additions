@@ -45,6 +45,23 @@ def test_defaults_native_paths_and_pipeline_settings_are_loaded_without_provisio
     assert "mcp_tests/test_claude_subscription.py" not in result["test_targets"]
 
 
+def test_supervisor_requires_reviewed_migration_of_legacy_pipeline_routing(tmp_path):
+    raw = document(tmp_path)
+    pipeline_path = Path(raw['pipeline_config'])
+    pipeline = json.loads(pipeline_path.read_text())
+    pipeline['routing'] = {'policy_version': 1}
+    pipeline_path.write_text(json.dumps(pipeline))
+    filename = write_config(tmp_path, raw)
+    before = pipeline_path.read_bytes()
+    with pytest.raises(ValueError, match='routing policy_version 2; migrate configuration explicitly'):
+        load_config(filename)
+    assert pipeline_path.read_bytes() == before
+    assert not Path(raw['private_root']).exists()
+    pipeline['routing'] = {'policy_version': 2}
+    pipeline_path.write_text(json.dumps(pipeline))
+    assert load_config(filename)['pipeline_routing']['policy_version'] == 2
+
+
 def test_loaded_default_policy_collections_are_independent(tmp_path):
     raw = document(tmp_path)
     first = load_config(write_config(tmp_path, raw))

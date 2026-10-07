@@ -22,8 +22,12 @@ import re
 from typing import Any
 
 
-POLICY_VERSION = 1
-GEMINI_PRO_MODEL = "gemini-3.1-pro"
+POLICY_VERSION = 2
+# Catalogue changes must not change the deterministic scoring algorithm or the
+# hashes of scores captured by an earlier release.
+SCORING_VERSION = 1
+GEMINI_PRO_MODEL = "gemini-3.1-pro-preview"
+_LEGACY_GEMINI_PRO_MODEL = "gemini-3.1-pro"
 _PROVIDERS = ("codex", "claude", "gemini")
 _KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS",
           "CODE_REQUEST", "CODE_PLAN", "CODE_PLAN_REVIEW", "CODE_TEST_AUTHOR", "CODE_EDIT", "CODE_REVIEW", "CODE_RESEARCH", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST"}
@@ -88,17 +92,24 @@ class ModelTarget:
                 "quota_pool": self.quota_pool}
 
 
-def _defaults() -> dict:
+def _defaults(policy_version: int = POLICY_VERSION) -> dict:
     def route(provider, model, effort=None):
         return {"provider": provider, "model": model, "reasoning_effort": effort}
-    return {
-        "policy_version": POLICY_VERSION,
-        "tiers": {
+    legacy_tiers = {
             "1-3": [route("gemini", "gemini-3.8-flash"), route("claude", "claude-haiku-4-5"), route("codex", "gpt-6-luna")],
-            "4-6": [route("claude", "claude-sonnet-5-5"), route("codex", "gpt-6-sol"), route("gemini", GEMINI_PRO_MODEL)],
-            "7-9": [route("claude", "claude-opus-5-5"), route("codex", "gpt-6-astra", "low"), route("gemini", GEMINI_PRO_MODEL)],
+            "4-6": [route("claude", "claude-sonnet-5-5"), route("codex", "gpt-6-sol"), route("gemini", _LEGACY_GEMINI_PRO_MODEL)],
+            "7-9": [route("claude", "claude-opus-5-5"), route("codex", "gpt-6-astra", "low"), route("gemini", _LEGACY_GEMINI_PRO_MODEL)],
             "10": [route("claude", "claude-fable-5-1"), route("codex", "gpt-6-astra", "ultra")],
-        },
+    }
+    current_tiers = {
+        "1-3": [route("gemini", "gemini-3.8-flash"), route("claude", "claude-haiku-4-5"), route("codex", "gpt-6-luna", "low")],
+        "4-6": [route("claude", "claude-sonnet-5-5"), route("codex", "gpt-6.1-sol", "medium"), route("gemini", "gemini-3.8-flash", "extended")],
+        "7-9": [route("codex", "gpt-6.1-sol", "high"), route("claude", "claude-opus-5-5", "extended"), route("gemini", GEMINI_PRO_MODEL, "high")],
+        "10": [route("claude", "claude-fable-5-1", "extended"), route("codex", "gpt-6-astra", "ultra")],
+    }
+    return {
+        "policy_version": policy_version,
+        "tiers": legacy_tiers if policy_version == 1 else current_tiers,
         "model_limits": {},
         "provider_limits": {provider: {"max_concurrency": 20 if provider == "claude" else None, "quota_pool": provider}
                             for provider in _PROVIDERS},
@@ -142,20 +153,24 @@ def _route_pair(value: Any) -> dict:
         raise ValueError("Routing requires a native codex, claude or gemini provider")
     if not isinstance(model, str) or not _MODEL.fullmatch(model):
         raise ValueError("Routing requires an explicit native model identifier without command text")
-    if effort is not None and (provider != "codex" or effort not in ("low", "ultra")):
-        raise ValueError("Explicit routing reasoning_effort must be native Codex low or ultra; no remapping is allowed")
+    efforts = {"codex": {"low", "medium", "high", "ultra"}, "claude": {"extended"}, "gemini": {"extended", "high"}}
+    if effort is not None and (not isinstance(effort, str) or effort not in efforts[provider]):
+        raise ValueError("Explicit routing reasoning_effort must match the provider's approved selector; no remapping is allowed")
     return {"provider": provider, "model": model, "reasoning_effort": effort}
 
 
 def _normalize(raw: Mapping[str, Any] | None) -> dict:
-    defaults = _defaults()
     if raw is None:
         raw = {}
-    if not isinstance(raw, Mapping) or set(raw) - set(defaults):
+    if not isinstance(raw, Mapping):
+        raise ValueError("Routing policy must be an object containing only documented policy fields")
+    version = raw.get("policy_version", POLICY_VERSION)
+    if type(version) is not int or version not in (1, POLICY_VERSION):
+        raise ValueError("Unsupported routing policy_version")
+    defaults = _defaults(version)
+    if set(raw) - set(defaults):
         raise ValueError("Routing policy must be an object containing only documented policy fields")
     data = {**defaults, **raw}
-    if type(data["policy_version"]) is not int or data["policy_version"] != POLICY_VERSION:
-        raise ValueError("Unsupported routing policy_version")
     tiers = data["tiers"]
     if not isinstance(tiers, Mapping) or set(tiers) != set(_TIER_SIZES):
         raise ValueError("Routing tiers must be exactly 1-3, 4-6, 7-9 and 10")
@@ -332,7 +347,21 @@ class RoutingPolicy:
 
 
 def load_routing_policy(raw: Mapping[str, Any] | None = None) -> RoutingPolicy:
+    """Decode an immutable captured v1/v2 policy without changing its digest.
+
+    New deployments must use load_current_routing_policy. Supporting the old
+    catalogue here preserves historical receipts and pending-job visibility;
+    it does not enable retired targets in the current dispatch catalogue.
+    """
     return RoutingPolicy(_canonical(_normalize(raw)))
+
+
+def load_current_routing_policy(raw: Mapping[str, Any] | None = None) -> RoutingPolicy:
+    """Require the current ratified catalogue for new controller configuration."""
+    policy = load_routing_policy(raw)
+    if policy.as_dict()["policy_version"] != POLICY_VERSION:
+        raise ValueError("New controller configuration requires routing policy_version 2; migrate configuration explicitly")
+    return policy
 
 
 def _content_strings(value: Any):
@@ -381,7 +410,7 @@ def score_task(kind: str, payload: Mapping[str, Any]) -> dict:
               "work_breadth": sum(breadth >= limit for limit in (3, 8)),
               "risk_groups": sum(len(risks) >= limit for limit in (1, 3))}
     score = min(10, sum(points.values()))
-    return {"score": score, "tier": tier_for_score(score), "policy_version": POLICY_VERSION,
+    return {"score": score, "tier": tier_for_score(score), "policy_version": SCORING_VERSION,
             "rationale": [{"criterion": criterion, "points": value} for criterion, value in points.items()],
             "metrics": {"kind": kind, "utf8_bytes": byte_count, "estimated_tokens": estimated_tokens,
                         "requirement_count": requirement_count, "dependency_count": dependency_count,

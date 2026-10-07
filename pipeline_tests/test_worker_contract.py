@@ -64,7 +64,7 @@ def test_unknown_node_kind_is_rejected_in_prompt_and_routing():
         NativeRunner(None).route(node)
 
 
-def selected_route_fixture(score=8,index=1,kind='CHAPTER_DRAFT'):
+def selected_route_fixture(score=8,index=0,kind='CHAPTER_DRAFT'):
     """Parser fixture only; real persistence is covered by Store integration tests."""
     policy = load_routing_policy()
     target = policy.candidates(score,kind)[index]
@@ -80,8 +80,8 @@ def test_runner_uses_one_persisted_selection_without_recomputing_or_fallback():
     runner,node = selected_route_fixture()
     node['payload'].update(score=1,provider='gemini',model='gemini-3.8-flash',chapter_index=999)
     assert runner.route(node) == node['route']
-    assert runner.route(node)['model'] == 'gpt-6-astra'
-    assert runner.route(node)['reasoning_effort'] == 'low'
+    assert runner.route(node)['model'] == 'gpt-6.1-sol'
+    assert runner.route(node)['reasoning_effort'] == 'high'
 
 
 @pytest.mark.parametrize('kind',['MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS'])
@@ -103,10 +103,10 @@ def test_selected_route_identity_and_fence_must_match(change):
 def test_existing_route_preserves_captured_policy_after_current_capacity_changes():
     runner,node = selected_route_fixture()
     changed = runner.config.routing.as_dict()
-    changed['model_limits']['codex:gpt-6-astra:low'] = 2
+    changed['model_limits']['codex:gpt-6.1-sol:high'] = 2
     runner.config.routing = load_routing_policy(changed)
     assert runner.config.routing.digest != node['route']['policy_digest']
-    assert runner.route(node)['candidate_index'] == 1
+    assert runner.route(node)['candidate_index'] == 0
     assert runner.route(node)['max_concurrency'] is None
 
 
@@ -122,13 +122,12 @@ def test_unratified_current_model_substitution_is_rejected_before_dispatch():
     runner,node = selected_route_fixture()
     changed = runner.config.routing.as_dict()
     changed['tiers']['7-9'][1] = {'provider':'codex','model':'gpt-6-sol','reasoning_effort':None}
-    changed['model_limits'].pop('codex:gpt-6-astra:low')
     with pytest.raises(ValueError, match='canonical Chapter 06'):
         load_routing_policy(changed)
-    assert runner.route(node)['model'] == 'gpt-6-astra'
+    assert runner.route(node)['model'] == 'gpt-6.1-sol'
 
 
-@pytest.mark.parametrize('effort',['low','ultra'])
+@pytest.mark.parametrize('effort',['low','medium','high','ultra'])
 def test_native_codex_command_preserves_exact_selected_reasoning_effort(effort):
     argv = provider_command('codex',['native-codex'],'gpt-6-astra','worker-slot',{},effort)
     assert ['-c','model_reasoning_effort='+json.dumps(effort)] == argv[-3:-1]
@@ -137,7 +136,7 @@ def test_native_codex_command_preserves_exact_selected_reasoning_effort(effort):
     assert '--ephemeral' in argv and '--skip-git-repo-check' in argv
 
 
-@pytest.mark.parametrize(('provider','effort'), [('codex','xhigh'),('codex','high'),('claude','ultra'),('gemini','low')])
+@pytest.mark.parametrize(('provider','effort'), [('codex','xhigh'),('codex','max'),('claude','ultra'),('gemini','low')])
 def test_command_cannot_silently_alias_or_cross_provider_reasoning_effort(provider,effort):
     with pytest.raises(ValueError,match='reasoning effort'):
         provider_command(provider,['native-cli'],'model','worker-slot',{},effort)

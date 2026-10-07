@@ -21,6 +21,7 @@ import pytest
 
 from cochem_mcp.providers import parse_result
 from cochem_pipeline.failures import parse_native_failure
+from cochem_pipeline.native_effort import reported_profile
 from cochem_pipeline.routing import load_routing_policy
 from cochem_pipeline.store import JobStore, output_digest
 from cochem_pipeline.worker import NativeRunner, native_reported_effort, node_prompt, parse_gemini, parse_payload, provider_command
@@ -34,6 +35,10 @@ import os
 from pathlib import Path
 import sys
 import time
+
+if '--version' in sys.argv:
+    print('labelled-physical-native-envelope-fixture-v1')
+    raise SystemExit(0)
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('--fixture-provider', required=True)
@@ -95,8 +100,12 @@ if args.fixture_provider == 'codex':
     for record in records:
         print(json.dumps(record), flush=True)
 else:
+    metadata = {}
+    profile_flag = '--effort' if args.fixture_provider == 'claude' else '--thinking-level'
+    if profile_flag in native_arguments:
+        metadata['reasoning_effort'] = native_arguments[native_arguments.index(profile_flag) + 1]
     print(json.dumps({'type': 'result', 'subtype': 'success', 'is_error': False,
-                      'session_id': session, 'model': args.model, 'result': content}), flush=True)
+                      'session_id': session, 'model': args.model, 'result': content, **metadata}), flush=True)
 '''
 
 
@@ -125,6 +134,34 @@ def _wait_ready(path: Path, process: subprocess.Popen, timeout: float = 10) -> d
     pytest.fail("Labelled CLI fixture did not publish startup evidence")
 
 
+def _fixture_provider_spec(route: dict) -> dict:
+    """Reviewed bindings for this labelled fixture protocol, not vendor flags.
+
+    provider_command validates the contract shape. NativeRunner binary/version
+    preflight is outside this fixture's scope; no subscription is asserted.
+    """
+    spec = {"arguments": ["--model", "{model}"], "protocol": "terminal-json"}
+    effort = route.get("reasoning_effort")
+    if effort is None or route["provider"] == "codex":
+        return spec
+    binary = {"executable_sha256": hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),
+              "version": "labelled-physical-native-envelope-fixture-v1",
+              "version_arguments": ["--version"]}
+    native_effort = "high"
+    spec["inference_only"] = {**binary, "arguments": ["--model", "{model}"],
+        "capability_reference": "This protocol fixture has no tools, hooks or MCP implementation",
+        "disables_tools": True, "disables_mcp": True, "disables_hooks": True,
+        "disables_subagents": True, "disables_model_fallback": True}
+    spec["effort_contracts"] = {route["model"] + ":" + effort: {
+        **binary,
+        "arguments": ["--effort" if route["provider"] == "claude" else "--thinking-level", native_effort],
+        "capability_reference": "Labelled protocol fixture only; not native vendor capability evidence",
+        "thinking_enabled": True if route["provider"] == "claude" else None,
+        "native_metadata": {"path": ["reasoning_effort"], "value": native_effort},
+    }}
+    return spec
+
+
 def _launch_fixture(script: Path, node: dict, root: Path, *, gate: Path | None = None,
                     failure: str | None = None, retry_after: float = .2) -> tuple:
     route = node["route"]
@@ -137,7 +174,8 @@ def _launch_fixture(script: Path, node: dict, root: Path, *, gate: Path | None =
         prefix.extend(["--fixture-failure", failure, "--fixture-retry", str(retry_after)])
     effort = route.get("reasoning_effort")
     command = provider_command(route["provider"], prefix, route["model"], str(root),
-                               {"arguments": ["--model", "{model}"]}, effort)
+                               _fixture_provider_spec(route), effort,
+                               inference_only=route["provider"] != "codex" and effort is not None)
     started = time.time()
     process = subprocess.Popen(command, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                text=True, encoding="utf-8", cwd=root)
@@ -158,6 +196,9 @@ def _collect_fixture(node: dict, execution: tuple) -> tuple[dict, dict]:
     parsed = (parse_gemini(raw, "terminal-json", route["model"]) if route["provider"] == "gemini"
               else parse_result(route["provider"], raw))
     output = parse_payload(parsed["content"])
+    effort_evidence = (reported_profile(route["provider"], raw, model=route["model"],
+        effort=route["reasoning_effort"], spec=_fixture_provider_spec(route))
+        if route["provider"] != "codex" and route.get("reasoning_effort") is not None else None)
     receipt = {
         "provider": route["provider"], "requested_model": route["model"],
         "reported_model": parsed["reported_model"], "pid": process.pid, "exit_code": process.returncode,
@@ -170,7 +211,9 @@ def _collect_fixture(node: dict, execution: tuple) -> tuple[dict, dict]:
         "started_at": started, "finished_at": finished, "fixture_started_at": ready["started_at"],
         "execution_kind": "physical-native-envelope-fixture", "subscription_verified": False,
         "requested_effort": route.get("reasoning_effort"),
-        "reported_effort": native_reported_effort(route["provider"], raw),
+        "reported_effort": (effort_evidence["reported_effort"] if effort_evidence is not None
+                            else native_reported_effort(route["provider"], raw)),
+        "effort_profile_evidence": effort_evidence,
         "selected_route": dict(route),
     }
     if "reasoning_effort" in route:
@@ -234,10 +277,10 @@ def _cleanup(executions: list[tuple]) -> None:
 @pytest.mark.parametrize("objective,requirements,count,tier,model", [
     ("List checks", ["REQ-1"], 1, "1-3", "gemini-3.8-flash"),
     ("Write operational chapters", ["REQ-1"], 6, "4-6", "claude-sonnet-5-5"),
-    ("Review security", [f"REQ-{number}" for number in range(12)], 3, "7-9", "claude-opus-5-5"),
+    ("Review security", [f"REQ-{number}" for number in range(12)], 3, "7-9", "gpt-6.1-sol"),
     ("security migration concurrency " + "detail " * 5000,
      [f"REQ-{number}" for number in range(12)], 8, "10", "claude-fable-5-1"),
-])
+], ids=["lightweight", "medium", "complex", "critical"])
 def test_actual_computed_complexity_selects_preferred_model_before_physical_cli(
         tmp_path, fixture_cli, objective, requirements, count, tier, model):
     store = JobStore(tmp_path / "job_board.db", routing_policy=_policy())
@@ -254,25 +297,28 @@ def test_actual_computed_complexity_selects_preferred_model_before_physical_cli(
     assert completed["routing"]["dispatches"] == 1 and completed["routing"]["failure_count"] == 0
 
 
-@pytest.mark.parametrize("objective,count,expected_effort", [
-    ("Review security", 3, "low"),
-    ("security migration concurrency " + "detail " * 5000, 8, "ultra"),
-])
-def test_astra_fallback_preserves_exact_native_effort_in_real_fixture_argv(
-        tmp_path, fixture_cli, objective, count, expected_effort):
+@pytest.mark.parametrize("objective,requirements,count,model,expected_effort,candidate_index", [
+    ("Document one note", ["REQ-1"], 1, "gpt-6-luna", "low", 2),
+    ("Write operational chapters", ["REQ-1"], 6, "gpt-6.1-sol", "medium", 1),
+    ("Review security", [f"REQ-{number}" for number in range(12)], 3, "gpt-6.1-sol", "high", 0),
+    ("security migration concurrency " + "detail " * 5000,
+     [f"REQ-{number}" for number in range(12)], 8, "gpt-6-astra", "ultra", 1),
+], ids=["luna-low", "sol-medium", "sol-high", "astra-ultra"])
+def test_codex_profiles_preserve_exact_native_effort_in_real_fixture_argv(
+        tmp_path, fixture_cli, objective, requirements, count, model, expected_effort, candidate_index):
     policy = _policy()
     store = JobStore(tmp_path / "job_board.db", routing_policy=policy)
-    workflow = store.submit(objective, [f"REQ-{number}" for number in range(12)], count)
-    # This controller observation precedes any dispatch; it does not fabricate
-    # a CLI error, model execution, quota receipt, or successful output.
+    workflow = store.submit(objective, requirements, count)
+    # Controller observations precede dispatch; these are not fabricated CLI
+    # errors, live quota receipts or evidence of subscription availability.
     from cochem_pipeline.routing import score_task
     root_payload = workflow["root"]["payload"]
     score = score_task("MANIFEST_GENERATOR", root_payload)["score"]
-    preferred = policy.candidates(score, "MANIFEST_GENERATOR")[0]
-    store.set_route_hold("model", preferred.key, 5, "busy")
+    for earlier in policy.candidates(score, "MANIFEST_GENERATOR")[:candidate_index]:
+        store.set_route_hold("model", earlier.key, 5, "busy")
     node = store.claim("fixture-controller", worker_slot="slot1")
-    assert node["route"]["candidate_index"] == 1
-    assert node["route"]["model"] == "gpt-6-astra"
+    assert node["route"]["candidate_index"] == candidate_index
+    assert node["route"]["model"] == model
     assert node["route"]["reasoning_effort"] == expected_effort
     execution = _launch_fixture(fixture_cli, node, tmp_path)
     assert f'model_reasoning_effort="{expected_effort}"' in execution[1]["native_arguments"]
@@ -280,6 +326,31 @@ def test_astra_fallback_preserves_exact_native_effort_in_real_fixture_argv(
     assert completed["receipt"]["requested_effort"] == expected_effort
     assert completed["receipt"]["reported_effort"] == expected_effort
     assert len(node["routing"]["candidates"]) == (2 if expected_effort == "ultra" else 3)
+
+
+@pytest.mark.parametrize("candidate_index,model,effort,native_effort", [
+    (1, "claude-opus-5-5", "extended", "high"),
+    (2, "gemini-3.1-pro-preview", "high", "high"),
+], ids=["opus-extended", "gemini-pro-high"])
+def test_complex_band_spillover_preserves_reviewed_profile_and_native_metadata(
+        tmp_path, fixture_cli, candidate_index, model, effort, native_effort):
+    policy = _policy()
+    store = JobStore(tmp_path / "job_board.db", routing_policy=policy)
+    store.submit("Review security", [f"REQ-{number}" for number in range(12)], 3)
+    for earlier in policy.candidates(7, "MANIFEST_GENERATOR")[:candidate_index]:
+        store.set_route_hold("model", earlier.key, 5, "busy")
+    node = store.claim("fixture-controller", worker_slot="slot1")
+    assert node["route"]["candidate_index"] == candidate_index
+    assert node["route"]["model"] == model
+    completed = _finish_fixture(store, node, fixture_cli, tmp_path)
+    receipt = completed["receipt"]
+    assert receipt["requested_effort"] == effort
+    assert receipt["effort_profile_evidence"]["verified_profile"] == effort
+    assert receipt["effort_profile_evidence"]["observed_native_value"] == native_effort
+    # The fixture's reviewed Claude Extended profile maps to native "high";
+    # the native result must never be rewritten to claim it said "extended".
+    assert receipt["reported_effort"] == (native_effort if native_effort == effort else None)
+    assert receipt["subscription_verified"] is False
 
 
 def test_six_routed_chapters_have_four_physical_processes_and_one_synthesis_barrier(tmp_path, fixture_cli):
@@ -606,7 +677,8 @@ def test_shared_subscription_pool_skips_otherwise_idle_second_model(tmp_path, fi
         assert first["route"]["model"] == "claude-sonnet-5-5" and execution[0].poll() is None
         second = store.claim("shared-pool-controller", worker_slot="slot2")
         assert second["route"]["candidate_index"] == 2
-        assert second["route"]["model"] == "gemini-3.1-pro"
+        assert second["route"]["model"] == "gemini-3.8-flash"
+        assert second["route"]["reasoning_effort"] == "extended"
         assert [route["provider"] for route in store.routing_status()["active_reservations"]] == ["claude", "gemini"]
         _finish_fixture(store, second, fixture_cli, tmp_path)
         gate.write_text("release subscription fixture", encoding="utf-8")

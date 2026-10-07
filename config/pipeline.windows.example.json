@@ -47,15 +47,16 @@
   "providers": {
     "codex": {
       "executable": "C:\\Program Files\\Codex\\codex.exe",
-      "model": "gpt-6-astra"
+      "model": "gpt-6.1-sol"
     },
     "claude": {
       "executable": "C:\\Program Files\\Claude\\claude.exe",
-      "model": "claude-opus-5-5"
+      "model": "claude-opus-5-5",
+      "effort_contracts": {}
     },
     "gemini": {
       "executable": "C:\\Program Files\\Agy\\agy.exe",
-      "model": "gemini-3.1-pro",
+      "model": "gemini-3.1-pro-preview",
       "arguments": [
         "REPLACE_WITH_VERIFIED_AGY_HEADLESS_FLAGS",
         "{model}"
@@ -83,8 +84,11 @@
         "capability_reference": "REPLACE_WITH_VERIFIED_NATIVE_CAPABILITY_REFERENCE",
         "disables_tools": true,
         "disables_mcp": true,
-        "disables_hooks": true
-      }
+        "disables_hooks": true,
+        "disables_subagents": true,
+        "disables_model_fallback": true
+      },
+      "effort_contracts": {}
     }
   },
   "timeout_seconds": 1800,
@@ -120,7 +124,7 @@
     "max_routing_cycles": 0,
     "max_routing_seconds": 0.0,
     "model_limits": {},
-    "policy_version": 1,
+    "policy_version": 2,
     "provider_limits": {
       "claude": {
         "max_concurrency": 20,
@@ -155,14 +159,14 @@
         {
           "model": "gpt-6-luna",
           "provider": "codex",
-          "reasoning_effort": null
+          "reasoning_effort": "low"
         }
       ],
       "10": [
         {
           "model": "claude-fable-5-1",
           "provider": "claude",
-          "reasoning_effort": null
+          "reasoning_effort": "extended"
         },
         {
           "model": "gpt-6-astra",
@@ -177,31 +181,31 @@
           "reasoning_effort": null
         },
         {
-          "model": "gpt-6-sol",
+          "model": "gpt-6.1-sol",
           "provider": "codex",
-          "reasoning_effort": null
+          "reasoning_effort": "medium"
         },
         {
-          "model": "gemini-3.1-pro",
+          "model": "gemini-3.8-flash",
           "provider": "gemini",
-          "reasoning_effort": null
+          "reasoning_effort": "extended"
         }
       ],
       "7-9": [
         {
+          "model": "gpt-6.1-sol",
+          "provider": "codex",
+          "reasoning_effort": "high"
+        },
+        {
           "model": "claude-opus-5-5",
           "provider": "claude",
-          "reasoning_effort": null
+          "reasoning_effort": "extended"
         },
         {
-          "model": "gpt-6-astra",
-          "provider": "codex",
-          "reasoning_effort": "low"
-        },
-        {
-          "model": "gemini-3.1-pro",
+          "model": "gemini-3.1-pro-preview",
           "provider": "gemini",
-          "reasoning_effort": null
+          "reasoning_effort": "high"
         }
       ]
     }

@@ -504,11 +504,15 @@ def test_document_governing_requirements_are_captured_once_and_inherited(tmp_pat
 
 def test_legacy_single_model_synthesis_is_amended_without_mutating_captured_history(tmp_path):
     from cochem_pipeline.routing import load_routing_policy, score_task
-    store, workflow_id = seeded(tmp_path, 1)
+    # Historical fixed-model synthesis used catalogue v1. Do not derive its
+    # identity from today's catalogue, where the medium Gemini route is Flash.
+    captured = load_routing_policy({'policy_version': 1})
+    store = JobStore(tmp_path / 'job_board.db', routing_policy=captured)
+    workflow_id = store.submit('Create an SRS and WBS', ['REQ-1'], 1)['workflow_id']
+    finish(store, store.claim('manifest-worker'), manifest(1))
     job = store.claim('chapter')
     finish(store, job, chapter(job))
     synthesis = next(item for item in store.workflow(workflow_id)['jobs'] if item['kind'] == 'SYNTHESIS')
-    captured = load_routing_policy(store.routing_policy)
     old_candidate = next(value.as_dict() for value in captured.candidates(4) if value.provider == 'gemini')
     old = [old_candidate]
     score = score_task('SYNTHESIS', synthesis['payload'])
@@ -517,6 +521,9 @@ def test_legacy_single_model_synthesis_is_amended_without_mutating_captured_hist
         conn.execute('''INSERT INTO pipeline_routing_jobs(job_id,policy_json,score_json,candidates_json,
             cursor,cycle,failure_count,dispatches,state,created_at) VALUES(?,?,?,?,1,2,1,3,'READY',?)''',
             (synthesis['job_id'], canonical_json(captured.as_dict()), canonical_json(score), canonical_json(old), time.time()))
+    # Reopen the real database under the current deployment catalogue. The
+    # amendment must retain the old authority, ordering and spent budgets.
+    store = JobStore(store.path)
     dispatched = store.claim('new-controller')
     assert dispatched['route']['candidate_index'] == 0
     assert dispatched['route']['model'] == captured.candidates(score['score'], 'SYNTHESIS')[0].model
@@ -524,6 +531,8 @@ def test_legacy_single_model_synthesis_is_amended_without_mutating_captured_hist
     assert dispatched['routing']['dispatches'] == 4
     assert dispatched['routing']['failure_count'] == 1 and dispatched['routing']['cycle'] == 2
     with sqlite3.connect(store.path) as conn:
+        assert json.loads(conn.execute('SELECT policy_json FROM pipeline_routing_workflows WHERE workflow_id=?',
+                                       (workflow_id,)).fetchone()[0]) == captured.as_dict()
         assert json.loads(conn.execute('SELECT candidates_json FROM pipeline_routing_jobs WHERE job_id=?',
                                        (synthesis['job_id'],)).fetchone()[0]) == old
         with pytest.raises(sqlite3.IntegrityError, match='immutable'):

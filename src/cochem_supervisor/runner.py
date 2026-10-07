@@ -29,9 +29,9 @@ from cochem_mcp.providers import build_command, executable_prefix, parse_result
 from cochem_pipeline.worker import strict_json, subscription_status
 
 
-_REPAIR_MODELS = {"codex": {"gpt-6-astra", "gpt-6-sol", "gpt-6-luna"},
+_REPAIR_MODELS = {"codex": {"gpt-6-astra", "gpt-6-sol", "gpt-6.1-sol", "gpt-6-luna"},
                   "claude": {"claude-fable-5-1", "claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-4-5"},
-                  "gemini": {"gemini-3.1-pro", "gemini-3.8-flash"}}
+                  "gemini": {"gemini-3.1-pro", "gemini-3.1-pro-preview", "gemini-3.8-flash"}}
 _PROTECTED_COMPONENTS = {".git", ".venv", "venv", "node_modules", "tests", "supervisor_tests",
                          "pipeline_tests", "mcp_tests", "cochem_supervisor"}
 _DEPENDENCY_FILES = {"pyproject.toml", "setup.py", "setup.cfg", "package.json", "package-lock.json",
@@ -119,7 +119,9 @@ def validate_provider_spec(spec: Mapping[str, Any]) -> None:
     if not isinstance(spec.get("model"), str) or spec["model"] not in _REPAIR_MODELS[provider]:
         raise ValueError(f"Repair {provider} requires an exact Chapter 06 model")
     effort = spec.get("reasoning_effort")
-    if effort is not None and (provider != "codex" or spec["model"] != "gpt-6-astra" or effort not in ("low", "ultra")):
+    supported_efforts = {'codex': ('low', 'medium', 'high', 'ultra'),
+                         'claude': ('extended',), 'gemini': ('extended', 'high')}
+    if effort is not None and effort not in supported_efforts[provider]:
         raise ValueError("Repair reasoning effort must match the exact routed model")
     if provider == "gemini":
         from cochem_pipeline.config import validate_subscription_probe
@@ -513,6 +515,68 @@ class RepairRunner:
         (logs / "process-receipt.json").write_text(json.dumps(receipt, sort_keys=True, indent=2), encoding="utf-8")
         return receipt
 
+    def preflight_selected_spec(self, spec: Mapping[str, Any], identity: Mapping[str, str],
+                                workspace: Path, log_dir: Path,
+                                heartbeat: Callable[[], bool]) -> dict:
+        """Check native capabilities before reserving a paid repair generation.
+
+        The engine must call this after selecting a durable board reservation
+        and before charging the monetary/model-call budget. Commands are only
+        version/help/features probes, with the same protected worker identity,
+        limits and process closure as inference. No prompt or model invocation
+        is sent. Inference repeats the checks to catch changes after this gate.
+        """
+        from cochem_pipeline.native_effort import (effort_contract, effort_binary_digest,
+            effort_version_evidence)
+        from cochem_pipeline.worker import (codex_policy_probe_command, gemini_binary_digest,
+            validate_gemini_version)
+        from cochem_pipeline.inference_policy import (claude_inference_arguments,
+            validate_claude_help, validate_codex_features)
+        from cochem_pipeline.windows import require_system, validate_code_path
+        try:
+            validate_provider_spec(spec)
+            provider, model, effort = spec['provider'], spec['model'], spec.get('reasoning_effort')
+            binding = effort_contract(provider, model, effort, spec)
+            # Reject absent/unreviewed capabilities before creating logs or
+            # launching even an offline worker process.
+            digest = effort_binary_digest(spec, binding) if binding is not None else None
+            agy_digest = gemini_binary_digest(spec) if provider == 'gemini' else None
+            require_system()
+            validate_code_path(spec['executable'])
+            prefix = executable_prefix(provider, spec['executable']) if provider != 'gemini' else [spec['executable']]
+            for path in prefix:
+                validate_code_path(path)
+            logs = self._private_logs(Path(log_dir))
+            evidence = {'provider': provider, 'model': model, 'requested_effort': effort,
+                        'paid_inference': False, 'mode': 'offline-capability', 'probes': []}
+
+            def probe(arguments, label):
+                receipt = self.run_process(identity, arguments, workspace, logs / label,
+                    timeout_seconds=30, heartbeat=heartbeat)
+                raw_bytes = Path(receipt['stdout_path']).read_bytes()
+                if receipt['exit_code'] != 0 or len(raw_bytes) > 262144:
+                    raise NativeRepairProtocolError('Native pre-budget capability probe failed')
+                evidence['probes'].append({'pid': receipt['pid'], 'exit_code': 0,
+                    'stdout_sha256': hashlib.sha256(raw_bytes).hexdigest(), 'probe': label})
+                return raw_bytes.decode('utf-8', 'strict')
+
+            if binding is not None:
+                version = probe([*prefix, *binding['version_arguments']], 'effort-version')
+                evidence['reasoning_effort'] = effort_version_evidence(binding, version, digest,
+                    model=model, effort=effort)
+            if provider == 'codex':
+                evidence.update(validate_codex_features(probe(codex_policy_probe_command(prefix,
+                    'features', reasoning_effort=effort), 'features')))
+            elif provider == 'claude':
+                evidence.update(validate_claude_help(probe([*prefix, *claude_inference_arguments(),
+                    *(binding['arguments'] if binding else []), '--help'], 'help')))
+            else:
+                version = probe([*prefix, *spec['inference_only']['version_arguments']], 'native-version')
+                evidence.update(validate_gemini_version(spec, version, agy_digest))
+            return evidence
+        except (ValueError, TypeError, KeyError, OSError) as exc:
+            raise NativeRepairProtocolError('Selected repair capability is not verified before budget admission') from exc
+
     def run(self, provider_spec: Mapping[str, Any], identity: Mapping[str, str], workspace: Path,
             evidence: Mapping[str, Any], log_dir: Path, timeout_seconds: int,
             heartbeat: Callable[[], bool]) -> dict:
@@ -575,15 +639,30 @@ class RepairRunner:
             if result['exit_code']!=0:
                 raise NativeRepairProtocolError('Native inference-only capability probe failed')
             return raw
+        from cochem_pipeline.native_effort import (effort_contract, effort_binary_digest,
+            effort_version_evidence, reported_profile)
+        try:
+            binding = effort_contract(provider, provider_spec['model'],
+                provider_spec.get('reasoning_effort'), provider_spec)
+            if binding is not None:
+                digest = effort_binary_digest(provider_spec, binding)
+                version = probe([*prefix, *binding['version_arguments']], 'policy-effort-version')
+                policy_evidence['reasoning_effort'] = effort_version_evidence(binding, version, digest,
+                    model=provider_spec['model'], effort=provider_spec['reasoning_effort'])
+        except (ValueError, TypeError, KeyError, OSError) as exc:
+            raise NativeRepairProtocolError('Native repair reasoning profile capability is not verified') from exc
         if provider=='codex':
-            names=parse_codex_mcp_names(probe(codex_policy_probe_command(prefix,'mcp'), 'policy-enumerate'))
-            verified=parse_codex_mcp_names(probe(codex_policy_probe_command(prefix,'mcp',mcp_names=names),
+            names=parse_codex_mcp_names(probe(codex_policy_probe_command(prefix,'mcp',
+                reasoning_effort=provider_spec.get('reasoning_effort')), 'policy-enumerate'))
+            verified=parse_codex_mcp_names(probe(codex_policy_probe_command(prefix,'mcp',mcp_names=names,
+                reasoning_effort=provider_spec.get('reasoning_effort')),
                 'policy-disabled-mcp'),require_disabled=True)
             if names!=verified:
                 raise NativeRepairProtocolError('Native MCP configuration changed during repair policy verification')
             policy_evidence.update(validate_codex_features(probe(codex_policy_probe_command(prefix,'features',
                 mcp_names=names,reasoning_effort=provider_spec.get('reasoning_effort')),'policy-disabled-tools')))
-            auth_argv=codex_policy_probe_command(prefix,'auth',mcp_names=names)
+            auth_argv=codex_policy_probe_command(prefix,'auth',mcp_names=names,
+                reasoning_effort=provider_spec.get('reasoning_effort'))
         elif provider=='claude':
             policy_evidence.update(validate_claude_help(probe([*prefix,*claude_inference_arguments(),'--help'],
                 'policy-disabled-tools')))
@@ -608,6 +687,11 @@ class RepairRunner:
         argv = repair_command(provider_spec, prefix, str(workspace), mcp_names=names)
         if provider=="gemini":
             gemini_binary_digest(provider_spec)
+        if binding is not None:
+            try:
+                effort_binary_digest(provider_spec, binding)
+            except (ValueError, TypeError, KeyError, OSError) as exc:
+                raise NativeRepairProtocolError('Native repair effort executable changed before inference') from exc
         process = self.run_process(identity, argv, workspace, logs / "inference", stdin_text=prompt,
                                    timeout_seconds=remaining, heartbeat=heartbeat)
         raw = Path(process["stdout_path"]).read_text(encoding="utf-8", errors="replace")
@@ -622,6 +706,14 @@ class RepairRunner:
         review_output=strict_json(parsed["content"]) if review_manifest is not None else None
         from cochem_pipeline.worker import native_reported_effort
         reported_effort = native_reported_effort(provider, raw)
+        if binding is not None:
+            try:
+                observation = reported_profile(provider, raw, model=provider_spec['model'],
+                    effort=provider_spec['reasoning_effort'], spec=provider_spec)
+                policy_evidence['reasoning_effort'].update(observation)
+                reported_effort = observation['reported_effort']
+            except (ValueError, TypeError, KeyError) as exc:
+                raise NativeRepairProtocolError('Native repair output did not attest the reviewed reasoning profile') from exc
         if reported_effort is not None and reported_effort != provider_spec.get("reasoning_effort"):
             raise NativeRepairModelError("Native repair reasoning effort contradicts its reservation")
         receipt = {**process, "provider": provider, "requested_model": provider_spec["model"],

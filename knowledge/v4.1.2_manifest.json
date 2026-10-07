@@ -1,12 +1,12 @@
 {
-  "manifest_version": "4.2.7-r2",
-  "revision": "owner-amendment-2026-10-06",
-  "provenance": "Owner-ratified canonical4.2.7 amendment; primary captures are historical; original corpus archived outside active RAG",
+  "manifest_version": "4.2.7-model-routing-2026-10-07",
+  "revision": "model-routing-2026-10-07",
+  "provenance": "Current canonical model-routing amendment; previous exact source captures remain immutable historical evidence; provider research is not host capability acceptance.",
   "documents": [
     {
       "path": ".sources/4.2.7_SRS.md",
       "sha256": "2563c33b7237f099b936a48af6545a674012fc2fb6792f2d7c343e94c9afaf83",
-      "authority": "current_normative",
+      "authority": "historical_source",
       "authority_revision": "owner-amendment-2026-10-06"
     },
     {
@@ -24,7 +24,7 @@
     {
       "path": ".sources/SRS_ADDENDUM_4.2.7.md",
       "sha256": "3fa638f4a476950b668b8bf05c7737d38a97a42672953ec171c6c6036518ef4f",
-      "authority": "owner_decision",
+      "authority": "historical_source",
       "authority_revision": "owner-amendment-2026-10-06"
     },
     {
@@ -41,21 +41,33 @@
     },
     {
       "path": "wiki/00_skeleton.md",
-      "sha256": "26d5067b1d5d85058e770186ccd147260a1d7a5ccb64b442050042fe89d6a17c",
+      "sha256": "97ccbc6a9aff171e92aae4484c75557093df7051dad2fff1e5530f166d34033a",
       "authority": "current_normative",
-      "authority_revision": "owner-amendment-2026-10-06"
+      "authority_revision": "model-routing-2026-10-07"
     },
     {
       "path": "wiki/4.2.7_SRS.md",
-      "sha256": "16bda1ae566ae4760c8eff9ac844d33a1936dbd88d47dc26cdbfb145f6a359c2",
+      "sha256": "7ac003ca55a204100d0886fb8eee2d402794133a0774f76e007d2952f2b7ad95",
       "authority": "current_normative",
-      "authority_revision": "owner-amendment-2026-10-06"
+      "authority_revision": "model-routing-2026-10-07"
     },
     {
       "path": "wiki/owner_decisions.md",
-      "sha256": "aae805bd4a1b3534e5702e06541f51848890d80dab1cfd7f2cc148220dfe5b67",
+      "sha256": "26794d59cebd65f588124bc1f1c661e057629863f625c70a87297170ab50e9dd",
       "authority": "owner_decision",
-      "authority_revision": "owner-amendment-2026-10-06"
+      "authority_revision": "model-routing-2026-10-07"
+    },
+    {
+      "path": ".sources/4.2.7_SRS.model-routing-2026-10-07.md",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+      "authority": "current_normative",
+      "authority_revision": "model-routing-2026-10-07"
+    },
+    {
+      "path": ".sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md",
+      "sha256": "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9",
+      "authority": "owner_decision",
+      "authority_revision": "model-routing-2026-10-07"
     }
   ],
   "srs_documents": [
@@ -67,6 +79,8 @@
     ".sources/full_dossier_untruncated.md",
     "wiki/00_skeleton.md",
     "wiki/4.2.7_SRS.md",
-    "wiki/owner_decisions.md"
+    "wiki/owner_decisions.md",
+    ".sources/4.2.7_SRS.model-routing-2026-10-07.md",
+    ".sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md"
   ]
 }

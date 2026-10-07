@@ -143,7 +143,7 @@ def test_captured_specification_hash_is_real_and_cannot_drift_during_planning(tm
     captured=case.state()['planning_evidence']
     actual=(assets/'4.2.7_SRS.md').read_bytes()
     assert captured['specification_sha256']==hashlib.sha256(actual).hexdigest()
-    assert captured['owner_amendments'][0]['revision']=='owner-amendment-2026-10-06'
+    assert captured['owner_amendments'][0]['revision']=='model-routing-2026-10-07'
     (assets/'4.2.7_SRS.md').write_bytes(actual+b'\nUnratified physical asset change.\n')
     with pytest.raises(ValueError,match='authority drifted'):
         case.plan()

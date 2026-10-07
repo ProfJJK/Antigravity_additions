@@ -1,0 +1,116 @@
+{
+  "schema": "cochem-scoped-validation/1",
+  "revision": "model-routing-2026-10-07",
+  "recorded_at": "2026-10-07T01:13:13.618328+00:00",
+  "baseline_commit": "af4e335945fbd5d25198166e16ca32323df65bcb",
+  "specification_sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+  "tested_source_manifest": "docs/evidence/SOURCE_model-routing-2026-10-07.json",
+  "tested_source_manifest_sha256": "46972de1e4d61e94df5cc3f7d37425e2a2bdb513225ab5e4d67f1f87d1fbb9d9",
+  "tested_source_content_sha256": "e5a5282699eb4092af3828ad211b0e7533ec550f130b284f47481808cd7be881",
+  "source_and_tests_unchanged_during_run": true,
+  "execution_status": {
+    "state": "finished",
+    "exit_code": 0,
+    "started_at": 1791335141.783538,
+    "finished_at": 1791335573.7590704
+  },
+  "interrupted_repeat": {
+    "cause": "Cloud exec-server transport disconnected; process stopped before completion. No pass inferred.",
+    "last_logged_progress_percent": 19
+  },
+  "complete_target_host_acceptance_certified": false,
+  "full_srs_compliance_certified": false,
+  "environment": {
+    "os": "Linux",
+    "python": "3.12.14",
+    "docker": "28.4.0",
+    "storage_driver": "vfs"
+  },
+  "full_suite": {
+    "tests": 2632,
+    "passed": 2597,
+    "skipped": 35,
+    "failures": 0,
+    "errors": 0,
+    "skip_reasons": {
+      "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Requires a real Win32 process handle; no emulation": 1,
+      "Real Windows console allocation requires a native Windows process": 1,
+      "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+      "Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1": 1,
+      "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+      "Requires actual Windows; no Win32 emulation used": 8,
+      "Requires real Windows SYSTEM, repair identity and Docker API ACLs": 1,
+      "Requires real Windows and SYSTEM; no Win32 emulation used": 5,
+      "Requires real Windows SYSTEM and explicit disposable-task test opt-in": 1
+    },
+    "seconds": 430.407,
+    "junit": "docs/evidence/TESTS_model-routing-2026-10-07.xml",
+    "junit_sha256": "370e1e537388c24d4c2fe8aaeea293ceeb19a1d5c1d819a7ff47d925a286c509",
+    "command": "python -m pytest -q --junitxml=/tmp/model-routing-20261007-final.xml",
+    "process_exit_code": 0,
+    "actual_docker_execution_enabled": true,
+    "docker_image": "sha256:a3d8c8a1b836c46ffda919139a3d42b7214fe1e8b6603d584bb58b8aa4a589f5",
+    "native_codex_and_claude_offline_probes_enabled": true,
+    "native_subscription_inference_executed": false
+  },
+  "dependency_consistency": {
+    "checked_packages": 114,
+    "passed": true,
+    "lockfile_sha256": "c6f885ecfb9d8d189fa2c24205da4e466922a0358fc3abc558584b7aa3a9c6a9"
+  },
+  "research": {
+    "artifact": "docs/evidence/ROUTING_RESEARCH_2026-10-07.json",
+    "sha256": "f05a926fa83e72abc7ce0cfc0dfa32746cff798241ff6258833bfa125a0c2de0",
+    "comparative_model_benchmark_performed": false
+  },
+  "knowledge": {
+    "generation": "g-d47331d4acdd416ab5aa926d25b10a8a",
+    "manifest_sha256": "cbde9b4d9d5be3ffdb21603c4cfeabe963a9563ab59dec734b8a125a0fcb7ca6",
+    "document_count": 11,
+    "section_count": 126,
+    "corpus_bytes": 279057,
+    "index_bytes": 548864,
+    "index_ratio": 1.9668526501754122,
+    "index_size_sla_met": true,
+    "relative_links_checked": 17,
+    "updated_at": 1791334207.8921049,
+    "changed_documents": 11,
+    "removed_documents": 0,
+    "rebuilt_corruption": false,
+    "schema": "cochem-public-knowledge-export/1",
+    "snapshot_file": "KNOWLEDGE_model-routing-2026-10-07.sqlite3",
+    "snapshot_sha256": "a9dfff897a0034fdc11dcabf12f1edf148fb872c9d2f70060ea1ef49cc7a31e9",
+    "snapshot_bytes": 548864,
+    "windows_deployment_updated": false,
+    "scope": "Public ratified corpus only; protected deployed index is rebuilt locally"
+  },
+  "preserved_history": {
+    "previous_six_source_captures_unchanged": true,
+    "catalogue_v1_policies_and_receipts_immutable": true,
+    "old_acceptance_evidence_retains_old_specification_hash": true
+  },
+  "open_limitations": [
+    "Nine previously recorded r2 audit findings are not certified closed by this routing change; setup text was corrected, but the legacy checker remains outside current acceptance.",
+    "Actual Windows account/executable/model/effort/ACL/Job Object/ImDisk/WSL2 and 48-hour acceptance remain unexecuted.",
+    "Agy native profile capabilities were not established; default empty contracts remain compatibility holds.",
+    "Four-worker Windows queue acceptance and any six/eight-slot tuning require actual workstation measurements.",
+    "Public knowledge export does not replace the deployed protected Windows RAG database.",
+    "Managed startup draft save returned stale_base; reusable proposal is retained in config/cloud-environment.proposed.json."
+  ],
+  "evidence_scope": "Executed regression suite and physical Linux Docker/SQLite/Git/HTTP/process checks. CLI protocol fixtures and offline version/help are not native subscription inference or full semantic requirement certification.",
+  "initial_run": {
+    "passed": 2596,
+    "skipped": 35,
+    "failed": 1,
+    "failure": "Historical synthesis migration test derived its old Gemini model from the new catalogue; corrected fixture to explicit v1 and verified captured history preservation. No runtime change was needed for this failure.",
+    "junit": "docs/evidence/TESTS_model-routing-2026-10-07_initial.xml",
+    "junit_sha256": "ea56e65985371b288fe77e0985626c3dcfaa0b28342d44fb1fc9f51e0a526ab2",
+    "source_manifest": "docs/evidence/SOURCE_model-routing-2026-10-07_initial.json",
+    "source_content_sha256": "d0ce6e6b08a5e1070c49202fe039cc98bbb6bd52895bf72affd2754e047d96f1",
+    "focused_rerun_passed": 29
+  }
+}

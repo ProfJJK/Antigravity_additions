@@ -9,7 +9,8 @@ wording, not competing instructions to workers.
 ## Authority and changes approved by the owner
 
 The owner's current instructions take precedence over all archived documents.
-The following decisions are effective for 4.2.7, dated October 6, 2026:
+The following decisions are effective for 4.2.7, dated October 6, 2026 and amended
+October 7, 2026 (`model-routing-2026-10-07`):
 
 | Decision | Canonical disposition |
 | --- | --- |
@@ -19,7 +20,7 @@ The following decisions are effective for 4.2.7, dated October 6, 2026:
 | Backend retrieval around 4.1 ms and authenticated knowledge requests around 7.7 ms are acceptable. | Retain these accepted measurements and profile the approximately 3.6 ms difference. The old authenticated 5 ms target does not block launch solely because the accepted baseline exceeds it. Preserve authentication and result correctness while optimizing. |
 | Cold Docker startup around 4.85 seconds is acceptable as pool replenishment. | Normal jobs use a persistent pool of prepared, single-use containers. Cold creation belongs to replenishment; empty capacity causes a visible bounded wait rather than a request-path cold launch. Record cold creation and prepared handoff separately. |
 | Isolate ordinary task failures; amend archived FR009. | Preserve the 4.2.6 amendment: structural lease/budget corruption triggers global containment; an unrelated historical FAILED row does not. |
-| Exact complexity routing was corrected by the owner. | 1–3 Flash → Haiku → Luna; 4–6 Sonnet → Sol → Gemini Pro; 7–9 Opus → Astra low → Gemini Pro; 10 Fable → Astra ultra, two candidates only. Every model job, including synthesis and repair, uses these chains; there is no fixed-model exception. |
+| The owner requested updated model assignments and research-informed tier/effort choices; complexity 3 remains lightweight and Fable 5.1 was confirmed. | Chapter 06 now uses 1–3 Flash default → Haiku default → Luna low; 4–6 Sonnet default → Sol 6.1 medium → Flash Extended; 7–9 Sol 6.1 high → Opus 5.5 Extended → Gemini 3.1 Pro Preview high; 10 Fable 5.1 Extended → Astra ultra, two candidates only. Every model job uses the applicable chain. Extended requires an exact reviewed native profile; no automatic alias or native fallback may bypass the controller. |
 | Windows Python beside the native subscription CLIs is the host execution choice. | Protected Windows controller and native Codex, Claude and Agy subscription runners; WSL2/Linux Docker executes code/tests. Do not silently replace subscriptions with API-key inference. |
 
 The accepted performance observations are not newly invented universal ceilings.
@@ -117,3 +118,22 @@ counts do not inherit that ceiling. Final asymmetric SRS/WBS reconciliation is
 mandatory. Adopt the existing 8 GiB `R:` RAM volume with one-time setup and automatic
 startup. All 18 improvement inserts are accepted. The current requirement ledger
 and acceptance dashboard distinguish implementation from physical host evidence.
+
+## Current model routing revision, 2026-10-07
+
+The current canonical revision is `model-routing-2026-10-07`; pipeline version
+and installation paths remain 4.2.7. Historical routing documents, original
+source captures and released evidence keep their exact bytes. Their old model
+order is superseded for new submissions by Chapter 06 and catalogue version 2.
+Score algorithm version 1 is unchanged. Older captured policies remain decodable
+and immutable; retired targets cause compatibility holds at new dispatch and
+normal spillover within their original chain, not automatic replacement. Active
+and accepted receipts and all consumed budgets remain evidence-bound.
+
+[Routing research](ROUTING_RESEARCH_2026-10-07.md) supports identifier and effort
+availability only within its evidence scope; it does not prove Sol/Opus coding
+equivalence or the deployed Agy contract. Choosing Sol medium/high is an
+engineering refinement to evaluate, not a new measured quality claim.
+The [workstation guide](WORKSTATION_13700K_4.2.7.md) explains conditional six/eight-
+slot tuning without changing the four-slot default or four-worker queue benchmark.
+The [nine audit findings](AUDIT_4.2.7-r2.md) are not closed by a model catalogue change.

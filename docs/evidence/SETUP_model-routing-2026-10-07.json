@@ -1,0 +1,9 @@
+{
+  "status": "not_saved",
+  "error": "stale_base",
+  "requested_fields": [
+    "start_skill"
+  ],
+  "proposal": "config/cloud-environment.proposed.json",
+  "scope": "Reusable managed-cloud startup guidance only; application changes and test execution are independent."
+}

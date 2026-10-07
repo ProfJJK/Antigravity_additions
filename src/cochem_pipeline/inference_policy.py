@@ -62,7 +62,7 @@ def codex_policy_overrides(mcp_names=()) -> list[str]:
     result = []
     for name in CODEX_DISABLED_FEATURES:
         result += ['-c', 'features.' + name + '=false']
-    result += ['-c', 'web_search="disabled"']
+    result += ['-c', 'web_search="disabled"', '-c', 'agents.enabled=false']
     seen = set()
     entries = []
     for name in mcp_names:
@@ -124,10 +124,11 @@ def gemini_inference_arguments(spec: dict) -> list[str]:
     contract = spec.get('inference_only') if isinstance(spec, dict) else None
     if not isinstance(contract, dict) or set(contract) != {
             'arguments', 'version_arguments', 'executable_sha256', 'version', 'capability_reference',
-            'disables_tools', 'disables_mcp', 'disables_hooks'}:
+            'disables_tools', 'disables_mcp', 'disables_hooks', 'disables_subagents', 'disables_model_fallback'}:
         raise ValueError('Agy requires an operator-verified inference-only native contract')
-    if any(contract[key] is not True for key in ('disables_tools','disables_mcp','disables_hooks')):
-        raise ValueError('Agy inference contract must disable tools, MCP and hooks')
+    if any(contract[key] is not True for key in ('disables_tools','disables_mcp','disables_hooks',
+                                                'disables_subagents','disables_model_fallback')):
+        raise ValueError('Agy inference contract must disable tools, MCP, hooks, subagents and model fallback')
     if not isinstance(contract['executable_sha256'], str) or not re.fullmatch('[0-9a-f]{64}', contract['executable_sha256']):
         raise ValueError('Agy inference contract requires the exact verified native binary digest')
     if any(not isinstance(contract[key], str) or not contract[key].strip() or len(contract[key]) > 2048

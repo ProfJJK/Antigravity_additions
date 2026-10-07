@@ -344,8 +344,8 @@ def provider_command(provider: str, prefix: list[str], model: str, workspace: st
                      spec: dict, reasoning_effort: str | None = None, *,
                      inference_only: bool = False, mcp_names=()) -> list[str]:
     """Build one explicit dispatch without substituting a model or effort alias."""
-    if reasoning_effort is not None and (provider != 'codex' or reasoning_effort not in ('low','ultra')):
-        raise ValueError('The selected native reasoning effort is unsupported by this routing contract')
+    from .native_effort import effort_contract
+    effort_binding = effort_contract(provider, model, reasoning_effort, spec)
     if type(inference_only) is not bool or (mcp_names and not inference_only):
         raise ValueError('Native tool overrides require an explicit inference-only policy')
     from .inference_policy import codex_policy_overrides, claude_inference_arguments, gemini_inference_arguments
@@ -360,9 +360,17 @@ def provider_command(provider: str, prefix: list[str], model: str, workspace: st
                 argv[-1:-1] = ['-c','model_reasoning_effort='+json.dumps(reasoning_effort)]
         else:
             if inference_only:
+                policy_args = claude_inference_arguments()
+                if effort_binding is not None:
+                    settings_index = policy_args.index('--settings') + 1
+                    settings = json.loads(policy_args[settings_index])
+                    settings['alwaysThinkingEnabled'] = True
+                    policy_args[settings_index] = json.dumps(settings, separators=(',', ':'))
                 return [*prefix, '--print', '--output-format', 'json', '--model', model,
                         '--permission-mode', 'default', '--no-session-persistence',
-                        *claude_inference_arguments()]
+                        *policy_args, *(effort_binding['arguments'] if effort_binding else [])]
+            if effort_binding is not None:
+                raise ValueError('Reviewed Claude reasoning effort requires inference-only execution')
             argv.append('--no-session-persistence')
             if spec.get('allowed_tools'):
                 argv.extend(['--allowedTools',*spec['allowed_tools']])
@@ -372,6 +380,10 @@ def provider_command(provider: str, prefix: list[str], model: str, workspace: st
     arguments = gemini_inference_arguments(spec) if inference_only else spec['arguments']
     if inference_only and arguments.count('{model}') != 1:
         raise ValueError('Agy inference arguments must contain exactly one selected model placeholder')
+    if effort_binding is not None:
+        if not inference_only:
+            raise ValueError('Reviewed Agy reasoning effort requires inference-only execution')
+        arguments = [*arguments, *effort_binding['arguments']]
     return [*prefix,*(model if arg=='{model}' else workspace if arg=='{workspace}' else arg
                       for arg in arguments)]
 
@@ -381,7 +393,7 @@ def codex_policy_probe_command(prefix, operation, *, mcp_names=(), reasoning_eff
     from .inference_policy import codex_policy_overrides
     commands = {'mcp': ['mcp', 'list', '--json'], 'features': ['features', 'list'],
                 'auth': ['login', 'status']}
-    if operation not in commands or reasoning_effort not in (None, 'low', 'ultra'):
+    if operation not in commands or reasoning_effort not in (None, 'low', 'medium', 'high', 'ultra'):
         raise ValueError('Unsupported native inference policy probe')
     args = [*prefix, '-a', 'never', '--sandbox', 'read-only',
             '-c', 'model_provider="openai"', '-c', 'forced_login_method="chatgpt"',
@@ -426,7 +438,8 @@ def validate_gemini_version(spec, stdout, executable_digest):
     if executable_digest != contract['executable_sha256'] or not isinstance(stdout, str) or stdout.strip() != contract['version']:
         raise ValueError('Agy native version does not match its reviewed inference-only contract')
     return {'executable_sha256': executable_digest, 'version': contract['version'],
-            'capability_reference': contract['capability_reference']}
+            'capability_reference': contract['capability_reference'],
+            'subagents_disabled': True, 'model_fallback_disabled': True}
 
 
 def validate_coding_source_context(node):
@@ -634,6 +647,15 @@ class NativeRunner:
             return raw
 
         try:
+            from .native_effort import effort_contract, effort_binary_digest, effort_version_evidence
+            model = node['route']['model']
+            binding = effort_contract(provider, model, reasoning_effort, spec)
+            if binding is not None:
+                digest = effort_binary_digest(spec, binding)
+                raw = probe([*prefix, *binding['version_arguments']],
+                            'verify_reviewed_effort_version', 8192)
+                evidence['reasoning_effort'] = effort_version_evidence(binding, raw, digest,
+                    model=model, effort=reasoning_effort)
             if provider == 'codex':
                 raw = probe(codex_policy_probe_command(prefix, 'mcp', reasoning_effort=reasoning_effort),
                             'enumerate_mcp')
@@ -756,6 +778,10 @@ class NativeRunner:
         try:
             argv = provider_command(provider,prefix,model,str(workspace),spec,reasoning_effort,
                                     inference_only=inference_only,mcp_names=mcp_names)
+            from .native_effort import effort_contract, effort_binary_digest
+            binding = effort_contract(provider, model, reasoning_effort, spec)
+            if binding is not None:
+                effort_binary_digest(spec, binding)
             if inference_only and provider == 'gemini':
                 # The protected binary must still be the one whose version and
                 # capability contract were verified before authentication.
@@ -788,6 +814,12 @@ class NativeRunner:
                 try:
                     parsed = parse_result(provider,raw) if provider!='gemini' else parse_gemini(raw,spec['protocol'],model)
                     reported_effort = native_reported_effort(provider,raw)
+                    if provider != 'codex' and reasoning_effort is not None:
+                        from .native_effort import reported_profile
+                        observation = reported_profile(provider, raw, model=model,
+                            effort=reasoning_effort, spec=spec)
+                        inference_evidence['reasoning_effort'].update(observation)
+                        reported_effort = observation['reported_effort']
                 except (ValueError,TypeError) as exc:
                     raise ProviderFailure('protocol') from exc
                 if parsed.get('reported_model') is not None and parsed['reported_model']!=model:

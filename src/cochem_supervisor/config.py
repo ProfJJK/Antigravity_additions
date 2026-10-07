@@ -34,6 +34,7 @@ DEFAULTS = {'poll_seconds':10,'startup_grace_seconds':120,'heartbeat_timeout':30
                             'pipeline_tests/test_lease_invariants.py','pipeline_tests/test_planning_governance.py',
                             'pipeline_tests/test_execution_integration.py','pipeline_tests/test_runtime_storage_holds.py',
                             'pipeline_tests/test_inference_policy.py','pipeline_tests/test_worker_inference_policy.py',
+                            'pipeline_tests/test_native_effort.py',
                             'pipeline_tests/test_oracle.py','pipeline_tests/test_recovery_telemetry.py',
                             'pipeline_tests/test_runtime_monitor.py','pipeline_tests/test_service.py',
                             'pipeline_tests/test_routing_policy.py','pipeline_tests/test_routing_store.py',
@@ -137,6 +138,6 @@ def load_config(filename: str | Path) -> dict:
     result['pipeline_routing']=deepcopy(pipeline.get('routing',{}))
     # Independent parsing must remain usable when candidate pipeline imports
     # are broken; this reads only the protected policy, never a model module.
-    from .probes import configured_routing_policy
-    result['pipeline_routing']=configured_routing_policy(result['pipeline_routing'])
+    from .probes import configured_current_routing_policy
+    result['pipeline_routing']=configured_current_routing_policy(result['pipeline_routing'])
     return result

@@ -1,0 +1,18 @@
+{
+  "schema": "cochem-audit-evidence-manifest/1",
+  "audited_commit": "af4e335945fbd5d25198166e16ca32323df65bcb",
+  "canonical_specification_sha256": "2563c33b7237f099b936a48af6545a674012fc2fb6792f2d7c343e94c9afaf83",
+  "files": {
+    "docs/AUDIT_4.2.7-r2.md": "f43da0a6c603c4bf4ebda821d397f41453f10d824dd7a6b0e93682cb898129a2",
+    "docs/evidence/audit_4.2.7-r2/audit.json": "a716104ac7ec115aa28f786db1584a0e6e31ab3d2a8352b600bce4984b0d7de2",
+    "docs/evidence/audit_4.2.7-r2/authority-planning-tests.xml": "e219309288a03d202dc7a3a19925a50b25acc095bb29c96355672def51691c9d",
+    "docs/evidence/audit_4.2.7-r2/controller-reproductions.json": "a0ce4aaea22fbb63536acfc45ebb4a417690ca5b59cd476850453894151344d4",
+    "docs/evidence/audit_4.2.7-r2/docker-reproductions.json": "cc0b0ccb6043fde6ca740a7fdc2e792f6bb2b30e9591680c2c002c1182560f9f",
+    "docs/evidence/audit_4.2.7-r2/nonassertion-red.xml": "f8f31106bce9187ef166490e26f9d2f43f4b3254a1668c1a5767a6e248b98425",
+    "docs/evidence/audit_4.2.7-r2/ram-docker-tests.xml": "8de2bdb4d254e8cded90327156d1911a5dd0dbe9bc84fa260f0bf69c44f8ac6f",
+    "docs/evidence/audit_4.2.7-r2/reproduce_controller.py": "087d7f05ef3ea736c339701eee037f72b2630380fffd951b8b1f3b731b2a303f",
+    "docs/evidence/audit_4.2.7-r2/reproduce_docker.py": "4e5872e62bace6ace793f6e98ee55748866faf72164d56691e317197c0363a86",
+    "docs/evidence/audit_4.2.7-r2/routing-resources-tests.xml": "d1b7d41421fa434f37077a07dc7c7020234a653bbaee61065d5d2aceb601b0e9",
+    "docs/evidence/audit_4.2.7-r2/script-inventory.json": "4f6f81f74ba9739a782c5af132aec2f2c10de701e121cf5c9de4e47004239ea4"
+  }
+}

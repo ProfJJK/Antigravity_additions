@@ -1,7 +1,8 @@
 # 4.2.7 owner-amendment operations
 
-The canonical revision is `owner-amendment-2026-10-06`. The release tag is
-`v4.2.7-r2`; the original `v4.2.7` remains immutable history. All 18 accepted
+The canonical revision is `model-routing-2026-10-07`. Published tags
+`v4.2.7-r2` and `v4.2.7` remain immutable history; this revision keeps version
+4.2.7 and the existing installation paths. All 18 accepted
 chapter improvements are mandatory and listed in the requirement ledger.
 
 ## Model jobs and concurrency
@@ -18,11 +19,34 @@ The controller applies validated artifacts; models cannot launch hidden nested
 agents or acquire unaccounted capacity. Unsupported native restrictions produce
 compatibility holds and normal tier spillover.
 
+| Complexity | Ordered candidates |
+| --- | --- |
+| 1–3 | Gemini 3.8 Flash default → Claude Haiku 4.5 default → GPT-6 Luna low |
+| 4–6 | Claude Sonnet 5.5 default → GPT-6.1 Sol medium → Gemini 3.8 Flash Extended |
+| 7–9 | GPT-6.1 Sol high → Claude Opus 5.5 Extended → Gemini 3.1 Pro Preview high |
+| 10 | Claude Fable 5.1 Extended → GPT-6 Astra ultra |
+
+Read [the research record](ROUTING_RESEARCH_2026-10-07.md) for exact identifiers
+and effort evidence. Sol medium/high is a latency/quota hypothesis, not measured
+equivalence to Opus. Extended means a protected reviewed profile bound to exact
+executable/version/model/native arguments or settings and observed metadata;
+do not type `extended` as an invented CLI option. Verify the installed Agy
+headless/auth/profile contract and disable native automatic fallback and internal
+inference subagents. An unavailable profile holds and spills over normally.
+
 `max_execution_slots` controls shared host admission, initially 4. Increase it
 only after measuring the host and provisioning enough distinct isolated worker
 identities. CPU, RAM, commit, GPU/thermal, disk and container reservations remain
 active constraints. Claude has a hard provider ceiling 20. Codex/Agy have no
 assumed provider ceiling. Coding batches and WBS leaf counts do not inherit the Claude limit of 20.
+
+For the owner's 13700K/64 GB host, [workstation guidance](WORKSTATION_13700K_4.2.7.md)
+recommends measuring six then eight seats after preflight, retaining the required
+four-worker Windows queue benchmark. The six-identity example needs at least
+eight identities for an eight-slot configuration. Eight requires 33 GiB of
+current available RAM and 38 GiB free commit under default reservations; twelve
+requires 49/54 GiB and is conditional, while sixteen cannot fit the default
+physical-memory bound on 64 GiB. No slot or pool size changes automatically.
 
 The prepared pool defaults to fixed per-profile targets. Optional adaptation
 requires measured demand history and stays inside configured hardware capacity,
@@ -83,6 +107,13 @@ snapshot contains public canonical documents and reviewed authority metadata;
 Windows still builds/validates its protected index. Existing immutable source
 pins must not be silently overwritten. An old captured execution contract may
 require a visible migration hold; it never receives retrospective approval.
+
+New model submissions capture catalogue version 2; score algorithm version 1 is
+unchanged. Version-1 task policies stay decodable and immutable. At a new attempt,
+retired targets receive compatibility holds and ordinary spillover within the
+captured chain. They are not rewritten to similarly named models/efforts. Active
+reservations and accepted receipts remain unchanged, and upgrades cannot reset
+dispatch, ordinary-failure, quota/backoff or repair budgets.
 
 ## Incident replay and manual preflight
 
@@ -145,6 +176,12 @@ accepted queue/MCP/cold-preparation observations stay acceptable, while
 correctness, containment and 30-second physical test deadlines stay mandatory.
 
 ## Evidence limits
+
+This routing update does not close the nine [4.2.7-r2 audit findings](AUDIT_4.2.7-r2.md).
+In particular, the dashboard's source-drift check and deployment attestation view
+remain incomplete; a displayed verified row is not proof that changed source
+meets every semantic requirement. The prior release record does not validate this
+new canonical revision without fresh evidence.
 
 The dashboard checks exact artifact hashes, revision and required platforms.
 A missing row, stale artifact or missing Windows evidence prevents full

@@ -45,7 +45,7 @@ def test_native_ram_capacity_wait_does_not_become_a_permanent_security_hold(tmp_
         ramdisk_provider_failure(WorkerCleanupError('Process closure is unverified'))
 
 
-@pytest.mark.parametrize('effort', [None, 'low', 'ultra'])
+@pytest.mark.parametrize('effort', [None, 'low', 'medium', 'high', 'ultra'])
 def test_codex_coding_dispatch_has_readonly_sandbox_and_effective_feature_overrides(effort):
     names = ('plain', 'server.with.dots"andquotes')
     argv = provider_command('codex', ['protected-codex'], 'gpt-6-astra', 'ram-project', {}, effort,
@@ -61,6 +61,7 @@ def test_codex_coding_dispatch_has_readonly_sandbox_and_effective_feature_overri
     assert 'forced_login_method="chatgpt"' in values and 'model_provider="openai"' in values
     assert 'features.unified_exec=false' not in values
     assert 'features.apply_patch_freeform=false' not in values
+    assert 'agents.enabled=false' in values
     assert not any('disable_in_process_fallback' in value for value in values)
     tables = [value for value in values if value.startswith('mcp_servers=')]
     assert tables == ['mcp_servers={"plain"={enabled=false},"server.with.dots\\"andquotes"={enabled=false}}']
@@ -117,7 +118,8 @@ def gemini_spec(binary):
         'inference_only': {'arguments': ['fixture-infer-no-tools', '--selected-model', '{model}'],
             'version_arguments': ['fixture-native-version'], 'executable_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
             'version': 'Agy reviewed-version fixture', 'capability_reference': 'Operator protocol fixture, not native availability evidence',
-            'disables_tools': True, 'disables_mcp': True, 'disables_hooks': True}}
+            'disables_tools': True, 'disables_mcp': True, 'disables_hooks': True,
+            'disables_subagents': True, 'disables_model_fallback': True}}
 
 
 def test_gemini_uses_only_reviewed_native_argv_and_selected_model(tmp_path):

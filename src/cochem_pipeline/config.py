@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-from .routing import RoutingPolicy, load_routing_policy
+from .routing import RoutingPolicy, load_current_routing_policy
 from .hardware_guard import HardwarePolicy
 from .resource_limits import ResourceLimits
 from .ramdisk import RamdiskConfig
@@ -169,7 +169,7 @@ def load_config(filename: str) -> PipelineConfig:
             Rule(**rule)
         except (TypeError,ValueError) as exc:
             raise ValueError(f'Invalid rule configuration: {exc}') from exc
-    routing = load_routing_policy(raw.get('routing'))
+    routing = load_current_routing_policy(raw.get('routing'))
     hardware = HardwarePolicy.from_dict(raw.get('hardware'))
     execution_limits = ResourceLimits.from_dict(raw.get('execution_limits'))
     ramdisk = RamdiskConfig.from_dict(raw.get('ramdisk'))

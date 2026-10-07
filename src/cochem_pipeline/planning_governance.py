@@ -129,10 +129,10 @@ def canonical_authority():
         raise ValueError('Installed canonical specification assets are missing or unbounded')
     hashes={name:hashlib.sha256(raw).hexdigest() for name,raw in content.items()}
     return {'specification_id':SPECIFICATION_ID,
-            'specification_revision':'owner-amendment-2026-10-06',
+            'specification_revision':'model-routing-2026-10-07',
             'specification_sha256':hashes['4.2.7_SRS.md'],
             'owner_amendments':[{'source':'SRS_ADDENDUM_4.2.7.md',
-                'revision':'owner-amendment-2026-10-06','sha256':hashes['SRS_ADDENDUM_4.2.7.md']}],
+                'revision':'model-routing-2026-10-07','sha256':hashes['SRS_ADDENDUM_4.2.7.md']}],
             'specification_artifact_hashes':hashes}
 
 

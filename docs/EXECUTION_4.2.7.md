@@ -6,6 +6,12 @@ Alternative Path; the obsolete seven-stage and agentic Method Matrix references
 are not production prerequisites. Chemical method selection remains a domain
 concern, not a universal agent workflow gate.
 
+The current revision is `model-routing-2026-10-07`, with version 4.2.7 and existing
+installation paths retained. It updates the Chapter 06 model catalogue, not
+historical release tags or evidence. Read [routing research](ROUTING_RESEARCH_2026-10-07.md)
+for exact IDs and reviewed effort profiles. The [nine audit findings](AUDIT_4.2.7-r2.md)
+remain outstanding; this guide is not certification that Windows deployment is ready.
+
 ## Preserve deployment state
 
 Stage new protected `Pipeline4.2.7-r2` and `Supervisor4.2.7-r2` code/environments.
@@ -27,6 +33,11 @@ service lock prevents running a second Warden against the same private state.
 Windows SYSTEM, identity/ACL, real RAM backing, Docker pipe/backend, native
 subscription and Agy capability checks remain mandatory. The sample contains
 explicit rejected Agy placeholders; this release does not invent native flags.
+Public Gemini identifiers, including `gemini-3.1-pro-preview`, do not prove that
+the installed Agy version supports the required headless/profile contract. Bind
+Extended intent to reviewed native arguments/settings and observed metadata;
+disable native fallback/subagents and retain visible compatibility holds when
+the required restriction or profile cannot be verified.
 
 ## Activate the clean knowledge corpus
 
@@ -105,6 +116,12 @@ coverage, native receipts, meaningful workload or successful invariant checks
 remains pending. If the 5 ms objective is still missed, investigate the observed
 cause before changing the queue; correctness and durability stay mandatory.
 
+After that original observation and prerequisite checks, use the
+[13700K capacity guide](WORKSTATION_13700K_4.2.7.md) to evaluate six then eight
+shared seats with sufficient identities and measured memory/commit headroom.
+The global default remains four; do not relabel an eight-worker run as the
+required four-worker acceptance observation.
+
 ## Remaining acceptance
 
 Run the existing native identity/RAM/Docker/governor/Oracle tests, full planning
@@ -130,3 +147,9 @@ the new final reconciliation gate; the preview reports these holds and the
 controller rejects incompatible captures. Review/re-submit with explicit
 lineage where a safe untouched-hold migration does not apply; do not erase
 history or claim an old review proves the amended contract.
+
+New model jobs capture catalogue version 2 with score algorithm version 1
+unchanged. Existing version-1 captures remain decodable and immutable. Retired
+targets hold visibly on new dispatch, then use their captured spillover chain;
+do not silently substitute the new Sol version or new effort into old policies.
+Active/accepted receipts and consumed budgets remain unchanged.

@@ -1,16 +1,28 @@
-# Active owner decisions for 4.2.7, amendment 2026-10-06
+# Active owner decisions for 4.2.7, amendment 2026-10-07
 
-The [canonical 4.2.7 SRS](../.sources/4.2.7_SRS.md) and
-[owner addendum](../.sources/SRS_ADDENDUM_4.2.7.md) govern the active pipeline.
+The [canonical 4.2.7 SRS](../.sources/4.2.7_SRS.model-routing-2026-10-07.md) and
+[owner addendum](../.sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md) govern the active pipeline.
 Current explicit owner instructions take precedence. Historical source material
 and debug snippets do not create new requirements.
 
 ## Every model job uses Chapter 06
 
-- Complexity 1–3: Flash → Haiku → Luna.
-- Complexity 4–6: Sonnet → Sol → Gemini Pro.
-- Complexity 7–9: Opus → Astra low → Gemini Pro.
-- Complexity 10: Fable → Astra ultra, exactly two candidates.
+- Complexity 1–3: Gemini 3.8 Flash → Claude Haiku 4.5 → GPT-6 Luna low.
+- Complexity 4–6: Claude Sonnet 5.5 → GPT-6.1 Sol medium → Gemini 3.8 Flash Extended.
+- Complexity 7–9: GPT-6.1 Sol high → Claude Opus 5.5 Extended → Gemini 3.1 Pro Preview high.
+- Complexity 10: Claude Fable 5.1 Extended → GPT-6 Astra ultra, exactly two candidates.
+
+The owner explicitly kept complexity 3 in the lightweight band and confirmed
+Fable 5.1 after Fable 5.5 could not be verified. Sol medium/high are engineering
+recommendations implemented under the requested research-based update, not a
+claim of benchmark equivalence to Opus. Extended is a protected native thinking
+profile requiring reviewed exact arguments, executable/version and observed
+native metadata; it is not an invented literal effort flag. Unsupported targets
+remain compatibility holds and use ordinary spillover. The documented Gemini
+Pro identifier is gemini-3.1-pro-preview; actual Agy support remains unverified.
+Catalogue v2 applies to new requests; scoring remains v1. Old captured policies,
+receipts and spent budgets remain immutable. Retired targets cannot receive new
+reservations under the current catalogue; captured-order fallback/backoff remains.
 
 Planning, synthesis, coding, research, review, preflight and repair all use these
 chains through a durable job board. There is no Gemini-only synthesis or fixed
@@ -62,10 +74,19 @@ preserve actual evidence and expose missing prerequisites.
 
 The 29.347 ms queue maximum, 7.731 ms authenticated MCP mean and 4.85 s cold
 container preparation are accepted observations, not invented universal maxima.
-Queue acceptance remains conditional on actual Windows launch withfour workers,
+Queue acceptance remains conditional on actual Windows launch with four workers,
 the production database and realistic workload before any redesign. Authentication,
 containment, durability and 30-second test deadlines remain mandatory.
 
 Ordinary task failures stay isolated. Confirmed structural queue corruption
 triggers containment under amended FR009. Windows/live-subscription and 48-hour
 acceptance require real host evidence; portable tests cannot establish them.
+
+## Workstation capacity recommendation
+
+For the 13700K/64 GiB workstation, measure six then eight shared slots after
+preflight. The default remains four; the required queue benchmark still uses
+four workers. Eight needs at least 33 GiB of currently available RAM and 38 GiB
+of free commit with default reservations. Provision enough distinct identities;
+never count the existing 8 GiB R: allocation twice. This is planning guidance,
+not observed host acceptance. Known audit defects remain open.

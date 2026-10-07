@@ -1,0 +1,30 @@
+{
+  "schema": "cochem-build-and-assets/1",
+  "revision": "model-routing-2026-10-07",
+  "wheel": "cochem-4.2.7-py3-none-any.whl",
+  "wheel_sha256": "0b4406ef542200c0dac648ad9c24a16a7e7bed97c12674ba8873f4b889e8bdcc",
+  "build_command": "UV_CACHE_DIR=/workspace/.cache/uv uv build --wheel --python /workspace/.venvs/antigravity/bin/python --offline --out-dir /tmp/cochem-model-routing-wheel-cached",
+  "build_exit_code": 0,
+  "checked_wheel_members": [
+    "4.2.7_SRS.md",
+    "SRS_ADDENDUM_4.2.7.md",
+    "requirements_4.2.7.json",
+    "acceptance_4.2.7.json",
+    "cochem_pipeline/native_effort.py",
+    "cochem_pipeline/routing.py",
+    "cochem_pipeline/worker.py",
+    "cochem_supervisor/probes.py",
+    "cochem_supervisor/job_board.py",
+    "cochem_supervisor/runner.py",
+    "docs/evidence/VALIDATION_model-routing-2026-10-07.json"
+  ],
+  "post_ledger_asset_tests": {
+    "passed": 93,
+    "failed": 0,
+    "skipped": 0,
+    "junit": "docs/evidence/ASSETS_model-routing-2026-10-07.xml",
+    "junit_sha256": "185ee4fe3b64dbae6fb379153282342cddfe6591ac54d6d7592ac38251eb321f"
+  },
+  "canonical_requirements": 110,
+  "full_srs_acceptance_certified": false
+}

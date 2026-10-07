@@ -57,6 +57,65 @@ def test_quota_spillover_and_exhaustion_backoff_survive_reopening(tmp_path):
     assert resumed['provider']=='claude' and resumed['cycle']==1
 
 
+@pytest.mark.parametrize('held_pool', ['codex', 'shared'])
+def test_retained_legacy_target_obeys_both_captured_and_current_quota_pool_holds(tmp_path, held_pool):
+    board = RepairJobBoard(tmp_path/'quota-migration.db')
+    legacy = configured_routing_policy({'policy_version': 1, 'backoff_jitter_fraction': 0})
+    current = configured_routing_policy()
+    for provider in ('codex', 'claude'):
+        current['provider_limits'][provider]['quota_pool'] = 'shared'
+    current['quota_pool_limits'] = {'shared': None, 'gemini': None}
+    complex_payload = {'objective': 'security migration concurrency rollback formal proof optimization',
+        'requirements': ['requirement '+str(index) for index in range(12)],
+        'dependencies': ['first', 'second', 'third', 'fourth'], 'artifact_text': 'source '*10000}
+    job = board.submit('quota-remap', complex_payload, legacy, now=100)
+    assert job['scoring']['score'] == 10
+    with board.connection(True) as connection:
+        connection.execute('INSERT INTO repair_route_holds VALUES(?,?,?,?)', ( 'pool', held_pool, 999, 'quota'))
+    assert board.claim(job['job_id'], ['codex'], primary_cleanup_verified=True,
+        current_policy=current, now=101) is None
+    waiting = RepairJobBoard(board.path).get(job['job_id'])
+    assert waiting['dispatches'] == 0 and waiting['policy'] == legacy
+    assert waiting['candidate_index'] == 0 and waiting['next_eligible'] == 131
+    with board.connection() as connection:
+        events = [json.loads(row[0]) for row in connection.execute(
+            "SELECT details FROM repair_route_events WHERE event='CANDIDATE_SKIPPED'")]
+        assert any(isinstance(event['reason'], dict) and event['reason']['category'] == 'quota' for event in events)
+    resumed = board.claim(job['job_id'], ['codex'], primary_cleanup_verified=True,
+        current_policy=current, now=1000)
+    assert resumed['model'] == 'gpt-6-astra' and resumed['reasoning_effort'] == 'ultra'
+    assert resumed['quota_pool'] == 'codex'  # Captured authority is never rewritten.
+    assert resumed['admission_quota_pool'] == 'shared'
+
+
+@pytest.mark.parametrize('failure', ['quota', 'auth'])
+def test_failure_preserves_captured_pool_and_holds_the_admitted_shared_pool(tmp_path, failure):
+    board = RepairJobBoard(tmp_path/'shared-admission.db')
+    captured = configured_routing_policy()
+    current = deepcopy(captured)
+    for provider in ('codex', 'claude'):
+        current['provider_limits'][provider]['quota_pool'] = 'shared'
+    current['quota_pool_limits'] = {'shared': None, 'gemini': None}
+    job = board.submit('shared-quota', payload(), captured, now=100)
+    first = board.claim(job['job_id'], ['claude', 'codex', 'gemini'],
+        primary_cleanup_verified=True, current_policy=current, now=101)
+    assert first['provider'] == 'claude'
+    assert first['quota_pool'] == 'claude' and first['admission_quota_pool'] == 'shared'
+    board.finish(first, failure=failure, now=102)
+    with board.connection() as connection:
+        holds = {(row['scope'], row['target']): row['category'] for row in connection.execute(
+            'SELECT * FROM repair_route_holds')}
+        assert holds == {('pool', 'claude'): failure, ('pool', 'shared'): failure}
+        reserved = json.loads(connection.execute(
+            "SELECT details FROM repair_route_events WHERE event='RESERVED'").fetchone()[0])
+        assert reserved == first
+    reopened = RepairJobBoard(board.path)
+    assert reopened.get(job['job_id'])['policy'] == captured
+    second = reopened.claim(job['job_id'], ['claude', 'codex', 'gemini'],
+        primary_cleanup_verified=True, current_policy=current, now=103)
+    assert second['provider'] == 'gemini'  # Codex shares the newly exhausted pool.
+
+
 def test_cleanup_fence_and_native_receipt_are_required_before_completion(tmp_path):
     board=RepairJobBoard(tmp_path/'board.db')
     job=board.submit('incident',payload())
@@ -85,6 +144,27 @@ def test_unspent_reservation_preserves_budget_and_first_candidate(tmp_path):
     second=board.claim(job['job_id'],['claude'],primary_cleanup_verified=True)
     assert second['candidate_index']==0 and second['reservation_id']!=first['reservation_id']
     assert board.get(job['job_id'])['dispatches']==1
+
+
+def test_capability_rejection_advances_only_unspent_dispatch_and_preserves_prior_charge(tmp_path):
+    board = RepairJobBoard(tmp_path/'board.db')
+    job = board.submit('incident', payload(), now=100)
+    first = board.claim(job['job_id'], ['claude','codex','gemini'], primary_cleanup_verified=True, now=101)
+    board.bind_budget(first, 'already-paid-attempt')
+    for operation in (board.release_unspent, board.reject_unspent):
+        with pytest.raises(ValueError, match='charged reservation'):
+            operation(first)
+    board.finish(first, failure='quota', now=102)
+    second = board.claim(job['job_id'], ['claude','codex','gemini'], primary_cleanup_verified=True, now=103)
+    assert second['provider'] == 'codex' and board.get(job['job_id'])['dispatches'] == 2
+    board.reject_unspent(second, now=104)
+    waiting = RepairJobBoard(board.path).get(job['job_id'])
+    assert waiting['dispatches'] == 1 and waiting['candidate_index'] == 2
+    third = board.claim(job['job_id'], ['claude','codex','gemini'], primary_cleanup_verified=True, now=105)
+    assert third['provider'] == 'gemini' and board.get(job['job_id'])['dispatches'] == 2
+    with sqlite3.connect(board.path) as connection:
+        hold = connection.execute("SELECT category FROM repair_route_holds WHERE scope='route' AND target=?", (second['key'],)).fetchone()
+        assert hold == ('compatibility',)
 
 
 def test_dry_replay_redacts_secrets_and_executes_no_provider(tmp_path):

@@ -1,13 +1,13 @@
 {
   "schema": "cochem-requirements/4.2.7",
-  "revision": "owner-amendment-2026-10-06",
+  "revision": "model-routing-2026-10-07",
   "specification_id": "COCHEM-4.2.7",
-  "specification_sha256": "2563c33b7237f099b936a48af6545a674012fc2fb6792f2d7c343e94c9afaf83",
+  "specification_sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
   "requirements": [
     {
       "id": "S427-GOV-001",
       "chapter": "01: Authority and scope",
-      "requirement": "Current explicit owner decisions take precedence over this specification, then this specification governs the active pipeline. The authoritative inputs are [the 4.2.0 planner architecture](Pipeline_4_2_0_Architecture.md), [Oracle SRS/WBS](Oracle_SRS_WBS.md), [complete telemetry dossier](full_dossier_untruncated.md), the corrected [routing specification](docs/ROUTING_4.2.4.md), and the applicable concurrency, queue, coding, knowledge and watchdog requirements listed below. The truncated [dossier](full_dossier.md) adds no conflicting authority.",
+      "requirement": "Current explicit owner decisions take precedence over this specification, then this specification governs the active pipeline. The authoritative inputs are [the 4.2.0 planner architecture](Pipeline_4_2_0_Architecture.md), [Oracle SRS/WBS](Oracle_SRS_WBS.md), [complete telemetry dossier](full_dossier_untruncated.md), the current Chapter 06 routing amendment and applicable concurrency, queue, coding, knowledge and watchdog requirements listed below. The [4.2.4 routing specification](docs/ROUTING_4.2.4.md) is historical where its model order differs; its retained spillover intent does not override Chapter 06. The truncated [dossier](full_dossier.md) adds no conflicting authority.",
       "mandatory": true,
       "code": [
         "src/cochem_pipeline/planning_governance.py",
@@ -18,13 +18,19 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Search active setup/launch instructions for fixed-model synthesis and stale direct-CLI claims, exercise the current checker through the authenticated board, and clearly label remaining historical documents.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-09"
+      ]
     },
     {
       "id": "S427-GOV-002",
@@ -40,13 +46,16 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retire contradictory current setup instructions; retain the canonical owner decisions and close dependent coding evidence gaps.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-GOV-003",
@@ -62,13 +71,16 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retire contradictory current setup instructions; retain the canonical owner decisions and close dependent coding evidence gaps.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-GOV-004",
@@ -84,13 +96,16 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retire contradictory current setup instructions; retain the canonical owner decisions and close dependent coding evidence gaps.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-001",
@@ -108,13 +123,16 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "All 18 improvements accepted; phantom agentic prerequisites withdrawn."
+        "All 18 improvements accepted; phantom agentic prerequisites withdrawn.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retire contradictory current setup instructions; retain the canonical owner decisions and close dependent coding evidence gaps.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ARCH-001",
@@ -133,14 +151,17 @@
         "pipeline_tests/test_containers.py"
       ],
       "owner_decisions": [
-        "Every model task uses board routing; Windows Python and native subscription CLIs."
+        "Every model task uses board routing; Windows Python and native subscription CLIs.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Complete the view, then execute SYSTEM/worker/repair ACL, Docker pipe/backend denial, protected path/link and actual SQLite placement checks on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ARCH-002",
@@ -159,14 +180,17 @@
         "pipeline_tests/test_containers.py"
       ],
       "owner_decisions": [
-        "Every model task uses board routing; Windows Python and native subscription CLIs."
+        "Every model task uses board routing; Windows Python and native subscription CLIs.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Complete the view, then execute SYSTEM/worker/repair ACL, Docker pipe/backend denial, protected path/link and actual SQLite placement checks on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ARCH-003",
@@ -185,14 +209,17 @@
         "pipeline_tests/test_containers.py"
       ],
       "owner_decisions": [
-        "Every model task uses board routing; Windows Python and native subscription CLIs."
+        "Every model task uses board routing; Windows Python and native subscription CLIs.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Complete the view, then execute SYSTEM/worker/repair ACL, Docker pipe/backend denial, protected path/link and actual SQLite placement checks on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ARCH-004",
@@ -211,14 +238,17 @@
         "pipeline_tests/test_containers.py"
       ],
       "owner_decisions": [
-        "Every model task uses board routing; Windows Python and native subscription CLIs."
+        "Every model task uses board routing; Windows Python and native subscription CLIs.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Complete the view, then execute SYSTEM/worker/repair ACL, Docker pipe/backend denial, protected path/link and actual SQLite placement checks on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-002",
@@ -232,14 +262,20 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Every model task uses board routing; Windows Python and native subscription CLIs."
+        "Every model task uses board routing; Windows Python and native subscription CLIs.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "On Windows change each relevant configured/observed identity or backing fact in controlled fixtures and demonstrate the diagram displays evidence, unknowns and drift without exposing secrets.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-07"
+      ]
     },
     {
       "id": "S427-STATE-001",
@@ -258,13 +294,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-STATE-002",
@@ -283,13 +322,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-STATE-003",
@@ -308,13 +350,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-STATE-004",
@@ -333,13 +378,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-STATE-005",
@@ -358,13 +406,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-STATE-006",
@@ -383,13 +434,16 @@
         "pipeline_tests/test_routing_store.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-003",
@@ -403,13 +457,16 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Durable budgets and captured contracts remain preserved."
+        "Durable budgets and captured contracts remain preserved.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Retain real Windows crash/cancellation/reboot/process-identity evidence and test recovery against the repaired planning/coding gates.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PLAN-001",
@@ -430,14 +487,20 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate unique manifest/chapter WBS survives scatter/gather; reject missing or changed WBS/output commitments; retain concurrent single-gather/crash tests and run the six-chapter native workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-02"
+      ]
     },
     {
       "id": "S427-PLAN-002",
@@ -458,14 +521,17 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix WBS/output binding, then demonstrate the six-chapter native DAG, overlap, fallback, sibling rejection and crash-safe single gather.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PLAN-003",
@@ -486,14 +552,20 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate unique manifest/chapter WBS survives scatter/gather; reject missing or changed WBS/output commitments; retain concurrent single-gather/crash tests and run the six-chapter native workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-02"
+      ]
     },
     {
       "id": "S427-PLAN-004",
@@ -514,14 +586,17 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix WBS/output binding, then demonstrate the six-chapter native DAG, overlap, fallback, sibling rejection and crash-safe single gather.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PLAN-005",
@@ -542,14 +617,17 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix WBS/output binding, then demonstrate the six-chapter native DAG, overlap, fallback, sibling rejection and crash-safe single gather.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PLAN-006",
@@ -570,14 +648,17 @@
         "pipeline_tests/test_document_governance.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix WBS/output binding, then demonstrate the six-chapter native DAG, overlap, fallback, sibling rejection and crash-safe single gather.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-004",
@@ -591,13 +672,19 @@
         "pipeline_tests/test_store.py"
       ],
       "owner_decisions": [
-        "Synthesis uses Chapter 06 without a Gemini-only exception."
+        "Synthesis uses Chapter 06 without a Gemini-only exception.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Demonstrate unique manifest/chapter WBS survives scatter/gather; reject missing or changed WBS/output commitments; retain concurrent single-gather/crash tests and run the six-chapter native workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-02"
+      ]
     },
     {
       "id": "S427-CODE-001",
@@ -621,14 +708,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-002",
@@ -652,14 +742,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-003",
@@ -683,14 +776,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-004",
@@ -714,14 +810,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-005",
@@ -745,14 +844,20 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Run actual pytest counterexamples for RuntimeError before an assertion, setup/collection failure and skips, plus a genuine failing assertion. Confirm only the latter advances the durable workflow, then repeat the complete native Windows coding workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-01"
+      ]
     },
     {
       "id": "S427-CODE-006",
@@ -776,14 +881,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-007",
@@ -807,14 +915,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-008",
@@ -838,14 +949,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CODE-009",
@@ -869,14 +983,20 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Run actual pytest counterexamples for RuntimeError before an assertion, setup/collection failure and skips, plus a genuine failing assertion. Confirm only the latter advances the durable workflow, then repeat the complete native Windows coding workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-01"
+      ]
     },
     {
       "id": "S427-CODE-010",
@@ -900,14 +1020,17 @@
         "pipeline_tests/test_coding_acceptance.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-005",
@@ -922,39 +1045,53 @@
         "pipeline_tests/test_coding_reconciliation.py"
       ],
       "owner_decisions": [
-        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval."
+        "Twenty is not a leaf limit; asymmetric SRS/WBS reconciliation precedes final approval.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repair RED evidence and rerun a complete Windows native coding task through final reconciliation and verified integration; verify earlier sealed regressions remain green.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ROUTE-001",
       "chapter": "06: Complexity routing and spillover",
-      "requirement": "The controller calculates and stores score/rationale from task content; submitted model, score, tier or identity fields confer no authority. Current deterministic scoring starts at one, adds two for non-chapter task kinds, one per estimated-token threshold crossed (512/2,048/8,192), requirements threshold (4/12), dependency threshold (1/4), work breadth threshold (3/8) and distinct risk-group threshold (1/3), then caps at ten. Estimates are scheduling heuristics, not measured intelligence or tokenizer output. Version/hash the captured policy.",
+      "requirement": "The controller calculates and stores score/rationale from task content; submitted model, score, tier or identity fields confer no authority. Current deterministic scoring starts at one, adds two for non-chapter task kinds, one per estimated-token threshold crossed (512/2,048/8,192), requirements threshold (4/12), dependency threshold (1/4), work breadth threshold (3/8) and distinct risk-group threshold (1/3), then caps at ten. Estimates are scheduling heuristics, not measured intelligence or tokenizer output. Version/hash the captured policy. New submissions use model catalogue version 2 and unchanged score algorithm version 1; captured version-1 policies remain decodable and immutable.",
       "mandatory": true,
       "code": [
         "src/cochem_pipeline/routing.py",
         "src/cochem_pipeline/routing_store.py",
         "src/cochem_pipeline/failures.py",
-        "src/cochem_pipeline/inference_policy.py"
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_routing_policy.py",
         "pipeline_tests/test_routing_store.py",
-        "pipeline_tests/test_routing_integration.py"
+        "pipeline_tests/test_routing_integration.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ROUTE-002",
@@ -965,48 +1102,70 @@
         "src/cochem_pipeline/routing.py",
         "src/cochem_pipeline/routing_store.py",
         "src/cochem_pipeline/failures.py",
-        "src/cochem_pipeline/inference_policy.py"
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_routing_policy.py",
         "pipeline_tests/test_routing_store.py",
-        "pipeline_tests/test_routing_integration.py"
+        "pipeline_tests/test_routing_integration.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ROUTE-003",
       "chapter": "06: Complexity routing and spillover",
-      "requirement": "Enforce at most 20 concurrent Claude CLI agent reservations, across its models and efforts. Codex and Agy have no assumed provider concurrency ceiling. Optional reviewed provider/model/effort/shared-pool operational limits may be lower than measured capabilities but SHALL be labelled configuration, not provider facts; default model/pool reservations have no artificial one/two cap. Current live admission limits govern new attempts, with their own captured admission-policy digest; an older task policy does not retain retired default one/two caps. Immutable task model order and already active reservations remain evidence-bound. Hardware admission and actual provisioned isolated identities still bound execution. Backlog, quota and cooldown observations distinguish actual evidence from assumptions. Never report remaining credits from a concurrency counter.",
+      "requirement": "Enforce at most 20 concurrent Claude CLI agent reservations, across its models and efforts. Codex and Agy have no assumed provider concurrency ceiling. Optional reviewed provider/model/effort/shared-pool operational limits may be lower than measured capabilities but SHALL be labelled configuration, not provider facts; default model/pool reservations have no artificial one/two cap. Current live admission limits govern new attempts, with their own captured admission-policy digest; an older task policy does not retain retired default one/two caps. Immutable task model order and already active reservations remain evidence-bound. Retired catalogue targets produce a visible compatibility hold at new dispatch and normal spillover within the captured chain; do not replace old target IDs/efforts, rewrite accepted receipts or reset budgets. Hardware admission and actual provisioned isolated identities still bound execution. Backlog, quota and cooldown observations distinguish actual evidence from assumptions. Never report remaining credits from a concurrency counter.",
       "mandatory": true,
       "code": [
         "src/cochem_pipeline/routing.py",
         "src/cochem_pipeline/routing_store.py",
         "src/cochem_pipeline/failures.py",
-        "src/cochem_pipeline/inference_policy.py"
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_routing_policy.py",
         "pipeline_tests/test_routing_store.py",
-        "pipeline_tests/test_routing_integration.py"
+        "pipeline_tests/test_routing_integration.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ROUTE-004",
@@ -1017,22 +1176,33 @@
         "src/cochem_pipeline/routing.py",
         "src/cochem_pipeline/routing_store.py",
         "src/cochem_pipeline/failures.py",
-        "src/cochem_pipeline/inference_policy.py"
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_routing_policy.py",
         "pipeline_tests/test_routing_store.py",
-        "pipeline_tests/test_routing_integration.py"
+        "pipeline_tests/test_routing_integration.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ROUTE-005",
@@ -1043,22 +1213,33 @@
         "src/cochem_pipeline/routing.py",
         "src/cochem_pipeline/routing_store.py",
         "src/cochem_pipeline/failures.py",
-        "src/cochem_pipeline/inference_policy.py"
+        "src/cochem_pipeline/inference_policy.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_pipeline/worker.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_routing_policy.py",
         "pipeline_tests/test_routing_store.py",
-        "pipeline_tests/test_routing_integration.py"
+        "pipeline_tests/test_routing_integration.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-006",
@@ -1072,13 +1253,16 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20."
+        "Exact Chapter 06 chains apply to all jobs; only Claude has the provider ceiling of 20.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify exact installed model/effort/auth contracts and real busy/backlog/quota/compatibility observations without manufacturing quota exhaustion or pinning a model.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-001",
@@ -1100,14 +1284,17 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-002",
@@ -1129,14 +1316,17 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-003",
@@ -1158,14 +1348,17 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-004",
@@ -1187,14 +1380,17 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-005",
@@ -1216,14 +1412,17 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-HOST-006",
@@ -1245,15 +1444,18 @@
         "pipeline_tests/test_controller_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native",
         "Windows-48-hour"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts. Complete the 48-hour resource/handle run and actual desktop-heap evidence."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-007",
@@ -1269,14 +1471,17 @@
         "pipeline_tests/test_hardware_guard.py"
       ],
       "owner_decisions": [
-        "Hardware capacity is configurable; initial four seats await actual host measurements."
+        "Hardware capacity is configurable; initial four seats await actual host measurements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Shorten the admission critical section without losing atomic reservations. Measure actual sensors, Job Objects, Warden budget, desktop heap and a 48-hour native soak before raising capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ORACLE-001",
@@ -1293,14 +1498,17 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ORACLE-002",
@@ -1317,14 +1525,17 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ORACLE-003",
@@ -1341,14 +1552,17 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ORACLE-004",
@@ -1365,14 +1579,17 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-ORACLE-005",
@@ -1389,14 +1606,17 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-008",
@@ -1410,13 +1630,16 @@
         "pipeline_tests/test_oracle.py"
       ],
       "owner_decisions": [
-        "Protected Oracle decision logging is accepted."
+        "Protected Oracle decision logging is accepted.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Demonstrate native named-pipe ACL/inheritance, >500-event storm containment, descendant/handle cleanup, Defender exclusions and Search attributes on the actual host.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-RAM-001",
@@ -1433,14 +1656,17 @@
         "pipeline_tests/test_deployment.py"
       ],
       "owner_decisions": [
-        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Attest actual ImDisk/AWE/NTFS backing and isolated workspace mappings, persistent logins/state outside scratch, reboot adoption and exact restoration after cleanup.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-RAM-002",
@@ -1457,14 +1683,17 @@
         "pipeline_tests/test_deployment.py"
       ],
       "owner_decisions": [
-        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Attest actual ImDisk/AWE/NTFS backing and isolated workspace mappings, persistent logins/state outside scratch, reboot adoption and exact restoration after cleanup.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-RAM-003",
@@ -1481,14 +1710,17 @@
         "pipeline_tests/test_deployment.py"
       ],
       "owner_decisions": [
-        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Attest actual ImDisk/AWE/NTFS backing and isolated workspace mappings, persistent logins/state outside scratch, reboot adoption and exact restoration after cleanup.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-RAM-004",
@@ -1505,14 +1737,17 @@
         "pipeline_tests/test_deployment.py"
       ],
       "owner_decisions": [
-        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Attest actual ImDisk/AWE/NTFS backing and isolated workspace mappings, persistent logins/state outside scratch, reboot adoption and exact restoration after cleanup.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-009",
@@ -1528,14 +1763,17 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup."
+        "Adopt existing R: 8 GiB volume; one-time setup and automatic startup.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Attest actual ImDisk/AWE/NTFS backing and isolated workspace mappings, persistent logins/state outside scratch, reboot adoption and exact restoration after cleanup.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DOCKER-001",
@@ -1554,14 +1792,21 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Exercise resource/image/ownership/readiness drift, engine restart and controller reboot against a real engine. Healthy unused members survive; mismatching ones never appear as available prepared capacity.; During deliberately slow real cold replenishment, prove an eligible native job and an available matching warm job can claim spare capacity without waiting for that creation. Simultaneously prove no oversubscription, starvation or premature release under pressure/failure.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-04",
+        "A427-05"
+      ]
     },
     {
       "id": "S427-DOCKER-002",
@@ -1580,14 +1825,20 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Exercise resource/image/ownership/readiness drift, engine restart and controller reboot against a real engine. Healthy unused members survive; mismatching ones never appear as available prepared capacity.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-04"
+      ]
     },
     {
       "id": "S427-DOCKER-003",
@@ -1606,14 +1857,17 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix both pool defects, then test Windows engine/pipe identity, reboot recovery, real prepared handoff, pressure revocation and shared-capacity fairness.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DOCKER-004",
@@ -1632,14 +1886,17 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix both pool defects, then test Windows engine/pipe identity, reboot recovery, real prepared handoff, pressure revocation and shared-capacity fairness.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DOCKER-005",
@@ -1658,14 +1915,17 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix both pool defects, then test Windows engine/pipe identity, reboot recovery, real prepared handoff, pressure revocation and shared-capacity fairness.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DOCKER-006",
@@ -1684,14 +1944,17 @@
         "pipeline_tests/test_execution_integration.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix both pool defects, then test Windows engine/pipe identity, reboot recovery, real prepared handoff, pressure revocation and shared-capacity fairness.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-010",
@@ -1705,13 +1968,16 @@
         "pipeline_tests/test_containers.py"
       ],
       "owner_decisions": [
-        "Persistent prepared pool; cold creation only during background maintenance."
+        "Persistent prepared pool; cold creation only during background maintenance.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Fix both pool defects, then test Windows engine/pipe identity, reboot recovery, real prepared handoff, pressure revocation and shared-capacity fairness.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-KNOW-001",
@@ -1728,13 +1994,16 @@
         "pipeline_tests/test_knowledge.py"
       ],
       "owner_decisions": [
-        "Authority badges distinguish normative decisions from historical snippets."
+        "Authority badges distinguish normative decisions from historical snippets.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repeat against the protected production corpus through Windows stdio/Antigravity, verify ACLs/Unicode/links/relevance and sustained index/RSS bounds.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-KNOW-002",
@@ -1751,13 +2020,16 @@
         "pipeline_tests/test_knowledge.py"
       ],
       "owner_decisions": [
-        "Authority badges distinguish normative decisions from historical snippets."
+        "Authority badges distinguish normative decisions from historical snippets.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repeat against the protected production corpus through Windows stdio/Antigravity, verify ACLs/Unicode/links/relevance and sustained index/RSS bounds.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-KNOW-003",
@@ -1774,13 +2046,16 @@
         "pipeline_tests/test_knowledge.py"
       ],
       "owner_decisions": [
-        "Authority badges distinguish normative decisions from historical snippets."
+        "Authority badges distinguish normative decisions from historical snippets.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repeat against the protected production corpus through Windows stdio/Antigravity, verify ACLs/Unicode/links/relevance and sustained index/RSS bounds.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-KNOW-004",
@@ -1797,13 +2072,16 @@
         "pipeline_tests/test_knowledge.py"
       ],
       "owner_decisions": [
-        "Authority badges distinguish normative decisions from historical snippets."
+        "Authority badges distinguish normative decisions from historical snippets.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repeat against the protected production corpus through Windows stdio/Antigravity, verify ACLs/Unicode/links/relevance and sustained index/RSS bounds.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-011",
@@ -1817,41 +2095,54 @@
         "pipeline_tests/test_knowledge.py"
       ],
       "owner_decisions": [
-        "Authority badges distinguish normative decisions from historical snippets."
+        "Authority badges distinguish normative decisions from historical snippets.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Repeat against the protected production corpus through Windows stdio/Antigravity, verify ACLs/Unicode/links/relevance and sustained index/RSS bounds.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CLI-001",
       "chapter": "12: Native CLI and MCP interfaces",
-      "requirement": "Native provider adapters must discover/check their configured executable and supported headless/login/model/effort contract, then invoke actual CLI processes without shell interpolation. Codex GPT-6 Astra/Sol/Luna, Claude Fable/Opus/Sonnet/Haiku and Agy Gemini models use exact supported IDs. Unsupported `ultra`, unsupported headless Agy or absent model/login is a visible compatibility/auth hold, never remapped silently.",
+      "requirement": "Native provider adapters must discover/check their configured executable and supported headless/login/model/effort contract, then invoke actual CLI processes without shell interpolation. Current Codex IDs are `gpt-6-luna` with `low`, `gpt-6.1-sol` with `medium`/`high`, and `gpt-6-astra` with `ultra`; Claude IDs are `claude-haiku-4-5`, `claude-sonnet-5-5`, `claude-opus-5-5` and `claude-fable-5-1`; Gemini IDs are `gemini-3.8-flash` and `gemini-3.1-pro-preview`. Bind Extended profiles to the exact reviewed native contract described in Chapter 06. Public model identifiers do not prove the installed Agy headless/auth/profile contract. Disable native automatic model fallback and internal inference subagents so every attempted model remains controller-routed and receipt-bound; an unsupported restriction, effort/profile, headless contract or absent model/login is a visible compatibility/auth hold with normal spillover, never remapped silently.",
       "mandatory": true,
       "code": [
         "src/cochem_pipeline/worker.py",
         "src/cochem_pipeline/inference_policy.py",
         "src/cochem_pipeline/native_evidence.py",
         "src/cochem_pipeline/server.py",
-        "src/cochem_pipeline/service.py"
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_worker_contract.py",
         "pipeline_tests/test_native_evidence.py",
         "pipeline_tests/test_inference_policy.py",
-        "pipeline_tests/test_service.py"
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Finish the supported login/checker path; collect actual Windows capability, auth, exact model/effort/session/process-creation, cancellation and subscription-retention receipts.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CLI-002",
@@ -1863,23 +2154,33 @@
         "src/cochem_pipeline/inference_policy.py",
         "src/cochem_pipeline/native_evidence.py",
         "src/cochem_pipeline/server.py",
-        "src/cochem_pipeline/service.py"
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_worker_contract.py",
         "pipeline_tests/test_native_evidence.py",
         "pipeline_tests/test_inference_policy.py",
-        "pipeline_tests/test_service.py"
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Finish the supported login/checker path; collect actual Windows capability, auth, exact model/effort/session/process-creation, cancellation and subscription-retention receipts.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CLI-003",
@@ -1891,23 +2192,33 @@
         "src/cochem_pipeline/inference_policy.py",
         "src/cochem_pipeline/native_evidence.py",
         "src/cochem_pipeline/server.py",
-        "src/cochem_pipeline/service.py"
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_worker_contract.py",
         "pipeline_tests/test_native_evidence.py",
         "pipeline_tests/test_inference_policy.py",
-        "pipeline_tests/test_service.py"
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Finish the supported login/checker path; collect actual Windows capability, auth, exact model/effort/session/process-creation, cancellation and subscription-retention receipts.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-CLI-004",
@@ -1919,23 +2230,33 @@
         "src/cochem_pipeline/inference_policy.py",
         "src/cochem_pipeline/native_evidence.py",
         "src/cochem_pipeline/server.py",
-        "src/cochem_pipeline/service.py"
+        "src/cochem_pipeline/service.py",
+        "src/cochem_pipeline/native_effort.py",
+        "src/cochem_supervisor/probes.py",
+        "src/cochem_supervisor/job_board.py"
       ],
       "verification_tests": [
         "pipeline_tests/test_worker_contract.py",
         "pipeline_tests/test_native_evidence.py",
         "pipeline_tests/test_inference_policy.py",
-        "pipeline_tests/test_service.py"
+        "pipeline_tests/test_service.py",
+        "pipeline_tests/test_native_effort.py",
+        "supervisor_tests/test_probes.py",
+        "supervisor_tests/test_routing_upgrade.py",
+        "supervisor_tests/test_repair_job_board.py"
       ],
       "owner_decisions": [
-        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Finish the supported login/checker path; collect actual Windows capability, auth, exact model/effort/session/process-creation, cancellation and subscription-retention receipts.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-012",
@@ -1952,14 +2273,17 @@
         "pipeline_tests/test_store.py"
       ],
       "owner_decisions": [
-        "Every CLI/MCP model task is routed; hidden nested agents are forbidden."
+        "Every CLI/MCP model task is routed; hidden nested agents are forbidden.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Finish the supported login/checker path; collect actual Windows capability, auth, exact model/effort/session/process-creation, cancellation and subscription-retention receipts.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OBS-001",
@@ -1977,13 +2301,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OBS-002",
@@ -2001,13 +2328,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OBS-003",
@@ -2025,13 +2355,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OBS-004",
@@ -2049,13 +2382,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OBS-005",
@@ -2073,13 +2409,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-013",
@@ -2093,13 +2432,16 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Reviewed archive policy preserves originals and verified hashes."
+        "Reviewed archive policy preserves originals and verified hashes.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Verify native close/unlink semantics, actual process metrics, long-running growth/forecasts and the reviewed production retention/archive policy.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-001",
@@ -2122,14 +2464,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-002",
@@ -2152,14 +2497,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-003",
@@ -2182,14 +2530,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-004",
@@ -2212,14 +2563,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-005",
@@ -2242,14 +2596,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-006",
@@ -2272,14 +2629,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-SRE-007",
@@ -2302,14 +2662,17 @@
         "supervisor_tests/test_repair_artifacts.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-014",
@@ -2324,13 +2687,16 @@
         "supervisor_tests/test_replay_budget.py"
       ],
       "owner_decisions": [
-        "Independent detection and board-routed bounded repair are required."
+        "Independent detection and board-routed bounded repair are required.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Execute a reversible Windows failure through containment, bounded repair/review, real live smoke, promotion and rollback; record <=1-second observation and <=5-second initiation timing.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-AC-001",
@@ -2348,14 +2714,17 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Full acceptance requires physical evidence for every applicable platform."
+        "Full acceptance requires physical evidence for every applicable platform.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Reopen affected clauses, bind closure to current installed source and physical target-host evidence, and execute the full Chapter 15 matrix.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-AC-002",
@@ -2373,14 +2742,20 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Full acceptance requires physical evidence for every applicable platform."
+        "Full acceptance requires physical evidence for every applicable platform.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Run actual pytest counterexamples for RuntimeError before an assertion, setup/collection failure and skips, plus a genuine failing assertion. Confirm only the latter advances the durable workflow, then repeat the complete native Windows coding workflow.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-01"
+      ]
     },
     {
       "id": "S427-AC-003",
@@ -2398,14 +2773,17 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Full acceptance requires physical evidence for every applicable platform."
+        "Full acceptance requires physical evidence for every applicable platform.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Reopen affected clauses, bind closure to current installed source and physical target-host evidence, and execute the full Chapter 15 matrix.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-AC-004",
@@ -2423,14 +2801,17 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Full acceptance requires physical evidence for every applicable platform."
+        "Full acceptance requires physical evidence for every applicable platform.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Reopen affected clauses, bind closure to current installed source and physical target-host evidence, and execute the full Chapter 15 matrix.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-015",
@@ -2444,13 +2825,19 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "Full acceptance requires physical evidence for every applicable platform."
+        "Full acceptance requires physical evidence for every applicable platform.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Change/remove an installed module or lockfile in an isolated deployment fixture and observe stale evidence; unchanged byte-identical deployments retain only their correct platform-scoped evidence. Audit counterexamples remain visible until hash-bound repair verification closes them.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-06"
+      ]
     },
     {
       "id": "S427-PERF-001",
@@ -2469,14 +2856,17 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "owner_accepted_observation_only",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix admission coupling; benchmark the actual Windows local database workload before any queue redesign. Measure all unwaived resource, deadline and recovery budgets independently.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PERF-002",
@@ -2495,14 +2885,17 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "conditional_windows_launch_acceptance",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix admission coupling; benchmark the actual Windows local database workload before any queue redesign. Measure all unwaived resource, deadline and recovery budgets independently.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PERF-003",
@@ -2521,14 +2914,17 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix admission coupling; benchmark the actual Windows local database workload before any queue redesign. Measure all unwaived resource, deadline and recovery budgets independently.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-PERF-004",
@@ -2547,14 +2943,20 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "During deliberately slow real cold replenishment, prove an eligible native job and an available matching warm job can claim spare capacity without waiting for that creation. Simultaneously prove no oversubscription, starvation or premature release under pressure/failure.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-05"
+      ]
     },
     {
       "id": "S427-PERF-005",
@@ -2573,14 +2975,17 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Fix admission coupling; benchmark the actual Windows local database workload before any queue redesign. Measure all unwaived resource, deadline and recovery budgets independently.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-016",
@@ -2594,14 +2999,17 @@
         "pipeline_tests/test_operations_policy.py"
       ],
       "owner_decisions": [
-        "Historical latencies accepted; Windows queue acceptance remains conditional."
+        "Historical latencies accepted; Windows queue acceptance remains conditional.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Collect Windows launch distributions; ratify per-workload p95/error objectives against real measurements."
+      "remediation": "Fix admission coupling; benchmark the actual Windows local database workload before any queue redesign. Measure all unwaived resource, deadline and recovery budgets independently.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DEPLOY-001",
@@ -2621,14 +3029,21 @@
         "supervisor_tests/test_budget_upgrade.py"
       ],
       "owner_decisions": [
-        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "From a fresh Windows installation execute the documented helper for all three CLIs, verify each intended worker account retains its own subscription, test boundary slot parsing and preserve logins across reboot/upgrade.; Build a fresh Windows MCP environment from the release; compare installed dependency/version hashes with the lock and rerun the authenticated MCP contract/stdio tests.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-03",
+        "A427-08"
+      ]
     },
     {
       "id": "S427-DEPLOY-002",
@@ -2648,14 +3063,17 @@
         "supervisor_tests/test_budget_upgrade.py"
       ],
       "owner_decisions": [
-        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Correct release paths/login range/Agy contract and frozen client installation; then run clean install, retained-state upgrade, reboot, smoke and rollback on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DEPLOY-003",
@@ -2675,14 +3093,17 @@
         "supervisor_tests/test_budget_upgrade.py"
       ],
       "owner_decisions": [
-        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Correct release paths/login range/Agy contract and frozen client installation; then run clean install, retained-state upgrade, reboot, smoke and rollback on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-DEPLOY-004",
@@ -2702,14 +3123,17 @@
         "supervisor_tests/test_budget_upgrade.py"
       ],
       "owner_decisions": [
-        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed_target_acceptance_pending",
+      "implementation": "pending_required_target_host_evidence",
       "required_platforms": [
         "Linux-portable",
         "Windows-native"
       ],
-      "remediation": "Run retained physical Windows/native subscription acceptance for this clause; attach exact revision/hash receipts."
+      "remediation": "Correct release paths/login range/Agy contract and frozen client installation; then run clean install, retained-state upgrade, reboot, smoke and rollback on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-017",
@@ -2723,13 +3147,16 @@
         "pipeline_tests/test_upgrade_preview.py"
       ],
       "owner_decisions": [
-        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots."
+        "Preserve jobs, credentials and budgets; use distinct r2 code/corpus roots.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Correct release paths/login range/Agy contract and frozen client installation; then run clean install, retained-state upgrade, reboot, smoke and rollback on Windows.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-TRACE-001",
@@ -2745,13 +3172,19 @@
         "pipeline_tests/test_planning_governance.py"
       ],
       "owner_decisions": [
-        "All accepted improvements are tracked as mandatory requirements."
+        "All accepted improvements are tracked as mandatory requirements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Search active setup/launch instructions for fixed-model synthesis and stale direct-CLI claims, exercise the current checker through the authenticated board, and clearly label remaining historical documents.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-09"
+      ]
     },
     {
       "id": "S427-TRACE-002",
@@ -2767,13 +3200,16 @@
         "pipeline_tests/test_planning_governance.py"
       ],
       "owner_decisions": [
-        "All accepted improvements are tracked as mandatory requirements."
+        "All accepted improvements are tracked as mandatory requirements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Use this audit as supplemental unresolved evidence, preserve historical artifacts and publish new exact-revision closures after repairs and native acceptance.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-TRACE-003",
@@ -2789,13 +3225,16 @@
         "pipeline_tests/test_planning_governance.py"
       ],
       "owner_decisions": [
-        "All accepted improvements are tracked as mandatory requirements."
+        "All accepted improvements are tracked as mandatory requirements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "portable_evidence_no_full_semantic_certification",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Use this audit as supplemental unresolved evidence, preserve historical artifacts and publish new exact-revision closures after repairs and native acceptance.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only"
     },
     {
       "id": "S427-OPS-018",
@@ -2809,13 +3248,19 @@
         "pipeline_tests/test_operator_views.py"
       ],
       "owner_decisions": [
-        "All accepted improvements are tracked as mandatory requirements."
+        "All accepted improvements are tracked as mandatory requirements.",
+        "2026-10-07: catalogue v2; complexity 3 remains lightweight; Fable 5.1 confirmed; research-based Sol medium/high; native effort profiles require verified contracts."
       ],
-      "implementation": "portable_checks_passed",
+      "implementation": "open_confirmed_gap",
       "required_platforms": [
         "Linux-portable"
       ],
-      "remediation": "Attach executed current-revision portable checks and physical artifact hashes."
+      "remediation": "Change/remove an installed module or lockfile in an isolated deployment fixture and observe stale evidence; unchanged byte-identical deployments retain only their correct platform-scoped evidence. Audit counterexamples remain visible until hash-bound repair verification closes them.",
+      "latest_regression_validation": "docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "regression_status": "passed_portable_regressions_only",
+      "open_audit_findings": [
+        "A427-06"
+      ]
     }
   ]
 }

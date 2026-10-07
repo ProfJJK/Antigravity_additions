@@ -26,7 +26,8 @@ def config_document(tmp_path, slots=6):
                        "inference_only": {"arguments":["fixture-no-tools","{model}"],"version_arguments":["fixture-version"],
                                           "executable_sha256":"a"*64,"version":"fixture-version",
                                           "capability_reference":"configuration parser fixture; not a native contract",
-                                          "disables_tools":True,"disables_mcp":True,"disables_hooks":True}},
+                                          "disables_tools":True,"disables_mcp":True,"disables_hooks":True,
+                                          "disables_subagents":True,"disables_model_fallback":True}},
         },
         "rules": [], "token_file": str(tmp_path / "operator" / "controller.token"), "operator_name": "ExampleOperator",
     }
@@ -53,6 +54,19 @@ def test_load_six_slot_configuration_with_bom_and_default_budgets(tmp_path):
     assert isinstance(config.routing, RoutingPolicy)
     assert config.routing.candidates(10)[1].reasoning_effort == "ultra"
     assert not config.private_root.exists(), "Loading configuration must not provision privileged paths"
+
+
+def test_deployment_requires_explicit_migration_of_legacy_routing_configuration(tmp_path):
+    raw = config_document(tmp_path)
+    raw['routing'] = {'policy_version': 1}
+    filename = write_config(tmp_path, raw)
+    before = Path(filename).read_bytes()
+    with pytest.raises(ValueError, match='routing policy_version 2; migrate configuration explicitly'):
+        load_config(filename)
+    assert Path(filename).read_bytes() == before
+    assert not Path(raw['private_root']).exists()
+    raw['routing'] = {'policy_version': 2}
+    assert load_config(write_config(tmp_path, raw)).routing.as_dict()['policy_version'] == 2
 
 
 @pytest.mark.parametrize("slots", [1, 64, 256])

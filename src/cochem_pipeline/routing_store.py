@@ -369,6 +369,14 @@ def _candidate_unavailability(conn, job, state, target, current_policy, now):
     """Read-only candidate checks shared by prediction and atomic reservation."""
     policy = state['policy']
     key,provider,pool = target['key'],target['provider'],target['quota_pool']
+    # The immutable old candidate list is never upgraded in place. Skip a
+    # retired identity before allocating a reservation or consuming an attempt;
+    # an unchanged later candidate may still execute with its original digest.
+    if current_policy is not None and not any(
+            (provider, target['model'], target.get('reasoning_effort')) ==
+            (entry['provider'], entry['model'], entry.get('reasoning_effort'))
+            for targets in current_policy['tiers'].values() for entry in targets):
+        return 'retired_target'
     producer = job.get('payload', {}).get('producer', {})
     reconciliation = job.get('payload', {}).get('review_scope') == 'srs_wbs_reconciliation'
     same_author = (provider == producer.get('provider') if reconciliation else

@@ -552,6 +552,42 @@ class Supervisor:
             'incident':incident,'details':details,'changed':changed,'review_manifest':manifest,
             'acceptance_manifest':self.acceptance_manifest,'baseline_manifest':tree_manifest(baseline)})
 
+    def _claim_preflighted_route(self, board, job_id, providers, workspace):
+        """Check the selected native capability before either paid budget gate."""
+        while self._heartbeat():
+            route = board.claim(job_id, providers, primary_cleanup_verified=True,
+                                current_policy=self.config.get('pipeline_routing'))
+            if route is None:
+                return None
+            spec = {**providers[route['provider']], 'model':route['model'],
+                    'reasoning_effort':route['reasoning_effort']}
+            try:
+                proof = self.runner.preflight_selected_spec(spec, self.config['repair_worker'],
+                    Path(workspace), self.private/'route-preflight'/route['reservation_id'], self._heartbeat)
+                if (not isinstance(proof, dict) or proof.get('paid_inference') is not False
+                        or proof.get('mode') != 'offline-capability'
+                        or any(proof.get(key) != value for key, value in {
+                            'provider':route['provider'], 'model':route['model'],
+                            'requested_effort':route['reasoning_effort']}.items())):
+                    raise ValueError('Selected native capability preflight returned unbound evidence')
+            except Exception as exc:
+                category = 'compatibility' if getattr(exc, 'category', None) == 'compatibility' else 'configuration'
+                board.reject_unspent(route, failure=category)
+                self.ledger.record_event('REPAIR_ROUTE_PREFLIGHT_REJECTED', {
+                    'job_id':job_id, 'key':route['key'], 'category':category,
+                    'failure_type':type(exc).__name__, 'paid_inference':False})
+                from .runner import RepairCleanupError
+                if isinstance(exc, RepairCleanupError):
+                    raise
+                if category == 'configuration':
+                    return None
+                continue
+            self.ledger.record_event('REPAIR_ROUTE_PREFLIGHT_VERIFIED', {
+                'job_id':job_id, 'reservation_id':route['reservation_id'],
+                'key':route['key'], 'paid_inference':False})
+            return route
+        return None
+
     def _reconcile_repair(self, candidate, baseline, frozen, incident, details, directory):
         """One independent routed reviewer is mandatory before release promotion."""
         from .job_board import RepairJobBoard, canonical
@@ -591,7 +627,7 @@ class Supervisor:
             if self.ledger.get_incident(incident['fingerprint'])['model_calls']>=active['max_per_incident']:
                 raise CandidateRejected('Original model-call budget is exhausted; asymmetric approval remains required')
             providers={spec['provider']:spec for spec in self._eligible_providers()}
-            route=board.claim(review['job_id'],providers,primary_cleanup_verified=True)
+            route=self._claim_preflighted_route(board,review['job_id'],providers,candidate)
             if route is None:
                 state=board.get(review['job_id'])
                 if state['status']=='BLOCKED':
@@ -728,7 +764,8 @@ class Supervisor:
             job=board.submit(incident['fingerprint']+':revision:'+str(previous['attempts']+1),payload,self.config.get('pipeline_routing'))
         eligible={spec['provider']:spec for spec in self._eligible_providers()}
         if not eligible:
-            board.claim(job['job_id'],[],primary_cleanup_verified=False)
+            board.claim(job['job_id'],[],primary_cleanup_verified=False,
+                        current_policy=self.config.get('pipeline_routing'))
             self.stage='blocked'
             self._publish(reason='Repair routes unavailable; durable job-board backoff retained')
             return False
@@ -745,7 +782,7 @@ class Supervisor:
                 self._start(Path(current['source_root']))
                 return False
             board.recover_interrupted(interrupted['reservation'],cleanup_verified=True,budget_attempt_terminal=True)
-        route=board.claim(job['job_id'],eligible,primary_cleanup_verified=True)
+        route=self._claim_preflighted_route(board,job['job_id'],eligible,Path(current['source_root']))
         if route is None:
             self._start(Path(current['source_root']))
             return False

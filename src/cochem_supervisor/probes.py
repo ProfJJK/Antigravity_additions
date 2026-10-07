@@ -22,12 +22,20 @@ _MAX_RESPONSE = 16 * 1024 * 1024
 _KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST"}
 # This independent acceptance contract deliberately does not import the release
 # under test. Configured overrides are checked against the persisted policy.
-_DEFAULT_TIERS = {
+_LEGACY_TIERS = {
     "1-3": [("gemini", "gemini-3.8-flash", None), ("claude", "claude-haiku-4-5", None), ("codex", "gpt-6-luna", None)],
     "4-6": [("claude", "claude-sonnet-5-5", None), ("codex", "gpt-6-sol", None), ("gemini", "gemini-3.1-pro", None)],
     "7-9": [("claude", "claude-opus-5-5", None), ("codex", "gpt-6-astra", "low"), ("gemini", "gemini-3.1-pro", None)],
     "10": [("claude", "claude-fable-5-1", None), ("codex", "gpt-6-astra", "ultra")],
 }
+_DEFAULT_TIERS = {
+    "1-3": [("gemini", "gemini-3.8-flash", None), ("claude", "claude-haiku-4-5", None), ("codex", "gpt-6-luna", "low")],
+    "4-6": [("claude", "claude-sonnet-5-5", None), ("codex", "gpt-6.1-sol", "medium"), ("gemini", "gemini-3.8-flash", "extended")],
+    "7-9": [("codex", "gpt-6.1-sol", "high"), ("claude", "claude-opus-5-5", "extended"), ("gemini", "gemini-3.1-pro-preview", "high")],
+    "10": [("claude", "claude-fable-5-1", "extended"), ("codex", "gpt-6-astra", "ultra")],
+}
+POLICY_VERSION = 2
+SCORING_VERSION = 1
 _SCORE_CONTENT = {"objective","title","description","requirements","dependencies","chapters",
                   "chapter_count","artifact_text","wbs","tasks","acceptance_criteria","scope"}
 _SCORE_AUTHORITY = {"score","complexity","complexity_score","tier","routing","route","priority",
@@ -127,7 +135,8 @@ def _target_identity(target: dict) -> tuple[str, str, str | None]:
     _require(isinstance(provider, str) and provider in {"codex", "claude", "gemini"}
              and isinstance(model, str) and bool(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]{0,199}", model)),
              "Routing target has an invalid provider or model")
-    _require(effort is None or (provider == "codex" and isinstance(effort,str) and effort in {"low", "ultra"}),
+    efforts = {"codex": {"low", "medium", "high", "ultra"}, "claude": {"extended"}, "gemini": {"extended", "high"}}
+    _require(effort is None or (isinstance(effort,str) and effort in efforts[provider]),
              "Routing target has an invalid reasoning effort")
     return provider, model, effort
 
@@ -135,35 +144,38 @@ def _target_identity(target: dict) -> tuple[str, str, str | None]:
 def configured_tiers(routing_policy: dict | None = None) -> dict:
     """Read the configured model order without importing pipeline code."""
     _require(routing_policy is None or isinstance(routing_policy, dict), "Routing policy must be an object")
+    version = (routing_policy or {}).get("policy_version", POLICY_VERSION)
+    _require(type(version) is int and version in (1, POLICY_VERSION), "Routing policy version is unsupported")
+    defaults = _LEGACY_TIERS if version == 1 else _DEFAULT_TIERS
     tiers = (routing_policy or {}).get("tiers")
     if tiers is None:
         _require(routing_policy is None or "tiers" not in routing_policy, "Routing policy score bands cannot be null")
-        return {key: list(value) for key, value in _DEFAULT_TIERS.items()}
-    _require(isinstance(tiers, dict) and set(tiers) == set(_DEFAULT_TIERS), "Routing policy has invalid score bands")
+        return {key: list(value) for key, value in defaults.items()}
+    _require(isinstance(tiers, dict) and set(tiers) == set(defaults), "Routing policy has invalid score bands")
     result = {}
     for tier, targets in tiers.items():
-        _require(isinstance(targets, list) and len(targets) == len(_DEFAULT_TIERS[tier]),
+        _require(isinstance(targets, list) and len(targets) == len(defaults[tier]),
                  "Routing policy has an invalid candidate count")
         result[tier] = [_target_identity(target) for target in targets]
         _require(len(set(result[tier])) == len(result[tier]), "Routing policy contains duplicate targets")
-        _require(result[tier] == _DEFAULT_TIERS[tier], "Routing policy must preserve the ratified Chapter 06 model order")
+        _require(result[tier] == defaults[tier], "Routing policy must preserve the ratified Chapter 06 model order")
     return result
 
 
 def configured_routing_policy(raw: dict | None = None) -> dict:
-    """Normalize the documented v1 policy independently of candidate code."""
+    """Decode captured v1/v2 authority independently of candidate code."""
     tiers = configured_tiers(raw)
     raw = raw or {}
     cooldowns = {"quota":300.,"auth":300.,"busy":30.,"backlog":30.,"provider":30.,"timeout":30.,
                  "resource":30.,"configuration":300.,"compatibility":300.,"protocol":30.,
                  "context":0.,"code":0.,"unknown":30.}
-    result = {"policy_version":1,"tiers":{tier:[{"provider":provider,"model":model,"reasoning_effort":effort}
+    result = {"policy_version":raw.get("policy_version", POLICY_VERSION),"tiers":{tier:[{"provider":provider,"model":model,"reasoning_effort":effort}
         for provider,model,effort in entries] for tier,entries in tiers.items()},
         "model_limits":{},"provider_limits":{},"quota_pool_limits":{},"backlog_threshold":8,
         "failure_cooldowns":cooldowns,"backoff_base_seconds":30.,"backoff_max_seconds":600.,
         "backoff_jitter_fraction":.2,"max_routing_cycles":0,"max_routing_seconds":0.,"max_dispatches":0}
     _require(not set(raw)-set(result), "Routing policy contains undocumented fields")
-    _require(type(raw.get("policy_version",1)) is int and raw.get("policy_version",1) == 1,
+    _require(type(raw.get("policy_version",POLICY_VERSION)) is int and raw.get("policy_version",POLICY_VERSION) in (1,POLICY_VERSION),
              "Routing policy version is unsupported")
     for targets in (raw.get("tiers") or {}).values():
         _require(all(not set(target)-{"provider","model","reasoning_effort"} for target in targets),
@@ -195,7 +207,6 @@ def configured_routing_policy(raw: dict | None = None) -> dict:
         _require(pool in pools, "Routing policy quota pool has no configured limit")
         result["quota_pool_limits"][pool] = number(pools[pool],1,1000000,True,True)
     keys = {provider+":"+model+(":"+effort if effort else "") for entries in tiers.values() for provider,model,effort in entries}
-    keys.add("gemini:gemini-3.1-pro")
     limits = raw.get("model_limits",{})
     _require(isinstance(limits,dict) and not set(limits)-keys, "Routing policy model limits are invalid")
     result["model_limits"] = {key:number(limits.get(key),1,1000000,True,True) for key in keys}
@@ -209,6 +220,14 @@ def configured_routing_policy(raw: dict | None = None) -> dict:
         result[key] = number(raw.get(key,result[key]),low,high)
     _require(result["backoff_max_seconds"] >= result["backoff_base_seconds"], "Routing policy backoff limits are invalid")
     return result
+
+
+def configured_current_routing_policy(raw: dict | None = None) -> dict:
+    """Require the current catalogue for a new protected supervisor config."""
+    policy = configured_routing_policy(raw)
+    _require(policy["policy_version"] == POLICY_VERSION,
+             "New supervisor configuration requires routing policy_version 2; migrate configuration explicitly")
+    return policy
 
 
 def score_routing_task(kind: str, payload: dict) -> dict:
@@ -250,7 +269,7 @@ def score_routing_task(kind: str, payload: dict) -> dict:
             "risk_groups":sum(len(risks)>=limit for limit in (1,3))}
     score=min(10,sum(points.values()))
     return {"score":score,"tier":"1-3" if score<=3 else "4-6" if score<=6 else "7-9" if score<=9 else "10",
-            "policy_version":1,"rationale":[{"criterion":key,"points":value} for key,value in points.items()],
+            "policy_version":SCORING_VERSION,"rationale":[{"criterion":key,"points":value} for key,value in points.items()],
             "metrics":{"kind":kind,"utf8_bytes":byte_count,"estimated_tokens":tokens,
                        "requirement_count":requirement_count,"dependency_count":dependency_count,
                        "work_breadth":breadth,"risk_groups":risks,"uncapped_score":sum(points.values())}}
@@ -309,7 +328,139 @@ def verify_routing_assignment(job: dict, routing_policy: dict | None = None) -> 
             "cycle": route["cycle"], "policy_digest": policy_digest, "reservation_sha256": reservation}
 
 
-def verify_smoke_workflow(workflow: dict, provider_models: dict, routing_policy: dict | None = None) -> dict:
+def _reviewed_effort_contract(provider: str, model: str, effort: str, spec: dict) -> dict:
+    """Independently validate protected native bindings, never candidate imports."""
+    contracts = spec.get("effort_contracts") if isinstance(spec, dict) else None
+    contract = contracts.get(model + ":" + effort) if isinstance(contracts, dict) else None
+    fields = {"arguments", "version_arguments", "executable_sha256", "version", "capability_reference",
+              "native_metadata", "thinking_enabled"}
+    _require(isinstance(contract, dict) and set(contract) == fields,
+             "Reasoning profile lacks its exact protected model/profile contract")
+    _require(isinstance(contract["executable_sha256"], str)
+             and bool(re.fullmatch("[a-f0-9]{64}", contract["executable_sha256"])),
+             "Reasoning profile contract lacks its exact executable digest")
+    _require(all(isinstance(contract[key], str) and 0 < len(contract[key].strip()) <= 2048
+                 for key in ("version", "capability_reference")),
+             "Reasoning profile contract lacks version or capability provenance")
+    _require(contract["version_arguments"] == ["--version"],
+             "Reasoning profile version probe must use the offline version selector")
+    args = contract["arguments"]
+    _require(isinstance(args, list) and len(args) == 2
+             and all(isinstance(arg, str) and 0 < len(arg) <= 2048
+                     and not any(ord(char) < 32 for char in arg) for arg in args),
+             "Reasoning profile arguments must be a bounded thinking-only selector")
+    if provider == "claude":
+        _require(effort == "extended" and args[0] == "--effort"
+                 and args[1] in ("low", "medium", "high", "xhigh", "max")
+                 and contract["thinking_enabled"] is True,
+                 "Claude reasoning profile requires reviewed native effort and enabled thinking")
+    else:
+        _require(provider == "gemini" and effort in ("extended", "high")
+                 and ((args[0] == "--thinking-level" and args[1] in
+                       ("minimal", "low", "medium", "high", "MINIMAL", "LOW", "MEDIUM", "HIGH"))
+                      or (args[0] == "--thinking-budget" and bool(re.fullmatch("[0-9]{1,6}", args[1]))
+                          and 1 <= int(args[1]) <= 131072)),
+                 "Agy reasoning profile requires a reviewed thinking-only selector")
+        _require(effort != "high" or args == ["--thinking-level", "high"] or args == ["--thinking-level", "HIGH"],
+                 "Agy High reasoning profile must select the native high thinking level")
+        inference = spec.get("inference_only")
+        _require(isinstance(inference, dict) and set(inference) == {
+            "arguments", "version_arguments", "executable_sha256", "version", "capability_reference",
+            "disables_tools", "disables_mcp", "disables_hooks", "disables_subagents", "disables_model_fallback"},
+            "Agy reasoning profile lacks its protected inference-only contract")
+        _require(contract["thinking_enabled"] is None and all(
+                 contract[key] == inference[key] for key in ("executable_sha256", "version", "version_arguments"))
+                 and all(inference[key] is True for key in ("disables_tools", "disables_mcp", "disables_hooks",
+                                                           "disables_subagents", "disables_model_fallback")),
+                 "Agy reasoning profile and inference-only contracts differ")
+        _require(isinstance(inference["capability_reference"], str)
+                 and 0 < len(inference["capability_reference"].strip()) <= 2048,
+                 "Agy inference-only contract lacks capability provenance")
+        arguments = inference["arguments"]
+        _require(isinstance(arguments, list) and 0 < len(arguments) <= 64
+                 and all(isinstance(arg, str) and "\0" not in arg and len(arg) <= 8192 for arg in arguments)
+                 and arguments.count("{model}") == 1,
+                 "Agy inference-only arguments must retain the selected model")
+    metadata = contract["native_metadata"]
+    if metadata is None:
+        return contract  # The reviewed CLI cannot provide native observation evidence.
+    _require(isinstance(metadata, dict) and set(metadata) == {"path", "value"},
+             "Reasoning profile requires an explicit native metadata binding")
+    path = metadata["path"]
+    _require(isinstance(path, list) and 1 <= len(path) <= 4
+             and all(isinstance(part, str) and bool(re.fullmatch("[A-Za-z_][A-Za-z0-9_]{0,63}", part))
+                     and part.casefold() not in {"result", "response", "content", "text", "message", "messages", "parts"}
+                     for part in path)
+             and path[0] in {"reasoning_effort", "model_reasoning_effort", "thinking_level", "thinking_mode",
+                            "thinking_enabled", "effort", "thinking", "metadata"},
+             "Reasoning profile cannot use generated content as native evidence")
+    value = metadata["value"]
+    _require(type(value) in (str, bool, int) and (not isinstance(value, str) or 0 < len(value) <= 128),
+             "Reasoning profile native metadata must be a bounded scalar")
+    if provider == "gemini" and effort == "high":
+        _require(isinstance(value, str) and value in ("high", "HIGH")
+                 and path[-1] in {"reasoning_effort", "model_reasoning_effort", "thinking_level", "effort"},
+                 "Agy High reasoning profile requires explicit native high-level metadata")
+    return contract
+
+
+def verify_effort_profile(receipt: dict, assignment: dict, provider_config: dict | None = None) -> bool:
+    """Verify receipt provenance against explicitly supplied protected config.
+
+    Extended is a reviewed profile, not a native metadata alias. Missing proof
+    remains unverified; contradictory proof is rejected. This checks trusted
+    controller metadata, not the OS identity of an already exited process.
+    """
+    provider, model, effort = (assignment[key] for key in ("provider", "model", "reasoning_effort"))
+    if effort is None:
+        return True
+    if provider == "codex":
+        return receipt.get("reported_effort") == effort
+    policy = receipt.get("inference_policy")
+    proof = policy.get("reasoning_effort") if isinstance(policy, dict) else None
+    if proof is None or provider_config is None:
+        return False
+    _require(isinstance(provider_config, dict), "Reasoning profile requires protected provider configuration")
+    contract = _reviewed_effort_contract(provider, model, effort, provider_config.get(provider))
+    native = contract["native_metadata"]
+    observed = native["value"] if native is not None else None
+    reported = observed if isinstance(observed, str) and observed == effort else None
+    expected = {"requested_profile": effort, "model": model,
+                "executable_sha256": contract["executable_sha256"], "version": contract["version"],
+                "capability_reference": contract["capability_reference"], "contract_sha256": _digest(contract),
+                "native_metadata": native, "verified_profile": effort if native is not None else None,
+                "native_metadata_path": native["path"] if native is not None else None,
+                "observed_native_value": observed, "reported_effort": reported}
+    if native is None:
+        expected["observation_status"] = "not_reported_by_reviewed_cli"
+    _require(isinstance(proof, dict) and _digest(proof) == _digest(expected)
+             and receipt.get("reported_effort") == reported,
+             "Reasoning profile proof differs from its protected contract or native observation")
+    _require(policy.get("mode") == "inference-only" and policy.get("provider") == provider,
+             "Reasoning profile receipt lacks its inference-only provenance")
+    if provider == "claude":
+        _require(policy.get("tools") == [] and policy.get("mcp_servers") == []
+                 and policy.get("hooks_disabled") is True,
+                 "Claude reasoning profile receipt lacks disabled native tools, MCP or hooks")
+    else:
+        _require(all(policy.get(key) is True for key in ("tools_disabled", "mcp_disabled", "hooks_disabled",
+                                                       "subagents_disabled", "model_fallback_disabled"))
+                 and all(policy.get(key) == provider_config[provider]["inference_only"][key]
+                         for key in ("executable_sha256", "version", "capability_reference")),
+                 "Agy reasoning profile receipt differs from its protected inference-only contract")
+    probes = policy.get("probes")
+    _require(isinstance(probes, list) and any(isinstance(probe, dict)
+             and probe.get("probe") == "verify_reviewed_effort_version"
+             and type(probe.get("pid")) is int and 0 < probe["pid"] <= 0xFFFFFFFF
+             and type(probe.get("exit_code")) is int and probe["exit_code"] == 0
+             and all(isinstance(probe.get(key), str) and bool(re.fullmatch("[a-f0-9]{64}", probe[key]))
+                     for key in ("stdout_sha256", "stderr_sha256")) for probe in probes),
+             "Reasoning profile receipt lacks its successful native version probe")
+    return native is not None
+
+
+def verify_smoke_workflow(workflow: dict, provider_models: dict, routing_policy: dict | None = None,
+                          *, provider_config: dict | None = None) -> dict:
     """Validate the entire two-chapter result and bound native receipt evidence.
 
     A valid PID field is metadata, not an OS revalidation of an exited process.
@@ -368,7 +519,8 @@ def verify_smoke_workflow(workflow: dict, provider_models: dict, routing_policy:
         _require(provider != "gemini" or reported == model, "Gemini must report the exact configured model")
         if reported is None:
             unverified.add(provider)
-        if assignment["reasoning_effort"] is not None and receipt.get("reported_effort") is None:
+        effort_verified = verify_effort_profile(receipt, assignment, provider_config)
+        if not effort_verified:
             unverified_effort.add(provider)
         digest = _digest(output)
         _require(receipt.get("output_sha256") == digest and job.get("output_sha256") == digest,
@@ -378,6 +530,7 @@ def verify_smoke_workflow(workflow: dict, provider_models: dict, routing_policy:
         receipts.append({"kind": job["kind"], "provider": provider, "pid": receipt["pid"],
                          "exit_code": 0, "session_id": receipt["session_id"], "requested_model": model,
                          "requested_effort": assignment["reasoning_effort"], "reported_effort": receipt.get("reported_effort"),
+                         "effort_profile_verified": effort_verified,
                          "routing": assignment,
                          "reported_model": reported, "output_sha256": digest, "stdout_sha256": receipt["stdout_sha256"]})
     _require(isinstance(manifest["output"].get("chapters"), list) and len(manifest["output"]["chapters"]) == 2,
@@ -557,7 +710,8 @@ def run_smoke_workflow(config: dict, client: ControllerClient, report_file: str 
             _require(workflow.get("workflow_id") == workflow_id, "Controller returned a different smoke workflow")
             completed = workflow.get("status") == "COMPLETED"
             if completed:
-                report.update(verify_smoke_workflow(workflow, models, routing_policy))
+                report.update(verify_smoke_workflow(workflow, models, routing_policy,
+                                                   provider_config=config.get("pipeline_providers")))
                 break
             if workflow.get("status") == "FAILED":
                 report.update(_failed_workflow_evidence(workflow))
@@ -592,7 +746,7 @@ def run_smoke_workflow(config: dict, client: ControllerClient, report_file: str 
     return report
 
 
-def verify_acceptance_preflight(workflow, routing_policy=None):
+def verify_acceptance_preflight(workflow, routing_policy=None, *, provider_config=None):
     """One native routed response is a live handoff smoke, not full product acceptance."""
     _require(isinstance(workflow,dict) and workflow.get('status')=='COMPLETED','Live preflight did not complete')
     jobs=workflow.get('jobs',[])
@@ -605,7 +759,12 @@ def verify_acceptance_preflight(workflow, routing_policy=None):
              root.get('status')=='COMPLETED' and job.get('workflow_id')==workflow['workflow_id'] and
              job.get('parent_job_id')==workflow['workflow_id'],'Live preflight ownership is inconsistent')
     _require(job.get('status')=='COMPLETED' and job.get('output')=={'ready':True},'Live preflight output is unverified')
-    assignment=verify_routing_assignment(job,routing_policy)
+    # The controller bounds this one-off workflow's routing deadline before
+    # capture. Derive that expected policy independently; never trust the
+    # deadline supplied inside the candidate controller's receipt.
+    bounded_policy = configured_routing_policy(routing_policy)
+    bounded_policy['max_routing_seconds'] = min(bounded_policy['max_routing_seconds'] or 300, 300)
+    assignment=verify_routing_assignment(job,bounded_policy)
     route=job['routing'];receipt=job['receipt']
     _require(type(route.get('dispatches')) is int and 1<=route['dispatches']<=3 and
              type(route.get('max_dispatches')) is int and 1<=route['max_dispatches']<=3,
@@ -621,9 +780,14 @@ def verify_acceptance_preflight(workflow, routing_policy=None):
     _require(receipt.get('reported_model') in (None,assignment['model']) and
              (assignment['provider']!='gemini' or receipt.get('reported_model')==assignment['model']),
              'Live preflight native model metadata contradicts its route')
+    effort_verified = verify_effort_profile(receipt, assignment, provider_config)
     return {'passed':True,'workflow_id':workflow['workflow_id'],'native_dispatches':route['dispatches'],
             'accepted_result_limit':1,'native_dispatch_limit':route['max_dispatches'],
+            'effort_identity_verified':effort_verified,
+            'unverified_effort_providers':[] if effort_verified else [assignment['provider']],
             'receipt':{**assignment,'pid':receipt['pid'],'session_id':receipt['session_id'],
+                'requested_effort':assignment['reasoning_effort'],'reported_effort':receipt.get('reported_effort'),
+                'effort_profile_verified':effort_verified,
                 'reported_model':receipt.get('reported_model'),'stdout_sha256':receipt['stdout_sha256']},
             'scope':'One real subscription-CLI handoff; complete planning/coding launch acceptance remains separate.'}
 
@@ -661,7 +825,8 @@ def run_acceptance_preflight(config,client,report_file,transaction_id,heartbeat=
             _require(workflow.get('workflow_id')==identifier,'Live preflight returned the wrong workflow')
             completed=workflow.get('status')=='COMPLETED'
             if completed:
-                report.update(verify_acceptance_preflight(workflow,config.get('pipeline_routing')))
+                report.update(verify_acceptance_preflight(workflow,config.get('pipeline_routing'),
+                    provider_config=config.get('pipeline_providers')))
                 break
             if workflow.get('status')=='FAILED':
                 report.update(_failed_workflow_evidence(workflow))

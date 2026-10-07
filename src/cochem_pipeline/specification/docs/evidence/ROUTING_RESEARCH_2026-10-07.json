@@ -1,0 +1,380 @@
+{
+  "research_date": "2026-10-07",
+  "retrieved_at_utc": "2026-10-07T00:34:51.177484+00:00",
+  "scope": "Read-only official public GitHub source and offline CLI help. No inference, API model enumeration, authentication or paid model calls.",
+  "access_limitations": "Managed cloud permits package and GitHub domains, not provider marketing/model-documentation domains; no attempt was made to bypass network policy. Published catalogue evidence is not account availability or a head-to-head benchmark.",
+  "sources": [
+    {
+      "name": "codex-config",
+      "url": "https://raw.githubusercontent.com/openai/codex/ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385/codex-rs/core/config.schema.json",
+      "status": 200,
+      "bytes": 236751,
+      "sha256": "7933a70506e753a6e98c16800d2a76770b2af2b7295491f8f0b8e713e952027e",
+      "repository": "openai/codex",
+      "commit": "ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385"
+    },
+    {
+      "name": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "status": 200,
+      "bytes": 945458,
+      "sha256": "27e1b6ea7d5c7d9163c5b9eb336954fa8c7321762ea506effd679495dd144f4e",
+      "repository": "anthropics/claude-code",
+      "commit": "765f236fe1bfcc678e0ec59af9170fb7d6771a3a"
+    },
+    {
+      "name": "gemini-model-routing",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/cli/model-routing.md",
+      "status": 200,
+      "bytes": 2735,
+      "sha256": "7e7cc3785ea30a59481d155c6f3c09299b1fa13d57fb982b555852c5bd960141",
+      "repository": "google-gemini/gemini-cli",
+      "commit": "ef59c532f07fbb3a58dd68bac024ae217e9c73ce"
+    },
+    {
+      "name": "gemini-models",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/packages/core/src/config/models.ts",
+      "status": 200,
+      "bytes": 22854,
+      "sha256": "5712e7247b81304e1c559c8675f8fb2a86fd8981e17b4d8949f2f3eaeb11ef68",
+      "repository": "google-gemini/gemini-cli",
+      "commit": "ef59c532f07fbb3a58dd68bac024ae217e9c73ce"
+    },
+    {
+      "name": "codex-models",
+      "url": "https://raw.githubusercontent.com/openai/codex/ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385/codex-rs/models-manager/models.json",
+      "status": 200,
+      "bytes": 472072,
+      "sha256": "943ca7fe1d19ed019054158303f0dbbd80b3bef43b3aa425a71aa7cb3fb52c2b",
+      "repository": "openai/codex",
+      "commit": "ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385"
+    },
+    {
+      "name": "codex-effort",
+      "url": "https://raw.githubusercontent.com/openai/codex/ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385/codex-rs/protocol/src/openai_models/reasoning_effort.rs",
+      "status": 200,
+      "bytes": 1804,
+      "sha256": "62089cb92996bb0030d4a219a6ba06b3bcf8f2f45e95ef7204bc8632d07ea08d",
+      "repository": "openai/codex",
+      "commit": "ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385"
+    },
+    {
+      "name": "codex-latest",
+      "url": "https://raw.githubusercontent.com/openai/codex/ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385/codex-rs/skills/src/assets/samples/openai-docs/references/latest-model.md",
+      "status": 200,
+      "bytes": 2147,
+      "sha256": "bdf241d505eb071b1c7b0b732f842b701348cf6eab95d1c36fd97edac64dd158",
+      "repository": "openai/codex",
+      "commit": "ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385"
+    },
+    {
+      "name": "codex-selection",
+      "url": "https://raw.githubusercontent.com/openai/codex/ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385/codex-rs/skills/src/assets/samples/openai-docs/references/model-selection.md",
+      "status": 200,
+      "bytes": 1344,
+      "sha256": "ba2d164abbca30435a460a0bc3a7d82398dce2bdf092705c98ba55b3f3af38a8",
+      "repository": "openai/codex",
+      "commit": "ed59a6c1cdf5e6fc96351fd46dfc1ef8a16db385"
+    },
+    {
+      "name": "claude-output-config",
+      "repository": "anthropics/anthropic-sdk-python",
+      "commit": "18f25547f20cf5f01da69ac611e700e3bc9ebf21",
+      "url": "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/18f25547f20cf5f01da69ac611e700e3bc9ebf21/src/anthropic/types/output_config_param.py",
+      "status": 200,
+      "bytes": 771,
+      "sha256": "55fd9fa7855463e780a6fe1b5e98a02cb46b0f69db56d7e2baaf219447919314"
+    },
+    {
+      "name": "claude-model-types",
+      "repository": "anthropics/anthropic-sdk-python",
+      "commit": "18f25547f20cf5f01da69ac611e700e3bc9ebf21",
+      "url": "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/18f25547f20cf5f01da69ac611e700e3bc9ebf21/src/anthropic/types/model.py",
+      "status": 200,
+      "bytes": 709,
+      "sha256": "ee0d81e257f935b619c5746cca181b0ff5cde93045751d73527ce19df4ce2a49"
+    },
+    {
+      "name": "google-sdk-types",
+      "repository": "googleapis/python-genai",
+      "commit": "84bf19c9394bb3cc41f56c11d125cf6e5de86e3a",
+      "url": "https://raw.githubusercontent.com/googleapis/python-genai/84bf19c9394bb3cc41f56c11d125cf6e5de86e3a/google/genai/types.py",
+      "status": 200,
+      "bytes": 885274,
+      "sha256": "a86848b0296691921911469c8faa9d7545a4b22389113a953ce4666ca85225f8"
+    },
+    {
+      "name": "gemini-cli-model",
+      "repository": "google-gemini/gemini-cli",
+      "commit": "ef59c532f07fbb3a58dd68bac024ae217e9c73ce",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/cli/model.md",
+      "status": 200,
+      "bytes": 2730,
+      "sha256": "11ab3a82c4e8212c693ef5f20c43ff82def58703563150ba127163fb10b9ac51"
+    },
+    {
+      "name": "gemini-cli-configuration",
+      "repository": "google-gemini/gemini-cli",
+      "commit": "ef59c532f07fbb3a58dd68bac024ae217e9c73ce",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/reference/configuration.md",
+      "status": 200,
+      "bytes": 101880,
+      "sha256": "39f17d8a39eb00ca2c95ee84534c257e60ed91e91bf19ea127ffa561a4318deb"
+    },
+    {
+      "name": "gemini-model-config",
+      "repository": "google-gemini/gemini-cli",
+      "commit": "ef59c532f07fbb3a58dd68bac024ae217e9c73ce",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/packages/core/src/services/modelConfigService.ts",
+      "status": 200,
+      "bytes": 21452,
+      "sha256": "667c9fc4c0bb338fffc570360a849dd0ed2ccb19d49c22c7c40f32a8d7d9f777"
+    }
+  ],
+  "codex_models": [
+    {
+      "slug": "gpt-6-astra",
+      "display_name": "GPT-6-Astra",
+      "description": "Frontier intelligence for the most demanding work.",
+      "default_reasoning_level": "low",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Fast responses with lighter reasoning"
+        },
+        {
+          "effort": "medium",
+          "description": "Balances speed and reasoning depth for everyday tasks"
+        },
+        {
+          "effort": "high",
+          "description": "Greater reasoning depth for complex problems"
+        },
+        {
+          "effort": "xhigh",
+          "description": "Extra high reasoning depth for complex problems"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum reasoning depth for the hardest problems"
+        },
+        {
+          "effort": "ultra",
+          "description": "Maximum reasoning with automatic task delegation"
+        }
+      ]
+    },
+    {
+      "slug": "gpt-6.1-sol",
+      "display_name": "GPT-6.1-Sol",
+      "description": "Latest workhorse model for coding and everyday work.",
+      "default_reasoning_level": "low",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Fast responses with lighter reasoning"
+        },
+        {
+          "effort": "medium",
+          "description": "Balances speed and reasoning depth for everyday tasks"
+        },
+        {
+          "effort": "high",
+          "description": "Greater reasoning depth for complex problems"
+        },
+        {
+          "effort": "xhigh",
+          "description": "Extra high reasoning depth for complex problems"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum reasoning depth for the hardest problems"
+        },
+        {
+          "effort": "ultra",
+          "description": "Maximum reasoning with automatic task delegation"
+        }
+      ]
+    },
+    {
+      "slug": "gpt-6-luna",
+      "display_name": "GPT-6-Luna",
+      "description": "Fast and affordable model for easier tasks.",
+      "default_reasoning_level": "medium",
+      "supported_reasoning_levels": [
+        {
+          "effort": "low",
+          "description": "Fast responses with lighter reasoning"
+        },
+        {
+          "effort": "medium",
+          "description": "Balances speed and reasoning depth for everyday tasks"
+        },
+        {
+          "effort": "high",
+          "description": "Greater reasoning depth for complex problems"
+        },
+        {
+          "effort": "xhigh",
+          "description": "Extra high reasoning depth for complex problems"
+        },
+        {
+          "effort": "max",
+          "description": "Maximum reasoning depth for the hardest problems"
+        }
+      ]
+    }
+  ],
+  "claude": {
+    "verified_ids": [
+      "claude-sonnet-5-5",
+      "claude-opus-5-5",
+      "claude-fable-5-1",
+      "claude-haiku-4-5"
+    ],
+    "requested_unverified_id": "claude-fable-5-5",
+    "fable_5_5_matches_in_current_changelog": 0,
+    "caveat": "Absence from these sources does not prove nonexistence; it means the requested Fable5.5 target is unverified. Preserve explicit requested target as unverified/held pending physical CLI capability confirmation rather than fabricate availability or silently replace it.",
+    "native_efforts": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "extended_is_native_effort": false,
+    "local_cli": {
+      "version": "2.1.291 (Claude Code)",
+      "command": "claude --help",
+      "effort_excerpt": "  --effort <level>                      Effort level for the current session\n                                        (low, medium, high, xhigh, max)",
+      "help_sha256": "550db4f88ae1d97bf7244ca96dc89554aabd3978241ceb69f79001e816c35f09",
+      "inference_performed": false
+    }
+  },
+  "gemini": {
+    "verified_ids": [
+      "gemini-3.8-flash",
+      "gemini-3.1-pro-preview"
+    ],
+    "stable_gemini_3_1_pro_without_preview_verified": false,
+    "flash_3_8_availability_note": "Source labels latest Flash an experiment-gated GA model; availability still depends on account/CLI capability.",
+    "thinking_levels": [
+      "MINIMAL",
+      "LOW",
+      "MEDIUM",
+      "HIGH"
+    ],
+    "extended_is_native_thinking_level": false,
+    "agy_contract_note": "Gemini CLI source does not attest Antigravity Agy flag syntax, account entitlement or aliases. Require installed executable contract evidence."
+  },
+  "cross_vendor_equivalence": {
+    "gpt_6_1_sol_equals_claude_opus_5_5": "not established by retrieved sources",
+    "claim_boundary": "Catalogue descriptions establish vendor model roles, not equivalent coding quality or success rate on this pipeline."
+  },
+  "routing_recommendation": {
+    "complexity_1_3": "Flash3.8 -> Haiku4.5 -> Luna low aligns speed-oriented roles.",
+    "complexity_4_6": "Sonnet5.5 -> Sol6.1 low (medium is a conservative engineering recommendation for the upper end) -> Flash3.8 HIGH as capacity fallback; benchmark correctness and quota use.",
+    "complexity_7_9": "Sol6.1 high/xhigh is a sensible latency/quota baseline; ultra may be selected for the hardest jobs if its delegated work is controlled. Opus5.5 high/extended -> Gemini3.1Pro HIGH are plausible alternate-provider tiers, not demonstrated equals. Preserve explicit user-approved policy where chosen.",
+    "complexity_10": "Requested Fable5.5 Extended remains unverified until installed CLI proves exact target; Astra ultra is catalogued. Do not silently substitute Fable5.1.",
+    "effort_translation": "Light -> Codex low; Ultra -> Codex ultra only on models advertising it; Extended is a local policy label requiring explicit Claude effort/thinking or Gemini HIGH mapping and capability validation.",
+    "validation_needed": "Benchmark representative completed tasks at each tier using first-pass acceptance, defect escape, end-to-end latency, quota consumption, fallback frequency and review disagreement. Ranking should follow this workstation/pipeline evidence."
+  },
+  "important_srs_constraints": [
+    "Codex ultra is described as maximum reasoning with automatic task delegation. Board-only routing/concurrency must account for or disable hidden native children.",
+    "Gemini CLI model flag does not override subagent models. CLI routing also contains enabled-by-default automatic and some silent utility fallback. Do not mistake passing --model for proof that all model calls obey the external job board.",
+    "Claude thinking and effort are distinct; xhigh/max can require thinking enabled. Never pass literal --effort extended."
+  ],
+  "excerpts": [
+    {
+      "source": "claude-model-types",
+      "url": "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/18f25547f20cf5f01da69ac611e700e3bc9ebf21/src/anthropic/types/model.py",
+      "start_line": 1,
+      "end_line": 35,
+      "text": "from typing import Union\nfrom typing_extensions import Literal, TypeAlias\n\n__all__ = [\"Model\"]\n\nModel: TypeAlias = Union[\n    Literal[\n        \"claude-sonnet-5-5\",\n        \"claude-fable-5-1\",\n        \"claude-opus-5-5\",\n        \"claude-mythos-5-1\",\n        \"claude-sonnet-5\",\n        \"claude-fable-5\",\n        \"claude-mythos-5\",\n        \"claude-opus-5\",\n        \"claude-opus-4-8\",\n        \"claude-opus-4-7\",\n        \"claude-mythos-preview\",\n        \"claude-opus-4-6\",\n        \"claude-sonnet-4-6\",\n        \"claude-haiku-4-5\",\n        \"claude-haiku-4-5-20251001\",\n        \"claude-opus-4-5\",\n        \"claude-opus-4-5-20251101\",\n        \"claude-sonnet-4-5\",\n        \"claude-sonnet-4-5-20250929\",\n    ],\n    str,\n]"
+    },
+    {
+      "source": "claude-output-config",
+      "url": "https://raw.githubusercontent.com/anthropics/anthropic-sdk-python/18f25547f20cf5f01da69ac611e700e3bc9ebf21/src/anthropic/types/output_config_param.py",
+      "start_line": 1,
+      "end_line": 30,
+      "text": "from __future__ import annotations\n\nfrom typing import Optional\nfrom typing_extensions import Literal, TypedDict\n\nfrom .json_output_format_param import JSONOutputFormatParam\n\n__all__ = [\"OutputConfigParam\"]\n\n\nclass OutputConfigParam(TypedDict, total=False):\n    effort: Optional[Literal[\"low\", \"medium\", \"high\", \"xhigh\", \"max\"]]\n    \"\"\"How much effort the model should put into its response.\n\n    Higher effort levels may result in more thorough analysis but take longer.\n\n    Valid values are `low`, `medium`, `high`, `xhigh`, or `max`.\n    \"\"\"\n\n    format: Optional[JSONOutputFormatParam]\n    \"\"\"A schema to specify Claude's output format in responses.\n\n    See\n    [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)\n    \"\"\""
+    },
+    {
+      "source": "gemini-models",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/packages/core/src/config/models.ts",
+      "start_line": 59,
+      "end_line": 83,
+      "text": "export const PREVIEW_GEMINI_MODEL = 'gemini-3-pro-preview';\nexport const PREVIEW_GEMINI_3_1_MODEL = 'gemini-3.1-pro-preview';\nexport const PREVIEW_GEMINI_3_1_CUSTOM_TOOLS_MODEL =\n  'gemini-3.1-pro-preview-customtools';\n// TODO: set to none and const once the experiment for 3_5 flash rollut can be\n// cleaned up.\nexport let PREVIEW_GEMINI_FLASH_MODEL = 'gemini-3-flash-preview';\nexport const DEFAULT_GEMINI_MODEL = 'gemini-2.5-pro';\n\n// Flash Tier: Base (stable GA) vs. Latest (experiment-gated GA)\nexport const BASE_GEMINI_FLASH_MODEL = 'gemini-3.5-flash';\nexport const LATEST_GEMINI_FLASH_MODEL = 'gemini-3.8-flash';\nexport const LEGACY_CCPA_FLASH_MODEL = 'gemini-3-flash';\n\n// Backward-compatible aliases\nexport const DEFAULT_GEMINI_3_5_FLASH_MODEL = BASE_GEMINI_FLASH_MODEL;\nexport const SECONDARY_GEMINI_3_5_FLASH_MODEL = LEGACY_CCPA_FLASH_MODEL;\n\n// Flash Lite Tier: Base (stable GA) vs. Latest (experiment-gated GA)\nexport const BASE_GEMINI_FLASH_LITE_MODEL = 'gemini-3.1-flash-lite';\nexport const LATEST_GEMINI_FLASH_LITE_MODEL = 'gemini-3.5-flash-lite';\n\n// Runtime active defaults (mutated when experiment flags are evaluated)\nexport let DEFAULT_GEMINI_FLASH_MODEL = BASE_GEMINI_FLASH_MODEL;\nexport let DEFAULT_GEMINI_FLASH_LITE_MODEL = BASE_GEMINI_FLASH_LITE_MODEL;"
+    },
+    {
+      "source": "google-sdk-types",
+      "url": "https://raw.githubusercontent.com/googleapis/python-genai/84bf19c9394bb3cc41f56c11d125cf6e5de86e3a/google/genai/types.py",
+      "start_line": 375,
+      "end_line": 387,
+      "text": "class ThinkingLevel(_common.CaseInSensitiveEnum):\n  \"\"\"The number of thoughts tokens that the model should generate.\"\"\"\n\n  THINKING_LEVEL_UNSPECIFIED = 'THINKING_LEVEL_UNSPECIFIED'\n  \"\"\"Unspecified thinking level.\"\"\"\n  MINIMAL = 'MINIMAL'\n  \"\"\"MINIMAL thinking level.\"\"\"\n  LOW = 'LOW'\n  \"\"\"Low thinking level.\"\"\"\n  MEDIUM = 'MEDIUM'\n  \"\"\"Medium thinking level.\"\"\"\n  HIGH = 'HIGH'\n  \"\"\"High thinking level.\"\"\""
+    },
+    {
+      "source": "gemini-cli-model",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/cli/model.md",
+      "start_line": 1,
+      "end_line": 13,
+      "text": "# Gemini CLI model selection (`/model` command)\n\nSelect your Gemini CLI model. The `/model` command lets you configure the model\nused by Gemini CLI, giving you more control over your results. Use **Pro**\nmodels for complex tasks and reasoning, **Flash** models for high speed results,\nor the (recommended) **Auto** setting to choose the best model for your tasks.\n\n<!-- prettier-ignore -->\n> [!NOTE]\n> The `/model` command (and the `--model` flag) does not override the\n> model used by sub-agents. Consequently, even when using the `/model` flag you\n> may see other models used in your model usage reports.\n"
+    },
+    {
+      "source": "gemini-model-routing",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/cli/model-routing.md",
+      "start_line": 1,
+      "end_line": 27,
+      "text": "# Model routing\n\nGemini CLI includes a model routing feature that automatically switches to a\nfallback model in case of a model failure. This feature is enabled by default\nand provides resilience when the primary model is unavailable.\n\n## How it works\n\nModel routing is managed by the `ModelAvailabilityService`, which monitors model\nhealth and automatically routes requests to available models based on defined\npolicies.\n\n1.  **Model failure:** If the currently selected model fails (for example, due\n    to quota or server errors), the CLI will initiate the fallback process.\n\n2.  **User consent:** Depending on the failure and the model's policy, the CLI\n    may prompt you to switch to a fallback model (by default always prompts\n    you).\n\n    Some internal utility calls (such as prompt completion and classification)\n    use a silent fallback chain for `gemini-2.5-flash-lite` and will fall back\n    to `gemini-2.5-flash` and `gemini-2.5-pro` without prompting or changing the\n    configured model.\n\n3.  **Model switch:** If approved, or if the policy allows for silent fallback,\n    the CLI will use an available fallback model for the current turn or the\n    remainder of the session."
+    },
+    {
+      "source": "gemini-cli-configuration",
+      "url": "https://raw.githubusercontent.com/google-gemini/gemini-cli/ef59c532f07fbb3a58dd68bac024ae217e9c73ce/docs/reference/configuration.md",
+      "start_line": 611,
+      "end_line": 626,
+      "text": "      \"chat-base-3\": {\n        \"extends\": \"chat-base\",\n        \"modelConfig\": {\n          \"generateContentConfig\": {\n            \"thinkingConfig\": {\n              \"thinkingLevel\": \"HIGH\"\n            }\n          }\n        }\n      },\n      \"gemini-3-pro-preview\": {\n        \"extends\": \"chat-base-3\",\n        \"modelConfig\": {\n          \"model\": \"gemini-3-pro-preview\"\n        }\n      },"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 757,
+      "end_line": 760,
+      "text": "## 2.1.284\n\n- Added Claude Sonnet 5.5 (`claude-sonnet-5-5`), now the default Sonnet model on the Anthropic API \u2014 1M context, $2/$10 per Mtok with $0.20/Mtok cache reads\n- Added a \"Yes, but ask again next time\" answer to auto mode's prompt before a read outside the working directories, so you can allow that one read and still be asked about later ones"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 1226,
+      "end_line": 1229,
+      "text": "## 2.1.280\n\n- Added Claude Opus 5.5 (`claude-opus-5-5`), now the default Opus model \u2014 1M context, $4/$20 per Mtok with $0.20/Mtok cache reads\n- Added mouse support to more lists in fullscreen mode: the wheel scrolls the `/skills` list, and a skill's state options in `/plugin` can be clicked"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 2326,
+      "end_line": 2329,
+      "text": "## 2.1.257\n\n- Added Claude Fable 5.1 (`claude-fable-5-1`), now the default Fable model \u2014 1M context, $10/$50 per Mtok with $0.25/Mtok cache reads\n- Added \"Time format\" (`timeFormat`) and `timeZone` settings: 12-hour, 24-hour, 24-hour UTC, or a strftime pattern for the turn-end clock and transcript-view timestamps"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 6734,
+      "end_line": 6737,
+      "text": "- Fixed custom agent `model` field in `.claude/agents/*.md` being ignored when spawning team teammates (anthropics/claude-code#26064)\n- Fixed plan mode being lost after context compaction, causing the model to switch from planning to implementation mode (anthropics/claude-code#26061)\n- Fixed `alwaysThinkingEnabled: true` in settings.json not enabling thinking mode on Bedrock and Vertex providers (anthropics/claude-code#26074)\n- Fixed `tool_decision` OTel telemetry event not being emitted in headless/SDK mode (anthropics/claude-code#26059)"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 5416,
+      "end_line": 5419,
+      "text": "- Claude Opus 4.7 xhigh is now available! Use /effort to tune speed vs. intelligence\n- Auto mode is now available for Max subscribers when using Opus 4.7\n- Added `xhigh` effort level for Opus 4.7, sitting between `high` and `max`. Available via `/effort`, `--effort`, and the model picker; other models fall back to `high`\n- `/effort` now opens an interactive slider when called without arguments, with arrow-key navigation between levels and Enter to confirm"
+    },
+    {
+      "source": "claude-changelog",
+      "url": "https://raw.githubusercontent.com/anthropics/claude-code/765f236fe1bfcc678e0ec59af9170fb7d6771a3a/CHANGELOG.md",
+      "start_line": 2452,
+      "end_line": 2455,
+      "text": "- Fixed conversations getting stuck on \"text content blocks must be non-empty\" errors after a turn where the model produced only thinking\n- Fixed the first launch on a fresh install starting in default mode instead of auto mode for accounts whose startup default is auto mode\n- Fixed Opus 5 requests failing with \"effort \u2026 is not supported when thinking is disabled\" when effort was xhigh/max and thinking was turned off; effort is now sent as `high` in that case\n- Fixed replying to a message Claude Desktop delivered from another session: `SendMessage` to that session id now delivers through Claude Desktop instead of failing with \"not reachable\""
+    }
+  ]
+}

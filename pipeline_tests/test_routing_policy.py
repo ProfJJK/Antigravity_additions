@@ -11,17 +11,73 @@ import json
 import pytest
 
 from cochem_pipeline.routing import (
-    ModelTarget, RoutingPolicy, load_routing_policy,
+    ModelTarget, RoutingPolicy, load_routing_policy, load_current_routing_policy,
     score_task, tier_for_score, validate_selected_route,
 )
 
 
 EXPECTED = {
-    "1-3": [("gemini", "gemini-3.8-flash", None), ("claude", "claude-haiku-4-5", None), ("codex", "gpt-6-luna", None)],
-    "4-6": [("claude", "claude-sonnet-5-5", None), ("codex", "gpt-6-sol", None), ("gemini", "gemini-3.1-pro", None)],
-    "7-9": [("claude", "claude-opus-5-5", None), ("codex", "gpt-6-astra", "low"), ("gemini", "gemini-3.1-pro", None)],
-    "10": [("claude", "claude-fable-5-1", None), ("codex", "gpt-6-astra", "ultra")],
+    "1-3": [("gemini", "gemini-3.8-flash", None), ("claude", "claude-haiku-4-5", None), ("codex", "gpt-6-luna", "low")],
+    "4-6": [("claude", "claude-sonnet-5-5", None), ("codex", "gpt-6.1-sol", "medium"), ("gemini", "gemini-3.8-flash", "extended")],
+    "7-9": [("codex", "gpt-6.1-sol", "high"), ("claude", "claude-opus-5-5", "extended"), ("gemini", "gemini-3.1-pro-preview", "high")],
+    "10": [("claude", "claude-fable-5-1", "extended"), ("codex", "gpt-6-astra", "ultra")],
 }
+
+
+@pytest.mark.parametrize("raw,digest", [
+    ({"policy_version": 1}, "77054d615daa19c2ef0283f6f40f4e549042763bb0c1452068051d48652507e1"),
+    ({"policy_version": 1, "model_limits": {"codex:gpt-6-astra:low": 2}, "max_dispatches": 11},
+     "3cf62c9a24cb36399e6d5f0861f143dd18c61ab6a60a3dca420427fe4d8f5de7"),
+    ({"policy_version": 1,
+      "provider_limits": {"codex": {"max_concurrency": 3, "quota_pool": "shared"},
+                          "claude": {"max_concurrency": 2, "quota_pool": "shared"}},
+      "quota_pool_limits": {"shared": 2, "gemini": 1}},
+     "3418973142969a42c15ef64ad5c87796a2ea47d67a006a553c4498536b1e64cc"),
+])
+def test_captured_v1_policy_preserves_preupgrade_digests_and_independent_decoding(raw, digest):
+    # These digests were captured from the released v1 implementation before
+    # the catalogue update. A v2 deployment must retain historical authority.
+    from cochem_supervisor.probes import configured_routing_policy
+    policy = load_routing_policy(raw)
+    assert policy.digest == digest
+    assert load_routing_policy(policy.as_dict()).digest == digest
+    assert configured_routing_policy(raw) == policy.as_dict()
+    assert configured_routing_policy(policy.as_dict()) == policy.as_dict()
+    assert policy.candidates(7)[1].key == "codex:gpt-6-astra:low"
+    assert policy.candidates(10)[0].key == "claude:claude-fable-5-1"
+
+
+def test_new_configuration_requires_v2_but_old_receipts_remain_decodable():
+    from cochem_supervisor.probes import configured_current_routing_policy
+    current = load_current_routing_policy()
+    assert current.as_dict()["policy_version"] == 2
+    assert configured_current_routing_policy() == current.as_dict()
+    with pytest.raises(ValueError, match="migrate configuration explicitly"):
+        load_current_routing_policy({"policy_version": 1})
+    with pytest.raises(ValueError, match="migrate configuration explicitly"):
+        configured_current_routing_policy({"policy_version": 1})
+    legacy = load_routing_policy({"policy_version": 1})
+    assert not current.is_enabled(legacy.candidates(7)[1])
+    assert not current.is_enabled(legacy.candidates(10)[0])
+    assert current.is_enabled(legacy.candidates(10)[1])
+    assert validate_selected_route(legacy, selected(legacy, index=1)).model == "gpt-6-astra"
+
+
+@pytest.mark.parametrize("raw", [None, {"max_dispatches": 17},
+    {"model_limits": {"codex:gpt-6.1-sol:high": 2, "gemini:gemini-3.1-pro-preview:high": 3}}])
+def test_v2_pipeline_and_frozen_supervisor_policy_normalization_agree(raw):
+    from cochem_supervisor.probes import configured_routing_policy
+    policy = load_routing_policy(raw)
+    assert configured_routing_policy(raw) == policy.as_dict()
+    assert configured_routing_policy(policy.as_dict()) == policy.as_dict()
+    assert "gemini:gemini-3.1-pro" not in policy.model_max_concurrency
+
+
+def test_catalogue_upgrade_does_not_rewrite_frozen_scoring_version():
+    from cochem_supervisor.probes import score_routing_task
+    payload = {"objective": "Review concurrent database migration", "requirements": ["R-1"]}
+    assert score_task("CHAPTER_DRAFT", payload) == score_routing_task("CHAPTER_DRAFT", payload)
+    assert score_task("CHAPTER_DRAFT", payload)["policy_version"] == 1
 
 
 @pytest.mark.parametrize("score,tier", [(1, "1-3"), (3, "1-3"), (4, "4-6"), (6, "4-6"),
@@ -35,13 +91,13 @@ def test_authoritative_tier_boundaries_order_models_and_exact_effort(score, tier
     assert len({value.key for value in candidates}) == len(candidates)
 
 
-def test_ultra_and_low_are_distinct_target_identities_without_remapping():
-    low = RoutingPolicy().candidates(7)[1]
-    ultra = RoutingPolicy().candidates(10)[1]
-    assert low.key == "codex:gpt-6-astra:low"
-    assert ultra.key == "codex:gpt-6-astra:ultra"
-    assert low != ultra and low.as_dict()["reasoning_effort"] == "low"
-    assert ultra.as_dict()["reasoning_effort"] == "ultra"
+def test_medium_and_high_are_distinct_target_identities_without_remapping():
+    medium = RoutingPolicy().candidates(4)[1]
+    high = RoutingPolicy().candidates(7)[0]
+    assert medium.key == "codex:gpt-6.1-sol:medium"
+    assert high.key == "codex:gpt-6.1-sol:high"
+    assert medium != high and medium.as_dict()["reasoning_effort"] == "medium"
+    assert high.as_dict()["reasoning_effort"] == "high"
 
 
 @pytest.mark.parametrize("score", range(1, 11))
@@ -91,7 +147,7 @@ def test_shared_subscription_pool_and_exact_model_caps_are_explicit():
 
 
 @pytest.mark.parametrize("config", [
-    [], "default", {"unexpected": 1}, {"policy_version": True}, {"policy_version": 2},
+    [], "default", {"unexpected": 1}, {"policy_version": True}, {"policy_version": 3},
     {"tiers": {}}, {"tiers": []}, {"model_limits": {"unknown": 1}},
     {"model_limits": {"codex:gpt-6-luna": True}}, {"model_limits": {"codex:gpt-6-luna": 0}},
     {"model_limits": {"codex:gpt-6-luna": 1000001}}, {"provider_limits": {"other": {}}},
@@ -221,7 +277,7 @@ def test_malformed_scoring_inputs_fail_closed(kind, payload):
         score_task(kind, payload)
 
 
-def selected(policy=None, *, score=7, index=1, kind="CHAPTER_DRAFT"):
+def selected(policy=None, *, score=7, index=0, kind="CHAPTER_DRAFT"):
     policy = policy or RoutingPolicy()
     target = policy.candidates(score, kind)[index]
     return {**target.as_dict(), "pool": target.quota_pool, "score": score, "tier": tier_for_score(score),
@@ -233,13 +289,13 @@ def selected(policy=None, *, score=7, index=1, kind="CHAPTER_DRAFT"):
 def test_selected_route_binds_effort_ordinal_score_tier_policy_and_pool():
     policy = RoutingPolicy()
     target = validate_selected_route(policy, selected(policy), kind="CHAPTER_DRAFT")
-    assert target == policy.candidates(7)[1]
-    assert target.reasoning_effort == "low"
+    assert target == policy.candidates(7)[0]
+    assert target.reasoning_effort == "high"
 
 
 @pytest.mark.parametrize("change", [
     {"score": True}, {"tier": "10"}, {"candidate_index": 2}, {"candidate_index": True},
-    {"provider": "claude"}, {"model": "gpt-6-luna"}, {"reasoning_effort": "ultra"},
+    {"provider": "claude"}, {"model": "gpt-6-luna"}, {"reasoning_effort": "low"},
     {"policy_digest": "0" * 64}, {"quota_pool": "foreign"}, {"pool": "foreign"},
     {"max_concurrency": True}, {"max_concurrency": 64}, {"key": "codex:gpt-6-astra:ultra"},
     {"kind": "SYNTHESIS"},
@@ -262,13 +318,13 @@ def test_current_capacity_change_cannot_reinterpret_old_captured_assignment():
     captured = RoutingPolicy()
     route = selected(captured)
     updated = captured.as_dict()
-    updated["model_limits"]["codex:gpt-6-astra:low"] = 2
+    updated["model_limits"]["codex:gpt-6.1-sol:high"] = 2
     current = load_routing_policy(updated)
-    assert validate_selected_route(captured, route).reasoning_effort == "low"
+    assert validate_selected_route(captured, route).reasoning_effort == "high"
     assert current.is_enabled(route)
     with pytest.raises(ValueError):
         validate_selected_route(current, route)
-    assert not current.is_enabled({**route, "reasoning_effort": "high"})
+    assert not current.is_enabled({**route, "reasoning_effort": "ultra"})
 
 
 def test_synthesis_binding_rejects_wrong_kind_but_accepts_scored_tier_candidate():

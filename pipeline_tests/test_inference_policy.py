@@ -63,14 +63,16 @@ def gemini_spec():
     return {'inference_only':{'arguments':['--documented-tool-mode','disabled'],
         'version_arguments':['--documented-version-probe'], 'executable_sha256':'a'*64,
         'version':'operator-observed-version','capability_reference':'operator-reviewed native documentation',
-        'disables_tools':True,'disables_mcp':True,'disables_hooks':True}}
+        'disables_tools':True,'disables_mcp':True,'disables_hooks':True,
+        'disables_subagents':True,'disables_model_fallback':True}}
 
 
 def test_gemini_never_guesses_native_flags_and_requires_operator_bound_evidence():
     spec=gemini_spec()
     assert gemini_inference_arguments(spec)==spec['inference_only']['arguments']
     with pytest.raises(ValueError):gemini_inference_arguments({})
-    for key,value in [('disables_tools',False),('executable_sha256','mutable'),('version_arguments',[])]:
+    for key,value in [('disables_tools',False),('disables_subagents',False),
+                      ('disables_model_fallback',False),('executable_sha256','mutable'),('version_arguments',[])]:
         changed=gemini_spec();changed['inference_only'][key]=value
         with pytest.raises(ValueError):gemini_inference_arguments(changed)
 
