@@ -1,0 +1,22 @@
+{
+    "schema":  "cochem-held-supervisor-activation-result/1",
+    "status":  "HELD_SUPERVISOR_OBSERVATION_RUNNING",
+    "root":  "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1",
+    "staging_receipt_sha256":  "32697215f4d9d62573371a9185fff6920fa84d34a8b066f5a183673ec9500f1d",
+    "commissioning_receipt_sha256":  "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+    "provisioning_receipt_sha256":  "beff7c79325f1c123ba7ae01aba4e810c033769063ba4aae5f9a9c5a67656e50",
+    "runtime_receipt_sha256":  "e6ecefc97bbf0b2218a3b37ddf24dbc0bfbd109d2d419e8130099b13e8b761b9",
+    "native_process":  {
+                           "pid":  24608,
+                           "system_sid":  "S-1-5-18",
+                           "creation_filetime":  134359860348047610,
+                           "held_native_handle":  true,
+                           "task_instance_guid":  "{91BC9A32-CAE6-4CF0-A0A7-48CE0CC7FCC6}",
+                           "image_sha256":  "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa"
+                       },
+    "paid_repair_enabled":  false,
+    "component_recovery_enabled":  false,
+    "existing_warden_changed":  false,
+    "full_srs_acceptance":  false,
+    "partial_outputs_preserved":  true
+}

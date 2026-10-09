@@ -1,0 +1,15 @@
+{
+    "schema":  "cochem-partial-resource-observer-recovery-result/1",
+    "status":  "RESOURCE_OBSERVER_RUNNING_INITIAL_MEASUREMENTS_VERIFIED",
+    "recovery_intent_sha256":  "14c82df9a222db5dd76fb215f959896b3d6d2e7572d92e4e9a659b01ccbda412",
+    "registration_receipt_sha256":  "34a4635c235218896055d1ae36f91748956c5b6b36c198212e8e3d6b39303b10",
+    "observer_started_receipt_sha256":  "1477eeb23e38e79c9fe701f1c973e6726dd2d107bac0013c31da73238ee3d01a",
+    "existing_daemons_unchanged":  true,
+    "task_action_limits_triggers_or_acl_modified":  false,
+    "task_registration_requested":  0,
+    "payloads_copied":  0,
+    "exactly_one_start_requested":  true,
+    "automatic_restart_or_resume":  false,
+    "continuous_48h_complete":  false,
+    "full_srs_acceptance":  false
+}
