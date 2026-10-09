@@ -1,0 +1,14 @@
+{
+    "schema":  "cochem-running-held-observer-recovery-result/1",
+    "status":  "RUNNING_HELD_OBSERVER_REATTESTED_AND_ACTIVATION_PUBLISHED",
+    "activation_path":  "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1\\activation.json",
+    "activation_sha256":  "5599e920e8b457e6389e5d7677a4eca6e5479e8dc72bba2f41ccb5d46e640171",
+    "intent_sha256":  "8d71f379c7f96b1a03cda62cee192d17b85eb6ada46416135e28e4b7a8442108",
+    "tasks_changed":  false,
+    "task_runs_requested":  0,
+    "model_jobs_submitted":  0,
+    "databases_opened":  false,
+    "credentials_modified":  false,
+    "automatic_retry_allowed":  false,
+    "full_srs_acceptance":  false
+}

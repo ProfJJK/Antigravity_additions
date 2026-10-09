@@ -1,0 +1,43 @@
+{
+  "calls": 1000,
+  "credentials_databases_or_tasks_accessed": false,
+  "linux_results_counted_as_windows": false,
+  "model_jobs_submitted": 0,
+  "private_mib_growth": 8.7265625,
+  "production_process_modified": false,
+  "rss_mib_growth": 8.0859375,
+  "schema": "cochem-windows-commit-probe-own-process-growth/1",
+  "snapshots_after_gc": [
+    {
+      "calls": 0,
+      "garbage_objects_collected": 0,
+      "pointer_type_cache_entries": 3,
+      "private_mib": 12.23828125,
+      "rss_mib": 22.08984375
+    },
+    {
+      "calls": 100,
+      "garbage_objects_collected": 152,
+      "pointer_type_cache_entries": 103,
+      "private_mib": 12.48828125,
+      "rss_mib": 22.73046875
+    },
+    {
+      "calls": 500,
+      "garbage_objects_collected": 166,
+      "pointer_type_cache_entries": 503,
+      "private_mib": 16.11328125,
+      "rss_mib": 25.94921875
+    },
+    {
+      "calls": 1000,
+      "garbage_objects_collected": 49,
+      "pointer_type_cache_entries": 1003,
+      "private_mib": 20.96484375,
+      "rss_mib": 30.17578125
+    }
+  ],
+  "source": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\resource_telemetry.py",
+  "source_sha256": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a",
+  "type_cache_growth": 1000
+}

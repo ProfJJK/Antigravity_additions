@@ -1,0 +1,123 @@
+{
+  "policy_limits_changed": false,
+  "python_version": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "results": [
+    {
+      "native_counter_reads": 3000,
+      "production_runtime_started": false,
+      "production_state_opened": false,
+      "samples": [
+        {
+          "calls": 0,
+          "performance_type_entries": 0,
+          "pointer_cache_entries": 3,
+          "private_bytes": 14733312,
+          "python_traced_current_bytes": 1584,
+          "python_traced_peak_bytes": 2667,
+          "rss_bytes": 25190400
+        },
+        {
+          "calls": 1000,
+          "performance_type_entries": 1000,
+          "pointer_cache_entries": 1003,
+          "private_bytes": 28893184,
+          "python_traced_current_bytes": 8171508,
+          "python_traced_peak_bytes": 8241539,
+          "rss_bytes": 38289408
+        },
+        {
+          "calls": 2000,
+          "performance_type_entries": 2000,
+          "pointer_cache_entries": 2003,
+          "private_bytes": 42635264,
+          "python_traced_current_bytes": 16325596,
+          "python_traced_peak_bytes": 16395579,
+          "rss_bytes": 52281344
+        },
+        {
+          "calls": 3000,
+          "performance_type_entries": 3000,
+          "pointer_cache_entries": 3003,
+          "private_bytes": 58662912,
+          "python_traced_current_bytes": 24591756,
+          "python_traced_peak_bytes": 24661739,
+          "rss_bytes": 67674112
+        }
+      ],
+      "schema_keys": [
+        "available",
+        "error",
+        "free_mb",
+        "limit_mb",
+        "process_memory_available",
+        "process_memory_error",
+        "process_memory_source",
+        "process_private_mb",
+        "process_working_set_mb",
+        "source",
+        "total_mb"
+      ],
+      "variant": "installed_dynamic_type"
+    },
+    {
+      "native_counter_reads": 3000,
+      "production_runtime_started": false,
+      "production_state_opened": false,
+      "samples": [
+        {
+          "calls": 0,
+          "performance_type_entries": 0,
+          "pointer_cache_entries": 3,
+          "private_bytes": 14594048,
+          "python_traced_current_bytes": 1584,
+          "python_traced_peak_bytes": 2667,
+          "rss_bytes": 24993792
+        },
+        {
+          "calls": 1000,
+          "performance_type_entries": 1,
+          "pointer_cache_entries": 4,
+          "private_bytes": 14594048,
+          "python_traced_current_bytes": 9611,
+          "python_traced_peak_bytes": 21374,
+          "rss_bytes": 25047040
+        },
+        {
+          "calls": 2000,
+          "performance_type_entries": 1,
+          "pointer_cache_entries": 4,
+          "private_bytes": 14594048,
+          "python_traced_current_bytes": 10083,
+          "python_traced_peak_bytes": 21846,
+          "rss_bytes": 25047040
+        },
+        {
+          "calls": 3000,
+          "performance_type_entries": 1,
+          "pointer_cache_entries": 4,
+          "private_bytes": 14594048,
+          "python_traced_current_bytes": 10499,
+          "python_traced_peak_bytes": 22262,
+          "rss_bytes": 25047040
+        }
+      ],
+      "schema_keys": [
+        "available",
+        "error",
+        "free_mb",
+        "limit_mb",
+        "process_memory_available",
+        "process_memory_error",
+        "process_memory_source",
+        "process_private_mb",
+        "process_working_set_mb",
+        "source",
+        "total_mb"
+      ],
+      "variant": "hoisted_type_cached_binding"
+    }
+  ],
+  "schema": "cochem-isolated-commit-type-cache-comparison/1",
+  "scope": "Two fresh ordinary isolated processes, read-only native OS counters; no runtime/config/database/credentials/provider/task operations.",
+  "source_sha256": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a"
+}

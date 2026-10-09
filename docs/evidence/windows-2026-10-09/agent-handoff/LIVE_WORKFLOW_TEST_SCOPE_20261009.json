@@ -1,0 +1,52 @@
+{
+  "agy_integration_hold_preserved": true,
+  "branch_changed": "Only windows-acceptance pipeline/accepted branch if independent acceptance succeeds",
+  "code_execution": "Controller runs disposable calculator tests in the prepared Docker boundary",
+  "credentials_are_model_inputs": false,
+  "exact_initial_requests": {
+    "coding": {
+      "objective": "Complete the disposable calculator project on its registered pipeline/accepted branch. Implement src/calculator.py add(left, right), replacing the existing return None with correct addition. Preserve the function signature. Add and execute pytest tests under tests for positive, negative, zero, and finite fractional inputs. Use the canonical planning, RED/GREEN, review and Git integration workflow; no external dependency, network operation or unrelated feature.",
+      "project_id": "windows-acceptance",
+      "requirements": [
+        "REQ-ADD: add(left, right) returns the sum of numeric inputs without changing the signature.",
+        "REQ-TEST: pytest covers positive, negative, zero and finite fractional values, including a proven failing test before implementation.",
+        "REQ-INTEGRATE: all tests pass and only the registered disposable project branch receives the reviewed implementation."
+      ],
+      "workflow_id": "windows427-r3-code-eb1e6810a6e3ee27105b"
+    },
+    "planning": {
+      "chapter_count": 6,
+      "objective": "Produce a complete six-chapter SRS and WBS for a local study-note application covering import, search, spaced review, privacy, backup and acceptance validation.",
+      "requirements": [
+        "REQ-IMPORT",
+        "REQ-SEARCH",
+        "REQ-REVIEW",
+        "REQ-PRIVACY",
+        "REQ-BACKUP",
+        "REQ-VALIDATE"
+      ],
+      "workflow_id": "windows427-r3-plan-eb1e6810a6e3ee27105b"
+    }
+  },
+  "initial_review_result": "Execution rejected before process creation; exact scope has now been inspected",
+  "model_prompt_context": [
+    "Synthetic study-note requirements and derived SRS/WBS artifacts",
+    "Disposable calculator source and pytest tests from the registered windows-acceptance project",
+    "Canonical pipeline governing requirements, provenance hashes and fixed execution directives",
+    "Derived planning, review and test-result diagnostics for these same two workflows"
+  ],
+  "model_routing": "Canonical Chapter 06 unchanged",
+  "native_model_tools_hooks_delegation_disabled": true,
+  "no_api_key_route_or_paid_repair": true,
+  "no_automatic_resubmission_after_attempt": true,
+  "original_fixed_request_ids_preserved": true,
+  "private_database_contents_are_model_inputs": false,
+  "provider_destinations": [
+    "OpenAI through the existing authenticated Codex subscription CLI",
+    "Anthropic through the existing authenticated Claude subscription CLI when Chapter 06 native effort compatibility allows it"
+  ],
+  "schema": "cochem-prepared-live-workflow-review-scope/1",
+  "shared_capacity_limit": 4,
+  "status": "PREPARED_NOT_SUBMITTED",
+  "unrelated_user_project_inputs": false
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "cochem-windows-agent-handoff-evidence/1",
+  "prepared_at_utc": "2026-10-09T20:51:40.1470157Z",
+  "repository": "ProfJJK/Pipeline-Mix-Model-Concurrent",
+  "scope": "Selected safe metadata and isolated experiment code/results. No credentials, private document text or production database files.",
+  "entries": [
+    {
+      "path": "LIVE_WORKFLOW_TEST_SCOPE_20261009.json",
+      "bytes": 3025,
+      "sha256": "b35b01c72d68b58909a717c8641ef3c1bd48a191427237ec8cb5caefdd411949"
+    },
+    {
+      "path": "LIVE_WORKFLOW_TEST_APPROVAL_20261009.json",
+      "bytes": 1079,
+      "sha256": "41511de098b4b4e8eba21c662d6ababdab2c087ea7f5a3830d114733775376cb"
+    },
+    {
+      "path": "compare_commit_type_cache_memory_r3.py",
+      "bytes": 5889,
+      "sha256": "ea4055871e9de6b35029424d3f778ed024e4f097f36ae05fe64d367e2a564ed7"
+    },
+    {
+      "path": "commit-type-cache-comparison-r3-20261009.json",
+      "bytes": 3790,
+      "sha256": "a4125e79893e91991617a29f9298d886c5013dd3547d8979c4b5a841f4b30d5c"
+    },
+    {
+      "path": "reproduce-commit-probe-type-growth-20261009.py",
+      "bytes": 1967,
+      "sha256": "c98c0e6570c4c2f75a12e60ffd3fd86591f08c3af0cafe5cbac6d0dc3c0a201c"
+    },
+    {
+      "path": "commit-probe-type-growth-actual-windows-20261009.json",
+      "bytes": 1308,
+      "sha256": "91bf6dc32a7a86539c52a36e1d80afb1315b3dd8be1f05af396a31d3f2eaebd8"
+    },
+    {
+      "path": "knowledge-memory-generated-fixture-r3-20261009.json",
+      "bytes": 4380,
+      "sha256": "eeaf52e12bc29874a7bf9008d57ac9b296414d8f0e7eeb6808d3c288378c12f6"
+    },
+    {
+      "path": "post-recorder-activation-live-readiness-safe-20261009.json",
+      "bytes": 3130,
+      "sha256": "06efac14fa22d6cc6262ff5e9c9612b4ad32f546079ee5cefcaa24775e95e53c"
+    },
+    {
+      "path": "observer-started.json",
+      "bytes": 1764,
+      "sha256": "1477eeb23e38e79c9fe701f1c973e6726dd2d107bac0013c31da73238ee3d01a"
+    },
+    {
+      "path": "resource-recovery-complete.json",
+      "bytes": 795,
+      "sha256": "9686c4a47243543931886dcc43224637e553f1fd5cebc954c28162fc1b30a4a0"
+    },
+    {
+      "path": "held-supervisor-activation.json",
+      "bytes": 1304,
+      "sha256": "5599e920e8b457e6389e5d7677a4eca6e5479e8dc72bba2f41ccb5d46e640171"
+    },
+    {
+      "path": "held-observer-recovery-complete.json",
+      "bytes": 695,
+      "sha256": "20c2e18bf33409bed4813faec3f4917b000917b032dbb39113f00a6c9a216c4a"
+    }
+  ],
+  "model_jobs_submitted": 0,
+  "telemetry_repair_implemented": false,
+  "production_processes_changed": false,
+  "full_srs_acceptance": false
+}
