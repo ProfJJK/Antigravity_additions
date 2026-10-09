@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="18" failures="0" skipped="0" tests="24" time="0.558" timestamp="2026-10-08T21:57:55.961501-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_exact_known_pins_and_frozen_only_post_sites" time="0.001" /><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_real_private_journal_success_preserves_original_bytes_and_never_replays" time="0.023"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029940&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC029A90&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC050180&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_real_private_journal_succ0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[planning-post-attempt.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029BE0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBF49450&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC050050&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[coding-post-attempt.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02A660&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBF49F90&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC018DD0&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior1/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[snapshot-planning-unknown.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02A510&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC050180&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC008050&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior2/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[prepost-continuation-intent.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029BE0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC0515B0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC00A250&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior3/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[prepost-continuation-result.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC028980&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC019A30&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBFA7050&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior4/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_any_marker_snapshot_prior_fence_or_unknown_file_refuses_before_network[unknown.json]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029A90&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC00A8B0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBFA7D50&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_any_marker_snapshot_prior5/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_original_byte_change_refuses_before_network" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02AE40&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC00B020&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBF6BD40&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_original_byte_change_refu0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_unknown_prior_failure_refuses_even_with_fixture_hash_rebound" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02B0E0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBEE1850&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC1546E0&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_unknown_prior_failure_ref0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_existing_workflow_or_unrecognized_missing_refuses_without_fence" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02AE40&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBFA7550&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC022EB0&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_existing_workflow_or_unre0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_original_inputs_and_exclusive_lock_remain_held_during_probe" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029A90&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBF6B4D0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC020D70&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_original_inputs_and_exclu0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_wait_timeout_durably_fences_without_marker_or_post_and_cannot_repeat" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC028980&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBF69310&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBE78390&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_wait_timeout_durably_fenc0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_readiness_requires_three_consecutive_fresh_advanced_samples" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC029BE0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBFFC830&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBE33110&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_readiness_requires_three_0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_stale_repeated_or_wrong_controller_samples_never_post[stale]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC028C20&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBFFE6D0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EBE33890&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_stale_repeated_or_wrong_c0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_stale_repeated_or_wrong_controller_samples_never_post[duplicate]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02A510&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBE7BAD0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC1A6990&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_stale_repeated_or_wrong_c1/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_stale_repeated_or_wrong_controller_samples_never_post[identity]" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02A3C0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBE33290&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC1A4D60&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_stale_repeated_or_wrong_c2/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_response_lost_after_first_post_keeps_marker_and_never_replays" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02A900&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EBE32450&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC12DA90&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_response_lost_after_first0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_ambiguous_fence_write_stops_before_health_and_cannot_repeat" time="0.002"><error message="failed on setup with &quot;AssertionError&quot;">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x000001B3EC02AA50&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x000001B3EC1A5860&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001B3EC12DE50&gt;
+
+    @pytest.fixture
+    def setup(native, monkeypatch):
+        parent, sid, win, scoped, private = native
+&gt;       v2.set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_prepost_continuation_r3_v1.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-prepost-fixtures-20261008-7cdab2e1/test_ambiguous_fence_write_sto0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+&gt;       assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:40: AssertionError</error></testcase><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_missing_probe_accepts_only_exact_memory_only_response[400-body0-True]" time="0.001" /><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_missing_probe_accepts_only_exact_memory_only_response[400-body1-False]" time="0.001" /><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_missing_probe_accepts_only_exact_memory_only_response[404-body2-False]" time="0.001" /><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_missing_probe_accepts_only_exact_memory_only_response[200-body3-False]" time="0.000" /><testcase classname="windows-deployment-next.test_live_prepost_continuation_r3_v1" name="test_default_preview_has_no_file_token_or_http_access" time="0.001" /></testsuite></testsuites>

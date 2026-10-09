@@ -1,0 +1,22 @@
+{
+  "schema": "cochem-reboot-setup-launcher-plan/1",
+  "mode": "READ_ONLY_PLAN",
+  "phases": [
+    {
+      "phase": "commissioning",
+      "file": "run-pipeline-commissioning-r3-v6.ps1",
+      "sha256": "42cec356b787f3edd1529f8f9c81859459f932b0630494636477a0b2e1c7e8f7"
+    },
+    {
+      "phase": "monitoring_setup",
+      "file": "run-post-commissioning-setup-r3-v3.ps1",
+      "sha256": "31ad291744eda4a2a453912b64c1b969c943b3fee70b387a503def6d6cd6589d"
+    }
+  ],
+  "source_custody_verified": true,
+  "child_processes_started": 0,
+  "tasks_changed": 0,
+  "model_jobs_submitted": 0,
+  "full_srs_acceptance": false,
+  "automatic_retry": false
+}

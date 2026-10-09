@@ -1,0 +1,48 @@
+{
+  "schema": "cochem-knowledge-recovery-preparation/1",
+  "host": "AETHERDESK",
+  "original_failure_evidence": "private-knowledge-failure-owner-receipt.json",
+  "original_failure_independently_read": false,
+  "status": "SOURCE_REPAIR_AND_READ_ONLY_DIAGNOSTIC_PREPARED",
+  "directory_creation_repair": {
+    "evidence": "docs/WINDOWS_PRIVATE_DIRECTORY_FIX_4.2.7_2026-10-07.md",
+    "knowledge_sha256": "65e1dc17a5bee38f19e47abb24dd97864fcdcd4bc08fd28ab9199d311869d7b2",
+    "operations_sha256": "06bc54e218596bee4103da96a179f49a9551bae23d0380a31b0f005a53323f86",
+    "root_review": "NO_REMAINING_CONCRETE_FINDING",
+    "strict_acl_validator_changed": false,
+    "windows_tests_passed": 86,
+    "windows_tests_skipped": 2,
+    "installed": false
+  },
+  "system_diagnostic": {
+    "wrapper": "windows-deployment-next/diagnose-knowledge-state.ps1",
+    "wrapper_sha256": "65887612ce9b1c6f563437d72d3a5a44f3dd01e47a2ee029416198ca27f02370",
+    "python_sha256": "e799d3d932a42af251c5ea752530eb9bcee022196d0c22db60c75e481e67da87",
+    "windows_inert_tests_passed": 28,
+    "windows_inert_tests_skipped": 0,
+    "actual_read_only_preview_holds": 0,
+    "root_review": "NO_REMAINING_CONCRETE_FINDING_AFTER_RECEIPT_ACL_FIX",
+    "independent_review": "NO_REMAINING_CONCRETE_FINDING_AFTER_RECEIPT_ACL_FIX",
+    "production_state_access": "File identity, attributes and ACL metadata only; no database contents or hashes",
+    "new_artifacts": "One private diagnostic root/task/report and two empty synthetic directory fixtures",
+    "original_task_rerun": false,
+    "index_refresh": false,
+    "existing_permissions_modified": false,
+    "actual_system_execution_verified": false
+  },
+  "fresh_runtime_candidate": {
+    "revision_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "source_files": 166,
+    "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "helper_sha256": "1cf9d391bf54b1a4b530636ebbb3746cadc3844b0fe13a60eabb13deb9987896",
+    "root_review": "Same reviewed r1 installer body with fresh r2 target; two independently reviewed source repairs",
+    "windows_tests_passed": 31,
+    "actual_read_only_preview_holds": 0,
+    "installed": false,
+    "r1_artifacts_preserved": true
+  },
+  "remaining": "Inspect actual SYSTEM diagnostic; install and verify fresh runtime; prepare resume-index procedure bound to exact partial state and original receipt. Never rerun the original continuation against existing targets.",
+  "pipeline_started": false,
+  "activation_ready": false,
+  "linux_results_are_separate": true
+}

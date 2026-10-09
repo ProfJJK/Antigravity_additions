@@ -1,0 +1,152 @@
+{
+  "schema": "cochem-docker-physical-system-observation/1",
+  "status": "DOCKER_PHYSICAL_CORRECTNESS_VERIFIED_SLA_HELD",
+  "captured_utc": "2026-10-08T00:53:32.197970+00:00",
+  "host": "AETHERDESK",
+  "receipt_sha256": "2ca594fdca714ff48ba8f9a8201f5f27c0e71ba833a5aa5a23cbbe3266ad2e74",
+  "inputs_sha256": "a6f5798ffb22cb386fb216cff49280032f4163d5ca8275b1a413a7736ca55da2",
+  "safe_owner_result_sha256": "5c28db56267868fd800e6cb7cd3d0cd7910c0e16310209988cdb44aa7695dce7",
+  "provenance": "Exact bounded reads of public protected SYSTEM receipt/input bytes and helper hashes. Safe owner result is an allowlisted reconstruction, not a raw console capture; task result2 comes from the owner wrapper report, not current COM inspection.",
+  "task": {
+    "last_result_reported_by_owner_wrapper": 2,
+    "current_com_state_queried_by_collector": false
+  },
+  "bindings": {
+    "nonce": "dcc1ef58803546c082b656b1baeea849",
+    "helper_sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+    "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "foundation_receipt_sha256": "9aea1e8f382ea8600cbd75d679f76acadc05da32774d9d8742cad08967ce1b41",
+    "revision": {
+      "acceptance_files": 0,
+      "acceptance_sha256": null,
+      "files": 109,
+      "read_only": true,
+      "schema": "cochem-installed-revision/1",
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "verified": true
+    }
+  },
+  "actual_windows_measures": [
+    {
+      "phase": "red",
+      "tests": 2,
+      "failures": 1,
+      "expected_test_failure": true,
+      "startup_seconds": 2.696504831314087,
+      "startup_sla_met": false,
+      "test_cycle_seconds": 4.562000000005355,
+      "cleanup_verified": true,
+      "input_and_output_source_verified": true
+    },
+    {
+      "phase": "green",
+      "tests": 2,
+      "failures": 0,
+      "expected_test_failure": false,
+      "startup_seconds": 2.658830165863037,
+      "startup_sla_met": false,
+      "test_cycle_seconds": 4.23499999998603,
+      "cleanup_verified": true,
+      "input_and_output_source_verified": true
+    }
+  ],
+  "physical_boundary_verified": true,
+  "cleanup_verified": true,
+  "startup_sla_met": false,
+  "prepared_count": 2,
+  "maximum_owned_observed": 2,
+  "shared_capacity": 4,
+  "native_occupancy": 0,
+  "final_physical_census_empty": true,
+  "final_registry_counts": {
+    "active": 0,
+    "owned": 0,
+    "preparing": 0,
+    "published_capacity": 4,
+    "quarantined": 0,
+    "unknown_owned": 0,
+    "warm": 0
+  },
+  "final_counts_provenance": "Explicit SYSTEM receipt claims at completion, not a new private registry query or current Docker census.",
+  "started_at_unix_ms": 1791420611780,
+  "finished_at_unix_ms": 1791420646424,
+  "registry_history_preserved": true,
+  "registry_claim_scope": "Acceptance intentionally recorded its own two leases/receipts/history in the previously new empty registry. No cleanup/reset by this collector.",
+  "prior_receipts_and_inputs_verified_unchanged": {
+    "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "failed_foundation_packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+    "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+    "diagnostic_packet_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d"
+  },
+  "protected_helper_pins_verified": [
+    {
+      "path": "accept-docker-execution-r3-v2.py",
+      "sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+      "bytes": 27944
+    },
+    {
+      "path": "provision-execution-foundation-r3-v2.py",
+      "sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+      "bytes": 25200
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.py",
+      "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+      "bytes": 24727
+    },
+    {
+      "path": "inspect-execution-prerequisites-r3.py",
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a"
+    },
+    {
+      "path": "worker-denial-acceptance-r3.py",
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77"
+    }
+  ],
+  "collector_actions": {
+    "docker_commands": 0,
+    "task_calls": 0,
+    "private_database_reads": 0,
+    "private_project_reads": 0,
+    "credential_reads": 0,
+    "deployments": 0
+  },
+  "automatic_retry_allowed": false,
+  "pipeline_activated": false,
+  "native_model_jobs_executed": 0,
+  "chapter06_coding_workflow_tested": false,
+  "next_action": "Review startup timing hold without rerunning this fresh-only acceptance, resetting registry/history/quarantine, or activating the pipeline.",
+  "linux_results_are_separate": true,
+  "original_bytes_preserved": true,
+  "files": {
+    "docker-physical-acceptance.json": {
+      "sha256": "2ca594fdca714ff48ba8f9a8201f5f27c0e71ba833a5aa5a23cbbe3266ad2e74",
+      "bytes": 4308
+    },
+    "inputs.json": {
+      "sha256": "a6f5798ffb22cb386fb216cff49280032f4163d5ca8275b1a413a7736ca55da2",
+      "bytes": 1517
+    },
+    "safe-owner-result.json": {
+      "sha256": "5c28db56267868fd800e6cb7cd3d0cd7910c0e16310209988cdb44aa7695dce7",
+      "bytes": 895
+    },
+    "preparation.json": {
+      "sha256": "30c6f7d6493913cfffaaf69a75f3631ee8238a9e82eb2c9515d4d66b11641832",
+      "bytes": 4387
+    },
+    "observed-before.json": {
+      "sha256": "eb91c1172e78000e6f34a3ca1d3a22556783474f15e4066a0a4f51337332b465",
+      "bytes": 63207
+    },
+    "handoff-before.md": {
+      "sha256": "1bbce1426298eb2eb4ad9da42db712d358f48a7c3a128a7d866b3eee796331df",
+      "bytes": 11552
+    },
+    "collector.py": {
+      "sha256": "9dfd71c42b77949d36f79d425b8da53b627e818326e714391fd0fddba6f16b64",
+      "bytes": 16834
+    }
+  }
+}

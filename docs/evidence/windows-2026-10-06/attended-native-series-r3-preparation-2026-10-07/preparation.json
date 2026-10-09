@@ -1,0 +1,87 @@
+{
+  "schema": "cochem-attended-native-series-preparation/1",
+  "prepared_utc": "2026-10-07T18:32:12.574584+00:00",
+  "host": "AETHERDESK",
+  "status": "PREPARED_REVIEWED_NOT_EXECUTED_OR_ISSUED",
+  "source_workspace": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next",
+  "scope": "One explicitly attended elevated owner command per provider: six isolated native logins, then the frozen r3 authentication-status batch. Fixed private provider marker refuses all retries, partial or successful. Old scripts, credentials, identities, routing, databases, budgets, R and tasks unchanged during preparation.",
+  "independent_review": {
+    "reviewer": "host_inspection",
+    "outcome": "No remaining concrete finding; read-only source/pin review; no Apply or provider calls."
+  },
+  "validation": {
+    "environment": "actual ordinary-user Windows PowerShell 5.1",
+    "passed": 42,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": "14.353",
+    "scope": [
+      "real ordinary console-child argv/exit/stderr transport",
+      "exact Apply action branch with simulated auth/task/admin boundaries",
+      "real disposable ACL fixture with explicit ordinary test-owner substitution",
+      "held helper hashes/write denial",
+      "first-failure order, fresh marker refusal, six protected status receipt bindings"
+    ],
+    "initial_fixture_failures_preserved": "Initial2 failures were mock Directory not declared switch. Followup4 failures were Set-Acl requesting SeSecurityPrivilege on constructed fixture descriptor; final fixture uses native .NET Access-only persistence. No production permission was changed."
+  },
+  "actual_readonly_preview": {
+    "providers": [
+      "codex",
+      "claude"
+    ],
+    "source_files_verified_each": 166,
+    "installed_package_assets_bound_each": 109,
+    "holds_each": 6,
+    "hold_scope": "Exact six worker-root metadata paths are inaccessible under the ordinary token; their ordinary-directory/ancestor checks must succeed in Administrator preflight before any marker/login. Absence was not inferred. No other hold reported."
+  },
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "frozen_native_package_preparation": "../native-r3-login-status-preparation-2026-10-07/preparation.json",
+  "native_commands_executed": 0,
+  "login_commands_executed": 0,
+  "model_jobs_executed": 0,
+  "administrator_or_SYSTEM_execution": false,
+  "activation_ready": false,
+  "important_existing_behavior": "Original Codex helper is explicitly passed r3 but retains historical output logs and GUID task removal; it does not pass ResourceLimits. New series records metadata only and separately requires six r3 authentication receipts. Claude uses the already reviewed private one-line bridge. No native argv/policy changed.",
+  "limits": "No attended browser flow was executed. Authentication success does not establish serving model/effort, provider account identity or paid plan. Agy owner availability is unaffected; isolated integration remains held.",
+  "files": [
+    {
+      "name": "login-six-workers-attended-r3.ps1",
+      "sha256": "76e147b643cac7f1db3ac8ad91f503a19337347e3fb858d061a8ea9cd847b766",
+      "bytes": 16739
+    },
+    {
+      "name": "test_attended_native_series_r3.py",
+      "sha256": "a6eefcb95cf071bb4128025f1d6a8593bf78b0897a7bce8691c16dd2b69f4a42",
+      "bytes": 16656
+    },
+    {
+      "name": "HUMAN_NATIVE_LOGIN_SERIES_R3.txt",
+      "sha256": "af9eb92a90cf82d51f8dac5a0d11c51c26b67a5f73f26ab68630ca166ba9230c",
+      "bytes": 3321
+    },
+    {
+      "name": "attended-native-series-readonly-preview.json",
+      "sha256": "23f64c9ab023fd218dd856ddc631bb3104b02980315081f9af81c41f482d0a70",
+      "bytes": 4904
+    },
+    {
+      "name": "attended-native-series-tests-initial.xml",
+      "sha256": "00d6225445b0a6faba1278a61baa96416a6c7d83eb9a7135059d6b53d75ea1ad",
+      "bytes": 13199
+    },
+    {
+      "name": "attended-native-series-tests-followup.xml",
+      "sha256": "357552cfb331d5e34ec00484e57c354bb12c4e3b8a54345b8b34a287028f9449",
+      "bytes": 26086
+    },
+    {
+      "name": "attended-native-series-tests-final.xml",
+      "sha256": "eef7b4817bf77ab53efba0f4e4c1d385cc10d9dbe463e3440ddafee236e44bf9",
+      "bytes": 7538
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "cochem-controller-startup-authentication-source-audit/1",
+  "observed_at_utc": "2026-10-08T02:59:25.3573367Z",
+  "scope": "Read-only canonical requirements and source review; no provider status, authentication, controller, task, token, credential or workflow operations",
+  "inspected_sources": [
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\4.2.7_SRS.md",
+      "lines": [
+        "25 S427-ARCH-002",
+        "63 S427-PLAN-002",
+        "119 S427-ROUTE-002",
+        "121 S427-ROUTE-004",
+        "122 S427-ROUTE-005",
+        "274 S427-DEPLOY-001"
+      ],
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\commission-first-warden-r3-v1.py",
+      "lines": [
+        "77-109 validate_auth",
+        "372-374 required startup gate"
+      ],
+      "sha256": "bd6ed9cc62bc96777d5748e819c5f780ada2e58ce0d43bf7e5f2013ca72f451c"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\commission-first-warden-r3-v1.ps1",
+      "lines": [
+        "Read-FirstStartAuth and inputs binding"
+      ],
+      "sha256": "75efe248449fa9be0317a85feb277d82a961d05594ee754d11b3b9d0ec4dfd1e"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\runtime.py",
+      "repository_counterpart": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\runtime.py",
+      "sha256": "4fa4c09ceb749ffa5e220c5e59dd5f04a441672e049062902595a19dd14e5db0",
+      "repository_sha256": "4fa4c09ceb749ffa5e220c5e59dd5f04a441672e049062902595a19dd14e5db0",
+      "repository_matches_installed": true
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\worker.py",
+      "repository_counterpart": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\worker.py",
+      "sha256": "476f83a3f4e19b826d62bd02c0bacce19530de442d047ed9f66a25d0ace0284c",
+      "repository_sha256": "476f83a3f4e19b826d62bd02c0bacce19530de442d047ed9f66a25d0ace0284c",
+      "repository_matches_installed": true
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\routing_store.py",
+      "repository_counterpart": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\routing_store.py",
+      "sha256": "78e8672d6bb96afdc88172f86a91747d906f3f5b3000f25a36c4dc0b75e9553f",
+      "repository_sha256": "78e8672d6bb96afdc88172f86a91747d906f3f5b3000f25a36c4dc0b75e9553f",
+      "repository_matches_installed": true
+    }
+  ],
+  "findings": [
+    {
+      "finding": "Universal twelve-profile authentication is a commissioning helper policy",
+      "evidence": "validate_auth requires both provider summaries and six successful native profile receipts each before task start; run calls it before state preflight.",
+      "canonical_requirement_found": false
+    },
+    {
+      "finding": "Six identities and four shared execution slots are separate constraints",
+      "evidence": "PLAN-002 immutable chapter ownership requires the existing six configured chapter identities; four remains the shared concurrency ceiling."
+    },
+    {
+      "finding": "Actual inference still requires the chosen worker/provider subscription session",
+      "evidence": "Installed worker.run checks native integration and inference-only capabilities, launches the selected worker subscription status command and rejects unverified status before inference (worker.py 745-811)."
+    },
+    {
+      "finding": "Auth unavailability uses canonical routing holds and fallback",
+      "evidence": "ROUTE-002/004 require auth-aware candidate advancement and durable holds. routing_store.py 586+ defaults auth failures to provider quota-pool holds, advances the candidate and backs off after exhaustion.",
+      "practical_limit": "One unavailable profile may impose a pool cooldown affecting other workers; targeted readiness remains operationally useful."
+    },
+    {
+      "finding": "Controller construction has no universal session-validation requirement",
+      "evidence": "Runtime.__init__ establishes system isolation, hardware, knowledge and stores; tick uses normal admission/routing. It does not validate all twelve CLI sessions before the control plane exists."
+    },
+    {
+      "finding": "Full workflow acceptance is not implied by controller bootstrap",
+      "evidence": "DEPLOY-001 requires actual account-login preflight; ROUTE-005 independently reviewed outputs exclude the producing provider/model. With the Agy integration hold, an additional eligible provider route remains necessary for those actual workflows."
+    }
+  ],
+  "owner_interaction": {
+    "mandatory_before_controller_start_canonical_all_twelve_logins": false,
+    "mandatory_for_inference": "Valid subscription authentication for the provider selected on the isolated identity that executes the job; no copied owner credentials or substituted shared identity.",
+    "actual_new_login_prompt_count": "Unknown until status validation; already-valid sessions require no login.",
+    "current_frozen_helper_requires_twelve_success_receipts": true,
+    "current_frozen_helpers_changed": false,
+    "no_owner_command_created": true
+  },
+  "possible_successor": {
+    "implemented": false,
+    "approach": "A separately reviewed controller bootstrap could retain every custody, state preservation, six-worker exclusion, exact task and one-start proof while leaving authentication as an explicit per-dispatch readiness state. Do not claim authenticated profile count without evidence.",
+    "required_cross_review": [
+      "Frozen downstream startup-receipt and observer bindings",
+      "Login helpers require stopped daemons; startup must not make later authentication unusable",
+      "No automatic progression to model acceptance from controller-only success",
+      "Fresh or preserved job-state scope and absence of unsolicited submissions",
+      "Full usable pipeline goal still requires actual eligible provider sessions and independent review workflows"
+    ],
+    "no_srs_relaxation_proposed": true
+  }
+}

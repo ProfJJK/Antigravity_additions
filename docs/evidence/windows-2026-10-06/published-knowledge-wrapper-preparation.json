@@ -1,0 +1,42 @@
+{
+  "schema": "cochem-published-knowledge-wrapper-preparation/1",
+  "recorded_utc": "2026-10-07T14:44:16.8088321Z",
+  "scope": "Preparation and ordinary-user read-only plan only; no Apply, privileged task registration, SYSTEM execution, existing index refresh or repair.",
+  "authoring_directory": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next",
+  "wrapper_sha256": "7a6f64ec9502a042c416c6d7706ffb62d755997139b91f87cb48ebfcb1ea82f5",
+  "python_sha256": "9f3b6c00255d6e5c9bc0a6e6bec546ae5a60a8287c2b24a65a2f675f6d3e0496",
+  "independent_wrapper_review": "No concrete finding at the recorded wrapper hash; review only, no Apply.",
+  "wrapper_tests": {
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "xml_seconds": 10.824,
+    "pytest_display_seconds": 10.92,
+    "python_version": "3.12.13",
+    "shell": "Windows PowerShell 5.1",
+    "scope": "Disposable ordinary-user fixtures; actual four-file exclusive copies and complete Apply body to simulated task registration; exact prior-task/nonce/exit checks; receipt preservation/no-write gates and visible sanitized failure metadata."
+  },
+  "python_tests": {
+    "passed": 28,
+    "scope": "Author-reported separate tests, including simultaneous read-only Windows handles and immutable SQLite; see knowledge-directory-metadata-investigation-2026-10-07."
+  },
+  "actual_preview": {
+    "mode": "READ_ONLY_PLAN",
+    "holds": [],
+    "private_receipt_and_terminal_task_checks_deferred": true,
+    "verification_executed": false
+  },
+  "new_target_root": "C:\\Program Files\\CoChem\\KnowledgePublishedVerification4.2.7-windows-20261007-r2",
+  "new_task": "CoChem-4.2.7-KnowledgePublishedVerification-20261007-r2",
+  "failed_resume_receipt_sha256": "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+  "existing_artifacts_preserved": true,
+  "actual_private_published_index_verified": false,
+  "worker_denials_executed": false,
+  "activation_ready": false,
+  "archive_pins": {
+    "verify-published-knowledge.ps1": "7a6f64ec9502a042c416c6d7706ffb62d755997139b91f87cb48ebfcb1ea82f5",
+    "test_verify_published_knowledge_wrapper.py": "49378d55f98170fa31beecc660ae17888617a7d44842a08b9afa0b04e84acce4",
+    "verify-published-knowledge-wrapper-tests.xml": "d05a9ea7fa41eadb5470e9a8b031451464944eb1c179a07014b0f43611515898",
+    "published-knowledge-verification-readonly-preview.json": "4eee117252058f0e5bc4079c6954015e9c645f8fc9bf8e54d38f45420a8a036f"
+  }
+}

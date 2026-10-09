@@ -1,0 +1,43 @@
+{
+  "schema": "cochem-first-warden-independent-review/1",
+  "recorded_utc": "2026-10-08T01:56:15.770394+00:00",
+  "reviewer": "root",
+  "status": "REVIEW_PASSED",
+  "files_sha256": {
+    "commission-first-warden-r3-v1.py": "464ef168f69b08b96a21957f40792f0b0459895926dfea1ac8f2fbb350f5ac1d",
+    "commission-first-warden-r3-v1.ps1": "b2941c4719d3231dff2e15d07b0a47cebec84c7b14d75a5d526176f559abc707",
+    "first-warden-commissioning-followup-3.xml": "ca590c3298493a26642a12faca8f1c80add7b4c3ab4e32ac61f8e4997dee2f98"
+  },
+  "checks": [
+    "Protected source copies and exact task identity/ACL checked before one durable intent and single daemon Enable/Run.",
+    "Authentication consumes twelve pinned cleanup-verified real-profile status proofs; no model submission or automatic repair.",
+    "Sole permitted nonempty RAM fixture is four exact prior test files: validate paths/ACLs/shape/hashes, copy CreateNew into private retention, verify bytes and durable manifest before normal runtime scratch cleanup.",
+    "Unknown, changed or partially retained scratch state stops before daemon start; helper deletes no source.",
+    "Actual Windows venv launcher/base-interpreter lineage is checked by SYSTEM token, process creation time and exact parent argv.",
+    "Two progressing heartbeat/API samples and actual six-identity/four-capacity queue header are required.",
+    "Any ambiguous startup is preserved; no retry, stop, old database import, repair-budget reset or R: reconfiguration."
+  ],
+  "actual_prior_fixture_manifest_agreement": [
+    {
+      "phase": "red",
+      "source_manifest_sha256": "95d9081cb97b728863520c6d87fa13fa383ee2af5ed473dedec66fd93042e0b7",
+      "matches_actual_windows_physical_receipt": true
+    },
+    {
+      "phase": "green",
+      "source_manifest_sha256": "d3bfcf536bd4f40535555752d82a3951813da0f8195d96d05b45e6bd585ba26e",
+      "matches_actual_windows_physical_receipt": true
+    }
+  ],
+  "findings": [],
+  "ordinary_fixture_tests": {
+    "passed": 42,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "system_first_start_executed": false,
+  "fixture_retention_applied": false,
+  "model_jobs_submitted": 0,
+  "full_srs_acceptance": false
+}

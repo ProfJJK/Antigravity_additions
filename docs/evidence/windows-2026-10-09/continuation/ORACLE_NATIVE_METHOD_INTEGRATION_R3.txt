@@ -1,0 +1,53 @@
+Oracle native acceptance preparation — method-level extension
+
+Status: source-only engineering candidate. No operational entry point, protected
+copy, scheduled task, worker process, credential lookup or SYSTEM run was made.
+The CLI reports SOURCE_ONLY_NOT_OPERATIONAL. Installed r3 remains unchanged.
+
+The proposed physical chain uses installed Oracle -> SlotMonitor -> actual
+Runtime.trip/cancel methods -> NativeRunner.terminate -> WindowsProcess.close.
+Runtime.__init__ is never called. A structural method context owns only a fresh
+private JobStore, active-node entry, cleanup event and quarantine dictionary.
+Its exact production trip path ends FAILED with a newer fence; it does not claim
+PENDING_RETRY merely because the wider requirement allows that disposition.
+Cleanup proof must precede clearing its execution guard and signaling the actual
+trip method. The resulting stale attempt must be rejected without state changes.
+The unrelated disposable workflow must remain identical.
+
+The future physical fixture is one protected, non-inference Python parent and a
+gated grandchild. It creates at most 1,024 empty files in one fresh nested RAM
+directory. Real SlotMonitor call intervals must show 501 callbacks in strictly
+less than one second. Native token/image/Job binding and retained process handles
+must prove both exits and a zero Job process census before durable success. No
+PID-existence shortcut, synthetic Oracle clock or substituted reaper is accepted.
+
+Ordinary tests use fresh pytest SQLite files and actual installed methods. One
+test composes actual Oracle and SlotMonitor with real asynchronous dispatch, but
+substitutes only the exact disposable tracking-file custody boundary and native
+termination/physical-proof boundary. This is not physical Windows acceptance.
+
+Remaining engineering before a future consolidated administrator run:
+1. A reviewed CreateNew protected staging/receipt wrapper must bind the complete
+   installed r3 source/dependency/configuration commitments, prior acceptance,
+   current six identities and unchanged R: volume/startup-task metadata.
+2. Require stopped Warden/Supervisor or an independently reviewed dispatch barrier.
+   Holding all six production presence mutexes protects preflight. The selected
+   slot is handed to the unchanged launcher; a competing holder causes refusal,
+   not overlap. The other five reservations remain held through cleanup.
+3. Create only the exact fresh private and nested slot1 scratch directories; fail
+   on any existing contents/partial prior attempt. Preserve partial evidence on
+   failure, with no deletion, retry, production DB access or repair-budget change.
+4. Grant the selected worker read/execute access on the new protected fixture/root.
+   The precheck accepts an explicit SID or universal grant, not guessed group
+   membership. Base Python is pinned. Launch retains the actual 2 GiB/20%/16-process
+   limits and required E-core policy, and verifies returned native limit evidence.
+5. Use the genuine RamdiskManager inspection for the nested path. The plain fixture
+   deliberately omits a RamWorkspace launch argument: its environment() path would
+   bind provider caches. No provider environment/cache acceptance is claimed.
+6. The future wrapper must capture bounded sanitized failure evidence and retained
+   files, including cleanup uncertainty. It must not turn a component result into
+   acceptance of a fully constructed production service.
+
+No extra manual interaction is inherent in this test. Once engineering/review is
+complete, one consolidated administrator launch can automate it. The owner need
+not log in to a provider, inspect processes or run a separate diagnostic probe.

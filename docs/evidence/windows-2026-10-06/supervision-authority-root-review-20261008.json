@@ -1,0 +1,55 @@
+{
+  "schema": "cochem-supervision-authority-independent-review/1",
+  "captured_at_utc": "2026-10-08T02:19:26.477557+00:00",
+  "status": "CANDIDATE_SOURCE_REVIEW_PASSED_NOT_INSTALLED",
+  "reviewer": "root, independent of the candidate author",
+  "source": {
+    "engine.py": {
+      "candidate_sha256": "9ec21d808bfbb1c5dfe01a6dd41b0dc969f9fc92df4ff5de010c4890c1dddeea",
+      "installed_before_sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64"
+    },
+    "replay.py": {
+      "candidate_sha256": "d0a10b30e3f16d44a2906d855d46f44dc0fbad7249b8b43d6b67b98e4d94d60d",
+      "installed_before_sha256": "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728"
+    }
+  },
+  "source_review": [
+    "Compared installed r3 and candidate source directly, independent of older intentional Git changes.",
+    "Held tick reads sterile detector output and authenticated controller health, publishes the hold, then returns before lease recovery, component actions, release recovery, CLI probes, repair routing or paid reservation.",
+    "Observation failures cannot fall through to an actuator; existing failure reporting remains in force.",
+    "Replay checks model and component unresolved authority through stable disposable snapshots; malformed or inaccessible authority remains unknown.",
+    "Historical verification and supervisor activation are explicitly false; diagnostic projection never authorizes execution.",
+    "Limits, historical charges, reservation guards, routing, identities and installed runtime are unchanged."
+  ],
+  "test_evidence": {
+    "file": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\supervision-authority-candidate-tests-final.xml",
+    "sha256": "02442922757be864c01297267bf0397ae302b8c43ede72f742179fd9dfffcd14",
+    "counts": {
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "groups": {
+      "supervisor_tests.test_held_observation": 7,
+      "supervisor_tests.test_legacy_budget_authority": 28,
+      "supervisor_tests.test_replay_budget": 15,
+      "supervisor_tests.test_engine": 36
+    },
+    "scope": "Ordinary Windows Python, disposable SQLite, fixture actuator/identity boundaries and bounded local HTTP tests; no live SYSTEM task or provider inference."
+  },
+  "known_scope_limits": [
+    "Existing authority mode=ro reads can create normal empty WAL/SHM coordination sidecars; they do not alter ledger rows or existing main database/history bytes.",
+    "No protected supervisor installation, task registration, historical migration, recovery allowance or paid repair was performed.",
+    "Real SYSTEM observation/recovery timing and full Windows SRS acceptance remain open."
+  ],
+  "published_startup_hashes_verified_unchanged": {
+    "run-pipeline-commissioning-r3-v1.ps1": "44ed0b7d79b33afee6e35b36ddf2d37056e1e51f31806f05a21c2038c98d9bf1",
+    "commission-first-warden-r3-v1.ps1": "75efe248449fa9be0317a85feb277d82a961d05594ee754d11b3b9d0ec4dfd1e",
+    "commission-first-warden-r3-v1.py": "bd6ed9cc62bc96777d5748e819c5f780ada2e58ce0d43bf7e5f2013ca72f451c"
+  },
+  "findings": [],
+  "activation_ready": false,
+  "model_jobs_executed": 0,
+  "existing_legacy_databases_opened": false
+}

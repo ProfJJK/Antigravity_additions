@@ -1,4 +1,10 @@
-# Antigravity additions 4.2.7
+# Pipeline Mix Model Concurrent — CoChem 4.2.7
+
+The [current Windows source publication](docs/WINDOWS_SOURCE_PUBLICATION_4.2.7_2026-10-09.md)
+preserves the implementation and deployment continuation from the workstation.
+Continue in the checkout outside Google Drive; read the dated handoff and bundle
+map before running any historical installation command. Windows deployment
+acceptance remains incomplete.
 
 The [canonical SRS](4.2.7_SRS.md), revision `model-routing-2026-10-07`, governs
 this pipeline. All 18 improvement inserts are accepted requirements. The

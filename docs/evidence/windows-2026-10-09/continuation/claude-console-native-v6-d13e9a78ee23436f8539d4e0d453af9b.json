@@ -1,0 +1,47 @@
+{
+    "schema":  "cochem-claude-console-native-fixture/1",
+    "status":  "OWNED_WINDOWS_PS5_NATIVE_AND_MANAGED_CLEAR_VERIFIED",
+    "fixture_pid":  14540,
+    "launcher_pid":  12188,
+    "nonce":  "d13e9a78ee23436f8539d4e0d453af9b",
+    "powershell_version":  "5.1.26100.9444",
+    "is_64_bit_process":  true,
+    "helper_sha256":  "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+    "user_console_accessed":  false,
+    "native_provider_jobs_executed":  0,
+    "system_tasks_created":  0,
+    "synthetic_events_written":  4,
+    "borrowed_stdin_closed":  false,
+    "started_utc":  "2026-10-09T01:27:16.9520817Z",
+    "console_process_ids":  [
+                                14540
+                            ],
+    "separate_owned_console_verified":  true,
+    "stdin_file_type":  2,
+    "stdin_console_mode":  503,
+    "empty_queue_result":  {
+                               "keys_discarded":  0,
+                               "bound_reached":  false,
+                               "reason":  "DRAINED",
+                               "native_queue_flushed":  true,
+                               "console_queue_clear":  true
+                           },
+    "native_events_before_clear":  3,
+    "native_queue_result":  {
+                                "keys_discarded":  0,
+                                "bound_reached":  false,
+                                "reason":  "DRAINED",
+                                "native_queue_flushed":  true,
+                                "console_queue_clear":  true
+                            },
+    "native_events_after_clear":  0,
+    "managed_cached_repeat_result":  {
+                                         "keys_discarded":  31,
+                                         "bound_reached":  false,
+                                         "reason":  "DRAINED",
+                                         "native_queue_flushed":  true,
+                                         "console_queue_clear":  true
+                                     },
+    "borrowed_stdin_still_valid":  true,
+    "finished_utc":  "2026-10-09T01:27:17.2849226Z"
+}

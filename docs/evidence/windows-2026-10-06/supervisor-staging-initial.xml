@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="12" time="4.325" timestamp="2026-10-06T21:35:58.955205-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_supervisor_proposal_loads_without_creating_state_and_preserves_holds" time="0.114"><failure message="AssertionError: assert {'policy_vers...emini'}}, ...} == {'backlog_thr...': 600.0, ...}&#10;  &#10;  Omitting 12 identical items, use -vv to show&#10;  Differing items:&#10;  {'model_limits': {'claude:claude-sonnet-5-5': None, 'claude:claude-haiku-4-5': None, 'codex:gpt-6-astra:ultra': None, 'codex:gpt-6.1-sol:high': None, ...}} != {'model_limits': {}}&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_supervisor_proposal_loads0')
+
+    def test_supervisor_proposal_loads_without_creating_state_and_preserves_holds(tmp_path):
+        from cochem_supervisor.config import load_config
+    
+        proposed = read(CONFIG / "aetherdesk-427.supervisor.proposed.json")
+        pipeline = read(CONFIG / "aetherdesk-427.proposed.json")
+        # Only the read-only policy input is redirected; protected state stays absent.
+        proposed["pipeline_config"] = str(CONFIG / "aetherdesk-427.proposed.json")
+        path = save(tmp_path / "supervisor.json", proposed)
+        before = set(tmp_path.iterdir())
+        result = load_config(path)
+        assert set(tmp_path.iterdir()) == before
+        assert (result["max_per_incident"], result["max_per_day"], result["cooldown_seconds"]) == (2, 4, 1800)
+        assert result["auto_deploy"] is True
+&gt;       assert result["pipeline_routing"] == pipeline["routing"]
+E       AssertionError: assert {'policy_vers...emini'}}, ...} == {'backlog_thr...': 600.0, ...}
+E         
+E         Omitting 12 identical items, use -vv to show
+E         Differing items:
+E         {'model_limits': {'claude:claude-sonnet-5-5': None, 'claude:claude-haiku-4-5': None, 'codex:gpt-6-astra:ultra': None, 'codex:gpt-6.1-sol:high': None, ...}} != {'model_limits': {}}
+E         Use -v to get more diff
+
+pipeline_tests\test_windows_cutover_plan.py:67: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_plan_is_held_and_commands_remain_inert_explicit_data" time="0.421"><failure message="AssertionError: D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\plan_aetherdesk_427_cutover.ps1 : The term 'Get-FileHash' &#10;  is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, &#10;  or if a path was included, verify that the path is correct and try again.&#10;      + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [plan_aetherdesk_427_cutover.ps1], CommandNotFound &#10;     Exception&#10;      + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).returncode">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_plan_is_held_and_commands0/manifest.json'), ...}
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_plan_is_held_and_commands0')
+
+    def test_plan_is_held_and_commands_remain_inert_explicit_data(inputs, tmp_path):
+        before = set(tmp_path.iterdir())
+        result = plan(inputs)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\plan_aetherdesk_427_cutover.ps1 : The term 'Get-FileHash' 
+E         is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, 
+E         or if a path was included, verify that the path is correct and try again.
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [plan_aetherdesk_427_cutover.ps1], CommandNotFound 
+E            Exception
+E             + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").returncode
+
+pipeline_tests\test_windows_cutover_plan.py:79: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_plan_refuses_capacity_budget_or_legacy_task_changes[PipelineProposal-max_execution_slots-8-four shared slots]" time="0.297" /><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_plan_refuses_capacity_budget_or_legacy_task_changes[SupervisorProposal-max_per_day-5-repair ceilings]" time="0.305" /><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_plan_refuses_capacity_budget_or_legacy_task_changes[SupervisorProposal-warden_task-CoChemHostWarden_V412-legacy Hyper-V MCP]" time="0.311" /><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_output_is_create_only" time="0.390"><failure message="AssertionError: D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\plan_aetherdesk_427_cutover.ps1 : The term 'Get-FileHash' &#10;  is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, &#10;  or if a path was included, verify that the path is correct and try again.&#10;      + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [plan_aetherdesk_427_cutover.ps1], CommandNotFound &#10;     Exception&#10;      + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).returncode">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_output_is_create0/manifest.json'), ...}
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_output_is_create0')
+
+    def test_evidence_output_is_create_only(inputs, tmp_path):
+        output = tmp_path / "evidence.json"
+        result = plan(inputs, Output=output)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\plan_aetherdesk_427_cutover.ps1 : The term 'Get-FileHash' 
+E         is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, 
+E         or if a path was included, verify that the path is correct and try again.
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [plan_aetherdesk_427_cutover.ps1], CommandNotFound 
+E            Exception
+E             + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").returncode
+
+pipeline_tests\test_windows_cutover_plan.py:121: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_cannot_be_written_into_protected_or_preserved_roots[R:\\cutover-plan-must-not-be-written.json]" time="0.388"><failure message="assert 'outside protected deployment/state' in &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;&#10; +  where &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).stderr">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_cannot_be_writte0/manifest.json'), ...}
+output = 'R:\\cutover-plan-must-not-be-written.json'
+
+    @pytest.mark.parametrize("output", [
+        r"R:\cutover-plan-must-not-be-written.json",
+        r"C:\Program Files\CoChem\cutover-plan-must-not-be-written.json",
+        r"C:\ProgramData\CoChemSupervisor427-windows-20261006\private\cutover-plan-must-not-be-written.json",
+        r"D:\__CoChem\__agentic\v4.1.2\cutover-plan-must-not-be-written.json",
+        r"C:\Users\ansac\CoChem427\cutover-plan-must-not-be-written.json",
+    ])
+    def test_evidence_cannot_be_written_into_protected_or_preserved_roots(inputs, output):
+        path = Path(output)
+        existed = path.exists()
+        result = plan(inputs, Output=output)
+        assert result.returncode != 0
+&gt;       assert "outside protected deployment/state" in result.stderr
+E       assert 'outside protected deployment/state' in "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n"
+E        +  where "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").stderr
+
+pipeline_tests\test_windows_cutover_plan.py:141: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_cannot_be_written_into_protected_or_preserved_roots[C:\\Program Files\\CoChem\\cutover-plan-must-not-be-written.json]" time="0.356"><failure message="assert 'outside protected deployment/state' in &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;&#10; +  where &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).stderr">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_cannot_be_writte1/manifest.json'), ...}
+output = 'C:\\Program Files\\CoChem\\cutover-plan-must-not-be-written.json'
+
+    @pytest.mark.parametrize("output", [
+        r"R:\cutover-plan-must-not-be-written.json",
+        r"C:\Program Files\CoChem\cutover-plan-must-not-be-written.json",
+        r"C:\ProgramData\CoChemSupervisor427-windows-20261006\private\cutover-plan-must-not-be-written.json",
+        r"D:\__CoChem\__agentic\v4.1.2\cutover-plan-must-not-be-written.json",
+        r"C:\Users\ansac\CoChem427\cutover-plan-must-not-be-written.json",
+    ])
+    def test_evidence_cannot_be_written_into_protected_or_preserved_roots(inputs, output):
+        path = Path(output)
+        existed = path.exists()
+        result = plan(inputs, Output=output)
+        assert result.returncode != 0
+&gt;       assert "outside protected deployment/state" in result.stderr
+E       assert 'outside protected deployment/state' in "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n"
+E        +  where "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").stderr
+
+pipeline_tests\test_windows_cutover_plan.py:141: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_cannot_be_written_into_protected_or_preserved_roots[C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\cutover-plan-must-not-be-written.json]" time="0.362"><failure message="assert 'outside protected deployment/state' in &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;&#10; +  where &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).stderr">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_cannot_be_writte2/manifest.json'), ...}
+output = 'C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\cutover-plan-must-not-be-written.json'
+
+    @pytest.mark.parametrize("output", [
+        r"R:\cutover-plan-must-not-be-written.json",
+        r"C:\Program Files\CoChem\cutover-plan-must-not-be-written.json",
+        r"C:\ProgramData\CoChemSupervisor427-windows-20261006\private\cutover-plan-must-not-be-written.json",
+        r"D:\__CoChem\__agentic\v4.1.2\cutover-plan-must-not-be-written.json",
+        r"C:\Users\ansac\CoChem427\cutover-plan-must-not-be-written.json",
+    ])
+    def test_evidence_cannot_be_written_into_protected_or_preserved_roots(inputs, output):
+        path = Path(output)
+        existed = path.exists()
+        result = plan(inputs, Output=output)
+        assert result.returncode != 0
+&gt;       assert "outside protected deployment/state" in result.stderr
+E       assert 'outside protected deployment/state' in "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n"
+E        +  where "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").stderr
+
+pipeline_tests\test_windows_cutover_plan.py:141: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_cannot_be_written_into_protected_or_preserved_roots[D:\\__CoChem\\__agentic\\v4.1.2\\cutover-plan-must-not-be-written.json]" time="0.365"><failure message="assert 'outside protected deployment/state' in &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;&#10; +  where &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).stderr">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_cannot_be_writte3/manifest.json'), ...}
+output = 'D:\\__CoChem\\__agentic\\v4.1.2\\cutover-plan-must-not-be-written.json'
+
+    @pytest.mark.parametrize("output", [
+        r"R:\cutover-plan-must-not-be-written.json",
+        r"C:\Program Files\CoChem\cutover-plan-must-not-be-written.json",
+        r"C:\ProgramData\CoChemSupervisor427-windows-20261006\private\cutover-plan-must-not-be-written.json",
+        r"D:\__CoChem\__agentic\v4.1.2\cutover-plan-must-not-be-written.json",
+        r"C:\Users\ansac\CoChem427\cutover-plan-must-not-be-written.json",
+    ])
+    def test_evidence_cannot_be_written_into_protected_or_preserved_roots(inputs, output):
+        path = Path(output)
+        existed = path.exists()
+        result = plan(inputs, Output=output)
+        assert result.returncode != 0
+&gt;       assert "outside protected deployment/state" in result.stderr
+E       assert 'outside protected deployment/state' in "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n"
+E        +  where "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").stderr
+
+pipeline_tests\test_windows_cutover_plan.py:141: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_evidence_cannot_be_written_into_protected_or_preserved_roots[C:\\Users\\ansac\\CoChem427\\cutover-plan-must-not-be-written.json]" time="0.375"><failure message="assert 'outside protected deployment/state' in &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;&#10; +  where &quot;D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n&quot;).stderr">inputs = {'StageManifest': WindowsPath('D:/Gdrive/__CoChem/GitHub-Repo/Antigravity_additions/config/windows/aetherdesk-427.stag...h('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24261/test_evidence_cannot_be_writte4/manifest.json'), ...}
+output = 'C:\\Users\\ansac\\CoChem427\\cutover-plan-must-not-be-written.json'
+
+    @pytest.mark.parametrize("output", [
+        r"R:\cutover-plan-must-not-be-written.json",
+        r"C:\Program Files\CoChem\cutover-plan-must-not-be-written.json",
+        r"C:\ProgramData\CoChemSupervisor427-windows-20261006\private\cutover-plan-must-not-be-written.json",
+        r"D:\__CoChem\__agentic\v4.1.2\cutover-plan-must-not-be-written.json",
+        r"C:\Users\ansac\CoChem427\cutover-plan-must-not-be-written.json",
+    ])
+    def test_evidence_cannot_be_written_into_protected_or_preserved_roots(inputs, output):
+        path = Path(output)
+        existed = path.exists()
+        result = plan(inputs, Output=output)
+        assert result.returncode != 0
+&gt;       assert "outside protected deployment/state" in result.stderr
+E       assert 'outside protected deployment/state' in "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n"
+E        +  where "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1 : The term 'Get-Fi...ndNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...dNotFound \n   Exception\n    + FullyQualifiedErrorId : CommandNotFoundException,plan_aetherdesk_427_cutover.ps1\n \n").stderr
+
+pipeline_tests\test_windows_cutover_plan.py:141: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_cutover_plan" name="test_powershell_ast_contains_no_process_task_install_or_dynamic_execution" time="0.245" /></testsuite></testsuites>

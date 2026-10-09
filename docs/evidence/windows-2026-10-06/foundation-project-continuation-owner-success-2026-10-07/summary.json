@@ -1,0 +1,250 @@
+{
+  "schema": "cochem-foundation-project-owner-observation/1",
+  "status": "TWO_CONTINUATION_PHASES_VERIFIED",
+  "captured_utc": "2026-10-08T00:18:04.020537+00:00",
+  "host": "AETHERDESK",
+  "foundation_receipt_sha256": "9aea1e8f382ea8600cbd75d679f76acadc05da32774d9d8742cad08967ce1b41",
+  "foundation_inputs_sha256": "308705b045c93e7da9fd5e9ef969b5375dd06d98c2efc3530980e82e7186f94e",
+  "owner_attachment_sha256": "225c598042605bf098f87d0f0975cac02f9c3f2f914a759fc802241c94e169ce",
+  "project_owner_reported_receipt_sha256": "9e31fba6cbacb975970653a9230d9093afa0adc6993fbe6b8c98805653a26283",
+  "provenance": {
+    "foundation": "Direct bounded read of existing protected public SYSTEM receipt/input bytes; exact expected hashes and bindings verified.",
+    "project": "Exact raw owner attachment and parsed result. Frozen Administrator importer verified private receipt/hash, runtime/bundle and private-entry custody; ordinary direct receipt read returned AccessDenied, not absence.",
+    "task_result": "Foundation task result0 is verified by the owner wrapper and present in the exact owner result; current COM task state was not queried by this ordinary collector.",
+    "private_state": "No RAM ledger/container DB/private project contents were reopened; their values are attributed to the validated producer receipt/result."
+  },
+  "foundation": {
+    "nonce": "adfb396a9a9140509ec0e06225aa37ca",
+    "helper_sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+    "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "revision": {
+      "acceptance_files": 0,
+      "acceptance_sha256": null,
+      "files": 109,
+      "read_only": true,
+      "schema": "cochem-installed-revision/1",
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "verified": true
+    },
+    "started_at_unix_ms": 1791418105179,
+    "finished_at_unix_ms": 1791418120570,
+    "scoped_ram_roots": 6,
+    "new_ram_ledger_sha256": "28d09a43a3052cf4834a9c43daa9290bebf14ab014582ea8c5c0433c6e3ec190",
+    "defender_added_exact_roots_count": 6,
+    "existing_defender_exclusions_preserved": true,
+    "registry": {
+      "capacity": 4,
+      "database_bytes": 49152,
+      "database_sha256": "04b97dbe4271b57e70e339f8200d93c76c7e7c6d4dc3c775b66519901df801e7",
+      "integrity_check": "ok",
+      "journal_mode": "wal",
+      "owner_sha256": "a7d78820b3f5f670e057d94fb4e7e250540b76b08d726327d6a07ec14652877d",
+      "registry_created_new": true,
+      "table_count": 5,
+      "unknown_owned": 0,
+      "work_rows": 0
+    },
+    "trace_observations": 2,
+    "trace_events": 36,
+    "read_only_docker_commands": 8,
+    "failed_events": 0,
+    "ram_before_after": {
+      "filesystem_bytes": 8589930496,
+      "imdisk_query_ioctl_used": true,
+      "ram_modified": false,
+      "root_attributes": 22,
+      "root_device": 18215568536144889826,
+      "root_file_id": 1407374883553285,
+      "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "volume": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      }
+    },
+    "ram_ledger": {
+      "adopted_existing_drive": true,
+      "auth_profiles": "persistent_native_profiles_unchanged",
+      "backup": null,
+      "boot_id": 134357188475893520,
+      "checked_at": 1791418112.8137045,
+      "config": {
+        "backing": "auto",
+        "claude_project_cache": true,
+        "enabled": true,
+        "imdisk_executable": "C:\\Windows\\System32\\imdisk.exe",
+        "lifecycle": "adopt_existing",
+        "min_free_mb": 512,
+        "mount_root": "R:\\",
+        "reserve_host_memory_mb": 4096,
+        "size_mb": 8192,
+        "startup_wait_seconds": 120,
+        "workspace_subdirectory": "CoChem427-windows-20261007"
+      },
+      "defender_exact_roots_verified": true,
+      "lifecycle_action": "ADOPT",
+      "mount_root": "R:\\",
+      "observed": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      },
+      "resize": {
+        "configured_bytes": 8589934592,
+        "dynamic_resize_supported": false,
+        "mode": "fixed_capacity",
+        "pressure_action": "wait_for_verified_free_space_and_retry",
+        "reason": "No verified non-destructive online ImDisk/AWE resize contract is available",
+        "reboot_action": "adopt_existing_startup_task_volume",
+        "repeated_administrator_setup_required": false
+      },
+      "schema": 1,
+      "search_not_content_indexed": true,
+      "search_not_content_indexed_scope": "R:\\CoChem427-windows-20261007",
+      "slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4",
+        "slot5",
+        "slot6"
+      ],
+      "state": "READY",
+      "volume_root_metadata_preserved": true,
+      "workspace_root": "R:\\CoChem427-windows-20261007"
+    },
+    "containers_created": 0,
+    "warm_pool_created": 0
+  },
+  "project": {
+    "schema": "cochem-private-project-import-result/1",
+    "status": "PRIVATE_BARE_PROJECT_VERIFIED",
+    "target": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+    "receipt_path": "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3\\project-import.json",
+    "receipt_sha256": "9e31fba6cbacb975970653a9230d9093afa0adc6993fbe6b8c98805653a26283",
+    "r3_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "git_custody_paths": 12,
+    "private_entries": 14,
+    "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+    "baseline_tree": "0e7fe3edd935e4a839d17cb99b30b08db18d8ae9",
+    "objects": 7,
+    "files": 3,
+    "activation_ready": false,
+    "direct_private_receipt_read_status": "ACCESS_DENIED",
+    "direct_private_receipt_archived": false
+  },
+  "preserved_prior_evidence": {
+    "preflight_receipt_sha256": {
+      "path": "C:\\Program Files\\CoChem\\ExecutionPrerequisites4.2.7-windows-20261007-r3\\execution-prerequisites.json",
+      "sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+      "bytes_verified_unchanged": true
+    },
+    "failed_foundation_receipt_sha256": {
+      "path": "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3\\execution-foundation.json",
+      "sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+      "bytes_verified_unchanged": true
+    },
+    "failed_foundation_packet_sha256": {
+      "path": "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3\\inputs.json",
+      "sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+      "bytes_verified_unchanged": true
+    },
+    "diagnostic_receipt_sha256": {
+      "path": "C:\\Program Files\\CoChem\\ExecutionFoundationDiagnostic4.2.7-windows-20261007-r3-v1\\foundation-diagnostic.json",
+      "sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+      "bytes_verified_unchanged": true
+    },
+    "diagnostic_packet_sha256": {
+      "path": "C:\\Program Files\\CoChem\\ExecutionFoundationDiagnostic4.2.7-windows-20261007-r3-v1\\inputs.json",
+      "sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+      "bytes_verified_unchanged": true
+    }
+  },
+  "protected_foundation_sources_verified": [
+    {
+      "path": "provision-execution-foundation-r3-v2.py",
+      "sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+      "bytes": 25200
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.py",
+      "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+      "bytes": 24727
+    },
+    {
+      "path": "inspect-execution-prerequisites-r3.py",
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+      "bytes": 26808
+    },
+    {
+      "path": "worker-denial-acceptance-r3.py",
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+      "bytes": 36096
+    }
+  ],
+  "original_failure_cause": "UNKNOWN",
+  "collector_scope": "Receipt/input/owner-output and source hashes only. No deployment/task/Docker/auth/model calls, database queries, credentials, private project traversal or ACL modification.",
+  "exact_integer_handling": "Python arbitrary-precision JSON parsing; raw source receipt/input/owner bytes archived unchanged. No JavaScript Number conversion.",
+  "physical_docker_acceptance_executed": false,
+  "pipeline_activated": false,
+  "native_model_jobs_executed": 0,
+  "files": {
+    "execution-foundation.json": {
+      "sha256": "9aea1e8f382ea8600cbd75d679f76acadc05da32774d9d8742cad08967ce1b41",
+      "bytes": 18714
+    },
+    "foundation-inputs.json": {
+      "sha256": "308705b045c93e7da9fd5e9ef969b5375dd06d98c2efc3530980e82e7186f94e",
+      "bytes": 1419
+    },
+    "owner-attachment.txt": {
+      "sha256": "225c598042605bf098f87d0f0975cac02f9c3f2f914a759fc802241c94e169ce",
+      "bytes": 6544
+    },
+    "owner-result-parsed.json": {
+      "sha256": "09b0763c1d81786a2f7d1c13da0febd71d50a191bc9758e7af05c10e29abf468",
+      "bytes": 3413
+    },
+    "project-receipt-access.json": {
+      "sha256": "1bcebab892dfdd34b49370369cd2978f37d804352e2f701f68813e072745b68c",
+      "bytes": 104
+    },
+    "observed-before.json": {
+      "sha256": "df93714e5949ee5c831f8009276d1ad9c8a9718f67784477cf6e446a712b3ccb",
+      "bytes": 52968
+    },
+    "handoff-before.md": {
+      "sha256": "d0e7e941fcb6663b7f4e523de772c7b5bc1e4b86e389eee77bb81af577012818",
+      "bytes": 12187
+    },
+    "collector.py": {
+      "sha256": "5698a34b44de632d2461e2e20d9d30e2123f7c204556fcf5462f85d0204ced76",
+      "bytes": 20589
+    },
+    "foundation-preparation.json": {
+      "sha256": "5265820aa096715bc02f8a894df12a506f2f0ba4ccb07c963f769ce5eff99f83",
+      "bytes": 7770
+    },
+    "project-preparation.json": {
+      "sha256": "7131df58a6e1aa4fda87ce9dc6558ddc4da15756cfb2756480b9910325e5dd0d",
+      "bytes": 5857
+    }
+  }
+}

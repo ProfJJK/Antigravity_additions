@@ -1,0 +1,34 @@
+--- installed-r3/engine.py
++++ candidate/engine.py
+@@ -82,6 +82,7 @@
+         except (OSError,ValueError,sqlite3.Error) as error:
+             authority={'state':'AUTHORITY_READ_FAILED','error_type':type(error).__name__}
+             held=True
++        self._last_budget_authority=authority
+         if held:
+             self.stage='blocked'
+             self._publish(reason='Unresolved legacy repair budget authority; preserve all history and keep activation held',
+@@ -965,7 +966,22 @@
+ 
+     def tick(self,*,ignore_startup_grace=False):
+         if self._budget_authority_hold():
+-            return {'health':{'state':'blocked','repair_hold':True,'budget_authority_hold':True},'incidents':[]}
++            # Unknown spending authority blocks actuators, not independent
++            # diagnosis. Do not recover leases, reserve a component action,
++            # inspect repair routes/CLIs, or change either ledger's rows here.
++            # The existing authority reader uses SQLite mode=ro, whose WAL
++            # coordination can create normal empty WAL/shared-memory sidecars.
++            # The sterile child may retain its own bounded process history;
++            # only the private observation/status projection is published.
++            observation_started=time.monotonic()
++            observation=self._read_observation()
++            self._observe_controller(observation)
++            observation['health'].update(state='blocked',repair_hold=True,
++                budget_authority_hold=True,observation_seconds=time.monotonic()-observation_started)
++            self.stage='blocked'
++            self._publish(observation,budget_authority=self._last_budget_authority,
++                reason='Independent observation continues; unresolved legacy authority blocks recovery and repair')
++            return observation
+         self.ledger.recover_expired()
+         if self._quarantine_hold():
+             return {'health':{'state':'blocked','reason':'repair identity quarantined'},'incidents':[]}

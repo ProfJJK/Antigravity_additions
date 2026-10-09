@@ -1,0 +1,11 @@
+{
+  "schema": "cochem-protected-payload-independent-verification/1",
+  "observed_at_utc": "2026-10-07T04:47:01.5527134Z",
+  "scope": "Actual installed files and code ACLs; no SYSTEM or hardware acceptance claimed",
+  "files_checked": 3505,
+  "directories_checked": 283,
+  "failures": [],
+  "manifest_sha256": "db9e6567095326bbeaf528a400525ee047a7887b5a5479bf8ac0ba6f8b4625d0",
+  "inspector_identity": "AETHERDESK\\ansac",
+  "system_acceptance": false
+}

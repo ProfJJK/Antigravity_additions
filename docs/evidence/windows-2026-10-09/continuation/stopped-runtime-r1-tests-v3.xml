@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="28" time="8.506" timestamp="2026-10-07T06:16:50.762090-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[valid]" time="0.334" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[unsafe]" time="0.276" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[duplicate]" time="0.285" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[incomplete]" time="0.232" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[baseline]" time="0.235" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_inventory_is_complete_confined_and_bound_to_prior_source[missing]" time="0.298" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[valid]" time="0.242" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[capacity]" time="0.241" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[token]" time="0.272" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[route]" time="0.238" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[subtree]" time="0.237" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_only_one_configuration_delta_is_accepted[existing]" time="0.229" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[absent]" time="0.240" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[disabled]" time="0.228" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[enabled]" time="0.225" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[running]" time="0.220" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[queued]" time="0.245" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[unknown]" time="0.220" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[instances]" time="0.250" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[denied]" time="0.231" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_all_managed_daemon_states_fail_closed[wrong_hresult]" time="0.224" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_frozen_build_restores_environment_on_failure_and_does_not_call_installer" time="0.279" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_runtime_tree_hardlink_is_refused_before_file_acl_mutation" time="0.415"><failure message="AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.&#10;  At line:11 char:29&#10;  +       $treeScript=Join-Path $PSScriptRoot 'unused';&#10;  +                             ~~~~~~~~~~~~~&#10;      + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join &#10;     PathCommand&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', &quot;$ErrorActionPreference='Stop';S...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/runtime-r1-test-tmp-v3/test_runtime_tree_hardlink_is_0')
+
+    def test_runtime_tree_hardlink_is_refused_before_file_acl_mutation(tmp_path):
+        outside = tmp_path / 'outside.txt'; outside.write_bytes(b'preserved')
+        root = tmp_path / 'new'; root.mkdir(); os.link(outside, root / 'alias.txt')
+        helper = str(REPO / 'scripts/stage_aetherdesk_427_payloads.ps1').replace("'", "''")
+        result = run(f"$script:targetRoot='{str(root)}';$helper='{helper}';" + r'''
+          $tokens=$null;$errors=$null;$a=[Management.Automation.Language.Parser]::ParseFile($helper,[ref]$tokens,[ref]$errors);
+          $f=$a.Find({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq 'Initialize-FileIdentity'},$true);
+          . ([scriptblock]::Create($f.Extent.Text));Initialize-FileIdentity;
+          function Assert-ProtectedPath {param($Path)};function New-CodeAcl {param($Directory)$null};
+          # Retain the real tree walk/handle verifier; only ACL objects are fixtures.
+          $treeScript=Join-Path $PSScriptRoot 'unused';
+        ''' + f"$treeSource='{str(ROOT / 'check-worker-denials.ps1')}';" + r'''
+          $treeAst=[Management.Automation.Language.Parser]::ParseFile($treeSource,[ref]$tokens,[ref]$errors);
+          $treeFunction=$treeAst.Find({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -eq 'Assert-CodeTreeOnce'},$true);
+          . ([scriptblock]::Create($treeFunction.Extent.Text));
+          function Get-Acl {param($LiteralPath)
+            $acl=[Security.AccessControl.DirectorySecurity]::new();$acl.SetOwner([Security.Principal.SecurityIdentifier]::new('S-1-5-32-544'));
+            $acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new('S-1-5-18'),'FullControl','Allow'));$acl};
+          $script:aclsChanged=0;function Set-Acl {param($LiteralPath,$AclObject)$script:aclsChanged++};
+          $refused=$false;try{Protect-NewRuntimeTree $script:targetRoot}catch{$refused=$true};
+          [ordered]@{refused=$refused;acls_changed=$script:aclsChanged}|ConvertTo-Json -Compress
+        ''')
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.
+E         At line:11 char:29
+E         +       $treeScript=Join-Path $PSScriptRoot 'unused';
+E         +                             ~~~~~~~~~~~~~
+E             + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join 
+E            PathCommand
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', "$ErrorActionPreference='Stop';S...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n").returncode
+
+windows-deployment-next\test_stopped_runtime_r1.py:118: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_nonadmin_apply_refuses_before_source_manifest_or_targets" time="0.281" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_actual_ps51_python_c_transport_and_scoped_config_parser" time="1.334" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_installed_uv_documents_selected_flags_without_build_execution" time="0.054" /><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_actual_native_stderr_is_judged_by_exit_code_in_ps51[0]" time="0.334"><failure message="AssertionError: assert {'failed': Tr...stderr': True} == {'failed': Fa...stderr': True}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Differing items:&#10;  {'failed': True} != {'failed': False}&#10;  {'preference': 1} != {'preference': 'Stop'}&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/runtime-r1-test-tmp-v3/test_actual_native_stderr_is_j0')
+exit_code = 0
+
+    @pytest.mark.parametrize('exit_code', [0, 7])
+    def test_actual_native_stderr_is_judged_by_exit_code_in_ps51(tmp_path, exit_code):
+        python = Path(r'C:\Program Files\CoChem\Toolchain4.2.7-windows-20261006\Python312\python.exe')
+        result = run(f"$script:targetRoot='{tmp_path}';$script:uv='{python}';$script:fixtureExit={exit_code};" + r'''
+          function Get-FrozenSyncArguments { @('-I','-B','-c',("import sys; print('benign native stderr',file=sys.stderr); sys.exit("+$script:fixtureExit+")")) };
+          $failed=$false;try{Invoke-FrozenRuntimeBuild}catch{$failed=$true};
+          [ordered]@{failed=$failed;preference=$ErrorActionPreference;log_contains_stderr=((Get-Content -LiteralPath (Join-Path $script:targetRoot 'frozen-build.log') -Raw) -match 'benign native stderr')}|ConvertTo-Json -Compress
+        ''')
+        assert result.returncode == 0, result.stderr
+&gt;       assert json.loads(result.stdout) == {'failed': exit_code != 0, 'preference':'Stop', 'log_contains_stderr':True}
+E       AssertionError: assert {'failed': Tr...stderr': True} == {'failed': Fa...stderr': True}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'failed': True} != {'failed': False}
+E         {'preference': 1} != {'preference': 'Stop'}
+E         Use -v to get more diff
+
+windows-deployment-next\test_stopped_runtime_r1.py:174: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_stopped_runtime_r1" name="test_actual_native_stderr_is_judged_by_exit_code_in_ps51[7]" time="0.313"><failure message="AssertionError: assert {'failed': Tr...stderr': True} == {'failed': Tr...stderr': True}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'preference': 1} != {'preference': 'Stop'}&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/runtime-r1-test-tmp-v3/test_actual_native_stderr_is_j1')
+exit_code = 7
+
+    @pytest.mark.parametrize('exit_code', [0, 7])
+    def test_actual_native_stderr_is_judged_by_exit_code_in_ps51(tmp_path, exit_code):
+        python = Path(r'C:\Program Files\CoChem\Toolchain4.2.7-windows-20261006\Python312\python.exe')
+        result = run(f"$script:targetRoot='{tmp_path}';$script:uv='{python}';$script:fixtureExit={exit_code};" + r'''
+          function Get-FrozenSyncArguments { @('-I','-B','-c',("import sys; print('benign native stderr',file=sys.stderr); sys.exit("+$script:fixtureExit+")")) };
+          $failed=$false;try{Invoke-FrozenRuntimeBuild}catch{$failed=$true};
+          [ordered]@{failed=$failed;preference=$ErrorActionPreference;log_contains_stderr=((Get-Content -LiteralPath (Join-Path $script:targetRoot 'frozen-build.log') -Raw) -match 'benign native stderr')}|ConvertTo-Json -Compress
+        ''')
+        assert result.returncode == 0, result.stderr
+&gt;       assert json.loads(result.stdout) == {'failed': exit_code != 0, 'preference':'Stop', 'log_contains_stderr':True}
+E       AssertionError: assert {'failed': Tr...stderr': True} == {'failed': Tr...stderr': True}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'preference': 1} != {'preference': 'Stop'}
+E         Use -v to get more diff
+
+windows-deployment-next\test_stopped_runtime_r1.py:174: AssertionError</failure></testcase></testsuite></testsuites>

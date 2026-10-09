@@ -1,0 +1,280 @@
+{
+  "schema": "cochem-post-start-ordinary-os-census/1",
+  "recorded_utc": "2026-10-09T02:24:33.3959828Z",
+  "identity": "AETHERDESK\\ansac",
+  "administrator": false,
+  "loopback_port": 47824,
+  "http_requests": 0,
+  "model_jobs_submitted": 0,
+  "tasks_changed": 0,
+  "token_contents_read": false,
+  "private_contents_read": false,
+  "ipglobal_listeners": [
+    {
+      "address": "127.0.0.1",
+      "port": 47824
+    }
+  ],
+  "net_tcp_listeners": [
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 47824,
+      "OwningProcess": 5788,
+      "CreationTime": "2026-10-08T21:17:13-05:00"
+    }
+  ],
+  "python_processes": [
+    {
+      "name": "python.exe",
+      "pid": 22472,
+      "parent_pid": 21152,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.518609-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 22512,
+      "parent_pid": 21152,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.521486-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 21892,
+      "parent_pid": 21152,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.527723-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 18632,
+      "parent_pid": 21152,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.538603-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23128,
+      "parent_pid": 21152,
+      "executable_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "created": "2026-10-08T18:45:49.621297-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23136,
+      "parent_pid": 21152,
+      "executable_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "created": "2026-10-08T18:45:49.621348-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23348,
+      "parent_pid": 23128,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.663856-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23364,
+      "parent_pid": 23136,
+      "executable_path": "C:\\Python314\\python.exe",
+      "created": "2026-10-08T18:45:49.664483-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 21928,
+      "parent_pid": 17224,
+      "executable_path": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpjg847r\\Scripts\\python.exe",
+      "created": "2026-10-08T18:45:52.188587-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23884,
+      "parent_pid": 21928,
+      "executable_path": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+      "created": "2026-10-08T18:45:52.200964-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 27140,
+      "parent_pid": 26368,
+      "executable_path": null,
+      "created": "2026-10-08T18:45:57.882823-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 20568,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T18:48:50.07765-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 12368,
+      "parent_pid": 20568,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T18:48:50.093345-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 11880,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T18:49:37.768728-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 4564,
+      "parent_pid": 11880,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T18:49:37.784253-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 25916,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T19:19:09.396-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 35696,
+      "parent_pid": 25916,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T19:19:09.414035-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 23628,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T20:09:09.229565-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 12168,
+      "parent_pid": 23628,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T20:09:09.243969-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 39376,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T20:12:13.511267-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 38480,
+      "parent_pid": 39376,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T20:12:13.526013-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 10012,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T20:39:17.977125-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 11532,
+      "parent_pid": 10012,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T20:39:17.998956-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 34760,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T20:48:24.487378-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 38516,
+      "parent_pid": 34760,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T20:48:24.504492-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 31696,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T21:09:23.027259-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 38112,
+      "parent_pid": 31696,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T21:09:23.042431-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 26336,
+      "parent_pid": 2672,
+      "executable_path": null,
+      "created": "2026-10-08T21:16:59.187405-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 5788,
+      "parent_pid": 26336,
+      "executable_path": null,
+      "created": "2026-10-08T21:16:59.210739-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 37864,
+      "parent_pid": 2672,
+      "executable_path": null,
+      "created": "2026-10-08T21:20:34.785464-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 24608,
+      "parent_pid": 37864,
+      "executable_path": null,
+      "created": "2026-10-08T21:20:34.804761-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 24400,
+      "parent_pid": 24424,
+      "executable_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "created": "2026-10-08T21:22:50.56826-05:00"
+    },
+    {
+      "name": "python.exe",
+      "pid": 22960,
+      "parent_pid": 24400,
+      "executable_path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+      "created": "2026-10-08T21:22:50.586827-05:00"
+    }
+  ],
+  "private_metadata_probes": [
+    {
+      "path": "C:\\Program Files\\CoChem\\WardenCommissioning4.2.7-windows-20261007-r3-v1\\commissioning.json",
+      "metadata_accessible": true,
+      "is_directory": false,
+      "last_write_utc": "2026-10-09T02:17:19.9701359Z"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\daemon-heartbeat.json",
+      "metadata_accessible": false,
+      "error_type": "ItemNotFoundException",
+      "hresult": -2146233087
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\HeldSupervisorObservation4.2.7-windows-20261008-r3-v3",
+      "metadata_accessible": false,
+      "error_type": "ItemNotFoundException",
+      "hresult": -2146233087
+    }
+  ],
+  "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c"
+}

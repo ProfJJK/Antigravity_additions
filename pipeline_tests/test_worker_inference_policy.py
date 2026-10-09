@@ -21,8 +21,8 @@ def overrides(argv):
     return [argv[index + 1] for index, arg in enumerate(argv[:-1]) if arg == '-c']
 
 
-def test_native_ram_capacity_wait_does_not_become_a_permanent_security_hold(tmp_path):
-    from cochem_pipeline.ramdisk import RamdiskCapacityError, RamdiskError, ordinary_tree
+def test_native_ram_capacity_wait_does_not_become_a_permanent_security_hold():
+    from cochem_pipeline.ramdisk import RamdiskCapacityError
 
     # Typed native diagnostic input, not a claim that Linux verified ImDisk.
     pressure = ramdisk_provider_failure(RamdiskCapacityError('Verified RAM reserve exhausted'))
@@ -30,20 +30,28 @@ def test_native_ram_capacity_wait_does_not_become_a_permanent_security_hold(tmp_
     assert pressure.retry_after_seconds == 30
     assert pressure.hold_scope is None
 
+    with pytest.raises(TypeError):
+        ramdisk_provider_failure(WorkerCleanupError('Process closure is unverified'))
+
+
+def test_redirected_ram_tree_is_a_permanent_security_hold(tmp_path):
+    from cochem_pipeline.ramdisk import RamdiskError, ordinary_tree
+
     target = tmp_path / 'physical'
     target.mkdir()
     redirected = tmp_path / 'redirected'
-    redirected.symlink_to(target, target_is_directory=True)
+    try:
+        redirected.symlink_to(target, target_is_directory=True)
+    except OSError as error:
+        if getattr(error, 'winerror', None) == 1314:
+            pytest.skip('Native Windows symlink creation privilege is unavailable')
+        raise
     with pytest.raises(RamdiskError) as rejected:
         ordinary_tree(redirected)
     security = ramdisk_provider_failure(rejected.value)
     assert security.category == 'configuration'
     assert security.hold_scope == 'job'
     assert security.retry_after_seconds is None
-
-    with pytest.raises(TypeError):
-        ramdisk_provider_failure(WorkerCleanupError('Process closure is unverified'))
-
 
 @pytest.mark.parametrize('effort', [None, 'low', 'medium', 'high', 'ultra'])
 def test_codex_coding_dispatch_has_readonly_sandbox_and_effective_feature_overrides(effort):
@@ -106,7 +114,8 @@ def test_claude_coding_tools_mcp_hooks_and_settings_are_disabled_without_disabli
     assert json.loads(argv[argv.index('--mcp-config') + 1]) == {'mcpServers': {}}
     assert argv[argv.index('--setting-sources') + 1] == ''
     settings = json.loads(argv[argv.index('--settings') + 1])
-    assert settings == {'disableAllHooks': True, 'disableSkillShellExecution': True}
+    assert settings == {'disableAllHooks': True, 'disableSkillShellExecution': True,
+                        'fallbackModel': [], 'switchModelsOnFlag': False}
     assert argv[argv.index('--permission-mode') + 1] == 'default'
     assert '--disable-slash-commands' in argv and '--no-session-persistence' in argv
     assert '--allowedTools' not in argv and '--bare' not in argv
@@ -136,15 +145,26 @@ def test_gemini_uses_only_reviewed_native_argv_and_selected_model(tmp_path):
             validate_gemini_version(spec, version, digest)
 
 
-def test_gemini_binary_replacement_and_redirected_path_invalidate_contract(tmp_path):
+def test_gemini_binary_replacement_invalidates_contract(tmp_path):
     binary = tmp_path / 'agy.exe'
     binary.write_bytes(b'original registered binary fixture')
     spec = gemini_spec(binary)
     binary.write_bytes(b'different registered binary fixture')
     with pytest.raises(ValueError, match='reviewed inference-only'):
         gemini_binary_digest(spec)
+
+
+def test_gemini_redirected_binary_path_invalidates_contract(tmp_path):
+    binary = tmp_path / 'agy.exe'
+    binary.write_bytes(b'original registered binary fixture')
+    spec = gemini_spec(binary)
     linked = tmp_path / 'linked.exe'
-    linked.symlink_to(binary)
+    try:
+        linked.symlink_to(binary)
+    except OSError as error:
+        if getattr(error, 'winerror', None) == 1314:
+            pytest.skip('Native Windows symlink creation privilege is unavailable')
+        raise
     linked_spec = gemini_spec(linked)
     with pytest.raises(ValueError, match='symbolic link'):
         gemini_binary_digest(linked_spec)

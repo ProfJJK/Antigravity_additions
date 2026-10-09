@@ -1,0 +1,28 @@
+{
+    "schema":  "cochem-six-worker-denials-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "slots":  [
+                  "slot1",
+                  "slot2",
+                  "slot3",
+                  "slot4",
+                  "slot5",
+                  "slot6"
+              ],
+    "parallel_workers":  1,
+    "stop_on_first_failure":  true,
+    "wrapper_sha256":  "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d",
+    "source_sha256":  "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+    "all_six_targets_checked":  true,
+    "original_failure":  {
+                             "receipt_sha256":  "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+                             "old_cleanup_verified":  false,
+                             "terminal_task_check_deferred":  true
+                         },
+    "runtime":  null,
+    "holds":  [
+                  "The reviewed fresh r3 runtime is not installed."
+              ],
+    "worker_processes_executed":  0,
+    "activation_ready":  false
+}

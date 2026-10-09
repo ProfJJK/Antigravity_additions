@@ -12,6 +12,7 @@ param(
     [string]$SupervisorTaskName = 'CoChem-4.2.3-Supervisor',
     [ValidateRange(1,256)][int]$Slots = 6,
     [string]$Config,
+    [switch]$RefuseProvisionTaskOverwrite,
     [switch]$RegisterDaemon
 )
 
@@ -24,11 +25,20 @@ function Invoke-Checked {
     if ($LASTEXITCODE -ne 0) { throw "$Executable failed with exit code $LASTEXITCODE" }
 }
 
+function Register-IdentityProvisionTask {
+    param($Action,$Principal,$Settings)
+    $parameters=@{TaskName='CoChem-4.2.2-Provision';Action=$Action;Principal=$Principal;Settings=$Settings;ErrorAction='Stop'}
+    # The fresh-install guard requires create-only behavior. Omitting Force
+    # preserves a task that appears after the guard's read-only collision check.
+    if (-not $RefuseProvisionTaskOverwrite) {$parameters.Force=$true}
+    Register-ScheduledTask @parameters | Out-Null
+}
+
 function Install-FrozenEnvironment {
     $savedEnvironment = $env:UV_PROJECT_ENVIRONMENT
     try {
         $env:UV_PROJECT_ENVIRONMENT = Join-Path $InstallRoot '.venv'
-        Invoke-Checked -Executable $Uv -Arguments @('sync','--project',$sourceRoot,'--frozen','--no-editable','--extra','mcp','--python',$Python,'--no-python-downloads')
+        Invoke-Checked -Executable $Uv -Arguments @('sync','--project',$sourceRoot,'--frozen','--no-editable','--link-mode','copy','--extra','mcp','--python',$Python,'--no-python-downloads')
     }
     finally { $env:UV_PROJECT_ENVIRONMENT = $savedEnvironment }
 }
@@ -137,8 +147,10 @@ function Assert-ProtectedItem {
     $trustedOwners = @('S-1-5-18','S-1-5-32-544','S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464')
     $owner = $acl.GetOwner([Security.Principal.SecurityIdentifier]).Value
     if ($owner -notin $trustedOwners) { throw "Privileged code owner is not SYSTEM/Administrators/TrustedInstaller: $Path" }
-    foreach ($rule in $acl.Access) {
-        $sid = $rule.IdentityReference.Translate([Security.Principal.SecurityIdentifier]).Value
+    # Enumerate trustees as SIDs so a deleted/unresolvable account is still
+    # checked for write authority instead of failing during name translation.
+    foreach ($rule in $acl.GetAccessRules($true,$true,[Security.Principal.SecurityIdentifier])) {
+        $sid = $rule.IdentityReference.Value
         if ($rule.AccessControlType -eq 'Allow' -and $sid -notin $trustedOwners -and -not ($rule.PropagationFlags -band [Security.AccessControl.PropagationFlags]::InheritOnly) -and ([int64]$rule.FileSystemRights -band 0x500D0116)) {
             throw "Untrusted writes or replacement are possible beneath a privileged path: $Path"
         }
@@ -264,7 +276,7 @@ $taskName = 'CoChem-4.2.2-Provision'
 $action = New-ScheduledTaskAction -Execute "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Argument ('-NoProfile -NonInteractive -ExecutionPolicy Bypass -File ' + (Quote-TaskArgument $provisionScript))
 $principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
 $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 10) -MultipleInstances IgnoreNew
-Register-ScheduledTask -TaskName $taskName -Action $action -Principal $principal -Settings $settings -Force | Out-Null
+Register-IdentityProvisionTask -Action $action -Principal $principal -Settings $settings
 $requestedStart = Get-Date
 Start-ScheduledTask -TaskName $taskName
 $deadline = (Get-Date).AddMinutes(10)

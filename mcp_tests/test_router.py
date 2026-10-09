@@ -45,7 +45,10 @@ def test_native_stdin_large_prompt_uses_regular_file_and_preserves_unicode():
     import json
     import sys
     prompt = 'π' * 70000
-    script = "import json,os,stat,sys; print(json.dumps([stat.S_ISREG(os.fstat(0).st_mode), len(sys.stdin.read())]))"
+    # The transport emits UTF-8 bytes; the protocol emulator must decode that
+    # contract explicitly, independent of Windows' locale-default Python stdin.
+    script = ("import json,os,stat,sys; sys.stdin.reconfigure(encoding='utf-8'); "
+              "print(json.dumps([stat.S_ISREG(os.fstat(0).st_mode), len(sys.stdin.read())]))")
     output = llm_router.run_cli([sys.executable, '-c', script], stdin_text=prompt,
                                large_prompt_to_file=False)
     assert json.loads(output) == [True, len(prompt)]

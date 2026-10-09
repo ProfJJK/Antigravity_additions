@@ -1,0 +1,77 @@
+{
+  "activation_ready": false,
+  "actual_install_receipt_sha256": "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+  "archive_copies_are_standalone_executable_package": false,
+  "artifacts": [
+    {
+      "bytes": 20403,
+      "file": "resume-private-knowledge.py",
+      "sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b"
+    },
+    {
+      "bytes": 16316,
+      "file": "resume-private-knowledge.ps1",
+      "sha256": "fdfbd0e313acdb75047d5ef51768654c58c9193991607e04d08c7dc35590bdfa"
+    },
+    {
+      "bytes": 15477,
+      "file": "test_knowledge_resume.py",
+      "sha256": "0958e6bb131d0749c69ed573e10ffb3fdcbfbdd4c6b80bb87e755e43b9df15f0"
+    },
+    {
+      "bytes": 5516,
+      "file": "knowledge-resume-final-tests.xml",
+      "sha256": "00101bbb51990936b504a931a84f7ce808efd607e4436ac498ce696d25b8da98"
+    },
+    {
+      "bytes": 8031,
+      "file": "knowledge-resume-initial-tests.xml",
+      "sha256": "ef45f91a4eb018ff313bf4ec0229a57b00f28acdc024f9a20077092b748f8ddd"
+    },
+    {
+      "bytes": 1545,
+      "file": "knowledge-resume-readonly-preview.json",
+      "sha256": "c6fe9d4402630caffdbbc214d0da2838c4d60c1fd82a6955ff3b43ed57d4b0dd"
+    }
+  ],
+  "captured_date": "2026-10-07",
+  "daemon_started": false,
+  "diagnostic_receipt_sha256": "18ceba4394b92bb6e1d320f49226359902af0084a72195a8139f699594bc0307",
+  "execution_location": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next",
+  "host": "AETHERDESK",
+  "knowledge_index_created_by_this_preparation": false,
+  "native_model_jobs_executed": 0,
+  "original_failure_receipt_sha256": "2cf8f1f4cafbb0537900af98349f6a3f4faec135a4061dd153f0cce78c1488dd",
+  "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "planned_effect": "One fresh private SYSTEM resume root/task; exact diagnosed state and lock checked before constructor and under real writer lock; existing 138-file corpus verified without reprovision; new137-document/1708-section index accepted with canonical authority",
+  "preservation": "No existing tasks, corpus bytes, state root identity/ACL, writer lock identity/metadata/byte, configuration, credentials or budgets modified. Frozen production refresh may clean its own unpublished new generation and temporary pointer files upon failure. Never delete pre-existing artifacts or automatically retry.",
+  "preview": {
+    "holds": [],
+    "mode": "READ_ONLY_PLAN",
+    "system_state_checks_deferred": true
+  },
+  "prior_diagnostics_preserved": {
+    "initial_preview": "Old venv parser refused actual uv pyvenv.cfg; fixed new wrapper with exact six-field uv binding; frozen original wrappers untouched",
+    "initial_tests": "34 passed, 1 failed: PowerShell bad-config array expression in test fixture corrected"
+  },
+  "reviewers": [
+    "root",
+    "native_next"
+  ],
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+  "schema": "cochem-knowledge-resume-preparation/1",
+  "scope": "Actual ordinary-user Windows preparation and inert regression tests only; no Linux result substitution",
+  "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+  "status": "REVIEWED_PREPARED_NOT_APPLIED",
+  "system_resume_executed": false,
+  "tests": {
+    "actual_ps51": true,
+    "actual_windows_msvcrt_and_metadata_handles": true,
+    "console_seconds": 1.74,
+    "failed": 0,
+    "fixture_scope": "Disposable ordinary-user files; production permission policy mocked only in the real lock unit test, never a SYSTEM acceptance claim",
+    "passed": 36,
+    "skipped": 0,
+    "system_permission_fixture": false
+  }
+}

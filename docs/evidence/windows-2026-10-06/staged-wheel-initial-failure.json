@@ -1,0 +1,8 @@
+{
+  "status": "FAILED",
+  "scope": "staged noneditable uv install, no production installation",
+  "error": "Revision files must not have alternate hardlinks",
+  "observed_file": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv\\Lib\\site-packages\\cochem_pipeline\\admission.py",
+  "observed_links": 2,
+  "resolution": "Explicit uv --link-mode copy; retain hardlink rejection"
+}

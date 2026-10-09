@@ -33,6 +33,7 @@ def test_manifest_prompt_contains_full_assignment_without_controller_secrets():
 def test_chapter_prompt_binds_owned_requirements_and_database_uri():
     node = {"kind": "CHAPTER_DRAFT", "workflow_id": "workflow-1", "payload": {
         "chapter_id": "database", "chapter_index": 1, "title": "Storage", "requirements": ["REQ-2"],
+        'wbs_tasks_defined': [{'id': 'database-task', 'description': 'Store evidence', 'requirements': ['REQ-2']}],
         "objective": "Write the storage chapter"}}
     prompt = node_prompt(node)
     shape = json.loads(prompt.split("Required output shape:\n", 1)[1].split("\n\nTask payload", 1)[0])
@@ -47,6 +48,8 @@ def test_chapter_prompt_binds_owned_requirements_and_database_uri():
 def test_synthesis_preserves_supplied_hash_map_and_chapter_content():
     hashes = {"first": "a" * 64, "second": "b" * 64}
     node = {"kind": "SYNTHESIS", "payload": {"chapter_hashes": hashes,
+        'chapter_output_hashes': {'first': 'c' * 64, 'second': 'd' * 64},
+        'coverage_report_sha256': 'e' * 64, 'wbs_tasks_by_chapter': {'first': [], 'second': []},
         "chapters": [{"chapter_id": "first", "artifact_text": "First full chapter"},
                      {"chapter_id": "second", "artifact_text": "Second full chapter"}]}}
     prompt = node_prompt(node)
@@ -54,6 +57,19 @@ def test_synthesis_preserves_supplied_hash_map_and_chapter_content():
     assert shape["chapter_hashes"] == hashes
     assert "First full chapter" in prompt and "Second full chapter" in prompt
     assert "Warden independently verifies" in prompt
+
+
+@pytest.mark.parametrize('kind,payload', [
+    ('CHAPTER_DRAFT', {'chapter_id': 'legacy', 'requirements': ['REQ-1']}),
+    ('SYNTHESIS', {'chapter_hashes': {'legacy': 'a' * 64}}),
+])
+def test_incomplete_legacy_planning_commitments_hold_before_native_prompt(kind, payload):
+    original = deepcopy(payload)
+    with pytest.raises(ProviderFailure) as failure:
+        node_prompt({'kind': kind, 'payload': payload})
+    assert failure.value.category == 'compatibility'
+    assert failure.value.hold_scope == 'job'
+    assert payload == original
 
 
 def test_unknown_node_kind_is_rejected_in_prompt_and_routing():

@@ -1,0 +1,49 @@
+{
+  "schema": "cochem-r2-readiness-plan-metadata/1",
+  "scope": "Read-only executable hashes/link metadata and exact R paths. No executable, Docker API, task, model or engine invocation. Private execution-state absence remains SYSTEM-deferred.",
+  "files_and_paths": [
+    {
+      "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "state": "OBSERVED",
+      "bytes": 44829104,
+      "links": 1,
+      "mtime_ns": 1791041263050421300,
+      "sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c"
+    },
+    {
+      "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "state": "OBSERVED",
+      "bytes": 156463536,
+      "links": 1,
+      "mtime_ns": 1791041252224389100,
+      "sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a"
+    },
+    {
+      "path": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "state": "OBSERVED",
+      "bytes": 46936,
+      "links": 2,
+      "mtime_ns": 1783009868000000000,
+      "sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a"
+    },
+    {
+      "path": "C:\\Windows\\System32\\imdisk.exe",
+      "state": "OBSERVED",
+      "bytes": 55552,
+      "links": 1,
+      "mtime_ns": 1778353905387674000,
+      "sha256": "3a6a94c98a4b87e59a136052c50da070c99706db3bcd54ef5b148784b21f75dd"
+    },
+    {
+      "path": "R:\\",
+      "state": "OBSERVED",
+      "attributes": 22,
+      "inode": 1407374883553285
+    },
+    {
+      "path": "R:\\CoChem427-windows-20261007",
+      "state": "NOT_FOUND",
+      "error_type": "FileNotFoundError"
+    }
+  ]
+}

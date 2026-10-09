@@ -1,0 +1,13 @@
+{
+  "schema": "cochem-ram-root-preservation-observation/1",
+  "checked_at": "2026-10-07T05:54:09.2394510Z",
+  "identity": "AETHERDESK\\ansac",
+  "scope": "read-only volume-root security and attributes; no file contents or enumeration",
+  "path": "R:\\",
+  "owner": "NT AUTHORITY\\SYSTEM",
+  "sddl": "O:SYG:SYD:(A;OICIIO;SDGXGWGR;;;AU)(A;;0x1301bf;;;AU)(A;;FA;;;SY)(A;OICIIO;GA;;;SY)(A;OICIIO;GA;;;BA)(A;;FA;;;BA)(A;;0x1200a9;;;BU)(A;OICIIO;GXGR;;;BU)",
+  "attributes": 22,
+  "attribute_names": "Hidden, System, Directory",
+  "production_ensure_existing_behavior": "Whole-root adopted drive protection removes ordinary owner access and changes inherited child ACLs; separate protected subtree repair required.",
+  "mutations_executed": false
+}

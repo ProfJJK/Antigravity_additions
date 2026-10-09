@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-10-07T02:01:03.999763+00:00",
+  "host_platform": "Windows",
+  "engine_platform": "Linux via Docker Desktop/WSL2",
+  "image_id": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+  "os": "linux",
+  "architecture": "amd64",
+  "configured_user": "1000:1000",
+  "tag": "cochem-pipeline-tests:windows-427-20261006",
+  "dockerfile_sha256": "4a472172362c40194594f6c2371c48d8b3a1be0735571d1e481f398bad9f3619",
+  "builder_sha256": "3152574d38070f3f1dc272b8bd8a43eb5f72b88e7701fb1cd54415224cab9c3c",
+  "build_exit_code": 0,
+  "build_log_local": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\image-build.log",
+  "physical_sandbox_and_pipe_acceptance": false
+}

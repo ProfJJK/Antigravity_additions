@@ -1,0 +1,257 @@
+{
+    "schema":  "cochem-administrator-r-startup-followup/1",
+    "reconstructed_at_utc":  "2026-10-07T04:36:59.1400588Z",
+    "scope":  "Curated metadata reconstructed from existing user-run Administrator captures; no new privileged observation or task execution",
+    "details_observed_at_utc":  "2026-10-07T04:31:10.9343644Z",
+    "prerequisite_observed_at_utc":  "2026-10-07T04:19:17.0378138Z",
+    "capture_identity":  "AETHERDESK\\ansac",
+    "capture_administrator":  true,
+    "capture_system":  false,
+    "provenance":  {
+                       "original_shared_file":  "administrator-evidence-shared-20261007T043110Z-8b16a518.json",
+                       "original_shared_sha256":  "d6489143a1dee4c37627d3f6673e5fe9f034551e89c2f8139daeed1bf12016ee",
+                       "private_details_file":  "admin-details-20261007T043110Z-8b16a518.json",
+                       "private_details_sha256":  "fe06ca0fc886a29bdc212fa8be0a827cceedb6c22fc1440147419378052c8fa0",
+                       "private_details_hash_reverified":  true,
+                       "original_prerequisite_sha256":  "51c715f23012d429e06000876a133f94674a3e3d01eeea2d54538448c87d67dc",
+                       "companion_script_sha256":  "201b2fdcb158b4a5d33b62363e7b9c6bfddf0452f21b8da1a87f5d812d3f4e35",
+                       "corrected_sharing_script_sha256":  "8af4c42f7f7c736c7ee52d2bdc15fcd2feabd47912eb48de2bfd54b218a52c7f",
+                       "projection_bug":  "PowerShell-wrapped string array items satisfied the generic object test and became Length objects. Scalars now stay atomic, array positions including null remain intact, and private fields are still removed.",
+                       "original_reports_preserved":  true,
+                       "administrator_rerun_for_projection":  false
+                   },
+    "ramdisk":  {
+                    "volume":  {
+                                   "DeviceID":  "R:",
+                                   "Size":  8589930496,
+                                   "FreeSpace":  8555827200,
+                                   "FileSystem":  "NTFS",
+                                   "VolumeName":  ""
+                               },
+                    "volume_scope":  "Logical-disk metadata from the original prerequisite observation; ImDisk device evidence has the later details timestamp.",
+                    "imdisk":  {
+                                   "executable":  {
+                                                      "path":  "C:\\Windows\\System32\\imdisk.exe",
+                                                      "available":  true,
+                                                      "bytes":  55552,
+                                                      "modified_utc":  "2026-05-09T19:11:45.3876740Z",
+                                                      "sha256":  "3a6a94c98a4b87e59a136052c50da070c99706db3bcd54ef5b148784b21f75dd",
+                                                      "version":  "2.1.2.50",
+                                                      "signature":  "Valid",
+                                                      "signer_subject":  "CN=Microsoft Windows Hardware Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US"
+                                                  },
+                                   "queries":  [
+                                                   {
+                                                       "arguments":  "-l",
+                                                       "available":  null,
+                                                       "timeout_seconds":  5,
+                                                       "max_bytes_per_stream":  32768,
+                                                       "exit_code":  1,
+                                                       "stdout":  "\\Device\\ImDisk0\r\n",
+                                                       "stderr":  "",
+                                                       "completed":  true,
+                                                       "exit_code_scope":  "Raw bare-list status; do not apply the device-query zero-exit convention."
+                                                   },
+                                                   {
+                                                       "arguments":  "-l -m R:",
+                                                       "available":  true,
+                                                       "timeout_seconds":  5,
+                                                       "max_bytes_per_stream":  32768,
+                                                       "exit_code":  0,
+                                                       "stdout":  "Mount point: R:\r\nNo image file.\r\nSize: 8589934592 bytes (8 GB), Virtual Memory, HDD, Modified.\r\n",
+                                                       "stderr":  "",
+                                                       "completed":  true
+                                                   }
+                                               ],
+                                   "recorded_sha256":  "3a6a94c98a4b87e59a136052c50da070c99706db3bcd54ef5b148784b21f75dd"
+                               },
+                    "owner_startup_task":  {
+                                               "name":  "Mount_CoChem_RAMDisk",
+                                               "path":  "\\",
+                                               "state":  "Ready",
+                                               "ramdisk_pattern_match":  true,
+                                               "principal":  {
+                                                                 "class":  "MSFT_TaskPrincipal2",
+                                                                 "DisplayName":  null,
+                                                                 "GroupId":  null,
+                                                                 "Id":  "Author",
+                                                                 "LogonType":  5,
+                                                                 "RunLevel":  1,
+                                                                 "UserId":  "SYSTEM",
+                                                                 "ProcessTokenSidType":  2,
+                                                                 "RequiredPrivilege":  null
+                                                             },
+                                               "triggers":  [
+                                                                {
+                                                                    "class":  "MSFT_TaskBootTrigger",
+                                                                    "Enabled":  true,
+                                                                    "EndBoundary":  null,
+                                                                    "ExecutionTimeLimit":  null,
+                                                                    "Id":  null,
+                                                                    "Repetition":  {
+                                                                                       "class":  "MSFT_TaskRepetitionPattern",
+                                                                                       "Duration":  null,
+                                                                                       "Interval":  null,
+                                                                                       "StopAtDurationEnd":  false
+                                                                                   },
+                                                                    "StartBoundary":  null,
+                                                                    "Delay":  null
+                                                                }
+                                                            ],
+                                               "settings":  {
+                                                                "class":  "MSFT_TaskSettings3",
+                                                                "AllowDemandStart":  true,
+                                                                "AllowHardTerminate":  true,
+                                                                "Compatibility":  3,
+                                                                "DeleteExpiredTaskAfter":  null,
+                                                                "DisallowStartIfOnBatteries":  true,
+                                                                "Enabled":  true,
+                                                                "ExecutionTimeLimit":  "PT72H",
+                                                                "Hidden":  false,
+                                                                "IdleSettings":  {
+                                                                                     "class":  "MSFT_TaskIdleSettings",
+                                                                                     "IdleDuration":  "PT10M",
+                                                                                     "RestartOnIdle":  false,
+                                                                                     "StopOnIdleEnd":  true,
+                                                                                     "WaitTimeout":  "PT1H"
+                                                                                 },
+                                                                "MultipleInstances":  2,
+                                                                "NetworkSettings":  {
+                                                                                        "class":  "MSFT_TaskNetworkSettings",
+                                                                                        "Id":  null,
+                                                                                        "Name":  null
+                                                                                    },
+                                                                "Priority":  7,
+                                                                "RestartCount":  0,
+                                                                "RestartInterval":  null,
+                                                                "RunOnlyIfIdle":  false,
+                                                                "RunOnlyIfNetworkAvailable":  false,
+                                                                "StartWhenAvailable":  false,
+                                                                "StopIfGoingOnBatteries":  true,
+                                                                "WakeToRun":  false,
+                                                                "DisallowStartOnRemoteAppSession":  false,
+                                                                "UseUnifiedSchedulingEngine":  true,
+                                                                "MaintenanceSettings":  null,
+                                                                "volatile":  false
+                                                            },
+                                               "actions":  [
+                                                               {
+                                                                   "execute":  "imdisk.exe",
+                                                                   "working_directory":  null,
+                                                                   "arguments_present":  true,
+                                                                   "arguments_omitted":  true,
+                                                                   "target_files":  [
+
+                                                                                    ]
+                                                               }
+                                                           ],
+                                               "last_run_time":  "2026-10-05T19:07:36.0000000-05:00",
+                                               "last_result":  0,
+                                               "next_run_time":  null,
+                                               "missed_runs":  0
+                                           },
+                    "configured_action_semantics":  {
+                                                        "create_new_virtual_disk":  true,
+                                                        "requested_size_bytes":  8589934592,
+                                                        "mount":  "R:",
+                                                        "filesystem":  "NTFS",
+                                                        "quick_format_after_creation":  true,
+                                                        "noninteractive_format":  true,
+                                                        "explicit_volume_label":  false,
+                                                        "configured_executable":  "imdisk.exe",
+                                                        "historical_executable_resolution_verified":  false,
+                                                        "interpretation":  "The existing boot action requests creation and formats the newly created disk. It was not replayed. This is not a claim that invoking it while R: exists would safely reformat or adopt the existing volume."
+                                                    },
+                    "existing_startup_vbs":  {
+                                                 "launcher":  {
+                                                                  "path":  "C:\\Users\\ansac\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\cochem_startup.vbs",
+                                                                  "available":  true,
+                                                                  "bytes":  986,
+                                                                  "modified_utc":  "2026-10-05T00:38:04.6972597Z",
+                                                                  "sha256":  "b9e5d2b4347e3c43df5f8a6b4f41d4b91b75e578c4b32541c4d23a22b9688f3a",
+                                                                  "version":  null,
+                                                                  "signature":  "NotSigned",
+                                                                  "signer_subject":  null
+                                                              },
+                                                 "recorded_sha256":  "b9e5d2b4347e3c43df5f8a6b4f41d4b91b75e578c4b32541c4d23a22b9688f3a",
+                                                 "matches_reviewed_source":  true,
+                                                 "referenced_target":  {
+                                                                           "path":  "D:\\__CoChem\\__agentic\\v4.2.0\\start_pipeline.bat",
+                                                                           "available":  true,
+                                                                           "bytes":  1022,
+                                                                           "modified_utc":  "2026-10-05T13:32:43.3386694Z",
+                                                                           "sha256":  "949c9ee2767be93c137e0541249db91851dcd2e13a2f15f8cbc1b0811a70fb38",
+                                                                           "version":  null,
+                                                                           "signature":  "UnknownError",
+                                                                           "signer_subject":  null
+                                                                       },
+                                                 "required_drive":  "R:",
+                                                 "required_label":  "COCHEM_RAM",
+                                                 "referenced_task":  "CoChem_EnsureRamdisk"
+                                             },
+                    "legacy_gate_status":  "Unchanged VBS expects CoChem_EnsureRamdisk and COCHEM_RAM. The actual task is Mount_CoChem_RAMDisk and the observed R: label is blank; preserve actual task/volume while reviewing this separate legacy gate.",
+                    "preservation":  {
+                                         "volume_formatted":  false,
+                                         "volume_resized":  false,
+                                         "volume_relabeled":  false,
+                                         "volume_recreated":  false,
+                                         "task_started":  false,
+                                         "task_modified":  false,
+                                         "task_xml_modified":  false,
+                                         "startup_vbs_modified":  false,
+                                         "reboot_requested":  false
+                                     }
+                },
+    "sensor_and_restart_metadata":  {
+                                        "pawnio_registry":  [
+                                                                {
+                                                                    "view":  "Registry64",
+                                                                    "key":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PawnIO",
+                                                                    "present":  false,
+                                                                    "display_version":  null
+                                                                },
+                                                                {
+                                                                    "view":  "Registry32",
+                                                                    "key":  "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PawnIO",
+                                                                    "present":  false,
+                                                                    "display_version":  null
+                                                                }
+                                                            ],
+                                        "pawnio_service":  {
+                                                               "key":  "Registry::HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\PawnIO",
+                                                               "present":  false,
+                                                               "file":  null
+                                                           },
+                                        "pawnio_system_drivers":  [
+
+                                                                  ],
+                                        "pending_reboot":  {
+                                                               "component_servicing":  false,
+                                                               "windows_update":  false,
+                                                               "pending_file_rename":  true,
+                                                               "scope":  "Presence/nonempty flags only; no registry payloads, no guarantee all reboot causes are detected."
+                                                           },
+                                        "monitor_processes":  [
+
+                                                              ],
+                                        "monitor_scope":  "Only HWiNFO64.exe, LibreHardwareMonitor.exe and OpenHardwareMonitor.exe at the prerequisite timestamp; no inference about every monitoring program.",
+                                        "cpu_sensor_measurement_performed":  false,
+                                        "driver_installed":  false,
+                                        "driver_loaded":  false
+                                    },
+    "restored_capture_holds":  [
+                                   "Administrator discovery does not establish SYSTEM acceptance.",
+                                   "PawnIO metadata does not prove driver-device ACLs, worker denial or usable CPU temperatures. No PawnIO device was opened or sensor measured; ImDisk inventory queries are read-only."
+                               ],
+    "remaining_scope":  "SYSTEM adoption/recovery, protected CPU temperatures and controlled reboot acceptance remain unrun. Four shared slots and Chapter 06 routing remain unchanged. Existing budgets, credentials, databases and task XML were not modified.",
+    "regression_checks":  {
+                              "pure_projection_checks_passed":  15,
+                              "powershell":  "5.1",
+                              "parse_errors":  0,
+                              "privileged_tests_run":  false
+                          },
+    "primary_sources":  [
+                            "https://github.com/LTRData/ImDisk/blob/master/cli/imdisk.c",
+                            "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/format"
+                        ]
+}

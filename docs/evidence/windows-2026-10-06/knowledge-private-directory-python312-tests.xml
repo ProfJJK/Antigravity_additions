@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="67" time="6.196" timestamp="2026-10-07T08:18:56.343065-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-2032127-0]" time="0.010" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-2032127-1]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-2032127-2]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-2032127-7]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-2032127-11]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-18-1179785-3]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-5-32-544-2032127-3]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_missing_effective_system_inheritance_refuses_before_creation[S-1-3-4-2032127-3]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_untrusted_parent_refuses_before_acl_lookup_or_creation" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_platform_creation_mode_and_child_validation[nt-511]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_platform_creation_mode_and_child_validation[posix-448]" time="0.002" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_existing_paths_are_preserved_without_acl_repair[directory]" time="0.006" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_existing_paths_are_preserved_without_acl_repair[file]" time="0.003" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_actual_python_mode700_reproduces_owner_rights_rejection" time="0.006" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_actual_inheritance_has_no_owner_rights_and_preserves_existing_acl" time="0.008" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_actual_fts_refresh_uses_inheritance_for_new_state_and_generation" time="0.075" /><testcase classname="pipeline_tests.test_knowledge_private_directories" name="test_actual_parent_junction_refuses_before_child_creation" time="0.032" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_installed_specification_and_owner_amendment_match_registered_bytes" time="0.062" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_committed_versioned_catalog_resolves_current_bytes_without_rewriting_history" time="0.144" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_duplicate_exact_captured_source_is_ambiguous_and_blocks_admission[4.2.7_SRS.md]" time="0.066" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_duplicate_exact_captured_source_is_ambiguous_and_blocks_admission[SRS_ADDENDUM_4.2.7.md]" time="0.064" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_current_amendment_requires_its_exact_authority_and_revision[authority-historical_source]" time="0.059" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_current_amendment_requires_its_exact_authority_and_revision[authority_revision-prior-revision]" time="0.058" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_matching_wiki_copy_cannot_replace_missing_archive_authority" time="0.063" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_refresh_generation_rechecks_changed_authority_metadata_immediately[authority-historical_source]" time="0.102" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_refresh_generation_rechecks_changed_authority_metadata_immediately[authority_revision-older-revision]" time="0.088" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_valid_but_older_source_corpus_stays_unready_without_overwriting_pins[old_spec]" time="0.056" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_valid_but_older_source_corpus_stays_unready_without_overwriting_pins[old_amendment]" time="0.061" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_physical_source_tampering_is_unknown_and_never_an_inherited_ready_state" time="0.065" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_same_generation_source_is_rechecked_after_thirty_seconds" time="0.068" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[before_read]" time="0.090" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[after_read]" time="0.088" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[between_sources]" time="0.092" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_resolver_refuses_stale_generation_before_reading_source" time="0.091" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_versioned_captured_source_tamper_remains_closed" time="0.132" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_authenticated_knowledge_status_reports_production_authority_hold" time="0.600" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_controller_tick_holds_real_queue_when_active_rag_disagrees" time="0.155" /><testcase classname="pipeline_tests.test_knowledge" name="test_real_index_unicode_catalog_links_and_read_only_schema" time="0.050" /><testcase classname="pipeline_tests.test_knowledge" name="test_incremental_only_reindexes_changed_documents_and_deletion" time="0.111" /><testcase classname="pipeline_tests.test_knowledge" name="test_full_reindex_is_atomic_for_real_concurrent_readers" time="0.064" /><testcase classname="pipeline_tests.test_knowledge" name="test_failed_ratification_preserves_accepted_generation_and_archive" time="0.055" /><testcase classname="pipeline_tests.test_knowledge" name="test_corrupt_binary_header_rebuilds_from_real_corpus" time="0.073" /><testcase classname="pipeline_tests.test_knowledge" name="test_corruption_cannot_reset_the_permanent_source_archive" time="0.048" /><testcase classname="pipeline_tests.test_knowledge" name="test_srs_catalog_requires_a_skeleton_link_to_each_chapter" time="0.015" /><testcase classname="pipeline_tests.test_knowledge" name="test_search_requests_real_background_rebuild_after_corruption" time="0.070" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[../secret.md]" time="0.030" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki/../../secret.md]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[/etc/passwd]" time="0.030" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[C:/secret.md]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki\\file.md]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki/CON.md]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki/file.md.]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki/a//b.md]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_read_rejects_unregistered_or_ambiguous_paths[wiki/a.py]" time="0.029" /><testcase classname="pipeline_tests.test_knowledge" name="test_invalid_links_and_oversized_chapters_cannot_publish[# Catalog\n[Absent](absent.md)\n]" time="0.068" /><testcase classname="pipeline_tests.test_knowledge" name="test_invalid_links_and_oversized_chapters_cannot_publish[# Catalog\n[Bad](warden.md#missing)\n]" time="0.047" /><testcase classname="pipeline_tests.test_knowledge" name="test_invalid_links_and_oversized_chapters_cannot_publish[# Catalog\n[Escape](../../secret.md)\n]" time="0.044" /><testcase classname="pipeline_tests.test_knowledge" name="test_invalid_links_and_oversized_chapters_cannot_publish[# Catalog\n[Undefined][missing]\n]" time="0.046" /><testcase classname="pipeline_tests.test_knowledge" name="test_invalid_links_and_oversized_chapters_cannot_publish[# Catalog\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\nline\n]" time="0.048" /><testcase classname="pipeline_tests.test_knowledge" name="test_code_fences_do_not_invent_links_or_sections" time="0.037" /><testcase classname="pipeline_tests.test_knowledge" name="test_symlink_hardlink_and_manifest_desync_rejected" time="0.005"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24345\\test_symlink_hardlink_and_mani0\\outside.md' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24345\\test_symlink_hardlink_and_mani0\\corpus\\wiki\\link.md'">corpus = namespace(root=WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_symlink_hardlink_and_m...tes=134217728, max_documents=20000), service=&lt;cochem_pipeline.knowledge.KnowledgeService object at 0x00000239C75951C0&gt;)
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_symlink_hardlink_and_mani0')
+
+    def test_symlink_hardlink_and_manifest_desync_rejected(corpus,tmp_path):
+        outside=tmp_path/'outside.md';outside.write_text('secret',encoding='utf-8')
+        target=corpus.root/'wiki/link.md'
+&gt;       target.symlink_to(outside)
+
+pipeline_tests\test_knowledge.py:184: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_symlink_hardlink_and_mani0/corpus/wiki/link.md')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_symlink_hardlink_and_mani0/outside.md')
+target_is_directory = False
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24345\\test_symlink_hardlink_and_mani0\\outside.md' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24345\\test_symlink_hardlink_and_mani0\\corpus\\wiki\\link.md'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_knowledge" name="test_manifest_hash_and_bounded_search_do_not_trust_caller_text" time="0.041" /><testcase classname="pipeline_tests.test_knowledge" name="test_config_placement_rejects_worker_or_private_corpus" time="0.006" /><testcase classname="pipeline_tests.test_knowledge" name="test_pipeline_loader_registers_real_corpus_and_rejects_worker_overlap" time="0.052" /><testcase classname="pipeline_tests.test_knowledge" name="test_real_authenticated_http_mcp_and_cli_retrieval" time="2.099"><failure message="TypeError: the JSON object must be str, bytes or bytearray, not NoneType">corpus = namespace(root=WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_real_authenticated_htt...tes=134217728, max_documents=20000), service=&lt;cochem_pipeline.knowledge.KnowledgeService object at 0x00000239C75978F0&gt;)
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24345/test_real_authenticated_http_m0')
+
+    def test_real_authenticated_http_mcp_and_cli_retrieval(corpus,tmp_path):
+        from cochem_pipeline.service import ControlClient,ControlServer
+        from cochem_pipeline.server import create_server,create_knowledge_server
+        from mcp.shared.memory import create_connected_server_and_client_session
+        corpus.service.refresh()
+        runtime=SimpleNamespace(config=SimpleNamespace(port=0),knowledge=corpus.service)
+        token=secrets.token_urlsafe(48);token_file=tmp_path/'token';token_file.write_text(token,encoding='utf-8')
+        server=ControlServer(runtime,token)
+        thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
+        client=ControlClient(server.server_address[1],token_file)
+        try:
+            connection=http.client.HTTPConnection('127.0.0.1',server.server_address[1],timeout=3)
+            connection.request('GET','/knowledge/status');response=connection.getresponse()
+            assert response.status==401;response.read();connection.close()
+            status=client.call('/knowledge/status')
+            assert status['indexed'] and not status['ready'], 'Tiny fixtures do not meet the 4x SQLite page-size floor'
+            token_file.write_text('invalid-token',encoding='utf-8')
+            with pytest.raises(RuntimeError,match='Unauthorized'):
+                client.call('/knowledge/status')
+            token_file.write_text(token,encoding='utf-8')
+            async def scenario():
+                async with create_connected_server_and_client_session(create_server(client)) as session:
+                    result=await session.call_tool('knowledge_search',{'query':'fencing'})
+                    assert not result.isError and result.structuredContent['results'][0]['doc_path']=='wiki/warden.md'
+                    text=await session.call_tool('knowledge_read',{'doc_path':'.sources/reference.md'})
+                    assert not text.isError and text.structuredContent['text']==corpus.docs['.sources/reference.md']
+                    denied=await session.call_tool('knowledge_read',{'doc_path':'../../secret.md'})
+                    assert denied.isError
+                async with create_connected_server_and_client_session(create_knowledge_server(client)) as session:
+                    tools=await session.list_tools()
+                    assert {tool.name for tool in tools.tools}=={'knowledge_search','knowledge_read','knowledge_status'}
+                    # The optimized result envelope must keep the public schema and
+                    # both MCP representations, including literal scientific UTF-8.
+                    for tool in tools.tools:
+                        assert tool.outputSchema=={'additionalProperties':True,
+                            'title':tool.name+'DictOutput','type':'object'}
+                    result=await session.call_tool('knowledge_search',{'query':'fencing'})
+                    assert not result.isError and result.structuredContent['results']
+                    assert json.loads(result.content[0].text)==result.structuredContent
+                    read=await session.call_tool('knowledge_read',{'doc_path':'.sources/reference.md'})
+                    assert json.loads(read.content[0].text)==read.structuredContent
+                    assert 'Ψ(r), ΔG°, kJ·mol⁻¹' in read.content[0].text
+                    token_file.write_text('invalid-token',encoding='utf-8')
+                    denied=await session.call_tool('knowledge_search',{'query':'fencing'})
+                    assert denied.isError and 'Unauthorized' in denied.content[0].text
+                    token_file.write_text(token,encoding='utf-8')
+                    restored=await session.call_tool('knowledge_search',{'query':'fencing'})
+                    assert not restored.isError and restored.structuredContent['results']
+                    bounded=await session.call_tool('knowledge_search',{'query':'fencing','limit':21})
+                    assert bounded.isError
+            asyncio.run(scenario())
+            config=tmp_path/'client.json';config.write_text(json.dumps({'port':server.server_address[1],'token_file':str(token_file)}),encoding='utf-8')
+            environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parents[1]/'src')}
+            result=subprocess.run([sys.executable,'-m','cochem_pipeline','knowledge-search','--client-config',str(config),'fencing'],
+                capture_output=True,text=True,encoding='utf-8',timeout=10,env=environment,
+                creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0) if os.name=='nt' else 0)
+            assert result.returncode==0,result.stderr
+&gt;           assert json.loads(result.stdout)['results'][0]['doc_path']=='wiki/warden.md'
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pipeline_tests\test_knowledge.py:286: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+s = None, cls = None, object_hook = None, parse_float = None, parse_int = None
+parse_constant = None, object_pairs_hook = None, kw = {}
+
+    def loads(s, *, cls=None, object_hook=None, parse_float=None,
+            parse_int=None, parse_constant=None, object_pairs_hook=None, **kw):
+        """Deserialize ``s`` (a ``str``, ``bytes`` or ``bytearray`` instance
+        containing a JSON document) to a Python object.
+    
+        ``object_hook`` is an optional function that will be called with the
+        result of any object literal decode (a ``dict``). The return value of
+        ``object_hook`` will be used instead of the ``dict``. This feature
+        can be used to implement custom decoders (e.g. JSON-RPC class hinting).
+    
+        ``object_pairs_hook`` is an optional function that will be called with the
+        result of any object literal decoded with an ordered list of pairs.  The
+        return value of ``object_pairs_hook`` will be used instead of the ``dict``.
+        This feature can be used to implement custom decoders.  If ``object_hook``
+        is also defined, the ``object_pairs_hook`` takes priority.
+    
+        ``parse_float``, if specified, will be called with the string
+        of every JSON float to be decoded. By default this is equivalent to
+        float(num_str). This can be used to use another datatype or parser
+        for JSON floats (e.g. decimal.Decimal).
+    
+        ``parse_int``, if specified, will be called with the string
+        of every JSON int to be decoded. By default this is equivalent to
+        int(num_str). This can be used to use another datatype or parser
+        for JSON integers (e.g. float).
+    
+        ``parse_constant``, if specified, will be called with one of the
+        following strings: -Infinity, Infinity, NaN.
+        This can be used to raise an exception if invalid JSON numbers
+        are encountered.
+    
+        To use a custom ``JSONDecoder`` subclass, specify it with the ``cls``
+        kwarg; otherwise ``JSONDecoder`` is used.
+        """
+        if isinstance(s, str):
+            if s.startswith('\ufeff'):
+                raise JSONDecodeError("Unexpected UTF-8 BOM (decode using utf-8-sig)",
+                                      s, 0)
+        else:
+            if not isinstance(s, (bytes, bytearray)):
+&gt;               raise TypeError(f'the JSON object must be str, bytes or bytearray, '
+                                f'not {s.__class__.__name__}')
+E               TypeError: the JSON object must be str, bytes or bytearray, not NoneType
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\json\__init__.py:339: TypeError</failure></testcase><testcase classname="pipeline_tests.test_knowledge" name="test_authority_badges_are_ratified_metadata_not_self_proclaimed_document_text" time="0.069" /><testcase classname="pipeline_tests.test_knowledge" name="test_uncatalogued_authority_is_never_inferred_from_filename_or_prose" time="0.041" /></testsuite></testsuites>

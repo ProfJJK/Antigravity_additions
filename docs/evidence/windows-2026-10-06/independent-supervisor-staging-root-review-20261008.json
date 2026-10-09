@@ -1,0 +1,41 @@
+{
+  "schema": "cochem-independent-supervisor-staging-root-review/1",
+  "status": "SOURCE_REVIEW_PASSED_STAGING_ONLY_NOT_OPERATIONAL",
+  "recorded_at_utc": "2026-10-08T02:51:32.493857+00:00",
+  "files": {
+    "install-independent-supervisor-staging-r3-v1.ps1": "4f8d3afa512ce81a73c114a384e208c39006ab3abe4771512a121ebf7ae7b098",
+    "stage-independent-supervisor-holds-r3-v1.py": "215af8db414c7bbc4352c825dbf250b7bbc244a8a2dbc2d4addadc72cf1acb74",
+    "independent-supervisor-staging-r3-v1.manifest.json": "6aec5eaf82205be34e5849e73700f2e817e157be5c5ddd4366f04e549b75f0c4",
+    "test_independent_supervisor_staging_r3_v1.py": "c6344ffee0dbc182a4e93736c1a3fa8543b822a163cb4735094c825467019b17",
+    "independent-supervisor-staging-r3-v1-tests-final.xml": "fde58b710ee7c47e1f800fa16853901665541ccd03bd1cb97e91a8d837b0a653"
+  },
+  "tests": {
+    "tests": 47,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "scope": "Ordinary Windows preparation; real disposable SQLite and copy fixtures; privileged identity, ACL, task and build effects are inert.",
+  "reviewed_boundaries": [
+    "Fresh protected source, acceptance closure and independent frozen uv venv; no current runtime replacement.",
+    "Exactly three reviewed source deltas: performance observer support, held supervision diagnosis and held replay authority.",
+    "Existing daemon task XML is observed and rechecked, never modified by staging.",
+    "Fresh SYSTEM-only private pair created after the code tree receives its public-read protection.",
+    "Both new ledgers carry immutable unresolved authority; no historical allowance is guessed and no old ledger is opened.",
+    "One no-trigger SYSTEM staging task; no worker provisioning, pipeline daemon, repair supervisor or provider invocation.",
+    "Completed receipt binds nonce, manifest, helper, installed revision and paired hold hashes; bounded failure metadata preserves partial outputs."
+  ],
+  "remaining_engineering": [
+    "Concrete fresh ProgramData supervisor boundary, dedicated repair workspace/account validation and held observation configuration.",
+    "Reviewed protected pointer and independent observation task without modifying the current Warden task or granting off-ledger restart authority.",
+    "Consolidated privileged execution and actual SYSTEM observation evidence."
+  ],
+  "operational_caveat": "An early interpreter/bootstrap failure or task timeout may precede the helper receipt; the later consolidated runner must report bounded parent/task metadata without requiring private report retrieval.",
+  "installed": false,
+  "supervisor_started": false,
+  "pipeline_started": false,
+  "paid_repair_enabled": false,
+  "historical_spending_verified": false,
+  "full_srs_acceptance": false,
+  "human_action_now": null
+}

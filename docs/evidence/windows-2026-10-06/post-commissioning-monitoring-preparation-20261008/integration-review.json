@@ -1,0 +1,23 @@
+{
+  "schema": "cochem-post-commissioning-independent-review/1",
+  "recorded_utc": "2026-10-08T22:58:38.7967543Z",
+  "reviewer": "/root/review_inspection_wiring_v4",
+  "status": "PASS",
+  "candidate_sha256": "6b1c7c7eb0a9f70d24abb9a778400b43917bb44007f2fa61bdf66c16e29b4ec7",
+  "reviewed": [
+    "Exact source and transitive pins",
+    "Producer receipt field compatibility and strict authentication metadata",
+    "Seven-file observer manifest and five unchanged payloads",
+    "Scanner-only staging/held wrapper changes and held verified source handles",
+    "Current controller native witness before and after every phase",
+    "First-start replay guard before every callback",
+    "Missing commissioning blocks all mutations",
+    "Oracle deferred and paid repair held",
+    "PowerShell and Python parsing",
+    "Generator exactly reproduces final bytes without writes"
+  ],
+  "finding_corrected": "Generator backslash escaping in Schedule.Service.GetFolder root argument",
+  "actual_host_or_provider_actions": false,
+  "tests_counted_as_system": false,
+  "full_srs_acceptance": false
+}

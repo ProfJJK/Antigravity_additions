@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="53" time="22.413" timestamp="2026-10-08T17:54:42.784884-05:00" hostname="AetherDesk"><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[valid]" time="0.626" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[incomplete]" time="0.339" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[bool_string]" time="0.342" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[activation]" time="0.380" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[bytes_bool]" time="0.399" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[bytes_text]" time="0.402" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[duplicate]" time="0.446" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[escape]" time="0.445" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[reserved]" time="0.427" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[changed_source]" time="0.419" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_inventory_strict_ps51[missing_test]" time="0.537" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_reviewed_native_copy_function_createnew_identity_and_hardlinks" time="0.660" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_task_absence_is_not_permission_denial[absent]" time="0.361" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_task_absence_is_not_permission_denial[exists]" time="0.312" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_task_absence_is_not_permission_denial[denied]" time="0.324" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_task_absence_is_not_permission_denial[wrong_missing]" time="0.330" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[success]" time="0.397" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[build_failure]" time="0.369" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[changed_daemon]" time="0.381" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_real_task_definition_argv_registration_and_readback[success]" time="0.398" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_real_task_definition_argv_registration_and_readback[bad_working_directory]" time="0.373" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_real_task_definition_argv_registration_and_readback[bad_runlevel]" time="0.377" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[valid]" time="0.608" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[owner]" time="0.439" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[untrusted_acl]" time="0.405" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[action]" time="0.379" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[demand]" time="0.378" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[enabled]" time="0.398" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[instances]" time="0.397" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[restart]" time="0.367" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_task_creation_and_boundary_checks[trigger]" time="0.398" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_assembled_apply_order_and_partial_preservation[success]" time="0.661" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_assembled_apply_order_and_partial_preservation[provision_failure]" time="0.682" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_assembled_apply_order_and_partial_preservation[copy_failure]" time="0.598" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_native_witness_own_ordinary_process_exact_handle_filetime" time="0.427" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[phase-bindings]" time="0.308" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[phase-secret private detail]" time="0.314" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[code-REPAIR_IDENTITY_MIXED_STATE]" time="0.306" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[code-secret private detail]" time="0.313" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[winerror-5]" time="0.317" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_safe_failure_allowlist[winerror--1]" time="0.315" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_frozen_predecessors_helper_and_successor_hashes" time="0.016" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_only_reviewed_scanner_dependency_and_support_binding_bytes_changed" time="0.001" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_ast_functions_unchanged_scanner_binding_unique_and_import_and_custody_loops_present[staging]" time="0.321"><failure message="AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.&#10;  At line:3 char:39&#10;  +     [pscustomobject]@{path=(Join-Path $PSScriptRoot 'install-stopped- ...&#10;  +                                       ~~~~~~~~~~~~~&#10;      + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join &#10;     PathCommand&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n&quot;).returncode">wrapper = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/install-independent-supervisor-staging-r3-v2.ps1')
+
+    @pytest.mark.parametrize('wrapper', [STAGING, HELD], ids=['staging', 'observation'])
+    def test_ast_functions_unchanged_scanner_binding_unique_and_import_and_custody_loops_present(wrapper):
+        old = wrapper.with_name(wrapper.name.replace('-v2.ps1', '-v1.ps1'))
+&gt;       value = run(r'''
+          function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$t,[ref]$e);if($e.Count){throw 'parse refused'};return $a}
+        ''' + f'$old=Read-Ast {quote(old)};$new=Read-Ast {quote(wrapper)};$PSScriptRoot={quote(WORK)};' + r'''
+          $repo='D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions'
+          $functions=@{};foreach($f in $old.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){$functions[$f.Name]=$f.Extent.Text}
+          $newFunctions=@($new.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true));$same=$newFunctions.Count -eq $functions.Count
+          foreach($f in $newFunctions){$same=$same -and $functions.ContainsKey($f.Name) -and $functions[$f.Name] -ceq $f.Extent.Text}
+          $assignment=@($new.FindAll({param($n)$n -is [Management.Automation.Language.AssignmentStatementAst] -and $n.Left -is [Management.Automation.Language.VariableExpressionAst] -and $n.Left.VariablePath.UserPath -ceq 'dependencies'},$true))
+          if($assignment.Count -ne 1){throw 'dependency assignment ambiguous'};. ([scriptblock]::Create($assignment[0].Extent.Text))
+          $inspection=@($dependencies|Where-Object {($_.names -ccontains 'Assert-CodeTreeOnce')})
+          $oldScan=@($dependencies|Where-Object {$_.path.EndsWith('install-private-knowledge-candidate.ps1') -and $_.names -ccontains 'Assert-CodeTreeOnce'})
+          $loops=@($new.FindAll({param($n)$n -is [Management.Automation.Language.ForEachStatementAst] -and $n.Condition.Extent.Text -ceq '$dependencies'},$true))
+          $importLoops=@($loops|Where-Object {$_.Extent.Text -match 'Import-StagingFunctions'});$holdLoops=@($loops|Where-Object {$_.Extent.Text -match 'Open-VerifiedFile'})
+          @{same_functions=$same;scanner_count=$inspection.Count;old_scanner_count=$oldScan.Count;scanner_path=$inspection[0].path;scanner_hash=$inspection[0].hash;scanner_names=@($inspection[0].names);import_loops=$importLoops.Count;hold_loops=$holdLoops.Count}|ConvertTo-Json -Compress
+        ''')
+
+test_supervisor_scanner_successors_r3_v2.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = '\n      function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,...es=@($inspection[0].names);import_loops=$importLoops.Count;hold_loops=$holdLoops.Count}|ConvertTo-Json -Compress\n    '
+
+    def run(body):
+        completed = subprocess.run(
+            [POWERSHELL, '-NoProfile', '-NonInteractive', '-Command',
+             "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest;" + body],
+            capture_output=True, text=True, timeout=40,
+        )
+&gt;       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.
+E         At line:3 char:39
+E         +     [pscustomobject]@{path=(Join-Path $PSScriptRoot 'install-stopped- ...
+E         +                                       ~~~~~~~~~~~~~
+E             + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join 
+E            PathCommand
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n").returncode
+
+test_supervisor_scanner_successors_r3_v2.py:39: AssertionError</failure></testcase><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_ast_functions_unchanged_scanner_binding_unique_and_import_and_custody_loops_present[observation]" time="0.325"><failure message="AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.&#10;  At line:3 char:37&#10;  +   [pscustomobject]@{path=(Join-Path $PSScriptRoot 'install-stopped-ru ...&#10;  +                                     ~~~~~~~~~~~~~&#10;      + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join &#10;     PathCommand&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n&quot;).returncode">wrapper = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/install-held-supervisor-observation-r3-v2.ps1')
+
+    @pytest.mark.parametrize('wrapper', [STAGING, HELD], ids=['staging', 'observation'])
+    def test_ast_functions_unchanged_scanner_binding_unique_and_import_and_custody_loops_present(wrapper):
+        old = wrapper.with_name(wrapper.name.replace('-v2.ps1', '-v1.ps1'))
+&gt;       value = run(r'''
+          function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$t,[ref]$e);if($e.Count){throw 'parse refused'};return $a}
+        ''' + f'$old=Read-Ast {quote(old)};$new=Read-Ast {quote(wrapper)};$PSScriptRoot={quote(WORK)};' + r'''
+          $repo='D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions'
+          $functions=@{};foreach($f in $old.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){$functions[$f.Name]=$f.Extent.Text}
+          $newFunctions=@($new.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true));$same=$newFunctions.Count -eq $functions.Count
+          foreach($f in $newFunctions){$same=$same -and $functions.ContainsKey($f.Name) -and $functions[$f.Name] -ceq $f.Extent.Text}
+          $assignment=@($new.FindAll({param($n)$n -is [Management.Automation.Language.AssignmentStatementAst] -and $n.Left -is [Management.Automation.Language.VariableExpressionAst] -and $n.Left.VariablePath.UserPath -ceq 'dependencies'},$true))
+          if($assignment.Count -ne 1){throw 'dependency assignment ambiguous'};. ([scriptblock]::Create($assignment[0].Extent.Text))
+          $inspection=@($dependencies|Where-Object {($_.names -ccontains 'Assert-CodeTreeOnce')})
+          $oldScan=@($dependencies|Where-Object {$_.path.EndsWith('install-private-knowledge-candidate.ps1') -and $_.names -ccontains 'Assert-CodeTreeOnce'})
+          $loops=@($new.FindAll({param($n)$n -is [Management.Automation.Language.ForEachStatementAst] -and $n.Condition.Extent.Text -ceq '$dependencies'},$true))
+          $importLoops=@($loops|Where-Object {$_.Extent.Text -match 'Import-StagingFunctions'});$holdLoops=@($loops|Where-Object {$_.Extent.Text -match 'Open-VerifiedFile'})
+          @{same_functions=$same;scanner_count=$inspection.Count;old_scanner_count=$oldScan.Count;scanner_path=$inspection[0].path;scanner_hash=$inspection[0].hash;scanner_names=@($inspection[0].names);import_loops=$importLoops.Count;hold_loops=$holdLoops.Count}|ConvertTo-Json -Compress
+        ''')
+
+test_supervisor_scanner_successors_r3_v2.py:117: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = '\n      function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,...es=@($inspection[0].names);import_loops=$importLoops.Count;hold_loops=$holdLoops.Count}|ConvertTo-Json -Compress\n    '
+
+    def run(body):
+        completed = subprocess.run(
+            [POWERSHELL, '-NoProfile', '-NonInteractive', '-Command',
+             "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest;" + body],
+            capture_output=True, text=True, timeout=40,
+        )
+&gt;       assert completed.returncode == 0, completed.stdout + completed.stderr
+E       AssertionError: Join-Path : Cannot bind argument to parameter 'Path' because it is an empty string.
+E         At line:3 char:37
+E         +   [pscustomobject]@{path=(Join-Path $PSScriptRoot 'install-stopped-ru ...
+E         +                                     ~~~~~~~~~~~~~
+E             + CategoryInfo          : InvalidData: (:) [Join-Path], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join 
+E            PathCommand
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : ParameterArgumentValidationErrorEmptyStringNotAllowed,Microsoft.PowerShell.Commands.Join \n   PathCommand\n \n").returncode
+
+test_supervisor_scanner_successors_r3_v2.py:39: AssertionError</failure></testcase><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[valid-staging]" time="0.875"><failure message="AssertionError: assert {'write_block...d': True, ...} == {'import_refu...ount': 1, ...}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'held_count': 0} != {'held_count': 1}&#10;  {'hold_refused': True} != {'hold_refused': False}&#10;  {'write_blocked': False} != {'write_blocked': True}&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/supervisor-scanner-v2-test-tmp/test_actual_successor_import_a0')
+wrapper = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/install-independent-supervisor-staging-r3-v2.ps1')
+case = 'valid'
+
+    @pytest.mark.parametrize('wrapper', [STAGING, HELD], ids=['staging', 'observation'])
+    @pytest.mark.parametrize('case', ['valid', 'changed_before_import', 'changed_before_hold'])
+    def test_actual_successor_import_and_held_native_identity_reject_changes(tmp_path, wrapper, case):
+        fixture = tmp_path / 'inspection.ps1'
+        fixture.write_bytes((WORK / 'protected-code-inspection-v4.ps1').read_bytes())
+        body = f'$wrapper={quote(wrapper)};$fixture={quote(fixture)};$case={quote(case)};$inspectionHash={quote(INSPECTION_HASH)};' + r'''
+          function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$t,[ref]$e);if($e.Count){throw 'parse refused'};return $a}
+        ''' + f'$support=Read-Ast {quote(STAGING)};' + r'''
+          $f=@($support.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -ceq 'Import-StagingFunctions'},$true))[0];. ([scriptblock]::Create($f.Extent.Text))
+          foreach($definition in @(Import-StagingFunctions 'D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\stage_aetherdesk_427_payloads.ps1' '0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b' @('Initialize-FileIdentity','Open-VerifiedFile'))){. ([scriptblock]::Create($definition))};Initialize-FileIdentity
+          function Assert-ProtectedPath {param($Path)if($Path -cne $fixture){throw 'outside disposable fixture'}}
+          $new=Read-Ast $wrapper;$dependencies=@([pscustomobject]@{path=$fixture;hash=$inspectionHash;names=@('Assert-CodeTreeOnce')});$held=[Collections.Generic.List[IO.Stream]]::new()
+          $loops=@($new.FindAll({param($n)$n -is [Management.Automation.Language.ForEachStatementAst] -and $n.Condition.Extent.Text -ceq '$dependencies'},$true))
+          $imports=@($loops|Where-Object {$_.Extent.Text -match 'Import-StagingFunctions'});$holds=@($loops|Where-Object {$_.Extent.Text -match 'Open-VerifiedFile'})
+          $importRefused=$false;$holdRefused=$false;$bound=$false;$writeBlocked=$false;$heldCount=0
+          if($case -eq 'changed_before_import'){[IO.File]::AppendAllText($fixture,"`n# changed fixture")}
+          try{. ([scriptblock]::Create($imports[0].Extent.Text));$bound=(Get-Item Function:Assert-CodeTreeOnce).Definition.Contains('[CoChemProtectedCodeInspectionV4]::Scan')}catch{$importRefused=$true}
+          if(-not $importRefused){
+           if($case -eq 'changed_before_hold'){[IO.File]::AppendAllText($fixture,"`n# changed fixture")}
+           try{. ([scriptblock]::Create($holds[0].Extent.Text));$heldCount=$held.Count}catch{$holdRefused=$true}
+           if(-not $holdRefused){try{$writer=[IO.File]::Open($fixture,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None);$writer.Dispose()}catch{$writeBlocked=$true}}
+          }
+          foreach($stream in $held){$stream.Dispose()};$writer=[IO.File]::Open($fixture,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None);$writer.Dispose()
+          @{import_refused=$importRefused;hold_refused=$holdRefused;bound_to_v4=$bound;held_count=$heldCount;write_blocked=$writeBlocked}|ConvertTo-Json -Compress
+        '''
+&gt;       assert run(body) == {
+            'import_refused': case == 'changed_before_import',
+            'hold_refused': case == 'changed_before_hold',
+            'bound_to_v4': case != 'changed_before_import',
+            'held_count': 1 if case == 'valid' else 0,
+            'write_blocked': case == 'valid',
+        }
+E       AssertionError: assert {'write_block...d': True, ...} == {'import_refu...ount': 1, ...}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'held_count': 0} != {'held_count': 1}
+E         {'hold_refused': True} != {'hold_refused': False}
+E         {'write_blocked': False} != {'write_blocked': True}
+E         Use -v to get more diff
+
+test_supervisor_scanner_successors_r3_v2.py:165: AssertionError</failure></testcase><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[valid-observation]" time="0.689"><failure message="AssertionError: assert {'write_block...d': True, ...} == {'import_refu...ount': 1, ...}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'held_count': 0} != {'held_count': 1}&#10;  {'hold_refused': True} != {'hold_refused': False}&#10;  {'write_blocked': False} != {'write_blocked': True}&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/supervisor-scanner-v2-test-tmp/test_actual_successor_import_a1')
+wrapper = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/install-held-supervisor-observation-r3-v2.ps1')
+case = 'valid'
+
+    @pytest.mark.parametrize('wrapper', [STAGING, HELD], ids=['staging', 'observation'])
+    @pytest.mark.parametrize('case', ['valid', 'changed_before_import', 'changed_before_hold'])
+    def test_actual_successor_import_and_held_native_identity_reject_changes(tmp_path, wrapper, case):
+        fixture = tmp_path / 'inspection.ps1'
+        fixture.write_bytes((WORK / 'protected-code-inspection-v4.ps1').read_bytes())
+        body = f'$wrapper={quote(wrapper)};$fixture={quote(fixture)};$case={quote(case)};$inspectionHash={quote(INSPECTION_HASH)};' + r'''
+          function Read-Ast {param($Path)$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$t,[ref]$e);if($e.Count){throw 'parse refused'};return $a}
+        ''' + f'$support=Read-Ast {quote(STAGING)};' + r'''
+          $f=@($support.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -ceq 'Import-StagingFunctions'},$true))[0];. ([scriptblock]::Create($f.Extent.Text))
+          foreach($definition in @(Import-StagingFunctions 'D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\stage_aetherdesk_427_payloads.ps1' '0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b' @('Initialize-FileIdentity','Open-VerifiedFile'))){. ([scriptblock]::Create($definition))};Initialize-FileIdentity
+          function Assert-ProtectedPath {param($Path)if($Path -cne $fixture){throw 'outside disposable fixture'}}
+          $new=Read-Ast $wrapper;$dependencies=@([pscustomobject]@{path=$fixture;hash=$inspectionHash;names=@('Assert-CodeTreeOnce')});$held=[Collections.Generic.List[IO.Stream]]::new()
+          $loops=@($new.FindAll({param($n)$n -is [Management.Automation.Language.ForEachStatementAst] -and $n.Condition.Extent.Text -ceq '$dependencies'},$true))
+          $imports=@($loops|Where-Object {$_.Extent.Text -match 'Import-StagingFunctions'});$holds=@($loops|Where-Object {$_.Extent.Text -match 'Open-VerifiedFile'})
+          $importRefused=$false;$holdRefused=$false;$bound=$false;$writeBlocked=$false;$heldCount=0
+          if($case -eq 'changed_before_import'){[IO.File]::AppendAllText($fixture,"`n# changed fixture")}
+          try{. ([scriptblock]::Create($imports[0].Extent.Text));$bound=(Get-Item Function:Assert-CodeTreeOnce).Definition.Contains('[CoChemProtectedCodeInspectionV4]::Scan')}catch{$importRefused=$true}
+          if(-not $importRefused){
+           if($case -eq 'changed_before_hold'){[IO.File]::AppendAllText($fixture,"`n# changed fixture")}
+           try{. ([scriptblock]::Create($holds[0].Extent.Text));$heldCount=$held.Count}catch{$holdRefused=$true}
+           if(-not $holdRefused){try{$writer=[IO.File]::Open($fixture,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None);$writer.Dispose()}catch{$writeBlocked=$true}}
+          }
+          foreach($stream in $held){$stream.Dispose()};$writer=[IO.File]::Open($fixture,[IO.FileMode]::Open,[IO.FileAccess]::Write,[IO.FileShare]::None);$writer.Dispose()
+          @{import_refused=$importRefused;hold_refused=$holdRefused;bound_to_v4=$bound;held_count=$heldCount;write_blocked=$writeBlocked}|ConvertTo-Json -Compress
+        '''
+&gt;       assert run(body) == {
+            'import_refused': case == 'changed_before_import',
+            'hold_refused': case == 'changed_before_hold',
+            'bound_to_v4': case != 'changed_before_import',
+            'held_count': 1 if case == 'valid' else 0,
+            'write_blocked': case == 'valid',
+        }
+E       AssertionError: assert {'write_block...d': True, ...} == {'import_refu...ount': 1, ...}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'held_count': 0} != {'held_count': 1}
+E         {'hold_refused': True} != {'hold_refused': False}
+E         {'write_blocked': False} != {'write_blocked': True}
+E         Use -v to get more diff
+
+test_supervisor_scanner_successors_r3_v2.py:165: AssertionError</failure></testcase><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[changed_before_import-staging]" time="0.412" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[changed_before_import-observation]" time="0.428" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[changed_before_hold-staging]" time="0.624" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_actual_successor_import_and_held_native_identity_reject_changes[changed_before_hold-observation]" time="0.551" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_existing_partial_destination_refused_before_scan_copy_or_task[staging]" time="0.348" /><testcase classname="test_supervisor_scanner_successors_r3_v2" name="test_existing_partial_destination_refused_before_scan_copy_or_task[observation]" time="0.355" /></testsuite></testsuites>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="2.775" timestamp="2026-10-06T23:53:57.570618-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_default_plan_does_not_launch_install_or_write_reports" time="1.728" /><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_install_switch_refuses_nonadministrator_before_any_write" time="0.417" /><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_private_task_xml_backup_preserves_encoding_and_refuses_overwrite" time="0.321"><failure message="AssertionError: Private report directory grants access to an unrelated trustee.&#10;  At line:9 char:144&#10;  + ... ts -ne 0) { throw 'Private report directory grants access to an unrel ...&#10;  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : OperationStopped: (Private report ...elated trustee.:String) [], RuntimeException&#10;      + FullyQualifiedErrorId : Private report directory grants access to an unrelated trustee.&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv... RuntimeException\n    + FullyQualifiedErrorId : Private report directory grants access to an unrelated trustee.\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24299/test_private_task_xml_backup_p0')
+
+    def test_private_task_xml_backup_preserves_encoding_and_refuses_overwrite(tmp_path: Path) -&gt; None:
+        # Load only file/ACL utilities; never evaluate installer dispatch.
+        harness = tmp_path / "backup-test.ps1"
+        harness.write_text(r'''
+    param([string]$Source,[string]$TestStage)
+    $ErrorActionPreference='Stop'; Set-StrictMode -Version Latest
+    Import-Module (Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1') -ErrorAction Stop
+    $stage=$TestStage; $operatorSid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value; $tokens=$null; $errors=$null
+    $ast=[Management.Automation.Language.Parser]::ParseFile($Source,[ref]$tokens,[ref]$errors)
+    if ($errors.Count) { throw ($errors | Out-String) }
+    $functions=@($ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -in @('Assert-PlainPath','Hash-Bytes','Get-PrivateDirectoryEvidence','Write-NewPrivateFile')},$true))
+    if ($functions.Count -ne 4) { throw 'Expected exactly the four file/ACL utilities.' }
+    foreach ($function in $functions) { . ([ScriptBlock]::Create($function.Extent.Text)) }
+    $path=Join-Path $stage 'task.xml'
+    $xml='&lt;?xml version="1.0" encoding="UTF-16"?&gt;&lt;Task&gt;&lt;Name&gt;R preservation&lt;/Name&gt;&lt;/Task&gt;'
+    Write-NewPrivateFile $path $xml -TaskXml
+    $bytes=[IO.File]::ReadAllBytes($path)
+    if ($bytes[0] -ne 255 -or $bytes[1] -ne 254) { throw 'Expected UTF-16 LE BOM.' }
+    if ([IO.File]::ReadAllText($path) -cne $xml) { throw 'XML text changed.' }
+    $document=[xml]([IO.File]::ReadAllText($path))
+    if ($document.Task.Name -ne 'R preservation') { throw 'XML could not be parsed.' }
+    $refused=$false
+    try { Write-NewPrivateFile $path 'overwrite' } catch { $refused=$true }
+    if (-not $refused -or [IO.File]::ReadAllText($path) -cne $xml) { throw 'Existing backup was overwritten.' }
+    $outside=Join-Path (Split-Path -Parent $stage) 'outside-private-stage.json'
+    $refused=$false
+    try { Write-NewPrivateFile $outside '{}' } catch { $refused=$true }
+    if (-not $refused -or (Test-Path -LiteralPath $outside)) { throw 'Outside report path was accepted.' }
+    [ordered]@{parse_errors=0;utf16_preserved=$true;overwrite_refused=$true;outside_refused=$true;installer_executed=$false} | ConvertTo-Json
+    ''', encoding="utf-8")
+        result = run("-File", str(harness), "-Source", str(SCRIPT), "-TestStage", str(tmp_path))
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: Private report directory grants access to an unrelated trustee.
+E         At line:9 char:144
+E         + ... ts -ne 0) { throw 'Private report directory grants access to an unrel ...
+E         +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : OperationStopped: (Private report ...elated trustee.:String) [], RuntimeException
+E             + FullyQualifiedErrorId : Private report directory grants access to an unrelated trustee.
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv... RuntimeException\n    + FullyQualifiedErrorId : Private report directory grants access to an unrelated trustee.\n \n").returncode
+
+pipeline_tests\test_pawnio_install_plan.py:85: AssertionError</failure></testcase></testsuite></testsuites>

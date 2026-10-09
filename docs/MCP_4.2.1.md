@@ -1,5 +1,12 @@
 # MCP 4.2.1: Windows subscription CLI handoffs
 
+> Historical 4.2.1 instructions, retained as release evidence. Do not use this
+> guide for current deployment: fixed-provider execution, regular-user worker
+> login and the live checker below are obsolete. `verify_cli_mcp.py` is retired
+> and performs no checks or submissions. Follow the
+> [4.2.7 launch guide](EXECUTION_4.2.7.md) for isolated worker login, the frozen
+> MCP client install and Chapter 06 routed preflight/acceptance.
+
 Antigravity's Gemini agent calls one of two stdio MCP servers. Windows Python
 starts the corresponding native CLI, sends the prompt over stdin, and records
 its process exit and structured result. No provider substitution occurs.

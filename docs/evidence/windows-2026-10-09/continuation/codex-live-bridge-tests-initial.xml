@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="42" time="9.008" timestamp="2026-10-07T20:48:08.563538-05:00" hostname="AetherDesk"><testcase classname="" name="test_actual_installed_sdk_transport_only_four_read_only_operations" time="2.272"><failure message="bridge_check.BridgeHeld: STDIO_TREE_NOT_EXITED">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24449/test_actual_installed_sdk_tran0')
+
+    def test_actual_installed_sdk_transport_only_four_read_only_operations(tmp_path):
+        script,seen=fixture_child(tmp_path)
+        progress={'mcp_tool_call_requests_attempted':0}
+&gt;       report=run_child(script,progress=progress)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_verify_codex_live_bridge_r3.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_verify_codex_live_bridge_r3.py:61: in run_child
+    return asyncio.run(M.bounded_stdio(str(PYTHON),['-I','-B',str(script)],S.EXPECTED_TOOLS,
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\asyncio\runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\asyncio\base_events.py:691: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+command = 'C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe'
+arguments = ['-I', '-B', 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24449\\test_actual_installed_sdk_tran0\\inert_mcp.py']
+expected_tools = {'knowledge_read', 'knowledge_search', 'knowledge_status', 'pipeline_cancel', 'pipeline_code', 'pipeline_code_cancel', ...}
+timeout_seconds = 8
+progress = {'mcp_tool_call_requests_attempted': 4, 'owned_stdio_child_started': True, 'stderr_bytes_discarded': 810, 'owned_stdio_tree_cleanup_verified': True}
+
+    async def bounded_stdio(command, arguments, expected_tools, *, timeout_seconds=TIMEOUT, progress=None):
+        """Fixed caller supplies the reviewed command; fixture tests supply an inert child."""
+        if not .3 &lt;= timeout_seconds &lt;= TIMEOUT:
+            raise BridgeHeld('INVALID_TIMEOUT')
+        cleanup_budget = min(5., timeout_seconds/4)
+        process = None
+        stderr_bytes = 0
+        if progress is None:
+            progress = {'mcp_tool_call_requests_attempted':0}
+        try:
+            async with asyncio.timeout(timeout_seconds-cleanup_budget):
+                process = OwnedStdio(command, arguments)
+                progress['owned_stdio_child_started'] = True
+    
+                async def discard_stderr():
+                    nonlocal stderr_bytes
+                    while chunk := await process.stderr.read(4096):
+                        stderr_bytes += len(chunk)
+                        if stderr_bytes &gt; MAX_STDERR:
+                            raise BridgeHeld('STDERR_LIMIT_EXCEEDED')
+                        # Intentionally retain no bytes/hash/text from stderr.
+    
+                async with asyncio.TaskGroup() as tasks:
+                    tasks.create_task(discard_stderr())
+                    result = await exchange(process, expected_tools, progress)
+                    process.stdin.close()
+                    await process.wait()
+                if process.returncode != 0:
+                    raise BridgeHeld('STDIO_CHILD_EXIT_NONZERO')
+                if process.active():
+&gt;                   raise BridgeHeld('STDIO_TREE_NOT_EXITED')
+E                   bridge_check.BridgeHeld: STDIO_TREE_NOT_EXITED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\verify-codex-live-bridge-r3.py:393: BridgeHeld</failure></testcase><testcase classname="" name="test_actual_server_identity_drift_is_held_and_child_tree_closed" time="1.107" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[pid-True]" time="0.001" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[pid-0]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[instance_id-bad]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[version-4.2.6]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[service_identity-ansac]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[process_started_at-inf]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[process_started_at--1]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[hardware-value7]" time="0.000" /><testcase classname="" name="test_health_rejects_unbound_or_invalid_metadata[hardware-value8]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change0]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change1]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change2]" time="0.001" /><testcase classname="" name="test_knowledge_rejects_mismatch[change3]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change4]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change5]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change6]" time="0.000" /><testcase classname="" name="test_knowledge_rejects_mismatch[change7]" time="0.000" /><testcase classname="" name="test_knowledge_exposed_index_digest_only_claimed_when_actually_present" time="0.000" /><testcase classname="" name="test_tool_error_or_missing_structured_envelope_held[result0]" time="0.000" /><testcase classname="" name="test_tool_error_or_missing_structured_envelope_held[result1]" time="0.000" /><testcase classname="" name="test_tool_error_or_missing_structured_envelope_held[result2]" time="0.000" /><testcase classname="" name="test_tool_error_or_missing_structured_envelope_held[result3]" time="0.000" /><testcase classname="" name="test_tool_error_or_missing_structured_envelope_held[result4]" time="0.000" /><testcase classname="" name="test_invalid_json_rejected[{&quot;x&quot;:1,&quot;x&quot;:2}]" time="0.000" /><testcase classname="" name="test_invalid_json_rejected[{&quot;x&quot;:NaN}]" time="0.000" /><testcase classname="" name="test_invalid_json_rejected[{&quot;x&quot;:Infinity}]" time="0.000" /><testcase classname="" name="test_invalid_json_rejected[not-json]" time="0.000" /><testcase classname="" name="test_invalid_project_inventory_held[projects0]" time="0.000" /><testcase classname="" name="test_invalid_project_inventory_held[projects1]" time="0.000" /><testcase classname="" name="test_invalid_project_inventory_held[projects2]" time="0.000" /><testcase classname="" name="test_invalid_project_inventory_held[projects3]" time="0.000" /><testcase classname="" name="test_real_disposable_bad_stdio_is_bounded_and_redacted[stderr-STDERR_LIMIT_EXCEEDED]" time="0.244" /><testcase classname="" name="test_real_disposable_bad_stdio_is_bounded_and_redacted[frame-MCP_FRAME_TOO_LARGE]" time="0.268" /><testcase classname="" name="test_real_disposable_bad_stdio_is_bounded_and_redacted[envelope-MCP_RESPONSE_ID_OR_ENVELOPE_DIFFERS]" time="0.247" /><testcase classname="" name="test_real_disposable_bad_stdio_is_bounded_and_redacted[hang-BRIDGE_DEADLINE_EXPIRED]" time="1.697" /><testcase classname="" name="test_timeout_covers_venv_interpreter_and_descendant_using_owned_handle" time="2.502" /><testcase classname="" name="test_output_is_exclusive_and_bad_names_refused_before_use" time="0.010" /><testcase classname="" name="test_configuration_verification_never_opens_token" time="0.019" /><testcase classname="" name="test_main_preview_does_not_launch_or_read_token" time="0.003" /><testcase classname="" name="test_safe_failure_discards_untrusted_exception_messages" time="0.000" /></testsuite></testsuites>

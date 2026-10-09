@@ -1,0 +1,64 @@
+{
+  "schema": "cochem-post-crash-read-only-observation/1",
+  "host": "AETHERDESK",
+  "platform": "Windows",
+  "owner_reported_crash_cause": "Gemini Agent",
+  "crash_cause_independently_investigated": false,
+  "observed_at_utc": "2026-10-08T23:49:56.3528819Z",
+  "last_boot_chicago": "2026-10-08T18:45:17.5-05:00",
+  "shell_identity": "AETHERDESK\\ansac",
+  "shell_administrator": false,
+  "ram_drive": {
+    "device": "R:",
+    "size_bytes": 8589930496,
+    "filesystem": "NTFS",
+    "volume_serial_hex": "C2195C99",
+    "pipeline_workspace": "R:\\CoChem427-windows-20261007",
+    "pipeline_workspace_present": false,
+    "workspace_absence_observed_outside_sandbox": true
+  },
+  "startup_task": {
+    "name": "Mount_CoChem_RAMDisk",
+    "ordinary_token_exact_query": "ACCESS_DENIED",
+    "unchanged_definition_after_reboot_verified": false,
+    "modified_by_this_work": false
+  },
+  "modern_controller_task_present": false,
+  "modern_supervisor_task_present": false,
+  "commissioning_or_claude_processes_observed": 0,
+  "prior_claude_task_query": "ACCESS_DENIED_NOT_ABSENT",
+  "prior_claude_session": "InteractiveClaude427-r3-slot1-98d78a06a63842b393f9179a5b822e67",
+  "prior_claude_private_receipt_read": false,
+  "protected_configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "pawnio_observation": {
+    "observed_at_utc": "2026-10-08T23:55:37.0818443Z",
+    "state": "Running",
+    "started": true,
+    "start_mode": "Manual"
+  },
+  "docker_after_reboot": {
+    "server_connected": true,
+    "server_version": "29.8.2",
+    "read_only_version_query_exit_code": 0,
+    "containers_started_by_query": 0,
+    "raw_error_published": false
+  },
+  "owner_supplied_pre_reboot_authentication": {
+    "attempt": "98fce96edada48fa986b43f0d195f9d2",
+    "codex_profiles_verified": 6,
+    "codex_existing_sessions_reused": 6,
+    "codex_login_commands_executed": 0,
+    "completed_at_utc": "2026-10-08T23:27:27.7041402Z",
+    "claude_slot1_current_status": "ATTENDED_LOGIN_REQUIRED",
+    "claude_new_login_started_in_reported_attempt": false,
+    "first_controller_start_started_in_reported_attempt": false,
+    "post_reboot_authentication_verified": false
+  },
+  "shared_slots": 4,
+  "configured_worker_identities": 6,
+  "chapter06_routing_changed": false,
+  "model_jobs_submitted": 0,
+  "credentials_databases_or_repair_budgets_modified_by_this_work": false,
+  "linux_evidence_used_as_windows_evidence": false,
+  "activation_verified": false
+}

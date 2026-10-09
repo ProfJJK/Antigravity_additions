@@ -1,0 +1,32 @@
+{
+  "schema": "cochem-stopped-install-diagnostic/1",
+  "provenance": "Owner returned the Administrator wrapper error; ordinary-user inspection then verified the existing protected receipt and absence of deployment targets",
+  "wrapper_sha256": "07330a95301ae0cfdaf4e5f594d4959fdfc43366afdebe47352461f9a8fd6195",
+  "source_manifest_sha256": "ee994719727936497b0436448a15e80dc18f11a8b108601fd43e5a62b918260b",
+  "error": {
+    "hresult": "0x8004130B",
+    "constant": "SCHED_E_TASK_NOT_RUNNING",
+    "owner_text": "There is no running instance of the task.",
+    "diagnosis": "The one-shot precheck wrote its success receipt before IRunningTask.Refresh was polled; the wrapper did not handle that completed-instance result."
+  },
+  "precheck_receipt": {
+    "path": "C:\\Program Files\\CoChem\\InstallGuard4.2.7-windows-20261006\\identity-precheck.json",
+    "sha256": "8c908d1217ce65619d96d1e943da9d4876f7a6943c6057f8884c0920b83d147b",
+    "owner": "NT AUTHORITY\\SYSTEM",
+    "nonce": "27c861adcbd741798cf66d7c9bb1c8b4",
+    "checked_at_utc": "2026-10-07T05:10:00.7361047Z",
+    "status": "FRESH_TARGETS_ABSENT",
+    "local_accounts_checked": 6,
+    "credential_targets_checked": 6,
+    "credential_blobs_dereferenced": false
+  },
+  "pipeline_root_exists": false,
+  "data_root_exists": false,
+  "controller_token_exists": false,
+  "matching_worker_accounts_found": 0,
+  "guard_files_and_precheck_task_preserved": true,
+  "pipeline_installed": false,
+  "pipeline_activated": false,
+  "supervisor_migration_invoked": false,
+  "recovery": "Prepare a separately reviewed continuation from the verified protected checkpoint; do not delete the task, receipt or copied source, and do not blindly rerun the fresh-only wrapper."
+}

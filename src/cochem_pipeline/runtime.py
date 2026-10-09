@@ -355,7 +355,7 @@ class Runtime:
                     LOG.error('Operational objective evidence could not be recorded: %s', type(exc).__name__)
             if hasattr(self,'admission'):
                 # Refill prepared capacity as soon as execution releases a seat.
-                self.admission.maintenance_requested.set()
+                self.admission.request_maintenance()
 
     def _record_failure(self,node,slot,exc):
         """Report one finished dispatch; durable scheduling owns all retry budgets."""
@@ -401,11 +401,13 @@ class Runtime:
             except Exception:
                 LOG.error('Private crash metadata could not be persisted')
             emit_recovery_event(self.config.job_db,{
-                'tier':1,'action':('routing_hold' if hold_scope=='job' or category=='configuration'
+                'tier':1,'action':('integration_verification_hold' if hasattr(exc,'integration_evidence') else
+                    'routing_hold' if hold_scope=='job' or category=='configuration'
                     else 'provider_unavailable' if category in ('quota','auth','busy','context','provider','backlog','resource','compatibility') else 'worker_failure'),
                 'job_id':job_id,'attempt_id':node['attempt_id'],'category':category,
                 'reason':str(exc),'retry_requested':retry,'retry_after_seconds':retry_after,
-                'hold_scope':hold_scope})
+                'hold_scope':hold_scope,
+                **({'integration_evidence':exc.integration_evidence} if hasattr(exc,'integration_evidence') else {})})
             LOG.error('Job %s failed (%s): %s',job_id,category,exc)
         return accepted
 

@@ -1,0 +1,26 @@
+{
+  "schema": "cochem-unresolved-budget-evidence/1",
+  "reason": "Known legacy job attempts, recovery telemetry and per-file/per-database preserved snapshots do not establish complete incident/day paid generation/review charges or component recovery authority. Remaining allowance stays unknown; preserve all originals and captured history, block every new spend/recovery reservation, and do not infer zero spend from absent or inaccessible modern ledger paths. This proposed provenance records uncertainty only; it neither installs a hold nor authorizes activation, migration, or allowance release.",
+  "sources": [
+    {
+      "kind": "legacy_schema_discovery",
+      "sha256": "0aa4c3a2e764ae8a324f5c97a0896021d565df9361f468958370016242b4d533"
+    },
+    {
+      "kind": "snapshot_preservation_review",
+      "sha256": "abbdac3cd2037dffc2c1216c666f1c82315aed9c420fc8720bd28b06043ff958"
+    },
+    {
+      "kind": "held_job_preview",
+      "sha256": "5e4c4128423d9ee87aaebe8a305f2e3b2b93dfc643c76f2058c64df4bd27be05"
+    },
+    {
+      "kind": "current_metadata_only_continuity",
+      "sha256": "23433c17d45291cadbc7e2a40d994e925be1bd1dd9c73d6b2578cfd3f982b4ec"
+    },
+    {
+      "kind": "canonical_srs",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+    }
+  ]
+}

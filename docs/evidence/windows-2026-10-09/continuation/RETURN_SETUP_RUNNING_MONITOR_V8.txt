@@ -1,0 +1,50 @@
+WINDOWS PIPELINE: FINISH MONITORING SETUP
+8 October 2026 - AETHERDESK
+
+The controller is running. All six Codex and six Claude sign-ins succeeded.
+The independent held supervisor is also running and reporting the controller
+healthy. Live Codex MCP connectivity passed against the same controller.
+
+The last command stopped because a PowerShell Unix-time calculation converted
+the epoch into local time and made a fresh heartbeat appear six hours stale.
+This was an implementation error in the verification wrapper. The running
+monitor and controller must be preserved.
+
+ONE COMMAND IN YOUR ADMINISTRATOR WINDOWS POWERSHELL WINDOW
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-running-monitoring-continuation-r3-v8.ps1" -Apply -Interactive
+
+Let it finish. No browser sign-in, code paste or further prompt is expected.
+The checks can take several minutes without output. You do not need to watch
+the automated measurements or perform repeated timing tests.
+
+The command verifies the saved failure evidence, successful staging and first
+start, the exact current SYSTEM controller and observer tasks/processes, and
+two progressing observer heartbeats using UTC time. It records the missing
+activation receipt for that already-running observer. It then installs and
+starts the previously unstarted resource recorder for its 48-hour observation.
+
+It does not restart the controller or held observer, rerun first start or
+authentication, reprovision their state, or repeat Docker, CPU, knowledge or
+worker-isolation tests. Earlier failure evidence remains preserved.
+
+Administrator access is required to inspect the private scheduled tasks and
+SYSTEM process tokens, write the protected verification receipt and create
+the resource-recorder task. This chat's ordinary Windows process cannot do
+those operations. No change to your permission settings is required.
+
+Return the final JSON or the first error. If it fails, preserve every artifact
+and running process. Do not rerun this or the old v7 command, stop a controller,
+clear a hold, or delete a partial folder.
+
+Existing credentials, databases, repair budgets, the 8 GiB R: drive and its
+Mount_CoChem_RAMDisk startup task remain preserved. Capacity remains four
+shared slots across six identities, with all model work on Chapter 06 routing.
+Agy's installation and sign-in remain preserved. Paid repair and component
+recovery remain disabled while historical budget authority is unresolved.
+
+The 48-hour observation runs unattended after a successful start. It establishes
+only the measurements actually collected; desktop heap, recovery and full SRS
+acceptance are not implied by starting the recorder. Routed live workflow and
+remaining acceptance results are recorded separately from setup and Linux
+results. This command requires no repeated provider approvals.

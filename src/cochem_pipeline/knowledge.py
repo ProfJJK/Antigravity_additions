@@ -33,6 +33,10 @@ class KnowledgeFileChanged(KnowledgeError):
     """An ordinary file changed across one verified read; no bytes were accepted."""
 
 
+class KnowledgeAuthorityUnresolved(KnowledgeError):
+    """The accepted catalog has no unique source with the captured authority."""
+
+
 AUTHORITY_LABELS = {
     'current_normative': 'Current normative',
     'owner_decision': 'Owner decision',
@@ -122,6 +126,28 @@ def _protected(path,*,directory=False,private=False):
 def _ancestors(path):
     for parent in (path,*path.parents):
         _ordinary(parent,directory=True)
+
+
+def _private_directory(path,*,exist_ok=False):
+    """Create beneath verified private custody without changing existing ACLs.
+
+    Windows Python 3.12.4+ gives mode 0700 directories an OWNER RIGHTS ACE.
+    Inherit the controller parent's exact private ACL instead; require SYSTEM
+    inheritance before creation so an unrelated token default DACL cannot win.
+    """
+    _ancestors(path.parent)
+    _protected(path.parent,directory=True,private=True)
+    if os.name == 'nt':
+        from .windows import _acl, SYSTEM_SID, FULL_CONTROL
+        _,_,rules = _acl(path.parent)
+        if not any(sid == SYSTEM_SID and mask == FULL_CONTROL
+                   and flags & 3 == 3 and not flags & (4 | 8)
+                   for sid,mask,flags in rules):
+            raise KnowledgeError('Private directory parent must inherit SYSTEM full control to files and directories')
+        path.mkdir(exist_ok=exist_ok)
+    else:
+        path.mkdir(mode=0o700,exist_ok=exist_ok)
+    _protected(path,directory=True,private=True)
 
 
 def _read_bytes(path,limit,*,private=False):
@@ -241,8 +267,7 @@ class KnowledgeService:
         _protected(self.root,directory=True)
         _ancestors(self.state.parent)
         _protected(self.state.parent,directory=True,private=True)
-        self.state.mkdir(mode=0o700,exist_ok=True)
-        _protected(self.state,directory=True,private=True)
+        _private_directory(self.state,exist_ok=True)
         self._writer=threading.Lock()
         self._background_lock=threading.Lock()
         self._background=None
@@ -493,7 +518,7 @@ class KnowledgeService:
                 self._last_error=None
                 return {**previous,'changed_documents':0,'removed_documents':0,'rebuilt_corruption':False}
             generation='g-'+uuid.uuid4().hex
-            folder=self.state/generation;folder.mkdir(mode=0o700)
+            folder=self.state/generation;_private_directory(folder)
             target=folder/'knowledge_index.db'
             changed=0
             try:
@@ -640,6 +665,43 @@ class KnowledgeService:
         return {**record,'text':text,'generation':generation['generation'], 'authority':row['authority'],
                 'authority_revision':row['authority_revision'],
                 'authority_label':AUTHORITY_LABELS.get(row['authority'],AUTHORITY_LABELS['unclassified'])}
+
+    def read_authority_source(self, *, sha256, authority, authority_revision,
+                              generation, manifest_sha256):
+        """Read one exact captured source from a bounded, accepted generation.
+
+        Names may change when an immutable archive gains a new revision. The
+        hash, reviewed authority and revision must all match one .sources row;
+        wiki summaries and ambiguous copies never establish source authority.
+        """
+        if (not isinstance(sha256,str) or not re.fullmatch(r'[0-9a-f]{64}',sha256)
+                or authority not in ('current_normative','owner_decision')
+                or not isinstance(authority_revision,str) or not 1<=len(authority_revision)<=128
+                or any(ord(char)<32 for char in authority_revision)
+                or not isinstance(generation,str) or not re.fullmatch(r'g-[0-9a-f]{32}',generation)
+                or not isinstance(manifest_sha256,str) or not re.fullmatch(r'[0-9a-f]{64}',manifest_sha256)):
+            raise KnowledgeError('Captured source resolution requires exact bounded authority and generation')
+        with self._reader() as (accepted,reader):
+            if (accepted.get('generation'),accepted.get('manifest_sha256')) != (generation,manifest_sha256):
+                raise KnowledgeFileChanged('Knowledge generation changed before source resolution')
+            columns={row[1] for row in reader.execute('PRAGMA table_info(documents)')}
+            if not {'authority','authority_revision'}<=columns:
+                raise KnowledgeAuthorityUnresolved('Accepted catalog has no reviewed source authority')
+            rows=reader.execute('''SELECT doc_path FROM documents
+                WHERE substr(doc_path,1,9)=? AND sha256=? AND authority=? AND authority_revision=?
+                LIMIT 2''',('.sources/',sha256,authority,authority_revision)).fetchall()
+            if len(rows)!=1:
+                raise KnowledgeAuthorityUnresolved('Captured authority requires exactly one matching .sources catalog entry')
+            key=_key(rows[0]['doc_path'])
+        source=self.read(key)
+        if (source.get('path'),source.get('sha256'),source.get('authority'),
+                source.get('authority_revision'),source.get('generation')) != (
+                key,sha256,authority,authority_revision,generation):
+            raise KnowledgeFileChanged('Captured source changed between resolution and verified read')
+        current,_=self._current()
+        if (current.get('generation'),current.get('manifest_sha256')) != (generation,manifest_sha256):
+            raise KnowledgeFileChanged('Knowledge generation changed during source read')
+        return source
 
     def status(self):
         result={'enabled':True,'last_error':self._last_error,

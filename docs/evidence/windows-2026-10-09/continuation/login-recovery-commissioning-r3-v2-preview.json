@@ -1,0 +1,106 @@
+{
+  "schema": "cochem-pipeline-commissioning-series-plan/1",
+  "mode": "READ_ONLY_PLAN",
+  "phases": [
+    "native_authentication",
+    "first_controller_start"
+  ],
+  "runtime": {
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "revision": {
+      "schema": "cochem-installed-revision/1",
+      "verified": true,
+      "read_only": true,
+      "files": 109,
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "acceptance_files": 0,
+      "acceptance_sha256": null
+    },
+    "source_files_verified": 166
+  },
+  "identity_count": 6,
+  "shared_capacity": 4,
+  "maximum_browser_authorizations": 12,
+  "actual_browser_authorizations_required": null,
+  "automatic_repair_enabled": false,
+  "full_srs_acceptance": false,
+  "model_jobs_submitted": 0,
+  "tasks_registered": 0,
+  "series_root": "C:\\Program Files\\CoChem\\CommissioningSeries4.2.7-windows-20261008-r3-v2",
+  "phase_previews": [
+    {
+      "schema": "cochem-both-providers-status-first-plan/1",
+      "mode": "READ_ONLY_PLAN",
+      "providers": [
+        "codex",
+        "claude"
+      ],
+      "identity_count": 6,
+      "shared_capacity": 4,
+      "maximum_browser_authorizations": 12,
+      "actual_browser_authorizations_required": null,
+      "status_first": true,
+      "configuration_changed": false,
+      "model_jobs_executed": 0,
+      "activation_ready": false,
+      "series_root": "C:\\Program Files\\CoChem\\NativeAuthBoth4.2.7-windows-20261008-r3-v2",
+      "holds": [
+        "codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+        "claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      ]
+    },
+    {
+      "schema": "cochem-warden-commissioning-plan/1",
+      "mode": "READ_ONLY_PLAN",
+      "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+      "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+      "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+      "target_root": "C:\\Program Files\\CoChem\\WardenCommissioning4.2.7-windows-20261007-r3-v1",
+      "task_name": "CoChem-4.2.7-Warden",
+      "identities": 6,
+      "shared_slots": 4,
+      "auth_completion_present": false,
+      "auth_completion_required": true,
+      "holds": [
+        "Completed status-first authentication is required before first start."
+      ],
+      "system_preflight_deferred": true,
+      "system_preflight_scope": "Exact private receipt pins, fresh primary database namespace, token ACL, empty six SSD/five RAM roots, exact four-file slot1 Docker fixture privately preserved before normal daemon cleanup, closed registry, Defender/RAM attestation, free loopback port",
+      "sole_nonempty_scratch_exception": "R:\\CoChem427-windows-20261007\\slot1\\execution-acceptance-r3-v2",
+      "fixture_preservation_required": true,
+      "full_tree_custody_deferred_until_apply": true,
+      "monitoring_scope": "heartbeat_and_queue_only",
+      "full_srs_acceptance": false,
+      "model_jobs_submitted": 0,
+      "automatic_repair_enabled": false,
+      "automatic_retry_allowed": false
+    }
+  ],
+  "holds": [
+    "native_authentication: codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "Prior failed-login receipts require owner read-only verification."
+  ]
+}

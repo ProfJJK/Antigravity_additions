@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="13" time="5.994" timestamp="2026-10-06T23:40:33.290154-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_default_is_read_only_even_with_fully_valid_inventory" time="0.477" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_read_handle_blocks_writes_and_detects_changed_bytes" time="0.374" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_source_hardlink_is_refused" time="0.362" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_apply_refuses_non_elevated_session_before_any_destination" time="0.622" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_code_acl_has_only_protected_system_admin_write_and_user_read" time="0.353"><failure message="AssertionError: assert {'S-1-5-18': ... Synchronize'} == {'S-1-5-18': ...adAndExecute'}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'S-1-5-32-545': 'ReadAndExecute, Synchronize'} != {'S-1-5-32-545': 'ReadAndExecute'}&#10;  Use -v to get more diff">def test_code_acl_has_only_protected_system_admin_write_and_user_read():
+        result = ps(functions() + """
+        $acl=New-CodeAcl $true;
+        [ordered]@{owner=$acl.GetOwner([Security.Principal.SecurityIdentifier]).Value;
+        protected=$acl.AreAccessRulesProtected;
+        rules=@($acl.GetAccessRules($true,$true,[Security.Principal.SecurityIdentifier])|ForEach-Object{
+        [ordered]@{sid=$_.IdentityReference.Value;rights=[string]$_.FileSystemRights;inherited=$_.IsInherited}})}|ConvertTo-Json -Depth 5 -Compress
+        """)
+        assert result.returncode == 0, result.stderr
+        value = json.loads(result.stdout)
+        assert value['owner'] == 'S-1-5-32-544' and value['protected'] is True
+&gt;       assert {row['sid']: row['rights'] for row in value['rules']} == {
+            'S-1-5-18': 'FullControl', 'S-1-5-32-544': 'FullControl', 'S-1-5-32-545': 'ReadAndExecute'}
+E       AssertionError: assert {'S-1-5-18': ... Synchronize'} == {'S-1-5-18': ...adAndExecute'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'S-1-5-32-545': 'ReadAndExecute, Synchronize'} != {'S-1-5-32-545': 'ReadAndExecute'}
+E         Use -v to get more diff
+
+pipeline_tests\test_windows_payload_staging.py:104: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[../escape.bin]" time="0.395" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Toolchain4.2.7-windows-20261006/../escape.bin]" time="0.389" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Toolchain4.2.7-windows-20261006/file:stream]" time="0.377" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Toolchain4.2.7-windows-20261006/sub./file]" time="0.381" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Toolchain4.2.7-windows-20261006/NUL.txt]" time="0.389" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Toolchain4.2.7-windows-20261006/with*wildcard]" time="0.377" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_cannot_escape_or_add_native_payloads[Native4.2.7-windows-20261006/agy.exe]" time="0.381" /><testcase classname="pipeline_tests.test_windows_payload_staging" name="test_manifest_digest_and_duplicate_destinations_are_rejected" time="0.793" /></testsuite></testsuites>

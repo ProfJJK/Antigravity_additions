@@ -1,0 +1,26 @@
+Desktop-heap acceptance remains held: a fresh, process-bound native usage collector has not been verified.
+
+The unchanged r3 harness requires used_bytes, allocation_limit_bytes, measured_at, the exact Warden PID/process_created_at, and a nonempty source. Its actual freshness check accepts ages from zero through ten seconds inclusive; usage must be strictly below 15%. The 48-hour run remains separate from any short diagnostic.
+
+Microsoft's GetUserObjectInformation(UOI_HEAPSIZE) gives desktop capacity, not used bytes. USER/GDI counts and process heaps are different measurements. The documented WinDbg !dskheap source does show per-session/windowstation/desktop capacity and a displayed integer used percentage. Its documented table alone supplies neither exact used bytes nor process identity, timestamps, rounding semantics or sustained collection guarantees.
+
+A rounded native percentage could support a conservative upper bound once its precision/rounding and desktop association are verified. That would require an explicit reviewed evidence/schema adapter; multiplying the displayed percentage by capacity and calling the result measured used_bytes would misstate the evidence.
+
+Next concrete prerequisite:
+1. Select a supported acquisition route and review its privileges and host impact. Do not automatically enable kernel debugging, reboot, install a driver, attach a debugger or start a trace. A scoped inventory found WPR/WPA and debugger support DLLs, but no debugger executables in the inspected SDK paths/PATH or a current-user WinDbg Appx package.
+2. Obtain one actual version-bound diagnostic sample. Establish the Warden's session, window station and thread desktop(s), with PID plus creation-time witness. The owner's interactive desktop is not the SYSTEM Warden desktop. Define coverage for shared or multiple desktops before aggregation.
+3. Confirm actual usage/capacity bytes or a justified conservative rate bound. Verify collection and publication keep every sample at most ten seconds old; a refreshed file timestamp cannot refresh an old measurement.
+4. Implement a bounded, protected report adapter only after that source contract exists. Preserve raw-source hashes and collector/version/desktop provenance. Test format drift, ambiguous desktops, missing use, boundary precision, wrong process/session, stale/future samples, and acquisition failures. Then perform a short physical check before the separate 48-hour acceptance run.
+
+No collector/parser was fabricated, and no runtime or frozen r3 source was changed. There was no heap measurement, debugger/trace launch, attachment, process manipulation, privileged command, driver or boot change.
+
+Primary references:
+https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getuserobjectinformationw
+https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-dskheap
+https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getthreaddesktop
+https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getguiresources
+https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/setting-up-local-kernel-debugging-of-a-single-computer-manually
+https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/performing-local-kernel-debugging
+https://learn.microsoft.com/en-us/sysinternals/downloads/livekd
+
+Detailed bounded evidence: docs/evidence/windows-2026-10-06/desktop-heap-collector-research-2026-10-07.json

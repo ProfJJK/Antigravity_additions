@@ -1,0 +1,104 @@
+REVIEWED CONTINUATION - 7 October 2026
+
+The actual SYSTEM diagnostic passed all 18 trace events and four read-only
+Docker commands, with preservation verified. The original foundation failure
+remains preserved; its precise historical cause is still unknown. No scoped
+RAM workspace or container registry has been provisioned yet.
+
+DO NOT RERUN the old run-return-setup-r3.ps1 series, original failed foundation,
+successful inspection or successful diagnostic. The commands below use a fresh
+reviewed foundation v2 and Docker acceptance v2. Earlier roots/tasks/receipts
+remain preserved. Foundation/series preparation passed 108 ordinary Windows
+tests; Docker successor preparation passed 58. These are not privileged passes.
+
+Windows pipeline setup for your return - AETHERDESK, 7 October 2026
+
+Nothing in this guide needs to be run while you are at work.
+This replaces the older MORNING_SETUP.txt command order. The pipeline remains
+stopped. The installed r3 runtime, verified knowledge index and successful six
+worker denial checks are already complete; do not repeat those earlier steps.
+
+When ready, open Start, type Windows PowerShell, choose Run as administrator,
+and accept UAC under your ansac account. Confirm the title says Administrator.
+Paste ONE command at a time below, as one line, and wait for it to finish.
+These commands require Windows administrator access that this chat does not have.
+
+Stop at the first error, HELD result or unexpected status. Preserve all files,
+tasks and receipts. Do not rerun, delete a partial destination, or skip ahead.
+Return the final sanitized JSON/error for review. A later successful step must
+not be used to override an earlier failed check. No reboot is needed now.
+
+1. Run the two fresh continuation phases in sequence.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-return-continuation-r3-v2.ps1" -Apply
+
+Continue only on TWO_CONTINUATION_PHASES_VERIFIED. This revalidates the preserved
+failed foundation and successful diagnostic, then rechecks Docker, R:, runtime,
+workers, knowledge and fresh state under SYSTEM before creating scoped RAM
+directories and an empty four-slot registry. It then imports the protected
+disposable Git project. It adds
+only missing Defender exclusions for the six new slot paths. The existing
+8 GiB R: volume and Mount_CoChem_RAMDisk task are preserved. There are no logins,
+model calls or daemon starts. The wrapper stops automatically on any failed phase.
+If you already ran either of these two fresh phases separately, stop and tell me;
+this fresh-only series deliberately rejects an existing destination.
+
+2. Run physical Docker acceptance after step 1 succeeds.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\accept-docker-execution-r3-v2.ps1" -Apply
+
+Continue only on DOCKER_PHYSICAL_ACCEPTANCE_VERIFIED. This creates at most two
+owned single-use containers, executes a fixed failing/passing test fixture,
+checks container restrictions and removes verified owned containers through the
+production cleanup path. It writes its own RAM test subtree and records in the
+new container registry. Shared capacity stays four. It does not run models.
+It requires the successful fresh foundation v2 receipt/task and rechecks the
+preserved earlier evidence. Native failures retain sanitized causal error codes.
+DOCKER_PHYSICAL_CORRECTNESS_VERIFIED_SLA_HELD is a hold, not a full pass: return
+that result without rerunning. This check is separate from later model-routed
+coding acceptance and does not leave a running warm pool.
+
+3. Save the read-only legacy continuity diagnostic.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\inspect-legacy-continuity.ps1" | Out-File -LiteralPath "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\legacy-continuity-admin-20261007.json" -Encoding utf8 -NoClobber
+
+No console output is expected on success. The report is saved beside this guide
+as legacy-continuity-admin-20261007.json; tell me it is saved. It contains only
+bounded task/process/path metadata. It does not open database contents, stop
+legacy tasks, migrate budgets or infer that missing history means zero spending.
+If the report already exists, preserve it and tell me instead of overwriting it.
+
+4. Stay at the computer for six Codex worker sign-ins.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\login-six-workers-attended-r3.ps1" -Provider codex -Apply -Interactive
+
+Follow the browser/device instructions for slot1, then slot2 through slot6.
+Use your intended subscription account. Keep this console open and do not
+redirect or record it. Do not send authentication codes or tokens to chat.
+The series then checks all six isolated profiles. Continue only on
+ALL_SIX_NATIVE_SUBSCRIPTION_AUTHENTICATION_VERIFIED for provider codex.
+
+5. Stay at the computer for six Claude worker sign-ins.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\login-six-workers-attended-r3.ps1" -Provider claude -Apply -Interactive
+
+Follow each slot's browser link. If a returned authorization code is requested,
+press P at the helper prompt and paste that one code into its masked input.
+Do not paste it into a PowerShell command or chat. Q requests cancellation via
+the helper. Continue only on ALL_SIX_NATIVE_SUBSCRIPTION_AUTHENTICATION_VERIFIED
+for provider claude. Both series preserve a private attempt record and refuse
+automatic repeats. They preserve your owner sign-ins and run no model jobs.
+Full attended instructions: HUMAN_NATIVE_LOGIN_SERIES_R3.txt beside this guide.
+
+After these commands, return the non-secret final results. They do not activate
+the pipeline. Remaining work includes legacy/history and repair-budget authority,
+Agy's isolated execution contract, exact provider/model controls, Chapter 06
+routed workflow and rollback acceptance, real four-worker queue measurements,
+controlled reboot/recovery, and 48-hour monitoring with a verified desktop-heap
+usage collector. Agy is available and signed in for you; that fact is preserved.
+
+All prepared packages were tested in ordinary Windows processes and independently
+reviewed. Those results are preparation evidence, separate from actual SYSTEM,
+Docker, authenticated model and sustained-operation acceptance. Historical Linux
+results remain separate. No command here changes four shared slots or Chapter 06
+routing, resets repair budgets, replaces original databases or starts a daemon.

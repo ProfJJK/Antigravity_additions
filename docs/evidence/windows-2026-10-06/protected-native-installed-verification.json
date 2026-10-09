@@ -1,0 +1,39 @@
+{
+  "schema": "cochem-protected-native-installed-verification/1",
+  "observed_at_utc": "2026-10-07T04:54:33.3724873Z",
+  "identity": "AETHERDESK\\ansac",
+  "scope": "Independent ordinary-user inspection: exact installed bytes, held-handle identity, no hardlinks/reparse paths, protected owner/write ACL ancestry through Program Files",
+  "files_checked": 5,
+  "files": [
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe",
+      "sha256": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d",
+      "bytes": 326872368
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex-code-mode-host.exe",
+      "sha256": "1d448bfde19e7a280d600d8d0bcddf77afbe9feaec1e804905becc5f39bc9db6",
+      "bytes": 74697520
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe",
+      "sha256": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469",
+      "bytes": 237100192
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\agy.exe",
+      "sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+      "bytes": 190286488
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\native-contract-agy-1.3.1-followup.json",
+      "sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5",
+      "bytes": 6736
+    }
+  ],
+  "failures": [],
+  "manifest_sha256": "585ba9a855565aa4e66df8177f706a6f880ffc8d7ec4ce167715066b7e37716b",
+  "payloads_executed": 0,
+  "isolated_authentication_verified": false,
+  "system_acceptance": false
+}

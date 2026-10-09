@@ -1,0 +1,193 @@
+{
+  "actual_windows_evidence": [
+    "Ordinary native process handles/creation/CPU/handles, SYSTEM refusal, ACL reads and protected dependency byte/custody census.",
+    "Actual isolated/no-site import boundary and fresh pycache-prefix behavior without production writes.",
+    "Windows PowerShell5.1 real temporary control copies and simulated task API lifecycle: disabled, no-overwrite, single-start intent, receipt/namespace drift refusal.",
+    "Actual unregistered in-memory TaskDefinition accepted PT49H and Enabled=false; no RegisterTaskDefinition was invoked."
+  ],
+  "custody": {
+    "base_noncache_original_pins": 2777,
+    "cache_policy": "Historical .pyc bytes preserved and not executed. Fixed private empty pycache_prefix plus -B. Ordinary base-Python proof confirmed no cache writes.",
+    "initial_installer": "Full protected base/psutil ACL, reparse and single-link census; every executable/source/dependency byte pin held before registration/start.",
+    "new_state_acl": "Atomic CreateDirectoryW creates SYSTEM/Admin-only protected inheriting ACL before metadata bytes.",
+    "observer_initial_and_final": "Fresh complete dependency byte/custody verification plus exact seven-source manifest, before accepting completion.",
+    "psutil_files": 11,
+    "source_write_locations": "Only fresh observer code root/private sibling root. No existing pipeline/worker/R/history/budget/config updates."
+  },
+  "dependency_manifest_sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429",
+  "distinct_current_tests": 104,
+  "files": [
+    {
+      "bytes": 34155,
+      "path": "install-resource-observer-r3-v2.ps1",
+      "sha256": "5030df59a14fef74b1147660978becf95a839e9d6e7f9e403708ac5b319153f2"
+    },
+    {
+      "bytes": 477651,
+      "path": "resource-observer-r3-v2-dependencies.json",
+      "sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429"
+    },
+    {
+      "bytes": 28991,
+      "path": "test_resource_observer_r3_v2.py",
+      "sha256": "ed169becbd27222a92352e34702d204a23227992386e65cebaa245a45230fb4c"
+    },
+    {
+      "bytes": 17992,
+      "path": "test_resource_observer_installer_r3_v2.py",
+      "sha256": "ebade61da2c0ef4d8e0207701d66f6e3316f09d5263232bc9de096913074098d"
+    },
+    {
+      "bytes": 8720,
+      "path": "resource-observer-r3-v2-python-initial.xml",
+      "sha256": "06bb4136036c50c385a294955a42d5bba5a3001435f77878f3af1a225021a77c"
+    },
+    {
+      "bytes": 8720,
+      "path": "resource-observer-r3-v2-python-followup.xml",
+      "sha256": "441ab645fa54e80c838601d7f04030c06dbe8e69a83772783b7902e3ef811e2f"
+    },
+    {
+      "bytes": 9227,
+      "path": "resource-observer-r3-v2-python-custody.xml",
+      "sha256": "9caf04139e80b95836f11ffcf6f73585311b42ef57fe7f52c75adddc524a1029"
+    },
+    {
+      "bytes": 9814,
+      "path": "resource-observer-r3-v2-python-final.xml",
+      "sha256": "cb0f264ce8ab1a2740db51ba3e374c105e5cb639fba371d775ebf88f0ac83a31"
+    },
+    {
+      "bytes": 7062,
+      "path": "resource-observer-r3-v2-powershell-initial.xml",
+      "sha256": "7cce282994a9543395b12a16d42e2f0f8059562ca1a1aadca4ef55eda183da1a"
+    },
+    {
+      "bytes": 8603,
+      "path": "resource-observer-r3-v2-powershell-final.xml",
+      "sha256": "178aee1e622c2f12e572f2aa2b2abdbf4c626d332c40d3aaad86f439ea8f113a"
+    },
+    {
+      "bytes": 1213,
+      "path": "resource-observer-r3-v2-install-readonly-preview.json",
+      "sha256": "28163637e26a922e3b3be774b71df0144725403b1562a28d13379827ec643859"
+    },
+    {
+      "bytes": 9188,
+      "path": "record-resource-observer-r3-v2-preparation.py",
+      "sha256": "c264902e5ecab9f92227782fcd7301d0040e15bef4c8fcd99ad332c52361bec2"
+    },
+    {
+      "bytes": 17414,
+      "path": "resource-observer-r3-v2/observe_resources.py",
+      "sha256": "03b00945de83756fd9d67b96b2c80af9d51644ae703ea486f319707bb917683d"
+    },
+    {
+      "bytes": 2971,
+      "path": "resource-observer-r3-v2/detector_bootstrap.py",
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5"
+    },
+    {
+      "bytes": 77,
+      "path": "resource-observer-r3-v2/cochem_supervisor/__init__.py",
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17"
+    },
+    {
+      "bytes": 7788,
+      "path": "resource-observer-r3-v2/cochem_supervisor/windows.py",
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b"
+    },
+    {
+      "bytes": 13949,
+      "path": "resource-observer-r3-v2/cochem_supervisor/resource_observation.py",
+      "sha256": "b0c04462953dd86674064fb83efc40d1ddc14be44741cbd6752bb050bdd74be9"
+    },
+    {
+      "bytes": 18919,
+      "path": "resource-observer-r3-v2/cochem_supervisor/performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c"
+    },
+    {
+      "bytes": 2061,
+      "path": "resource-observer-r3-v2/cochem_supervisor/shared_io.py",
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0"
+    },
+    {
+      "bytes": 1229,
+      "path": "resource-observer-r3-v2/source-manifest.json",
+      "sha256": "b2f1329893ce13662271070a36821cb7129410bc7d5160ce37d17b9552f55f52"
+    }
+  ],
+  "historical_inactive_candidate": {
+    "path": "docs\\evidence\\windows-2026-10-06\\resource-observer-adapter-preparation-2026-10-08\\preparation.json",
+    "sha256": "56706a636aed34f84be5d92fae7107ec54bd22234af3e0d42f58e4d4078d3e10"
+  },
+  "inactive_candidate_root_review": {
+    "path": "docs\\evidence\\windows-2026-10-06\\resource-observer-root-review-20261008.json",
+    "sha256": "57c9ea3900d530d3e3b20235ffced34b952ced6af3397b1b20d5e79e2f2b79f7"
+  },
+  "lifecycle": {
+    "after_reboot_or_controller_restart": "Existing window fails; separately reviewed new attestation and namespace required. No arbitrary current PID substitution.",
+    "automatic_resume": false,
+    "automatic_retry": false,
+    "binding": "Actual successful first-start receipt/current exact Warden task instance plus held native controller PID/creation FILETIME/SYSTEM/image proof.",
+    "duration_seconds": 172800,
+    "failure_diagnostics": "Fixed-code CreateNew public bootstrap/final projections; parent retains sanitized bound task failure when Python cannot establish custody. Private samples unchanged.",
+    "initial_start_wait": "Bounded360s, task/evidence preserved on failure or timeout, never Stop/kill/retry.",
+    "interval_seconds": 1,
+    "owner_supervision_required": false,
+    "restarts": 0,
+    "task_limit": "PT49H",
+    "triggers": 0
+  },
+  "not_actual_acceptance": {
+    "SYSTEM_observer_execution": false,
+    "actual_continuous_48h": false,
+    "administrator_Apply": false,
+    "controller_api_calls": 0,
+    "frozen_runtime_or_published_startup_changed": false,
+    "full_srs_acceptance": false,
+    "independent_recovery_timing_available": false,
+    "model_or_provider_execution": false,
+    "native_desktop_heap_available": false,
+    "original_database_opens": 0,
+    "scheduled_task_registered": false
+  },
+  "operational_interface": {
+    "Apply_Operation_Register": "Fresh code/private state; create disabled SYSTEM task, no process execution.",
+    "Apply_Operation_RegisterAndStart": "Same disabled registration/readback, then durable CreateNew intent and one Enable/Run with initial real sample verification.",
+    "Apply_Operation_StartRegistered": "Only exact previous successful disabled never-run registration, same source/dependency/commissioning pins and empty state; refuse all prior start/failure markers.",
+    "default": "Read-only preview. Actual preview has only missing first-instance commissioning receipt hold.",
+    "no_owner_command_issued": true
+  },
+  "prepared_at_utc": "2026-10-08T02:55:45.403347+00:00",
+  "remaining_gates": [
+    "Successful first-instance commissioning and live matching native controller before installation/start.",
+    "Independent final review of exact successor pins before inclusion in a future consolidated elevated batch.",
+    "Actual protected installation and unattended observation have not occurred.",
+    "Verified native desktop/session/window-station used/allocation acquisition and independent recovery-timing evidence remain engineering gaps.",
+    "Bounded descendant snapshots do not independently prove every native worker lifetime or desktop-heap use."
+  ],
+  "review_scope": "Root reviewed current successor source during preparation; final exact-pin review is recorded separately. Earlier peer native/import review was of inactive candidate only.",
+  "schema": "cochem-resource-observer-install-preparation/1",
+  "source_manifest_sha256": "b2f1329893ce13662271070a36821cb7129410bc7d5160ce37d17b9552f55f52",
+  "status": "PROTECTED_INSTALLER_AND_SINGLE_START_PREPARED_NOT_APPLIED",
+  "tests": [
+    {
+      "errors": 0,
+      "failures": 0,
+      "path": "resource-observer-r3-v2-python-final.xml",
+      "seconds": 3.401,
+      "skipped": 0,
+      "tests": 58
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "path": "resource-observer-r3-v2-powershell-final.xml",
+      "seconds": 40.141,
+      "skipped": 0,
+      "tests": 46
+    }
+  ]
+}

@@ -51,6 +51,30 @@ def validate_subscription_probe(spec: Any) -> None:
         raise ValueError('subscription_probe.protocol must be json-fields or exact-line')
 
 
+def validate_gemini_contract(gemini):
+    """Full native contracts remain mandatory whenever no integration hold exists."""
+    argv = gemini.get('arguments')
+    if not isinstance(argv, list) or not argv or not all(isinstance(x,str) and '\x00' not in x for x in argv) or '{model}' not in argv:
+        raise ValueError('Gemini arguments must be a verified native headless argv containing a separate {model} entry')
+    if any('REPLACE_WITH' in arg for arg in argv):
+        raise ValueError('Configure verified Agy headless arguments first; the example is an explicit placeholder')
+    if any(re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}') for arg in argv):
+        raise ValueError('Unsupported or embedded Gemini argument placeholder')
+    if gemini.get('protocol') not in ('gemini-json', 'terminal-json', 'agy-stream-json'):
+        raise ValueError('Select a supported Gemini native result protocol: gemini-json, terminal-json or agy-stream-json')
+    validate_subscription_probe(gemini.get('subscription_probe'))
+    from .inference_policy import gemini_inference_arguments
+    inference_args = gemini_inference_arguments(gemini)
+    if gemini['protocol'] == 'agy-stream-json':
+        from .agy_protocol import validate_arguments
+        validate_arguments(argv)
+        validate_arguments(inference_args)
+    if inference_args.count('{model}') != 1 or any(
+            re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}')
+            for arg in inference_args):
+        raise ValueError('Gemini inference-only arguments require exactly one separate {model} entry and supported placeholders')
+
+
 @dataclass(frozen=True)
 class PipelineConfig:
     private_root: Path
@@ -106,6 +130,8 @@ def load_config(filename: str) -> PipelineConfig:
     if len({x['name'].casefold() for x in workers.values()}) != len(workers):
         raise ValueError('Each slot requires a distinct worker identity')
     providers = raw['providers']
+    from .provider_integration import integration_hold
+    held_providers = set()
     for provider in ('codex', 'claude', 'gemini'):
         spec = providers.get(provider, {})
         if any(not isinstance(spec.get(key),str) or not spec[key].strip() or '\x00' in spec[key]
@@ -114,23 +140,11 @@ def load_config(filename: str) -> PipelineConfig:
         allowed = spec.get('allowed_tools',[])
         if not isinstance(allowed,list) or any(not isinstance(item,str) or not item or '\x00' in item for item in allowed):
             raise ValueError('allowed_tools must be a list of nonempty tool names')
+        if integration_hold(provider, spec) is not None:
+            held_providers.add(provider)
     gemini = providers['gemini']
-    argv = gemini.get('arguments')
-    if not isinstance(argv, list) or not argv or not all(isinstance(x,str) and '\x00' not in x for x in argv) or '{model}' not in argv:
-        raise ValueError('Gemini arguments must be a verified native headless argv containing a separate {model} entry')
-    if any('REPLACE_WITH' in arg for arg in argv):
-        raise ValueError('Configure verified Agy headless arguments first; the example is an explicit placeholder')
-    if any(re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}') for arg in argv):
-        raise ValueError('Unsupported or embedded Gemini argument placeholder')
-    if gemini.get('protocol') not in ('gemini-json', 'terminal-json'):
-        raise ValueError('Select a supported Gemini native result protocol: gemini-json or terminal-json')
-    validate_subscription_probe(gemini.get('subscription_probe'))
-    from .inference_policy import gemini_inference_arguments
-    inference_args = gemini_inference_arguments(gemini)
-    if inference_args.count('{model}') != 1 or any(
-            re.search(r'\{[A-Za-z_][A-Za-z_0-9]*\}',arg) and arg not in ('{model}','{workspace}')
-            for arg in inference_args):
-        raise ValueError('Gemini inference-only arguments require exactly one separate {model} entry and supported placeholders')
+    if 'gemini' not in held_providers:
+        validate_gemini_contract(gemini)
     values = {}
     for key, default, low, high in [
         ('port',47824,1024,65535), ('timeout_seconds',1800,1,14400),

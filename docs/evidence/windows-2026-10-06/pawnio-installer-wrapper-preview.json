@@ -1,0 +1,61 @@
+{
+  "schema": "cochem-pawnio-install/1",
+  "observed_at_utc": "2026-10-07T04:55:20.6263942Z",
+  "mode": "READ_ONLY_PLAN",
+  "identity": "AETHERDESK\\ansac",
+  "administrator": false,
+  "script_sha256": "a94c6389e4d30c96abaf48c218888969c802eda5f13d20b9203a10483f3e967e",
+  "source": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\pawnio-2.1.0-reviewed\\PawnIO_setup.exe",
+  "expected_sha256": "a3a46226c5e2824f4cdd42be0eecbabfc672c86f7889710f5ab1e6ad385b47a0",
+  "installer_arguments": "-install",
+  "interactive": true,
+  "install_invoked": false,
+  "exit_code": null,
+  "ram_before": null,
+  "pawnio_before": {
+    "registrations": [
+      {
+        "view": "Registry64",
+        "present": false,
+        "version": null
+      },
+      {
+        "view": "Registry32",
+        "present": false,
+        "version": null
+      }
+    ],
+    "service_key_present": false,
+    "existing_paths": [],
+    "drivers": []
+  },
+  "restart_before": {
+    "component_servicing": false,
+    "windows_update": false,
+    "pending_file_rename": true,
+    "scope": "Flags only; existing flags do not establish a new installer-caused restart requirement."
+  },
+  "holds": [
+    "Plan observed as ordinary user; -Install requires a manually opened Administrator Windows PowerShell under ansac.",
+    "No matching MSFT_ScheduledTask objects found by CIM query for instances of the Root/Microsoft/Windows/TaskScheduler/MSFT_ScheduledTask class on the  CIM server: SELECT * FROM MSFT_ScheduledTask  WHERE ((TaskName LIKE 'Mount[_]CoChem[_]RAMDisk')) AND ((TaskPath LIKE '\\\\')). Verify query parameters and retry."
+  ],
+  "automatic_reboot": false,
+  "next": "Explicit reviewed -Install only; inspect the actual installer dialogs and decline any restart until separately reviewed. No exit code or registry record alone establishes driver/SYSTEM sensor acceptance.",
+  "stage_acl": {
+    "path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006",
+    "owner_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001",
+    "permitted_trustees": [
+      "S-1-5-18",
+      "S-1-5-32-544",
+      "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    ],
+    "unrelated_allow_grants": false,
+    "sddl_sha256": "1abbdb7e5406c6255649c6a12bc1e54a5bd0125c86fc6a9090a62c96f4a18be4"
+  },
+  "verified_source": {
+    "bytes": 3225016,
+    "sha256": "a3a46226c5e2824f4cdd42be0eecbabfc672c86f7889710f5ab1e6ad385b47a0",
+    "signature": "Valid",
+    "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5"
+  }
+}

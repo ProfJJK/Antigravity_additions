@@ -1,0 +1,18 @@
+{
+  "schema": "cochem-owner-reported-knowledge-resume-result/1",
+  "provenance": "Owner returned the combined recovery command's sanitized failure output",
+  "status": "KNOWLEDGE_RESUME_HELD",
+  "receipt_path": "C:\\Program Files\\CoChem\\KnowledgeResume4.2.7-windows-20261007-r2\\resume-acceptance.json",
+  "receipt_sha256": "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+  "failure": {
+    "phase": "final_verification",
+    "error_type": "ValueError",
+    "winerror": null
+  },
+  "failed_wrapper": "resume-private-knowledge-copyfix.ps1",
+  "wrapper_error_line": 205,
+  "full_private_receipt_requested": true,
+  "read_only_postpublication_verification_required": true,
+  "automatic_reindex_or_reset_allowed": false,
+  "activation_ready": false
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "cochem-stopped-runtime-preparation/1",
+  "host": "AETHERDESK",
+  "captured_utc": "2026-10-07T15:14:47.168196+00:00",
+  "mode": "PREPARATION_ONLY_NO_APPLY",
+  "actual_windows_evidence": {
+    "tests": 56,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "junit_seconds": 19.356,
+    "scope": "Ordinary-user Windows PowerShell 5.1 fixtures, exact real protected config and uv pyvenv parsing, real temporary file copies through the full Apply function with explicit administrator/task/ACL/build/runtime execution stubs, hash/handle/source drift checks, native stderr exit handling. No SYSTEM worker, actual installation, Docker, model or auth acceptance."
+  },
+  "source_files": 166,
+  "source_bytes": 6183262,
+  "only_changed_source": "src/cochem_pipeline/resource_limits.py",
+  "resource_limits_sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+  "expected_package_assets": 109,
+  "expected_revision_source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+  "configuration_unchanged": true,
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "target_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "previous_runtime_preserved": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+  "read_only_preview_holds": [],
+  "administrator_checks_deferred": [
+    "Original failed slot1 task exact SYSTEM action/nonce/no-trigger definition; terminal state1or3, zero instances, LastTaskResult2. Ordinary-user direct COM lookup returned E_ACCESSDENIED.",
+    "Full protected base/r2 tree custody and fresh r3 root recheck before mutation."
+  ],
+  "preservation": [
+    "All prior installed roots, accepted knowledge corpus/index, failed denial task/receipt, workers/credentials/token, databases and repair budgets, existing R drive/startup task.",
+    "No account, task, database, RAM, login, model, daemon or budget changes."
+  ],
+  "review": "Parent and native_next independent source review completed; no remaining concrete finding.",
+  "files": [
+    {
+      "name": "install-stopped-runtime-r3.ps1",
+      "bytes": 25449,
+      "sha256": "372a0fe352124e81a2d097ebe7c075369f6f20275a8a2858f78f41febbc723e4"
+    },
+    {
+      "name": "test_stopped_runtime_r3.py",
+      "bytes": 24795,
+      "sha256": "c8e1b70e671c273e7a809c7d3433c3b8ccb4920b808358ab39790d18990cadb5"
+    },
+    {
+      "name": "stopped-runtime-r3-source-manifest.json",
+      "bytes": 30639,
+      "sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1"
+    },
+    {
+      "name": "stopped-runtime-r3-tests-initial.xml",
+      "bytes": 7972,
+      "sha256": "3a36f8a3f1a14255abbbf18753f107eead3feda039f4d910180ed23a4066fe74"
+    },
+    {
+      "name": "stopped-runtime-r3-tests-final.xml",
+      "bytes": 8985,
+      "sha256": "7db6a124def493bbf8d082f960a336302e0a71c1b95a5b39f1e2e5cf0d34dc64"
+    },
+    {
+      "name": "stopped-runtime-r3-readonly-preview.json",
+      "bytes": 1241,
+      "sha256": "db429308d197d8b44c2bd1ca3b8cf5a50ec07a80cc9a965f489daa68bf6b6a23"
+    }
+  ]
+}

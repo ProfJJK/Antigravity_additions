@@ -1,0 +1,80 @@
+{
+  "scope": "Full non-SYSTEM user-session diagnostic, not acceptance",
+  "groups": [
+    {
+      "count": 211,
+      "reason": "Requires actual SYSTEM/protected deployment",
+      "example": "pipeline_tests.test_coding_acceptance.test_unfinished_submission_has_no_live_acceptance"
+    },
+    {
+      "count": 40,
+      "reason": "Fixture lacks required protected Git executable",
+      "example": "pipeline_tests.test_coding_git.test_capture_committed_bytes_roundtrip_and_size_limits"
+    },
+    {
+      "count": 11,
+      "reason": "Symlink creation privilege unavailable",
+      "example": "pipeline_tests.test_coding_git.test_reject_symlink_and_submodule_committed_entries"
+    },
+    {
+      "count": 2,
+      "reason": "ValueError: Use a native Linux CLI with WSL Python; run Windows CLIs with Windows Python",
+      "example": "mcp_tests.test_providers.test_linux_accepts_native_file_named_exe[\\x7fELF]"
+    },
+    {
+      "count": 2,
+      "reason": "AssertionError: Regex pattern did not match.\n  Expected regex: 'Windows PE executable'\n  Actual message: 'Use a native Linux CLI with WSL Python; run Windows CLIs with Windows Python'",
+      "example": "mcp_tests.test_providers.test_linux_rejects_pe_executable_with_any_name[claude.exe]"
+    },
+    {
+      "count": 2,
+      "reason": "ValueError: Repair CLI executable must be an absolute native path",
+      "example": "supervisor_tests.test_repair_artifacts.test_no_repair_native_tool_can_launch_unrouted_models[claude-claude-sonnet-5-5]"
+    },
+    {
+      "count": 1,
+      "reason": "assert 0.01600000000325963 >= 0.02",
+      "example": "pipeline_tests.test_resource_telemetry.test_actual_host_snapshot_reports_cpu_memory_volumes_and_counter_availability"
+    },
+    {
+      "count": 1,
+      "reason": "cochem_pipeline.document_governance.DocumentCommitmentHold: Historical document planning lacks required WBS/output commitments; explicit operator reconciliation is required, preserving accepted output",
+      "example": "mcp_tests.test_jobs.test_chapter_request_preserves_scope_in_new_controller_owned_dag"
+    },
+    {
+      "count": 1,
+      "reason": "AssertionError: Regex pattern did not match.\n  Expected regex: 'not a native Linux ELF binary or script'\n  Actual message: 'Use a native Linux CLI with WSL Python; run Windows CLIs with Windows Python",
+      "example": "mcp_tests.test_providers.test_linux_rejects_unrecognized_exe_format"
+    },
+    {
+      "count": 1,
+      "reason": "assert [True, 140000] == [True, 70000]\n  \n  At index 1 diff: 140000 != 70000\n  Use -v to get more diff",
+      "example": "mcp_tests.test_router.test_native_stdin_large_prompt_uses_regular_file_and_preserves_unicode"
+    },
+    {
+      "count": 1,
+      "reason": "AssertionError(\"assert not True\\n +  where True = CallToolResult(meta=None, content=[TextContent(type='text', text='Error executing tool codex_submit_node: Historical d...equired, preserving accepted ",
+      "example": "mcp_tests.test_server.test_structured_node_creates_routed_controller_dag[CHAPTER_DRAFT-codex]"
+    },
+    {
+      "count": 1,
+      "reason": "AssertionError(\"assert not True\\n +  where True = CallToolResult(meta=None, content=[TextContent(type='text', text='Error executing tool claude_submit_node: Historical ...equired, preserving accepted ",
+      "example": "mcp_tests.test_server.test_structured_node_creates_routed_controller_dag[CHAPTER_DRAFT-claude]"
+    },
+    {
+      "count": 1,
+      "reason": "UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 2313: character maps to <undefined>",
+      "example": "supervisor_tests.test_reconciliation.test_capture_binds_real_canonical_clauses_file_bytes_diff_wbs_and_independent_tests"
+    },
+    {
+      "count": 1,
+      "reason": "UnicodeDecodeError: 'charmap' codec can't decode byte 0x9d in position 1322: character maps to <undefined>",
+      "example": "supervisor_tests.test_reconciliation.test_exact_same_id_canonical_wording_drift_invalidates_catalog"
+    },
+    {
+      "count": 1,
+      "reason": "ValueError: wbs_tasks_defined must be a bounded nonempty structured list",
+      "example": "supervisor_tests.test_routing_upgrade.test_legacy_accepted_artifact_survives_routing_adoption_for_pending_sibling"
+    }
+  ]
+}

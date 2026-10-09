@@ -17,6 +17,8 @@ _COUNTERS = {
         'input': 'input_tokens', 'output': 'output_tokens', 'prompt': 'prompt_tokens',
         'candidates': 'output_tokens', 'total': 'total_tokens',
         'cached': 'cached_input_tokens', 'thoughts': 'reasoning_tokens',
+        'thinking_tokens': 'reasoning_tokens', 'cache_read_tokens': 'cached_input_tokens',
+        'total_tokens': 'total_tokens',
         'tool': 'tool_tokens',
     },
 }

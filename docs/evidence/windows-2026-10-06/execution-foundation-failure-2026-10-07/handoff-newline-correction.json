@@ -1,0 +1,9 @@
+{
+  "schema": "cochem-handoff-newline-correction/1",
+  "captured_utc": "2026-10-07T23:14:01.452952+00:00",
+  "scope": "Formatting-only correction of CRCRLF produced by write_text on pre-decoded CRLF. Final handoff suffix is byte-for-byte equal to archived pre-update suffix; only requested top section changed.",
+  "pre_correction_sha256": "b2a56a278cabca861033cb1b08cf92b5294b6ea88b7e6b74d1ede16628714341",
+  "corrected_handoff_sha256": "1579c32455d962950dac3fd781a9c006b275d1c867a065a56a758ac95a9eb7a6",
+  "unchanged_suffix_sha256": "dd31f4abcf82c3f24a3d7153713c57baeb2035f4efb24c010f2a7dd38fc788f2",
+  "protected_receipts_or_archive_summary_changed": false
+}

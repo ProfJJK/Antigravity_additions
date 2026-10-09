@@ -16,6 +16,8 @@ from pathlib import Path
 import sqlite3
 import time
 
+from . import budget_authority
+
 
 class RecoveryLedger:
     def __init__(self, path: str | Path):
@@ -35,7 +37,18 @@ class RecoveryLedger:
                 BEGIN SELECT RAISE(ABORT,'Recovery evidence is immutable'); END;
                 CREATE TRIGGER IF NOT EXISTS recovery_no_delete BEFORE DELETE ON recovery_events
                 BEGIN SELECT RAISE(ABORT,'Recovery evidence is immutable'); END;
-            ''')
+            ''' + budget_authority.SCHEMA + budget_authority.COMPONENT_TRIGGERS)
+
+    def hold_legacy_budget_authority(self, evidence: dict, *, now=None) -> dict:
+        with closing(sqlite3.connect(self.path,timeout=5)) as db:
+            db.execute('BEGIN IMMEDIATE')
+            result=budget_authority.record(db,evidence,now=now)
+            db.commit()
+            return result
+
+    def budget_authority_status(self) -> dict:
+        with closing(sqlite3.connect(self.path,timeout=5)) as db:
+            return budget_authority.status(db)
 
     def observe(self, component: str, healthy: bool, *, now: float | None=None) -> dict:
         if component not in {'warden','docker_engine'} or type(healthy) is not bool:
@@ -47,6 +60,7 @@ class RecoveryLedger:
             db.row_factory=sqlite3.Row
             db.execute('BEGIN IMMEDIATE')
             try:
+                authority=budget_authority.status(db)
                 row=db.execute('SELECT * FROM components WHERE component=?',(component,)).fetchone()
                 strikes=0 if healthy else (row['strikes']+1 if row else 1)
                 first=None if healthy else (row['first_failure'] if row and row['first_failure'] is not None else now)
@@ -55,7 +69,9 @@ class RecoveryLedger:
                 if row and now<row['last_observed']:
                     raise ValueError('Recovery observations cannot move backwards in time')
                 state='healthy' if healthy else 'exhausted' if attempts>=1 else 'waiting'
-                if not healthy and attempts<1 and strikes>=3 and now-first>=30:
+                if not healthy and authority['blocked']:
+                    state='authority_hold'
+                elif not healthy and attempts<1 and strikes>=3 and now-first>=30:
                     state='reserved'
                     attempts+=1
                     reserved=now
@@ -67,6 +83,8 @@ class RecoveryLedger:
                 result={'component':component,'state':state,'strikes':strikes,'required_strikes':3,
                         'backoff_seconds':30,'attempts':attempts,'maximum_attempts':1,
                         'next_eligible_at':None if first is None or attempts else first+30}
+                if authority['blocked']:
+                    result.update(budget_authority=authority,next_eligible_at=None)
                 db.execute('INSERT INTO recovery_events(timestamp,component,event,details_json) VALUES(?,?,?,?)',
                     (now,component,'RECOVERY_RESERVED' if state=='reserved' else 'OBSERVED',json.dumps(result,sort_keys=True)))
                 db.commit()

@@ -1,0 +1,78 @@
+{
+  "schema": "cochem-desktop-heap-monitoring-followup/1",
+  "captured_at_utc": "2026-10-08T01:22:18.2495752Z",
+  "status": "CONTINUITY_REPAIRED_NATIVE_HEAP_ACQUISITION_UNRESOLVED",
+  "prior_research": "desktop-heap-collector-research-2026-10-07.json",
+  "prior_research_sha256": "ea33fc45038a18c8fa427bd844fa3c8a2894770ff982a2d854adea8e00b229df",
+  "source": {
+    "path": "src/cochem_pipeline/performance_acceptance.py",
+    "sha256": "724ae38e03d7048be59b513e07613bfea85e89eb7222d1f5bdfd467527161049",
+    "installed_r3_sha256": "3a6e1b0f5a62005c09ba07b4261bfef0e4d5f3962af9f087ae91b81ca2bab9e2",
+    "installed_r3_modified": false
+  },
+  "tests": {
+    "path": "pipeline_tests/test_native_observation_continuity.py",
+    "sha256": "fa6acdc7a4733be64cfee0067223eef89cbc26c9845a8d6cbddac05a263ea46e",
+    "xml": "native-observation-continuity-tests-final.xml",
+    "xml_sha256": "dc8ae2376182bec74f87f3c962986835d057500ae6930eb64d78176c3dbc6ef6",
+    "tests": 34,
+    "passed": 32,
+    "skipped": 2,
+    "failures": 0,
+    "errors": 0,
+    "junit_seconds": 2.134,
+    "pytest_report_seconds": 2.2,
+    "scope": "Actual ordinary Windows Python 3.12.13 execution; process, SYSTEM boundary, clocks and supervisor timing explicitly simulated in observer fixtures. No physical SYSTEM/48-hour or native heap evidence."
+  },
+  "repaired": [
+    "A fresh measurement after a long pause cannot satisfy continuous 48-hour observation: each completed sample must be within 10 seconds of the prior sample/start on both wall and monotonic clocks. Reversed clocks fail. Default 1-second cadence leaves scheduler headroom; a 10-second requested interval can honestly fail on overhead.",
+    "Completion requires a valid observed sample at or beyond 172800 seconds, not merely elapsed time after an interrupted or blocked operation.",
+    "Fresh psutil Process objects check creation time before and after sampling so the original cached create_time cannot hide PID reuse.",
+    "Each row retains PID, creation time, instance id, both gaps, and the raw external heap used/capacity/time/process/source values. Freshness is checked again after evidence reads."
+  ],
+  "findings": [
+    {
+      "source": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getuserobjectinformationw",
+      "finding": "UOI_HEAPSIZE supplies desktop capacity in KB. No documented used-byte index is provided; capacity alone remains insufficient."
+    },
+    {
+      "source": "https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-dskheap",
+      "finding": "The debugger extension reports per-session/window-station/desktop heap size and displayed used rate. Its rounded-rate precision, current-process association and repeated safe acquisition have not been validated on this host."
+    },
+    {
+      "source": "https://learn.microsoft.com/en-us/windows/win32/memory/memory-management-tracing-events",
+      "finding": "Microsoft documents ETW allocation/free/reallocation tracing. This documentation does not establish desktop-heap used/capacity accounting; ordinary process-heap tracing is not accepted as a substitute."
+    },
+    {
+      "source": "https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/desktop-heap-limitation-out-of-memory",
+      "finding": "Microsoft documents Win32k event 243 as an allocation-failure warning logged only once per session. The cited article applies to supported Windows Server. This is a potential supplemental failure signal, not a current Windows 11 measured utilization or continuous sampling contract; no eventlog query was run."
+    },
+    {
+      "source": "https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/performing-local-kernel-debugging",
+      "finding": "The documented kernel-debug route requires Administrator execution; LiveKD snapshots need not represent a single instant. No debugger, dump, tracing session or driver was launched."
+    }
+  ],
+  "remaining": {
+    "hard_block": "No verified supported nonintrusive acquisition route for fresh service-desktop used/capacity evidence is available under the current no-debugger/no-driver/no-boot-change constraints. This is an unresolved acquisition contract, not proof such a method is impossible.",
+    "adapter_implemented": false,
+    "actual_heap_samples": 0,
+    "full_native_acceptance": false,
+    "owner_decision_if_constraint_persists": "Either separately review and establish a supported acquisition route and real sample contract, or explicitly amend the desktop-heap acceptance requirement. Counts, RSS, capacity, absence of warnings and rounded-percent multiplication must never be relabeled as actual used bytes. No amendment was made.",
+    "future_integration": [
+      "Include this repository repair in a separately reviewed fresh protected runtime or acceptance package; frozen r3 remains unchanged.",
+      "Establish actual service desktop/session and exact Warden PID/creation binding, collector provenance and measurement precision before writing an adapter.",
+      "Preserve the strict <15% ceiling and <=10-second freshness; if a conservative rate-bound representation is chosen, review an explicitly labelled schema rather than invent used bytes.",
+      "Once Warden/supervisor and the real collector are installed and validated, run the observer with a new protected evidence directory at the default 1-second interval. Missing collector data remains unavailable, never zero.",
+      "A completed 48-hour run additionally needs real workload coverage, no process/instance replacement, handle/resource bounds and independent supervisor observation/recovery timing. Synthetic tests do not satisfy those requirements."
+    ]
+  },
+  "safety": {
+    "production_processes_started": false,
+    "privileged_commands": false,
+    "debugger_or_etw_sessions": false,
+    "driver_or_boot_changes": false,
+    "settings_or_credentials_changed": false,
+    "source_thresholds_relaxed": false,
+    "heap_measurements_fabricated": false
+  }
+}

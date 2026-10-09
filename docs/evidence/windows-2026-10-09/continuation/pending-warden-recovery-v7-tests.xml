@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="2" time="3.193" timestamp="2026-10-08T21:04:42.015367-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_success_reuses_original_auth_packet_repairs_once_and_runs_only_commission" time="0.484"><error message="failed on setup with &quot;OSError: could not create numbered dir with prefix pytest- in C:\Users\ansac\AppData\Local\Packages\sandbox.{4f57676a-2882-4848-810c-adbc6291429e}\AC\Temp\pytest-of-ansac after 10 tries&quot;">item = &lt;Function test_success_reuses_original_auth_packet_repairs_once_and_runs_only_commission&gt;
+
+    @pytest.hookimpl(wrapper=True, tryfirst=True)
+    def pytest_runtest_setup(item):
+        """
+        Hook called after before test setup starts, to start capturing exceptions
+        as early as possible.
+        """
+        capture_enabled = _is_exception_capture_enabled(item)
+        if capture_enabled:
+            item.qt_exception_capture_manager = _QtExceptionCaptureManager()
+            item.qt_exception_capture_manager.start()
+&gt;       result = yield
+                 ^^^^^
+
+..\..\..\..\AppData\Roaming\Python\Python314\site-packages\pytestqt\plugin.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_success_reuses_original_auth_packet_repairs_once_and_runs_only_commission&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        if (
+            fixturedef.argname == "event_loop_policy"
+            and fixturedef.func.__module__ != __name__
+        ):
+            warnings.warn(
+                PytestDeprecationWarning(_EVENT_LOOP_POLICY_FIXTURE_DEPRECATION_WARNING),
+            )
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+E               OSError: could not create numbered dir with prefix pytest- in C:\Users\ansac\AppData\Local\Packages\sandbox.{4f57676a-2882-4848-810c-adbc6291429e}\AC\Temp\pytest-of-ansac after 10 tries
+
+..\..\..\..\AppData\Roaming\Python\Python314\site-packages\pytest_asyncio\plugin.py:924: OSError</error></testcase><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[extra_file]" time="0.018"><error message="failed on setup with &quot;OSError: could not create numbered dir with prefix pytest- in C:\Users\ansac\AppData\Local\Packages\sandbox.{4f57676a-2882-4848-810c-adbc6291429e}\AC\Temp\pytest-of-ansac after 10 tries&quot;">item = &lt;Function test_preflight_failures_precede_every_mutation[extra_file]&gt;
+
+    @pytest.hookimpl(wrapper=True, tryfirst=True)
+    def pytest_runtest_setup(item):
+        """
+        Hook called after before test setup starts, to start capturing exceptions
+        as early as possible.
+        """
+        capture_enabled = _is_exception_capture_enabled(item)
+        if capture_enabled:
+            item.qt_exception_capture_manager = _QtExceptionCaptureManager()
+            item.qt_exception_capture_manager.start()
+&gt;       result = yield
+                 ^^^^^
+
+..\..\..\..\AppData\Roaming\Python\Python314\site-packages\pytestqt\plugin.py:178: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+fixturedef = &lt;FixtureDef argname='tmp_path' scope='function' baseid=''&gt;
+request = &lt;SubRequest 'tmp_path' for &lt;Function test_preflight_failures_precede_every_mutation[extra_file]&gt;&gt;
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -&gt; object | None:
+        if (
+            fixturedef.argname == "event_loop_policy"
+            and fixturedef.func.__module__ != __name__
+        ):
+            warnings.warn(
+                PytestDeprecationWarning(_EVENT_LOOP_POLICY_FIXTURE_DEPRECATION_WARNING),
+            )
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+&gt;               return (yield)
+                        ^^^^^
+E               OSError: could not create numbered dir with prefix pytest- in C:\Users\ansac\AppData\Local\Packages\sandbox.{4f57676a-2882-4848-810c-adbc6291429e}\AC\Temp\pytest-of-ansac after 10 tries
+
+..\..\..\..\AppData\Roaming\Python\Python314\site-packages\pytest_asyncio\plugin.py:924: OSError</error></testcase></testsuite></testsuites>

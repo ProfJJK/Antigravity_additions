@@ -1,0 +1,455 @@
+{
+  "schema": "windows-native-contract-followup/1",
+  "observed_at_utc": "2026-10-07T02:42:02.969577+00:00",
+  "platform": "Windows",
+  "invoking_account": "ansac",
+  "protected_worker_account_probed": false,
+  "evidence_kind": "offline-installed-CLI-capability-and-source-contract-tests",
+  "native_model_jobs_executed": 0,
+  "authentication_changed": false,
+  "credential_contents_read": false,
+  "production_databases_changed": false,
+  "production_provider_contract_activated": false,
+  "existing_linux_results_relabelled_as_windows": false,
+  "read_only_probe_contract": {
+    "stdin": "DEVNULL",
+    "timeout_seconds_maximum": 30,
+    "commands": "version/help plus Codex features list; no prompt, login action or model invocation",
+    "raw_help_retained_in_staging_only": true,
+    "raw_authentication_or_MCP_config_recorded": false
+  },
+  "installed_executables": {
+    "gemini": {
+      "product": "Agy",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+      "version": "1.3.0",
+      "sha256": "c1b0001989c4051a41f5104484de182db5014fa155053c8088baacf1663063bf"
+    },
+    "claude": {
+      "product": "Claude Code",
+      "path": "C:\\Users\\ansac\\.local\\bin\\claude.exe",
+      "version": "2.1.280 (Claude Code)",
+      "sha256": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469"
+    },
+    "codex": {
+      "product": "Codex CLI",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.exe",
+      "version": "codex-cli 0.160.0",
+      "sha256": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d"
+    }
+  },
+  "probes": [
+    {
+      "provider": "gemini",
+      "probe": "version",
+      "argv": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "64d23f858ef51b0f996e4966d4e27c0371b437e2d2787890b1f7ad22d4ec5663",
+      "executable_sha256": "c1b0001989c4051a41f5104484de182db5014fa155053c8088baacf1663063bf",
+      "observed_version": "1.3.0"
+    },
+    {
+      "provider": "gemini",
+      "probe": "help",
+      "argv": [
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "executable_sha256": "c1b0001989c4051a41f5104484de182db5014fa155053c8088baacf1663063bf",
+      "stderr_sha256": "337622c6dcdcb204312277570c4173dda83f3cbf006629f0eabe657069071e7c"
+    },
+    {
+      "provider": "claude",
+      "probe": "version",
+      "argv": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "df949515ffdb6d599aca902006cb97c3a11033d1d6e4824f07fdc7c1301d3ab4",
+      "executable_sha256": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469",
+      "observed_version": "2.1.280 (Claude Code)"
+    },
+    {
+      "provider": "claude",
+      "probe": "help",
+      "argv": [
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "23937937c79878eb95be2a6676d46730328adc03413f4a50f1b6d1852e7d52f3",
+      "executable_sha256": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469"
+    },
+    {
+      "provider": "codex",
+      "probe": "version",
+      "argv": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "f6464b8cc67af75deb2589fe1dbcde152fc15ffb76a91de1cf0686b4623afb1e",
+      "executable_sha256": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d",
+      "observed_version": "codex-cli 0.160.0"
+    },
+    {
+      "provider": "codex",
+      "probe": "help",
+      "argv": [
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "4a7f0188d4d6e6d812c5cfbcf82468336b899acd5e437de7450421a403c0071e",
+      "executable_sha256": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d"
+    },
+    {
+      "provider": "codex",
+      "probe": "policy_offline",
+      "argv": [
+        "-a",
+        "never",
+        "--sandbox",
+        "read-only",
+        "-c",
+        "model_provider=\"openai\"",
+        "-c",
+        "forced_login_method=\"chatgpt\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "features.shell_snapshot=false",
+        "-c",
+        "features.code_mode_host=false",
+        "-c",
+        "features.code_mode=false",
+        "-c",
+        "features.code_mode_only=false",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "features.plugins=false",
+        "-c",
+        "features.hooks=false",
+        "-c",
+        "features.remote_plugin=false",
+        "-c",
+        "features.recommended_plugins=false",
+        "-c",
+        "features.multi_agent=false",
+        "-c",
+        "features.multi_agent_v2=false",
+        "-c",
+        "features.browser_use=false",
+        "-c",
+        "features.browser_use_external=false",
+        "-c",
+        "features.browser_use_full_cdp_access=false",
+        "-c",
+        "features.computer_use=false",
+        "-c",
+        "features.in_app_local_automation=false",
+        "-c",
+        "features.workspace_dependencies=false",
+        "-c",
+        "features.skill_search=false",
+        "-c",
+        "features.skill_mcp_dependency_install=false",
+        "-c",
+        "features.tool_suggest=false",
+        "-c",
+        "features.request_permissions_tool=false",
+        "-c",
+        "features.view_image=false",
+        "-c",
+        "features.image_generation=false",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "agents.enabled=false",
+        "-c",
+        "model_reasoning_effort=\"ultra\"",
+        "features",
+        "list"
+      ],
+      "exit_code": 0,
+      "validation": {
+        "passed": true,
+        "disabled_features": [
+          "shell_tool",
+          "shell_snapshot",
+          "code_mode_host",
+          "code_mode",
+          "code_mode_only",
+          "apps",
+          "plugins",
+          "hooks",
+          "remote_plugin",
+          "recommended_plugins",
+          "multi_agent",
+          "multi_agent_v2",
+          "browser_use",
+          "browser_use_external",
+          "browser_use_full_cdp_access",
+          "computer_use",
+          "in_app_local_automation",
+          "workspace_dependencies",
+          "skill_search",
+          "skill_mcp_dependency_install",
+          "tool_suggest",
+          "request_permissions_tool",
+          "view_image",
+          "image_generation"
+        ],
+        "evidence_sha256": "52b5e5e20bb8a95eed1d97e616c2b14c7aa65a52937c174ab55bd6cbe983ef39"
+      },
+      "stdout_sha256": "52b5e5e20bb8a95eed1d97e616c2b14c7aa65a52937c174ab55bd6cbe983ef39"
+    },
+    {
+      "provider": "claude",
+      "probe": "policy_offline",
+      "argv": [
+        "--tools",
+        "",
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--setting-sources",
+        "",
+        "--disable-slash-commands",
+        "--settings",
+        "{\"disableAllHooks\":true,\"disableSkillShellExecution\":true}",
+        "--help"
+      ],
+      "exit_code": 0,
+      "validation": {
+        "passed": true,
+        "flags": [
+          "--tools",
+          "--strict-mcp-config",
+          "--mcp-config",
+          "--setting-sources",
+          "--disable-slash-commands",
+          "--settings"
+        ],
+        "evidence_sha256": "23937937c79878eb95be2a6676d46730328adc03413f4a50f1b6d1852e7d52f3"
+      },
+      "stdout_sha256": "23937937c79878eb95be2a6676d46730328adc03413f4a50f1b6d1852e7d52f3"
+    },
+    {
+      "provider": "gemini",
+      "probe": "offline-help---settings-{}",
+      "argv": [
+        "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+        "--settings",
+        "{}",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "337622c6dcdcb204312277570c4173dda83f3cbf006629f0eabe657069071e7c",
+      "limitation": "Global --help short-circuits; exit zero does not establish --settings support. --settings is absent from help and inspected public executable strings."
+    },
+    {
+      "provider": "gemini",
+      "probe": "offline-help-help-auth",
+      "argv": [
+        "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+        "help",
+        "auth"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8956208f3a6a88ce7800ccebe9f178245e6809e294ced6f0436339ea241367ec",
+      "safe_diagnostic": "Error: unknown subcommand: auth"
+    },
+    {
+      "provider": "gemini",
+      "probe": "offline-help-help-status",
+      "argv": [
+        "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+        "help",
+        "status"
+      ],
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e15af00651823712da140fd79590b18c91d1eef855bd61f0512da05e0a9bba6a",
+      "safe_diagnostic": "Error: unknown subcommand: status"
+    },
+    {
+      "provider": "claude",
+      "probe": "policy_offline_explicit_fallback_denial",
+      "argv": [
+        "--tools",
+        "",
+        "--strict-mcp-config",
+        "--mcp-config",
+        "{\"mcpServers\":{}}",
+        "--setting-sources",
+        "",
+        "--disable-slash-commands",
+        "--settings",
+        "{\"disableAllHooks\":true,\"disableSkillShellExecution\":true,\"fallbackModel\":[],\"switchModelsOnFlag\":false}",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_sha256": "23937937c79878eb95be2a6676d46730328adc03413f4a50f1b6d1852e7d52f3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "validation": {
+        "passed": true,
+        "flags": [
+          "--tools",
+          "--strict-mcp-config",
+          "--mcp-config",
+          "--setting-sources",
+          "--disable-slash-commands",
+          "--settings"
+        ],
+        "evidence_sha256": "23937937c79878eb95be2a6676d46730328adc03413f4a50f1b6d1852e7d52f3"
+      },
+      "limitation": "Help validates published flag presence and empty-tool semantics; it does not attest runtime setting enforcement or exact model availability."
+    }
+  ],
+  "public_executable_token_inspection": {
+    "source": "Installed application bytes only; no profile, credential store or environment contents",
+    "agy_counts": {
+      "--settings": 0,
+      "--tools": 0,
+      "--strict-mcp-config": 0,
+      "--effort": 13,
+      "--thinking-level": 0,
+      "--thinking-budget": 0
+    },
+    "claude_counts": {
+      "switchModelsOnFlag": 14,
+      "fallbackModel": 186,
+      "alwaysThinkingEnabled": 17,
+      "disableAllHooks": 61,
+      "disableSkillShellExecution": 6
+    },
+    "limitation": "Token presence/absence alone is not runtime semantics or a provider capability attestation."
+  },
+  "observations": {
+    "codex": "All 24 repository-required feature gates read back false with requested ultra in the offline configuration. This does not certify MCP isolation, protected account login, serving model or actual effort.",
+    "claude": "Installed help confirms empty tools disables tools and required MCP/settings/skill flags exist; effort lists low/medium/high/xhigh/max. Extended is not a literal effort value. No exact model/profile activation or output observation was established.",
+    "agy": "Installed help documents effort low/medium/high/xhigh/max and stream-json transport. Legacy thinking-level/budget shapes are unobserved. Help auth/status fail as unknown subcommands. Help short-circuit cannot verify hypothetical settings arguments."
+  },
+  "adapter_changes": [
+    "Prepared bounded one-turn Agy NDJSON stdin encoder, exact argv validator and native stream/session/tool checks.",
+    "Agy stream remains blocked before native dispatch in both runners; selected init metadata is not promoted to an actual-model receipt, including undocumented result.model fields.",
+    "Allow reviewed conditional Agy --effort selectors with exact high semantics and unchanged binary/version/inference contract binding. No host binding created.",
+    "Project documented numeric Agy thinking/cache/total usage fields without deriving currency or actual effort.",
+    "Explicitly deny Claude configured and flagged-content fallback in protected inference settings, retaining tool/MCP/hooks restrictions and reviewed thinking controls.",
+    "Separate symlink-only tests from pure policy assertions; skips name the missing Windows privilege."
+  ],
+  "activation_blockers": [
+    {
+      "id": "AGY-AUTH",
+      "status": "unverified",
+      "detail": "No read-only native subscription-status protocol established for the restricted worker identities."
+    },
+    {
+      "id": "AGY-ISOLATION",
+      "status": "unverified",
+      "detail": "No supported observed contract disables all native tools, MCP, hooks, subagents and native fallback. Strict/plan/sandbox are not substitutes."
+    },
+    {
+      "id": "AGY-IDENTITY",
+      "status": "compatibility-hold-before-dispatch",
+      "detail": "Documented stream reports selected init.model only; actual serving-model and effort metadata contracts remain unverified."
+    },
+    {
+      "id": "ROUTED-MODEL-PROFILES",
+      "status": "unverified",
+      "detail": "Offline help is not exact Chapter 06 model availability or a reviewed Extended mapping. No model alias substitutions or effort claims were made."
+    },
+    {
+      "id": "WINDOWS-PROTECTED-ACCEPTANCE",
+      "status": "not-run-by-this-followup",
+      "detail": "Authenticated worker identities, protected launch, native model receipts and full pipeline stages still require the Chapter 06 board."
+    }
+  ],
+  "primary_sources": [
+    {
+      "url": "https://www.antigravity.google/docs/cli/headless/",
+      "findings": "Documents one NDJSON user message on stdin and init/step_update/result events. Init records selected configuration, including model when overridden. Terminal result supplies conversation_id, status, response, num_turns and usage, without an actual serving-model or effort observation binding. Noninteractive permission denial is not an empty tool registry."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/cli/reference/",
+      "findings": "Documents interactive settings and toolPermission presets. Strict permissions still allow read tools; no documented all-tools disable contract or standalone authentication status command was established."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/cli/install/",
+      "findings": "Documents account sign-in and Windows Credential Manager storage. API-key modelProvider mode is separate and was not used. Account/profile credential contents were not inspected."
+    },
+    {
+      "url": "https://code.claude.com/docs/en/cli-reference",
+      "findings": "Documents tool selection, settings, effort and permission controls. default remains an accepted alias for manual; no permission-mode substitution was needed."
+    },
+    {
+      "url": "https://code.claude.com/docs/en/model-config",
+      "findings": "Documents effort and enabled-thinking controls plus configured fallback chains and automatic flagged-content switching. Explicit fallbackModel empty array and switchModelsOnFlag false preserve selected routing; exact runtime enforcement remains for staged acceptance."
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/config-file/config-basic",
+      "findings": "Official OpenAI configuration reference consulted after applying openai-docs skill. Installed offline feature readback is reported separately from model availability or runtime observation."
+    },
+    {
+      "url": "https://learn.chatgpt.com/docs/config-file/config-reference",
+      "findings": "Official OpenAI feature/configuration reference. Local policy check verified the repository-required gates under the installed binary."
+    }
+  ],
+  "verification": {
+    "python": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv\\Scripts\\python.exe",
+    "source_import": "pytest.ini src path; frozen dependency environment",
+    "junit": "docs/evidence/windows-2026-10-06/native-contract-followup-tests.xml",
+    "junit_sha256": "0936d58585746a4450b912ff84a06d155211076f4e4967006a2752ae08399743",
+    "tests": 550,
+    "passed": 547,
+    "failed": 0,
+    "errors": 0,
+    "skipped": [
+      {
+        "test": "pipeline_tests.test_worker_inference_policy::test_redirected_ram_tree_is_a_permanent_security_hold",
+        "reason": "Native Windows symlink creation privilege is unavailable"
+      },
+      {
+        "test": "pipeline_tests.test_worker_inference_policy::test_gemini_redirected_binary_path_invalidates_contract",
+        "reason": "Native Windows symlink creation privilege is unavailable"
+      },
+      {
+        "test": "supervisor_tests.test_runner::test_production_execution_refuses_posix_instead_of_claiming_windows_isolation",
+        "reason": "This assertion proves the production boundary on POSIX only"
+      }
+    ],
+    "seconds": 26.297,
+    "scope": [
+      "pipeline_tests/test_agy_protocol.py",
+      "pipeline_tests/test_native_effort.py",
+      "pipeline_tests/test_inference_policy.py",
+      "pipeline_tests/test_worker_inference_policy.py",
+      "pipeline_tests/test_native_evidence.py",
+      "pipeline_tests/test_config.py",
+      "supervisor_tests/test_probes.py",
+      "supervisor_tests/test_runner.py"
+    ],
+    "initial_diagnostic_junit": "docs/evidence/windows-2026-10-06/native-contract-followup-initial-tests.xml",
+    "initial_diagnostic": "544 passed, 1 skipped, 2 WinError1314 symlink privilege failures; not deployment acceptance."
+  },
+  "changed_files_sha256": {
+    "src/cochem_pipeline/agy_protocol.py": "78d7bd0ee5cc73c9fc29bc983ef91a8e356cb59303a537948491d5f82efa9dda",
+    "src/cochem_pipeline/config.py": "f9844ac0f6273f561edd3392b3c3773934d0330e348d37b1d21e4e63216b4e81",
+    "src/cochem_pipeline/inference_policy.py": "0bdd0cb37ee225504d6df4e754c5d0b12722f0e21506b6e013487f3c08176ed7",
+    "src/cochem_pipeline/native_effort.py": "7d75258b0e17fbf703a54d8bc9f2a72f8e0c105eae2274bd582f41ad9b6fb78c",
+    "src/cochem_pipeline/native_evidence.py": "0033a7c07750a7f630942c6414f57a030758e221c30ff000eea172bd71af8ec5",
+    "src/cochem_pipeline/worker.py": "fa1028a820a27343c611ca99562d42765fb0a47c350f4c4919fcee1cd874e200",
+    "src/cochem_supervisor/probes.py": "67d5d04fc3fec342bad59327bc80bb92c1bdd17f3462f6cdd03c3168cb85ddb1",
+    "src/cochem_supervisor/runner.py": "46defbfa9c7470e3fcc96bb8a6a3c05ecf34c6da470e3ae822af6dfc7c726a1f",
+    "pipeline_tests/test_agy_protocol.py": "092daf83be9a443fcbdc12ead9e9e8cd4e6df2a311a6be9779e32214f6ea987f",
+    "pipeline_tests/test_config.py": "9a8515c0681c0d95a44419894ac0430859d1a53e08be1a340baab68044a9f3cd",
+    "pipeline_tests/test_inference_policy.py": "c8141d508f78230ae53d5c8100344042309730a2383df87d361f7256627585cc",
+    "pipeline_tests/test_native_effort.py": "f486ac4115fb2821972f3a476ad7a710746433deb7d6e33b62f0685f8dcae7ea",
+    "pipeline_tests/test_worker_inference_policy.py": "9ff8e6dabe90de1af7b7fdc86d29695070b93ee9851d1feb15c43551ce40e527",
+    "docs/NATIVE_EFFORT_4.2.7.md": "e02a35aa7101669160a27b86c945f7f374fc8196da3b41a84d61a1366ee3e71e"
+  }
+}

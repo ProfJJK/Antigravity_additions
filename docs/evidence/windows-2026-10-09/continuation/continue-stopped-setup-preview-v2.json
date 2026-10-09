@@ -1,0 +1,117 @@
+{
+    "schema":  "cochem-stopped-setup-continuation/1",
+    "mode":  "READ_ONLY_PLAN",
+    "reviewed_phases":  3,
+    "max_execution_slots":  4,
+    "worker_identities":  6,
+    "plans":  [
+                  {
+                      "phase":  "knowledge_and_six_denials",
+                      "report":  {
+                                     "schema":  "cochem-reviewed-morning-setup/1",
+                                     "mode":  "READ_ONLY_PLAN",
+                                     "plans":  [
+                                                   {
+                                                       "phase":  "private_knowledge",
+                                                       "report":  {
+                                                                      "schema":  "cochem-private-knowledge-install-plan/1",
+                                                                      "mode":  "READ_ONLY_PLAN",
+                                                                      "owner":  "AETHERDESK\\ansac",
+                                                                      "administrator":  false,
+                                                                      "source_inventory_sha256":  "edb97ec08cfdc6e451c9a875b4e9f300dc67b8e9af03b32feada9d6251240892",
+                                                                      "acceptance_helper_sha256":  "832eb45e9629f2bcde75eff58a455135934118bc5ab9f45c7d2870c9db0950ca",
+                                                                      "files_verified":  138,
+                                                                      "bytes_verified":  2156744,
+                                                                      "documents":  137,
+                                                                      "target_corpus":  "C:\\Program Files\\CoChem\\Knowledge4.2.7-windows-20261006",
+                                                                      "target_index_state":  "C:\\ProgramData\\CoChemPipeline427\\private\\knowledge-windows-20261006",
+                                                                      "index_absence":  "Must be verified by SYSTEM before corpus provisioning/index creation",
+                                                                      "target_acl":  "Protected SYSTEM/Admin FullControl only, before first private byte",
+                                                                      "task_name":  "CoChem-4.2.7-PrivateKnowledge-Acceptance",
+                                                                      "holds":  [
+
+                                                                                ],
+                                                                      "private_files_copied":  0,
+                                                                      "source_databases_read_or_modified":  false,
+                                                                      "models_executed":  0,
+                                                                      "configuration_changed":  false,
+                                                                      "daemon_started":  false
+                                                                  }
+                                                   },
+                                                   {
+                                                       "phase":  "six_worker_denials",
+                                                       "report":  {
+                                                                      "schema":  "cochem-six-worker-denials-plan/1",
+                                                                      "mode":  "READ_ONLY_PLAN",
+                                                                      "slots":  [
+                                                                                    "slot1",
+                                                                                    "slot2",
+                                                                                    "slot3",
+                                                                                    "slot4",
+                                                                                    "slot5",
+                                                                                    "slot6"
+                                                                                ],
+                                                                      "parallel_workers":  1,
+                                                                      "stop_on_first_failure":  true,
+                                                                      "wrapper_sha256":  "1576882fe655d27894aa6f9da25a14ae4ddd08540c865d51cc43b26fa3dd6f9d",
+                                                                      "source_sha256":  "78c0006a225fa98211f038c380552d9651a86c9198b518603e989747f315bb45",
+                                                                      "all_six_targets_checked":  true,
+                                                                      "holds":  [
+
+                                                                                ],
+                                                                      "worker_processes_executed":  0,
+                                                                      "activation_ready":  false
+                                                                  }
+                                                   }
+                                               ],
+                                     "results":  [
+
+                                                 ],
+                                     "stop_on_first_failure":  true,
+                                     "models_executed":  0,
+                                     "logins_executed":  0,
+                                     "repair_budgets_modified":  false,
+                                     "pipeline_started":  false,
+                                     "activation_ready":  false,
+                                     "remaining":  "Human browser login, native integration/effort acceptance, Docker/RAM/Oracle execution acceptance, historical continuity/repair-ledger decisions and final activation remain separate."
+                                 }
+                  },
+                  {
+                      "phase":  "fresh_stopped_runtime",
+                      "report":  {
+                                     "schema":  "cochem-stopped-runtime-update/1",
+                                     "mode":  "READ_ONLY_PLAN",
+                                     "target_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r1",
+                                     "source_manifest_sha256":  "b643d5903b886e5fc3841dc0f379de992bde17dee0c202800b3cc7991998e18f",
+                                     "source_files":  166,
+                                     "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+                                     "only_config_change":  "ramdisk.workspace_subdirectory",
+                                     "accounts_provisioned":  0,
+                                     "tasks_changed":  0,
+                                     "credentials_modified":  false,
+                                     "databases_modified":  false,
+                                     "ram_modified":  false,
+                                     "pipeline_started":  false,
+                                     "activation_ready":  false,
+                                     "holds":  [
+
+                                               ]
+                                 }
+                  }
+              ],
+    "results":  [
+
+                ],
+    "holds":  [
+
+              ],
+    "stop_on_first_failure":  true,
+    "automatic_resume":  false,
+    "models_executed":  0,
+    "logins_executed":  0,
+    "repair_budgets_modified":  false,
+    "ram_modified":  false,
+    "pipeline_started":  false,
+    "activation_ready":  false,
+    "remaining":  "Select the new stopped runtime only through separately reviewed task/config binding; RAM/Docker/Oracle provisioning, browser login, native integration, historical continuity and activation remain separate."
+}

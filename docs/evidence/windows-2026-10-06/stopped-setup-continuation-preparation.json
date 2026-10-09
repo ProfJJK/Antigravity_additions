@@ -1,0 +1,62 @@
+{
+  "schema": "cochem-stopped-setup-continuation-preparation/1",
+  "captured_utc": "2026-10-07T11:29:03.6949877Z",
+  "host": "AETHERDESK",
+  "scope": "New outer orchestration only; frozen constituent helpers unchanged.",
+  "entrypoint": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\continue-stopped-setup.ps1",
+    "sha256": "0f536acb274b194b8bd28e36d44c8c4e379a12103a184372433800a55f2e287b"
+  },
+  "tests": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test_continue_stopped_setup.py",
+    "sha256": "c3acebdc157e3c94868ed6def96ea4e6b3b15865d1c31ca407fb4e307a05327c"
+  },
+  "junit": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\continue-stopped-setup-tests-v2.xml",
+    "sha256": "6214c319d19e6598e56bb432ae02c0674ac333f1535788ea62a3981633a2db4b"
+  },
+  "passed": 25,
+  "test_scope": "Inert phase result/order/failure-per-slot/pin/refusal fixtures, including named worker configuration shape. No production phase invoked.",
+  "actual_windows_read_only_preview": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\continue-stopped-setup-preview-v2.json",
+    "sha256": "2ec4f6d31951047127f5da977ae30c51caf6834d0ead468b9c04718f47d7cbf9"
+  },
+  "preview_exit_code": 0,
+  "preview_holds": [],
+  "preserved_initial_preview_failure": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\continue-stopped-setup-preview.stderr.txt",
+    "cause": "Worker configuration is a named object, not an array. Guard fixed and tested before successful v2 preview."
+  },
+  "phase_order": [
+    "Private corpus copy and fresh index acceptance through reviewed unique SYSTEM task.",
+    "Six sequential handle-only worker denial tasks; stop at first failure.",
+    "Fresh protected code/config runtime build with no account, credential, task, database, RAM or activation changes."
+  ],
+  "controls": [
+    "All group previews complete before first Apply.",
+    "All eleven constituent helper/candidate/manifest streams remain open read-only for the whole invocation.",
+    "Both first-group successful receipts and all six slots required before runtime update.",
+    "Frozen runtime/source/config hashes and successful installed revision/parser verification required.",
+    "No cleanup/retry/resume is automatic; partial evidence and roots are preserved."
+  ],
+  "preserved_first_two_helper": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\finish-reviewed-setup.ps1",
+    "sha256": "88fd8daafb4a4d1fdcd8070426958f1628886ec5109989f9bd419130fca27bf1"
+  },
+  "preserved_runtime_helper": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-stopped-runtime-r1.ps1",
+    "sha256": "b8ff6b7d2518e881e17ea5d62d22b645a0b29d5277c2b3a4643892e8c1c6e247"
+  },
+  "max_execution_slots": 4,
+  "worker_identities": 6,
+  "pipeline_model_routing": "Chapter 06 unchanged",
+  "applied": false,
+  "models_executed": 0,
+  "logins_executed": 0,
+  "repair_budgets_modified": false,
+  "ram_modified": false,
+  "pipeline_started": false,
+  "activation_ready": false,
+  "guide_updated": false,
+  "remaining": "Root review precedes handoff/guide update; actual Apply, runtime selection, RAM/Docker/Oracle provisioning, browser authentication, native integration and legacy continuity/activation remain separate."
+}

@@ -1,0 +1,22 @@
+{
+    "schema":  "cochem-claude-console-native-fixture/1",
+    "status":  "HELD",
+    "fixture_pid":  19132,
+    "launcher_pid":  19340,
+    "nonce":  "551cae04cbde4210a43db1b199d92c66",
+    "powershell_version":  "5.1.26100.9444",
+    "is_64_bit_process":  true,
+    "helper_sha256":  "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+    "user_console_accessed":  false,
+    "native_provider_jobs_executed":  0,
+    "system_tasks_created":  0,
+    "synthetic_events_written":  0,
+    "borrowed_stdin_closed":  false,
+    "started_utc":  "2026-10-09T01:25:27.4149363Z",
+    "failure":  {
+                    "phase":  "launch_binding",
+                    "error_type":  "CommandNotFoundException",
+                    "command_name":  "Get-FileHash"
+                },
+    "finished_utc":  "2026-10-09T01:25:27.5621039Z"
+}

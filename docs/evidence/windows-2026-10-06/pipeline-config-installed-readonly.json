@@ -1,0 +1,18 @@
+{
+  "schema": "cochem-config-installed-readonly/1",
+  "observed_at_utc": "2026-10-07T05:37:39.7196852Z",
+  "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\pipeline.json",
+  "sha256": "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+  "owner": "BUILTIN\\Administrators",
+  "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:P(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;BU)",
+  "worker_identities": 6,
+  "max_execution_slots": 4,
+  "routing_policy_version": 2,
+  "cpu_temperature_required": true,
+  "ramdisk_lifecycle": "adopt_existing",
+  "ramdisk_size_mb": 8192,
+  "knowledge_enabled": true,
+  "agy_hold_state": "verification_pending",
+  "agy_evidence_path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\native-contract-agy-1.3.1-followup.json",
+  "activation_ready": false
+}

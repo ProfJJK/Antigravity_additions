@@ -1,0 +1,51 @@
+{
+    "schema":  "cochem-claude-console-native-fixture/1",
+    "status":  "HELD",
+    "fixture_pid":  31740,
+    "launcher_pid":  7088,
+    "nonce":  "3fa9fa7626254b33bf8efe4007f117fe",
+    "powershell_version":  "5.1.26100.9444",
+    "is_64_bit_process":  true,
+    "helper_sha256":  "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+    "user_console_accessed":  false,
+    "native_provider_jobs_executed":  0,
+    "system_tasks_created":  0,
+    "synthetic_events_written":  4,
+    "borrowed_stdin_closed":  false,
+    "started_utc":  "2026-10-09T01:26:45.6732575Z",
+    "console_process_ids":  [
+                                31740
+                            ],
+    "separate_owned_console_verified":  true,
+    "stdin_file_type":  2,
+    "stdin_console_mode":  503,
+    "empty_queue_result":  {
+                               "keys_discarded":  0,
+                               "bound_reached":  false,
+                               "reason":  "DRAINED",
+                               "native_queue_flushed":  true,
+                               "console_queue_clear":  true
+                           },
+    "native_events_before_clear":  3,
+    "native_queue_result":  {
+                                "keys_discarded":  0,
+                                "bound_reached":  false,
+                                "reason":  "DRAINED",
+                                "native_queue_flushed":  true,
+                                "console_queue_clear":  true
+                            },
+    "native_events_after_clear":  0,
+    "managed_cached_repeat_result":  {
+                                         "keys_discarded":  31,
+                                         "bound_reached":  false,
+                                         "reason":  "DRAINED",
+                                         "native_queue_flushed":  true,
+                                         "console_queue_clear":  true
+                                     },
+    "failure":  {
+                    "phase":  "clear_managed_cached_repeat",
+                    "error_type":  "RuntimeException",
+                    "code":  "FIXTURE_MANAGED_CACHE_CLEAR_FAILED"
+                },
+    "finished_utc":  "2026-10-09T01:26:46.0170002Z"
+}

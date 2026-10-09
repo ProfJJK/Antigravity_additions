@@ -1,0 +1,80 @@
+{
+  "schema": "cochem-return-continuation-series/2",
+  "status": "TWO_CONTINUATION_PHASES_VERIFIED",
+  "results": [
+    {
+      "phase": "foundation",
+      "report": {
+        "schema": "cochem-execution-foundation-task-result/2",
+        "status": "SCOPED_RAM_AND_EMPTY_REGISTRY_VERIFIED",
+        "receipt_path": "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3-v2\\execution-foundation.json",
+        "receipt_sha256": "9aea1e8f382ea8600cbd75d679f76acadc05da32774d9d8742cad08967ce1b41",
+        "last_task_result": 0,
+        "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+        "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+        "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+        "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+        "activation_ready": false,
+        "automatic_retry_allowed": false,
+        "partial_outputs_preserved": true,
+        "ram_provision_started": true,
+        "registry_provision_started": true,
+        "docker_traces": [
+          {
+            "observation": "before_ram",
+            "trace": {
+              "last_stage": "docker_pipe_denials_after",
+              "events_recorded": 18,
+              "failed_events": [],
+              "commands_started": 4,
+              "commands_returned": 4,
+              "retry_attempts": 0,
+              "original_guard_decisions_unchanged": true
+            }
+          },
+          {
+            "observation": "before_registry",
+            "trace": {
+              "last_stage": "docker_pipe_denials_after",
+              "events_recorded": 18,
+              "failed_events": [],
+              "commands_started": 4,
+              "commands_returned": 4,
+              "retry_attempts": 0,
+              "original_guard_decisions_unchanged": true
+            }
+          }
+        ],
+        "ram_scoped_roots_verified": 6,
+        "empty_registry_capacity": 4
+      }
+    },
+    {
+      "phase": "project",
+      "report": {
+        "schema": "cochem-private-project-import-result/1",
+        "status": "PRIVATE_BARE_PROJECT_VERIFIED",
+        "target": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+        "receipt_path": "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3\\project-import.json",
+        "receipt_sha256": "9e31fba6cbacb975970653a9230d9093afa0adc6993fbe6b8c98805653a26283",
+        "r3_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+        "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+        "git_custody_paths": 12,
+        "private_entries": 14,
+        "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+        "baseline_tree": "0e7fe3edd935e4a839d17cb99b30b08db18d8ae9",
+        "objects": 7,
+        "files": 3,
+        "activation_ready": false
+      }
+    }
+  ],
+  "worker_identities": 6,
+  "max_shared_slots": 4,
+  "automatic_retry_allowed": false,
+  "provider_calls_executed": 0,
+  "model_jobs_executed": 0,
+  "pipeline_started": false,
+  "activation_ready": false,
+  "remaining": "Attended native sign-ins, Docker physical execution, native routed workflow, history/budget reconciliation and sustained acceptance remain separate."
+}

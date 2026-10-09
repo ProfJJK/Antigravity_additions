@@ -1,0 +1,20 @@
+{
+  "counts": {
+    "errors": 0,
+    "failures": 1,
+    "skipped": 387,
+    "tests": 3095
+  },
+  "exit_code": 1,
+  "linux_evidence_used": false,
+  "pipeline_activation_claimed": false,
+  "privileged_acceptance_claimed": false,
+  "python": "3.12.13",
+  "schema": "cochem-ordinary-windows-regression/1",
+  "scope": "Ordinary Windows process, disposable fixtures; privileged/Docker/model opt-ins absent; two native CLI capability calls deselected",
+  "seconds": 243.646,
+  "source_before_sha256": "1de8db461a80c530809314d515f4870428c2f0de54b050df35912bafe6d04fc4",
+  "source_files": 307,
+  "source_unchanged": true,
+  "xml_sha256": "c79309689ee0ecd9a21a4cd845e4d8d02c85dc5df2ee0595d0dfd9f823ed90e5"
+}

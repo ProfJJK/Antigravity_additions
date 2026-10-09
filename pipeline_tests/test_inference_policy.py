@@ -56,6 +56,9 @@ def test_claude_tool_policy_keeps_subscription_auth_and_disables_hooks_mcp_and_s
     assert '--bare' not in argv and '--dangerously-skip-permissions' not in argv
     assert json.loads(argv[argv.index('--mcp-config')+1])=={'mcpServers':{}}
     assert json.loads(argv[argv.index('--settings')+1])['disableAllHooks'] is True
+    settings = json.loads(argv[argv.index('--settings')+1])
+    assert settings['fallbackModel'] == []
+    assert settings['switchModelsOnFlag'] is False
     with pytest.raises(ValueError):validate_claude_help('Supports --tools but no documented empty-list semantics')
 
 

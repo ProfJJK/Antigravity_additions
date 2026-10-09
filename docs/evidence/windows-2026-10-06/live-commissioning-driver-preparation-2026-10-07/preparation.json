@@ -1,0 +1,130 @@
+{
+  "schema": "cochem-live-commissioning-driver-preparation/1",
+  "status": "PREPARED_REVIEWED_NO_LIVE_EXECUTION",
+  "host": "AETHERDESK",
+  "entrypoint": "run-live-commissioning-r3.py",
+  "driver_sha256": "930467a019b8e91ac19ba877fa34890dc64fa2966af3df5c2806e9e186e467a4",
+  "default_preview": "PREVIEW_NO_IO",
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "mode": "ordinary operator with exact installed isolated Python; explicit --run-live only",
+  "requests": [
+    "fixed six-chapter local study-note SRS/WBS",
+    "registered disposable calculator add function with full coding workflow"
+  ],
+  "coding_baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+  "project": "windows-acceptance",
+  "branch": "pipeline/accepted",
+  "identities": 6,
+  "shared_capacity": 4,
+  "chapter06_routing": "unchanged and independently verified for both workflows",
+  "evidence_root": "C:\\Users\\ansac\\CoChem427\\live-commissioning-r3-v1",
+  "durability": [
+    "two deterministic IDs in exclusive durable intent before any POST",
+    "each phase has CreateNew flushed POST-attempt record before request",
+    "exclusive Win32 invocation lock",
+    "resume GET same IDs only; missing/error400 never authorizes another attempted POST",
+    "coding can be submitted once only after fresh planning acceptance passes",
+    "finite observation returns PENDING without cancellation or budget reset",
+    "private snapshots remain outside repository; immutable records preserve partial work"
+  ],
+  "prerequisites": [
+    "actual reviewed successful Warden commissioning receipt readable by ordinary operator",
+    "same captured running controller PID and instance, exact current runtime/source/config",
+    "six isolated Codex/Claude profiles authenticated and provider engineering holds handled by controller",
+    "positive current admission and required healthy components before each new paid submission"
+  ],
+  "controller_token_read_during_preparation": false,
+  "http_calls_during_preparation": 0,
+  "provider_model_jobs_executed": 0,
+  "system_or_admin_tasks_executed": 0,
+  "production_state_modified": false,
+  "full_host_acceptance_claimed": false,
+  "monitoring_48h_acceptance_claimed": false,
+  "test_result": {
+    "passed": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 1.43,
+    "terminal_seconds": 1.47,
+    "runtime": "Windows CPython3.12.13",
+    "actual_native_fixtures": [
+      "private current SID/SYSTEM/Admin directory and inherited file ACLs",
+      "Win32 read-share handles reject write/delete",
+      "exclusive invocation lock",
+      "single-link/hardlink and real directory junction refusals",
+      "private CreateNew journal and complete two-phase fixture engine"
+    ],
+    "boundaries": "HTTP/controller/models are inert fixtures; fixture ancestry boundary explicitly substitutes unsafe AppData/sandbox parents; actual intended operator ancestry tested read-only separately",
+    "prior_results": "Initial36pass1fixturefailure included planning root in coding-only route fixture; corrected fixture. Two later35pass2runs correctly refused extra writable Temp/checkout ancestors; production guard retained, test ancestry boundary made explicit. All results preserved."
+  },
+  "readonly_installed_custody_probe": {
+    "status": "EXACT_RUNTIME_AND_OPERATOR_CUSTODY_VERIFIED_BEFORE_STARTUP",
+    "held_code_files": 282,
+    "source_files": 166,
+    "installed_assets": 109,
+    "startup_receipt_checked": false,
+    "tokens_read": 0,
+    "http_calls": 0,
+    "production_writes": 0
+  },
+  "independent_review": {
+    "reviewer": "/root/host_inspection",
+    "result": "PASS_NO_CONCRETE_REMAINING_FINDING",
+    "reviewed_source_sha256": "930467a019b8e91ac19ba877fa34890dc64fa2966af3df5c2806e9e186e467a4",
+    "reviewed_test_sha256": "f23fd890c32021f739453d3d5b109998a680b5aca3b75bee73d0e0b519136597",
+    "reviewer_ran_live_or_tests": false
+  },
+  "files": [
+    {
+      "name": "run-live-commissioning-r3.py",
+      "sha256": "930467a019b8e91ac19ba877fa34890dc64fa2966af3df5c2806e9e186e467a4",
+      "bytes": 32542
+    },
+    {
+      "name": "test_live_commissioning_r3.py",
+      "sha256": "f23fd890c32021f739453d3d5b109998a680b5aca3b75bee73d0e0b519136597",
+      "bytes": 18987
+    },
+    {
+      "name": "live-commissioning-r3-tests-initial.xml",
+      "sha256": "5a4f50fe66cc24ebfbce3f6dc78f3b0f510feca633d00e51a462411094597763",
+      "bytes": 8107
+    },
+    {
+      "name": "live-commissioning-r3-tests-followup.xml",
+      "sha256": "3df94edfccccdcf22ff454ad24dd1825bc97dec8ece6f3bd924b5a81153c578e",
+      "bytes": 6378
+    },
+    {
+      "name": "live-commissioning-r3-tests-private-final.xml",
+      "sha256": "ff9ec52dec693175c5687d9dd5bb48e56fb610b5f612e30eb7efb16f5d94a9a9",
+      "bytes": 9241
+    },
+    {
+      "name": "live-commissioning-r3-tests-workspace-fixtures.xml",
+      "sha256": "71d1e8b68c42259efe353760006dac5bb782f7b17231d6c67eb94b60ccb9f334",
+      "bytes": 9289
+    },
+    {
+      "name": "live-commissioning-r3-tests-review.xml",
+      "sha256": "2d2a536e77806271434d7cb3f3d2e3fd9174d33c1c103590b87aafd65372eb7d",
+      "bytes": 6545
+    },
+    {
+      "name": "live-commissioning-r3-tests-final.xml",
+      "sha256": "32486d555bace03b979f9a8ae70100bedd210d894b78353022d5955e9fd861b0",
+      "bytes": 6545
+    },
+    {
+      "name": "live-commissioning-r3-preview-final.json",
+      "sha256": "7631c800745334633786bc5070f932439884c05cd6a969556978bd536ae96dd9",
+      "bytes": 3150
+    },
+    {
+      "name": "live-driver-readonly-custody-probe-20261007.json",
+      "sha256": "131a248c82ad572ca9cf95ec303284a7322bb5d10d66779ac00b914c3e418369",
+      "bytes": 358
+    }
+  ]
+}

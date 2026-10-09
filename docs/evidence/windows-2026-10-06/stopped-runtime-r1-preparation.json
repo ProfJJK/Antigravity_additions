@@ -1,0 +1,144 @@
+{
+  "schema": "cochem-stopped-runtime-preparation/1",
+  "captured_utc": "2026-10-07T11:23:49.0924073Z",
+  "host": "AETHERDESK",
+  "scope": "Ordinary Windows source repair, inert helper validation, and read-only installation preview. No elevated installation or runtime activation.",
+  "actual_windows_evidence": true,
+  "linux_results_reused": false,
+  "source_manifest": {
+    "path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\stopped-runtime-r1-source-20261007.json",
+    "sha256": "b643d5903b886e5fc3841dc0f379de992bde17dee0c202800b3cc7991998e18f"
+  },
+  "frozen_source_files": 166,
+  "source_changes_from_preserved_installation": {
+    "added": [
+      "src/cochem_pipeline/legacy_history.py",
+      "src/cochem_supervisor/budget_authority.py"
+    ],
+    "removed": [],
+    "changed": [
+      "src/cochem_pipeline/deployment.py",
+      "src/cochem_pipeline/ramdisk.py",
+      "src/cochem_supervisor/component_recovery.py",
+      "src/cochem_supervisor/engine.py",
+      "src/cochem_supervisor/state.py",
+      "src/cochem_supervisor/upgrade.py"
+    ]
+  },
+  "installer": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-stopped-runtime-r1.ps1",
+    "sha256": "b8ff6b7d2518e881e17ea5d62d22b645a0b29d5277c2b3a4643892e8c1c6e247"
+  },
+  "installer_tests": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test_stopped_runtime_r1.py",
+    "sha256": "97689534405e224b3b5c999c49e1bb89567204338373bdf65a649f2bc8cc4a7b"
+  },
+  "candidate_config": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\pipeline.scoped-ram.candidate.json",
+    "sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c"
+  },
+  "preview_artifact": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\stopped-runtime-r1-complete-preview.json",
+    "sha256": "c758cc2e8e7cc1416a913252c7d740d7451de8e2fe0ac28b7c67f43b35e5582d"
+  },
+  "preview": {
+    "schema": "cochem-stopped-runtime-update/1",
+    "mode": "READ_ONLY_PLAN",
+    "target_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r1",
+    "source_manifest_sha256": "b643d5903b886e5fc3841dc0f379de992bde17dee0c202800b3cc7991998e18f",
+    "source_files": 166,
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "only_config_change": "ramdisk.workspace_subdirectory",
+    "accounts_provisioned": 0,
+    "tasks_changed": 0,
+    "credentials_modified": false,
+    "databases_modified": false,
+    "ram_modified": false,
+    "pipeline_started": false,
+    "activation_ready": false,
+    "holds": []
+  },
+  "runtime_source": [
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\ramdisk.py",
+      "sha256": "a148b2f5092e44fae42240f01d5243024629c99f1ec689c41d8d8a444c7d6104"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\deployment.py",
+      "sha256": "3e3eca79e1f8e552c1c837cdd6c81fed2daa193abba3a03445368e6a20939a63"
+    }
+  ],
+  "ram_root_observation": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\ram-root-preservation-observation.json",
+    "sha256": "d46b4e46a8061a7af5222aef2f62cf1ba685a29d588133abbfe79c8342f0a870"
+  },
+  "ram_fix": {
+    "workspace_subdirectory": "CoChem427-windows-20261007",
+    "mount_root_preserved": "R:\\",
+    "existing_8_gib_volume_and_startup_task_preserved": true,
+    "volume_root_acl_and_indexing_untouched_by_scoped_mode": true,
+    "new_subtree_has_atomic_protected_creation": true,
+    "workspace_and_parent_checks_fail_closed": true,
+    "old_config_remains_compatible": true,
+    "old_installed_runtime_has_not_received_fix": true
+  },
+  "tests": [
+    {
+      "artifact": {
+        "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\stopped-runtime-r1-tests-v5.xml",
+        "sha256": "436a36b444188fdefa056bb282cffae8b72c2471917ae43596a269c822a882fb"
+      },
+      "passed": 30,
+      "skipped": 0,
+      "deselected": 0,
+      "scope": "Inert WinPS5.1 security/control-flow fixtures; actual native stderr, Python argument transport, protected uv help; no build/install."
+    },
+    {
+      "artifact": {
+        "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\ram-subtree-preservation-tests-v2.xml",
+        "sha256": "6c75b7e697708a9b994fa55e2026934fcbad44f2cacc02373e7aa04040caad1f"
+      },
+      "passed": 88,
+      "skipped": 5,
+      "deselected": 4,
+      "scope": "RAM adoption subtree and boundary tests; four existing symlink privilege cases explicitly deselected."
+    },
+    {
+      "artifact": {
+        "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\ram-subtree-consumer-tests-v2.xml",
+        "sha256": "0da3310d149094dac3d8ebdce5b5a04e3ef7a1a15bb8f5292ae97e3dd290d39a"
+      },
+      "passed": 158,
+      "skipped": 15,
+      "deselected": 1,
+      "scope": "RAM consumers/config/deployment/revision/operator views; one existing symlink privilege case explicitly deselected."
+    }
+  ],
+  "corrected_review_findings": [
+    "Judge actual native stderr by a nonnull native exit code and restore process environment/error preference.",
+    "Verify complete fresh tree custody before the first inheritable ACL assignment, including every file hardlink identity.",
+    "Rebind source, config, layout and source-manifest bytes to reviewed hashes after uv build and before importing new installed code."
+  ],
+  "apply_scope": {
+    "target_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r1",
+    "fresh_root_only": true,
+    "calls_account_installer": false,
+    "configuration_change_only": "ramdisk.workspace_subdirectory",
+    "credentials_or_tokens_modified": false,
+    "existing_tasks_modified": false,
+    "legacy_or_pipeline_state_migrated": false,
+    "repair_budgets_reset": false,
+    "ramdisk_provisioned": false,
+    "pipeline_activated": false,
+    "max_execution_slots": 4,
+    "worker_identities": 6,
+    "pipeline_model_routing": "Chapter 06 unchanged"
+  },
+  "limitations": [
+    "No -Apply execution or new-runtime build acceptance has occurred.",
+    "The old installed runtime/config remain selected. Do not provision R through them: scoped-subtree repair must first be installed and selected.",
+    "The reviewed helper copies only code/config/layout to a fresh protected root; it cannot activate tasks, migrate legacy state or prove SYSTEM/worker physical acceptance.",
+    "The separate initialize-execution-readiness.py remains an inert, unapproved draft bound to the old installation; it must be revised and reviewed before any execution.",
+    "Earlier failed test evidence remains preserved; these results do not repeat Linux acceptance or establish physical RAM/Docker/worker acceptance."
+  ]
+}

@@ -9,7 +9,8 @@ these are deliberate compatibility holds, not verified working bindings.
 
 The [routing research](ROUTING_RESEARCH_2026-10-07.md) records the public model
 and effort evidence. It does not replace Windows executable or account evidence.
-No host Agy capability proof was obtained during this change.
+Windows offline evidence is recorded below. It does not establish a deployable
+Agy authentication, isolation or actual-model contract.
 
 ## Protected configuration placement
 
@@ -71,6 +72,10 @@ unrestricted user settings file.
 The existing inference-only command also disables tools, additional MCP servers,
 setting sources and slash commands. The effort binding cannot relax those
 controls. Extended is rejected outside this inference-only execution path.
+The protected settings also clear the configured fallback chain with
+`fallbackModel: []` and disable automatic flagged-content model switches with
+`switchModelsOnFlag: false`. This retains the selected Chapter 06 model when a
+native request must end in refusal instead of invoking a different model.
 
 Offline Linux inspection of Claude Code 2.1.291 `--help` confirmed the native
 effort vocabulary and `--settings` support. This was not model inference and
@@ -105,18 +110,19 @@ The adapter currently accepts only these *conditional parser forms*:
 
 | Form | Permitted value |
 | --- | --- |
+| `--effort`, followed by one token | `low`, `medium`, `high`, `xhigh`, or `max`; High accepts only `high` |
 | `--thinking-level`, followed by one token | `minimal`, `low`, `medium`, `high`, or the corresponding uppercase spelling |
 | `--thinking-budget`, followed by one token | Extended only: decimal digits representing a value from 1 through 131072, at most six digits |
 
-The High profile requires exactly `--thinking-level high` or
-`--thinking-level HIGH`; it cannot map to a lower level or a numeric budget.
+The High profile requires exactly `--effort high`, `--thinking-level high` or
+`--thinking-level HIGH`; it cannot map to another level or a numeric budget.
 When its native metadata binding is present, it must identify an effort/level
 field reporting `high` or `HIGH`. A missing native field may still be declared
 `null`, which leaves the actual effort unverified. Extended rejects a zero
 thinking budget; positive numeric budgets remain reviewed deployment choices,
 without an inferred equivalence to High.
 
-**These forms are not a claim that Agy supports either flag.** A binding may be
+**Parser eligibility alone is not a native capability claim.** A binding may be
 installed only if the actual protected executable, its offline help/version and
 reviewed provider documentation establish the selector's meaning for that exact
 model/profile. Numeric acceptance by the parser does not demonstrate that a
@@ -227,3 +233,83 @@ authorization.
 The shipped empty contracts and placeholders intentionally prevent unsupported
 profiles from being treated as deployment-ready. Completing these host checks
 is separate from passing Linux protocol-fixture tests.
+
+## Windows offline follow-up, 2026-10-06
+
+The sanitized [native contract evidence](evidence/windows-2026-10-06/native-contract-followup.json)
+records Agy 1.3.0, Claude Code 2.1.280 and Codex 0.160.0 as inspected on Windows.
+Only bounded help/version/configuration probes ran; no model requests or
+authentication changes were made. These observations are distinct from Linux
+results and from protected worker-account acceptance.
+
+Agy's installed help exposes `--effort` and the stream input/output flags; it
+does not expose `--thinking-level`, `--thinking-budget` or `--settings`.
+The [official headless contract](https://www.antigravity.google/docs/cli/headless/)
+documents stdin user events and init/step/result output. The new
+`agy-stream-json` preparation code preserves one prompt, checks native session
+continuity, and rejects tool or subagent events. It requires an empty native
+tool registry, which has **not** been observed on this installation.
+
+The documented init model describes selected configuration; the terminal
+result does not establish the actual serving model. No effort observation
+binding is established either. An explicit compatibility hold therefore rejects
+this protocol **before any native launch** in pipeline and repair runners.
+Parsing fixtures is not permission to enable it. Even an undocumented terminal
+field named `model` is not promoted to actual-model evidence.
+
+The [Agy reference](https://www.antigravity.google/docs/cli/reference/) permits
+read tools even under strict permission settings. No verified all-tools/MCP/
+hooks/subagents disable contract or read-only subscription-status command was
+found. `agy help auth` and `agy help status` report unknown subcommands. Keep
+the host Agy entry and effort contracts held; do not substitute API-key mode.
+
+Claude help confirms the required inference flags and effort vocabulary. Its
+[model configuration documentation](https://code.claude.com/docs/en/model-config)
+supports the explicit fallback denials and enabled-thinking settings above.
+Exact Extended model/profile bindings and actual output still need controlled
+Chapter 06 acceptance. Codex's existing policy readback verified all 24 required
+feature gates disabled with the `ultra` configuration, but did not certify
+worker-account authentication, MCP isolation, serving models or actual effort.
+
+## Explicit pending integration state
+
+The owner confirms Agy is available, signed in and functioning on the workstation.
+That owner confirmation is distinct from this session's offline version/help
+evidence. The pending checks concern **isolated pipeline integration**, not an
+Agy outage or failure of the owner's login. Existing credentials are unchanged.
+
+The Windows proposals now retain an explicit `integration_hold` on the Agy
+provider. This permits configuration loading and ordinary Chapter 06
+compatibility spillover without inventing missing native contracts. The complete
+candidate catalogue and order remain intact; no model is forced for coverage.
+Other host prerequisites, four shared seats and different-provider review still
+apply. It does not establish full Agy or Windows acceptance.
+
+The exact hold schema is `native-integration-hold/1`, with
+`state: verification_pending`, `scope: isolated_pipeline_integration`, a bounded
+operator `reason`, absolute `evidence_path`, `evidence_sha256`, observed
+`executable_sha256` and `version`, and provider-specific `finding_ids`.
+The referenced bounded, ordinary JSON file must retain the recorded Windows
+capability report schema, matching binary/version and actual pending findings.
+Duplicate, resolved or mismatched evidence is rejected. A staged executable may
+still be absent while held; if present its bytes must match the recorded digest.
+
+Every command, worker and repair preflight path rejects a held integration
+before launching a version/help probe, authentication or inference. The
+pipeline records `integration_verification_hold` with compatibility category
+and the evidence commitment; the repair board records an unspent compatibility
+rejection before paid admission. Missing or changed evidence cannot clear the
+hold or turn into an authentication-failure diagnosis. Hashing occurs outside
+shared admission and SQLite claim critical sections.
+
+Removing the hold restores the full native headless/authentication/isolation
+validation. An incomplete contract then fails configuration or dispatch again;
+there is no `ready: true` shortcut. Live acceptance cannot certify a currently
+held provider from a previously supplied receipt fixture.
+
+The proposals point to the existing exact repository capability report for
+review. Before protected activation, copy those **same bytes** into the planned
+protected native root, attest ownership and worker denial, and update both
+installed configurations' `evidence_path` to that copy, retaining its hash.
+The staged plan records the custody mapping. Missing, changed or untrusted
+evidence remains held; relocation alone cannot activate the integration.

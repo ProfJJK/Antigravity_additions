@@ -1,0 +1,13 @@
+{
+  "schema": "cochem-commissioning-preparation-state/1",
+  "status": "PREPARATION_RECORDED_NOT_APPLIED",
+  "auth_preparation_sha256": "d27318e6bb63820896d03a817b9158407567ec4d975884864ddd54e5398df518",
+  "observed_sha256": "2f26d09bfc480e46d0fd525eb773c47c3036def043278fa4dd98079f6c53daf2",
+  "handoff_sha256": "7438ecfd5bdc8d4221eb9646f623375fc2abc2501a372f3ed373e35fb2c9ffd8",
+  "guide_sha256": "33ddd4c1d54d723aed220ba0ae50877808d223229abcf2b82ee4927d81f81c56",
+  "installed_runtime_or_configuration_changed": false,
+  "production_tasks_changed": false,
+  "native_or_model_jobs_executed": 0,
+  "full_srs_acceptance": false,
+  "stale_four_profile_and_older_command_guidance_replaced_in_current_fields": true
+}

@@ -1,0 +1,66 @@
+{
+  "schema": "cochem-reviewed-windows-preparation/1",
+  "captured_utc": "2026-10-08T01:27:17.852787+00:00",
+  "host": "AETHERDESK",
+  "state": "PREPARED_NOT_APPLIED",
+  "scope": "Fresh unpublished paired held-ledger construction primitive, with preview-only CLI. Actual disposable Windows SQLite; production private boundary substituted only inside explicit temporary-fixture tests. Actual non-SYSTEM refusal also verified.",
+  "artifacts": {
+    "bootstrap-unresolved-budget-pair.py": {
+      "sha256": "1c431c12f5b502664494fb09bf6c0ef75bea9e6fad7739f8478b3591a24dcc11",
+      "bytes": 13622
+    },
+    "test_budget_pair_bootstrap.py": {
+      "sha256": "82cd17e14127267e9ea12b72dadfff3dff4daab28e8cc518f4a948ff6d922e96",
+      "bytes": 9625
+    },
+    "budget-pair-bootstrap-initial.xml": {
+      "sha256": "4745636ff6903ec37bef2b7ce7ce991a9f4d3449f2e97b69ac9dcfa7cd6fce81",
+      "bytes": 79216
+    },
+    "budget-pair-bootstrap-followup.xml": {
+      "sha256": "d4d34a7ffca0bc8276208fbde7abc863b114504ee553b4c2fa8bdbdc3afdd768",
+      "bytes": 20627
+    },
+    "budget-pair-bootstrap-followup-2.xml": {
+      "sha256": "4a1c7a2f7dbb647d3e292ed1d244130eff90ca18d090ac07f86bed7680a229cb",
+      "bytes": 4275
+    },
+    "budget-pair-bootstrap-readonly-preview.json": {
+      "sha256": "ad851157a9c3f2e067c930788701b31caad78454d9c69d3ec902aaafa834a2cc",
+      "bytes": 406
+    },
+    "unresolved-budget-evidence.proposed.json": {
+      "sha256": "b7b822ff263720dfb443607f0e3cbf515d175b9b7784ea4fd15f8968b7ff3709",
+      "bytes": 1330
+    }
+  },
+  "final_tests": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 31,
+    "suite_seconds": 1.687
+  },
+  "final_xml": "budget-pair-bootstrap-followup-2.xml",
+  "earlier_failed_fixture_runs_retained": true,
+  "review": {
+    "reviewer": "host_inspection",
+    "kind": "independent_read_only_source_review",
+    "source_sha256": "1c431c12f5b502664494fb09bf6c0ef75bea9e6fad7739f8478b3591a24dcc11",
+    "finding": "No concrete defect found in fresh-root creation, partial preservation, exact module/schema/trigger bindings, paired immutable holds, closed-writer immutable verification, or no-repeat behavior. Scope is unpublished only; missing history is never zero and no old ledgers/tasks/config are opened.",
+    "reviewer_executed_tests_or_privileged_actions": false
+  },
+  "limitations": [
+    "No protected bootstrap launcher is implemented or applied; a reviewed launcher must bind full protected runtime, exact fresh destination, inherited private ACLs, stopped state and this source/evidence before invoking.",
+    "No source ledger, WAL, spend or job history is imported or reset. Historical allowance remains unknown. Complete staged pairs block paid repair and component recovery permanently under current no-release API.",
+    "The r3 Supervisor budget guard also blocks _start, recovery and tick before observation. This primitive does not enable supervisor-driven Warden startup or full independent supervisor commissioning.",
+    "Future cutover must revalidate paired completion and guards; no current configuration is pointed to this staging root. Failed/partial roots remain preserved and cannot be automatically reused."
+  ],
+  "production_tasks_created": 0,
+  "native_or_model_commands_executed": 0,
+  "original_databases_opened": false,
+  "credentials_read_or_modified": false,
+  "installed_configuration_or_runtime_changed": false,
+  "linux_results_used": false
+}

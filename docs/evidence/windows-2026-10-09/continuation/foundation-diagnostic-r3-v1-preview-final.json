@@ -1,0 +1,38 @@
+{
+    "schema":  "cochem-foundation-diagnostic-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "helper_sha256":  "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+    "runtime":  {
+                    "install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+                    "source_manifest_sha256":  "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+                    "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+                    "revision":  {
+                                     "schema":  "cochem-installed-revision/1",
+                                     "verified":  true,
+                                     "read_only":  true,
+                                     "files":  109,
+                                     "source_sha256":  "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+                                     "acceptance_files":  0,
+                                     "acceptance_sha256":  null
+                                 },
+                    "source_files_verified":  166
+                },
+    "target_root":  "C:\\Program Files\\CoChem\\ExecutionFoundationDiagnostic4.2.7-windows-20261007-r3-v1",
+    "task_name":  "CoChem-4.2.7-ExecutionFoundationDiagnostic-20261007-r3-v1",
+    "failed_foundation_receipt_sha256":  "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "preflight_receipt_sha256":  "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "private_receipt_and_prior_task_checks_deferred":  true,
+    "proposed_creates":  [
+                             "fresh protected diagnostic helper/config/packet/receipt root",
+                             "one no-trigger SYSTEM diagnostic task"
+                         ],
+    "existing_state_changes":  0,
+    "provisioning_performed":  false,
+    "containers_created":  0,
+    "native_model_jobs_executed":  0,
+    "activation_ready":  false,
+    "automatic_retry_allowed":  false,
+    "holds":  [
+
+              ]
+}

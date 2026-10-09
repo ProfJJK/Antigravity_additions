@@ -23,7 +23,7 @@ def captured(tmp_path):
     target='src/cochem_pipeline/example.py'
     for directory,value in ((baseline,1),(candidate,2)):
         path=directory/target;path.parent.mkdir(parents=True)
-        path.write_text(f'# Source is read as data, never imported\nvalue = {value}\n')
+        path.write_text(f'# Source is read as data, never imported\nvalue = {value}\n', encoding='utf-8', newline='\n')
     arguments={'incident':{'fingerprint':'independent-incident','category':'code'},
         'allowed_paths':['src/cochem_pipeline/'],
         'test_evidence':{'passed':2,'failures':0,'errors':0,'skipped':0,'tests':2},
@@ -41,7 +41,7 @@ def native(provider,model):
 def test_capture_binds_real_canonical_clauses_file_bytes_diff_wbs_and_independent_tests(captured):
     specification,baseline,candidate,arguments,manifest=captured
     assert manifest['artifact_hashes']['4.2.7_SRS.md']==hashlib.sha256((specification/'4.2.7_SRS.md').read_bytes()).hexdigest()
-    ledger=json.loads((specification/'requirements_4.2.7.json').read_text())
+    ledger=json.loads((specification/'requirements_4.2.7.json').read_text(encoding='utf-8'))
     assert {row['id'] for row in manifest['requirements']}=={row['id'] for row in ledger['requirements']}
     assert manifest['artifact_hashes']['repair_wbs']==digest(manifest['wbs'])
     assert manifest['artifact_hashes']['regression_evidence']==digest(arguments['test_evidence'])
@@ -51,7 +51,7 @@ def test_capture_binds_real_canonical_clauses_file_bytes_diff_wbs_and_independen
     result=validate_review(output,manifest,receipt,native('codex','gpt-6-sol'))
     assert result['approved'] is True
     assert result['manifest_sha256']==digest(manifest)
-    assert (candidate/'src/cochem_pipeline/example.py').read_text().endswith('value = 2\n')
+    assert (candidate/'src/cochem_pipeline/example.py').read_text(encoding='utf-8').endswith('value = 2\n')
 
 
 @pytest.mark.parametrize('mutation',['manifest','artifact','coverage','duplicate','chapter','wbs','findings','self','receipt'])
@@ -75,12 +75,13 @@ def test_generic_pass_or_partial_wrong_self_review_cannot_approve_repair(capture
 def test_exact_same_id_canonical_wording_drift_invalidates_catalog(captured):
     specification,baseline,candidate,arguments,_=captured
     path=specification/'4.2.7_SRS.md'
-    path.write_text(path.read_text().replace('Current explicit owner decisions','Altered explicit owner decisions',1))
+    path.write_text(path.read_text(encoding='utf-8').replace('Current explicit owner decisions','Altered explicit owner decisions',1),
+                    encoding='utf-8', newline='\n')
     with pytest.raises(ValueError,match='hashes/coverage'):
         build_review_manifest(specification,baseline,candidate,**arguments)
     catalog=specification/'requirements_4.2.7.json'
-    ledger=json.loads(catalog.read_text());ledger['specification_sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
-    catalog.write_text(json.dumps(ledger))
+    ledger=json.loads(catalog.read_text(encoding='utf-8'));ledger['specification_sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
+    catalog.write_text(json.dumps(ledger), encoding='utf-8', newline='\n')
     with pytest.raises(ValueError,match='wording differs'):
         build_review_manifest(specification,baseline,candidate,**arguments)
 
@@ -90,7 +91,7 @@ def test_failed_outer_evidence_and_unapproved_paths_prevent_review_capture(captu
     with pytest.raises(ValueError,match='passing protected'):
         build_review_manifest(specification,baseline,candidate,**{**arguments,'outer_evidence':{'passed':False}})
     unauthorized=candidate/'src/cochem_supervisor/engine.py';unauthorized.parent.mkdir()
-    unauthorized.write_text('pass\n')
+    unauthorized.write_text('pass\n', encoding='utf-8', newline='\n')
     with pytest.raises(ReleaseError,match='protected or unapproved'):
         build_review_manifest(specification,baseline,candidate,**arguments)
 
@@ -98,7 +99,8 @@ def test_failed_outer_evidence_and_unapproved_paths_prevent_review_capture(captu
 def test_candidate_python_is_read_without_import_or_execution(captured):
     specification,baseline,candidate,arguments,_=captured
     marker=candidate/'executed-by-accident'
-    (candidate/'src/cochem_pipeline/example.py').write_text(f'from pathlib import Path\nPath({str(marker)!r}).write_text("bad")\n')
+    (candidate/'src/cochem_pipeline/example.py').write_text(f'from pathlib import Path\nPath({str(marker)!r}).write_text("bad")\n',
+                                                        encoding='utf-8', newline='\n')
     manifest=build_review_manifest(specification,baseline,candidate,**arguments)
     assert 'write_text' in manifest['files'][0]['after_text']
     assert not marker.exists()

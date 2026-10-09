@@ -1,0 +1,46 @@
+{
+  "schema": "cochem-protected-native-version-capabilities/1",
+  "observed_at_utc": "2026-10-07T04:56:33.671220+00:00",
+  "scope": "Ordinary ansac execution from protected copies, version commands only; no login, model jobs or SYSTEM acceptance",
+  "records": [
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe",
+      "argv": [
+        "--version"
+      ],
+      "sha256_before": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d",
+      "sha256_after": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d",
+      "unchanged": true,
+      "exit_code": 0,
+      "stdout": "codex-cli 0.160.0\n",
+      "stderr": ""
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe",
+      "argv": [
+        "--version"
+      ],
+      "sha256_before": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469",
+      "sha256_after": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469",
+      "unchanged": true,
+      "exit_code": 0,
+      "stdout": "2.1.280 (Claude Code)\n",
+      "stderr": ""
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\agy.exe",
+      "argv": [
+        "--version"
+      ],
+      "sha256_before": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+      "sha256_after": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+      "unchanged": true,
+      "exit_code": 0,
+      "stdout": "1.3.1\n",
+      "stderr": ""
+    }
+  ],
+  "isolated_authentication_verified": false,
+  "serving_model_verified": false,
+  "system_acceptance": false
+}

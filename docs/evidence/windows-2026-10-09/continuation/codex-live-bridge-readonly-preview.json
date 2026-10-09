@@ -1,0 +1,29 @@
+{
+  "activation_ready": false,
+  "check_live_requested": false,
+  "child_started": false,
+  "configuration": {
+    "client_config_sha256": "9059f6e65d3259dff6e595f3f4f131983fd827088034db283913a7285411ea5b",
+    "codex_config_sha256": "a0721e9cdf08179d9a71aa744f798f8bc9a135def7f239aaa8ad7ef868af4b59",
+    "connector_sha256": "de8741c843df2cc12ce81fbdf3ee78f0c7c6bc8449b3efd1aff3c6c768a4d1d4",
+    "installed_revision_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "loopback_port": 47824,
+    "server_entry_matches": true,
+    "token_opened_by_verifier": false,
+    "token_path_matches": true
+  },
+  "configuration_changed": false,
+  "controller_tool_calls": 0,
+  "existing_token_read_by_stdio_bridge": false,
+  "mcp_tool_call_requests_attempted": 0,
+  "model_jobs_submitted": 0,
+  "native_performance_verified": false,
+  "network_calls": 0,
+  "owned_stdio_child_started": false,
+  "owned_stdio_tree_cleanup_verified": false,
+  "raw_tool_responses_retained": false,
+  "running_chat_tool_catalog_reloaded": false,
+  "schema": "cochem-codex-live-bridge/1",
+  "status": "READ_ONLY_PREVIEW",
+  "token_opened_by_verifier": false
+}

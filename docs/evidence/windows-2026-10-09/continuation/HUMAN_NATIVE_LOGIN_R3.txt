@@ -1,0 +1,52 @@
+Attended native login — r3 preparation, review before use
+
+This supersedes HUMAN_NATIVE_LOGIN.txt for runtime selection. The original guide
+and helpers remain preserved. These commands have not performed any login,
+provider status or inference. Keep the pipeline and supervisor daemons stopped.
+Use this phase only when the owner is present and the deployment reviewer has
+released it; it is separate from the pending Docker/RAM preparation.
+
+All worker execution below selects:
+C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r3
+The existing six isolated accounts/profiles are retained. Maximum shared capacity
+remains four and all pipeline model jobs remain on Chapter 06 routing. Never
+copy the owner's authentication files into a worker profile. The owner confirmed
+Agy is available, signed in and working. Only its isolated pipeline integration
+contract remains held; no Agy login or new provider contract is supplied here.
+
+Claude (one attended account at a time):
+Open an Administrator Windows PowerShell console as AETHERDESK\ansac. Run the
+following for slot1, then change only -Slot through slot6 after each successful
+command/cleanup result. Stay at that console and use the intended browser account.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\login_pipeline_worker_interactive_r3.ps1" -Slot slot1 -Apply -Interactive
+
+Follow Claude's browser instructions. If it requests a returned code, press P in
+this console and enter the code only at the masked prompt. Do not paste it as a
+PowerShell command. This bridge accepts one bounded line and suppresses native
+output after submission. Press Q to request cancellation. Preserve any failed or
+partial session and its task; do not retry automatically. The original generic
+Claude helper cannot supply this paste-code fallback and is not this command.
+
+Codex (one attended account at a time):
+The frozen generic helper below exists and accepts an explicit InstallRoot.
+Its login path does not request ResourceLimits; the r3 path is selected explicitly
+for the current runtime. Its historical GUID task/log lifecycle is unchanged.
+Run for slot1, then change only -Slot through slot6 after each successful result.
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Program Files\CoChem\InstallGuard4.2.7-windows-20261006\repository\scripts\login_pipeline_worker.ps1" -Slot slot1 -Provider codex -Executable "C:\Program Files\CoChem\Native4.2.7-windows-20261006\codex.exe" -InstallRoot "C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r3"
+
+Follow Codex's device-login URL/code in your browser. The frozen helper prints
+its diagnostic log location. Do not claim authentication solely from command exit.
+
+After all six attended logins for one provider, its separate status batch is:
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\check-all-worker-native-status-r3.ps1" -Provider claude -Apply
+
+Use -Provider codex for Codex. The r3 batch checks all six fresh evidence targets
+before starting, runs sequentially, and stops at the first failed receipt. It
+preserves completed/failed tasks and evidence. No automatic rerun or activation.
+A native authentication-status pass does not verify account identity, paid plan
+entitlement, serving-model identity, effort routing or inference acceptance.
+No model jobs, supervisor budget migration, daemon activation or Agy integration
+release are performed by this phase.

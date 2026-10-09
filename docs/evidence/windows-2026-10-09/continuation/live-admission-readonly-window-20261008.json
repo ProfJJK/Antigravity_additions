@@ -1,0 +1,211 @@
+{
+  "automatic_repeat": false,
+  "controller": {
+    "instance_id": "c867588c063c4362beca10358ebf79ef",
+    "pid": 5788
+  },
+  "failure": null,
+  "http_get_calls": 24,
+  "http_post_calls": 0,
+  "model_jobs_submitted": 0,
+  "private_journal_modified": false,
+  "samples": [
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514660.0820282,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 85.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514665.108673,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514670.1207306,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 75.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514675.1634176,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 84.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514680.1776376,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514685.2063568,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514690.2193456,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 81.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514695.2337618,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 93.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514700.2434802,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 86.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514705.2863686,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 89.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514710.2981925,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 96.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514715.3113093,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514720.3205295,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514725.3356876,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 78.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514730.3491738,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 78.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514735.3947139,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 87.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514740.407641,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 89.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514745.431493,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 88.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514750.4553027,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 90.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514755.468359,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 85.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514760.479764,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 77.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514765.5097635,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 76.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514770.5296543,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 82.0
+    },
+    {
+      "admission_capacity": 0,
+      "consecutive_ready_samples": 0,
+      "observed_at": 1791514775.5706346,
+      "ready": false,
+      "samples_fresh": true,
+      "temperature_celsius": 85.0
+    }
+  ],
+  "schema": "cochem-live-readonly-admission-window/1",
+  "startup_receipt_sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+  "status": "READINESS_NOT_ESTABLISHED",
+  "tasks_or_thresholds_changed": false,
+  "window_seconds": 120
+}

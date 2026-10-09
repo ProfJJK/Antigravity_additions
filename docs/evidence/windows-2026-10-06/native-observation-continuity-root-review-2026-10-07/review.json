@@ -1,0 +1,50 @@
+{
+  "schema": "cochem-monitoring-continuity-review/1",
+  "status": "ORDINARY_WINDOWS_FIXTURES_PASSED_NOT_NATIVE_ACCEPTANCE",
+  "passed": 32,
+  "skipped": [
+    {
+      "name": "test_forked_child_rejects_parent_writer_before_acquiring_inherited_lock",
+      "reason": "Windows uses fresh spawned processes, not fork"
+    },
+    {
+      "name": "test_short_linux_probe_cannot_claim_windows_acceptance",
+      "reason": "Linux cannot attest native performance"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "python": "Windows staged Python 3.12.13",
+  "independent_review": true,
+  "checks": [
+    "Long observation gaps cannot count as continuous 48-hour monitoring.",
+    "PID reuse is checked with fresh process identities before and after collection.",
+    "Raw fresh desktop-heap measurement provenance is retained.",
+    "No accepted rows means desktop-heap availability remains false.",
+    "Ten-second maximum completed-sample gap is documented as harness policy, not an SRS-prescribed interval."
+  ],
+  "limitations": [
+    "Synthetic process/clock fixtures, not actual SYSTEM process or 48 elapsed hours.",
+    "Installed r3 remains unchanged; this repaired external observation harness needs protected deployment binding before native use.",
+    "Actual desktop-heap used/capacity acquisition remains unavailable/unverified."
+  ],
+  "files": [
+    {
+      "path": "tests.xml",
+      "sha256": "a676ee19390b78ab5d0f5ba583a004fc72ecb9c27e8bb1aa58d74e6f1b1cd222",
+      "bytes": 5909
+    },
+    {
+      "path": "performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+      "bytes": 18919
+    },
+    {
+      "path": "test_native_observation_continuity.py",
+      "sha256": "ade36294bdfd845680c55b9eb87ae9471cd4995f6d2b19b1caa1f00b03e4beee",
+      "bytes": 9695
+    }
+  ],
+  "native_model_jobs": 0,
+  "protected_runtime_changed": false
+}

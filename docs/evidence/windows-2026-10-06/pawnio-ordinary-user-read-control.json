@@ -1,0 +1,14 @@
+{
+  "schema": "cochem-device-security-ordinary-user/1",
+  "checked_at_utc": "2026-10-07T11:17:41.185579+00:00",
+  "identity": "AETHERDESK\\ansac",
+  "elevated": false,
+  "scope": "READ_CONTROL handle plus security metadata only",
+  "device": "\\\\?\\GLOBALROOT\\Device\\PawnIO",
+  "device_ioctls_issued": 0,
+  "device_data_read_or_written": false,
+  "worker_or_system_acceptance": false,
+  "status": "HANDLE_NOT_OPENED",
+  "winerror": 5,
+  "interpretation": "ACCESS_DENIED for the actual ordinary operator token and READ_CONTROL only. This does not establish the six workers' device or data-access denial."
+}

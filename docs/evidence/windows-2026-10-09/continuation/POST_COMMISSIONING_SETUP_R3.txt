@@ -1,0 +1,33 @@
+PREPARED LATER MONITORING SETUP
+
+First complete RETURN_SETUP_CONTINUE.txt. This later batch is separate from
+the v4 sign-in/startup command and is not needed to begin ordinary pipeline use.
+Do not run it before Codex has verified the successful commissioning result.
+
+The later batch requires the exact currently running commissioned controller.
+It cannot authenticate profiles, start/restart the controller, stop it, or
+accept a replacement PID. A missing or partial first start stops all changes.
+
+It stages the independent supervisor with unresolved historical budget
+authority preserved, then starts held supervision and resource observation.
+Both run unattended. Paid repair and component recovery remain disabled.
+The existing credentials, databases/history, repair budgets, R: startup task,
+six identities, four shared slots and Chapter 06 routing are preserved.
+
+One future Administrator PowerShell command installs these protected SYSTEM
+components. No browser approval is required in this later command. The chat
+process is not a Windows administrator, even when filesystem access is enabled.
+
+The observer can collect controller/descendant memory, CPU, handles and
+published CPU-temperature metadata for 48 hours. Initial samples do not prove
+48-hour completion. Genuine desktop-heap usage and independent recovery timing
+remain unavailable and cannot be replaced with USER/GDI counts or fabricated
+passing values. Full SRS acceptance remains incomplete until those gaps close.
+
+Oracle maintenance tests remain deferred and do not block first use. Existing
+partial tasks/files and all receipts are retained; this batch cannot retry,
+resume a failed start or reset previous state.
+
+No administrator/System task or observer was installed or started during
+preparation. Codex will provide the final reviewed command when the current
+commissioning result and live MCP/workflow checks have been inspected.

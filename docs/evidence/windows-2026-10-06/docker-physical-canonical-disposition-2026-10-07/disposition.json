@@ -1,0 +1,157 @@
+{
+  "canonical_clauses": {
+    "S427-AC-003": {
+      "line": 249,
+      "text": "- **S427-AC-003:** Required Windows launch evidence: SYSTEM/worker/repair identities and ACLs; real RAM backing/mapping; Docker pipe/backend denial; subscription retention; exact CLI capabilities; six-chapter native DAG; a complete coding workflow; stress at the configured shared capacity including replenishment, plus the separate exact four-worker Windows queue benchmark; Oracle storm/reaper; cancellation/crash/reboot; independent repair/promotion/rollback; hardware/desktop-heap/48-hour monitoring."
+    },
+    "S427-DOCKER-001": {
+      "line": 176,
+      "text": "- **S427-DOCKER-001:** Maintain a persistent prepared-container pool managed by the protected controller. Cold `create`/`start` occurs only in bounded background replenishment. Normal test jobs acquire a previously verified, unused matching prepared container; an empty pool records a wait/request and cannot fall back to inline cold creation. Prepared means actual running readiness plus exact image/policy/ownership attestation, not a registry label alone."
+    },
+    "S427-DOCKER-003": {
+      "line": 178,
+      "text": "- **S427-DOCKER-003:** A prepared container serves one attempt only. After source injection/execution, remove it and its scratch; never return a contaminated instance to the pool. Replenishment uses the exact immutable allowlisted image SHA and captured policy. Prepared, preparing and active containers count against the same hardware/seat budget as native jobs."
+    },
+    "S427-DOCKER-006": {
+      "line": 181,
+      "text": "- **S427-DOCKER-006:** Record background preparation duration separately from queue wait, handoff and test-ready latency. Retain original request time; never reset clocks to hide a miss. Warm startup ≤1.5 seconds remains the optimization target; the accepted historical 4.85-second cold creation belongs to replenishment, not the foreground job path. See Chapter 16 for acceptance disposition."
+    },
+    "S427-OPS-015": {
+      "line": 254,
+      "text": "- **S427-OPS-015:** Expose one acceptance dashboard containing every mandatory requirement, latest exact artifact hash, platform, revision and outstanding action. Missing, stale, unexecuted or wrong-platform evidence prevents aggregate full acceptance."
+    },
+    "S427-PERF-001": {
+      "line": 260,
+      "text": "- **S427-PERF-001:** The owner accepts the reported measurements as useful operating ranges: ten-process queue acquisition maximum **29.347 ms**, knowledge authenticated MCP mean **7.731 ms** (backend mean **4.100 ms**) and historical cold Docker creation **4.85 seconds**. These are accepted observations, not invented universal maxima, percentile promises or native Windows certification. The old 5 ms/1.5-second values remain optimization targets with the scopes below."
+    },
+    "S427-PERF-004": {
+      "line": 263,
+      "text": "- **S427-PERF-004:** Cold Docker preparation is accepted maintenance overhead. Normal jobs SHALL use the persistent prepared pool; no inline cold fallback. Record queue/request-to-test and prepared-handoff timing honestly; a pool miss is visible waiting, not a fake ≤1.5-second success. Improve warm handoff toward ≤1.5 seconds while preserving configured hardware admission, resource and isolation gates. The prior 0.486536-second warm fixture is evidence for that fixture only."
+    },
+    "S427-PERF-005": {
+      "line": 264,
+      "text": "- **S427-PERF-005:** The owner amendment does not waive ≤30-second test+collection, knowledge index ≤4×/RSS <256 MiB, Warden 50 MiB/5%, native desktop heap <15%, 48-hour handle stability, or independent observation/recovery timing. Each needs its own measured disposition. Do not interpret “these numbers are acceptable” as a blanket exemption from other requirements."
+    },
+    "S427-SRE-002": {
+      "line": 232,
+      "text": "- **S427-SRE-002:** Apply amended FR009: non-running rows retaining lease authority or pending jobs with exhausted ordinary-failure budgets establish structural collapse. Ordinary historical `FAILED` rows, cancellation and explicit task holds do not freeze unrelated work. Contain confirmed structural failure and preserve immutable diagnostic evidence before bounded recovery."
+    }
+  },
+  "captured_utc": "2026-10-08T00:57:53.655003+00:00",
+  "disposition": {
+    "activation_ready": false,
+    "automatic_retry_allowed": false,
+    "chapter06_coding_workflow_certified": false,
+    "correctness_and_cleanup_verified_within_public_fixture_scope": true,
+    "existing_regression_coverage": [
+      "test_owner_accepted_measured_latency_is_nonblocking_with_real_prepared_pool_fields",
+      "test_prepared_pool_claim_requires_provenance_and_honest_clocks"
+    ],
+    "frozen_fixture_status_difference": "The external physical helper selected SLA_HELD/exit2 solely because startup_sla_met was false after correctness and cleanup. This historical stricter fixture result remains unchanged.",
+    "full_windows_acceptance": false,
+    "hard_requirements_retained": [
+      "Actual prepared single-use provenance",
+      "Honest original request, reservation, handoff and test-ready clocks",
+      "No inline cold creation or hidden queue delay",
+      "Test plus collection within 30 seconds",
+      "Exact image and source, resource/isolation/ownership gates",
+      "Four shared slots, at most two prepared instances in this fixture",
+      "Cleanup and quarantine/history preservation",
+      "All model jobs through Chapter 06",
+      "Full Windows workflow, queue and 48-hour acceptance remain separate"
+    ],
+    "optimization_open": true,
+    "owner_amendment": "Warm startup toward 1.5 seconds is an optimization target. Valid measured latency is nonblocking under installed coding acceptance. Cold preparation is separate maintenance overhead; no inline cold fallback or hidden waiting is allowed.",
+    "private_request_clock_details_verified": false,
+    "request_clock_details": "Pending bounded read-only projection of the two exact private execution receipts. No clock values inferred from summaries.",
+    "tests_run_by_this_collector": false,
+    "warm_1_5_second_objective_met": false
+  },
+  "execution": {
+    "database_opens": 0,
+    "docker_commands": 0,
+    "model_jobs": 0,
+    "original_evidence_rewritten": false,
+    "original_state_writes": 0,
+    "private_execution_receipt_reads": 0,
+    "provider_calls": 0,
+    "system_execution": false,
+    "task_changes": 0
+  },
+  "historical_receipt": {
+    "bytes": 4308,
+    "path": "C:\\Program Files\\CoChem\\DockerExecutionAcceptance4.2.7-windows-20261007-r3-v2\\docker-physical-acceptance.json",
+    "sha256": "2ca594fdca714ff48ba8f9a8201f5f27c0e71ba833a5aa5a23cbbe3266ad2e74"
+  },
+  "historical_status_preserved": "DOCKER_PHYSICAL_CORRECTNESS_VERIFIED_SLA_HELD",
+  "historical_task_result_preserved": 2,
+  "historical_task_result_source": "Owner result reported exit 2; this collector did not query Task Scheduler.",
+  "measured_windows_fixture": [
+    {
+      "phase": "red",
+      "private_receipt_name": "de4e8c2cfb6646f0938e2cfaec007ec5.receipt.json",
+      "startup_seconds": 2.696504831314087,
+      "startup_sla_met": false,
+      "test_cycle_seconds": 4.562000000005355
+    },
+    {
+      "phase": "green",
+      "private_receipt_name": "f4d7a7348f50486db541d58ddfdd0837.receipt.json",
+      "startup_seconds": 2.658830165863037,
+      "startup_sla_met": false,
+      "test_cycle_seconds": 4.23499999998603
+    }
+  ],
+  "performance_followthrough": {
+    "current_cause": "Unmeasured; elapsed values alone do not identify the bottleneck.",
+    "next_measurement": "Retain current receipt; first inspect exact existing private timing fields using bounded metadata-only projection. Any later fresh profiling attempt requires a separately reviewed plan, preserves total clocks and history, and records per-call stop-check, attestation, process and snapshot components without removing gates or retrying the consumed fixture.",
+    "source_backed_candidate": "Four warm-path CLI calls precede test-ready. The physical helper performs two require_stopped WinPS/Scheduler checks and two backend attestations per call, unlike the production transport. Their contribution is not measured.",
+    "speculative_optimization": "Only if measured dominant: reuse a scoped Scheduler COM connection while still checking exact Enabled/State/GetInstances before and after every CLI, retaining HRESULT failure semantics and immediate drift refusal. Test exact preserved checks and races before any deployment."
+  },
+  "safe_independent_continuation": [
+    "Metadata-only legacy continuity diagnostic may resolve path visibility without opening or resetting ledgers.",
+    "Previously reviewed attended Codex/Claude isolated worker logins and status can proceed under their own stopped-daemon, custody, fresh-target and human-console guards.",
+    "Agy owner availability remains established; its separate isolated integration/authentication hold is unchanged.",
+    "Paid repair/model execution still requires its own native/routing and unresolved legacy budget authority prerequisites."
+  ],
+  "schema": "cochem-windows-physical-docker-canonical-disposition/1",
+  "scope": "Read-only independent interpretation of current canonical SRS, exact installed acceptance source, and the exact public Windows physical fixture receipt. No private execution receipt or database was opened.",
+  "source_pins": {
+    "canonical_srs": {
+      "bytes": 76701,
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\4.2.7_SRS.md",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+    },
+    "existing_semantic_tests": {
+      "bytes": 27449,
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\pipeline_tests\\test_coding_acceptance.py",
+      "sha256": "cc83130aff77000027ea4c35b23adba32c3110fdd9de0a732145d5fb38baddcd"
+    },
+    "frozen_acceptance_helper": {
+      "bytes": 27944,
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\accept-docker-execution-r3-v2.py",
+      "sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f"
+    },
+    "installed_coding_acceptance": {
+      "bytes": 41317,
+      "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\coding_acceptance.py",
+      "sha256": "77369f7585970ab7ab7e8e965de9d711635c7dc63724b5101dc04884ed852a7f"
+    },
+    "installed_containers": {
+      "bytes": 78340,
+      "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\containers.py",
+      "sha256": "736cf378bfa6e298a47a8adbbca5e7b9ac6b3334e8bd1b8f0b91f1592c344f8e"
+    },
+    "matching_repository_coding_acceptance": {
+      "bytes": 41317,
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\coding_acceptance.py",
+      "sha256": "77369f7585970ab7ab7e8e965de9d711635c7dc63724b5101dc04884ed852a7f"
+    },
+    "owner_addendum": {
+      "bytes": 8893,
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\SRS_ADDENDUM_4.2.7.md",
+      "sha256": "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9"
+    }
+  },
+  "status": "PHYSICAL_CORRECTNESS_VERIFIED_OPTIMIZATION_OPEN_REQUEST_CLOCK_DETAILS_PENDING"
+}

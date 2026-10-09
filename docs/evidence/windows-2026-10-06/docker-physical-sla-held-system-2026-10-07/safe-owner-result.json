@@ -1,0 +1,19 @@
+{
+  "schema": "cochem-docker-physical-task-result/2",
+  "status": "DOCKER_PHYSICAL_CORRECTNESS_VERIFIED_SLA_HELD",
+  "receipt_path": "C:\\Program Files\\CoChem\\DockerExecutionAcceptance4.2.7-windows-20261007-r3-v2\\docker-physical-acceptance.json",
+  "receipt_sha256": "2ca594fdca714ff48ba8f9a8201f5f27c0e71ba833a5aa5a23cbbe3266ad2e74",
+  "last_task_result": 2,
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "activation_ready": false,
+  "automatic_retry_allowed": false,
+  "chapter06_coding_workflow_tested": false,
+  "physical_boundary_verified": true,
+  "cleanup_verified": true,
+  "prepared_count": 2,
+  "container_creation_started": true,
+  "ram_fixture_creation_started": true,
+  "foundation_registry_mutation_started": true,
+  "startup_sla_met": false
+}

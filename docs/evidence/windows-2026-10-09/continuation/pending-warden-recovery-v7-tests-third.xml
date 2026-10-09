@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="25" time="15.084" timestamp="2026-10-08T21:05:22.048069-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_success_reuses_original_auth_packet_repairs_once_and_runs_only_commission" time="0.750" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[extra_file]" time="0.529" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[changed_input]" time="0.582" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[wrong_auth]" time="0.578" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[active_task]" time="0.488" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[previously_run]" time="0.513" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[commission_collision]" time="0.480"><failure message="AssertionError: The property 'Arguments' cannot be found on this object. Verify that the property exists.&#10;  At C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\pending-recove&#10;  ry-v7-inert-scripts\fixture-22cfb98ba43c4c77ab6147c33f251bd0.ps1:139 char:76&#10;  + ... ssionTask)){$folder.Tasks[$commissionTask].Definition.Actions.Value.A ...&#10;  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : PropertyNotFoundStrict&#10;   &#10;  &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...: NotSpecified: (:) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : PropertyNotFoundStrict\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/pending-recovery-fixtures-20261008-d703ce91/test_preflight_failures_preced5')
+mutation = 'commission_collision'
+
+    @pytest.mark.parametrize("mutation", [
+        "extra_file", "changed_input", "wrong_auth", "active_task", "previously_run", "commission_collision", "outside_acl", "backing_acl", "control_custody", "runtime_custody", "runtime_binding", "auth_drift", "recovery_exists",
+    ])
+    def test_preflight_failures_precede_every_mutation(tmp_path, mutation):
+        code, originals = setup(tmp_path)
+        mutations = {
+            "extra_file": "[IO.File]::WriteAllText((Join-Path $targetRoot 'extra.keep'),'preserve')",
+            "changed_input": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.model_jobs_submitted=1;[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "wrong_auth": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.auth_attempt=('0'*32);[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "active_task": "$warden.Instances=1",
+            "previously_run": "$warden.LastTaskResult=0;$warden.LastRunTime=[DateTime]::UtcNow",
+            "commission_collision": "$folder.Tasks[$commissionTask]=New-InertTask (New-InertDefinition) $commissionTask 'O:BAG:BAD:P(A;;FA;;;SY)(A;;FA;;;BA)'",
+            "outside_acl": "$warden.Sddl='O:BAG:BAD:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FR;;;WD)'",
+            "backing_acl": "$backingFailure=$true",
+            "control_custody": "$controlFailure=$true",
+            "runtime_custody": "$treeFailure=$true",
+            "runtime_binding": "$bindingFailure=$true",
+            "auth_drift": "$authDrift=$true",
+            "recovery_exists": "$null=[IO.Directory]::CreateDirectory($recoveryRoot);[IO.File]::WriteAllText((Join-Path $recoveryRoot 'partial.keep'),'preserve')",
+        }
+&gt;       result = run_ps(code + mutations[mutation] + "\n" + COLLECT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_pending_warden_recovery_v7.py:257: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "\n$fixtureRoot='C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployme...ns.Value.Arguments}else{$null})\n }|ConvertTo-Json -Depth 16\n}finally{foreach($stream in $held){$stream.Dispose()}}\n"
+
+    def run_ps(body):
+        prefix = r"""
+    $ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+    foreach($m in @('Microsoft.PowerShell.Utility','Microsoft.PowerShell.Security')){
+     Import-Module (Join-Path $PSHOME "Modules\$m\$m.psd1") -ErrorAction Stop
+    }
+    function Import-InertDeclarations([string]$Path){
+     $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($Path,[ref]$tokens,[ref]$errors)
+     if($errors.Count){throw 'FIXTURE_PARSE'}
+     foreach($n in $ast.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){$n.Extent.Text}
+    }
+    """
+        for path in (REGISTRATION, FIRST_START, WRAPPER):
+            prefix += f"foreach($text in Import-InertDeclarations {quote(path)}){{. ([scriptblock]::Create($text))}}\n"
+        code = prefix + body
+        scripts = HERE / "pending-recovery-v7-inert-scripts"
+        scripts.mkdir(exist_ok=True)
+        script = scripts / ("fixture-" + uuid.uuid4().hex + ".ps1")
+        with script.open("x", encoding="utf-8", newline="") as stream:
+            stream.write(code)
+        result = subprocess.run(
+            [PS, "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-File", str(script)],
+            capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=40,
+        )
+&gt;       assert result.returncode == 0, result.stderr + "\n" + result.stdout
+E       AssertionError: The property 'Arguments' cannot be found on this object. Verify that the property exists.
+E         At C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\pending-recove
+E         ry-v7-inert-scripts\fixture-22cfb98ba43c4c77ab6147c33f251bd0.ps1:139 char:76
+E         + ... ssionTask)){$folder.Tasks[$commissionTask].Definition.Actions.Value.A ...
+E         +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : PropertyNotFoundStrict
+E          
+E         
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...: NotSpecified: (:) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : PropertyNotFoundStrict\n \n").returncode
+
+windows-deployment-next\test_pending_warden_recovery_v7.py:52: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[outside_acl]" time="0.523" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[backing_acl]" time="0.500" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[control_custody]" time="0.559" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[runtime_custody]" time="0.461" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[runtime_binding]" time="0.453" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[auth_drift]" time="0.477" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[recovery_exists]" time="0.453" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[setter-1-0-0-0]" time="0.707" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[readback-1-0-0-0]" time="0.684" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[postset_acl-1-0-0-0]" time="0.719" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[postset_xml-1-0-0-0]" time="0.692" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[registration-1-1-0-0]" time="0.722" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[run-1-1-1-0]" time="0.727" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_uncertain_operations_stop_without_retry_and_preserve_journal[wait-1-1-1-1]" time="0.727" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_temporary_acl_callback_is_visible_to_actual_shape_check_and_restored[False]" time="0.573" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_temporary_acl_callback_is_visible_to_actual_shape_check_and_restored[True]" time="0.506" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_completed_or_partial_recovery_namespace_prevents_second_attempt" time="0.747" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_wrapper_contains_no_provider_login_or_warden_run_or_destructive_task_calls" time="0.001" /></testsuite></testsuites>

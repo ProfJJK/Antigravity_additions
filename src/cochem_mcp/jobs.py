@@ -91,8 +91,8 @@ class JobManager:
 
     def submit_node(self, kind, payload, workflow_id, workspace='', model=''):
         # Shared validation rejects control authority before contacting controller.
-        from .server import _structured_node_prompt
-        _structured_node_prompt(kind, payload, workflow_id)
+        from .server import _validate_structured_request
+        _validate_structured_request(kind, payload, workflow_id)
         if model:
             raise ValueError('Model pinning is forbidden; Chapter 06 selects every model task')
         if workspace:

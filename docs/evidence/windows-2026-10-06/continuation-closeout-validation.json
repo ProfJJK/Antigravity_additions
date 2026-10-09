@@ -1,0 +1,87 @@
+{
+  "schema": "cochem-windows-continuation-closeout/1",
+  "recorded_at_utc": "2026-10-07T03:42:23.251085+00:00",
+  "status": "HELD_NOT_INSTALLED",
+  "host": "AETHERDESK",
+  "git_head": "2144f067c78f0cd235f715a3e04df411ebe68696",
+  "preserved_backup_branch": "backup/windows-pre-427-20261006",
+  "changes_committed_or_pushed_by_session": false,
+  "capacity": {
+    "initial_shared_slots": 4,
+    "planned_worker_identities": 6,
+    "new_worker_identities_provisioned": 0,
+    "docker_maximum": 4,
+    "warm_pool_target": 2,
+    "routing": "Chapter 06 catalogue 2, scoring algorithm 1"
+  },
+  "agy_owner_confirmation": "Available, signed in, functioning on this workstation",
+  "agy_pipeline_state": "isolated_pipeline_integration verification_pending; canonical compatibility spillover, no provider outage or owner-login failure asserted",
+  "windows_regression": {
+    "exit_code": 0,
+    "counts": {
+      "tests": 1597,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 66,
+      "passed": 1531
+    },
+    "source_drift": [],
+    "source_manifest_sha256": "e6cd9bcd85598644434a4cf0b36784fdc56d87f9ce1ffa4745b5a02c4b13439b",
+    "elapsed_seconds": 160.673,
+    "modules": 45,
+    "explicitly_unrun_privileged_cases": [
+      "pipeline_tests/test_service.py::test_real_http_coding_submission_captures_baseline_and_dispatches_canonical_plan_idempotently",
+      "pipeline_tests/test_service.py::test_actual_mcp_coding_tool_creates_only_a_registered_real_workflow"
+    ]
+  },
+  "linux_evidence": {
+    "historical_passed": 2597,
+    "historical_skipped": 35,
+    "historical_asset_checks": 93,
+    "rerun_or_relabelled_as_windows": false
+  },
+  "source_files": 242,
+  "source_drift_after_run": [],
+  "preservation": {
+    "sqlite_snapshots": 7,
+    "snapshots_individually_consistent": true,
+    "legacy_files_copied": 6104,
+    "original_databases_credentials_budgets_preserved": true,
+    "existing_ramdisk_mib": 8192,
+    "ramdisk_or_startup_task_changed": false,
+    "independent_hyperv_warden_preserved": true,
+    "cross_database_cutover_consistency_claimed": false
+  },
+  "execution": {
+    "production_native_model_jobs": 0,
+    "privileged_installer_runs": 0,
+    "driver_installer_runs": 0,
+    "new_scheduled_tasks": 0,
+    "system_acceptance": false,
+    "48_hour_observation": false
+  },
+  "remaining": [
+    "Administrator discovery; prior UAC launch canceled, no automatic retry",
+    "Legacy job/knowledge/budget mapping and writer containment; do not invent zero spend",
+    "Protected full payloads, sensor dependency and real SYSTEM readings, R startup ownership",
+    "Isolated native account login including reviewed Agy interactive flow and adapter/receipt verification",
+    "SYSTEM containment, Antigravity/knowledge integration, routed workflows and repair/rollback",
+    "Actual four-worker queue, reboot recovery and 48-hour observation"
+  ],
+  "evidence_sha256": {
+    "continuation-closeout-result.json": "c582e65dab15f7362e4e22d46e4709353c38329e0bb4bd9928d72477112be55e",
+    "continuation-closeout-command.json": "caa49e95c7e3e77274ecada1c258bcff2911bbbfb3550ed14eef462cbb2d09fc",
+    "continuation-closeout-source-manifest.json": "e6cd9bcd85598644434a4cf0b36784fdc56d87f9ce1ffa4745b5a02c4b13439b",
+    "continuation-closeout-consolidated.xml": "e86030fea7f54e5eb7fa8af7cdef9331b878457f7199dfe32619af89fc679052",
+    "staged-wheel-continuation-closeout.json": "22de7c7587fa75705953afc1d48ab37f64efaf87d1075c3fc7aba34eda88996c",
+    "host-configuration-continuation-closeout.json": "e1fa0bba357f81639d745ed56cea3da5e6fb37694f7d88731f4944164bd30ca2",
+    "cutover-plan-continuation-closeout.json": "eee6c1b34d98b86fb96e8d622b0b0e70244b99f2108e62a415d94d46cc2f16e3",
+    "powershell51-parse-continuation-closeout.json": "8b114f3784816675bec46adb5c894952ce9643deddfbe79984358ef153434d44",
+    "privilege-continuation-closeout.json": "86a2d00970b26d4b11cddc74f11e95956552020b649b876ffe984849f1b90640",
+    "legacy-preservation-followup.json": "abbdac3cd2037dffc2c1216c666f1c82315aed9c420fc8720bd28b06043ff958",
+    "cpu-probe-staging.json": "62745ddd89340c6ab3741e6fd8b2d03df84a9ba6e8fbf8524644e6ff93e524bb",
+    "pawnio-dependency-staging.json": "8c7c1f582ff2fe1500329a5237e36d40338d9ac9b2643606509f7557c7ccb1fe",
+    "integration-hold-verification.json": "cb401dcaf8c49ce81745c9b747db56caf367a5ad1be779288c4880fcaa590623",
+    "resource-timeout-diagnosis.json": "18f2683a73adda77d91e759057124154e6f42ab8e6a55d1c814d98f1f14474c2"
+  }
+}

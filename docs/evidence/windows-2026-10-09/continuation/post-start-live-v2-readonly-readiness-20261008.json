@@ -1,0 +1,56 @@
+{
+  "active_count": 0,
+  "admission_capacity": 0,
+  "components": {
+    "containers": {
+      "required": true,
+      "state": "healthy"
+    },
+    "docker_engine": {
+      "required": true,
+      "state": "healthy"
+    },
+    "knowledge": {
+      "required": true,
+      "state": "healthy"
+    },
+    "warden_controller": {
+      "required": true,
+      "state": "unrecognized"
+    }
+  },
+  "controller": {
+    "instance_id": "c867588c063c4362beca10358ebf79ef",
+    "pid": 5788
+  },
+  "driver_sha256": "cb2c1b834978a310298bb224f526ae880182b00e88f38dec60b7c02d0d45d363",
+  "existing_token_acl_matches": true,
+  "hard_max_agents": 4,
+  "http_get_calls": 1,
+  "http_post_calls": 0,
+  "knowledge_ready": true,
+  "live_evidence_created": false,
+  "max_agents": 4,
+  "model_jobs_submitted": 0,
+  "operator_token_read_only": true,
+  "phase_readiness": {
+    "coding": {
+      "code": "controller_not_ready",
+      "ready": false
+    },
+    "planning": {
+      "code": "controller_not_ready",
+      "ready": false
+    }
+  },
+  "production_acl_changes": 0,
+  "quarantined_count": 0,
+  "recorded_at": 1791513510.624421,
+  "runtime_preflight_passed": true,
+  "schema": "cochem-live-v2-readonly-readiness/1",
+  "startup_receipt_sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+  "status": "READ_ONLY_RUNTIME_VERIFIED_PHASE_HELD",
+  "tasks_changed": 0,
+  "token_contents_retained": false,
+  "v2_root_absent": true
+}

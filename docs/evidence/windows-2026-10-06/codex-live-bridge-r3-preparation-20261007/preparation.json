@@ -1,0 +1,70 @@
+{
+  "actual_default_preview": {
+    "installed_r3_revision_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "network_calls": 0,
+    "status": "READ_ONLY_PREVIEW",
+    "stdio_children_started": 0,
+    "tokens_read": 0
+  },
+  "files_sha256": {
+    "codex-live-bridge-independent-review-native-next-20261007.json": "26ee4894c05aad8d3f35dd1b05dd97fdea9e375ab91aa66b3ff210902f3bfd40",
+    "codex-live-bridge-readonly-preview.json": "e93abe5077b3bedf99c7393bdba241945b0874be1ba081e3815f9b04f9c208b4",
+    "codex-live-bridge-tests-followup.xml": "9863b7192d6cd9510134020ec5a445f7585b35698dad36c95242f38f9e9fb479",
+    "codex-live-bridge-tests-initial.xml": "cb1654e549a6102c4764a81c5aefa7608cb56bd14f56b9d7f839d36ce301b923",
+    "test_verify_codex_live_bridge_r3.py": "49287bb2f7db2acd4358a457c4dd43f8dcafb2d51f4eb3a0fa5ce70e48ea0734",
+    "verify-codex-live-bridge-r3.py": "6e263c86a21454d4afa025ff592a56cce40429bf1bd51c1c9ad1bfbfd25441e5"
+  },
+  "future_explicit_live_scope": {
+    "configuration_changed": false,
+    "controller_get_telemetry_cache_writes_possible": true,
+    "exact_tools": 15,
+    "flag": "--check-live",
+    "fresh_workspace_metadata_output_required": true,
+    "jobs_submitted": 0,
+    "max_stderr_discard_bytes": 65536,
+    "max_stdout_frame_bytes": 1048576,
+    "only_stdio_child_reads_existing_token": true,
+    "sequence": [
+      "initialize",
+      "notifications/initialized",
+      "tools/list",
+      "pipeline_health",
+      "pipeline_projects",
+      "knowledge_status",
+      "pipeline_health"
+    ],
+    "timeout_seconds_including_owned_tree_cleanup": 60
+  },
+  "limitations": [
+    "Live calls have not been performed. Controller must first be commissioned.",
+    "Service SYSTEM/version/PID/instance/capacity are authenticated service reports, not independent token or native-performance acceptance.",
+    "Installed r3 knowledge_status does not expose index_sha256. Expected generation is checked; absent index digest remains unavailable.",
+    "MCP server reports SDK 1.30.0; pipeline health reports 4.2.7.",
+    "This does not reload the current chat tool catalog, establish desktop heap evidence, or complete 48-hour acceptance."
+  ],
+  "preservation": {
+    "configuration_modified": false,
+    "frozen_connector_modified": false,
+    "installed_runtime_modified": false,
+    "live_controller_calls": 0,
+    "tasks_modified": false,
+    "tokens_modified": false
+  },
+  "schema": "cochem-codex-live-bridge-preparation/1",
+  "sources": [
+    "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
+    "https://learn.microsoft.com/en-us/windows/win32/procthread/creating-a-child-process-with-redirected-input-and-output",
+    "https://learn.microsoft.com/en-us/windows/win32/api/jobapi2/nf-jobapi2-assignprocesstojobobject",
+    "https://learn.microsoft.com/en-us/windows/win32/procthread/process-creation-flags"
+  ],
+  "status": "REVIEWED_PREPARED_NOT_LIVE_EXECUTED",
+  "tests": {
+    "errors": 0,
+    "failed": 0,
+    "junit_seconds": 8.196,
+    "passed": 42,
+    "pytest_terminal_seconds": 8.23,
+    "scope": "Ordinary Windows disposable children only. Real installed MCP SDK with in-memory fake controller; no real endpoint, credentials, provider or model calls. Native handle proves timeout ends owned interpreter descendant. Initial failing Job accounting timing test preserved, repaired by deadline-bounded wait for ActiveProcesses zero.",
+    "skipped": 0
+  }
+}

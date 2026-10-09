@@ -1,0 +1,8 @@
+{
+  "status": "EXPECTED_HOLD",
+  "error": "Gemini arguments must be a verified native headless argv containing a separate {model} entry",
+  "sha256": "2dc3d266762dc0e2c77d0219185ea623eacade4cd3673d00234c9b3a39d97202",
+  "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+  "scope": "Production configuration validator; no installation or model execution",
+  "source_manifest_sha256": "1414a1e144165e157ce85a8db343c6c1f6eb457cbc7831d972748f5c964007ed"
+}

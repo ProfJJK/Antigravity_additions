@@ -1,0 +1,13 @@
+{
+  "schema": "cochem-current-policy-document-reconciliation/1",
+  "disposition": "docs/evidence/windows-2026-10-06/docker-physical-canonical-disposition-2026-10-07/disposition.json",
+  "disposition_sha256": "b57e9ee4966f90b05e9e0efbe8fb616f606a6c5364a8e747aadf7122844e597e",
+  "actual_windows_record_unchanged": true,
+  "raw_receipts_and_task2_unchanged": true,
+  "warm_latency_target_met": false,
+  "optimization_alone_blocks_independent_steps": false,
+  "owner_timing_projection_or_fixture_rerun_required": false,
+  "frozen_sources_or_live_guide_edited": false,
+  "observed_sha256": "ea840cff2244772e0edeeeebe7cbac5f54ebef396f444effa29066b25d6264c9",
+  "handoff_sha256": "8e4ea415b6fa99b51fbeda957296c8b75eaf172b4aae06b7ef9dfb48fd2fa2e5"
+}

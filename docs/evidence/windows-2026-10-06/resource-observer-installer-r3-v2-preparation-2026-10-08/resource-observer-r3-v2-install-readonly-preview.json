@@ -1,0 +1,26 @@
+{
+    "schema":  "cochem-resource-observer-install-plan/1",
+    "operation":  "Register",
+    "administrator":  false,
+    "holds":  [
+                  "Successful first-instance commissioning receipt is required."
+              ],
+    "source_manifest_sha256":  "b2f1329893ce13662271070a36821cb7129410bc7d5160ce37d17b9552f55f52",
+    "dependency_manifest_sha256":  "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429",
+    "code_root":  "C:\\Program Files\\CoChem\\ResourceObservation4.2.7-windows-20261008-r3-v2",
+    "private_state_root":  "C:\\Program Files\\CoChem\\ResourceObservationState4.2.7-windows-20261008-r3-v2",
+    "task_name":  "CoChem-4.2.7-ResourceObservation-20261008-r3-v2",
+    "commissioning_present":  false,
+    "full_dependency_custody_deferred":  true,
+    "initial_registration_disabled":  true,
+    "optional_single_start":  false,
+    "duration_seconds":  172800,
+    "task_limit":  "PT49H",
+    "no_restart_or_resume":  true,
+    "source_files":  7,
+    "base_noncache_files":  2777,
+    "psutil_files":  11,
+    "historical_bytecode_untouched_and_redirected":  true,
+    "full_srs_acceptance":  false,
+    "desktop_heap_available":  false
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="48" time="12.473" timestamp="2026-10-07T00:46:13.254253-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_actual_private_candidate_exact_bytes_and_catalog_count" time="0.638" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[extra-file]" time="0.135" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[missing-file]" time="0.118" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[modified-byte]" time="0.123" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[extra-directory]" time="0.144" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[symlink]" time="0.121" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[hardlink]" time="0.118" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[duplicate]" time="0.129" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[traversal]" time="0.124" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[wrong-target]" time="0.114" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_payload_refuses_changes_and_links[wrong-count]" time="0.115" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_duplicate_and_nonfinite_json_refused[{&quot;a&quot;:1,&quot;a&quot;:2}]" time="0.001" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_duplicate_and_nonfinite_json_refused[{&quot;a&quot;:NaN}]" time="0.000" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_duplicate_and_nonfinite_json_refused[{&quot;a&quot;:Infinity}]" time="0.000" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_state_missing_only_not_permissions_or_existing" time="0.002" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_safe_failure_cannot_leak_private_path_and_preserves_error_code" time="0.000" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_installed_config_pin_matches_readonly_capture" time="0.000" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-1-0-True]" time="0.575" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-3-0-True]" time="0.461" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[True-3-0-False]" time="0.515"><failure message="AssertionError: &#10;assert (0 == 0) is False&#10; +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode">enabled = True, state = 3, instances = 0, success = False
+
+    @pytest.mark.parametrize('enabled,state,instances,success', [(False, 1, 0, True), (False, 3, 0, True),
+        (True, 3, 0, False), (False, 0, 0, False), (False, 2, 0, False), (False, 4, 0, False), (False, 3, 1, False)])
+    def test_both_stopped_checks_reject_unknown_or_active_actual_daemons(enabled, state, instances, success):
+        fixture = f"""$script:task=[pscustomobject]@{{Enabled=${str(enabled).lower()};State={state}}};
+        $script:task|Add-Member ScriptMethod GetInstances {{param($flags) [pscustomobject]@{{Count={instances}}}}};
+        $script:seen=@();$folder=[pscustomobject]@{{}};$folder|Add-Member ScriptMethod GetTask {{param($name) $script:seen+=$name;$script:task}};
+        """
+        wrapper = ps(fixture + "Assert-StoppedDaemons;if('CoChem-4.2.7-Warden' -notin $script:seen -or 'CoChem-4.2.7-Supervisor' -notin $script:seen){throw 'Actual task omitted'}")
+        assert (wrapper.returncode == 0) is success, wrapper.stderr
+        captured = []
+        accept.require_stopped(SimpleNamespace(_powershell=lambda body, names: captured.append((body, names))))
+        code, names = captured[0]
+        # Replace COM construction only; exercise exact production PowerShell guard.
+        code = code[code.index('foreach ($name in $data)'):]
+        native = ps(fixture + '$data=' + quote(json.dumps(names)) + '|ConvertFrom-Json;' + code)
+&gt;       assert (native.returncode == 0) is success, native.stderr
+E       AssertionError: 
+E       assert (0 == 0) is False
+E        +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode
+
+windows-deployment-next\test_private_knowledge_candidate.py:150: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-0-0-False]" time="0.503"><failure message="AssertionError: &#10;assert (0 == 0) is False&#10; +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode">enabled = False, state = 0, instances = 0, success = False
+
+    @pytest.mark.parametrize('enabled,state,instances,success', [(False, 1, 0, True), (False, 3, 0, True),
+        (True, 3, 0, False), (False, 0, 0, False), (False, 2, 0, False), (False, 4, 0, False), (False, 3, 1, False)])
+    def test_both_stopped_checks_reject_unknown_or_active_actual_daemons(enabled, state, instances, success):
+        fixture = f"""$script:task=[pscustomobject]@{{Enabled=${str(enabled).lower()};State={state}}};
+        $script:task|Add-Member ScriptMethod GetInstances {{param($flags) [pscustomobject]@{{Count={instances}}}}};
+        $script:seen=@();$folder=[pscustomobject]@{{}};$folder|Add-Member ScriptMethod GetTask {{param($name) $script:seen+=$name;$script:task}};
+        """
+        wrapper = ps(fixture + "Assert-StoppedDaemons;if('CoChem-4.2.7-Warden' -notin $script:seen -or 'CoChem-4.2.7-Supervisor' -notin $script:seen){throw 'Actual task omitted'}")
+        assert (wrapper.returncode == 0) is success, wrapper.stderr
+        captured = []
+        accept.require_stopped(SimpleNamespace(_powershell=lambda body, names: captured.append((body, names))))
+        code, names = captured[0]
+        # Replace COM construction only; exercise exact production PowerShell guard.
+        code = code[code.index('foreach ($name in $data)'):]
+        native = ps(fixture + '$data=' + quote(json.dumps(names)) + '|ConvertFrom-Json;' + code)
+&gt;       assert (native.returncode == 0) is success, native.stderr
+E       AssertionError: 
+E       assert (0 == 0) is False
+E        +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode
+
+windows-deployment-next\test_private_knowledge_candidate.py:150: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-2-0-False]" time="0.488"><failure message="AssertionError: &#10;assert (0 == 0) is False&#10; +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode">enabled = False, state = 2, instances = 0, success = False
+
+    @pytest.mark.parametrize('enabled,state,instances,success', [(False, 1, 0, True), (False, 3, 0, True),
+        (True, 3, 0, False), (False, 0, 0, False), (False, 2, 0, False), (False, 4, 0, False), (False, 3, 1, False)])
+    def test_both_stopped_checks_reject_unknown_or_active_actual_daemons(enabled, state, instances, success):
+        fixture = f"""$script:task=[pscustomobject]@{{Enabled=${str(enabled).lower()};State={state}}};
+        $script:task|Add-Member ScriptMethod GetInstances {{param($flags) [pscustomobject]@{{Count={instances}}}}};
+        $script:seen=@();$folder=[pscustomobject]@{{}};$folder|Add-Member ScriptMethod GetTask {{param($name) $script:seen+=$name;$script:task}};
+        """
+        wrapper = ps(fixture + "Assert-StoppedDaemons;if('CoChem-4.2.7-Warden' -notin $script:seen -or 'CoChem-4.2.7-Supervisor' -notin $script:seen){throw 'Actual task omitted'}")
+        assert (wrapper.returncode == 0) is success, wrapper.stderr
+        captured = []
+        accept.require_stopped(SimpleNamespace(_powershell=lambda body, names: captured.append((body, names))))
+        code, names = captured[0]
+        # Replace COM construction only; exercise exact production PowerShell guard.
+        code = code[code.index('foreach ($name in $data)'):]
+        native = ps(fixture + '$data=' + quote(json.dumps(names)) + '|ConvertFrom-Json;' + code)
+&gt;       assert (native.returncode == 0) is success, native.stderr
+E       AssertionError: 
+E       assert (0 == 0) is False
+E        +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode
+
+windows-deployment-next\test_private_knowledge_candidate.py:150: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-4-0-False]" time="0.551"><failure message="AssertionError: &#10;assert (0 == 0) is False&#10; +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode">enabled = False, state = 4, instances = 0, success = False
+
+    @pytest.mark.parametrize('enabled,state,instances,success', [(False, 1, 0, True), (False, 3, 0, True),
+        (True, 3, 0, False), (False, 0, 0, False), (False, 2, 0, False), (False, 4, 0, False), (False, 3, 1, False)])
+    def test_both_stopped_checks_reject_unknown_or_active_actual_daemons(enabled, state, instances, success):
+        fixture = f"""$script:task=[pscustomobject]@{{Enabled=${str(enabled).lower()};State={state}}};
+        $script:task|Add-Member ScriptMethod GetInstances {{param($flags) [pscustomobject]@{{Count={instances}}}}};
+        $script:seen=@();$folder=[pscustomobject]@{{}};$folder|Add-Member ScriptMethod GetTask {{param($name) $script:seen+=$name;$script:task}};
+        """
+        wrapper = ps(fixture + "Assert-StoppedDaemons;if('CoChem-4.2.7-Warden' -notin $script:seen -or 'CoChem-4.2.7-Supervisor' -notin $script:seen){throw 'Actual task omitted'}")
+        assert (wrapper.returncode == 0) is success, wrapper.stderr
+        captured = []
+        accept.require_stopped(SimpleNamespace(_powershell=lambda body, names: captured.append((body, names))))
+        code, names = captured[0]
+        # Replace COM construction only; exercise exact production PowerShell guard.
+        code = code[code.index('foreach ($name in $data)'):]
+        native = ps(fixture + '$data=' + quote(json.dumps(names)) + '|ConvertFrom-Json;' + code)
+&gt;       assert (native.returncode == 0) is success, native.stderr
+E       AssertionError: 
+E       assert (0 == 0) is False
+E        +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode
+
+windows-deployment-next\test_private_knowledge_candidate.py:150: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_both_stopped_checks_reject_unknown_or_active_actual_daemons[False-3-1-False]" time="0.509"><failure message="AssertionError: &#10;assert (0 == 0) is False&#10; +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode">enabled = False, state = 3, instances = 1, success = False
+
+    @pytest.mark.parametrize('enabled,state,instances,success', [(False, 1, 0, True), (False, 3, 0, True),
+        (True, 3, 0, False), (False, 0, 0, False), (False, 2, 0, False), (False, 4, 0, False), (False, 3, 1, False)])
+    def test_both_stopped_checks_reject_unknown_or_active_actual_daemons(enabled, state, instances, success):
+        fixture = f"""$script:task=[pscustomobject]@{{Enabled=${str(enabled).lower()};State={state}}};
+        $script:task|Add-Member ScriptMethod GetInstances {{param($flags) [pscustomobject]@{{Count={instances}}}}};
+        $script:seen=@();$folder=[pscustomobject]@{{}};$folder|Add-Member ScriptMethod GetTask {{param($name) $script:seen+=$name;$script:task}};
+        """
+        wrapper = ps(fixture + "Assert-StoppedDaemons;if('CoChem-4.2.7-Warden' -notin $script:seen -or 'CoChem-4.2.7-Supervisor' -notin $script:seen){throw 'Actual task omitted'}")
+        assert (wrapper.returncode == 0) is success, wrapper.stderr
+        captured = []
+        accept.require_stopped(SimpleNamespace(_powershell=lambda body, names: captured.append((body, names))))
+        code, names = captured[0]
+        # Replace COM construction only; exercise exact production PowerShell guard.
+        code = code[code.index('foreach ($name in $data)'):]
+        native = ps(fixture + '$data=' + quote(json.dumps(names)) + '|ConvertFrom-Json;' + code)
+&gt;       assert (native.returncode == 0) is success, native.stderr
+E       AssertionError: 
+E       assert (0 == 0) is False
+E        +  where 0 = CompletedProcess(args=['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', '$ErrorActionPreferen...{throw \'Protected daemons must remain stopped and disabled.\'}\n        }\n    '], returncode=0, stdout='', stderr='').returncode
+
+windows-deployment-next\test_private_knowledge_candidate.py:150: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_task_lookup_accepts_only_exact_absence[-2147024894-True]" time="0.233" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_task_lookup_accepts_only_exact_absence[-2147024891-False]" time="0.262" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_task_lookup_accepts_only_exact_absence[-2147216625-False]" time="0.264" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_task_lookup_accepts_only_exact_absence[-2147216629-False]" time="0.264" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[1-0-True]" time="0.221" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[3-0-True]" time="0.222" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[0-0-False]" time="0.253" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[2-0-False]" time="0.258" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[4-0-False]" time="0.252" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_receipt_requires_terminal_task_and_no_instances[3-1-False]" time="0.255" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_refresh_completion_hresult_ends_wait_only[-2147216629-True]" time="0.488" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_refresh_completion_hresult_ends_wait_only[-2147024891-False]" time="0.515" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_refresh_completion_hresult_ends_wait_only[-2147024894-False]" time="0.518" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/a.md-True]" time="0.194" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[.sources/legacy/sha256/a.md-True]" time="0.211" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[../a.md-False]" time="0.217" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/../a.md-False]" time="0.218" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/a.md:stream-False]" time="0.213" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/CON.md-False]" time="0.278" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/trailing./a.md-False]" time="0.227" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_windows_ambiguous_or_unregistered_copy_path_rejected[wiki/a.txt-False]" time="0.222" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_private_acl_constructor_has_exact_private_trustees_before_creation" time="0.196" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_reviewed_copy_handle_refuses_actual_hardlink" time="0.435" /><testcase classname="windows-deployment-next.test_private_knowledge_candidate" name="test_wrapper_acceptance_pin_tracks_exact_source_and_uses_isolated_no_bytecode" time="0.010"><failure message="assert 'Copy-VerifiedPayload (' not in &quot;#Requires -...r reset.'}\n&quot;&#10;  &#10;  'Copy-VerifiedPayload (' is contained here:&#10;    reator or Copy-VerifiedPayload (which grants Users read).&#10;  ?           ++++++++++++++++++++++&#10;    $stream=[IO.File]::Open($helper,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)&#10;    try {&#10;        $sha=[Security.Cryptography.SHA256]::Create()...&#10;  &#10;  ...Full output truncated (201 lines hidden), use '-vv' to show">def test_wrapper_acceptance_pin_tracks_exact_source_and_uses_isolated_no_bytecode():
+        source = (HERE / 'accept-private-knowledge.py').read_bytes()
+        wrapper = SCRIPT.read_text(encoding='utf-8')
+        assert f"$sourceHash='{hashlib.sha256(source).hexdigest()}'" in wrapper
+        assert "'-I -B " in wrapper
+        assert "New-PrivateDirectory $corpusRoot -Root" in wrapper
+&gt;       assert 'Copy-VerifiedPayload (' not in wrapper
+E       assert 'Copy-VerifiedPayload (' not in "#Requires -...r reset.'}\n"
+E         
+E         'Copy-VerifiedPayload (' is contained here:
+E           reator or Copy-VerifiedPayload (which grants Users read).
+E         ?           ++++++++++++++++++++++
+E           $stream=[IO.File]::Open($helper,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
+E           try {
+E               $sha=[Security.Cryptography.SHA256]::Create()...
+E         
+E         ...Full output truncated (201 lines hidden), use '-vv' to show
+
+windows-deployment-next\test_private_knowledge_candidate.py:198: AssertionError</failure></testcase></testsuite></testsuites>

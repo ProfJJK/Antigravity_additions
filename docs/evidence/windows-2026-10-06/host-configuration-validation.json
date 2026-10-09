@@ -1,0 +1,13 @@
+{
+  "status": "EXPECTED_HOLD",
+  "config": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+  "reason": "Gemini arguments must be a verified native headless argv containing a separate {model} entry",
+  "daemon_started": false,
+  "worker_accounts_created": false,
+  "routing_policy_version": 2,
+  "shared_slots": 4,
+  "ramdisk_size_mb": 8192,
+  "ramdisk_lifecycle": "auto",
+  "ramdisk_backing": "auto",
+  "source_sha256": "213a28d88117485fca5749a20b8906de76119df6d04e2f52c626fc7f32155fe5"
+}

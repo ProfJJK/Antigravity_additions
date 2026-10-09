@@ -1,0 +1,537 @@
+{
+  "activation_ready": false,
+  "automatic_retry_allowed": false,
+  "containers_created": 0,
+  "credentials_or_native_profiles_modified": false,
+  "defender_added_exact_roots_count": 6,
+  "diagnostic_packet_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+  "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+  "docker_before": {
+    "api_aliases": [
+      "npipe:////./pipe/dockerDesktopLinuxEngine",
+      "npipe:////./pipe/dockerDesktopWindowsEngine",
+      "npipe:////./pipe/docker_engine"
+    ],
+    "backend_sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a",
+    "cli_sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c",
+    "commands_executed": 4,
+    "containers_created_or_modified": false,
+    "denied_modes": [
+      "write",
+      "read",
+      "read_write"
+    ],
+    "engine": {
+      "daemon_id_sha256": "39a274add971e365d9a99fe0306bc0d48da477d212b34a8dc453829012c65fbd",
+      "linux": true,
+      "resource_limits_supported": {
+        "CpuCfsQuota": true,
+        "MemoryLimit": true,
+        "PidsLimit": true,
+        "SwapLimit": true
+      },
+      "seccomp_available": true
+    },
+    "image": {
+      "credential_named_environment_absent": true,
+      "image_declared_volumes": false,
+      "image_id": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+      "linux": true
+    },
+    "ownership_census": {
+      "empty": true,
+      "identifiers_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name_prefix_count": 0,
+      "owner_label_count": 0,
+      "union_count": 0
+    },
+    "raw_info_environment_labels_published": false,
+    "server": {
+      "executable": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "pid": 26816,
+      "process_created_filetime": 134357190020978742,
+      "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    },
+    "worker_access_denied_before_and_after": true,
+    "workers_per_alias": 6
+  },
+  "docker_before_registry": {
+    "api_aliases": [
+      "npipe:////./pipe/dockerDesktopLinuxEngine",
+      "npipe:////./pipe/dockerDesktopWindowsEngine",
+      "npipe:////./pipe/docker_engine"
+    ],
+    "backend_sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a",
+    "cli_sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c",
+    "commands_executed": 4,
+    "containers_created_or_modified": false,
+    "denied_modes": [
+      "write",
+      "read",
+      "read_write"
+    ],
+    "engine": {
+      "daemon_id_sha256": "39a274add971e365d9a99fe0306bc0d48da477d212b34a8dc453829012c65fbd",
+      "linux": true,
+      "resource_limits_supported": {
+        "CpuCfsQuota": true,
+        "MemoryLimit": true,
+        "PidsLimit": true,
+        "SwapLimit": true
+      },
+      "seccomp_available": true
+    },
+    "image": {
+      "credential_named_environment_absent": true,
+      "image_declared_volumes": false,
+      "image_id": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+      "linux": true
+    },
+    "ownership_census": {
+      "empty": true,
+      "identifiers_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name_prefix_count": 0,
+      "owner_label_count": 0,
+      "union_count": 0
+    },
+    "raw_info_environment_labels_published": false,
+    "server": {
+      "executable": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "pid": 26816,
+      "process_created_filetime": 134357190020978742,
+      "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    },
+    "worker_access_denied_before_and_after": true,
+    "workers_per_alias": 6
+  },
+  "docker_traces": [
+    {
+      "observation": "before_ram",
+      "trace": {
+        "commands_returned": 4,
+        "commands_started": 4,
+        "events": [
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_1",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "default_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_2",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "windows_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_3",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_info"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_info"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_info"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_image"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_image"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_image"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_owner_census"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_owner_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_owner_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_name_census"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_name_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_name_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_1",
+            "stage": "docker_pipe_denials_after"
+          },
+          {
+            "alias": "default_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_2",
+            "stage": "docker_pipe_denials_after"
+          },
+          {
+            "alias": "windows_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_3",
+            "stage": "docker_pipe_denials_after"
+          }
+        ],
+        "last_stage": "docker_pipe_denials_after",
+        "original_guard_decisions_unchanged": true,
+        "retry_attempts": 0
+      }
+    },
+    {
+      "observation": "before_registry",
+      "trace": {
+        "commands_returned": 4,
+        "commands_started": 4,
+        "events": [
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_1",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "default_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_2",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "windows_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_3",
+            "stage": "docker_pipe_denials_before"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_info"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_info"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_info"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_image"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_image"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_image"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_owner_census"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_owner_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_owner_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "before_cli",
+            "stage": "docker_name_census"
+          },
+          {
+            "completed": true,
+            "kind": "bounded_cli",
+            "position": "single_attempt",
+            "stage": "docker_name_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "after_cli",
+            "stage": "docker_name_census"
+          },
+          {
+            "alias": "selected_linux",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_1",
+            "stage": "docker_pipe_denials_after"
+          },
+          {
+            "alias": "default_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_2",
+            "stage": "docker_pipe_denials_after"
+          },
+          {
+            "alias": "windows_alias",
+            "completed": true,
+            "kind": "server_attestation",
+            "position": "boundary_attestation_3",
+            "stage": "docker_pipe_denials_after"
+          }
+        ],
+        "last_stage": "docker_pipe_denials_after",
+        "original_guard_decisions_unchanged": true,
+        "retry_attempts": 0
+      }
+    }
+  ],
+  "existing_defender_exclusions_preserved": true,
+  "existing_tasks_modified_or_run": false,
+  "failed_foundation_packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+  "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+  "finished_at_unix_ms": 1791418120570,
+  "general_readiness_called": false,
+  "helper_sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "knowledge_index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+  "knowledge_service_constructed_or_refreshed": false,
+  "legacy_databases_or_budgets_modified": false,
+  "native_model_jobs_executed": 0,
+  "nonce": "adfb396a9a9140509ec0e06225aa37ca",
+  "original_failure_cause_established": false,
+  "packet_sha256": "308705b045c93e7da9fd5e9ef969b5375dd06d98c2efc3530980e82e7186f94e",
+  "partial_outputs_preserved": true,
+  "preflight_receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+  "ram_after": {
+    "filesystem_bytes": 8589930496,
+    "imdisk_query_ioctl_used": true,
+    "ram_modified": false,
+    "root_attributes": 22,
+    "root_device": 18215568536144889826,
+    "root_file_id": 1407374883553285,
+    "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+    "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+    "volume": {
+      "backing": "vm",
+      "configured_backing": "auto",
+      "device_number": 0,
+      "drive_letter": "R",
+      "filesystem": "NTFS",
+      "flags": 66064,
+      "nonpageable": false,
+      "size_bytes": 8589934592,
+      "target": "\\Device\\ImDisk0",
+      "volume_serial": 3400714210
+    }
+  },
+  "ram_before": {
+    "filesystem_bytes": 8589930496,
+    "imdisk_query_ioctl_used": true,
+    "ram_modified": false,
+    "root_attributes": 22,
+    "root_device": 18215568536144889826,
+    "root_file_id": 1407374883553285,
+    "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+    "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+    "volume": {
+      "backing": "vm",
+      "configured_backing": "auto",
+      "device_number": 0,
+      "drive_letter": "R",
+      "filesystem": "NTFS",
+      "flags": 66064,
+      "nonpageable": false,
+      "size_bytes": 8589934592,
+      "target": "\\Device\\ImDisk0",
+      "volume_serial": 3400714210
+    }
+  },
+  "ram_ledger": {
+    "adopted_existing_drive": true,
+    "auth_profiles": "persistent_native_profiles_unchanged",
+    "backup": null,
+    "boot_id": 134357188475893520,
+    "checked_at": 1791418112.8137045,
+    "config": {
+      "backing": "auto",
+      "claude_project_cache": true,
+      "enabled": true,
+      "imdisk_executable": "C:\\Windows\\System32\\imdisk.exe",
+      "lifecycle": "adopt_existing",
+      "min_free_mb": 512,
+      "mount_root": "R:\\",
+      "reserve_host_memory_mb": 4096,
+      "size_mb": 8192,
+      "startup_wait_seconds": 120,
+      "workspace_subdirectory": "CoChem427-windows-20261007"
+    },
+    "defender_exact_roots_verified": true,
+    "lifecycle_action": "ADOPT",
+    "mount_root": "R:\\",
+    "observed": {
+      "backing": "vm",
+      "configured_backing": "auto",
+      "device_number": 0,
+      "drive_letter": "R",
+      "filesystem": "NTFS",
+      "flags": 66064,
+      "nonpageable": false,
+      "size_bytes": 8589934592,
+      "target": "\\Device\\ImDisk0",
+      "volume_serial": 3400714210
+    },
+    "resize": {
+      "configured_bytes": 8589934592,
+      "dynamic_resize_supported": false,
+      "mode": "fixed_capacity",
+      "pressure_action": "wait_for_verified_free_space_and_retry",
+      "reason": "No verified non-destructive online ImDisk/AWE resize contract is available",
+      "reboot_action": "adopt_existing_startup_task_volume",
+      "repeated_administrator_setup_required": false
+    },
+    "schema": 1,
+    "search_not_content_indexed": true,
+    "search_not_content_indexed_scope": "R:\\CoChem427-windows-20261007",
+    "slots": [
+      "slot1",
+      "slot2",
+      "slot3",
+      "slot4",
+      "slot5",
+      "slot6"
+    ],
+    "state": "READY",
+    "volume_root_metadata_preserved": true,
+    "workspace_root": "R:\\CoChem427-windows-20261007"
+  },
+  "ram_ledger_created_new": true,
+  "ram_ledger_sha256": "28d09a43a3052cf4834a9c43daa9290bebf14ab014582ea8c5c0433c6e3ec190",
+  "ram_provision_started": true,
+  "ram_scoped_roots_verified": 6,
+  "ram_volume_or_startup_task_modified": false,
+  "registry": {
+    "capacity": 4,
+    "database_bytes": 49152,
+    "database_sha256": "04b97dbe4271b57e70e339f8200d93c76c7e7c6d4dc3c775b66519901df801e7",
+    "integrity_check": "ok",
+    "journal_mode": "wal",
+    "owner_sha256": "a7d78820b3f5f670e057d94fb4e7e250540b76b08d726327d6a07ec14652877d",
+    "registry_created_new": true,
+    "table_count": 5,
+    "unknown_owned": 0,
+    "work_rows": 0
+  },
+  "registry_provision_started": true,
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "schema": "cochem-execution-foundation/2",
+  "started_at_unix_ms": 1791418105179,
+  "status": "SCOPED_RAM_AND_EMPTY_REGISTRY_VERIFIED",
+  "system_sid": "S-1-5-18",
+  "warm_pool_created": 0,
+  "worker_receipt_sha256": {
+    "slot1": "b9e9fd56c77ac54f97f136b562881a554ed18f6f4f216ccacc0fdf43c51f2c85",
+    "slot2": "7ebac1cedc48cf60c52af7c9b5ff4e883b4325c8d92a6826c935a9e5f7b5322d",
+    "slot3": "c8518fb7c3f126c1c550e36072441eb520a3e76d91f75735d5f3ac832af954ee",
+    "slot4": "f81613cb152f9b5369908f796f55572e3f5779d2253515233b98aafc9e2b1344",
+    "slot5": "84d7043f2044d52e2cfd31bdd373d424821ed3e3a234cef74590b2cfb427283b",
+    "slot6": "5f987ba0f47d27417c0724277d70c52105dd1a96f04dd0a102fe7175d55f2970"
+  }
+}

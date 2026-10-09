@@ -1,0 +1,84 @@
+{
+  "artifacts": [
+    {
+      "bytes": 329038,
+      "path": "publication-focused-windows-tests.xml",
+      "sha256": "98692b11be1788e13050af0e2736038b103b5e77674609ef90854db7fd38fefe"
+    },
+    {
+      "bytes": 4336,
+      "path": "focused-validation-summary.json",
+      "sha256": "6b2af1caaac065d5448fe913444f2a2634e89528e88fcfa38117679869f8a893"
+    },
+    {
+      "bytes": 496,
+      "path": "source-binding-proof.json",
+      "sha256": "e2c5dd4f6ba284de49680f0683316eb9ee377daa4ee7c5785f043333f099b15b"
+    },
+    {
+      "bytes": 2556,
+      "path": "incomplete-canonical-validation-summary.json",
+      "sha256": "02fe5fcba4ba0bbc02b4dd923e0efd4d9bc8361b7d9e71eadd45b0fb59897929"
+    },
+    {
+      "bytes": 15132,
+      "path": "preserved-modified-source.json",
+      "sha256": "584ba65d9610ba558eca1a763bf0075ccd4e83388139b82dc88999c46c520b1f"
+    }
+  ],
+  "branch": "master",
+  "canonical_full_suite": {
+    "complete_results_available": false,
+    "earlier_failure_markers_observed": true,
+    "exit_code": 124,
+    "notes": "No full-suite success is claimed. Only the owned test harness and its verified direct pytest child were stopped; production processes were preserved. Focused regression excludes the stalled MCP integration fixture.",
+    "stalled_fixture": "pipeline_tests/test_service.py::test_actual_pipeline_mcp_session_creates_and_cancels_real_dag",
+    "status": "INCOMPLETE"
+  },
+  "date": "2026-10-09",
+  "focused_regression": {
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 1811,
+    "seconds": 100.58,
+    "selected_test_files": 57,
+    "skipped": 91,
+    "source_binding": {
+      "isolated": true,
+      "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+      "source_modules": {
+        "cochem_mcp": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_mcp\\__init__.py",
+        "cochem_pipeline": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_pipeline\\__init__.py",
+        "cochem_supervisor": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_supervisor\\__init__.py"
+      }
+    },
+    "tests": 1902
+  },
+  "interpretation": "Source publication validation only. Skipped protected Windows/Docker/symlink/POSIX checks are not acceptance passes. The installed r3 pipeline, running observers and remaining deployment holds are unchanged.",
+  "platform": "Windows AETHERDESK, actual workstation execution",
+  "preservation": {
+    "all_local_git_history_bundle_verified": true,
+    "complete_private_checkout_backup_verified": true,
+    "continuation_manifest_files_verified": 940,
+    "continuation_manifest_sha256": "0fd58229e1621b6288ce0ed18723aea8566d5eb63a4298437799d3d6b17b8236",
+    "exact_original_modified_files": 86,
+    "resource_telemetry_module_sha256": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a",
+    "telemetry_leak_repair_implemented": false
+  },
+  "remote": "https://github.com/ProfJJK/Pipeline-Mix-Model-Concurrent.git",
+  "repository": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent",
+  "schema": "cochem-source-publication-windows-validation/1",
+  "scope": {
+    "credentials_modified": false,
+    "databases_modified": false,
+    "full_srs_acceptance": false,
+    "linux_results_used": false,
+    "production_runtime_changed": false,
+    "production_tasks_modified": false,
+    "provider_model_jobs_executed": false,
+    "ram_drive_modified": false,
+    "repair_budgets_modified": false,
+    "system_acceptance_opt_ins_enabled": false
+  }
+}

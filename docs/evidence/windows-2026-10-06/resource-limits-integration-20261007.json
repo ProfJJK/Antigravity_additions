@@ -1,0 +1,27 @@
+{
+  "schema": "cochem-resource-limit-integration-tests/1",
+  "recorded_utc": "2026-10-07T15:06:23.169678+00:00",
+  "python": "3.12.13",
+  "platform": "Windows",
+  "resource_limits_sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+  "passed": 31,
+  "skipped": 13,
+  "failures": 0,
+  "skip_reasons": {
+    "Unsupported-host refusal is a Linux contract": 1,
+    "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+    "Actual non-Windows rejection": 1,
+    "Set COCHEM_SUPERVISOR_WINDOWS_CONFIG to the installed supervisor.json and run its Python as SYSTEM": 1,
+    "Non-Windows fail-closed contract": 1,
+    "Set COCHEM_WINDOWS_TEST_LAYOUT to a real provisioned windows-layout.json and run pytest as SYSTEM": 8
+  },
+  "test_paths": [
+    "pipeline_tests/test_controller_guard.py",
+    "pipeline_tests/test_runtime_storage_holds.py",
+    "supervisor_tests/test_repair_resources.py",
+    "pipeline_tests/test_windows_contract.py"
+  ],
+  "junit_file": "resource-limits-integration-20261007.xml",
+  "junit_sha256": "fd326dd0c83ae261520a3d50802aa05b427fdf2804255d7805c417c6934ab1ec",
+  "scope": "Ordinary-user repository regression checks, not privileged worker/system acceptance; no pipeline activation"
+}

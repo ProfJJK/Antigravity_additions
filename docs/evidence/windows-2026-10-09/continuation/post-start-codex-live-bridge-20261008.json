@@ -1,0 +1,75 @@
+{
+  "activation_ready": false,
+  "bridge": {
+    "controller": {
+      "configured_max_agents": 4,
+      "hard_max_agents": 4,
+      "independent_os_token_attestation": false,
+      "instance_id": "c867588c063c4362beca10358ebf79ef",
+      "performance_acceptance": false,
+      "pid": 5788,
+      "reported_service_identity": "SYSTEM",
+      "reported_version": "4.2.7",
+      "service_reported_process_started_at": 1791512233.3475318
+    },
+    "knowledge": {
+      "authority_matches_capture": true,
+      "document_count": 137,
+      "generation": "g-abed1cd030c746559aed6bb30a47093a",
+      "index_digest_scope": "verified only if reported; installed r3 does not expose this field",
+      "index_sha256": null,
+      "index_sha256_exposed_by_mcp": false,
+      "index_sha256_verified_via_mcp": false,
+      "manifest_sha256": "7c16c12d319aa89b78fcd83628be7e23250259ad9b05b0c246dbd48746d44ec5",
+      "ready": true,
+      "section_count": 1708
+    },
+    "mcp_sdk_reported_version": "1.30.0",
+    "owned_stdio_child_exited": true,
+    "projects": {
+      "registered_project_count": 1,
+      "windows_acceptance_registered": true
+    },
+    "protocol_version": "2025-11-25",
+    "read_only_calls": [
+      "pipeline_health",
+      "pipeline_projects",
+      "knowledge_status",
+      "pipeline_health"
+    ],
+    "same_controller_before_and_after": true,
+    "server_name": "CoChem Pipeline 4.2.7",
+    "stderr_bytes_discarded": 381,
+    "stderr_content_retained": false,
+    "stdio_child_exit_code": 0,
+    "tool_count": 15
+  },
+  "check_live_requested": true,
+  "configuration": {
+    "client_config_sha256": "9059f6e65d3259dff6e595f3f4f131983fd827088034db283913a7285411ea5b",
+    "codex_config_sha256": "b1334aea78421c16bc9d825afcc4d2ab3f0054c25f03ae5cb31ddca4f5b927e4",
+    "connector_sha256": "de8741c843df2cc12ce81fbdf3ee78f0c7c6bc8449b3efd1aff3c6c768a4d1d4",
+    "installed_revision_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "loopback_port": 47824,
+    "server_entry_matches": true,
+    "token_opened_by_verifier": false,
+    "token_path_matches": true
+  },
+  "configuration_changed": false,
+  "controller_get_telemetry_writes_possible": true,
+  "controller_tool_calls": 4,
+  "existing_token_read_by_stdio_bridge": true,
+  "existing_token_read_by_stdio_bridge_possible": true,
+  "mcp_tool_call_requests_attempted": 4,
+  "model_jobs_submitted": 0,
+  "native_performance_verified": false,
+  "owned_stdio_child_started": true,
+  "owned_stdio_launch_attempted": true,
+  "owned_stdio_tree_cleanup_verified": true,
+  "raw_tool_responses_retained": false,
+  "running_chat_tool_catalog_reloaded": false,
+  "schema": "cochem-codex-live-bridge/1",
+  "status": "LIVE_MCP_READ_ONLY_BRIDGE_VERIFIED",
+  "stderr_bytes_discarded": 381,
+  "token_opened_by_verifier": false
+}

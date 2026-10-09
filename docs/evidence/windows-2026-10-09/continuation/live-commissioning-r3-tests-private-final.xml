@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="37" time="1.559" timestamp="2026-10-07T20:46:39.281672-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_default_preview_has_no_file_network_token_or_job_access" time="0.002" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_success_submits_two_exact_requests_once_and_resume_only_gets" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_crashes_never_resubmit_planning_even_when_get_reports400[before_marker]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_crashes_never_resubmit_planning_even_when_get_reports400[after_marker]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_crashes_never_resubmit_planning_even_when_get_reports400[before_post_delivery]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_crashes_never_resubmit_planning_even_when_get_reports400[after_post_delivery]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_coding_submit_gate_and_ambiguous_attempt_never_repeated[before_marker]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_coding_submit_gate_and_ambiguous_attempt_never_repeated[after_marker]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_coding_submit_gate_and_ambiguous_attempt_never_repeated[after_post_delivery]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_planning_validation_failure_cannot_release_coding" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_observation_timeout_is_pending_without_cancellation_or_budget_mutation" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_expired_window_defers_coding_without_new_attempt" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[instance]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[capacity]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[source]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[required_empty]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[knowledge_missing]" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[docker_missing]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_current_controller_identity_and_nonvacuous_phase_readiness[paused]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_paused_existing_work_is_still_observed_without_post" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_same_id_must_bind_the_original_request[workflow_id]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_same_id_must_bind_the_original_request[objective]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_same_id_must_bind_the_original_request[project_id]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_same_id_must_bind_the_original_request[chapter_count]" time="0.000" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_real_windows_private_create_new_lock_snapshot_and_collision" time="0.183"><failure message="run_live_commissioning_r3.Held: operator_parent_replaceable">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24447/test_real_windows_private_crea0')
+private = &lt;run_live_commissioning_r3.WindowsPrivate object at 0x000001EBEE462F60&gt;
+
+    def test_real_windows_private_create_new_lock_snapshot_and_collision(tmp_path, private):
+&gt;       root = tmp_path / 'evidence'; private.create_directory(root)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_live_commissioning_r3.py:227: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+windows-deployment-next\run-live-commissioning-r3.py:185: in create_directory
+    self.validate_ancestry(path.parent); self.validate(path.parent)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+windows-deployment-next\run-live-commissioning-r3.py:181: in validate_ancestry
+    require(owner in trusted and not any(sid not in trusted and not flags &amp; 8 and mask &amp; 0xD0040
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, code = 'operator_parent_replaceable'
+
+    def require(value, code):
+        if not value:
+&gt;           raise Held(code)
+E           run_live_commissioning_r3.Held: operator_parent_replaceable
+
+windows-deployment-next\run-live-commissioning-r3.py:73: Held</failure></testcase><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_held_file_refuses_write_delete_and_keeps_actual_hash" time="0.153" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_hardlinks_and_real_directory_junction_refused" time="0.301" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_real_extra_private_acl_trustee_is_held" time="0.286" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_real_complete_driver_engine_uses_private_journals_and_retained_ids" time="0.147"><failure message="run_live_commissioning_r3.Held: operator_parent_replaceable">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24447/test_real_complete_driver_engi0')
+private = &lt;run_live_commissioning_r3.WindowsPrivate object at 0x000001EBEE465370&gt;
+
+    def test_real_complete_driver_engine_uses_private_journals_and_retained_ids(tmp_path, private):
+&gt;       root = tmp_path / 'evidence'; private.create_directory(root)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_live_commissioning_r3.py:271: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+windows-deployment-next\run-live-commissioning-r3.py:185: in create_directory
+    self.validate_ancestry(path.parent); self.validate(path.parent)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+windows-deployment-next\run-live-commissioning-r3.py:181: in validate_ancestry
+    require(owner in trusted and not any(sid not in trusted and not flags &amp; 8 and mask &amp; 0xD0040
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = False, code = 'operator_parent_replaceable'
+
+    def require(value, code):
+        if not value:
+&gt;           raise Held(code)
+E           run_live_commissioning_r3.Held: operator_parent_replaceable
+
+windows-deployment-next\run-live-commissioning-r3.py:73: Held</failure></testcase><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_exact_reused_planning_validator_refuses_malformed_native_receipts[execution_kind]" time="0.043" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_exact_reused_planning_validator_refuses_malformed_native_receipts[subscription]" time="0.009" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_exact_reused_planning_validator_refuses_malformed_native_receipts[pid]" time="0.010" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_exact_reused_planning_validator_refuses_malformed_native_receipts[reservation]" time="0.010" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_exact_reused_planning_validator_refuses_malformed_native_receipts[model]" time="0.010" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_installed_coding_validator_and_additional_route_validation_are_real" time="0.012" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_only_fixed_submission_endpoints_and_no_cancel_resume_reset_in_source" time="0.001" /><testcase classname="windows-deployment-next.test_live_commissioning_r3" name="test_actual_installed_manifest_asset_shape_and_digest_without_runtime_or_token_reads" time="0.001" /></testsuite></testsuites>

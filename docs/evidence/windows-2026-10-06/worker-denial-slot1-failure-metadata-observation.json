@@ -1,0 +1,326 @@
+{
+  "schema": "cochem-worker-denial-failure-metadata-observation/1",
+  "captured_utc": "2026-10-07T14:57:50.8107291Z",
+  "operator": "AETHERDESK\\ansac",
+  "administrator": false,
+  "failed_receipt_sha256": "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+  "receipt_worker_pid_present": false,
+  "receipt_worker_released": false,
+  "receipt_cleanup_verified": false,
+  "task_observations": [
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot1",
+      "observed": false,
+      "status": "INACCESSIBLE_OR_ERROR",
+      "hresults": [
+        "0x80070005"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot2",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot3",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot4",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot5",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-WorkerDenial-slot6",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-Warden",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.7-Supervisor",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.2-Warden",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    },
+    {
+      "name": "CoChem-4.2.3-Supervisor",
+      "observed": false,
+      "status": "NOT_FOUND",
+      "hresults": [
+        "0x80070002"
+      ]
+    }
+  ],
+  "target_root_observations": [
+    {
+      "slot": "slot1",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot1",
+      "status": "OBSERVED",
+      "directory": true,
+      "attributes": "Directory",
+      "created_utc": "2026-10-07T14:53:47.1627545Z",
+      "last_write_utc": "2026-10-07T14:53:47.4314678Z"
+    },
+    {
+      "slot": "slot2",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot2",
+      "status": "NOT_FOUND",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "slot": "slot3",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot3",
+      "status": "NOT_FOUND",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "slot": "slot4",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot4",
+      "status": "NOT_FOUND",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "slot": "slot5",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot5",
+      "status": "NOT_FOUND",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "slot": "slot6",
+      "path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot6",
+      "status": "NOT_FOUND",
+      "error_type": "ItemNotFoundException"
+    }
+  ],
+  "process_query_status": "OBSERVED",
+  "process_scope": "Up to64 python.exe/pythonw.exe/powershell.exe/pwsh.exe metadata rows; no command lines or environment read.",
+  "process_observations": [
+    {
+      "pid": 10668,
+      "parent_pid": 12864,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:08:07.5196200Z",
+      "executable_path": null,
+      "owner": null,
+      "owner_query_status": 2,
+      "command_line_read": false
+    },
+    {
+      "pid": 13876,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:45.4641320Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 4272,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:45.4703450Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 6728,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:45.4713820Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 14756,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:45.4725960Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 15204,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:45.4738570Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 25316,
+      "parent_pid": 7860,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:46.1289020Z",
+      "executable_path": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp7NTtd5\\Scripts\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 25340,
+      "parent_pid": 24548,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:46.1293920Z",
+      "executable_path": "C:\\Users\\ansac\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpqUHFQf\\Scripts\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 25384,
+      "parent_pid": 25316,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:46.1431660Z",
+      "executable_path": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 25392,
+      "parent_pid": 25340,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T00:09:46.1431860Z",
+      "executable_path": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 34580,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T01:20:41.9845150Z",
+      "executable_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 32260,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T01:20:41.9845160Z",
+      "executable_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 30884,
+      "parent_pid": 32260,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T01:20:41.9922910Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 10244,
+      "parent_pid": 34580,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T01:20:41.9938080Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 32752,
+      "parent_pid": 24308,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T02:08:27.0231720Z",
+      "executable_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\.venv-mcp\\Scripts\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 32672,
+      "parent_pid": 32752,
+      "name": "python.exe",
+      "created_utc": "2026-10-06T02:08:27.0286500Z",
+      "executable_path": "C:\\Python314\\python.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 17312,
+      "parent_pid": 4684,
+      "name": "powershell.exe",
+      "created_utc": "2026-10-07T04:17:04.9278960Z",
+      "executable_path": null,
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    },
+    {
+      "pid": 41160,
+      "parent_pid": 24504,
+      "name": "pwsh.exe",
+      "created_utc": "2026-10-07T14:57:50.3845280Z",
+      "executable_path": "C:\\Users\\ansac\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+      "owner": "AETHERDESK\\ansac",
+      "owner_query_status": 0,
+      "command_line_read": false
+    }
+  ],
+  "attribution_limitations": [
+    "Failed receipt contains no worker PID or child identity attestation.",
+    "Non-administrator task/process access can be denied; access denied is not absence.",
+    "Matching process names alone cannot prove ownership by this acceptance task.",
+    "A point-in-time process inventory does not establish verified launch cleanup."
+  ],
+  "read_only": true,
+  "task_or_process_mutations": false,
+  "credentials_or_private_state_opened": false
+}

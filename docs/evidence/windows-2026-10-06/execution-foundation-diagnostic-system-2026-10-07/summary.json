@@ -1,0 +1,144 @@
+{
+  "schema": "cochem-foundation-diagnostic-system-observation/1",
+  "captured_utc": "2026-10-07T23:32:06.564974+00:00",
+  "host": "AETHERDESK",
+  "status": "FOUNDATION_READ_ONLY_DIAGNOSTIC_VERIFIED",
+  "receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+  "inputs_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+  "safe_owner_result_sha256": "d9b5b88ce552f215a9ab75a3eb4c36772125e88b2532e68e3aad0e95920949bf",
+  "scope": "Ordinary-user exact bounded reads of existing public SYSTEM receipt/input metadata and helper bytes; no task, Docker, provider or provisioning executed by this collector.",
+  "safe_owner_result_provenance": "Allowlisted projection reconstructed from the exact protected receipt. Task result0 is owner-wrapper-reported, not read from COM by this collector; this is not a captured raw console transcript.",
+  "task_evidence": {
+    "old_foundation_result_verified_by_owner_wrapper": 2,
+    "new_diagnostic_result_verified_by_owner_wrapper": 0,
+    "current_com_task_state_directly_observed_by_collector": false,
+    "ordinary_com_access": "DENIED_REPORTED_BY_PARENT"
+  },
+  "bindings": {
+    "nonce": "3e2e411d9c274167a703a4308404dbe5",
+    "helper_sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+    "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "revision": {
+      "acceptance_files": 0,
+      "acceptance_sha256": null,
+      "files": 109,
+      "read_only": true,
+      "schema": "cochem-installed-revision/1",
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "verified": true
+    },
+    "preflight_receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "failed_foundation_packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+    "all_six_worker_receipt_hashes_match": true
+  },
+  "observations": {
+    "events": 18,
+    "read_only_docker_commands": 4,
+    "failed_events": 0,
+    "preservation_verified": true,
+    "ram_provision_started": false,
+    "registry_provision_started": false,
+    "scoped_owned_container_count": 0,
+    "docker_server": {
+      "executable": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "pid": 26816,
+      "process_created_filetime": 134357190020978742,
+      "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    },
+    "ram_before": {
+      "filesystem_bytes": 8589930496,
+      "imdisk_query_ioctl_used": true,
+      "ram_modified": false,
+      "root_attributes": 22,
+      "root_device": 18215568536144889826,
+      "root_file_id": 1407374883553285,
+      "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "volume": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      }
+    },
+    "ram_after": {
+      "filesystem_bytes": 8589930496,
+      "imdisk_query_ioctl_used": true,
+      "ram_modified": false,
+      "root_attributes": 22,
+      "root_device": 18215568536144889826,
+      "root_file_id": 1407374883553285,
+      "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "volume": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      }
+    },
+    "fresh_state_before": {
+      "container_registry_root_absent": true,
+      "ram_ledger_absent": true,
+      "ram_workspace_absent": true,
+      "readiness_receipt_absent": true
+    },
+    "fresh_state_after": {
+      "container_registry_root_absent": true,
+      "ram_ledger_absent": true,
+      "ram_workspace_absent": true,
+      "readiness_receipt_absent": true
+    },
+    "started_at_unix_ms": 1791415532130,
+    "finished_at_unix_ms": 1791415537266
+  },
+  "historical_failure": {
+    "preserved_unchanged": true,
+    "cause": "UNKNOWN; the sanitized original receipt cannot recover the exact historical failing guard. The later successful observation does not retrospectively diagnose or erase the failure."
+  },
+  "next_action": "A fresh separately reviewed foundation continuation is pending. Do not rerun the old return series, failed foundation, successful inspection or diagnostic. No provisioning/activation authorized by this observation.",
+  "exact_integer_handling": "Python arbitrary-precision parsing; original receipt/input bytes copied unchanged; no JavaScript Number conversion.",
+  "native_model_jobs_executed_by_collector": 0,
+  "pipeline_activated": false,
+  "linux_evidence_used": false,
+  "files": {
+    "foundation-diagnostic.json": {
+      "sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+      "bytes": 10177
+    },
+    "handoff-before.md": {
+      "sha256": "7239c61b98320ad256c1ec2c0dcba4b8d79d3ebbce92ebd81d4fbed2fa7e1c00",
+      "bytes": 11910
+    },
+    "inputs.json": {
+      "sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+      "bytes": 1215
+    },
+    "observed-before.json": {
+      "sha256": "c8fa82194a1d77ebe500f422bbd8efea8a5577786b55e8e33883d89cfedb03ea",
+      "bytes": 44414
+    },
+    "record-foundation-diagnostic-success-20261007.py": {
+      "sha256": "9a662fce350ef167029b7a5f165d8682cacaed50a310978f6339544b50a3f59f",
+      "bytes": 15679
+    },
+    "safe-owner-result.json": {
+      "sha256": "d9b5b88ce552f215a9ab75a3eb4c36772125e88b2532e68e3aad0e95920949bf",
+      "bytes": 1006
+    }
+  }
+}

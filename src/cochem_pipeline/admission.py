@@ -12,7 +12,7 @@ import threading
 import time
 
 from .container_policy import DockerPolicy
-from .containers import DockerRunner,ContainerCapacityError,ContainerCleanupError
+from .containers import DockerRunner,ContainerCapacityError,ContainerCleanupError,_prepared_provenance
 from .coding_store import CODING_KINDS
 
 _NATIVE_KINDS=tuple(kind for kind in ('MANIFEST_GENERATOR','CHAPTER_DRAFT','SYNTHESIS','PREFLIGHT_REQUEST',*CODING_KINDS)
@@ -27,14 +27,22 @@ class JointAdmission:
         self.store,self.docker=store,docker
         self.lock=lock if lock is not None else threading.Lock()
         self._budget_lock=threading.RLock()
+        self._maintenance_lock=threading.Lock()
         self._capacity=0
         self._pending_native=0
         self._drain_target=None
+        self._maintenance_generation=0
         self.maintenance_requested=threading.Event()
         self.update_capacity(capacity)
 
     def _native_active(self):
         return sum(job['kind']!='CODE_TEST' for job in self.store.active_jobs())
+
+    def request_maintenance(self):
+        """Do not lose a concurrent handoff/completion/pressure notification."""
+        with self._budget_lock:
+            self._maintenance_generation+=1
+            self.maintenance_requested.set()
 
     def _publish_locked(self):
         residual=max(0,self._capacity-self._native_active()-self._pending_native)
@@ -55,13 +63,13 @@ class JointAdmission:
             self._capacity=capacity
             residual=self._publish_locked()
             if capacity==0 or changed:
-                self.maintenance_requested.set()
+                self.request_maintenance()
             return residual
 
     def _request_drain(self,target):
         with self._budget_lock:
             self._drain_target=target if self._drain_target is None else min(self._drain_target,target)
-            self.maintenance_requested.set()
+            self.request_maintenance()
 
     def _native_pending(self):
         # Read only bounded eligibility metadata, not prompts or artifact data.
@@ -129,7 +137,7 @@ class JointAdmission:
                 census=self.docker.census()
                 if census['quarantined']:
                     self.docker.set_capacity(0)
-                    self.maintenance_requested.set()
+                    self.request_maintenance()
                     return None
                 if census['owned']>residual:
                     self._request_drain(residual)
@@ -145,7 +153,7 @@ class JointAdmission:
                             exc=ContainerCapacityError('Prepared-container request queue is full (64 profiles); '
                                 'job remains held until FIFO capacity is available')
                         self._unstarted_failure(node,exc)
-                        self.maintenance_requested.set()
+                        self.request_maintenance()
                         return None
                     except (ValueError,ContainerCleanupError) as exc:
                         self._unstarted_failure(node,exc,category='configuration')
@@ -153,15 +161,21 @@ class JointAdmission:
                     with self._budget_lock:
                         self._drain_target=None
                     self.docker.complete_preparation_request(runner.policy.pool_digest)
-                    self.maintenance_requested.set()
+                    self.request_maintenance()
                     return node,reservation
-                if self.docker.preparation_requests():
-                    # Preserve the first queued profile's seat through its
-                    # retry delay instead of letting native traffic evict it.
-                    return None
+                requests=self.docker.preparation_requests()
                 if not self._native_pending():
                     return None
                 target=max(0,residual-1)
+                if requests:
+                    # Keep the FIFO head's prepared/preparing seat, or reserve
+                    # one vacant seat until maintenance can prepare it. Other
+                    # spare seats remain available to native work.
+                    head=requests[0]['profile_digest']
+                    reserved=any(row['pool_digest']==head and row['status'] in ('WARM','PREPARING')
+                                 for row in census['containers'])
+                    if census['owned']>target-(0 if reserved else 1):
+                        return None
                 if census['owned']>target:
                     self._request_drain(target)
                     return None
@@ -189,15 +203,22 @@ class JointAdmission:
             self.lock.release()
 
     def maintenance(self,ceiling=None):
-        """Background-only: reap, drain, and prewarm under the admission lock."""
+        """Serialize maintenance; release shared admission for cold Docker work."""
         if ceiling is not None:
             self.update_capacity(ceiling)
-        if self.docker is None or not self.lock.acquire(blocking=False):
+        if self.docker is None or not self._maintenance_lock.acquire(blocking=False):
             return None
+        admission_held=False
         try:
-            active={job['attempt_id'] for job in self.store.active_jobs() if job['kind']=='CODE_TEST'}
-            self.docker.reap_orphans(active_attempt_ids=active)
+            # Reaping performs slow engine calls without admission held. Each
+            # removal decision rechecks current leases under the short lock.
+            self.docker.reap_orphans(active_attempt_ids=lambda: {
+                job['attempt_id'] for job in self.store.active_jobs() if job['kind']=='CODE_TEST'},
+                admission_lock=self.lock)
+            self.lock.acquire()
+            admission_held=True
             with self._budget_lock:
+                generation=self._maintenance_generation
                 residual=self._publish_locked()
                 target=min(residual,self.docker.policy.max_containers)
                 if self._drain_target is not None:
@@ -227,21 +248,36 @@ class JointAdmission:
                 # Keep this FIFO request until its prepared slot is handed off.
                 # Otherwise a later incompatible profile could immediately
                 # evict the first one before its controlled retry becomes due.
-                result=runner.prepare_requested_profile(target)
-                if result['ready']:
-                    self.maintenance_requested.clear()
+                self.lock.release()
+                admission_held=False
+                result=runner.prepare_requested_profile(target,admission_lock=self.lock)
+                with self._budget_lock:
+                    residual=self._publish_locked()
+                    census=runner.census()
+                    ready=any(row['status']=='WARM' and row['pool_digest']==digest
+                              and row['deadline']>time.time() and _prepared_provenance(row,as_of=time.time())
+                              for row in census['containers'])
+                    result={**result,'ready':bool(result['ready'] and ready),'census':census}
+                    if residual<=0 or census['owned']>residual:
+                        result={**result,'ready':False,'reason':'pressure_revoked_prepared_capacity'}
+                    if result['ready'] and generation==self._maintenance_generation:
+                        self.maintenance_requested.clear()
                 return {'requested_profile':digest,**result}
             if self._native_pending():
                 # Do not cold-create an idle tree only to drain it on the very
                 # next native claim. Actual eligible work keeps one vacant seat;
                 # each further claim can request another bounded idle drain.
                 target=min(target,max(0,residual-1))
-            result=self.docker.prepare_pool(target=target)
+            self.lock.release()
+            admission_held=False
+            result=self.docker.prepare_pool(target=target,admission_lock=self.lock)
             with self._budget_lock:
                 # A pressure update while Docker was working must request a
                 # second maintenance pass instead of clearing the new signal.
-                if self._capacity-self._native_active()>=target:
+                if generation==self._maintenance_generation and self._capacity-self._native_active()>=target:
                     self.maintenance_requested.clear()
             return result
         finally:
-            self.lock.release()
+            if admission_held:
+                self.lock.release()
+            self._maintenance_lock.release()

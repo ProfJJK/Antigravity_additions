@@ -1,0 +1,56 @@
+WINDOWS PIPELINE: CONTINUE AFTER COMPLETED SIGN-IN
+8 October 2026 - AETHERDESK
+
+All six Codex profiles and all six Claude profiles passed authentication in
+attempt 8ba7ce50d32c4a96a3c3fd5947a6cd4b. No browser approvals are repeated.
+
+The first-start wrapper registered the Warden disabled, then rejected Windows'
+Task Scheduler descriptor projection. The actual task is disabled, has zero
+instances and has never run. The commissioning task was not created. This was
+an implementation error in the registration/permission check.
+
+ONE COMMAND IN YOUR ADMINISTRATOR WINDOWS POWERSHELL WINDOW
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pending-warden-setup-r3-v7.ps1" -Apply -Interactive
+
+Let it finish. It checks the saved authentication chain, the original four
+commissioning files, the task's exact definition and never-run state, and its
+protected backing file before changing anything. It records the original
+descriptor/XML and a durable recovery intent in a new protected folder.
+
+It uses Task Scheduler's supported API once to restore the originally requested
+protected SYSTEM/Administrators task permissions. It verifies unchanged task
+XML and original file bytes, registers only the missing commissioning task,
+and invokes commissioning once. The original installed runtime and reviewed
+Python commissioning helper remain unchanged. After verified first start,
+the same command continues independent supervisor and resource monitoring.
+
+The downstream permission checks also verify the protected backing task file
+when Windows returns its alternate service descriptor. They do not change
+completed tasks' permissions or repeat logins or first start.
+
+Administrator access is required for the protected task/private evidence.
+No browser interaction or additional prompt is expected. File checks and
+installation work can take several minutes without output.
+
+Return the final JSON or the first failure. If it fails, preserve every task,
+folder, receipt and any running controller. Do not rerun either this command
+or the earlier v6 setup command; the continuation never retries or stops a
+potentially running controller automatically.
+
+The successful sign-ins, credentials, databases, repair budgets, existing
+8 GiB R: drive and Mount_CoChem_RAMDisk startup task are preserved. Capacity
+remains four shared slots across six identities with Chapter 06 routing.
+Completed Docker, CPU, knowledge and isolation tests are not repeated.
+Paid repair and component recovery remain disabled while budget history is
+unresolved. Agy's existing sign-in is preserved.
+
+After setup succeeds, Codex can perform the prepared live MCP/workflow checks.
+The full stability interval and remaining acceptance evidence are still needed;
+setup completion alone does not establish full SRS acceptance.
+
+Preparation evidence: pending-warden-recovery-v7-preparation-20261008.json.
+Actual ordinary Windows Task Scheduler observations, inert Windows fixtures
+and owner-reported SYSTEM authentication results are recorded separately.
+Linux results are not counted as Windows deployment evidence. Earlier files
+and evidence remain preserved.

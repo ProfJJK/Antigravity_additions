@@ -1045,13 +1045,24 @@ def launch_worker(identity: WorkerIdentity, argv: list[str], cwd: str | Path,
         raise
 
 
-def login_worker(layout_file: str | Path, slot: str, provider: str, executable: str, log_path: str | Path) -> int:
+def login_worker(layout_file: str | Path, slot: str, provider: str, executable: str, log_path: str | Path,
+                 login_contract: str | Path | None = None) -> int:
     """Run the real native subscription login in the selected worker's profile.
 
     The operator reads the provider's login link/code locally from a protected
     log. No provider credential is parsed, copied, returned, or placed in argv.
     """
     require_system()
+    # Account/root/operator selection is privileged configuration. Validate its
+    # custody before reading any fields, including for Codex and Claude logins.
+    validate_code_path(layout_file)
+    if provider == "gemini":
+        if not login_contract:
+            raise ValueError("Agy login requires its protected reviewed subscription-login contract")
+        from cochem_supervisor.windows import login_gemini_worker
+        return login_gemini_worker(layout_file, slot, executable, log_path, login_contract)
+    if login_contract:
+        raise ValueError("A login contract is only supported for the gemini (Agy) provider")
     layout = json.loads(Path(layout_file).read_text(encoding="utf-8"))
     if slot not in layout["slots"] or provider not in {"codex", "claude"}:
         raise ValueError("Choose a provisioned slot and codex or claude")
@@ -1084,14 +1095,20 @@ def main() -> None:
     parser.add_argument("--layout-output")
     parser.add_argument("--layout")
     parser.add_argument("--slot")
-    parser.add_argument("--provider", choices=("codex", "claude"))
+    parser.add_argument("--provider", choices=("codex", "claude", "gemini"))
     parser.add_argument("--executable")
     parser.add_argument("--log-path")
+    parser.add_argument("--login-contract")
     args = parser.parse_args()
     if args.operation == "login":
         if not all((args.layout, args.slot, args.provider, args.executable, args.log_path)):
             parser.error("login requires --layout, --slot, --provider, --executable and --log-path")
-        raise SystemExit(login_worker(args.layout, args.slot, args.provider, args.executable, args.log_path))
+        if args.provider == "gemini" and not args.login_contract:
+            parser.error("Agy login requires --login-contract with reviewed native subscription-login arguments")
+        if args.provider != "gemini" and args.login_contract:
+            parser.error("--login-contract is only supported for the gemini (Agy) provider")
+        raise SystemExit(login_worker(args.layout, args.slot, args.provider, args.executable, args.log_path,
+                                     args.login_contract))
     if not args.private_root or not args.workers_root:
         parser.error("provision/validate requires --private-root and --workers-root")
     identities = {f"slot{index}": WorkerIdentity(f"CoChem422Worker{index}", f"CoChem422/slot{index}") for index in range(1, args.slots + 1)}

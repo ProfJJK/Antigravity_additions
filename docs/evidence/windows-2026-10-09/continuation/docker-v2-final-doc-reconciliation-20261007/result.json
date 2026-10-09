@@ -1,0 +1,15 @@
+{
+  "schema": "cochem-final-preparation-document-reconciliation/1",
+  "preparation": "docs/evidence/windows-2026-10-06/docker-execution-r3-v2-preparation-2026-10-07/preparation.json",
+  "preparation_sha256": "30c6f7d6493913cfffaaf69a75f3631ee8238a9e82eb2c9515d4d66b11641832",
+  "observed_sha256": "df93714e5949ee5c831f8009276d1ad9c8a9718f67784477cf6e446a712b3ccb",
+  "handoff_sha256": "d0e7e941fcb6663b7f4e523de772c7b5bc1e4b86e389eee77bb81af577012818",
+  "current_return_guide_sha256": "9029bb62ddd4d43b4506afaba31ce03687de11294e47a47c8b77e1a4fe5bfe57",
+  "current_morning_pointer_sha256": "e452bff1b76ecc2b2a8c117c47a2ae662f08f7daca9752244a446d8adfec63bf",
+  "source_pins_verified_unchanged": true,
+  "guide_files_edited": false,
+  "original_observation_timestamp_preserved": "2026-10-07T14:11:50.4763689Z",
+  "actual_foundation_project_and_physical_acceptance_pending": true,
+  "foundation_preparation_tests": 108,
+  "docker_preparation_tests": 58
+}

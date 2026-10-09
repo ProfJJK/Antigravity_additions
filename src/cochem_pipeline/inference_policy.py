@@ -99,7 +99,8 @@ def claude_inference_arguments() -> list[str]:
     # --bare must NOT be used: it disables OAuth/keychain subscription login.
     return ['--tools', '', '--strict-mcp-config', '--mcp-config', '{"mcpServers":{}}',
             '--setting-sources', '', '--disable-slash-commands', '--settings',
-            '{"disableAllHooks":true,"disableSkillShellExecution":true}']
+            '{"disableAllHooks":true,"disableSkillShellExecution":true,'
+            '"fallbackModel":[],"switchModelsOnFlag":false}']
 
 
 def validate_claude_help(stdout: str) -> dict:

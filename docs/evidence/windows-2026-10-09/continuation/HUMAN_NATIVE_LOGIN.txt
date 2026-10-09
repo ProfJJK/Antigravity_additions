@@ -1,0 +1,55 @@
+Human native login — reviewed preparation, no login executed
+
+Use a real 64-bit Administrator Windows PowerShell console as AETHERDESK\ansac.
+Keep both new pipeline/supervisor daemon tasks absent or disabled. The existing
+R: startup task and legacy Warden are unrelated and must remain untouched.
+
+These helpers deliberately use the preserved stopped 20261006 installation.
+They have NOT been repinned to the separately prepared 20261007-r1 runtime.
+Run the frozen morning setup first. Login is a separate, attended browser step.
+
+Claude, one worker:
+
+powershell.exe -NoProfile -File "D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\login_pipeline_worker_interactive.ps1" -Slot slot1 -Apply -Interactive
+
+Follow the provider's browser URL. If the browser callback finishes the login,
+wait for its command/cleanup receipt. If Claude asks for its returned code,
+press P in the waiting console and enter ONE line in the masked prompt. Do not
+paste that code into a normal PowerShell command prompt. The bridge stops
+publishing native output before submitting the code, and closes stdin once.
+Press Q to cancel and wait for owned Job/profile cleanup. Closing the console
+or pressing Ctrl+C does not prove cleanup; preserve the session for review.
+
+Complete the same attended flow for slot2, slot3, slot4, slot5 and slot6, changing
+only -Slot. A failed or existing session stops a repeat; do not delete its task,
+private input, log or receipt, and do not retry automatically. No credentials are
+copied from the regular owner account or between workers.
+
+Codex uses the verified frozen protected helper, not a path under PipelineRoot:
+
+powershell.exe -NoProfile -File "C:\Program Files\CoChem\InstallGuard4.2.7-windows-20261006\repository\scripts\login_pipeline_worker.ps1" -Slot slot1 -Provider codex -Executable "C:\Program Files\CoChem\Native4.2.7-windows-20261006\codex.exe" -InstallRoot "C:\Program Files\CoChem\Pipeline4.2.7-windows-20261006"
+
+Follow its device-auth browser instructions, then repeat for slot2 through slot6.
+Confirm the intended subscription account in the browser for each worker.
+The original Claude helper has an empty stdin stream; use the new interactive
+bridge above for Claude's paste-code fallback. No Agy login is inferred or run.
+
+After all six attended logins for a provider, its separate status batch is:
+
+powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\check-all-worker-native-status.ps1" -Provider claude -Apply
+
+Use -Provider codex for the Codex status batch. Each checks all six identities
+sequentially and stops on its first failed result. Existing status roots/tasks
+are preserved and block an automatic rerun. A successful login command alone
+does not prove authentication; even a passing native authentication status does
+not prove current model/effort entitlement or pipeline activation readiness.
+
+Prepared evidence: 44 focused Windows inert bridge tests passed. The actual
+read-only slot1 preview had zero holds and executed zero login/model commands.
+Independent review found no remaining concrete defect in the frozen snapshot.
+Actual browser callback/paste-code behavior still requires this human session.
+
+Bridge Python SHA256:
+39a163887514ab0153cd14c036dc60151c0f4752f90df15de31dc7076f1b5e59
+Interactive wrapper SHA256:
+904ba27a9ad6dfe096fd29b7206cc41e8bd8556367cb457a522c710eda156fe6

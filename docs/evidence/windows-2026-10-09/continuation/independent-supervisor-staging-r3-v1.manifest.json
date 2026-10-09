@@ -1,0 +1,1564 @@
+{
+  "schema": "cochem-independent-supervisor-staging-freeze/1",
+  "complete_source_freeze": true,
+  "activation_authorized": false,
+  "target_root": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1",
+  "unpublished_pair_root": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1\\unpublished-private\\unresolved-pair",
+  "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "source_files": [
+    {
+      "relative": "pyproject.toml",
+      "sha256": "014376449f0ea2d431e678bc2212e97883f6bf2da243b9525e56b54a930de521",
+      "bytes": 2550
+    },
+    {
+      "relative": "README.md",
+      "sha256": "7511cf6a9e349b918f9161108e1a134455c090a0e0536b3a13e7a755e0f56b20",
+      "bytes": 5635
+    },
+    {
+      "relative": "src/cochem/__init__.py",
+      "sha256": "0108253d30c72de6a79ff70c48bfb792a932fca325521df9fa0d27b77d0864d8",
+      "bytes": 495
+    },
+    {
+      "relative": "src/cochem/cli/__init__.py",
+      "sha256": "d99016b37e02057e0957c7bd238e873ce9d03188aef732e3bf471a5e47f5a35b",
+      "bytes": 1232
+    },
+    {
+      "relative": "src/cochem/cli/audit.py",
+      "sha256": "ea05d3edd82a99dbb4082a5855e870ecce6fdffe604eb78a27e0a82cf9656e9f",
+      "bytes": 25770
+    },
+    {
+      "relative": "src/cochem/cli/conformer.py",
+      "sha256": "3c7470f74b08e17b813aef11f93d38ec0a34a6d32420e5039ab39925e676028b",
+      "bytes": 35700
+    },
+    {
+      "relative": "src/cochem/cli/hardware.py",
+      "sha256": "858c7e82f39f90901771c4f25dc19e54e808aefcc1842ad57050a4c931b63115",
+      "bytes": 10514
+    },
+    {
+      "relative": "src/cochem/cli/init_wizard.py",
+      "sha256": "7702c0f4e087911e231de33e30771fa8c87580189e90f4fc9720f08101e91f10",
+      "bytes": 10628
+    },
+    {
+      "relative": "src/cochem/cli/main.py",
+      "sha256": "7b286bf922b57d9c449351201b79f43a5fe719ef845b54131c64925995dd47f7",
+      "bytes": 7827
+    },
+    {
+      "relative": "src/cochem/cli/pes.py",
+      "sha256": "183b278235c8e33596f9e0311c8c4cd4dd88888049cdbb4937209edaf072ec20",
+      "bytes": 47113
+    },
+    {
+      "relative": "src/cochem/concurrency/__init__.py",
+      "sha256": "22eefae76a7e25719bd5a444d8ab3bd8b558fcca46fc42219da03622b3430d39",
+      "bytes": 655
+    },
+    {
+      "relative": "src/cochem/concurrency/atomic_file_lock.py",
+      "sha256": "872c2eda68c7129c820b175dcddad318a4af6e20ab035dea79f3e36daa968f72",
+      "bytes": 10025
+    },
+    {
+      "relative": "src/cochem/core/__init__.py",
+      "sha256": "c790c86b9be6d2e7b7bfea56b81696fda85229b7eb5dde1ed055d5ddbf247883",
+      "bytes": 2187
+    },
+    {
+      "relative": "src/cochem/core/ast_eradication_engine.py",
+      "sha256": "fd26e193ca4cd9fbaf86cf8b60838a2260a44c7283f7d6698a1c5680125bb2a6",
+      "bytes": 85087
+    },
+    {
+      "relative": "src/cochem/core/config.py",
+      "sha256": "761211eb0ee006af1d6c53f8eae4f04f9a934ce764b9a779d5d59a2f28781f08",
+      "bytes": 3674
+    },
+    {
+      "relative": "src/cochem/core/exceptions.py",
+      "sha256": "3529aeafaf293c03303040c8f59dbb7d8d3f9a98784bfcb45e4fdc8bb51dd790",
+      "bytes": 4327
+    },
+    {
+      "relative": "src/cochem/core/fixture_builder.py",
+      "sha256": "c566ab0f3839359d42305bb8f6828fcc5fbbfd84bcf984519a33c963491435d5",
+      "bytes": 25953
+    },
+    {
+      "relative": "src/cochem/core/physical_fallback.py",
+      "sha256": "de4969979626a92a42051fc35656d8104331576492dfae77895f055f8fcd3b3d",
+      "bytes": 16561
+    },
+    {
+      "relative": "src/cochem/core/physical_fixtures.py",
+      "sha256": "804a4d0b7d80800464fd58029301a8de022f477a3dd03055d9aabec19505b516",
+      "bytes": 30793
+    },
+    {
+      "relative": "src/cochem/dsp/router.py",
+      "sha256": "c2f9b0a6469d47030d94a07ecef316de11312c3aba5f48b40b4f866888bc6f98",
+      "bytes": 24467
+    },
+    {
+      "relative": "src/cochem/dsp/telemetry.py",
+      "sha256": "7df1f9c1a056d49242fee143122369c903fc9eb1cc9882b9bc78145d236cc658",
+      "bytes": 6921
+    },
+    {
+      "relative": "src/cochem/engine/__init__.py",
+      "sha256": "b938d797d21c909c9d0bf88e6e8efe04e06431e9a4d07ce53d93a2f6468d68d0",
+      "bytes": 2475
+    },
+    {
+      "relative": "src/cochem/engine/frozen_monomer.py",
+      "sha256": "70457960ef5a995f688e8751039ed47ccf0f333a253787af9aac6fee0e801965",
+      "bytes": 53170
+    },
+    {
+      "relative": "src/cochem/hpc/__init__.py",
+      "sha256": "940074e757591a558ece86b01735c37ce0c9e17bc5efb5d1e8aebee3801e9b88",
+      "bytes": 157
+    },
+    {
+      "relative": "src/cochem/ml/__init__.py",
+      "sha256": "fb61eaff3d8b52ec71e065fa994ae28ac580f5f84184f4d43ccbb98318ea67ae",
+      "bytes": 167
+    },
+    {
+      "relative": "src/cochem/py.typed",
+      "sha256": "6b546543e8409e03dd643b6b8258b04d536d3e66585194b7c2f7db3119ee9c72",
+      "bytes": 28
+    },
+    {
+      "relative": "src/cochem/runners/__init__.py",
+      "sha256": "0d70880860170f2425f4eb098b3be4a3f34971f05264e4ccd22adcf2e24308a1",
+      "bytes": 161
+    },
+    {
+      "relative": "src/cochem/spectroscopy/__init__.py",
+      "sha256": "b6f1cbec0d3645170fdf3168d5c4d19bc08bf6769c67c4efb8f8884c91384918",
+      "bytes": 160
+    },
+    {
+      "relative": "src/cochem/storage/__init__.py",
+      "sha256": "f449c786d0bcd88bbcb34829fb59e9d7912054cd5342fbe7f3291f67aa0a6b54",
+      "bytes": 5610
+    },
+    {
+      "relative": "src/cochem/storage/hdf5_chunk_geometry.py",
+      "sha256": "356d85b4996e9d352cc4d322ff74c9aceb8b35b244b2a1a217a0a75562256955",
+      "bytes": 17518
+    },
+    {
+      "relative": "src/cochem/storage/hdf5_filters.py",
+      "sha256": "614cb4641378d420adcefe7cfaf291aa51f73655d21ca6bdc73ecdf2533327a0",
+      "bytes": 6114
+    },
+    {
+      "relative": "src/cochem/storage/hdf5_lock_bypass.py",
+      "sha256": "1aabd4989812ebbef17485ad7a7ed50682cab57caf626867b89c94f1c73ba14c",
+      "bytes": 21868
+    },
+    {
+      "relative": "src/cochem/storage/hdf5_roundtrip.py",
+      "sha256": "2374842d2451cead25fd79720d0db7ff95ba67a378927468ad90074f98c21abe",
+      "bytes": 13439
+    },
+    {
+      "relative": "src/cochem/storage/hdf5_zstd.py",
+      "sha256": "0342861339eadc5e7b7554d6a9847058963ea5c694f6c2a1b3f23262274264ce",
+      "bytes": 16496
+    },
+    {
+      "relative": "src/cochem/storage/pes_metadata.py",
+      "sha256": "b2e0db50aef582cf4965c4f45c44fde9ea3f0622bc1d3404f5baf8d06c50779c",
+      "bytes": 7219
+    },
+    {
+      "relative": "src/cochem/storage/pes_store.py",
+      "sha256": "9da045011f4dd64d45491bfc786336e9d8ec821229b02ac86e5b0e8aeb3bcdac",
+      "bytes": 37150
+    },
+    {
+      "relative": "src/cochem/topos/__init__.py",
+      "sha256": "526872e3fc030db6f0a88847dd7c1ac2001ab9c6298fa19133e4bdad7cf35557",
+      "bytes": 2462
+    },
+    {
+      "relative": "src/cochem/topos/clustering.py",
+      "sha256": "6b80c2c2b4a152f9ce24850e0ecef6accf12cf1d52e4824a5769fec14a9f6afb",
+      "bytes": 22056
+    },
+    {
+      "relative": "src/cochem/topos/conformer_ensemble.py",
+      "sha256": "30a8a2fec777b7e639e2bf0e4230f5e0afd725d7c742bb5d6f1f773c82525946",
+      "bytes": 27054
+    },
+    {
+      "relative": "src/cochem/topos/energy_filter.py",
+      "sha256": "15dd742aaa4a93b96911c8861d2d1cfc2bae92f948767f15132440ee85fcf95b",
+      "bytes": 6902
+    },
+    {
+      "relative": "src/cochem/warden/ipc.py",
+      "sha256": "ad9dd4c899eeeacf2ab61baddff37a5c2cabfd313745c2733f1bcb72aaf24ed4",
+      "bytes": 4102
+    },
+    {
+      "relative": "src/cochem/warden/ladder.py",
+      "sha256": "a77e2108b6f9ed502808c4637ce79925f992a35b19bbf492304e35eb6b192813",
+      "bytes": 4207
+    },
+    {
+      "relative": "src/cochem_mcp/__init__.py",
+      "sha256": "eb9a139a77dd51a5e1408148076908a9188894347b1149ad88ea841f693f1fe3",
+      "bytes": 78
+    },
+    {
+      "relative": "src/cochem_mcp/__main__.py",
+      "sha256": "ebb7f4bd84be62b8ea9ade44486d2ce65797f7c872e0226eee278d46c131f85f",
+      "bytes": 1304
+    },
+    {
+      "relative": "src/cochem_mcp/config.py",
+      "sha256": "27b72f353879d1a7fd6b5034d2c151313f532d19565fdeb5dc6d3d391c01fdf7",
+      "bytes": 7001
+    },
+    {
+      "relative": "src/cochem_mcp/jobs.py",
+      "sha256": "3aef70241813a8d8048fd3dae393942d023f566b8ca1f239ee98d34149f771aa",
+      "bytes": 7458
+    },
+    {
+      "relative": "src/cochem_mcp/providers.py",
+      "sha256": "b52319f871f9e1a7d00f1036b12873b8a353b387e0bda2b32e082de229cc06fc",
+      "bytes": 14016
+    },
+    {
+      "relative": "src/cochem_mcp/server.py",
+      "sha256": "22e77e7493a1697f1502c115c01a91e45b0a6ac731cb738c4422ff6bce093278",
+      "bytes": 6232
+    },
+    {
+      "relative": "src/cochem_ml/__init__.py",
+      "sha256": "dd48b37a86d04b501a2e91f2430b3c460d14a578812d1051dbf77dfd91fe0fff",
+      "bytes": 6614
+    },
+    {
+      "relative": "src/cochem_ml/deadlock_detector.py",
+      "sha256": "2202f9ece61c487c89c6864437fa04bd73247131e002fc1bfe307a7ceb5baa33",
+      "bytes": 10901
+    },
+    {
+      "relative": "src/cochem_ml/fault_ontology.py",
+      "sha256": "fe1dcef995a461d32dcbdd75b699abbd82def4a0c42ba245fa710a8983363fe8",
+      "bytes": 13824
+    },
+    {
+      "relative": "src/cochem_ml/lock_reclamation.py",
+      "sha256": "fb9ba68cbb80137c356462cf9f2b76b3785ed5c77031aa74baa8ac222fad1ae2",
+      "bytes": 51744
+    },
+    {
+      "relative": "src/cochem_ml/prompt_modifier.py",
+      "sha256": "36fefa8c05196b11d871aa0d95dc3d44f4c80be202aff0577567b215610c6fdb",
+      "bytes": 5827
+    },
+    {
+      "relative": "src/cochem_ml/ram_guardrail.py",
+      "sha256": "c50e76cad3837ac0189e1084c4e1f53f27ab6c151717a983ff2a0ecc4adf51d1",
+      "bytes": 14724
+    },
+    {
+      "relative": "src/cochem_ml/remote_state_ledger.py",
+      "sha256": "7512afb0aed39403c6b7f6789dff11f61135a07ab84ae0479f238012a04da3f2",
+      "bytes": 24947
+    },
+    {
+      "relative": "src/cochem_ml/rollback_benchmark.py",
+      "sha256": "c45f6db346b06a0e6404cbcc4ee73bf70eec320122327acd85ab0a22d114f0ea",
+      "bytes": 35713
+    },
+    {
+      "relative": "src/cochem_ml/safe_lock_reclamation.py",
+      "sha256": "cc23c065b9a672fae6e87011911c917d1c8c0e4fe4a9a64b2c1123b258a49d28",
+      "bytes": 1717
+    },
+    {
+      "relative": "src/cochem_ml/self_healing_fsm.py",
+      "sha256": "323ff8fa9b40b730458eb418af3ee5847b6c07a22cb83475bf9e09915137dc94",
+      "bytes": 44149
+    },
+    {
+      "relative": "src/cochem_ml/telemetry_archival_daemon.py",
+      "sha256": "544678890af4708d1b4fc69b819bb46daf627809dee65639114a8ac69b196834",
+      "bytes": 33456
+    },
+    {
+      "relative": "src/cochem_pipeline/__init__.py",
+      "sha256": "14654e09f04c532fbad9d2f42bfc808439cd1cf102f4c60394b54f810aaa7895",
+      "bytes": 105
+    },
+    {
+      "relative": "src/cochem_pipeline/__main__.py",
+      "sha256": "6d9886bfa131aa4bcf72c7debbfaae5e36117d41f5c85b17b29572a0554c8705",
+      "bytes": 8831
+    },
+    {
+      "relative": "src/cochem_pipeline/admission.py",
+      "sha256": "a1693b14c7cabc2eb829ee1a6d4fff0e2f30924999bda163b8d54cd3ec2f69db",
+      "bytes": 15817
+    },
+    {
+      "relative": "src/cochem_pipeline/agy_protocol.py",
+      "sha256": "78d7bd0ee5cc73c9fc29bc983ef91a8e356cb59303a537948491d5f82efa9dda",
+      "bytes": 6653
+    },
+    {
+      "relative": "src/cochem_pipeline/agy_status.py",
+      "sha256": "7bc872e2ff0b8799335edef2ebcd7916baf6886d9893bdb0f5f3b8d5abbbfeff",
+      "bytes": 7819
+    },
+    {
+      "relative": "src/cochem_pipeline/coding.py",
+      "sha256": "5ac2454b6c41e862d59bad71c927723048a07f7a78b5b3b2ee1de4765e2cf6d5",
+      "bytes": 32684
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_acceptance.py",
+      "sha256": "77369f7585970ab7ab7e8e965de9d711635c7dc63724b5101dc04884ed852a7f",
+      "bytes": 41317
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_checks.py",
+      "sha256": "e9ba73a4896da29997fa61ebd12872f9633c0b72689bee9f40744602629a5f42",
+      "bytes": 4914
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_git.py",
+      "sha256": "0015df23eb3c803f288c69983cc31d10220f407182aa0b5df67fe4c442ffa720",
+      "bytes": 39334
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_plan.py",
+      "sha256": "421900bd106b47912d26f2199cc52104cb1ea2a76f41c0f37e8659f31c96f3aa",
+      "bytes": 22057
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_reconciliation.py",
+      "sha256": "fa36306544e65ceb39f10650ed3e25acba5f174fd428e717772ef0a942f59fe2",
+      "bytes": 9038
+    },
+    {
+      "relative": "src/cochem_pipeline/coding_store.py",
+      "sha256": "947714ee0458d98dfaa02d7f0b9ca26d568af31fdab82e0a571e297c6cd269e9",
+      "bytes": 75073
+    },
+    {
+      "relative": "src/cochem_pipeline/config.py",
+      "sha256": "fba7e9e5a8336e489587bd7fa7901fa3004e3a2fe965dbe618083a0ec43b440a",
+      "bytes": 13508
+    },
+    {
+      "relative": "src/cochem_pipeline/container_policy.py",
+      "sha256": "86d5999fc6c9c34708733b0081ff501c9451ed8a2596888ef4d10062c28ec756",
+      "bytes": 8918
+    },
+    {
+      "relative": "src/cochem_pipeline/containers.py",
+      "sha256": "736cf378bfa6e298a47a8adbbca5e7b9ac6b3334e8bd1b8f0b91f1592c344f8e",
+      "bytes": 78340
+    },
+    {
+      "relative": "src/cochem_pipeline/controller_guard.py",
+      "sha256": "6daedd23b9c685e79b639b520041a84a74494c8a331606a3c6f0641e29562ade",
+      "bytes": 2849
+    },
+    {
+      "relative": "src/cochem_pipeline/cpu_temperature.py",
+      "sha256": "e24c84847d15236d4b0668637c7d06ea9ae03669b1dbd056523b75c15eb73f59",
+      "bytes": 7024
+    },
+    {
+      "relative": "src/cochem_pipeline/crash.py",
+      "sha256": "e46312bb93fe141d72701eadd4e1e14f34bff49b1388587b130c233a1e722da2",
+      "bytes": 2712
+    },
+    {
+      "relative": "src/cochem_pipeline/deployment.py",
+      "sha256": "3e3eca79e1f8e552c1c837cdd6c81fed2daa193abba3a03445368e6a20939a63",
+      "bytes": 19441
+    },
+    {
+      "relative": "src/cochem_pipeline/deployment_revision.py",
+      "sha256": "dd0211cb94c5fe754f80fe229b7e124d78a705c0c3663498665d7659d78ed42a",
+      "bytes": 3624
+    },
+    {
+      "relative": "src/cochem_pipeline/diagnostics.py",
+      "sha256": "a401592da2fc02208c4c811f67be83813aa1026bc26a0a1c622e2613848ca455",
+      "bytes": 4426
+    },
+    {
+      "relative": "src/cochem_pipeline/document_governance.py",
+      "sha256": "23572cdf1aaaa1d9fbda4e15fc8242e9290238db44c5ff321321e2cc6276454b",
+      "bytes": 4669
+    },
+    {
+      "relative": "src/cochem_pipeline/failures.py",
+      "sha256": "9cde65b860b606b5b74a95690ba75ca4c74d714361203f5bf8b7407a406c9b6e",
+      "bytes": 14349
+    },
+    {
+      "relative": "src/cochem_pipeline/hardware_guard.py",
+      "sha256": "d015562164733b085697ac44031c2d51e8c30fe68dbd03f11933287e873bed3d",
+      "bytes": 24454
+    },
+    {
+      "relative": "src/cochem_pipeline/heartbeat.py",
+      "sha256": "4792519e7e7504bd4b00251b23bd62f26cbe6f204ab70a830287847ce01e65ac",
+      "bytes": 2305
+    },
+    {
+      "relative": "src/cochem_pipeline/inference_policy.py",
+      "sha256": "0bdd0cb37ee225504d6df4e754c5d0b12722f0e21506b6e013487f3c08176ed7",
+      "bytes": 8380
+    },
+    {
+      "relative": "src/cochem_pipeline/knowledge.py",
+      "sha256": "65e1dc17a5bee38f19e47abb24dd97864fcdcd4bc08fd28ab9199d311869d7b2",
+      "bytes": 41425
+    },
+    {
+      "relative": "src/cochem_pipeline/knowledge_authority.py",
+      "sha256": "e7dd99cb0f9a6710d3a03cff2d983a58879fef0b68bd463c0f38607603ba1f27",
+      "bytes": 7669
+    },
+    {
+      "relative": "src/cochem_pipeline/knowledge_mcp.py",
+      "sha256": "845837e6c5c09242730c405f566b96f823713ab6aa076982da63ffb0953b5514",
+      "bytes": 682
+    },
+    {
+      "relative": "src/cochem_pipeline/legacy_history.py",
+      "sha256": "2c8d0c70ead8069bed691fb45c82bf405872924f5af702b9a4d67d342e855704",
+      "bytes": 12157
+    },
+    {
+      "relative": "src/cochem_pipeline/native_effort.py",
+      "sha256": "7d75258b0e17fbf703a54d8bc9f2a72f8e0c105eae2274bd582f41ad9b6fb78c",
+      "bytes": 11893
+    },
+    {
+      "relative": "src/cochem_pipeline/native_evidence.py",
+      "sha256": "0033a7c07750a7f630942c6414f57a030758e221c30ff000eea172bd71af8ec5",
+      "bytes": 2919
+    },
+    {
+      "relative": "src/cochem_pipeline/operations_policy.py",
+      "sha256": "06bc54e218596bee4103da96a179f49a9551bae23d0380a31b0f005a53323f86",
+      "bytes": 23466
+    },
+    {
+      "relative": "src/cochem_pipeline/operator_views.py",
+      "sha256": "7ecdc6313598bb831daf1eefecc9745a0e350473b6349da3aad062d126345660",
+      "bytes": 43947
+    },
+    {
+      "relative": "src/cochem_pipeline/oracle.py",
+      "sha256": "11e593a6da0adba876b41ba979311b53af9d175dedd57b4c0b3946370eaa96bf",
+      "bytes": 32969
+    },
+    {
+      "relative": "src/cochem_pipeline/performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+      "bytes": 18919
+    },
+    {
+      "relative": "src/cochem_pipeline/planning_governance.py",
+      "sha256": "c742783ec863d177b07f937e677484132bbdfbd42b28df8934dd59547e2a5dad",
+      "bytes": 19333
+    },
+    {
+      "relative": "src/cochem_pipeline/provider_integration.py",
+      "sha256": "4658e5e5ae7b70f937c21062291bc37629d4bbccd8a8843a6c445fd6957ab81b",
+      "bytes": 7493
+    },
+    {
+      "relative": "src/cochem_pipeline/pytest_assertions.py",
+      "sha256": "d0dc8e921ce4205c2547f6494411f3e3313f7467d5b4a5a6ece651eb74f2dc7c",
+      "bytes": 5136
+    },
+    {
+      "relative": "src/cochem_pipeline/queue_launch.py",
+      "sha256": "a0b4a866f2bc9455eba456ce08dbd7596d3a70b03c3cd9066972390f94ea1516",
+      "bytes": 31355
+    },
+    {
+      "relative": "src/cochem_pipeline/queue_profile.py",
+      "sha256": "f912dcb2ac1cca4313fc4d3a487c2bcfe143bf49ab3e9d8f3bbb2426b43b70cf",
+      "bytes": 16276
+    },
+    {
+      "relative": "src/cochem_pipeline/ramdisk.py",
+      "sha256": "a148b2f5092e44fae42240f01d5243024629c99f1ec689c41d8d8a444c7d6104",
+      "bytes": 56264
+    },
+    {
+      "relative": "src/cochem_pipeline/resource_limits.py",
+      "sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+      "bytes": 16590
+    },
+    {
+      "relative": "src/cochem_pipeline/resource_telemetry.py",
+      "sha256": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a",
+      "bytes": 24306
+    },
+    {
+      "relative": "src/cochem_pipeline/routing.py",
+      "sha256": "753be0fd65bd55deccd62812f2022f84467baf17cad13037a76c50a921b96521",
+      "bytes": 24586
+    },
+    {
+      "relative": "src/cochem_pipeline/routing_store.py",
+      "sha256": "78e8672d6bb96afdc88172f86a91747d906f3f5b3000f25a36c4dc0b75e9553f",
+      "bytes": 39527
+    },
+    {
+      "relative": "src/cochem_pipeline/runtime.py",
+      "sha256": "4fa4c09ceb749ffa5e220c5e59dd5f04a441672e049062902595a19dd14e5db0",
+      "bytes": 39203
+    },
+    {
+      "relative": "src/cochem_pipeline/server.py",
+      "sha256": "04e61fb6e4abd0e04eb3f7ca37e32727f7d14d8bfe8de3157f69763ec224240f",
+      "bytes": 8757
+    },
+    {
+      "relative": "src/cochem_pipeline/service.py",
+      "sha256": "646244f2f89cb7af43991ad0143c716005de44cdad340e3984552371f8f88de2",
+      "bytes": 15114
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/4.2.7_SRS.md",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+      "bytes": 76701
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/acceptance_4.2.7.json",
+      "sha256": "78df23b80ec04c03bcbdb671913770dfeb161c85efc1207aa50f650c57f96228",
+      "bytes": 203114
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/KNOWLEDGE_model-routing-2026-10-07.json",
+      "sha256": "89f69d6a0916b0c20f14321d5bc659c7c07f2a5f17efa62b97127db239a8524f",
+      "bytes": 820
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/outer_4.2.7-r2.json",
+      "sha256": "e18f85608632c64a353f5dab765bfd6227ae7b5ae3947998724c382dd30a009e",
+      "bytes": 896
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/powershell_4.2.7-r2.json",
+      "sha256": "67aec82e4bc500b70fb640e30a19e91879f37fb9134138848b7165bd9589a9b4",
+      "bytes": 482
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/protected_4.2.7-r2.json",
+      "sha256": "0bbd299a78d560328bbe65f07551855e86a938ad9726250c58b93b25382331a5",
+      "bytes": 3071
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/protected_tests_4.2.7-r2.xml",
+      "sha256": "ef5f55fdefc796821d74d78fe440500f312c58233ee3180c030c2ef76f41b8fb",
+      "bytes": 334987
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/ROUTING_RESEARCH_2026-10-07.json",
+      "sha256": "f05a926fa83e72abc7ce0cfc0dfa32746cff798241ff6258833bfa125a0c2de0",
+      "bytes": 24780
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/source_4.2.7-r2.json",
+      "sha256": "7ff2b44b256578efed6fc60d862753d90a68a20dec68956c88904dccaa234d73",
+      "bytes": 27965
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/SOURCE_model-routing-2026-10-07.json",
+      "sha256": "46972de1e4d61e94df5cc3f7d37425e2a2bdb513225ab5e4d67f1f87d1fbb9d9",
+      "bytes": 30479
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/SOURCE_model-routing-2026-10-07_initial.json",
+      "sha256": "594b1273eca7ef3334114be3bd5f654470469d6f84251738d2ce68c2dcac19c2",
+      "bytes": 30479
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/tests_4.2.7-r2.xml",
+      "sha256": "6a967125359cb3bcc9a8ea8c23c85b4ec3f7d4e9cee86d77e63285306e5525e5",
+      "bytes": 539718
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/TESTS_model-routing-2026-10-07.xml",
+      "sha256": "370e1e537388c24d4c2fe8aaeea293ceeb19a1d5c1d819a7ff47d925a286c509",
+      "bytes": 495113
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/TESTS_model-routing-2026-10-07_initial.xml",
+      "sha256": "ea56e65985371b288fe77e0985626c3dcfaa0b28342d44fb1fc9f51e0a526ab2",
+      "bytes": 496685
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/VALIDATION_4.2.7-r2.json",
+      "sha256": "27e583032030f63fcc9bac3d90abf1cb2d3336ee2f134a83be28370ff194a2fb",
+      "bytes": 9034
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+      "sha256": "0bf15b630f31594dac1d7bd1c38dfdc9112e97acfdb3c24838df7ef13632ec7d",
+      "bytes": 6105
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/requirements_4.2.7.json",
+      "sha256": "c30185de12d6eff353ba971424a243219484561849fc1accf1566bcc943053f0",
+      "bytes": 197713
+    },
+    {
+      "relative": "src/cochem_pipeline/specification/SRS_ADDENDUM_4.2.7.md",
+      "sha256": "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9",
+      "bytes": 8893
+    },
+    {
+      "relative": "src/cochem_pipeline/store.py",
+      "sha256": "ba55f367a5c625ee1bfda0015c0dd69123b8cc4a52019b8d1cb76ac5c8d7d287",
+      "bytes": 82270
+    },
+    {
+      "relative": "src/cochem_pipeline/transport.py",
+      "sha256": "1cf2b134c105307005c7018b59baac72f0e09bf4a711ee1d07cd8ae4772968c3",
+      "bytes": 6630
+    },
+    {
+      "relative": "src/cochem_pipeline/upgrade_preview.py",
+      "sha256": "614c7493161168e4a8069fa9c4a77ab0c9010eca4bd42fdc351f81e1debe597f",
+      "bytes": 9419
+    },
+    {
+      "relative": "src/cochem_pipeline/windows.py",
+      "sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+      "bytes": 61790
+    },
+    {
+      "relative": "src/cochem_pipeline/worker.py",
+      "sha256": "476f83a3f4e19b826d62bd02c0bacce19530de442d047ed9f66a25d0ace0284c",
+      "bytes": 59414
+    },
+    {
+      "relative": "src/cochem_platform/__init__.py",
+      "sha256": "3f158b259a2758f0564b9209b985520f3bd58e954ae977d8c4f9c6db4503ba88",
+      "bytes": 493
+    },
+    {
+      "relative": "src/cochem_platform/io_guardrail.py",
+      "sha256": "abb480ac86ff037feefe6b642049fdc5d349954aa2cb4c40e3e2a003391e4968",
+      "bytes": 9696
+    },
+    {
+      "relative": "src/cochem_supervisor/__init__.py",
+      "sha256": "2b9eb398c8b89873a4e2758ddde60d3a25550c97b8c4414304b8e79477eaa132",
+      "bytes": 107
+    },
+    {
+      "relative": "src/cochem_supervisor/__main__.py",
+      "sha256": "14326bd860b51f5221590c2594eae2eb31d896c45a7bd4c646a3317a8a50b22a",
+      "bytes": 5025
+    },
+    {
+      "relative": "src/cochem_supervisor/acceptance.py",
+      "sha256": "cff3e854b1998d6be6877228021db15b5165a04fbe57c3c87cad1527e42ee220",
+      "bytes": 10227
+    },
+    {
+      "relative": "src/cochem_supervisor/blackbox.py",
+      "sha256": "5148b1e2a449b61850dcbc00a692eab642c3a14076641e0b0844c848986249e7",
+      "bytes": 17779
+    },
+    {
+      "relative": "src/cochem_supervisor/blackbox_child.py",
+      "sha256": "164083ec2c865a65c3728569b557cc6fd39c140eaeee2c25f85149c15b6df610",
+      "bytes": 3495
+    },
+    {
+      "relative": "src/cochem_supervisor/budget_authority.py",
+      "sha256": "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852",
+      "bytes": 9797
+    },
+    {
+      "relative": "src/cochem_supervisor/cleanup.py",
+      "sha256": "671f1b35dd7b8875d7b71987287ad6e0f22b65a0fd098026457b74b4f32fcf26",
+      "bytes": 11823
+    },
+    {
+      "relative": "src/cochem_supervisor/component_recovery.py",
+      "sha256": "3f1336f3ec7d9a2e14289c1f032f2baa9cfb1ab0bed06648e39f9ff016ac871d",
+      "bytes": 9169
+    },
+    {
+      "relative": "src/cochem_supervisor/config.py",
+      "sha256": "1efe7e02742c859233df61b90ded0c7076310b9b769abf9b32af7246ed6c4091",
+      "bytes": 12092
+    },
+    {
+      "relative": "src/cochem_supervisor/detector.py",
+      "sha256": "28cb1cfc34b8b25c3fdaabb393db785986499079dfb0dd0a77a048157fa50a02",
+      "bytes": 4654
+    },
+    {
+      "relative": "src/cochem_supervisor/detector_bootstrap.py",
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5",
+      "bytes": 2971
+    },
+    {
+      "relative": "src/cochem_supervisor/diagnostics.py",
+      "sha256": "6b14b332b2b24479c5a93009ec3c9f60c59d072b19e16cc0c7bdaf7be08e5b6a",
+      "bytes": 12038
+    },
+    {
+      "relative": "src/cochem_supervisor/engine.py",
+      "sha256": "9ec21d808bfbb1c5dfe01a6dd41b0dc969f9fc92df4ff5de010c4890c1dddeea",
+      "bytes": 65835
+    },
+    {
+      "relative": "src/cochem_supervisor/io.py",
+      "sha256": "01cb258d886fc8f7b36d62add5df79a9a540b45abd55c877dfaf2714d6d2c04a",
+      "bytes": 591
+    },
+    {
+      "relative": "src/cochem_supervisor/job_board.py",
+      "sha256": "72a699b3091f8aad369dcc10b08666b87528173cb1eb5f98f061b46476179084",
+      "bytes": 20957
+    },
+    {
+      "relative": "src/cochem_supervisor/launcher.py",
+      "sha256": "e0bc4485d7c3bef981dfc98b9f32d33c79d3b26378adad5cc64ca7937fa029e5",
+      "bytes": 1805
+    },
+    {
+      "relative": "src/cochem_supervisor/monitor.py",
+      "sha256": "ffc2f6792b756f5a6b3538d3b202559585944c2dbbf57567e9af1fb1052eb13e",
+      "bytes": 32801
+    },
+    {
+      "relative": "src/cochem_supervisor/preflight.py",
+      "sha256": "97fd98c53d35ac01e2486fc889d01e23e840fad8214ad279b51abbba764c8390",
+      "bytes": 6069
+    },
+    {
+      "relative": "src/cochem_supervisor/probes.py",
+      "sha256": "881a864fa73a354be874099d51223547b7c6199fec79a2c33c02c64b45756743",
+      "bytes": 58975
+    },
+    {
+      "relative": "src/cochem_supervisor/process_observer.py",
+      "sha256": "5b25808e8a9f5a325a692c6b85204d07d5368edc4f82a617358e5932d8bf40aa",
+      "bytes": 7401
+    },
+    {
+      "relative": "src/cochem_supervisor/reconciliation.py",
+      "sha256": "fd8e7661bdfe4a4b260a305a9a85d8dc7c05624a6f02df73e051200da9ba6759",
+      "bytes": 12119
+    },
+    {
+      "relative": "src/cochem_supervisor/releases.py",
+      "sha256": "5a73fdde21c4f9bd74f654eb7acc44cd6870ecd7e19c3c64f9326b92cc01f26f",
+      "bytes": 24063
+    },
+    {
+      "relative": "src/cochem_supervisor/repair_artifacts.py",
+      "sha256": "677a7e85cdfb9643591c82aa99acbfcddb414ecaae2455c54189bcf55d14e675",
+      "bytes": 8305
+    },
+    {
+      "relative": "src/cochem_supervisor/replay.py",
+      "sha256": "d0a10b30e3f16d44a2906d855d46f44dc0fbad7249b8b43d6b67b98e4d94d60d",
+      "bytes": 13886
+    },
+    {
+      "relative": "src/cochem_supervisor/runner.py",
+      "sha256": "8fbd62ec0b8bdb7859c2d3a649868330790148b7e9108345e801aeabb5555b9f",
+      "bytes": 46182
+    },
+    {
+      "relative": "src/cochem_supervisor/shared_io.py",
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0",
+      "bytes": 2061
+    },
+    {
+      "relative": "src/cochem_supervisor/state.py",
+      "sha256": "404abfa2971a8f4a865171fc8fee3fe2c51d7837b6d49975346e6bac3740ff74",
+      "bytes": 30285
+    },
+    {
+      "relative": "src/cochem_supervisor/structural.py",
+      "sha256": "4b522bd5fdac8c3413e871ca3b84d3e486b4b17d6e4e3f44b8a8f2b9108571a6",
+      "bytes": 3275
+    },
+    {
+      "relative": "src/cochem_supervisor/upgrade.py",
+      "sha256": "6394295fc31dd9f7dca5fa541c11137be9ada340e7a2e62fc41cd744651753fd",
+      "bytes": 10601
+    },
+    {
+      "relative": "src/cochem_supervisor/windows.py",
+      "sha256": "86dc29a626bc5699be7063072f3dbe4966079dceba2df22985d332c1f4be99ab",
+      "bytes": 53975
+    },
+    {
+      "relative": "src/cochem_supervisor/workspace.py",
+      "sha256": "8ad1196d6c7fd8b3d10067dcd3119d1e26d1cc593f95f51dbea8f4c54d9cf3d0",
+      "bytes": 907
+    },
+    {
+      "relative": "src/x.py",
+      "sha256": "6cf2c2cbce86e1a0a63028b14a351403850142d11be170e8f8921cce4d54e83a",
+      "bytes": 11170
+    },
+    {
+      "relative": "uv.lock",
+      "sha256": "c96db1c1a19a63a4b96a35cb5de8148ab37aac68b4635e0e42eecaef278322a2",
+      "bytes": 1117259
+    }
+  ],
+  "acceptance_files": [
+    {
+      "relative": "mcp_tests/test_claude_subscription.py",
+      "sha256": "6748a03eecaa3daa08fc5357991468056cf41e57ef2d451f316de9b0a32b60eb",
+      "bytes": 12237
+    },
+    {
+      "relative": "mcp_tests/test_config.py",
+      "sha256": "96b0d07e24eb0e6fad13ba42dd8f6a1011c9894299d08d7f7cf602bc0f6f7994",
+      "bytes": 2588
+    },
+    {
+      "relative": "mcp_tests/test_jobs.py",
+      "sha256": "394c62dd18e4da6784369da33e9ab5463e1d7f13ad6a5b86e0cdbfbe2a467500",
+      "bytes": 9014
+    },
+    {
+      "relative": "mcp_tests/test_legacy_status.py",
+      "sha256": "ed954e06f2107eee79d7c89afbf755f4ff780118eef13db34dc8e513d6a0bab6",
+      "bytes": 2892
+    },
+    {
+      "relative": "mcp_tests/test_providers.py",
+      "sha256": "fe7090348864c22ba3c11662de29c3091bed831b2d056762b1fe7c8187e5adc9",
+      "bytes": 16486
+    },
+    {
+      "relative": "mcp_tests/test_router.py",
+      "sha256": "9f8658799bf23ef58bedbb6184a5d1a370f37941059719bd3d6a2febe4d6fc77",
+      "bytes": 2590
+    },
+    {
+      "relative": "mcp_tests/test_server.py",
+      "sha256": "c5fe6132727581da054547074c5ab6364789750f5ef16022a61ce77b800ac87d",
+      "bytes": 4268
+    },
+    {
+      "relative": "pipeline_tests/__init__.py",
+      "sha256": "aaf1fb4cb275d829e94722ad92d85ccdd14d91226d90c91c8227c1049c35a47d",
+      "bytes": 76
+    },
+    {
+      "relative": "pipeline_tests/test_acceptance_report.py",
+      "sha256": "194d504b6a40589b85a077ff36151423e70a045d21696fb4cb6ce63ff6200146",
+      "bytes": 15296
+    },
+    {
+      "relative": "pipeline_tests/test_agy_protocol.py",
+      "sha256": "092daf83be9a443fcbdc12ead9e9e8cd4e6df2a311a6be9779e32214f6ea987f",
+      "bytes": 6260
+    },
+    {
+      "relative": "pipeline_tests/test_agy_status.py",
+      "sha256": "bf01b8b483537330af976b297390cf7b72bc4837f052bcb430864b2a8a916a62",
+      "bytes": 8578
+    },
+    {
+      "relative": "pipeline_tests/test_coding_acceptance.py",
+      "sha256": "cc83130aff77000027ea4c35b23adba32c3110fdd9de0a732145d5fb38baddcd",
+      "bytes": 27449
+    },
+    {
+      "relative": "pipeline_tests/test_coding_boundaries.py",
+      "sha256": "a5ea3778ed2980a04c331590afdf975871ee578c441655f044d474942974d2ab",
+      "bytes": 15432
+    },
+    {
+      "relative": "pipeline_tests/test_coding_git.py",
+      "sha256": "29805de6ab77ded8474c799391c826a0b1af4d7037c85223733de4cf959c9eb4",
+      "bytes": 26120
+    },
+    {
+      "relative": "pipeline_tests/test_coding_plan.py",
+      "sha256": "375b3866c12225f51ee1b4ae3aead862f96213e807bb700fa9e3ea99010ac2df",
+      "bytes": 10930
+    },
+    {
+      "relative": "pipeline_tests/test_coding_reconciliation.py",
+      "sha256": "b78c501d6d6989cbb808523af96f65fcf2b5dcbc36b4a1741c0ac57dfc4bea79",
+      "bytes": 12041
+    },
+    {
+      "relative": "pipeline_tests/test_coding_srs_gates.py",
+      "sha256": "7666e1b233bdd0b6070db67d271a430862343b7ad4b0f2c8ffa2a07ad38d36dc",
+      "bytes": 4303
+    },
+    {
+      "relative": "pipeline_tests/test_coding_workflow.py",
+      "sha256": "5652eaacaed47272a66eca6d8737a77c68d46b8164778cfea8c099b57b7ae7d0",
+      "bytes": 54491
+    },
+    {
+      "relative": "pipeline_tests/test_config.py",
+      "sha256": "9a8515c0681c0d95a44419894ac0430859d1a53e08be1a340baab68044a9f3cd",
+      "bytes": 17373
+    },
+    {
+      "relative": "pipeline_tests/test_container_policy.py",
+      "sha256": "41ea29877ec0828ccf618fc1c47b1ed773df05d10773cb61af127192758fc255",
+      "bytes": 3166
+    },
+    {
+      "relative": "pipeline_tests/test_containers.py",
+      "sha256": "1329abc3fd01be3ddfbd814692646d28e38fa37d011cbc41b255dafb7acb24e9",
+      "bytes": 44020
+    },
+    {
+      "relative": "pipeline_tests/test_controller_guard.py",
+      "sha256": "6bc44388e4f37ad73bc5c24ff0c687bae39babe5d9e15797bddeeb8cb3bea411",
+      "bytes": 3270
+    },
+    {
+      "relative": "pipeline_tests/test_cpu_temperature_probe.py",
+      "sha256": "9f98aed91ccb85da244ad7e1359663de633b0847def4f2e2f4036ddf25e9f81c",
+      "bytes": 4998
+    },
+    {
+      "relative": "pipeline_tests/test_crash_envelope.py",
+      "sha256": "2ce2005e30ee025ddd98004b01c13c7f27a444fad6f8b2b7e665b3e3597f0421",
+      "bytes": 1751
+    },
+    {
+      "relative": "pipeline_tests/test_deployment.py",
+      "sha256": "3e1207b2d13380b097229263b8909f8c3c231db45d9a3c26e0742d6f63f62730",
+      "bytes": 11424
+    },
+    {
+      "relative": "pipeline_tests/test_deployment_revision.py",
+      "sha256": "af417b631c2b1816c59566dd6872cd7b0c2973766ad337ff7ddb1c14634549c4",
+      "bytes": 3553
+    },
+    {
+      "relative": "pipeline_tests/test_diagnostics.py",
+      "sha256": "40a2ed44c231b3eeaee6619ff0548af2eceae7eb592a77bfa8ebddfb8e30165a",
+      "bytes": 2335
+    },
+    {
+      "relative": "pipeline_tests/test_document_governance.py",
+      "sha256": "181e96d38bf65937ea5984951d72cee6ac1055184c25bfb136690272f8d6f6f2",
+      "bytes": 5666
+    },
+    {
+      "relative": "pipeline_tests/test_execution_integration.py",
+      "sha256": "573e100a3f14dc9ddf5b5755f21bc78e0384d0aa79fd88e61688595189a8a7ab",
+      "bytes": 16434
+    },
+    {
+      "relative": "pipeline_tests/test_git_deadline.py",
+      "sha256": "fcf833cd7c9099b9aafd8774642db9496982d7003f9a23fd01a170187dbdcdf6",
+      "bytes": 4231
+    },
+    {
+      "relative": "pipeline_tests/test_hardware_guard.py",
+      "sha256": "063040986d368a0370130238bb8dc0d6afd07fffbf026618805db178d62f1a30",
+      "bytes": 17335
+    },
+    {
+      "relative": "pipeline_tests/test_inference_policy.py",
+      "sha256": "c8141d508f78230ae53d5c8100344042309730a2383df87d361f7256627585cc",
+      "bytes": 5663
+    },
+    {
+      "relative": "pipeline_tests/test_knowledge.py",
+      "sha256": "ed2373ad4d1bd033e8eff756ebde83b875322b3fc9ac3fd4372624ce3f8d1e87",
+      "bytes": 17472
+    },
+    {
+      "relative": "pipeline_tests/test_knowledge_private_directories.py",
+      "sha256": "5de8f292b5968519a1489d8945316771370c91e5958a17a0d52f2f123e8b135d",
+      "bytes": 11707
+    },
+    {
+      "relative": "pipeline_tests/test_lease_invariants.py",
+      "sha256": "8611f813d3d21073a68ab12f9c585e900956276c0b2bfb4df765eb11484ac93f",
+      "bytes": 5906
+    },
+    {
+      "relative": "pipeline_tests/test_legacy_discovery.py",
+      "sha256": "14eeba2710410503331f23ccb3ec7c4b172aa13f2439c6882a5340bf458cd1b1",
+      "bytes": 5023
+    },
+    {
+      "relative": "pipeline_tests/test_legacy_history.py",
+      "sha256": "70e3735e27b0cdf888be76ff5f35496cabcd367039cbe5e2ccc2432f6263ce7e",
+      "bytes": 7868
+    },
+    {
+      "relative": "pipeline_tests/test_legacy_snapshot.py",
+      "sha256": "785190549ae094c23448ad7aabde3cc00629e0ff44bfa267889d953825944858",
+      "bytes": 2669
+    },
+    {
+      "relative": "pipeline_tests/test_native_effort.py",
+      "sha256": "f486ac4115fb2821972f3a476ad7a710746433deb7d6e33b62f0685f8dcae7ea",
+      "bytes": 15640
+    },
+    {
+      "relative": "pipeline_tests/test_native_evidence.py",
+      "sha256": "c305900b86b486834b3e9b2f34ef36a6dc408e2a7c5d4e50632445fb6629a71d",
+      "bytes": 8268
+    },
+    {
+      "relative": "pipeline_tests/test_native_observation_continuity.py",
+      "sha256": "ade36294bdfd845680c55b9eb87ae9471cd4995f6d2b19b1caa1f00b03e4beee",
+      "bytes": 9695
+    },
+    {
+      "relative": "pipeline_tests/test_native_output_bounds.py",
+      "sha256": "dc0862dd9727fb7b13468e28e95e0bc9ac112ff8bb57efbe926b52ed4b779591",
+      "bytes": 3783
+    },
+    {
+      "relative": "pipeline_tests/test_operations_policy.py",
+      "sha256": "db7b6e43734eb11f6915c5d48fbcf585b7b163af5d94fe73b71ecca24c157559",
+      "bytes": 9748
+    },
+    {
+      "relative": "pipeline_tests/test_operator_evidence_bindings.py",
+      "sha256": "fffbc74ef8332c262ab8b11b9d46b3e0672033bd7a03190f2e13f5930bfe7fff",
+      "bytes": 8738
+    },
+    {
+      "relative": "pipeline_tests/test_operator_views.py",
+      "sha256": "7006c180ea7ac7b4479a3c082498427010ae522964aad55c2892951e98668f25",
+      "bytes": 16434
+    },
+    {
+      "relative": "pipeline_tests/test_oracle.py",
+      "sha256": "f266a5621990b17c049e30234ee8145305d382b5eac072b1d71f841777fed54e",
+      "bytes": 23078
+    },
+    {
+      "relative": "pipeline_tests/test_pawnio_install_plan.py",
+      "sha256": "1725da8c0ec6fb629cb70e3f52da5fadf154dcccd7ce70e425a4ce922b63f97a",
+      "bytes": 6122
+    },
+    {
+      "relative": "pipeline_tests/test_performance_acceptance.py",
+      "sha256": "081825a8291b6e1e3153b296ff21948f6b606077fce4c43b7b04b4fd6d65f171",
+      "bytes": 6674
+    },
+    {
+      "relative": "pipeline_tests/test_planning_governance.py",
+      "sha256": "39cc746fbcf1122cc4f871b1d3330e06fec1cf5b578fe91ae8a0835e575c652a",
+      "bytes": 25143
+    },
+    {
+      "relative": "pipeline_tests/test_pool_recovery_admission.py",
+      "sha256": "4bb834d2608fe06952e024b2f4824822f6d9105581db58991232557bcc4fc560",
+      "bytes": 6917
+    },
+    {
+      "relative": "pipeline_tests/test_prompt_transport.py",
+      "sha256": "7ac170b51f65bc50114bff29505e2f8552f2d7b1ea8c28a308221b406b257564",
+      "bytes": 2659
+    },
+    {
+      "relative": "pipeline_tests/test_provider_failures.py",
+      "sha256": "739c93516d9e6d88bf033d44479210fd4928dae2debbc3bc11d5723566c3fbfa",
+      "bytes": 6624
+    },
+    {
+      "relative": "pipeline_tests/test_provider_integration.py",
+      "sha256": "b7b8e05e0851962743628da31232aa467319291456c95095d4e76278959c7e3d",
+      "bytes": 13200
+    },
+    {
+      "relative": "pipeline_tests/test_pytest_assertions.py",
+      "sha256": "49763ab19e97885e52238a8c0b624c2e45479ed75f3a9ec85d9a7da6b5c52d60",
+      "bytes": 4018
+    },
+    {
+      "relative": "pipeline_tests/test_queue_launch.py",
+      "sha256": "dbb2a5699826ce82bb541a4e37883b06e54a39f93ad9ee19c9df9cdb11c110a3",
+      "bytes": 18320
+    },
+    {
+      "relative": "pipeline_tests/test_ramdisk.py",
+      "sha256": "09f8c2ea654ac0fa752fe16415fddab7542b6931df68ef7c96f13fd3a50c8186",
+      "bytes": 25021
+    },
+    {
+      "relative": "pipeline_tests/test_ramdisk_adopted_subtree.py",
+      "sha256": "72a2dd02f2b6f71ed96a89b9b233b1e95d52eb3f35fc6bc5acf242f00cb3c627",
+      "bytes": 12418
+    },
+    {
+      "relative": "pipeline_tests/test_recovery_telemetry.py",
+      "sha256": "457b07a1fa61845b60462a639dcaacc55ce10ba14c8f93cfa1c6b97013151d7f",
+      "bytes": 9443
+    },
+    {
+      "relative": "pipeline_tests/test_resource_limits.py",
+      "sha256": "a8a30e3f9aaf491025b1a020cbfe4c9be865320ec9b70a43b4816fa7f65710ff",
+      "bytes": 16135
+    },
+    {
+      "relative": "pipeline_tests/test_resource_telemetry.py",
+      "sha256": "1e38e41edfdda7d4e8b521174cefe7058f87f2a89cc7680af38a8411d3a8b913",
+      "bytes": 13689
+    },
+    {
+      "relative": "pipeline_tests/test_route_preview.py",
+      "sha256": "1a2c8374aa157b270387b992a79d7485b130771e356b68fc12fa7c3714fac5f4",
+      "bytes": 5684
+    },
+    {
+      "relative": "pipeline_tests/test_routing_integration.py",
+      "sha256": "2d56b9ff4a45b06f2af4815b52430e36cc01905a39e396f82ececa28b4b32b2d",
+      "bytes": 41703
+    },
+    {
+      "relative": "pipeline_tests/test_routing_policy.py",
+      "sha256": "b662e75c908b232f60566115e295e4699739040f0c5c3110b1ca82a3ee0a93a1",
+      "bytes": 19083
+    },
+    {
+      "relative": "pipeline_tests/test_routing_store.py",
+      "sha256": "3a9ae9dda4373b80ab8e7621bb7892df504b106a9cd607b3ba37369cdc7ac1a0",
+      "bytes": 24910
+    },
+    {
+      "relative": "pipeline_tests/test_runtime_knowledge_authority.py",
+      "sha256": "a9463d997811f658d11b0f7462b5c9e5986a532caa674fd0c7d7e5317323ac04",
+      "bytes": 14911
+    },
+    {
+      "relative": "pipeline_tests/test_runtime_monitor.py",
+      "sha256": "53a45b5e686556f39df7036787bf1bf65868a78b3756a2412c6eccb73e1c7f03",
+      "bytes": 2368
+    },
+    {
+      "relative": "pipeline_tests/test_runtime_routing.py",
+      "sha256": "1e14124daf9804d76379491eba7d38b69d93143267dc5bbdd47dd239118313f1",
+      "bytes": 19245
+    },
+    {
+      "relative": "pipeline_tests/test_runtime_storage_holds.py",
+      "sha256": "047576c7dfa37bc7082deeb2ba6c842cc032459c7071be30171214a20699f321",
+      "bytes": 4834
+    },
+    {
+      "relative": "pipeline_tests/test_service.py",
+      "sha256": "d62c116a867b4e8eecf1569a07202969cd55cbfbdc364e8fbe42f056ecdfca82",
+      "bytes": 22746
+    },
+    {
+      "relative": "pipeline_tests/test_service_auth_rejection.py",
+      "sha256": "0e73276f37149922c3233684baf3b43b7bb8a10f54b7161eb66797ef3b0d6b60",
+      "bytes": 5017
+    },
+    {
+      "relative": "pipeline_tests/test_store.py",
+      "sha256": "98169e4325eaf04a013b691ad68a2aa3d652f09e078516a0588b067897a7b42c",
+      "bytes": 38032
+    },
+    {
+      "relative": "pipeline_tests/test_upgrade_preview.py",
+      "sha256": "edfc74fca4448bd2a66cb8b73c71c21194cfbac1e5bd6dd183e53bba37834d2e",
+      "bytes": 4699
+    },
+    {
+      "relative": "pipeline_tests/test_windows_contract.py",
+      "sha256": "b942663aa75a561f51c8cd6db6b5585b8b01e4dbd128c8a95aee8501558dc4d7",
+      "bytes": 13579
+    },
+    {
+      "relative": "pipeline_tests/test_windows_cutover_plan.py",
+      "sha256": "205d977c83247030e7558c56875d771d91d488653d8ba82ee6125812bd46e3e8",
+      "bytes": 13092
+    },
+    {
+      "relative": "pipeline_tests/test_windows_native_payload_staging.py",
+      "sha256": "05b3370f37c7186ad02e1ee8cc47051aad7824df03c0e0798ee0aca767545bce",
+      "bytes": 4865
+    },
+    {
+      "relative": "pipeline_tests/test_windows_payload_staging.py",
+      "sha256": "8fb8052136d45a8438b069920fda59cdc2c94d8ec1d790ad84c85d4e01b81449",
+      "bytes": 7703
+    },
+    {
+      "relative": "pipeline_tests/test_windows_setup_contracts.py",
+      "sha256": "fca17fe6c8a18f07542eaca843475f84aaedd1b7524a012a0f7c0ca68b718566",
+      "bytes": 14247
+    },
+    {
+      "relative": "pipeline_tests/test_windows_stopped_install_guard.py",
+      "sha256": "b671cfd8abf733079fd73bf2be6d014332333b8102d533f288b73c076d75203a",
+      "bytes": 8361
+    },
+    {
+      "relative": "pipeline_tests/test_worker_contract.py",
+      "sha256": "6f091b5d82075306246b58485aa39856a63232931395e3f7cf681ed59d45b007",
+      "bytes": 16440
+    },
+    {
+      "relative": "pipeline_tests/test_worker_inference_policy.py",
+      "sha256": "9ff8e6dabe90de1af7b7fdc86d29695070b93ee9851d1feb15c43551ce40e527",
+      "bytes": 13794
+    },
+    {
+      "relative": "pipeline_tests/windows_test_context.py",
+      "sha256": "7ecfd0d6f01257f2acd76f4b318de831211553af4c9ea4a62794e8e506ac300e",
+      "bytes": 1031
+    },
+    {
+      "relative": "supervisor_tests/__init__.py",
+      "sha256": "03a06d7eba1f923506ef62a205dfa595a1e93997f788ce0acbb77062ab1114a2",
+      "bytes": 85
+    },
+    {
+      "relative": "supervisor_tests/test_acceptance.py",
+      "sha256": "9a376fa289c98a7bf87ef4f5ddfbd1db52945d080f77a7bd8268ce7351182558",
+      "bytes": 10433
+    },
+    {
+      "relative": "supervisor_tests/test_blackbox.py",
+      "sha256": "10c63651cdfbcc6a71749b47a35a4b3a193392148418225bc23189c2e07d2a53",
+      "bytes": 4726
+    },
+    {
+      "relative": "supervisor_tests/test_budget_upgrade.py",
+      "sha256": "3231f93f3d522eb2d03a5102ad69cc411574084402a5541257daeac0332a168d",
+      "bytes": 8471
+    },
+    {
+      "relative": "supervisor_tests/test_cleanup_reconciliation.py",
+      "sha256": "b1f2d424b3eb9b0f5192a3e315fe4c84de5226a85862fbf299c8eb2464854c83",
+      "bytes": 11110
+    },
+    {
+      "relative": "supervisor_tests/test_component_recovery.py",
+      "sha256": "f67e377883246138a39a77e6423466587bb1212e9a692a29430687a12c64ee34",
+      "bytes": 3546
+    },
+    {
+      "relative": "supervisor_tests/test_config.py",
+      "sha256": "4803617e88ef5ff46d1fccb024aafb87cbd88fbb615686d96fda29dd3471ff7e",
+      "bytes": 10944
+    },
+    {
+      "relative": "supervisor_tests/test_diagnostics.py",
+      "sha256": "8d4c60e58fcc0d4e66f84882dfa84efdaa5a73662b97622eb0525d050784ef24",
+      "bytes": 6862
+    },
+    {
+      "relative": "supervisor_tests/test_engine.py",
+      "sha256": "556c0ebdc76096ef4885ba62a05437852193813cd29a5288c059258a687b71a2",
+      "bytes": 41348
+    },
+    {
+      "relative": "supervisor_tests/test_heartbeat.py",
+      "sha256": "8879050213a5271d3a05c862f268b09a1bfb11c6e12181085861aad7c8a8c7f4",
+      "bytes": 10995
+    },
+    {
+      "relative": "supervisor_tests/test_held_observation.py",
+      "sha256": "4ed7a40327ef4ea76473dc5aef180734f307ec0267f2047d23483500b9cec677",
+      "bytes": 6626
+    },
+    {
+      "relative": "supervisor_tests/test_legacy_budget_authority.py",
+      "sha256": "b70c55fdba7cd10db676d237d1b190b00a81e1294b9edea2b4c98bf432bcffd2",
+      "bytes": 14639
+    },
+    {
+      "relative": "supervisor_tests/test_monitor.py",
+      "sha256": "22dea368a1adfd6ac6e796ecf18be5e66f8b391c1963068cded14a07a8e01611",
+      "bytes": 25620
+    },
+    {
+      "relative": "supervisor_tests/test_probes.py",
+      "sha256": "87431f2ac92c78e883ddd22451b8bd5e6320b414bd0efcd34772e48e61a10241",
+      "bytes": 47994
+    },
+    {
+      "relative": "supervisor_tests/test_process_observer.py",
+      "sha256": "a0f51202cabf50f691dc6f57afc726e570ed797d48daf642a9d44e0fa6973190",
+      "bytes": 3467
+    },
+    {
+      "relative": "supervisor_tests/test_reconciliation.py",
+      "sha256": "6807081e2bca14c7db1e78fb92337be6052870f8732a205fad9754815e139a4b",
+      "bytes": 7023
+    },
+    {
+      "relative": "supervisor_tests/test_releases.py",
+      "sha256": "a5fb8a8353df2c97cfca3f03e55a58af94a0d54a2c996c3869a7f10efc69f9a5",
+      "bytes": 19651
+    },
+    {
+      "relative": "supervisor_tests/test_repair_artifacts.py",
+      "sha256": "781d0fefaeb07741f202d7ae267aa2b2ac01887a844348108a537e7b69633534",
+      "bytes": 7334
+    },
+    {
+      "relative": "supervisor_tests/test_repair_docker.py",
+      "sha256": "de215daadd4b94b24e809b39c0c2867ba5e5110ea441a6eaca375ca03671167a",
+      "bytes": 4799
+    },
+    {
+      "relative": "supervisor_tests/test_repair_job_board.py",
+      "sha256": "1a1cc0587736bb04a1dfd91a19be0beecff9003261dad1b4bfe447f1867ea425",
+      "bytes": 12554
+    },
+    {
+      "relative": "supervisor_tests/test_repair_resources.py",
+      "sha256": "f29fd029370a5b7fa4db15634363094dc966b0e8faf613db419d8b012959c0ae",
+      "bytes": 6199
+    },
+    {
+      "relative": "supervisor_tests/test_replay_budget.py",
+      "sha256": "2fdc8ec0f02bcbdb0a3e030a941f162edab7681f09c1688188115f60fb73385a",
+      "bytes": 10157
+    },
+    {
+      "relative": "supervisor_tests/test_review_continuation.py",
+      "sha256": "e4560bed3024b68752110fc6eb999c7d5e2c3118e65e238e323875bdd7e3edb6",
+      "bytes": 4244
+    },
+    {
+      "relative": "supervisor_tests/test_routing_upgrade.py",
+      "sha256": "33ba98adb5aefcfd4639ddca745decc127b933d47705636f0de39f5f95ea0ce0",
+      "bytes": 17135
+    },
+    {
+      "relative": "supervisor_tests/test_runner.py",
+      "sha256": "fe407c92d4a58f581dd5dd0814175f99bf3496e9dfe3f997ea3e7646f5a06e01",
+      "bytes": 18131
+    },
+    {
+      "relative": "supervisor_tests/test_state.py",
+      "sha256": "12d24c167c15f9441052eb0ec975d8bb5b4b49f0f0d020959cb81e7fbb4634b7",
+      "bytes": 18066
+    },
+    {
+      "relative": "supervisor_tests/test_structural.py",
+      "sha256": "ce13b9eb5424215123adf57982d7e5442121b057ca1e24b1f41595ba7f0db274",
+      "bytes": 9500
+    },
+    {
+      "relative": "supervisor_tests/test_task_control_policy.py",
+      "sha256": "f2e60847d3de8782d395641bac7cb3c73fba2c40417465f6d142f9893d80e52c",
+      "bytes": 13081
+    },
+    {
+      "relative": "supervisor_tests/test_windows.py",
+      "sha256": "4247695a72693652a1363a8e6b4c7f4a9b0f3fcd13044af1f0999eb2cb7b71fc",
+      "bytes": 9296
+    },
+    {
+      "relative": "knowledge/.sources/4.2.7_SRS.md",
+      "sha256": "2563c33b7237f099b936a48af6545a674012fc2fb6792f2d7c343e94c9afaf83",
+      "bytes": 73462
+    },
+    {
+      "relative": "knowledge/.sources/4.2.7_SRS.model-routing-2026-10-07.md",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+      "bytes": 76701
+    },
+    {
+      "relative": "knowledge/.sources/full_dossier.md",
+      "sha256": "eaa191a9c83c6149827c9bcfa758864858447bc67164fe0168e0746599e11c6e",
+      "bytes": 4120
+    },
+    {
+      "relative": "knowledge/.sources/full_dossier_untruncated.md",
+      "sha256": "3741396e172e1ce2e1b50fc4b69cec7f0bdbf1d0ca3db84eb3aeefefec27c7ca",
+      "bytes": 10684
+    },
+    {
+      "relative": "knowledge/.sources/Oracle_SRS_WBS.md",
+      "sha256": "5a852cf5c51519bf8ce4625723fe4b77608ad9278b2038c9e8a24c091f9b9440",
+      "bytes": 4925
+    },
+    {
+      "relative": "knowledge/.sources/Pipeline_4_2_0_Architecture.md",
+      "sha256": "68ca91fffb6874c3d5da298ebc701f602a8638d390e3cc0da2055923f46fed7f",
+      "bytes": 3726
+    },
+    {
+      "relative": "knowledge/.sources/SRS_ADDENDUM_4.2.7.md",
+      "sha256": "3fa638f4a476950b668b8bf05c7737d38a97a42672953ec171c6c6036518ef4f",
+      "bytes": 6288
+    },
+    {
+      "relative": "knowledge/.sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md",
+      "sha256": "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9",
+      "bytes": 8893
+    },
+    {
+      "relative": "knowledge/v4.1.2_manifest.json",
+      "sha256": "cbde9b4d9d5be3ffdb21603c4cfeabe963a9563ab59dec734b8a125a0fcb7ca6",
+      "bytes": 3395
+    },
+    {
+      "relative": "knowledge/wiki/00_skeleton.md",
+      "sha256": "97ccbc6a9aff171e92aae4484c75557093df7051dad2fff1e5530f166d34033a",
+      "bytes": 1563
+    },
+    {
+      "relative": "knowledge/wiki/4.2.7_SRS.md",
+      "sha256": "7ac003ca55a204100d0886fb8eee2d402794133a0774f76e007d2952f2b7ad95",
+      "bytes": 83222
+    },
+    {
+      "relative": "knowledge/wiki/owner_decisions.md",
+      "sha256": "26794d59cebd65f588124bc1f1c661e057629863f625c70a87297170ab50e9dd",
+      "bytes": 5473
+    },
+    {
+      "relative": "scripts/install_aetherdesk_pawnio.ps1",
+      "sha256": "a94c6389e4d30c96abaf48c218888969c802eda5f13d20b9203a10483f3e967e",
+      "bytes": 12772
+    },
+    {
+      "relative": "scripts/parse_agy_status_capture.py",
+      "sha256": "b336706bc674738aa3f4c8ebc20649d0c9013a9e55e97e0538e8a519de20db6e",
+      "bytes": 6514
+    },
+    {
+      "relative": "scripts/verify_pipeline_acceptance.py",
+      "sha256": "206cbeea48774042fa676ca71350ac3c17cd468619cc2cfbd7ba5bc999f6dca0",
+      "bytes": 23878
+    },
+    {
+      "relative": "pytest.ini",
+      "sha256": "5f1925b4a423d125a0e653f5c876fada9293684bf6797381b303fc88c5712778",
+      "bytes": 25
+    }
+  ],
+  "control_files": [
+    {
+      "relative": "stage-independent-supervisor-holds-r3-v1.py",
+      "sha256": "215af8db414c7bbc4352c825dbf250b7bbc244a8a2dbc2d4addadc72cf1acb74",
+      "bytes": 10594
+    },
+    {
+      "relative": "bootstrap-unresolved-budget-pair.py",
+      "sha256": "1c431c12f5b502664494fb09bf6c0ef75bea9e6fad7739f8478b3591a24dcc11",
+      "bytes": 13622
+    },
+    {
+      "relative": "unresolved-budget-evidence.json",
+      "sha256": "b7b822ff263720dfb443607f0e3cbf515d175b9b7784ea4fd15f8968b7ff3709",
+      "bytes": 1330
+    }
+  ],
+  "selected_regression_targets": [
+    "pipeline_tests/test_config.py",
+    "pipeline_tests/test_hardware_guard.py",
+    "pipeline_tests/test_resource_telemetry.py",
+    "pipeline_tests/test_resource_limits.py",
+    "pipeline_tests/test_ramdisk.py",
+    "pipeline_tests/test_deployment.py",
+    "pipeline_tests/test_container_policy.py",
+    "pipeline_tests/test_containers.py",
+    "pipeline_tests/test_coding_git.py",
+    "pipeline_tests/test_git_deadline.py",
+    "pipeline_tests/test_coding_plan.py",
+    "pipeline_tests/test_coding_workflow.py",
+    "pipeline_tests/test_coding_boundaries.py",
+    "pipeline_tests/test_coding_acceptance.py",
+    "pipeline_tests/test_diagnostics.py",
+    "pipeline_tests/test_coding_reconciliation.py",
+    "pipeline_tests/test_operator_views.py",
+    "pipeline_tests/test_document_governance.py",
+    "pipeline_tests/test_operations_policy.py",
+    "pipeline_tests/test_runtime_knowledge_authority.py",
+    "pipeline_tests/test_upgrade_preview.py",
+    "pipeline_tests/test_deployment_revision.py",
+    "pipeline_tests/test_coding_srs_gates.py",
+    "pipeline_tests/test_knowledge.py",
+    "pipeline_tests/test_prompt_transport.py",
+    "pipeline_tests/test_crash_envelope.py",
+    "pipeline_tests/test_native_output_bounds.py",
+    "pipeline_tests/test_controller_guard.py",
+    "pipeline_tests/test_lease_invariants.py",
+    "pipeline_tests/test_planning_governance.py",
+    "pipeline_tests/test_execution_integration.py",
+    "pipeline_tests/test_runtime_storage_holds.py",
+    "pipeline_tests/test_inference_policy.py",
+    "pipeline_tests/test_worker_inference_policy.py",
+    "pipeline_tests/test_native_effort.py",
+    "pipeline_tests/test_oracle.py",
+    "pipeline_tests/test_recovery_telemetry.py",
+    "pipeline_tests/test_runtime_monitor.py",
+    "pipeline_tests/test_service.py",
+    "pipeline_tests/test_routing_policy.py",
+    "pipeline_tests/test_routing_store.py",
+    "pipeline_tests/test_routing_integration.py",
+    "pipeline_tests/test_runtime_routing.py",
+    "pipeline_tests/test_provider_failures.py",
+    "pipeline_tests/test_store.py",
+    "pipeline_tests/test_windows_contract.py",
+    "pipeline_tests/test_worker_contract.py",
+    "mcp_tests/test_config.py",
+    "mcp_tests/test_providers.py",
+    "mcp_tests/test_jobs.py",
+    "mcp_tests/test_server.py"
+  ],
+  "source_changes_since_r3": {
+    "added": [],
+    "removed": [],
+    "changed": [
+      {
+        "relative": "src/cochem_pipeline/performance_acceptance.py",
+        "r3_sha256": "3a6e1b0f5a62005c09ba07b4261bfef0e4d5f3962af9f087ae91b81ca2bab9e2",
+        "candidate_sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c"
+      },
+      {
+        "relative": "src/cochem_supervisor/engine.py",
+        "r3_sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+        "candidate_sha256": "9ec21d808bfbb1c5dfe01a6dd41b0dc969f9fc92df4ff5de010c4890c1dddeea"
+      },
+      {
+        "relative": "src/cochem_supervisor/replay.py",
+        "r3_sha256": "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728",
+        "candidate_sha256": "d0a10b30e3f16d44a2906d855d46f44dc0fbad7249b8b43d6b67b98e4d94d60d"
+      }
+    ]
+  },
+  "scope": "Fresh unpublished code/test runtime and immutable paired holds only; no activation or allowance."
+}

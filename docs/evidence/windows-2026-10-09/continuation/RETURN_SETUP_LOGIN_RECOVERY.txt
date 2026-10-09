@@ -1,0 +1,81 @@
+SUPERSEDED AFTER THE V2 RUN REACHED SLOT5 AND STOPPED
+Use RETURN_SETUP_CONTINUE.txt and its v4 command. Preserve this v2 attempt.
+
+WINDOWS PIPELINE: CONTINUE AFTER THE DEVICE-LOGIN FAILURE
+8 October 2026 - AETHERDESK
+
+Codex device-code login prints a link and code. It does not open a browser
+window automatically. The previous instructions were not clear enough about
+this manual step. The previous code must not be reused.
+
+ONE COMMAND
+
+In your Administrator Windows PowerShell window, paste this entire command once:
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pipeline-commissioning-r3-v2.ps1" -Apply -Interactive
+
+WHEN CODEX PRINTS A NEW CODE
+
+1. Manually open https://auth.openai.com/codex/device in your normal browser.
+2. Sign in with the existing ChatGPT subscription and enter the NEW code shown
+   by this running console. Complete the page's authorization instructions.
+3. Leave PowerShell open. It detects completion and continues automatically.
+   Do not type the code into PowerShell or paste it into chat.
+4. Follow each subsequent provider prompt for the selected isolated profile.
+   Current verified sessions are reused. Up to twelve approvals are possible
+   across six profiles and two providers; the actual count is not yet known.
+5. Return the final JSON. If it stops, return the error with any login code
+   removed, and leave the new files/tasks in place. Do not repeat either series.
+
+If the browser explicitly says device-code authentication is disabled, enable
+device-code login in ChatGPT's security settings (or contact the workspace
+administrator if your workspace controls it). Do not supply an API key.
+If the browser shows a different error, return that error text without codes.
+
+WHAT THIS CONTINUATION DOES
+
+It verifies and preserves the three failed v1 series and the existing status
+receipt, then uses new v2 status/series roots. It checks the CURRENT sign-in of
+every profile. A prior logged-out result never authorizes another login by
+itself. A valid current session is reused; an explicit current logout allows
+an attended login. Unknown status stops for diagnosis.
+
+After both providers pass, it performs the already-prepared first controller
+start once. The first-start namespace and task action stay as previously
+planned because no first-start phase ran. Only its authentication input chain
+and pinned helper source change. Existing installations are not replaced.
+
+No completed Docker, knowledge, CPU or worker-isolation test is repeated.
+Existing credentials, databases/history, repair budgets, the 8 GiB R: drive
+and Mount_CoChem_RAMDisk stay preserved. Capacity remains four shared slots
+across six identities, with Chapter 06 routing. Agy's existing sign-in remains
+unchanged. Automatic repair stays held; this command submits no model jobs.
+
+WHY YOUR INTERACTION IS NEEDED
+
+Windows administrator rights are required for the protected status/first-start
+tasks. This chat's process is not elevated. Browser consent authenticates each
+isolated profile and must be completed by you. Opening a browser manually is
+the missing interaction from the reported attempt.
+
+AFTER SUCCESS
+
+Codex can perform the prepared MCP bridge and routed workflow checks without
+another administrator command for those checks. Controller startup, live
+workflows, reboot/recovery and 48-hour acceptance are not yet claimed here.
+
+EVIDENCE SCOPE
+
+The user reported slot1 Codex login task result 1 before controller startup,
+and confirmed no browser window appeared. The 476-byte native log contains
+device instructions and no recorded error marker. Scheduler result 1 alone
+does not establish a native CLI error or the exact timeout/cleanup cause.
+
+Prepared recovery: 24 focused authentication checks and 115 commissioning /
+preservation checks passed on ordinary Windows. These include simulated task
+flows and actual read-only previews. No new SYSTEM acceptance, login, model
+execution or controller start was performed during preparation. Existing
+Linux results are separate and are not counted as Windows deployment proof.
+
+Official device authentication guidance:
+https://learn.chatgpt.com/docs/auth#login-on-headless-devices

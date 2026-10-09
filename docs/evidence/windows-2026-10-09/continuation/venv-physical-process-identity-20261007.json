@@ -1,0 +1,23 @@
+{
+  "schema": "cochem-windows-venv-physical-process-observation/1",
+  "scope": "Ordinary Windows process only; no SYSTEM/controller/model execution. Probe and parent have exited.",
+  "observed": {
+    "sys_executable": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+    "process_image": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+    "pid": 43184,
+    "parent_pid": 21116,
+    "parent_image": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+    "parent_argv_prefix": [
+      "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+      "-I",
+      "-B",
+      "-c"
+    ],
+    "parent_argv_count": 5,
+    "known_probe_code_sha256": "c6ea5b6119356f1bfbb7f484b0c94a0487a28f4da0267c03309d4402dc277973"
+  },
+  "finding": "The venv executable is the immediate launcher parent; the interpreter physical image is the pinned protected base Python. sys.executable retains the venv path.",
+  "linux_results_used": false,
+  "credentials_accessed": false,
+  "production_tasks_changed": false
+}

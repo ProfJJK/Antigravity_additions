@@ -27,3 +27,14 @@ config/antigravity.local.json
 
 config/pipeline.local.json
 config/pipeline.client.local.json
+
+# Generated outputs and environments are not the source authority.
+/build/
+/dist/
+/.venv/
+/.pytest_cache/
+*.egg-info/
+
+# Retained deployment instructions are historical evidence, not runtime state.
+!docs/evidence/windows-2026-10-09/continuation/*.txt
+!docs/evidence/windows-2026-10-09/continuation/**/*.txt

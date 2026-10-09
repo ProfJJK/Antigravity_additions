@@ -77,6 +77,11 @@ def test_chapter_request_preserves_scope_in_new_controller_owned_dag(job_environ
     assert 'Preserve the existing R: volume' in objective
     assert saved['root']['payload']['requirements'] == ['RAM-1']
     assert record['status'] != 'completed'
+    assert {(job['kind'], job['status']) for job in saved['jobs'] if job['parent_job_id']} == {
+        ('MANIFEST_GENERATOR', 'PENDING'), ('SYNTHESIS', 'BLOCKED')}
+    contract = saved['root']['payload']['governing_requirements']['contract']
+    assert 'bounded-owned-wbs-declarations' in contract['manifest_completion']['requirements']
+    assert all('wbs_tasks_defined' not in job['payload'] for job in saved['jobs'])
 
 
 @pytest.mark.parametrize('root_state,coding_state,expected', [
@@ -127,6 +132,7 @@ def test_bad_controller_auth_cannot_submit(job_environment,tmp_path):
     manager=create(controller_token_file=str(token))
     with pytest.raises(RuntimeError,match='Unauthorized'): manager.submit('Task')
     assert not manager.requests
+    assert manager.endpoint.controller.store.list_workflows() == []
 
 
 @pytest.mark.parametrize('identifier',['../escape','code:../escape','code:x/../../health','x','plan:'])

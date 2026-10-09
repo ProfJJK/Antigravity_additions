@@ -1,0 +1,20 @@
+{
+    "schema":  "cochem-independent-supervisor-staging-plan/2",
+    "mode":  "READ_ONLY_PLAN",
+    "target_root":  "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1",
+    "unpublished_pair_root":  "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1\\unpublished-private\\unresolved-pair",
+    "manifest_sha256":  "6aec5eaf82205be34e5849e73700f2e817e157be5c5ddd4366f04e549b75f0c4",
+    "source_and_test_files":  292,
+    "controls":  4,
+    "activation_ready":  false,
+    "daemon_and_task_metadata_checks_deferred_to_admin":  true,
+    "daemon_definitions_observed":  false,
+    "warden_stop_required":  false,
+    "new_one_shot_task_on_apply":  "CoChem-4.2.7-StageIndependentSupervisor-20261007-v1",
+    "accounts_changed":  0,
+    "credentials_read":  false,
+    "old_ledgers_opened":  false,
+    "holds":  [
+
+              ]
+}

@@ -1,0 +1,192 @@
+{
+  "schema": "cochem-claude-paste-continuation-preparation/1",
+  "prepared_utc": "2026-10-09T01:32:33.886496+00:00",
+  "host": "AETHERDESK",
+  "status": "PREPARED_NOT_APPLIED",
+  "owner_run": {
+    "attempt": "79dc08c4325c426f8e95b59320834dfa",
+    "codex_profiles_verified": 6,
+    "existing_codex_sessions_reused": 6,
+    "codex_login_commands_executed": 0,
+    "codex_completed_utc": "2026-10-09T01:09:20.5281427Z",
+    "claude_slot1_cancelled_while_owner_pasted_code": true,
+    "controller_or_monitoring_start_reached": false,
+    "private_cleanup_receipt_read_by_this_preparation": false
+  },
+  "defect": "Old wrapper intercepted individual P/Q characters while displaying the native code-paste prompt; a pasted Q requested cancellation",
+  "repairs": [
+    "Nonblocking masked SecureString input accepts ordinary P/Q; Enter submits once, Escape cancels",
+    "Native prompt split across log reads is retained/replaced; no blocked Read-Host code prompt",
+    "Current console queue is validated, drained and flushed before returning to later prompts",
+    "Prior cancelled/timeout sessions require exact protected terminal task/receipt/owned-Job cleanup proof before any new READY/login"
+  ],
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "worker_identities": 6,
+  "shared_slots": 4,
+  "model_routing": "Chapter 06 unchanged",
+  "sources": [
+    {
+      "name": "claude-session-history-v6.ps1",
+      "sha256": "36cac78f54d9a9370991df3a83bfdf36144e7e9f8ed2dabe4da3105e5edd4636",
+      "bytes": 27402
+    },
+    {
+      "name": "claude-code-input-v6.ps1",
+      "sha256": "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+      "bytes": 5402
+    },
+    {
+      "name": "login_pipeline_worker_interactive_r3_v6.ps1",
+      "sha256": "837f567c5cae00d30620e313d746df6acf98259c9ffa1ef43ebc217b7cf9c46d",
+      "bytes": 20377
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v6.ps1",
+      "sha256": "9e45266bdccbaa7765245eb23091211b669c92504c374dd7ded6eab0699a4665",
+      "bytes": 24518
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v6.ps1",
+      "sha256": "cb91573102e6e37d362d0ce80578fe1ddb8db540f6756c7f5181517f64d1e4b0",
+      "bytes": 17993
+    },
+    {
+      "name": "run-pipeline-commissioning-r3-v6.ps1",
+      "sha256": "42cec356b787f3edd1529f8f9c81859459f932b0630494636477a0b2e1c7e8f7",
+      "bytes": 31659
+    },
+    {
+      "name": "run-post-commissioning-setup-r3-v3.ps1",
+      "sha256": "31ad291744eda4a2a453912b64c1b969c943b3fee70b387a503def6d6cd6589d",
+      "bytes": 33156
+    },
+    {
+      "name": "run-reboot-setup-r3-v6.ps1",
+      "sha256": "dd74da76d96676bc0c1f3d013d7c11661bb04f760759af91c96ec04b72622041",
+      "bytes": 4824
+    },
+    {
+      "name": "worker_claude_login_bridge_r3.py",
+      "sha256": "b5bbede85ceb099460c6d6634f09a361a9b6617740eb082ab8d3bf5931260c73",
+      "bytes": 16296
+    },
+    {
+      "name": "commission-first-warden-r3-v5.py",
+      "sha256": "8ae682483caff2c178ab096b481699a5fea12c62519c5002bb75cbedad9e8c9e",
+      "bytes": 46590
+    },
+    {
+      "name": "commission-first-warden-r3-v5.ps1",
+      "sha256": "a40e093839f8482937a814a236b4a50775e741f30f2514c3ae9715fab371363e",
+      "bytes": 19877
+    },
+    {
+      "name": "install-resource-observer-r3-v4.ps1",
+      "sha256": "106d95dd5b22613cb871f3649d4376dc0a75745b6fce38469ddf94d2fcb9ec65",
+      "bytes": 34924
+    },
+    {
+      "name": "prepare-claude-paste-continuation-v6.py",
+      "sha256": "96b6d7e182a66097f3862eeef295f96c0c02d6c44686b489cede73534c31e707",
+      "bytes": 9983
+    },
+    {
+      "name": "test_claude_code_input_v6.py",
+      "sha256": "075139fd7bc0771acc1a3ab1b924761c04c6495f7462db692ed97121a501f15e",
+      "bytes": 14745
+    },
+    {
+      "name": "test_claude_session_history_v6.py",
+      "sha256": "98df8d0c7ad58fade8619eeaa9fbb7738e5e73b2fb893e9a294345294a9e563b",
+      "bytes": 11215
+    },
+    {
+      "name": "test_claude_paste_continuation_v6.py",
+      "sha256": "94e1a430c57895d432b06c8b30e357e80d5c4c6ef296c9fa8e5a6da6ddc8053d",
+      "bytes": 18400
+    },
+    {
+      "name": "test-claude-console-native-v6.ps1",
+      "sha256": "ce7ed45f4d8f574d85f0efb2ae1426d6430204340095a962ff00f102ba6008de",
+      "bytes": 8357
+    },
+    {
+      "name": "RETURN_SETUP_PASTE_FIX_V6.txt",
+      "sha256": "8275347cbaa5d7a57a6d9233ccef5874a046cc1197d72329e45d2abe653226da",
+      "bytes": 3686
+    },
+    {
+      "name": "record-claude-paste-continuation-v6.py",
+      "sha256": "615ae37b9bca28ea2e1b332d65164028daa6603f669c6002d42f0a1016aa9276",
+      "bytes": 8265
+    }
+  ],
+  "ordinary_windows_fixtures": [
+    {
+      "name": "claude-session-history-v6-tests-final.xml",
+      "sha256": "045bfd18b07643f27e0158b92c9885d87a3be676a761daca0b780dd45e299a02",
+      "bytes": 40916,
+      "passed": 190,
+      "source_sha256": "3b8539c8fc9445c43464c54498620869442f941f7ba746e7bee90247f4165b7b",
+      "scope": "121 unchanged baseline paths plus 69 new cases before the additional raw-JSON type guard"
+    },
+    {
+      "name": "claude-session-history-v6-strict-final.xml",
+      "sha256": "0b8d53599b99c5e600ca99ebf12609cb538047b41920b5ff7298b3e20a408c56",
+      "bytes": 23669,
+      "passed": 114,
+      "source_sha256": "36cac78f54d9a9370991df3a83bfdf36144e7e9f8ed2dabe4da3105e5edd4636",
+      "scope": "All affected cancellation/timeout cases, including 45 additional array coercion refusals; unchanged baseline path source preserved exactly"
+    },
+    {
+      "name": "claude-code-input-v6-tests-final.xml",
+      "sha256": "c4a6eb27d1de3ab87e6e7fcc29fb5b112972a245c254bd415f6b11f5fe360124",
+      "bytes": 7735,
+      "passed": 46,
+      "source_sha256": "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+      "scope": "Actual exported PS5 functions with synthetic keys, masks, disposal and bounded console seams"
+    },
+    {
+      "name": "claude-paste-continuation-v6-tests-final.xml",
+      "sha256": "72178693778de0e81a9f2faf6648a2a4d4501e149f48e2e133d49f3442bbbe9e",
+      "bytes": 45075,
+      "passed": 225,
+      "source_sha256": "837f567c5cae00d30620e313d746df6acf98259c9ffa1ef43ebc217b7cf9c46d",
+      "scope": "Active v6 source chain, actual inert input loop and unchanged authentication/first-start/launcher protocols"
+    }
+  ],
+  "history_distinct_case_coverage": 235,
+  "history_provenance": "121 byte-identical baseline paths from initial run plus final 114 affected-branch cases; the 69 repeated cases are not double-counted",
+  "actual_ordinary_windows_evidence": [
+    {
+      "name": "claude-paste-continuation-v6-preview-final.json",
+      "sha256": "7c117deeac6eb8c462fe90aa6d9482329a47f95a5b90ed18b36070af2eda84ee",
+      "bytes": 7477
+    },
+    {
+      "name": "reboot-setup-launcher-v6-preview-final.json",
+      "sha256": "d5c54ac48f8070e48f40a9f23152ea36d83d5018f3a385280f5e0cc850e99ef9",
+      "bytes": 669
+    },
+    {
+      "name": "claude-console-native-v6-d13e9a78ee23436f8539d4e0d453af9b.json",
+      "sha256": "103b4f3e0011234bc7ea6fa0a0e3136273b69990c67b40cbdd78ee732f2f923b",
+      "bytes": 2162
+    }
+  ],
+  "independent_source_review": "PASS_NO_CONCRETE_FINDINGS",
+  "archive_scope": "Changed sources, selected pinned dependencies and preparation evidence; other frozen dependencies remain in the workspace",
+  "linux_results_counted_as_windows": false,
+  "windows_administrator_or_system_execution_during_preparation": false,
+  "deployment_tasks_changed": 0,
+  "provider_logins_executed": 0,
+  "model_jobs_submitted": 0,
+  "credentials_modified": false,
+  "databases_modified": false,
+  "repair_budgets_modified": false,
+  "ram_or_owner_startup_task_modified": false,
+  "controller_started": false,
+  "current_private_cleanup_verified": false,
+  "full_srs_acceptance": false,
+  "next": "Owner runs run-reboot-setup-r3-v6.ps1 -Apply -Interactive once; paste NEW browser code at masked Code prompt and press Enter; monitoring follows verified first start"
+}

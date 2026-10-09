@@ -1,0 +1,107 @@
+{
+  "archive_inventory": [
+    {
+      "bytes": 24352,
+      "file": "resume-partial-resource-observer-r3-v1.ps1",
+      "sha256": "6d15a2e11b971d61fa202eb00448c25f70f084a444ebc6f53a6781aeb28c75f1"
+    },
+    {
+      "bytes": 2465,
+      "file": "resource-observer-duration-r3-v1.ps1",
+      "sha256": "3dd63e3db9ed65210571dd2336b1d5f67e3464415bb04bc11aa916dc9e17dd9c"
+    },
+    {
+      "bytes": 35146,
+      "file": "install-resource-observer-r3-v5.ps1",
+      "sha256": "ad64a859ad069a728cc57c324aedc5d48b44a072352e40b2bbed143d57e7c69f"
+    },
+    {
+      "bytes": 7095,
+      "file": "partial-resource-observer-recovery-v1-tests-passed-final.xml",
+      "sha256": "d00f2f9108d6e3e5ed9ee40a334b77c8e6e3b27fb310b799a3322eff7a801875"
+    },
+    {
+      "bytes": 624,
+      "file": "partial-resource-observer-recovery-v1-tests-metadata-final.xml",
+      "sha256": "bc4dd30e18266f1e9b586bc7f96e66f9118021f0556af2daf62315e359dbc73e"
+    },
+    {
+      "bytes": 7273,
+      "file": "resource-observer-duration-r3-v1-tests-final.xml",
+      "sha256": "e89b15fc1563b3de8d43efb0940c61b605058beecb3032522c9a8f4c75c9ea54"
+    },
+    {
+      "bytes": 923,
+      "file": "partial-resource-observer-recovery-v1-preview-final.json",
+      "sha256": "7ce69cc53a631caca5cfb873c3d0af7436edeea20d2e2d8516536c54f82da70a"
+    },
+    {
+      "bytes": 3145,
+      "file": "RETURN_SETUP_RESOURCE_RECOVERY_20261009.txt",
+      "sha256": "0effc8e1778b235b8867a3755722be56a5c19513db8c5dd6f02179c7802d9958"
+    },
+    {
+      "bytes": 3025,
+      "file": "LIVE_WORKFLOW_TEST_SCOPE_20261009.json",
+      "sha256": "b35b01c72d68b58909a717c8641ef3c1bd48a191427237ec8cb5caefdd411949"
+    },
+    {
+      "bytes": 1481,
+      "file": "live-model-tests-review-held-20261009.json",
+      "sha256": "4ab09ef6a61494087d39d798f0debdf7a4c8a45314aa0e4c7310512a787e5574"
+    },
+    {
+      "bytes": 2969,
+      "file": "post-monitoring-v8-live-readiness-safe-20261009.json",
+      "sha256": "0056e1cf638cd283ee8d0caf85da79d7769c529a51cb9069285063aa22d6b77d"
+    },
+    {
+      "bytes": 4830,
+      "file": "partial-resource-observer-recovery-v1-tests-initial.xml",
+      "sha256": "57becf9494dee40c2783a086e2460f6ff6d094e4aa8e9d96e90ed5dca3427f65"
+    },
+    {
+      "bytes": 29231,
+      "file": "partial-resource-observer-recovery-v1-tests-scalar-candidate.xml",
+      "sha256": "0df8a83af71598b31e247076f4218856f3fb725c7c6c96291aefc454b53fbc06"
+    }
+  ],
+  "continuous_48h_complete": false,
+  "copied_dependencies_byte_verified": true,
+  "copied_package_files_byte_verified": 8,
+  "duration_representation_repair": "Only semantically exact 176400 seconds; no calendar units, changed limits or other task-guard exceptions",
+  "existing_partial_registration_intent_sha256": "3fde035d1aed9f06b950284953a5737ba089cf7e5ab2e12ea5a24a06425537bd",
+  "existing_resource_task_recreated": false,
+  "external_model_acceptance": "exact scope prepared; explicit owner approval pending after automatic review rejected process creation",
+  "full_srs_acceptance": false,
+  "host": "AETHERDESK",
+  "linux_results_counted_as_windows": false,
+  "model_jobs_submitted_by_this_turn": 0,
+  "newest_read_only_controller_health": "ready at one actual Windows sample: same controller, 57 Celsius, capacity 2, no active jobs or quarantines",
+  "next": "Run resume-partial-resource-observer-r3-v1.ps1 -Apply once in Administrator Windows PowerShell; answer exact model-test scope approval separately",
+  "owner_local_date": "2026-10-09",
+  "prepared_utc": "2026-10-09T12:39:11.342920+00:00",
+  "preserved": [
+    "provider sign-ins",
+    "credentials",
+    "databases",
+    "repair budgets",
+    "8 GiB R: and startup task",
+    "same running controller and held supervisor",
+    "four shared slots",
+    "Chapter 06 routing"
+  ],
+  "raw_registered_duration_known": false,
+  "recovery_apply_performed": false,
+  "registered_resource_task_actual_fields": "inaccessible to ordinary process; administrator projection and strict conditional preflight required",
+  "resource_observer_started": false,
+  "schema": "cochem-partial-resource-observer-recovery-preparation/1",
+  "status": "PREPARED_NOT_APPLIED",
+  "successful_held_supervisor_activation_sha256": "5599e920e8b457e6389e5d7677a4eca6e5479e8dc72bba2f41ccb5d46e640171",
+  "test_scope": "Windows PowerShell 5.1; native in-memory COM duration and inert task/provider recovery fixtures; no host task registration or start",
+  "windows_tests": {
+    "distinct_recovery_and_projection_cases": 34,
+    "duration_and_original_task_guards": 38,
+    "final_reporting_rename_cases_run_separately": 2
+  }
+}

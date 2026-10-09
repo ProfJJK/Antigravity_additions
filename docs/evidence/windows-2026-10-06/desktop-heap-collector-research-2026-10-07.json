@@ -1,0 +1,111 @@
+{
+  "schema": "cochem-desktop-heap-collector-research/1",
+  "captured_at_utc": "2026-10-07T18:03:41.8992494Z",
+  "status": "COLLECTOR_CONTRACT_NOT_YET_VERIFIED",
+  "scope": "Ordinary-user Windows metadata and primary Microsoft documentation; no heap measurement, debugger launch or attachment, driver installation, boot change, process manipulation, or privileged execution.",
+  "requirement": {
+    "canonical_ids": ["S427-HOST-006", "S427-PERF-005", "S427-AC-003"],
+    "source": "4.2.7_SRS.md",
+    "desktop_heap_percent_strictly_below": 15,
+    "continuous_acceptance_seconds": 172800,
+    "substitutions_disallowed": ["USER/GDI object counts", "process heaps", "process RSS", "desktop capacity alone"]
+  },
+  "installed_harness": {
+    "file": "src/cochem_pipeline/performance_acceptance.py",
+    "repository_and_installed_r3_sha256": "3a6e1b0f5a62005c09ba07b4261bfef0e4d5f3962af9f087ae91b81ca2bab9e2",
+    "function": "desktop_heap_evidence",
+    "required_fields": ["used_bytes", "allocation_limit_bytes", "measured_at", "process_created_at", "pid", "source"],
+    "freshness_seconds_inclusive": [0, 10],
+    "process_binding": "Exact observer-selected Warden PID and psutil create_time value must match; a restart starts a new continuous observation.",
+    "percentage_test": "100 * used_bytes / allocation_limit_bytes < 15",
+    "missing_collector_result": "available=false, passed=false; never zero usage",
+    "limits": "Current input schema has no native desktop/session identity, rate precision or upper-bound representation; the external collector must establish truthful provenance rather than merely satisfy numeric fields. A report filename timestamp is not a measurement timestamp."
+  },
+  "primary_sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getuserobjectinformationw",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "UOI_HEAPSIZE (5) returns desktop heap size in KB as ULONG. The documented indices do not provide desktop used bytes. This capacity API alone cannot generate the required ratio."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-dskheap",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "The Kdexts.dll extension reports desktop heap by window station and session. Its documented table contains capacity in KB and an integer displayed Used Rate(%); -s selects the session and omission selects session 0. -v requests detail. The page does not document exact used bytes, rate rounding, PID/creation binding, refresh cadence, or a machine-readable protocol. This is a real candidate measurement source, not yet a verified adapter for this host."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getthreaddesktop",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "A desktop is associated with a thread; threads may change desktop. The returned borrowed handle can be queried with GetUserObjectInformation. Services already have an associated window station and desktop. A collector must establish the monitored process/thread-to-desktop association; the operator's interactive desktop is not evidence for the Warden."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getguiresources",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "This API reports USER/GDI object counts, not allocated desktop-heap bytes. A GUI-less process can return zero without establishing zero consumption of its shared desktop heap."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/setting-up-local-kernel-debugging-of-a-single-computer-manually",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "The documented local kernel-debug setup uses an Administrator, debug boot configuration, and a reboot. It notes security-feature implications. None of that setup was inspected through a privileged command, enabled, or changed here. This is not proposed as an automatic pipeline dependency."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/performing-local-kernel-debugging",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "Local kernel debugging runs with Administrator access and has changing-state/context limitations. LiveKD is described as a snapshot approach that need not represent one instant. Neither description establishes a nonintrusive ten-second-cadence, process-bound desktop-heap collector."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/sysinternals/downloads/livekd",
+      "accessed_utc_date": "2026-10-07",
+      "finding": "The official LiveKD tool depends on debugging tools/symbols and documents kernel snapshots, including a consistent mirror mode with additional memory requirements. Its documentation references LIVEKDD.SYS. No download, launch, dump, symbol fetch, driver action or suitability claim was made."
+    }
+  ],
+  "actual_windows_metadata": {
+    "computer": "AETHERDESK",
+    "execution_scope": "ordinary AETHERDESK\\ansac account",
+    "cim_os_caption": "Microsoft Windows 11 Pro",
+    "cim_version": "10.0.26300",
+    "registry_display_version": "26H2",
+    "registry_build_revision": 9457,
+    "registry_product_name": "Windows 10 Pro",
+    "os_label_note": "Registry ProductName is retained verbatim and differs from CIM Caption; no inference from the legacy ProductName alone.",
+    "path_lookup_found": {
+      "wpr.exe": "C:\\WINDOWS\\system32\\wpr.exe",
+      "wpa.exe": "C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit\\wpa.exe"
+    },
+    "not_resolved_on_path": ["windbg.exe", "cdb.exe", "kd.exe", "livekd.exe", "livekd64.exe", "dheapmon.exe"],
+    "sdk_debuggers_x64_directory": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64",
+    "sdk_debuggers_x64_direct_entries": [
+      {"name": "dbgcore.dll", "bytes": 252344},
+      {"name": "dbghelp.dll", "bytes": 2259384},
+      {"name": "srcsrv.dll", "bytes": 272808},
+      {"name": "symsrv.dll", "bytes": 424400}
+    ],
+    "current_user_windbg_appx_matches": 0,
+    "desktop_named_cim_classes": ["Win32_Desktop", "Win32_UserDesktop", "Win32_SystemDesktop", "CIM_DesktopMonitor", "Win32_DesktopMonitor", "Win32_PerfFormattedData_Counters_RemoteDesktopVirtualChannel", "Win32_PerfRawData_Counters_RemoteDesktopVirtualChannel"],
+    "tool_inventory_limit": "These are scoped PATH, SDK directory and current-user Appx checks, not proof no debugger exists at an arbitrary path or for another user. WPR/WPA availability does not establish an exact desktop-heap used/capacity data source. No tool in this list was launched."
+  },
+  "implementable_next_contract": {
+    "candidate": "A reviewed native diagnostic backed by a supported, host-version-tested desktop-heap source; documented !dskheap is a candidate for a one-sample feasibility study, not an already accepted live collector.",
+    "required_before_adapter": [
+      "Establish a supported diagnostic execution route without silently changing boot/security policy or installing a kernel component. Review its privilege and runtime impact before any host action.",
+      "Capture an actual version-bound sample and identify its session, window station and desktop. Bind those identities to the live Warden PID and process creation time, and define coverage if its threads or worker processes use multiple desktops.",
+      "Verify the source yields actual used and allocation bytes, or establish documented/tested rate precision and a conservative upper-bound contract. A rounded rate must not be relabeled as exact used_bytes by multiplication.",
+      "If an upper-bound rate is selected, prepare a separately reviewed acceptance-schema/validator change that labels the bound and its provenance; do not weaken the strict 15% ceiling or silently alter the frozen r3 harness.",
+      "Bound collection time/output, record measurement time rather than parse/publication time, and prove every admitted sample remains at most ten seconds old. Demonstrate repeated collection on this Windows build before promising the 48-hour cadence.",
+      "Write report updates only within a new protected private evidence path with coherent publication. Pin the collector/version and record raw-diagnostic hash plus exact desktop and process witness; stop on unsupported/missing/ambiguous/stale data or process/desktop drift.",
+      "Add parser fixtures from the actual accepted format, including duplicate desktops, missing usage, rounding boundaries, wrong session/PID/creation time, stale/future sample, command failure and unexpected format. Then run a short physical check before the separate 48-hour acceptance run."
+    ],
+    "remaining_external_prerequisite": "A reviewed acquisition method and actual source contract for desktop usage, with current service-desktop association and sustained freshness. No supported ordinary-user complete collector was established by this research; this is not a claim that such a collector is impossible.",
+    "ready_to_run_48_hour_desktop_heap_acceptance": false
+  },
+  "actions": {
+    "runtime_source_or_frozen_r3_modified": false,
+    "new_executable_collector_created": false,
+    "new_parser_created_without_actual_source_contract": false,
+    "desktop_heap_bytes_measured": false,
+    "debugger_or_trace_session_started": false,
+    "privileged_commands_executed": false,
+    "driver_or_boot_settings_changed": false,
+    "processes_attached_or_manipulated": false,
+    "model_or_authentication_jobs_executed": false
+  }
+}

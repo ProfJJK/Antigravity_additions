@@ -1,0 +1,14 @@
+{
+  "schema": "cochem-confirmed-post-foundation-guide/1",
+  "guide_sha256": "6d639a79830884c3f018ad40f486b87d02c25496e107a5e85f7802e4a4a13848",
+  "guide_archive": "guide-after-foundation.txt",
+  "supersedes_unpersisted_draft_hash": "075e9f79df210d0deaf53cde79386294669f7e4a3999e78902eec7f067c11c0c",
+  "unpersisted_draft_not_used_as_authority": true,
+  "completed_phase_1_command_absent": true,
+  "next_live_command_number": 2,
+  "remaining_live_commands": 4,
+  "physical_docker_acceptance_executed": false,
+  "frozen_sources_changed": false,
+  "observed_sha256": "eb91c1172e78000e6f34a3ca1d3a22556783474f15e4066a0a4f51337332b465",
+  "handoff_sha256": "1bbce1426298eb2eb4ad9da42db712d358f48a7c3a128a7d866b3eee796331df"
+}

@@ -1,0 +1,117 @@
+{
+  "schema": "cochem-protected-project-preparation/1",
+  "captured_at_utc": "2026-10-07T11:39:10.393814+00:00",
+  "status": "PREREQUISITES_HELD_NO_INSTALLER_ISSUED",
+  "scope": "Read-only bundle bytes, PE import metadata, exact known file metadata and bounded Git directory filenames; no project code or Git command executed for this preparation",
+  "bundle": {
+    "path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\disposable-acceptance-c52a3a97.bundle",
+    "bytes": 622,
+    "sha256": "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+    "format": "git bundle v2",
+    "self_contained": true,
+    "pack_checksum_verified": true,
+    "object_count": 7,
+    "ref": "refs/heads/pipeline/accepted",
+    "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+    "baseline_tree": "0e7fe3edd935e4a839d17cb99b30b08db18d8ae9",
+    "files": [
+      {
+        "path": "README.md",
+        "mode": "100644",
+        "blob_oid": "415aade8c462f8cd7d1b5530a3e587b7bb172f0f",
+        "bytes": 96,
+        "sha256": "c33ac1c425ce64bf18e4d027f9b998eb8782f797b2103ad24b8c47d70751a59a"
+      },
+      {
+        "path": "src/calculator.py",
+        "mode": "100644",
+        "blob_oid": "ab181a8c44960bda8f2565986dadce2fd8dc72f4",
+        "bytes": 38,
+        "sha256": "89fb6a0b833a9db8edfc28b3c34b2bc1509abde1318e93116dd9e2fe2cf2061f"
+      },
+      {
+        "path": "tests/.gitkeep",
+        "mode": "100644",
+        "blob_oid": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "symlinks_submodules_hooks_or_extra_files": false
+  },
+  "target": {
+    "repository": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+    "branch": "pipeline/accepted",
+    "parent_path_probe_exists": false,
+    "target_path_probe_exists": false,
+    "probe_is_not_privileged_freshness_authority": true,
+    "data_parent_acl_observation": "Get-Acl on C:\\ProgramData\\CoChemPipeline427 returned UnauthorizedAccessException under the ordinary-user token; privileged parent custody has not been established"
+  },
+  "git_observed": {
+    "configured_path": "C:\\Program Files\\Git\\cmd\\git.exe",
+    "file_version_metadata": "2.55.0.2",
+    "executables": [
+      {
+        "path": "C:\\Program Files\\Git\\cmd\\git.exe",
+        "bytes": 46936,
+        "link_count": 2,
+        "sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a"
+      },
+      {
+        "path": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+        "bytes": 4383064,
+        "link_count": 4,
+        "sha256": "77965c1ffd7d5d0f7d55ddbec10ad540efa61e58f36eae565cde0f36fab8fe53"
+      },
+      {
+        "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+        "bytes": 4383064,
+        "link_count": 1,
+        "sha256": "77965c1ffd7d5d0f7d55ddbec10ad540efa61e58f36eae565cde0f36fab8fe53"
+      }
+    ],
+    "cmd_exe_hardlink_aliases_observed": [
+      "C:\\Program Files\\Git\\cmd\\git.exe",
+      "C:\\Program Files\\Git\\cmd\\git-lfs.exe"
+    ],
+    "mingw64_bin_exe_hardlink_aliases_observed": [
+      "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "C:\\Program Files\\Git\\mingw64\\bin\\git-receive-pack.exe",
+      "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-pack.exe",
+      "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-archive.exe"
+    ],
+    "native_direct_imports_non_system": [
+      "libiconv-2.dll",
+      "libintl-8.dll",
+      "libpcre2-8-0.dll",
+      "zlib1.dll"
+    ],
+    "matching_git_core_dll_paths_observed": true,
+    "git_core_dll_link_counts_observed": 2,
+    "dependency_closure_and_all_alias_custody_verified": false,
+    "existing_hardlinks_are_not_declared_a_vulnerability": true
+  },
+  "holds": [
+    {
+      "id": "PROJECT-PARENT-CUSTODY",
+      "reason": "Administrator must attest the exact existing data parent owner/DACL and no-reparse chain, and freshly establish target absence before creating any destination; do not change parent ACLs."
+    },
+    {
+      "id": "GIT-RUNTIME-CUSTODY",
+      "reason": "The configured launcher, child native Git, DLL dependency closure and their actual hardlink aliases have not received complete bounded custody/pin review. Existing generic payload guard deliberately accepts only single-link files and must not be weakened speculatively."
+    }
+  ],
+  "safe_next_plan": [
+    "Keep outside the ready first administrator command.",
+    "Complete an exact Git executable/dependency/alias custody inventory under the existing installed Git paths, without reading global credential or user Git configuration.",
+    "Prepare a fresh-only SYSTEM/Admin-owned bare repository; current capture_repository explicitly supports bare roots, avoiding checkout/filter/hook execution.",
+    "Run only fixed Git plumbing from the reviewed absolute executable with fresh empty template, hooks/fsmonitor/attributes/signing/maintenance disabled, clean environment, no inherited Git configuration, no lazy fetch/replacement objects and network protocols disabled.",
+    "Import the verified bundle objects, create only refs/heads/pipeline/accepted at the exact baseline using an absent-ref precondition, and verify the exact tree/files/objects, no alternates/worktrees/remotes/reparse entries and private ACLs.",
+    "Preserve every partial destination and evidence on error; no cleanup, retry, existing-root mutation or daemon/model activation."
+  ],
+  "protected_paths_created": 0,
+  "existing_paths_modified": 0,
+  "model_jobs_executed": 0,
+  "git_or_project_commands_executed": 0,
+  "first_administrator_command_changed": false
+}

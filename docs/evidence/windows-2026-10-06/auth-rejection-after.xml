@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="2" failures="0" skipped="0" tests="75" time="45.232" timestamp="2026-10-06T22:19:32.919119-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs[True]" time="0.551" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs[False]" time="0.514" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_auth_rejection_is_immediate_and_incomplete_body_drain_is_bounded" time="1.534" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_repeated_real_control_client_rejects_wrong_token_without_job_creation" time="0.633" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_rejected_invalid_or_oversized_declaration_does_not_start_body_drain[invalid]" time="0.527" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_rejected_invalid_or_oversized_declaration_does_not_start_body_drain[-1]" time="0.527" /><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_rejected_invalid_or_oversized_declaration_does_not_start_body_drain[4194305]" time="0.543" /><testcase classname="pipeline_tests.test_service" name="test_public_redaction_preserves_hashable_user_artifacts" time="0.001" /><testcase classname="pipeline_tests.test_service" name="test_actual_pipeline_mcp_session_creates_and_cancels_real_dag" time="2.686" /><testcase classname="pipeline_tests.test_service" name="test_unauthorized_request_cannot_read_health_or_create_jobs[None]" time="0.532" /><testcase classname="pipeline_tests.test_service" name="test_unauthorized_request_cannot_read_health_or_create_jobs[Bearer wrong]" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_unauthorized_request_cannot_read_health_or_create_jobs[Basic wrong]" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_unauthorized_request_cannot_read_health_or_create_jobs[]" time="0.557" /><testcase classname="pipeline_tests.test_service" name="test_real_client_submits_unicode_and_reads_durable_workflow" time="0.575" /><testcase classname="pipeline_tests.test_service" name="test_concurrent_duplicate_submission_creates_one_dag" time="0.543" /><testcase classname="pipeline_tests.test_service" name="test_public_api_hides_real_claim_authority" time="0.555" /><testcase classname="pipeline_tests.test_service" name="test_routing_submission_budget_and_real_assignment_survive_safe_api_projection" time="0.574" /><testcase classname="pipeline_tests.test_service" name="test_invalid_dispatch_budget_cannot_create_workflow[True]" time="0.524" /><testcase classname="pipeline_tests.test_service" name="test_invalid_dispatch_budget_cannot_create_workflow[0]" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_invalid_dispatch_budget_cannot_create_workflow[-1]" time="0.546" /><testcase classname="pipeline_tests.test_service" name="test_invalid_dispatch_budget_cannot_create_workflow[1]" time="0.525" /><testcase classname="pipeline_tests.test_service" name="test_invalid_dispatch_budget_cannot_create_workflow[1000001]" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_explicit_routing_resume_requires_auth_and_preserves_budgets_and_policy" time="0.577" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[None]" time="0.570" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[]" time="0.567" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[  ]" time="0.570" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[42]" time="0.570" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.573" /><testcase classname="pipeline_tests.test_service" name="test_resume_without_bounded_operator_reason_cannot_change_job[bad\x00reason]" time="0.570" /><testcase classname="pipeline_tests.test_service" name="test_operator_resume_cannot_reset_an_exhausted_dispatch_budget" time="0.574" /><testcase classname="pipeline_tests.test_service" name="test_actual_cancellation_fences_a_live_database_lease" time="0.575" /><testcase classname="pipeline_tests.test_service" name="test_even_authenticated_clients_cannot_mutate_worker_authority[/claim]" time="0.524" /><testcase classname="pipeline_tests.test_service" name="test_even_authenticated_clients_cannot_mutate_worker_authority[/complete]" time="0.526" /><testcase classname="pipeline_tests.test_service" name="test_even_authenticated_clients_cannot_mutate_worker_authority[/heartbeat]" time="0.527" /><testcase classname="pipeline_tests.test_service" name="test_even_authenticated_clients_cannot_mutate_worker_authority[/workflow/service-workflow/complete]" time="0.530" /><testcase classname="pipeline_tests.test_service" name="test_invalid_submissions_return_errors_without_creating_workflows[{]" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_invalid_submissions_return_errors_without_creating_workflows[[]]" time="0.526" /><testcase classname="pipeline_tests.test_service" name="test_invalid_submissions_return_errors_without_creating_workflows[null]" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_invalid_submissions_return_errors_without_creating_workflows[{&quot;objective&quot;:&quot;x&quot;,&quot;chapter_count&quot;:0}]" time="0.538" /><testcase classname="pipeline_tests.test_service" name="test_invalid_submissions_return_errors_without_creating_workflows[{&quot;objective&quot;:&quot;x&quot;,&quot;requirements&quot;:[]}]" time="0.547" /><testcase classname="pipeline_tests.test_service" name="test_oversized_declared_body_is_rejected_before_read" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_request_larger_than_identity_pool_is_rejected_before_creation" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_non_ascii_authorization_is_rejected_without_dropping_response" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_real_partial_connections_are_bounded_and_released" time="0.652" /><testcase classname="pipeline_tests.test_service" name="test_client_surfaces_authentication_error_without_token_disclosure" time="0.527" /><testcase classname="pipeline_tests.test_service" name="test_coding_reads_require_real_http_authentication[/coding/projects]" time="0.529" /><testcase classname="pipeline_tests.test_service" name="test_coding_reads_require_real_http_authentication[/coding/workflow/unknown]" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_coding_mutations_require_real_http_authentication[/coding/submit]" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_coding_mutations_require_real_http_authentication[/coding/cancel]" time="0.531" /><testcase classname="pipeline_tests.test_service" name="test_coding_mutations_require_real_http_authentication[/coding/resume]" time="0.528" /><testcase classname="pipeline_tests.test_service" name="test_projects_endpoint_returns_only_registered_identifiers" time="0.541" /><testcase classname="pipeline_tests.test_service" name="test_real_http_coding_submission_captures_baseline_and_dispatches_canonical_plan_idempotently" time="0.523"><error message="failed on setup with &quot;cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account&quot;">endpoint = namespace(controller=&lt;pipeline_tests.test_service.DatabaseController object at 0x0000015B58429370&gt;, port=60049, token=...76973nTgqe7tK07YROiiOlT95HyyqJis1DjivLJV', client=&lt;cochem_pipeline.service.ControlClient object at 0x0000015B58455250&gt;)
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24280/test_real_http_coding_submissi0')
+
+    @pytest.fixture
+    def coding_endpoint(endpoint, tmp_path):
+        """Actual Git/SQLite submission only; this fixture never simulates inference."""
+        import subprocess
+        from cochem_pipeline.coding import CodingCoordinator, CodingProject
+        from cochem_pipeline.container_policy import DockerPolicy
+        from cochem_pipeline.ramdisk import RamdiskConfig
+        repository = tmp_path/'registered-repository'
+        repository.mkdir()
+        def git(*args):
+            return subprocess.run(['git','-C',str(repository),*args],check=True,
+                                  capture_output=True,text=True).stdout.strip()
+        git('init','-b','pipeline/accepted')
+        (repository/'src').mkdir(); (repository/'src'/'calculation.py').write_text('VALUE = 1\n')
+        git('add','src'); git('-c','user.name=API Test','-c','user.email=test@localhost','commit','-m','baseline')
+        controller = endpoint.controller
+        controller.config.private_root = tmp_path/'private'
+        controller.config.private_root.mkdir()
+        import os
+        controller.config.git_executable = r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git'
+        controller.config.ramdisk = RamdiskConfig(enabled=True)
+        controller.config.docker = DockerPolicy.from_dict({'enabled':True,'image':'sha256:'+'a'*64,
+            'allowed_images':['sha256:'+'a'*64],'commands':[{'name':'tests','argv':['python','-m','pytest','tests']}]})
+        controller.config.coding_projects = {'sample':CodingProject.from_dict('sample',{
+            'repository':str(repository),'branch':'pipeline/accepted','allowed_paths':['src']})}
+&gt;       coding = CodingCoordinator(controller.config,controller.store,None,None)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pipeline_tests\test_service.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cochem_pipeline\coding.py:313: in __init__
+    self.git = GitStager(config.private_root / 'coding-git', git_executable=getattr(config,'git_executable',None))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\coding_git.py:444: in __init__
+    self.git_executable = _trusted_git_executable(git_executable)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\coding_git.py:95: in _trusted_git_executable
+    validate_code_path(path)
+src\cochem_pipeline\windows.py:405: in validate_code_path
+    require_system()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def require_system() -&gt; None:
+        """Require the actual LocalSystem SID; administrator elevation is insufficient."""
+        api = _api()
+        token = HANDLE()
+        _check(api["advapi32"].OpenProcessToken(api["kernel32"].GetCurrentProcess(), 0x8, C.byref(token)), "Open current token")
+        try:
+            user = _SID_AND_ATTRIBUTES.from_buffer(_token_info(token, 1))
+            if _sid_text(user.Sid) != SYSTEM_SID:
+&gt;               raise WindowsIsolationError("The Warden must run as NT AUTHORITY\\SYSTEM, not an administrator or an agent account")
+E               cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account
+
+src\cochem_pipeline\windows.py:276: WindowsIsolationError</error></testcase><testcase classname="pipeline_tests.test_service" name="test_actual_mcp_coding_tool_creates_only_a_registered_real_workflow" time="0.427"><error message="failed on setup with &quot;cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account&quot;">endpoint = namespace(controller=&lt;pipeline_tests.test_service.DatabaseController object at 0x0000015B58488B00&gt;, port=60050, token=...KBHtSyzMW8Po_Vn2wRWF1fqADr6boAeVWmZbsDOj', client=&lt;cochem_pipeline.service.ControlClient object at 0x0000015B5848B050&gt;)
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24280/test_actual_mcp_coding_tool_cr0')
+
+    @pytest.fixture
+    def coding_endpoint(endpoint, tmp_path):
+        """Actual Git/SQLite submission only; this fixture never simulates inference."""
+        import subprocess
+        from cochem_pipeline.coding import CodingCoordinator, CodingProject
+        from cochem_pipeline.container_policy import DockerPolicy
+        from cochem_pipeline.ramdisk import RamdiskConfig
+        repository = tmp_path/'registered-repository'
+        repository.mkdir()
+        def git(*args):
+            return subprocess.run(['git','-C',str(repository),*args],check=True,
+                                  capture_output=True,text=True).stdout.strip()
+        git('init','-b','pipeline/accepted')
+        (repository/'src').mkdir(); (repository/'src'/'calculation.py').write_text('VALUE = 1\n')
+        git('add','src'); git('-c','user.name=API Test','-c','user.email=test@localhost','commit','-m','baseline')
+        controller = endpoint.controller
+        controller.config.private_root = tmp_path/'private'
+        controller.config.private_root.mkdir()
+        import os
+        controller.config.git_executable = r'C:\Program Files\Git\cmd\git.exe' if os.name=='nt' else 'git'
+        controller.config.ramdisk = RamdiskConfig(enabled=True)
+        controller.config.docker = DockerPolicy.from_dict({'enabled':True,'image':'sha256:'+'a'*64,
+            'allowed_images':['sha256:'+'a'*64],'commands':[{'name':'tests','argv':['python','-m','pytest','tests']}]})
+        controller.config.coding_projects = {'sample':CodingProject.from_dict('sample',{
+            'repository':str(repository),'branch':'pipeline/accepted','allowed_paths':['src']})}
+&gt;       coding = CodingCoordinator(controller.config,controller.store,None,None)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pipeline_tests\test_service.py:369: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cochem_pipeline\coding.py:313: in __init__
+    self.git = GitStager(config.private_root / 'coding-git', git_executable=getattr(config,'git_executable',None))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\coding_git.py:444: in __init__
+    self.git_executable = _trusted_git_executable(git_executable)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\coding_git.py:95: in _trusted_git_executable
+    validate_code_path(path)
+src\cochem_pipeline\windows.py:405: in validate_code_path
+    require_system()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def require_system() -&gt; None:
+        """Require the actual LocalSystem SID; administrator elevation is insufficient."""
+        api = _api()
+        token = HANDLE()
+        _check(api["advapi32"].OpenProcessToken(api["kernel32"].GetCurrentProcess(), 0x8, C.byref(token)), "Open current token")
+        try:
+            user = _SID_AND_ATTRIBUTES.from_buffer(_token_info(token, 1))
+            if _sid_text(user.Sid) != SYSTEM_SID:
+&gt;               raise WindowsIsolationError("The Warden must run as NT AUTHORITY\\SYSTEM, not an administrator or an agent account")
+E               cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account
+
+src\cochem_pipeline\windows.py:276: WindowsIsolationError</error></testcase><testcase classname="mcp_tests.test_jobs" name="test_coding_request_goes_to_board_without_provider_or_model_pin" time="0.542" /><testcase classname="mcp_tests.test_jobs" name="test_planning_is_durable_controller_dag_with_routing_and_no_completion_claim" time="0.639" /><testcase classname="mcp_tests.test_jobs" name="test_chapter_request_preserves_scope_in_new_controller_owned_dag" time="0.542" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[BLOCKED-PLANNING_HOLD-blocked]" time="0.557" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[BLOCKED-READY_TO_INTEGRATE-blocked]" time="0.561" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[FAILED-CANCELLED-cancelled]" time="0.573" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[IN_PROGRESS-PLANNING-queued]" time="0.546" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[IN_PROGRESS-COMPLETED-running]" time="0.574" /><testcase classname="mcp_tests.test_jobs" name="test_actual_coding_response_shape_projects_holds_and_cancellation_honestly[FAILED-TESTING-failed]" time="0.542" /><testcase classname="mcp_tests.test_jobs" name="test_every_explicit_model_pin_rejected_before_submission[sol]" time="0.528" /><testcase classname="mcp_tests.test_jobs" name="test_every_explicit_model_pin_rejected_before_submission[gpt-6-astra]" time="0.527" /><testcase classname="mcp_tests.test_jobs" name="test_every_explicit_model_pin_rejected_before_submission[claude-fable-5-1]" time="0.526" /><testcase classname="mcp_tests.test_jobs" name="test_missing_controller_fails_closed_without_native_execution" time="0.531" /><testcase classname="mcp_tests.test_jobs" name="test_no_implicit_workspace_registration_or_override" time="0.529" /><testcase classname="mcp_tests.test_jobs" name="test_bad_controller_auth_cannot_submit" time="0.546" /><testcase classname="mcp_tests.test_jobs" name="test_job_id_cannot_change_controller_operation[../escape]" time="0.528" /><testcase classname="mcp_tests.test_jobs" name="test_job_id_cannot_change_controller_operation[code:../escape]" time="0.538" /><testcase classname="mcp_tests.test_jobs" name="test_job_id_cannot_change_controller_operation[code:x/../../health]" time="0.530" /><testcase classname="mcp_tests.test_jobs" name="test_job_id_cannot_change_controller_operation[x]" time="0.524" /><testcase classname="mcp_tests.test_jobs" name="test_job_id_cannot_change_controller_operation[plan:]" time="0.528" /><testcase classname="mcp_tests.test_jobs" name="test_bridge_restart_does_not_interrupt_controller_work" time="0.576" /><testcase classname="mcp_tests.test_jobs" name="test_result_paging_requires_real_controller_completion" time="0.540" /></testsuite></testsuites>

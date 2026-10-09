@@ -1,0 +1,57 @@
+{
+  "activation_ready": false,
+  "archive_is_standalone_execution_package": false,
+  "artifacts": [
+    {
+      "file": "knowledge-final-verification-disposable.json",
+      "length": 887,
+      "sha256": "a2b2e8a3cc637006c758f415ece31f8d8387c7123e665d1b13850002dc29a7db"
+    },
+    {
+      "file": "knowledge-final-verification-comparator-proof.json",
+      "length": 664,
+      "sha256": "4608f193cd99a24f298cf88c8de6c609a2ae677907020155c18e5d0dda9ded11"
+    },
+    {
+      "file": "verify-published-knowledge.py",
+      "length": 20410,
+      "sha256": "9f3b6c00255d6e5c9bc0a6e6bec546ae5a60a8287c2b24a65a2f675f6d3e0496"
+    },
+    {
+      "file": "test_published_knowledge_verification.py",
+      "length": 11864,
+      "sha256": "7252a7ef4d9c0be9a33610fba5d1cf48f0bcf7b041a8f7c0d89fd9e08d4a26a0"
+    },
+    {
+      "file": "published-knowledge-verification-freeze-tests.xml",
+      "length": 5410,
+      "sha256": "22438c9442844e479842332a35cebdf36ff035e75b33678be8d5c5e5bdd6a203"
+    },
+    {
+      "file": "published-knowledge-verification-initial-tests.xml",
+      "length": 9253,
+      "sha256": "04c00de64f9e9dae5fbeca92418f96909a182c6759a6285f602289c1c7ea4f2f"
+    }
+  ],
+  "date": "2026-10-07",
+  "existing_production_state_or_acl_changed": false,
+  "finding": "Actual NTFS directory metadata bytes increase from0 to4096 after publication. Frozen comparator mistakenly required unchanged directory bytes; exact comparator rejects the disposable example and passes when only the directory byte field is normalized. Identity/creation/security/attributes/links and original one-byte lock remain exact.",
+  "frozen_resume_python_sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+  "host": "AETHERDESK",
+  "native_model_jobs_executed": 0,
+  "new_read_only_validator_sha256": "9f3b6c00255d6e5c9bc0a6e6bec546ae5a60a8287c2b24a65a2f675f6d3e0496",
+  "new_validator_scope": "Exact hash-bound failed receipt supplies published generation/index commitments; verify runtime166sourcepins/config/corpus138files/state metadata/exact lock and canonical index authority with no KnowledgeService constructor or refresh. Creates only its own new receipt when owner explicitly runs reviewed wrapper.",
+  "production_failure_receipt_sha256": "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+  "production_metadata_cause_confirmed": false,
+  "schema": "cochem-knowledge-directory-metadata-investigation/1",
+  "scope": "Ordinary-user disposable tests only. Real Win32 metadata, msvcrt and read-only file sharing, SQLite immutable/query-only/temp-memory. Existing staged137document/1708section candidate also checked read-only with four concurrent held handles and unchanged metadata. No production state/index reads, refresh or changes performed by this investigation.",
+  "system_validator_applied": false,
+  "tests": {
+    "failed": 0,
+    "initial_fixture_failures_preserved": "25passed2failed: SQLite fixture left connection open; AST guard confused string.replace with filesystem mutation. Corrected fixture closure and AST selector.",
+    "junit_seconds": 0.262,
+    "passed": 28,
+    "permission_boundary": "Explicit ordinary-user private-permission fixture in disposable handle tests; no SYSTEM acceptance claim.",
+    "skipped": 0
+  }
+}

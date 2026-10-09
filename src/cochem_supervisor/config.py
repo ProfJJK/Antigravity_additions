@@ -91,6 +91,16 @@ def load_config(filename: str | Path) -> dict:
         try:
             validate_provider_spec(spec)
         except (ValueError, TypeError) as exc:
+            from cochem_pipeline.provider_integration import IntegrationVerificationHold
+            if isinstance(spec, dict) and 'integration_hold' in spec:
+                if not isinstance(exc, IntegrationVerificationHold):
+                    raise ValueError('Repair integration hold evidence is invalid') from exc
+                provider = spec['provider']
+                if provider in seen:
+                    raise ValueError('Repair providers must be distinct')
+                seen.add(provider)
+                result.setdefault('provider_integration_holds', {})[provider] = exc.integration_evidence
+                continue
             if isinstance(spec,dict) and spec.get('provider')=='gemini':
                 result.setdefault('provider_contract_errors',{})['gemini']=str(exc)
                 if 'gemini' in seen:
@@ -129,12 +139,24 @@ def load_config(filename: str | Path) -> dict:
         raise ValueError('Pipeline providers must be an object')
     if 'gemini' not in seen and isinstance(result['pipeline_providers'].get('gemini'),dict):
         gemini={**result['pipeline_providers']['gemini'],'provider':'gemini'}
-        if all(key in gemini for key in ('executable','arguments','protocol','subscription_probe')):
+        if 'integration_hold' in gemini or all(key in gemini for key in ('executable','arguments','protocol','subscription_probe')):
             try:
                 validate_provider_spec(gemini)
             except (ValueError,TypeError) as exc:
+                if 'integration_hold' in gemini:
+                    from cochem_pipeline.provider_integration import IntegrationVerificationHold
+                    if not isinstance(exc, IntegrationVerificationHold):
+                        raise ValueError('Pipeline integration hold evidence is invalid') from exc
+                    result.setdefault('provider_integration_holds', {})['gemini'] = exc.integration_evidence
                 result.setdefault('provider_contract_errors',{})['gemini']=str(exc)
             result['providers'].append(gemini)
+    for spec in result['providers']:
+        pipeline_spec = result['pipeline_providers'].get(spec['provider'], {})
+        if isinstance(pipeline_spec, dict) and 'integration_hold' in pipeline_spec:
+            from cochem_pipeline.provider_integration import integration_hold
+            integration_hold(spec['provider'], pipeline_spec)
+            if spec.get('integration_hold') != pipeline_spec['integration_hold']:
+                raise ValueError('Repair provider must preserve the pipeline integration hold and evidence binding')
     result['pipeline_routing']=deepcopy(pipeline.get('routing',{}))
     # Independent parsing must remain usable when candidate pipeline imports
     # are broken; this reads only the protected policy, never a model module.

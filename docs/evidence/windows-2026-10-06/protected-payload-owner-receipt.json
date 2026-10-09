@@ -1,0 +1,22 @@
+{
+  "schema": "cochem-owner-reported-receipt/1",
+  "provenance": "Administrator command output returned by the owner in this conversation; independently checked afterward in protected-payload-installed-verification.json",
+  "receipt": {
+    "schema": "cochem-protected-payload-stage/1",
+    "mode": "PAYLOADS_COPIED",
+    "manifest_sha256": "db9e6567095326bbeaf528a400525ee047a7887b5a5479bf8ac0ba6f8b4625d0",
+    "files_verified": 3505,
+    "files_copied": 3505,
+    "protected_roots": [
+      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006",
+      "C:\\Program Files\\CoChem\\CpuSensors4.2.7-windows-20261006"
+    ],
+    "payloads_executed": 0,
+    "tasks_changed": 0,
+    "accounts_changed": 0,
+    "driver_installed": false,
+    "supervisor_history": "UNRESOLVED_UNTOUCHED",
+    "activation_ready": false,
+    "next": "Separate reviewed driver installation and stopped pipeline provisioning; keep supervisor installation/migration/activation held."
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "cochem-r3-execution-prerequisites-preparation/1",
+  "host": "AETHERDESK",
+  "prepared_utc": "2026-10-07T15:52:22.0043478Z",
+  "status": "REVIEWED_DRAFT_NOT_APPLIED",
+  "files": [
+    {
+      "name": "inspect-execution-prerequisites-r3.py",
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+      "bytes": 26808
+    },
+    {
+      "name": "inspect-execution-prerequisites-r3.ps1",
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887",
+      "bytes": 19238
+    },
+    {
+      "name": "test_execution_prerequisites_r3.py",
+      "sha256": "cae089292e28417d297a1fbaca81befcaaf9b63bcdc8544b537523ad6993fcc0",
+      "bytes": 22079
+    },
+    {
+      "name": "execution-prerequisites-r3-tests.xml",
+      "sha256": "0273ad63a971c6f798203963595470322f763a28bfdace85c0136c3aa538e0ff",
+      "bytes": 7520
+    },
+    {
+      "name": "execution-prerequisites-r3-readonly-preview.json",
+      "sha256": "8a4c74b800f73dab39120b7eb167bc3846c6db7d2911385ec51ce234d71871a7",
+      "bytes": 1865
+    }
+  ],
+  "tests": {
+    "passed": 45,
+    "failed": 0,
+    "skipped": 0,
+    "interpreter": "CPython3.12.13",
+    "actual_windows_ps51": true,
+    "actual_six_receipt_shape_checked": true,
+    "system_or_worker_executed": false,
+    "privileged_boundaries_mocked": true
+  },
+  "read_only_preview": {
+    "holds": [],
+    "actual_r3_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "prior_success_task_checks_deferred": true,
+    "private_knowledge_checks_deferred": true,
+    "system_ram_docker_preflight_executed": false
+  },
+  "docker_custody_scope": {
+    "executed_cli_sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c",
+    "inspected_backend_sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a",
+    "cli_pe_machine": "0x8664",
+    "cli_static_imports": [
+      "kernel32.dll"
+    ],
+    "cli_delay_imports": [],
+    "known_dll_registry_value_name": "*kernel32",
+    "systemroot_ancestor_check_passed": true,
+    "backend_launched": false,
+    "unrelated_plugins_excluded_from_execution_scope": true
+  },
+  "preserved_preparation_failures": [
+    "Initial broad Docker resources metadata probe produced hardlink errors for16 unrelated packaged plugin/compose paths. Extracted shell had Continue error preference and printed69entries; that was not a passing custody result. Guard narrowed to actual fixed-command execution scope after review; no Docker files changed.",
+    "Initial literal KnownDLL value-name assumption kernel32 failed; actual read-only registry metadata showed *kernel32. Corrected and tested before Apply.",
+    "ProgramFiles-only payload ancestry helper rejected normal C: ACL when applied to System32. Added separately reviewed SystemRoot-bounded OS dependency check; no drive/OS ACL changed.",
+    "Inert fixture corrections included bounded pytest parameter IDs, explicit PSHome Security module import, and DirectoryInfo.Attributes instead of provider-only PSIsContainer during parent traversal."
+  ],
+  "planned_actions_only": [
+    "Create one fresh protected helper root with two copied Python files, inputs packet, empty Docker CLI config directory and receipt.",
+    "Create one no-trigger bounded SYSTEM inspection task.",
+    "Read/hold current private knowledge index and pointer bytes; no SQLite connection or refresh.",
+    "Read existing R root/device/startup identity; ImDisk query IOCTL only, no formatting, resize, ACL/index/exclusion change.",
+    "Use actual existing local worker batch tokens for handle-only Docker pipe denial; no native provider authentication.",
+    "Run four bounded explicit local Docker CLI info/image/ownership-census commands; no pull/build/run/delete."
+  ],
+  "performed_here": {
+    "apply": false,
+    "protected_roots_or_tasks_created": false,
+    "docker_cli_or_api_executed": false,
+    "system_or_worker_processes_launched": false,
+    "native_logins_or_model_jobs": false,
+    "existing_databases_or_credentials_modified": false,
+    "ram_drive_or_startup_task_modified": false
+  },
+  "independent_review": "host_inspection: full draft review plus final base-Python pin delta approved",
+  "activation_ready": false
+}

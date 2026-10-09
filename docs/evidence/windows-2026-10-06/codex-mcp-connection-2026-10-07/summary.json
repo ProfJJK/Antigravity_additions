@@ -1,0 +1,44 @@
+{
+  "schema": "cochem-codex-mcp-connection-evidence/1",
+  "status": "CODEX_MCP_REGISTERED_STDIO_VERIFIED_CONTROLLER_NOT_STARTED",
+  "platform": "actual Windows operator process",
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "actual_stdio_initialize_and_tool_discovery": true,
+  "tools_discovered": 15,
+  "actual_installed_codex_mcp_get_exit_code": 0,
+  "installed_codex_config_readback_verified": true,
+  "codex_config_before_sha256": "102b34a264b11988fd29f635178bc52ecb8e278ca61ac265d4a481d6bd048c6e",
+  "codex_config_after_sha256": "a0721e9cdf08179d9a71aa744f798f8bc9a135def7f239aaa8ad7ef868af4b59",
+  "existing_codex_bytes_preserved_as_prefix": true,
+  "credentials_copied_into_archive": false,
+  "operator_token_contents_archived": false,
+  "controller_tool_calls": 0,
+  "model_jobs_submitted": 0,
+  "daemon_started": false,
+  "current_chat_tool_catalog_reloaded": false,
+  "full_pipeline_running": false,
+  "activation_ready": false,
+  "files": [
+    {
+      "file": "connection.json",
+      "bytes": 2708,
+      "sha256": "ed0edbe253b0dc2b3616345a20c8e0594eb687e5adc148118a77f397dec7901f"
+    },
+    {
+      "file": "connect-codex-pipeline-r3.py",
+      "bytes": 8927,
+      "sha256": "de8741c843df2cc12ce81fbdf3ee78f0c7c6bc8449b3efd1aff3c6c768a4d1d4"
+    },
+    {
+      "file": "pipeline-client-r3.json",
+      "bytes": 85,
+      "sha256": "9059f6e65d3259dff6e595f3f4f131983fd827088034db283913a7285411ea5b"
+    }
+  ],
+  "official_source": "https://learn.chatgpt.com/docs/extend/mcp?surface=cli",
+  "limitations": [
+    "The installed SDK reports serverInfo.version 1.30.0; package 4.2.7 and installed revision are recorded separately.",
+    "Real tool execution awaits the running authenticated controller.",
+    "Windows/Linux results remain separate."
+  ]
+}

@@ -60,7 +60,8 @@ def test_reviewed_claude_profile_preserves_all_host_gates_and_actual_native_effo
     assert argv[argv.index('--model') + 1] == model
     assert argv[argv.index('--tools') + 1] == ''
     settings = json.loads(argv[argv.index('--settings') + 1])
-    assert settings == {'disableAllHooks': True, 'disableSkillShellExecution': True, 'alwaysThinkingEnabled': True}
+    assert settings == {'disableAllHooks': True, 'disableSkillShellExecution': True,
+        'alwaysThinkingEnabled': True, 'fallbackModel': [], 'switchModelsOnFlag': False}
     assert '--strict-mcp-config' in argv and '--disable-slash-commands' in argv
     assert repair_command(spec, [spec['executable']], 'workspace') == argv
     observation = reported_profile('claude', json.dumps({'type': 'result', 'reasoning_effort': 'max',
@@ -97,6 +98,49 @@ def test_agy_high_cannot_be_redefined_as_lower_effort_or_an_assumed_budget_equiv
         effort_contract('gemini', model, 'high', spec)
     with pytest.raises(ValueError):
         provider_command('gemini', [spec['executable']], model, 'workspace', spec, 'high', inference_only=True)
+
+
+@pytest.mark.parametrize('native', ['low', 'medium', 'high', 'xhigh', 'max'])
+def test_reviewed_agy_effort_selector_remains_a_conditional_binding(tmp_path, native):
+    model, spec, contract = reviewed_fixture(tmp_path, 'gemini', 'extended')
+    contract['arguments'] = ['--effort', native]
+    contract['native_metadata'] = None
+    assert effort_contract('gemini', model, 'extended', spec) is contract
+    from cochem_supervisor.probes import _reviewed_effort_contract
+    assert _reviewed_effort_contract('gemini', model, 'extended', spec) is contract
+    observation = reported_profile('gemini', '{}', model=model, effort='extended', spec=spec)
+    assert observation['verified_profile'] is None
+    assert observation['reported_effort'] is None
+    contract['version'] = 'different-native-version'
+    with pytest.raises(ValueError, match='same native binary'):
+        effort_contract('gemini', model, 'extended', spec)
+
+
+@pytest.mark.parametrize('native', ['low', 'medium', 'high', 'xhigh', 'max'])
+def test_agy_high_effort_selector_cannot_alias_even_a_higher_label(tmp_path, native):
+    model, spec, contract = reviewed_fixture(tmp_path, 'gemini', 'high')
+    contract['arguments'] = ['--effort', native]
+    contract['native_metadata'] = None
+    from cochem_supervisor.probes import _reviewed_effort_contract
+    if native == 'high':
+        assert effort_contract('gemini', model, 'high', spec) is contract
+        assert _reviewed_effort_contract('gemini', model, 'high', spec) is contract
+    else:
+        with pytest.raises(ValueError):
+            effort_contract('gemini', model, 'high', spec)
+        with pytest.raises(ValueError):
+            _reviewed_effort_contract('gemini', model, 'high', spec)
+
+
+def test_agy_stream_cannot_invent_effort_metadata_binding(tmp_path):
+    model, spec, contract = reviewed_fixture(tmp_path, 'gemini', 'extended')
+    spec['protocol'] = 'agy-stream-json'
+    contract['arguments'] = ['--effort', 'high']
+    with pytest.raises(ValueError, match='no verified native effort'):
+        effort_contract('gemini', model, 'extended', spec)
+    from cochem_supervisor.probes import _reviewed_effort_contract
+    with pytest.raises(ValueError, match='no verified native effort'):
+        _reviewed_effort_contract('gemini', model, 'extended', spec)
 
 
 @pytest.mark.parametrize('metadata', [

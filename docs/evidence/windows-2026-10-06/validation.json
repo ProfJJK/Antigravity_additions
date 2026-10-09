@@ -1,0 +1,428 @@
+{
+  "schema": "cochem-windows-staging-validation/1",
+  "recorded_at_utc": "2026-10-07T02:20:28.119566+00:00",
+  "local_session_date": "2026-10-06",
+  "host": "AETHERDESK",
+  "os": "Windows 11 Pro build 26300",
+  "status": "SCOPED_WINDOWS_PASS_NATIVE_DEPLOYMENT_HELD",
+  "canonical_revision": "model-routing-2026-10-07",
+  "git": {
+    "head": "2144f067c78f0cd235f715a3e04df411ebe68696",
+    "fetched_origin_master": "6894dddad946f09cfa12c0a03eef9128d58c1ff2",
+    "backup_branch": "backup/windows-pre-427-20261006",
+    "backup_head": "637a1ac9b1b09cdd21b28d6bcfe8cc2134fc5e49",
+    "ahead_behind_origin_master": "3\t0",
+    "preexisting_local_commits_preserved": [
+      "637a1ac",
+      "fb5c66d"
+    ],
+    "initial_worktree_clean": true,
+    "repair_changes": "uncommitted working tree",
+    "pushed": false
+  },
+  "final_user_regression": {
+    "exit_code": 0,
+    "counts": {
+      "tests": 911,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 63,
+      "passed": 848
+    },
+    "source_drift": [],
+    "source_manifest_sha256": "a8b9955488bebff69e8293518246dc4eafd40e0d9fea22aaa8f4758ce6873304",
+    "elapsed_seconds": 101.511,
+    "command": "final-user-command.json",
+    "xml": "final-user-scope.xml",
+    "manifest": "final-source-manifest.json",
+    "source_files": 203,
+    "test_modules": 30,
+    "skip_reasons": {
+      "Linux executable discovery requires real POSIX paths; Windows drive paths are correctly rejected": 5,
+      "Linux executable discovery requires a real POSIX symlink and path": 1,
+      "Native symlink creation requires Developer Mode or elevation; denial remains unverified": 1,
+      "Set COCHEM_TEST_DOCKER_IMAGE to run actual local Docker acceptance": 30,
+      "Actual non-Windows rejection contract": 2,
+      "Actual non-Windows CLI rejection contract": 2,
+      "Actual non-Windows token rejection contract": 1,
+      "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+      "Native protected metrics require the staged Windows SYSTEM acceptance session": 1,
+      "Portable observer checks do not assert native SYSTEM identity": 4,
+      "Native sibling-directory benchmark requires protected SYSTEM deployment": 1,
+      "Portable fixture processes cannot attest Windows CLI inference": 1,
+      "Portable store observer does not simulate native Windows": 1,
+      "Physical POSIX executable mismatch; no Windows identity emulation": 1,
+      "Portable observer contract does not attest Windows SYSTEM identity": 1,
+      "Host policy disallows real symlink creation": 1,
+      "Non-Windows rejection is a platform-specific contract": 1
+    },
+    "non_system_session": true,
+    "source": "Repository source through pytest.ini; frozen copied dependencies under separate staging venv",
+    "proves": [
+      "Executed Windows regression behavior for repaired paths",
+      "Actual disposable file handles, PowerShell parser, SQLite, Git/process/protocol fixtures"
+    ],
+    "does_not_prove": [
+      "Protected SYSTEM install or ACL/Job Object/pipe/RAM acceptance",
+      "Real model/subscription/effort receipts",
+      "Physical Docker sandbox RED/GREEN",
+      "Four-worker native queue performance, reboot or 48-hour stability"
+    ]
+  },
+  "broad_diagnostics": {
+    "full-initial.xml": {
+      "passed": 2157,
+      "failed": 254,
+      "errors": 66,
+      "skipped": 156,
+      "status": "Diagnostic during repairs, not final-source acceptance"
+    },
+    "full-final.xml": {
+      "passed": 2280,
+      "failed": 213,
+      "errors": 64,
+      "skipped": 159,
+      "status": "Broad post-core-repair diagnostic before final follow-ups; filename does not establish final-source acceptance"
+    },
+    "classification": "full-diagnostic-failure-groups.json",
+    "disposition": "262 failures/errors classified as actual SYSTEM/protected Git/symlink privilege prerequisites. Other 15 failures prompted fixes or Windows fixture corrections covered by the final regression. The full suite was not rerun or relabeled passing."
+  },
+  "historical_runs": {
+    "note": "Scopes overlap; never add these counts. Earlier failures are retained as diagnostics.",
+    "runs": [
+      {
+        "artifact": "budget-migration-final.xml",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 2,
+        "passed": 26
+      },
+      {
+        "artifact": "budget-migration.xml",
+        "tests": 28,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 26
+      },
+      {
+        "artifact": "correctness-final-additions.xml",
+        "tests": 143,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 143
+      },
+      {
+        "artifact": "correctness-focused.xml",
+        "tests": 75,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 75
+      },
+      {
+        "artifact": "correctness-initial.xml",
+        "tests": 35,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 30
+      },
+      {
+        "artifact": "correctness-mcp-followup.xml",
+        "tests": 46,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 46
+      },
+      {
+        "artifact": "correctness-routing.xml",
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 20
+      },
+      {
+        "artifact": "correctness-scoped-initial.xml",
+        "tests": 349,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 346
+      },
+      {
+        "artifact": "correctness-scoped.xml",
+        "tests": 429,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 9,
+        "passed": 420
+      },
+      {
+        "artifact": "final-user-scope.xml",
+        "tests": 911,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 63,
+        "passed": 848
+      },
+      {
+        "artifact": "full-final.xml",
+        "tests": 2716,
+        "failures": 213,
+        "errors": 64,
+        "skipped": 159,
+        "passed": 2280
+      },
+      {
+        "artifact": "full-initial.xml",
+        "tests": 2632,
+        "failures": 254,
+        "errors": 66,
+        "skipped": 156,
+        "passed": 2156
+      },
+      {
+        "artifact": "heartbeat-focused.xml",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 11
+      },
+      {
+        "artifact": "heartbeat-repairs-initial.xml",
+        "tests": 256,
+        "failures": 2,
+        "errors": 2,
+        "skipped": 0,
+        "passed": 252
+      },
+      {
+        "artifact": "heartbeat-repairs.xml",
+        "tests": 256,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 256
+      },
+      {
+        "artifact": "install-repairs-initial.xml",
+        "tests": 9,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 6
+      },
+      {
+        "artifact": "install-repairs-routing.xml",
+        "tests": 20,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 20
+      },
+      {
+        "artifact": "install-repairs.xml",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 9
+      },
+      {
+        "artifact": "pool-initial.xml",
+        "tests": 88,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 30,
+        "passed": 55
+      },
+      {
+        "artifact": "pool-repairs.xml",
+        "tests": 102,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 31,
+        "passed": 71
+      },
+      {
+        "artifact": "portability-final.xml",
+        "tests": 106,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 6,
+        "passed": 100
+      },
+      {
+        "artifact": "pre-copy-final-user-scope.xml",
+        "tests": 729,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 57,
+        "passed": 672
+      },
+      {
+        "artifact": "pre-followup-final-user-scope.xml",
+        "tests": 731,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 57,
+        "passed": 674
+      },
+      {
+        "artifact": "resource-telemetry-final.xml",
+        "tests": 28,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 28
+      },
+      {
+        "artifact": "views-initial-failure.xml",
+        "tests": 50,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 14,
+        "passed": 35
+      },
+      {
+        "artifact": "views-repairs.xml",
+        "tests": 51,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 15,
+        "passed": 36
+      },
+      {
+        "artifact": "views-token-initial-failure.xml",
+        "tests": 51,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 15,
+        "passed": 35
+      }
+    ]
+  },
+  "powershell_parser": {
+    "artifact": "powershell-parse.json",
+    "scripts": 7,
+    "errors": 0
+  },
+  "staged_wheel": {
+    "schema": "cochem-installed-revision/1",
+    "verified": true,
+    "read_only": true,
+    "files": 103,
+    "source_sha256": "e0950b59b18c5f36c536136d032e7fe64b92207c1234816b3201c2069b3a15c6",
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "scope": "Unprotected staged frozen wheel byte comparison; not SYSTEM deployment",
+    "python": "3.12.13",
+    "executable": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv-copy\\Scripts\\python.exe",
+    "dependency_check": "115 installed packages compatible",
+    "link_mode": "copy",
+    "observed_module_hardlinks": 1
+  },
+  "frozen_build": {
+    "argv": [
+      "uv",
+      "sync",
+      "--frozen",
+      "--extra",
+      "mcp",
+      "--extra",
+      "dev",
+      "--python",
+      "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+      "--no-python-downloads",
+      "--no-editable",
+      "--link-mode",
+      "copy",
+      "--reinstall-package",
+      "cochem"
+    ],
+    "environment_variable": {
+      "UV_PROJECT_ENVIRONMENT": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv-copy"
+    },
+    "uv_lock_sha256": "c96db1c1a19a63a4b96a35cb5de8148ab37aac68b4635e0e42eecaef278322a2",
+    "installed_packages_compatible": 115,
+    "original_virtual_environments_preserved": true
+  },
+  "docker_image": {
+    "observed_at": "2026-10-07T02:01:03.999763+00:00",
+    "host_platform": "Windows",
+    "engine_platform": "Linux via Docker Desktop/WSL2",
+    "image_id": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+    "os": "linux",
+    "architecture": "amd64",
+    "configured_user": "1000:1000",
+    "tag": "cochem-pipeline-tests:windows-427-20261006",
+    "dockerfile_sha256": "4a472172362c40194594f6c2371c48d8b3a1be0735571d1e481f398bad9f3619",
+    "builder_sha256": "3152574d38070f3f1dc272b8bd8a43eb5f72b88e7701fb1cd54415224cab9c3c",
+    "build_exit_code": 0,
+    "build_log_local": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\image-build.log",
+    "physical_sandbox_and_pipe_acceptance": false
+  },
+  "host_inspection": "host-inspection.json",
+  "resources": "resources.json",
+  "cpu_sensor": "cpu-sensor-query.json",
+  "preservation": "preservation.json",
+  "config_validation": {
+    "status": "EXPECTED_HOLD",
+    "config": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+    "reason": "Gemini arguments must be a verified native headless argv containing a separate {model} entry",
+    "daemon_started": false,
+    "worker_accounts_created": false,
+    "routing_policy_version": 2,
+    "shared_slots": 4,
+    "ramdisk_size_mb": 8192,
+    "ramdisk_lifecycle": "auto",
+    "ramdisk_backing": "auto",
+    "source_sha256": "213a28d88117485fca5749a20b8906de76119df6d04e2f52c626fc7f32155fe5"
+  },
+  "configuration_hashes": {
+    "config/windows/aetherdesk-427.proposed.json": "213a28d88117485fca5749a20b8906de76119df6d04e2f52c626fc7f32155fe5",
+    "config/windows/aetherdesk-427.stage.json": "d99ade0aaec47812377030c2c12a8b3554953355b8a8bd59cebf88a2888ab59e"
+  },
+  "holds": [
+    "Review Agy stdin/result/auth/inference-only and effort contracts from installed capabilities",
+    "Copy exact native binaries/dependencies and pinned Python/uv to protected roots; attest ACLs",
+    "Provision intended isolated identities only after migration review; existing operator logins do not authenticate workers",
+    "Locate original repair/component budget authority and implement reviewed legacy migration",
+    "Confirm existing R startup ownership without changing its volume/task",
+    "CPU temperature unverified in protected collector (requires SYSTEM); separate direct WMI query returned invalid namespace 0x8004100e for root/LibreHardwareMonitor. HWiNFO is running but no supported adapter attested; hardware requirements remain enabled",
+    "SYSTEM controller/worker/repair denial, Docker pipe/backend, Job Objects and RAM mapping unverified",
+    "Different-provider routed planning/coding/reconciliation/repair and rollback not yet run",
+    "Actual four-worker queue observation, reboot and 48-hour stability unrun",
+    "Disposable user-profile fixture must be copied to the configured protected project target with exact Git baseline/branch preserved and SYSTEM/controller/worker ACLs attested before activation"
+  ],
+  "production_effects": {
+    "installed": false,
+    "new_workers_provisioned": false,
+    "credentials_modified": false,
+    "existing_databases_or_budgets_written_by_session": false,
+    "r_drive_or_startup_modified": false,
+    "warden_switched_or_started": false,
+    "model_inference_jobs": 0,
+    "initial_shared_slots": 4,
+    "all_pipeline_model_jobs": "Chapter 06"
+  },
+  "linux_evidence": {
+    "historical_passed": 2597,
+    "historical_skipped": 35,
+    "later_asset_checks": 93,
+    "rerun_in_session": false,
+    "included_in_windows_counts": false,
+    "original_records_modified": false
+  },
+  "generated_build_cleanup": {
+    "status": "NOT_PERFORMED",
+    "path": "build/",
+    "reason": "Automatic approval review rejected cleanup with blocked by policy; no detailed reason supplied. Generated directory retained. No deletion retry or bypass."
+  }
+}

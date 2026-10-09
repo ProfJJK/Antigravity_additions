@@ -1,0 +1,18 @@
+{
+  "schema": "cochem-disposable-project-staging/1",
+  "host": "AETHERDESK",
+  "source": "private local staging disposable-project",
+  "branch": "pipeline/accepted",
+  "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+  "bundle_bytes": 622,
+  "bundle_sha256": "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+  "git_bundle_verify_exit": 0,
+  "complete_history": true,
+  "working_tree_clean_before_bundle": true,
+  "remote_configured": false,
+  "protected_destination": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+  "protected_destination_created": false,
+  "git_hooks_or_project_code_executed": false,
+  "model_jobs_executed": 0,
+  "acceptance_test_passed": false
+}

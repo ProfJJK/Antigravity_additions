@@ -1,0 +1,30 @@
+{
+  "schema": "cochem-staged-configuration-check/1",
+  "status": "SHAPE_VALID_WITH_SCOPED_INTEGRATION_HOLD",
+  "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+  "sha256": "423bd9832bb82b01f24d94ad843bf1eda13e40eecc10151ca41b593d226e78a4",
+  "max_execution_slots": 4,
+  "worker_count": 4,
+  "pipeline_routing_policy_version": 2,
+  "integration_hold": {
+    "scope": "isolated_pipeline_integration",
+    "state": "verification_pending",
+    "category": "compatibility",
+    "provider": "gemini",
+    "reason": "The owner confirms Agy is available, signed in and functioning. Isolated pipeline worker authentication, inference-only controls and native serving-model receipts have not yet been verified; this is not a provider outage or owner-login failure.",
+    "finding_ids": [
+      "AGY-AUTH",
+      "AGY-ISOLATION",
+      "AGY-IDENTITY"
+    ],
+    "evidence_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-followup.json",
+    "evidence_sha256": "c2296fde5dce1a5eadec12c50edf438c09da679b02cd878517653eaab17405d8",
+    "executable_sha256": "c1b0001989c4051a41f5104484de182db5014fa155053c8088baacf1663063bf",
+    "version": "1.3.0",
+    "staged_executable_present": false
+  },
+  "activation_ready": false,
+  "native_inference_executed": false,
+  "source_manifest_sha256": "85f8039acdbbd9de1ed77a61c6defddfacb7be27b188ce1238e2960c2f7a9f0b",
+  "scope": "Read-only production configuration validation; isolated Agy integration pending, owner confirms working signed-in Agy; separate protected-state/SYSTEM prerequisites remain"
+}

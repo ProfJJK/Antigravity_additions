@@ -1,0 +1,10 @@
+{
+  "original_sha256": "7c237baa372f76717cf70c9f65835ac08fbb08c577690d511d54aaa503147e4d",
+  "original_source_preserved": true,
+  "publication_file": "docs/evidence/windows-2026-10-09/continuation/execution-prerequisites-r3-tests-initial.xml",
+  "reason": "A pytest failure captured a credential environment value; redact the public copy.",
+  "redacted_sha256": "042c540391301bdeed8e54d4028a1589b1fab82b2eb74dc505e62e96eb117aeb",
+  "redacted_value_occurrences": 2,
+  "schema": "cochem-publication-redaction/1",
+  "xml_result_attributes_and_structure_preserved": true
+}

@@ -1,0 +1,83 @@
+WINDOWS PIPELINE: CONTINUE AFTER THE REBOOT
+8 October 2026 - AETHERDESK
+
+The last reported run verified all six saved Codex sessions. It stopped before
+a new Claude login because an earlier Claude session directory already existed.
+The v5 command reviews that session's protected task and receipt before asking
+you for READY. A completed earlier attempt does not require deleting its files.
+Uncertain or still-running attempts remain held with a short diagnostic.
+
+The reboot also cleared the pipeline's temporary R: subtree. The command can
+recreate only that subtree after proving the old foundation ledger, the new boot,
+the current 8 GiB ImDisk drive and the unchanged owner startup task. It retains
+the old ledger before using the production adoption code once. It never formats,
+resizes or replaces R:, and never recreates or repeats the old Docker test.
+
+ONE COMMAND IN ADMINISTRATOR WINDOWS POWERSHELL
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-reboot-setup-r3-v5.ps1" -Apply -Interactive
+
+Open Start, type Windows PowerShell, select Run as administrator, accept UAC,
+then paste the single line above and press Enter. Leave the console open.
+File and status inspections can take a few minutes per profile without output.
+
+SIGN-IN PROMPTS
+
+1. Existing sessions are checked and reused. Only an explicitly logged-out
+   profile requests browser approval. Type READY when you can complete it now.
+   No code has been issued while the command waits for READY.
+2. For Claude, follow the URL and instructions printed by the running console.
+   The isolated profile may require you to open its URL manually. Return any
+   requested completion code to that console, not this chat. If Claude supplies
+   a completion code, press P at the wrapper's prompt and paste it only into
+   the masked code prompt, as its console instructions describe.
+3. If Codex requests login, manually open https://auth.openai.com/codex/device
+   and enter the NEW code printed by the running console. It does not open a
+   browser automatically. Old codes are not reusable.
+4. Type PAUSE at a READY prompt if you need to step away. Completed sign-ins
+   remain saved. A later deliberate invocation checks all saved sessions again.
+5. After all sign-ins pass, the same command attempts the prepared controller
+   start once and checks its control plane. If that passes, it automatically
+   runs the prepared monitoring setup in the same Administrator console.
+   There is no second monitoring command for you to paste. Return the final
+   JSON to Codex; if it stops earlier, return that phase's printed error/JSON.
+
+IF IT STOPS
+
+Return the printed JSON/error, with login codes removed. Preserve all files,
+tasks and private logs. Do not rerun after a controller-start failure or clear
+any partial RAM recovery. Do not run an older commissioning command.
+The v5 session review can accept a proved terminal earlier attempt; it does
+not assume that every cancelled or interrupted Claude attempt cleaned up.
+
+WHAT THIS COMPLETES
+
+The command checks the two configured providers in six isolated profiles,
+performs the prepared controller start, stages the independent supervisor and
+starts observation with paid repair and component recovery disabled. The
+resource observer begins its 48-hour observation only after validating the
+current controller. Shared capacity stays at four, model
+routing stays on Chapter 06, and existing credentials, databases, repair budgets,
+R: and Mount_CoChem_RAMDisk are preserved. Agy's existing sign-in is preserved.
+No model jobs are submitted by this command; automatic paid repair remains held.
+
+After a successful setup receipt, Codex can run the prepared ordinary MCP and
+workflow checks. Their actual Windows results, completed stability observation
+and unresolved acceptance evidence are still needed before claiming full SRS
+acceptance. The monitoring setup never replays authentication or first start.
+
+WHY YOUR INTERACTION IS NEEDED
+
+This chat's process is not a Windows administrator. The command needs elevation
+to inspect the prior private Claude session and create protected SYSTEM tasks.
+Provider browser consent must be completed by you. There is no separate manual
+Docker, CPU, knowledge or worker-isolation acceptance test in this command.
+
+EVIDENCE
+
+Post-crash observations are recorded separately in
+post-crash-observation-20261008.json. The continuation's source pins, ordinary
+Windows fixture results and limits are recorded in
+claude-reboot-continuation-v5-preparation-20261008.json.
+These preparation results are not elevated/SYSTEM deployment acceptance, and
+existing Linux results are not counted as Windows evidence.

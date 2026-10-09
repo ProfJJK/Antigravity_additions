@@ -1,0 +1,25 @@
+{
+  "schema": "cochem-live-workflow-approval-hold/1",
+  "status": "EXPLICIT_PAYLOAD_AND_PROVIDER_APPROVAL_PENDING",
+  "exact_scope_file": "LIVE_WORKFLOW_TEST_SCOPE_20261009.json",
+  "exact_scope_sha256": "b35b01c72d68b58909a717c8641ef3c1bd48a191427237ec8cb5caefdd411949",
+  "review_rejections": 2,
+  "first_reason": "Exact payloads and external destinations were not explicitly authorized",
+  "second_reason": "Synthetic inputs still include internal governing requirements and diagnostics sent to OpenAI or Anthropic; explicit authorization is required",
+  "both_rejections_occurred_before_process_creation": true,
+  "model_jobs_submitted_by_rejected_commands": 0,
+  "private_submission_fences_created_by_rejected_commands": 0,
+  "same_reviewed_helper": "continue-live-prepost-r3-v1.py",
+  "same_reviewed_helper_sha256": "ecd0ff981cff06b5abdc4ac3ceae81e55a9557c7d313c1829850d1eb33053068",
+  "original_workflow_ids": {
+    "planning": "windows427-r3-plan-eb1e6810a6e3ee27105b",
+    "coding": "windows427-r3-code-eb1e6810a6e3ee27105b"
+  },
+  "no_workaround_or_indirect_execution_attempted": true,
+  "user_approval_requested_for_exact_scope": true,
+  "temperature_hold_cleared_at_latest_read_only_sample": true,
+  "latest_readiness_evidence": "post-monitoring-v8-live-readiness-safe-20261009.json",
+  "latest_readiness_evidence_sha256": "0056e1cf638cd283ee8d0caf85da79d7769c529a51cb9069285063aa22d6b77d",
+  "linux_results_counted_as_windows": false,
+  "full_srs_acceptance": false
+}

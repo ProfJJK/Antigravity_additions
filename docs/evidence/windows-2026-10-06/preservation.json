@@ -1,0 +1,51 @@
+{
+  "scope": "Read-only post-work preservation checks",
+  "checked_at": "2026-10-07T02:07:42.2696223Z",
+  "tasks": [
+    {
+      "name": "ClaudeTokenRefresh",
+      "exists": true,
+      "principal_same": true,
+      "execute_same": true,
+      "arguments_same": true,
+      "state": "Ready"
+    },
+    {
+      "name": "CoChem V4.1.2 Swarm",
+      "exists": true,
+      "principal_same": true,
+      "execute_same": true,
+      "arguments_same": true,
+      "state": "Ready"
+    },
+    {
+      "name": "CoChemHostWarden_V412",
+      "exists": true,
+      "principal_same": true,
+      "execute_same": true,
+      "arguments_same": true,
+      "state": "Running"
+    },
+    {
+      "name": "CoChem_Ecosystem_Backup",
+      "exists": true,
+      "principal_same": true,
+      "execute_same": true,
+      "arguments_same": true,
+      "state": "Ready"
+    }
+  ],
+  "ram_volume": {
+    "DeviceID": "R:",
+    "Size": 8589930496,
+    "FileSystem": "NTFS",
+    "VolumeName": ""
+  },
+  "credentials_modified": false,
+  "existing_databases_modified_by_session": false,
+  "startup_modified": false,
+  "second_warden_started": false,
+  "new_accounts_created": false,
+  "model_jobs_invoked": 0,
+  "note": "No hashes or contents of credentials were collected; existing legacy services may continue their own normal writes."
+}

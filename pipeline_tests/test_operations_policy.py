@@ -13,6 +13,7 @@ import pytest
 from cochem_pipeline.operations_policy import RetentionPolicy, WorkloadObjectives, archive_evidence, storage_forecast
 from cochem_pipeline.containers import DockerRunner, ContainerCapacityError
 from cochem_pipeline.container_policy import DockerPolicy
+from pipeline_tests.test_knowledge_private_directories import actual_windows_private_fixture
 
 
 def policy(**changes):
@@ -22,7 +23,11 @@ def policy(**changes):
 
 
 @pytest.fixture
-def private(tmp_path):
+def private(tmp_path,request):
+    if os.name == 'nt':
+        # Real private ACL inheritance, with only the explicit non-SYSTEM test
+        # principal mapping documented by the disposable Windows fixture.
+        return request.getfixturevalue('actual_windows_private_fixture').root
     path=tmp_path/'private'
     path.mkdir(mode=0o700)
     return path
@@ -62,7 +67,7 @@ def test_archive_online_backup_includes_committed_wal_and_keeps_live_database(pr
     assert result['entries'][0]['kind']=='sqlite_online_backup'
 
 
-def test_archive_rejects_new_receipts_secrets_escaping_and_links(private,tmp_path):
+def test_archive_rejects_new_receipts_secrets_escaping_and_pruning(private,tmp_path):
     fresh=private/'fresh.receipt.json'
     fresh.write_text('{}')
     with pytest.raises(ValueError,match='younger'):
@@ -72,13 +77,21 @@ def test_archive_rejects_new_receipts_secrets_escaping_and_links(private,tmp_pat
         archive_evidence(private,['credentials.json'])
     with pytest.raises(ValueError,match='within live'):
         archive_evidence(private,['../out.receipt.json'])
-    external=tmp_path/'out.receipt.json'
-    external.write_text('{}')
-    (private/'link.receipt.json').symlink_to(external)
-    with pytest.raises(ValueError,match='symlinks'):
-        archive_evidence(private,['link.receipt.json'])
     with pytest.raises(ValueError,match='Pruning'):
         RetentionPolicy(prune_enabled=True)
+
+
+def test_archive_rejects_symlinks(private,tmp_path):
+    external=tmp_path/'out.receipt.json'
+    external.write_text('{}')
+    try:
+        (private/'link.receipt.json').symlink_to(external)
+    except OSError as error:
+        if os.name == 'nt' and error.winerror == 1314:
+            pytest.skip('Windows token lacks symlink creation privilege; junction/hardlink checks are separate')
+        raise
+    with pytest.raises(ValueError,match='symlinks'):
+        archive_evidence(private,['link.receipt.json'])
 
 
 def test_forecast_uses_measured_storage_delta_and_never_counts_secrets_or_archive_twice(private):

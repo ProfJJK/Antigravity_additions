@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-10-07T03:34:59.026886+00:00",
+  "host": "AetherDesk",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.13",
+  "scope": "Windows resource probe timeout process cleanup; real test-created processes only; no production process action",
+  "failed_evidence": {
+    "path": "docs/evidence/windows-2026-10-06/continuation-final-consolidated.xml",
+    "sha256": "073051ff580c43fed82346da0eefca0018465ad86ef98c3dd56d08cd6dbc8837",
+    "bytes": 279194,
+    "counts": {
+      "tests": 1588,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 66
+    },
+    "failed_test": "pipeline_tests/test_resource_telemetry.py::test_real_command_timeout_terminates_process",
+    "failed_assertion": "assert not psutil.pid_exists(child_pid)",
+    "observed_pid": 3464,
+    "preserved": true,
+    "pid_was_not_killed_or_reused_as_a_target": true
+  },
+  "diagnostic_observations_before_change": {
+    "method": "Ten real venv Python launches observed with a native interpreter process handle opened while that interpreter was alive. Timeout OSError objects and real Popen objects were retained. Each interpreter handle was closed after exit. Tool-output observations summarized here; this is not an additional pytest run.",
+    "runs": 10,
+    "timeout_seconds": 0.4,
+    "distinct_venv_launcher_and_interpreter_all_runs": true,
+    "launcher_confirmed_exit_all_runs": true,
+    "launcher_process_handles_still_open_with_retained_objects_all_runs": true,
+    "interpreter_immediate_wait_timeout_count": 10,
+    "interpreter_signaled_within_1000ms_all_runs": true,
+    "interpreter_exit_code_after_wait_all_runs": 0,
+    "psutil_pid_exists_true_after_interpreter_handle_signaled_count": 1,
+    "total_elapsed_seconds_range": [
+      0.4105,
+      0.4234
+    ],
+    "interpretation": "PID enumeration alone does not establish a live process. The venv launcher and interpreter are distinct, and launcher job termination completes asynchronously. Popen keeps the launcher process handle open until finalization even after confirmed exit; holding error tracebacks prolongs this retention."
+  },
+  "repair": {
+    "runtime": "After bounded pipe-reader joins, close the Popen-owned Windows process handle only when returncode confirms process termination and every reader has exited. A still-running reader can be inside process.kill, so it retains normal Popen handle ownership instead. Use Handle.Close so finalization remains idempotent; do not close raw handles behind Popen.",
+    "test_oracle": "Capture the actual Windows interpreter handle while live, verify it signals within a bounded one-second wait, verify exited status, and retain the existing three-second total test deadline. Preserve the venv launcher topology. Cleanup can terminate only the same captured test-process handle if the assertion fails.",
+    "lifecycle_regressions": "Real success, nonzero exit, output-limit, and timeout cases retain Popen references and failure tracebacks while verifying that handles and pipes were explicitly closed.",
+    "generic_process_tree_changes": false,
+    "files": [
+      {
+        "path": "src/cochem_pipeline/resource_telemetry.py",
+        "sha256": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a",
+        "bytes": 24306
+      },
+      {
+        "path": "pipeline_tests/test_resource_telemetry.py",
+        "sha256": "1e38e41edfdda7d4e8b521174cefe7058f87f2a89cc7680af38a8411d3a8b913",
+        "bytes": 13689
+      }
+    ]
+  },
+  "focused_validation": {
+    "path": "docs/evidence/windows-2026-10-06/resource-timeout-cleanup.xml",
+    "sha256": "41bdd9ff5153228118ca8e6415f92a1a1481932a632e11cf3f043b00b530d592",
+    "bytes": 25066,
+    "counts": {
+      "tests": 161,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "pytest_reported_seconds": 3.2,
+    "modules": [
+      "pipeline_tests/test_resource_telemetry.py",
+      "pipeline_tests/test_cpu_temperature_probe.py",
+      "pipeline_tests/test_hardware_guard.py"
+    ],
+    "native_windows": true
+  },
+  "limitations": [
+    "No privileged acceptance or hardware-driver/sensor access was performed.",
+    "This does not establish a generic descendant-process termination contract. Production helper commands remain controlled direct native executables.",
+    "The prior failing consolidated result remains preserved; a fresh consolidated run is required for the changed source."
+  ],
+  "primary_sources": [
+    {
+      "url": "https://github.com/python/cpython/blob/v3.12.13/PC/launcher.c#L716-L777",
+      "supports": "Windows venv launcher starts the interpreter in a kill-on-close job."
+    },
+    {
+      "url": "https://github.com/python/cpython/blob/v3.12.13/Lib/subprocess.py",
+      "supports": "Popen stores a Windows Handle object; Handle.Close is idempotent; wait records returncode while handle lifetime normally follows object lifetime."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/procthread/terminating-a-process",
+      "supports": "Termination closes handles owned by the process; a process object remains until its open handles close."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitforsingleobject",
+      "supports": "A process handle becomes signaled when the process terminates; bounded native handle waiting avoids PID reuse ambiguity."
+    },
+    {
+      "url": "https://github.com/giampaolo/psutil/blob/release-7.2.2/psutil/arch/windows/proc_utils.c",
+      "supports": "Windows PID existence can fall back to enumeration even when a process exit code is no longer STILL_ACTIVE."
+    }
+  ],
+  "independent_review": {
+    "result": "Native interpreter handle and retained traceback proofs accepted. One potential close-while-reader-kill race identified and repaired before final validation by requiring every reader exited. No other defect found.",
+    "source_frozen_after_review": true
+  }
+}

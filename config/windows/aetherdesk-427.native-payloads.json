@@ -1,0 +1,42 @@
+{
+  "schema": "cochem-native-payload-inventory/1",
+  "host": "AETHERDESK",
+  "captured_utc": "2026-10-07T04:47:42.5141437Z",
+  "roots": [
+    "Native4.2.7-windows-20261006"
+  ],
+  "scope": "Complete observed Codex bin directory (two ordinary files, no subdirectories), standalone Claude and current Agy executable, and exact new capability report. Agy old auto-update backup is preserved in place and excluded. No credentials, profiles, tasks or configuration.",
+  "dependency_inspection": "Offline PE import/delay-import tables contain Windows/API-set DLL names only. This is static inspection, not proof of every dynamically loaded resource or isolated runtime acceptance.",
+  "files": [
+    {
+      "source": "C:\\Users\\ansac\\.codex\\packages\\standalone\\releases\\0.160.0-x86_64-pc-windows-msvc\\bin\\codex.exe",
+      "destination": "Native4.2.7-windows-20261006/codex.exe",
+      "length": 326872368,
+      "sha256": "fdda5fa3cf3fb3d000b876720742857676293e4315e4b045fae6f8bd7e866d1d"
+    },
+    {
+      "source": "C:\\Users\\ansac\\.codex\\packages\\standalone\\releases\\0.160.0-x86_64-pc-windows-msvc\\bin\\codex-code-mode-host.exe",
+      "destination": "Native4.2.7-windows-20261006/codex-code-mode-host.exe",
+      "length": 74697520,
+      "sha256": "1d448bfde19e7a280d600d8d0bcddf77afbe9feaec1e804905becc5f39bc9db6"
+    },
+    {
+      "source": "C:\\Users\\ansac\\.local\\bin\\claude.exe",
+      "destination": "Native4.2.7-windows-20261006/claude.exe",
+      "length": 237100192,
+      "sha256": "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469"
+    },
+    {
+      "source": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+      "destination": "Native4.2.7-windows-20261006/agy.exe",
+      "length": 190286488,
+      "sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741"
+    },
+    {
+      "source": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-agy-1.3.1-followup.json",
+      "destination": "Native4.2.7-windows-20261006/native-contract-agy-1.3.1-followup.json",
+      "length": 6736,
+      "sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5"
+    }
+  ]
+}

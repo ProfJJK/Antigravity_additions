@@ -1,0 +1,31 @@
+{
+    "schema":  "cochem-private-knowledge-resume-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "source_sha256":  "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+    "runtime_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "install_receipt_sha256":  "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+    "source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "source_files":  166,
+    "target_root":  "C:\\Program Files\\CoChem\\KnowledgeResume4.2.7-windows-20261007-r2",
+    "task_name":  "CoChem-4.2.7-KnowledgeResume-20261007-r2",
+    "diagnostic_receipt_sha256":  "18ceba4394b92bb6e1d320f49226359902af0084a72195a8139f699594bc0307",
+    "original_receipt_sha256":  "2cf8f1f4cafbb0537900af98349f6a3f4faec135a4061dd153f0cce78c1488dd",
+    "state_gate":  "Exact diagnosed root plus 1-byte writer.lock=0, rechecked under real production writer lock",
+    "corpus_files_reverified":  138,
+    "corpus_acl_changes":  false,
+    "old_evidence_preserved":  true,
+    "existing_root_reused_only_if_empty":  true,
+    "existing_root_private_empty_check_deferred":  true,
+    "expected_empty_root_creation_and_write_utc":  "2026-10-07T14:08:15.5776970Z",
+    "index_resume_executed":  false,
+    "activation_ready":  false,
+    "admin_system_checks_deferred":  [
+                                         "exact existing root private ACL and zero children, no existing resume task",
+                                         "full r2/base tree custody and held source166",
+                                         "private original+diagnostic receipt/task binding",
+                                         "exact diagnosed SYSTEM state metadata and authorized one-byte lock read"
+                                     ],
+    "holds":  [
+
+              ]
+}

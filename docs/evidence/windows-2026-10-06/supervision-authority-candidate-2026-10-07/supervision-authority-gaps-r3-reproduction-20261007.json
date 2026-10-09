@@ -1,0 +1,63 @@
+{
+  "actual_transactional_reservation_denied": true,
+  "held_replay": {
+    "action": "would_queue_bounded_repair",
+    "budget_projection": {
+      "active_reservations": 0,
+      "blockers": [],
+      "charged_model_calls": {
+        "incident": 0,
+        "incident_generations": 0,
+        "incident_reviews": 0,
+        "utc_day": 0
+      },
+      "configured_limits": {
+        "cooldown_seconds": 1800,
+        "max_per_day": 4,
+        "max_per_incident": 2
+      },
+      "cooldown_until": 10000,
+      "effective_limits": {
+        "cooldown_seconds": 1800,
+        "max_per_day": 4,
+        "max_per_incident": 2
+      },
+      "eligible_to_reserve": true,
+      "expired_reservations": 0,
+      "incident_recorded": false,
+      "known": true,
+      "next_successful_repair_requires_at_least_model_calls": 2,
+      "observed_at": 10000,
+      "read_only": true,
+      "remaining_model_calls": {
+        "incident": 2,
+        "utc_day": 4
+      },
+      "scope": "repair generation and asymmetric review; deployment smoke has a separate three-dispatch limit",
+      "sufficient_calls_for_generation_and_review": true,
+      "utc_day": "1970-01-01"
+    },
+    "disposable_source_bytes_unchanged": true,
+    "execution_authorized": false
+  },
+  "held_tick": {
+    "budget_hold_visible": true,
+    "detector_calls": 0,
+    "publications": 1
+  },
+  "linux_evidence_used": false,
+  "model_calls": 0,
+  "module_sha256": {
+    "cochem_supervisor.budget_authority": "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852",
+    "cochem_supervisor.engine": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+    "cochem_supervisor.replay": "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728",
+    "cochem_supervisor.state": "404abfa2971a8f4a865171fc8fee3fe2c51d7837b6d49975346e6bac3740ff74"
+  },
+  "native_calls": 0,
+  "production_databases_opened": false,
+  "schema": "cochem-supervision-authority-gap-reproduction/1",
+  "scope": "Ordinary Windows, frozen installed r3 modules, disposable synthetic SQLite only",
+  "service_or_task_changes": 0,
+  "supervisor_constructor_called": false,
+  "tokens_read": false
+}

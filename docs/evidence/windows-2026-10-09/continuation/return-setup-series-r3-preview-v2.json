@@ -1,0 +1,124 @@
+{
+    "schema":  "cochem-return-setup-series/1",
+    "status":  "READ_ONLY_PLAN",
+    "results":  [
+                    {
+                        "phase":  "inspection",
+                        "report":  {
+                                       "schema":  "cochem-execution-prerequisites-plan/1",
+                                       "mode":  "READ_ONLY_PLAN",
+                                       "helper_sha256":  "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+                                       "runtime":  {
+                                                       "install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+                                                       "source_manifest_sha256":  "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+                                                       "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+                                                       "revision":  {
+                                                                        "schema":  "cochem-installed-revision/1",
+                                                                        "verified":  true,
+                                                                        "read_only":  true,
+                                                                        "files":  109,
+                                                                        "source_sha256":  "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+                                                                        "acceptance_files":  0,
+                                                                        "acceptance_sha256":  null
+                                                                    },
+                                                       "source_files_verified":  166
+                                                   },
+                                       "target_root":  "C:\\Program Files\\CoChem\\ExecutionPrerequisites4.2.7-windows-20261007-r3",
+                                       "task_name":  "CoChem-4.2.7-ExecutionPrerequisites-20261007-r3",
+                                       "all_six_success_and_terminal_task_checks_deferred":  true,
+                                       "private_knowledge_receipt_checks_deferred":  true,
+                                       "preflight_executed":  false,
+                                       "proposed_creates":  [
+                                                                "fresh helper root",
+                                                                "fresh empty Docker CLI config directory",
+                                                                "fresh SYSTEM task and receipt"
+                                                            ],
+                                       "existing_state_changes":  0,
+                                       "activation_ready":  false,
+                                       "holds":  [
+
+                                                 ]
+                                   }
+                    },
+                    {
+                        "phase":  "foundation",
+                        "report":  {
+                                       "schema":  "cochem-execution-foundation-plan/1",
+                                       "mode":  "READ_ONLY_PLAN",
+                                       "helper_sha256":  "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1",
+                                       "runtime":  {
+                                                       "install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+                                                       "source_manifest_sha256":  "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+                                                       "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+                                                       "revision":  {
+                                                                        "schema":  "cochem-installed-revision/1",
+                                                                        "verified":  true,
+                                                                        "read_only":  true,
+                                                                        "files":  109,
+                                                                        "source_sha256":  "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+                                                                        "acceptance_files":  0,
+                                                                        "acceptance_sha256":  null
+                                                                    },
+                                                       "source_files_verified":  166
+                                                   },
+                                       "target_root":  "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3",
+                                       "task_name":  "CoChem-4.2.7-ExecutionFoundation-20261007-r3",
+                                       "all_prior_success_receipt_and_task_checks_deferred":  true,
+                                       "system_fresh_state_revalidation_deferred":  true,
+                                       "provisioning_executed":  false,
+                                       "proposed_creates":  [
+                                                                "fresh helper root, isolated Docker CLI config, packet, SYSTEM task and receipt",
+                                                                "R:\\CoChem427-windows-20261007 plus exactly six slot roots",
+                                                                "fresh private ramdisk-state.json",
+                                                                "fresh private containers directory and empty containers.db with transient WAL/SHM"
+                                                            ],
+                                       "scoped_changes":  [
+                                                              "ACL and no-content-index flags on seven new RAM directories",
+                                                              "only missing six Defender exclusions"
+                                                          ],
+                                       "ram_volume_or_startup_task_changes":  0,
+                                       "existing_database_changes":  0,
+                                       "containers_created":  0,
+                                       "activation_ready":  false,
+                                       "automatic_retry_allowed":  false,
+                                       "holds":  [
+                                                     "Successful read-only prerequisite receipt is not present."
+                                                 ]
+                                   }
+                    },
+                    {
+                        "phase":  "project",
+                        "report":  {
+                                       "schema":  "cochem-private-project-import-plan/1",
+                                       "mode":  "READ_ONLY_PLAN",
+                                       "target":  "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+                                       "target_state":  "ABSENT",
+                                       "session":  "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3",
+                                       "runtime":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+                                       "r3_install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+                                       "config_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+                                       "layout_sha256":  "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+                                       "bundle_sha256":  "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+                                       "helper_sha256":  "3224bbc544a9f46ef402cb6bc483bdaa854bbfdf94737323e5408ae94e87ce1d",
+                                       "git_custody_paths":  12,
+                                       "worker_identities":  6,
+                                       "shared_slots":  4,
+                                       "project_code_executed":  false,
+                                       "models_executed":  0,
+                                       "tasks_created":  0,
+                                       "activation_ready":  false,
+                                       "holds":  [
+                                                     "Data-parent custody requires the owner Administrator token."
+                                                 ]
+                                   }
+                    }
+                ],
+    "worker_identities":  6,
+    "max_shared_slots":  4,
+    "automatic_retry_allowed":  false,
+    "provider_calls_executed":  0,
+    "model_jobs_executed":  0,
+    "pipeline_started":  false,
+    "activation_ready":  false,
+    "remaining":  "Attended native sign-ins, Docker physical execution, native routed workflow, history/budget reconciliation and sustained acceptance remain separate."
+}

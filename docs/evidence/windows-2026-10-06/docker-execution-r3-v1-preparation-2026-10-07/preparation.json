@@ -1,0 +1,140 @@
+{
+  "activation_ready": false,
+  "actual_docker_calls_or_containers_executed": 0,
+  "actual_ordinary_windows_tests": {
+    "errors": 0,
+    "failures": 0,
+    "junit_suite_seconds": "8.120",
+    "limitations": "This is not actual Docker, Linux container, SYSTEM task, worker, warm-pool, startup SLA, or Chapter06 workflow acceptance.",
+    "pytest_terminal_report_seconds": 12.16,
+    "python": "3.12.13",
+    "scope": [
+      "Exact installed containers.py bytes execute actual SQLite/prepare/reserve/run/source/assertion/cleanup logic against an explicitly inert Docker transport.",
+      "Actual isolated Python pytest observer executes fixed RED AssertionError and GREEN answer on ordinary Windows, selecting the answer test only; Linux physical assertions are tested with explicit OS fixtures.",
+      "Exact six production worker mutex existence semantics and collision release are exercised with inert API handles.",
+      "Full assembled support/runtime/control schema run reaches inert execution boundary; rejected foundation stops before source or registry changes.",
+      "Actual PS5.1 source copies/CreateNew packet/file holds reach a simulated SYSTEM task registration; prior foundation task/receipt bindings have positive and negative fixtures.",
+      "Cleanup failures retain quarantine/history and report counts; slow startup remains distinct from correctness."
+    ],
+    "shell": "Windows PowerShell 5.1",
+    "skipped": 0,
+    "tests": 37
+  },
+  "actual_read_only_preview": {
+    "all_prior_private_receipt_and_task_checks_deferred": true,
+    "holds": [
+      "Successful read-only prerequisite receipt is not present.",
+      "Successful scoped foundation receipt is not present."
+    ],
+    "runtime": {
+      "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+      "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+      "revision": {
+        "acceptance_files": 0,
+        "acceptance_sha256": null,
+        "files": 109,
+        "read_only": true,
+        "schema": "cochem-installed-revision/1",
+        "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+        "verified": true
+      },
+      "source_files_verified": 166,
+      "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1"
+    }
+  },
+  "actual_system_or_worker_launches": 0,
+  "apply_executed": false,
+  "archive_role": "Exact evidence/source custody. Live wrapper resolves sibling reviewed helpers and pinned original payload helper. Host-specific tests and controls are not a portable deployment bundle.",
+  "chapter06_coding_workflow_tested": false,
+  "created_utc": "2026-10-07T18:24:29.910645+00:00",
+  "entrypoint": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\accept-docker-execution-r3-v1.ps1",
+  "files": {
+    "accept-docker-execution-r3-v1.ps1": {
+      "bytes": 17358,
+      "sha256": "380386520ace322d7967382d8778b9751bb510f13ce391cd7e92ee3b000bf035"
+    },
+    "accept-docker-execution-r3-v1.py": {
+      "bytes": 25236,
+      "sha256": "3ac01c18be77c18b6c80601a681f7b3c082424e88d2f79a29fe15dc9a63aa0c5"
+    },
+    "check-worker-denials-r3.ps1": {
+      "bytes": 21523,
+      "sha256": "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d"
+    },
+    "docker-execution-r3-v1-preview.json": {
+      "bytes": 2729,
+      "sha256": "fb012ec247a6ae62282fd5942b6586ef0608448f05ff849d7a3bd98b1bddcadd"
+    },
+    "docker-execution-r3-v1-tests.xml": {
+      "bytes": 6331,
+      "sha256": "8b629804bfe71179ee2183ef9d7f37f49a973f5c8a312b9f6b89f02ec7b104ac"
+    },
+    "inspect-execution-prerequisites-r3.ps1": {
+      "bytes": 19238,
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887"
+    },
+    "inspect-execution-prerequisites-r3.py": {
+      "bytes": 26808,
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a"
+    },
+    "provision-execution-foundation-r3.ps1": {
+      "bytes": 15640,
+      "sha256": "402c27276b56b42cac3c8ecc6fa5b8fd0da4361c57c3abd5c2bf2d432724208c"
+    },
+    "provision-execution-foundation-r3.py": {
+      "bytes": 19191,
+      "sha256": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1"
+    },
+    "stage_aetherdesk_427_payloads.ps1": {
+      "bytes": 12591,
+      "sha256": "0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b"
+    },
+    "test_docker_execution_r3_v1.py": {
+      "bytes": 32709,
+      "sha256": "c8c0c14e49d31e1f272a8fa1661d076bb7632cd2158a90c2ebcbf90cb98d8ca4"
+    },
+    "test_execution_foundation_r3.py": {
+      "bytes": 28880,
+      "sha256": "8e2b32dcbd4e34e3df838c9d82a31cde082450b600be4ab7749316ea1ee4458a"
+    },
+    "worker-denial-acceptance-r3.py": {
+      "bytes": 36096,
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77"
+    }
+  },
+  "independent_review": {
+    "result": "No concrete finding at final archived pins; complete source/installed API/test review, no execution by reviewer.",
+    "reviewer": "host_inspection"
+  },
+  "native_model_jobs_executed": 0,
+  "owner_apply_command_issued": false,
+  "performance_policy": "Preserve real request-to-ready timings; if correctness passes but the 1.5-second startup SLA misses, emit DOCKER_PHYSICAL_CORRECTNESS_VERIFIED_SLA_HELD and exit2.",
+  "physical_acceptance_scope": "Fixed non-model RED/GREEN fixture plus actual container nonroot/capability/seccomp/cgroup/tmpfs/network/read-only-root checks. This does not satisfy the later Chapter06 routed coding workflow.",
+  "planned_fresh_write_set": [
+    "One new protected helper/config/packet/receipt root and no-trigger SYSTEM task.",
+    "One new protected scoped subtree under existing RAM slot1, two fixed RED/GREEN source trees and their four source files/index attributes.",
+    "Previously empty hash-bound foundation registry receives up to two lease/demand/tombstone records and two private production receipts, with transient SQLite WAL/SHM.",
+    "At most two owned single-use prepared Docker containers at unchanged shared capacity four; no native worker occupancy while all six exclusion objects are held.",
+    "One production drain of any remaining owned WARM member; finish zero actual live owned containers or retain unverified quarantine."
+  ],
+  "preconditions": [
+    "Actual successful preflight and foundation receipts and exact terminal task action/nonce/result bindings.",
+    "Unchanged installed r3/source/config/layout/base interpreter, accepted knowledge and six worker receipts.",
+    "Exact foundation empty-registry bytes and owner hash, RAM ledger, R volume/root/startup identity; no existing acceptance subtree or namespace.",
+    "All six native exclusion objects absent before acquisition; daemons disabled/terminal; current worker Docker API denials and actual backend attestation.",
+    "Pinned local image/endpoint/cap4/warm2; empty initial ownership census; no generic readiness or knowledge refresh."
+  ],
+  "preparation_findings": [
+    "Fixed fixture imports the business module from tests/business.py so the actual isolated pytest observer can resolve it without adding a host Python path.",
+    "Failure fixture verified that production cleanup can raise ContainerCleanupError during the one final warm drain. Candidate now snapshots final registry counts in finally while preserving the exception/quarantine; no retry is added.",
+    "Explicit flags report RAM fixture creation and foundation registry mutation attempts independently of Docker creation."
+  ],
+  "preservation": [
+    "No original R volume/root/startup ACL change or RAM ledger rewrite.",
+    "No credentials/native profiles/provider login/models/legacy databases/budgets/runtime activation.",
+    "No image pull/build, unknown object adoption, broad orphan reaping, reset, repeated preparation, or quarantine clearing.",
+    "Full production receipts remain private; public task output carries bounded status, hashes, counts and failure metadata only."
+  ],
+  "schema": "cochem-docker-physical-preparation/1",
+  "status": "PREPARED_REVIEWED_NOT_ISSUED"
+}

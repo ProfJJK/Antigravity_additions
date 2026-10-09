@@ -126,9 +126,11 @@ def test_syntax_failure_does_not_modify_candidate(tmp_path):
 
 
 @pytest.mark.parametrize('provider,model',[('claude','claude-sonnet-5-5'),('codex','gpt-6-sol')])
-def test_no_repair_native_tool_can_launch_unrouted_models(provider,model):
-    spec={'provider':provider,'model':model,'executable':'/trusted/native'}
-    argv=repair_command(spec,['/trusted/native'],'/candidate')
+def test_no_repair_native_tool_can_launch_unrouted_models(tmp_path,provider,model):
+    # Command-construction fixture only; no CLI is created or executed.
+    executable=str(tmp_path/'native-cli.exe')
+    spec={'provider':provider,'model':model,'executable':executable}
+    argv=repair_command(spec,[executable],str(tmp_path/'candidate'))
     if provider=='claude':
         assert argv[argv.index('--tools')+1]==''
     else:

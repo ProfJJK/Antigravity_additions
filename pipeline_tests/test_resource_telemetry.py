@@ -6,6 +6,7 @@ import json
 import math
 import os
 import shutil
+import subprocess
 import sys
 import threading
 import time
@@ -183,12 +184,103 @@ def test_real_command_output_limit_terminates_producer(stream: str) -> None:
 def test_real_command_timeout_terminates_process(tmp_path: Path) -> None:
     pid_file = tmp_path / "probe.pid"
     program = "import os,pathlib,sys,time; pathlib.Path(sys.argv[1]).write_text(str(os.getpid())); time.sleep(30)"
+    handles: list[int] = []
+    observer_errors: list[Exception] = []
+    stop = threading.Event()
+
+    def observe_windows_interpreter() -> None:
+        import _winapi
+
+        # The Windows venv launcher is a different process from the interpreter.
+        # Hold the interpreter's native handle while it is alive: a PID can be
+        # reused, and psutil's PID list can retain a process that already exited.
+        while not stop.wait(0.001):
+            try:
+                pid = int(pid_file.read_text())
+            except (OSError, ValueError):
+                continue
+            try:
+                handle = _winapi.OpenProcess(
+                    _winapi.SYNCHRONIZE | 0x1000 | 0x0001, False, pid,
+                )  # QUERY_LIMITED_INFORMATION and TERMINATE (failure cleanup).
+                handles.append(handle)
+                assert _winapi.WaitForSingleObject(handle, 0) == _winapi.WAIT_TIMEOUT
+            except Exception as exc:
+                observer_errors.append(exc)
+            return
+
+    observer = threading.Thread(target=observe_windows_interpreter, daemon=True) if os.name == "nt" else None
+    if observer is not None:
+        import _winapi
+
+        observer.start()
     started = time.monotonic()
-    with pytest.raises(OSError, match="timeout"):
-        _bounded_command([sys.executable, "-c", program, str(pid_file)], timeout=0.2)
-    assert time.monotonic() - started < 3
-    assert pid_file.exists()
-    assert not psutil.pid_exists(int(pid_file.read_text()))
+    try:
+        with pytest.raises(OSError, match="timeout"):
+            _bounded_command([sys.executable, "-c", program, str(pid_file)], timeout=0.5)
+        assert pid_file.exists()
+        if observer is not None:
+            observer.join(timeout=0.5)
+            assert not observer.is_alive()
+            assert not observer_errors
+            assert len(handles) == 1, "Interpreter handle was not captured while running"
+            # Closing the launcher's kill-on-close job terminates its interpreter
+            # asynchronously; prove that exact interpreter exits within the bound.
+            assert _winapi.WaitForSingleObject(handles[0], 1000) == _winapi.WAIT_OBJECT_0
+            assert _winapi.GetExitCodeProcess(handles[0]) != _winapi.STILL_ACTIVE
+        else:
+            assert not psutil.pid_exists(int(pid_file.read_text()))
+        assert time.monotonic() - started < 3
+    finally:
+        stop.set()
+        if observer is not None:
+            observer.join(timeout=0.5)
+            for handle in handles:
+                try:
+                    if _winapi.WaitForSingleObject(handle, 0) == _winapi.WAIT_TIMEOUT:
+                        # This exact handle belongs only to this test's interpreter.
+                        _winapi.TerminateProcess(handle, 1)
+                        assert _winapi.WaitForSingleObject(handle, 1000) == _winapi.WAIT_OBJECT_0
+                finally:
+                    _winapi.CloseHandle(handle)
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows Popen process handle lifecycle")
+@pytest.mark.parametrize("outcome", ["success", "exit_failure", "output_limit", "timeout"])
+def test_windows_command_releases_handle_with_process_and_traceback_retained(monkeypatch, outcome: str) -> None:
+    processes: list[subprocess.Popen] = []
+    real_popen = subprocess.Popen
+
+    def record_real_process(*args, **kwargs):
+        process = real_popen(*args, **kwargs)
+        processes.append(process)
+        return process
+
+    # Observe the actual process without replacing any process behavior/results.
+    monkeypatch.setattr(subprocess, "Popen", record_real_process)
+    programs = {
+        "success": "print('done')",
+        "exit_failure": "import sys; sys.exit(7)",
+        "output_limit": "import sys; sys.stdout.buffer.write(b'x'*1048576); sys.stdout.flush()",
+        "timeout": "import time; time.sleep(30)",
+    }
+    retained_error = None
+    try:
+        result = _bounded_command([sys.executable, "-c", programs[outcome]], timeout=0.5)
+    except OSError as exc:
+        retained_error = exc
+    assert len(processes) == 1
+    process = processes[0]
+    assert process.returncode is not None
+    assert process._handle.closed, "Cleanup must not depend on object/traceback garbage collection"
+    assert process.stdout.closed and process.stderr.closed
+    if outcome == "success":
+        assert retained_error is None
+        assert result.strip() == b"done"
+    else:
+        assert retained_error is not None and retained_error.__traceback__ is not None
+        expected = {"exit_failure": "code 7", "output_limit": "output limit", "timeout": "timeout"}
+        assert expected[outcome] in str(retained_error)
 
 
 @pytest.mark.parametrize("sample", [0, -1, 0.001, 6, True, math.nan, math.inf, "0.05"])

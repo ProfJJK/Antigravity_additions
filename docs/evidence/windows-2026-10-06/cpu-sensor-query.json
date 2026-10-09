@@ -1,0 +1,11 @@
+{
+  "platform": "Windows",
+  "observed_at": "2026-10-07T02:05:35.4341268Z",
+  "command": "Get-CimInstance -Namespace root/LibreHardwareMonitor -ClassName Sensor",
+  "status": "unavailable",
+  "error_id": "HRESULT 0x8004100e",
+  "message": "Invalid namespace",
+  "scope": "Direct read-only non-elevated WMI query, separate from guarded production telemetry",
+  "HWiNFO_running": true,
+  "host_configuration_modified": false
+}

@@ -1,0 +1,145 @@
+{
+  "schema": "cochem-legacy-continuity-reconciliation/1",
+  "captured_utc": "2026-10-07T18:15:49.438454+00:00",
+  "scope": "Public archived evidence and exact public installed/source module hashes, plus metadata-only ordinary-user continuity inspection. No original database, private snapshot, credential store, budget ledger or control-file content opened.",
+  "known": {
+    "preserved_sqlite_snapshots": 7,
+    "captured_job_rows": 646,
+    "historical_completions": 324,
+    "unfinished_or_unknown_held": 322,
+    "modern_jobs_created_by_preview": 0,
+    "snapshot_capture_utc": "2026-10-07T02:44:05.092605+00:00",
+    "cross_database_consistency": false,
+    "legacy_attempts_equal_paid_launches": false,
+    "historical_remaining_allowance": null,
+    "older_modern_ledger_search": "Known ProgramData roots absent; legacy recursive searches hit bounds and cannot establish global absence.",
+    "current_metadata": {
+      "present_paths": 13,
+      "absent_paths": 259,
+      "inaccessible_paths": 11,
+      "visible_modern_ledgers": 0,
+      "inaccessible_scope": "Only requested control names under C:\\ProgramData\\CoChemPipeline427\\private",
+      "legacy_hyperv_task_running": true,
+      "legacy_mcp_ingress_pid": 6728,
+      "process_liveness_scope": "Readable command-line metadata only; two candidate command lines inaccessible, no file-handle or DB writer proof."
+    }
+  },
+  "still_unknown": [
+    "Whether inaccessible known modern ledger paths exist and whether custom locations outside the declared scan contain authoritative ledgers.",
+    "Current legacy writer/open-handle and lease state at an eventual coordinated cutover; captured snapshots were not quiesced together.",
+    "Complete paid generation/review incident/day charges, component recovery attempt authority, and historical continuation lineage for any selected unfinished request.",
+    "A validated old-request-to-modern-workflow continuation map; no selected legacy request is automatically runnable."
+  ],
+  "facts_not_needing_owner_memory": [
+    "Known source locations and preservation hashes are already listed in captured evidence.",
+    "Current remaining allowance must remain unknown; no request to estimate spend or reconstruct it from memory is needed.",
+    "Old job completions remain historical; unfinished requests can stay held without choosing them for continuation.",
+    "The immutable unresolved-authority guard is already present in installed r3; paired protected bootstrap is not yet applied."
+  ],
+  "smallest_next_diagnostic": {
+    "script": "inspect-legacy-continuity.ps1",
+    "ordinary_result": "legacy-continuity-ordinary-user.json",
+    "optional_administrator_command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\inspect-legacy-continuity.ps1\"",
+    "purpose": "Resolve the eleven current visibility gaps and refresh exact known task/process metadata. This does not inspect any database contents or resolve spend.",
+    "required_for_other_prerequisite_staging": false,
+    "prepared_not_issued": true
+  },
+  "paired_hold_bootstrap_design": {
+    "implementation_state": "DESIGN_ONLY_NOT_IMPLEMENTED",
+    "existing_guard_module_sha256": "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852",
+    "proposed_evidence_file": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\unresolved-budget-evidence.proposed.json",
+    "proposed_evidence_file_sha256": "b7b822ff263720dfb443607f0e3cbf515d175b9b7784ea4fd15f8968b7ff3709",
+    "canonical_evidence_sha256": "1cf291591724b6edef17ba7e8d48fc6cce75830872ff6183ac1139aa313a3177",
+    "pure_validator_result": "Accepted by exact budget_authority._evidence; no SQLite connection or ledger constructors invoked.",
+    "steps": [
+      "Recheck stopped modern daemons, absence/custody of a fresh unreferenced private supervisor preparation root and preserve every old root/task/ledger/snapshot. If a real modern ledger is discovered, stop and design its consistent preservation/import instead of replacing it.",
+      "Create a fresh protected SYSTEM/Admin-private unpublished staging root and a durable INCOMPLETE paired-bootstrap marker before creating either ledger. Do not register tasks, provision identities, point configuration at it, or activate services.",
+      "Using frozen r3 Ledger/RecoveryLedger constructors only in this new staging root, record the same canonical unresolved provenance in both ledgers under their BEGIN IMMEDIATE guard. No fictional charge/incident/recovery-attempt records and no known allowance claimed.",
+      "Read back both immutable rows, exact provenance digests and rollback SQL guard definitions; test initial/additional/review/component spend refusal against disposable copies, never execute models or services. Existing historical snapshots remain immutable separate evidence, not flattened into invented modern spend.",
+      "Publish a CreateNew paired-completion receipt only after both ledgers and custody are verified. Every future installer/configuration/activation entrypoint must require this receipt and revalidate both holds. Missing/partial/mismatched state is a stopped manual-review hold, never automatic resume or cleanup.",
+      "The recorded hold blocks all repair/component actuation. Enabling independent repair later requires a separate reviewed append-only authority/import design; current code intentionally has no release/reset API."
+    ],
+    "why_not_generic_installer": "install_supervisor_windows.ps1 invokes provision, migrate-ledger and execution provisioning. Its missing-source NO_PRIOR_LEDGER path and new ledger constructors do not establish legacy authority or a paired hold. Do not invoke it for this bootstrap."
+  },
+  "authority_references": [
+    "S427-SRE-004",
+    "S427-SRE-005",
+    "S427-SRE-006",
+    "S427-DEPLOY-002",
+    "S427-DEPLOY-004"
+  ],
+  "module_pins": [
+    {
+      "relative": "cochem_supervisor/budget_authority.py",
+      "source_sha256": "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852",
+      "installed_r3_sha256": "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852",
+      "matches": true
+    },
+    {
+      "relative": "cochem_supervisor/state.py",
+      "source_sha256": "404abfa2971a8f4a865171fc8fee3fe2c51d7837b6d49975346e6bac3740ff74",
+      "installed_r3_sha256": "404abfa2971a8f4a865171fc8fee3fe2c51d7837b6d49975346e6bac3740ff74",
+      "matches": true
+    },
+    {
+      "relative": "cochem_supervisor/component_recovery.py",
+      "source_sha256": "3f1336f3ec7d9a2e14289c1f032f2baa9cfb1ab0bed06648e39f9ff016ac871d",
+      "installed_r3_sha256": "3f1336f3ec7d9a2e14289c1f032f2baa9cfb1ab0bed06648e39f9ff016ac871d",
+      "matches": true
+    },
+    {
+      "relative": "cochem_supervisor/engine.py",
+      "source_sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+      "installed_r3_sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+      "matches": true
+    },
+    {
+      "relative": "cochem_supervisor/upgrade.py",
+      "source_sha256": "6394295fc31dd9f7dca5fa541c11137be9ada340e7a2e62fc41cd744651753fd",
+      "installed_r3_sha256": "6394295fc31dd9f7dca5fa541c11137be9ada340e7a2e62fc41cd744651753fd",
+      "matches": true
+    },
+    {
+      "relative": "cochem_pipeline/legacy_history.py",
+      "source_sha256": "2c8d0c70ead8069bed691fb45c82bf405872924f5af702b9a4d67d342e855704",
+      "installed_r3_sha256": "2c8d0c70ead8069bed691fb45c82bf405872924f5af702b9a4d67d342e855704",
+      "matches": true
+    }
+  ],
+  "evidence_sources": [
+    {
+      "kind": "legacy_schema_discovery",
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\legacy-migration-discovery.json",
+      "sha256": "0aa4c3a2e764ae8a324f5c97a0896021d565df9361f468958370016242b4d533"
+    },
+    {
+      "kind": "snapshot_preservation_review",
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\legacy-preservation-followup.json",
+      "sha256": "abbdac3cd2037dffc2c1216c666f1c82315aed9c420fc8720bd28b06043ff958"
+    },
+    {
+      "kind": "held_job_preview",
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\legacy-held-preview-summary.json",
+      "sha256": "5e4c4128423d9ee87aaebe8a305f2e3b2b93dfc643c76f2058c64df4bd27be05"
+    },
+    {
+      "kind": "current_metadata_only_continuity",
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\legacy-continuity-ordinary-user.json",
+      "sha256": "23433c17d45291cadbc7e2a40d994e925be1bd1dd9c73d6b2578cfd3f982b4ec"
+    },
+    {
+      "kind": "canonical_srs",
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\knowledge\\.sources\\4.2.7_SRS.model-routing-2026-10-07.md",
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+    }
+  ],
+  "tests": {
+    "file": "legacy-continuity-tests-followup.xml",
+    "passed": 13,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "scope": "Actual WinPS5.1 disposable files/junction, metadata and process/task error/redaction/control-flow fixtures; no SYSTEM/DB/migration acceptance."
+  },
+  "linux_results_used": false
+}

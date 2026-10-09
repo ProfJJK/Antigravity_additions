@@ -1,0 +1,44 @@
+{
+  "canonical_requirements": [
+    "S427-PLAN-002",
+    "S427-PLAN-006"
+  ],
+  "created_utc": "2026-10-08T01:20:58.326911+00:00",
+  "files": [
+    {
+      "bytes": 2401,
+      "filename": "four-worker-planning-feasibility-20261007.json",
+      "sha256": "b7c3e098ae4366b86c1f09b016dd50a538199b9128175c19c3e896e34e97284d"
+    },
+    {
+      "bytes": 8907,
+      "filename": "pipeline-four-active-r3-v1.proposed.json",
+      "sha256": "58d55a93d9455d58c23ccc708f6680a2ee53448464fcc19990f9d50db850965e"
+    },
+    {
+      "bytes": 28182,
+      "filename": "worker-native-auth-status-r3-v1.py",
+      "sha256": "9be7ed68359e7a190eaf1112fa2ba1091af58123ededf24713891ea33bba3248"
+    },
+    {
+      "bytes": 23269,
+      "filename": "check-worker-native-auth-status-r3-v1.ps1",
+      "sha256": "879cfaab3bd69c8aa5315ece3afab3fb9a477dda0bb1a02de20bfcc2fb849e74"
+    },
+    {
+      "bytes": 21939,
+      "filename": "login-four-workers-status-first-r3-v1.ps1",
+      "sha256": "522eee0bda26204d842fd9890ff66c20676c881908360a9d3f506c8ae813be4f"
+    }
+  ],
+  "native_model_calls": 0,
+  "ordinary_windows_fixture_only": true,
+  "production_state_changes": 0,
+  "protected_config_changes": 0,
+  "reason": "Current canonical six-chapter planning requires six distinct immutable chapter-owner identities even though simultaneous shared capacity remains four. Actual installed-r3 SQLite fixture demonstrates four-worker stall and six-worker completion. Earlier four-worker recommendation is corrected.",
+  "rejected_powershell_entrypoints_explicitly_refuse_execution": true,
+  "replacement_scope": "Status-first authentication for all six existing identities, retaining four shared slots; only explicit logged-out profiles need attended login.",
+  "schema": "cochem-rejected-four-worker-proposal/1",
+  "scope_of_drafts": "Historical unreviewed preparation only; these scripts are not deployable.",
+  "status": "REJECTED_NOT_USABLE_NOT_APPLIED"
+}

@@ -1,0 +1,65 @@
+{
+    "schema":  "cochem-task-scheduler-acl-roundtrip-fixture/1",
+    "status":  "HELD",
+    "nonce":  "bbd9bf8061764e6ba8cdefa47fb6a149",
+    "powershell_version":  "5.1.26100.9444",
+    "is_64_bit_process":  true,
+    "administrator":  false,
+    "current_user_sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+    "tasks_created":  [
+                          "CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2"
+                      ],
+    "observations":  [
+
+                     ],
+    "security_descriptor_sets":  0,
+    "task_run_calls":  0,
+    "tasks_deleted":  0,
+    "existing_tasks_changed":  false,
+    "credentials_accessed":  false,
+    "pipeline_state_accessed":  false,
+    "system_tasks_created":  0,
+    "started_utc":  "2026-10-09T01:54:58.6780993Z",
+    "requested_descriptor":  {
+                                 "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:P(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)",
+                                 "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                 "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                 "control_flags":  36868,
+                                 "dacl_protected":  true,
+                                 "dacl_present":  true,
+                                 "ace_count":  3,
+                                 "aces":  [
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                              },
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-18"
+                                              },
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-32-544"
+                                              }
+                                          ]
+                             },
+    "failure":  {
+                    "phase":  "readback_2",
+                    "error_type":  "RuntimeException",
+                    "hresult":  -2146233087,
+                    "code":  "FIXTURE_DISABLED_NEVER_RUN_DEFINITION",
+                    "chain":  [
+                                  {
+                                      "error_type":  "RuntimeException",
+                                      "hresult":  -2146233087
+                                  }
+                              ]
+                },
+    "finished_utc":  "2026-10-09T01:54:58.8052996Z"
+}

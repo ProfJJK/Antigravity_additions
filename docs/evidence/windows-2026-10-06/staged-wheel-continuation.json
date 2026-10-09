@@ -1,0 +1,14 @@
+{
+  "schema": "cochem-installed-revision/1",
+  "verified": true,
+  "read_only": true,
+  "files": 106,
+  "source_sha256": "78f998fd86f12ba7298b9f7d664a693d95d8b12e38a7bfdbc3a890314a243fca",
+  "acceptance_files": 0,
+  "acceptance_sha256": null,
+  "scope": "Unprotected frozen staged wheel; exact current source/package verification, not SYSTEM installation",
+  "python": "3.12.13",
+  "executable": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv-copy\\Scripts\\python.exe",
+  "link_mode": "copy",
+  "observed_module_hardlinks": 1
+}

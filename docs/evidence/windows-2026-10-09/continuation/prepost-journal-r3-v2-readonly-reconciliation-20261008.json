@@ -1,0 +1,29 @@
+{
+  "controller": {
+    "instance_id": "c867588c063c4362beca10358ebf79ef",
+    "pid": 5788
+  },
+  "driver_sha256": "cb2c1b834978a310298bb224f526ae880182b00e88f38dec60b7c02d0d45d363",
+  "frozen_driver_requires_marker_before_every_post": true,
+  "http_get_calls": 0,
+  "http_post_calls": 0,
+  "intent_sha256": "294bfc7cfc8bccd38c883600876751862c35d562409352c36c2f576b9e5159d3",
+  "journal_filenames": [
+    "intent.json",
+    "invocation.lock",
+    "observation-0002.json"
+  ],
+  "journal_files_changed": 0,
+  "model_jobs_submitted": 0,
+  "observation_sha256": "2a6796e91c20fadf26602355b50213ce9883b2b65ab008d02120bf4dc2774eb2",
+  "original_failure": "controller_not_ready",
+  "original_intent_exact": true,
+  "post_attempt_markers": 0,
+  "recorded_at": 1791514305.2105846,
+  "schema": "cochem-live-prepost-readonly-reconciliation/1",
+  "startup_receipt_sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+  "status": "EXACT_PRE_POST_FAILURE_VERIFIED",
+  "tasks_changed": 0,
+  "token_contents_read": false,
+  "workflow_snapshots": 0
+}

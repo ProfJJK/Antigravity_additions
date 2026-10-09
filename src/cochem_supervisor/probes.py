@@ -17,6 +17,7 @@ import time
 import uuid
 
 from .monitor import classify_error, redact_diagnostic
+from .shared_io import open_shared_text
 
 _MAX_RESPONSE = 16 * 1024 * 1024
 _KINDS = {"MACRO_PLANNING_REQUEST", "MANIFEST_GENERATOR", "CHAPTER_DRAFT", "SYNTHESIS", "REPAIR_REQUEST", "REPAIR_REVIEW", "PREFLIGHT_REQUEST"}
@@ -358,10 +359,11 @@ def _reviewed_effort_contract(provider: str, model: str, effort: str, spec: dict
         _require(provider == "gemini" and effort in ("extended", "high")
                  and ((args[0] == "--thinking-level" and args[1] in
                        ("minimal", "low", "medium", "high", "MINIMAL", "LOW", "MEDIUM", "HIGH"))
+                      or (args[0] == "--effort" and args[1] in ("low", "medium", "high", "xhigh", "max"))
                       or (args[0] == "--thinking-budget" and bool(re.fullmatch("[0-9]{1,6}", args[1]))
                           and 1 <= int(args[1]) <= 131072)),
                  "Agy reasoning profile requires a reviewed thinking-only selector")
-        _require(effort != "high" or args == ["--thinking-level", "high"] or args == ["--thinking-level", "HIGH"],
+        _require(effort != "high" or args in (["--thinking-level", "high"], ["--thinking-level", "HIGH"], ["--effort", "high"]),
                  "Agy High reasoning profile must select the native high thinking level")
         inference = spec.get("inference_only")
         _require(isinstance(inference, dict) and set(inference) == {
@@ -382,6 +384,8 @@ def _reviewed_effort_contract(provider: str, model: str, effort: str, spec: dict
                  and arguments.count("{model}") == 1,
                  "Agy inference-only arguments must retain the selected model")
     metadata = contract["native_metadata"]
+    _require(provider != "gemini" or spec.get("protocol") != "agy-stream-json" or metadata is None,
+             "Agy stream has no verified native effort observation binding")
     if metadata is None:
         return contract  # The reviewed CLI cannot provide native observation evidence.
     _require(isinstance(metadata, dict) and set(metadata) == {"path", "value"},
@@ -412,6 +416,10 @@ def verify_effort_profile(receipt: dict, assignment: dict, provider_config: dict
     controller metadata, not the OS identity of an already exited process.
     """
     provider, model, effort = (assignment[key] for key in ("provider", "model", "reasoning_effort"))
+    if isinstance(provider_config, dict):
+        configured = provider_config.get(provider)
+        _require(not isinstance(configured, dict) or 'integration_hold' not in configured,
+                 'Isolated pipeline integration verification remains pending for this provider')
     if effort is None:
         return True
     if provider == "codex":
@@ -581,7 +589,7 @@ def _valid_health_sample(private_root: Path, client: ControllerClient, expected_
     path = private_root / "supervisor_status.json"
     if path.is_symlink() or not path.is_file() or path.stat().st_size > 65536:
         return None
-    with path.open("r", encoding="utf-8") as stream:
+    with open_shared_text(path) as stream:
         value = _json(stream.read(65537))
     if not isinstance(value, dict):
         return None

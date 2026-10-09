@@ -1,0 +1,74 @@
+{
+  "schema": "cochem-oracle-native-method-preparation/1",
+  "status": "SOURCE_ONLY_NOT_OPERATIONAL",
+  "recorded_at_utc": "2026-10-08T02:33:30.8095585Z",
+  "scope": "actual installed Oracle/SlotMonitor and Runtime.trip/cancel methods on new disposable SQLite; native boundaries inert",
+  "tests": {
+    "passed": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 0.524,
+    "terminal_seconds": 0.59,
+    "python": "3.12.13"
+  },
+  "historical_failures_preserved": [
+    "Initial guard-row fixture assumed execution_quarantines includes a valid live guard; corrected to exact disposable SQLite row.",
+    "Added Oracle composition initially refused ordinary tracking-file custody as expected; the test now substitutes only an exact disposable tracking-path boundary, leaving source and operational guard unchanged."
+  ],
+  "worker_processes_executed": 0,
+  "system_tasks_executed": 0,
+  "provider_jobs_executed": 0,
+  "production_state_modified": false,
+  "installed_r3_modified": false,
+  "full_service_acceptance": false,
+  "physical_acceptance_pass": false,
+  "human_interaction": "No additional interaction beyond one future reviewed consolidated administrator launch.",
+  "files": [
+    {
+      "name": "oracle-native-components-r3-v1.py",
+      "sha256": "e32634f56bd67199cde3a7b6501030da892f540fa40e184ac0206639b847d1a0",
+      "bytes": 28302
+    },
+    {
+      "name": "oracle-rogue-fixture-r3-v1.py",
+      "sha256": "137ffae58caee103a8025b7325f64580026ad6aefb10e95c3feba8f4494f0205",
+      "bytes": 2065
+    },
+    {
+      "name": "test_oracle_native_components_r3_v1.py",
+      "sha256": "efdfadfecd12db051000b900ac5d570e4e8cbf3bdb6b254462d41264f81326b7",
+      "bytes": 15256
+    },
+    {
+      "name": "ORACLE_NATIVE_METHOD_INTEGRATION_R3.txt",
+      "sha256": "205adcf63d7500422939805d135e256528e2f5352c46e195812eb5f69c0d6475",
+      "bytes": 3698
+    },
+    {
+      "name": "oracle-native-method-integration-draft-tests.xml",
+      "sha256": "898f21180c01255eb032758b2e15d4399dcde9a8d8d0ec4d3cf9357821b58173",
+      "bytes": 7486
+    },
+    {
+      "name": "oracle-native-method-integration-followup-tests.xml",
+      "sha256": "79073bd7cb314290dbc63f6b13a6a77413e294411a0251c7dd63becc0f271fd5",
+      "bytes": 5982
+    },
+    {
+      "name": "oracle-native-method-integration-final-tests.xml",
+      "sha256": "5359525a5d68e8ece2a2efb00cadb6da2c441cc3dca6cdb682e942488bc876c7",
+      "bytes": 9475
+    },
+    {
+      "name": "oracle-native-method-integration-final-followup-tests.xml",
+      "sha256": "19b5be75b5319fd545b421967925e7dc553e40efd281d783ce362a563e7a7205",
+      "bytes": 6173
+    },
+    {
+      "name": "oracle-native-method-integration-reviewed-tests.xml",
+      "sha256": "f7f3b06c2aefd7e4f8af8449af0c48a9bfe0fb091a5dc87995e4e0da5644241e",
+      "bytes": 6731
+    }
+  ]
+}

@@ -18,6 +18,7 @@ import shutil
 import subprocess
 import threading
 import time
+import uuid
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
@@ -75,7 +76,23 @@ def _cpu(sample_seconds: float) -> dict[str, Any]:
     return result
 
 
-def _cpu_temperature(result: dict[str, Any]) -> None:
+def _cpu_temperature(result: dict[str, Any], probe: str | None = None) -> None:
+    if probe is not None:
+        result['temperature_source'] = 'Protected LibreHardwareMonitorLib 0.9.6 CPU probe'
+        try:
+            if os.name != 'nt':
+                raise OSError('The configured CPU probe requires native Windows SYSTEM')
+            from .cpu_temperature import parse_cpu_temperature, verify_probe_bundle
+            executable = Path(probe)
+            executable = verify_probe_bundle(executable)
+            nonce = uuid.uuid4().hex
+            raw = _bounded_command([str(executable), '--nonce', nonce], cwd=executable.parent)
+            result.update(temperature_available=True,
+                          temperature_celsius=parse_cpu_temperature(raw, nonce, time.time()),
+                          temperature_error=None)
+        except (*_PROBE_ERRORS, AttributeError, UnicodeError, subprocess.SubprocessError) as exc:
+            result['temperature_error'] = 'Protected CPU temperature probe unavailable: ' + _error(exc)
+        return
     try:
         probe = getattr(psutil, "sensors_temperatures", None)
         if probe is None:
@@ -227,11 +244,12 @@ def _commit() -> dict[str, Any]:
     return result
 
 
-def _bounded_command(argv: list[str], *, timeout: float = 3, max_output_bytes: int = 32768) -> bytes:
+def _bounded_command(argv: list[str], *, timeout: float = 3, max_output_bytes: int = 32768,
+                     cwd: Path | None = None) -> bytes:
     """Drain both native pipes with bounded memory, including on Windows."""
     process = subprocess.Popen(
         argv, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        shell=False, close_fds=True,
+        shell=False, close_fds=True, cwd=cwd,
         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0) if os.name == "nt" else 0,
     )
     output = [bytearray(), bytearray()]
@@ -269,6 +287,11 @@ def _bounded_command(argv: list[str], *, timeout: float = 3, max_output_bytes: i
     finally:
         for reader in readers:
             reader.join(timeout=0.5)
+        if os.name == "nt" and process.returncode is not None and not any(reader.is_alive() for reader in readers):
+            # Popen otherwise keeps this Windows handle until finalization;
+            # retained error tracebacks can retain the terminated process too.
+            # A still-running pipe reader may be inside process.kill().
+            process._handle.Close()
     if timed_out:
         raise OSError("Resource probe command exceeded its timeout")
     if exceeded.is_set():
@@ -325,9 +348,9 @@ def _disk_counters() -> tuple[dict[str, Any], Any, float, str | None]:
         aggregate = psutil.disk_io_counters(perdisk=False, nowrap=False)
         if not devices or aggregate is None:
             raise OSError("OS did not report disk I/O counters")
-        return devices, aggregate, time.monotonic(), None
+        return devices, aggregate, time.perf_counter(), None
     except _PROBE_ERRORS as exc:
-        return {}, None, time.monotonic(), _error(exc)
+        return {}, None, time.perf_counter(), _error(exc)
 
 
 def _io_delta(before: Any, after: Any, elapsed: float) -> dict[str, Any]:
@@ -423,6 +446,7 @@ def _volumes(workspaces: Sequence[Path], io_result: dict[str, Any]) -> dict[str,
 
 def collect_resources(
     workspaces: Sequence[Path], sample_seconds: float = 0.05, *, nvidia_smi: str = "nvidia-smi",
+    cpu_temperature_probe: str | None = None,
 ) -> dict[str, Any]:
     """Measure actual resources; each unsupported probe reports unavailable.
 
@@ -438,14 +462,19 @@ def collect_resources(
         raise ValueError("workspaces must be a nonempty sequence of filesystem paths")
     if not isinstance(nvidia_smi, str) or not nvidia_smi.strip() or "\x00" in nvidia_smi:
         raise ValueError("nvidia_smi must identify one executable")
+    from .cpu_temperature import validate_probe_path
+    validate_probe_path(cpu_temperature_probe)
     before = _disk_counters()
     cpu = _cpu(sample_seconds)
     # CPU sampling can fail before waiting; a disk delta still needs real time.
-    remaining = sample_seconds - (time.monotonic() - before[2])
-    if remaining > 0:
+    # CPython 3.12 Windows monotonic can have a ~15.6 ms tick. Use the
+    # high-resolution performance counter for these short physical samples.
+    remaining = sample_seconds - (time.perf_counter() - before[2])
+    while remaining > 0:
         time.sleep(remaining)
+        remaining = sample_seconds - (time.perf_counter() - before[2])
     disk_io = _disk_io(before, _disk_counters())
-    _cpu_temperature(cpu)
+    _cpu_temperature(cpu, cpu_temperature_probe)
     return {
         "measured_at": time.time(), "cpu": cpu, "memory": _memory(),
         "commit": _commit(), "gpus": _gpus(nvidia_smi),

@@ -1,0 +1,81 @@
+{
+  "schema": "cochem-execution-foundation-continuation-python-preparation/1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "platform": "Windows",
+  "python": "3.12.13",
+  "helper": {
+    "path": "provision-execution-foundation-r3-v2.py",
+    "sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c"
+  },
+  "tests": {
+    "path": "test_execution_foundation_r3_v2.py",
+    "sha256": "4008910fecd5ff111e95fe9bf883b4a77965074985791a3365646a7a208be8ba",
+    "xml": "execution-foundation-r3-v2-tests-final.xml",
+    "xml_sha256": "45414d097cdca1c3bdb0cab40a6360cde42856de31f774c7fbbdf0d50095f4a9",
+    "passed": 39,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 2.74,
+    "pytest_reported_seconds": 2.83
+  },
+  "authority": {
+    "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+    "diagnostic_packet_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+    "held_original_foundation_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "preflight_receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "original_failure_cause_established": false,
+    "actual_receipt_hashes_checked_read_only": true,
+    "prior_task_state_verified_by_this_agent": false
+  },
+  "continuity": {
+    "unchanged_source_exact_functions": [
+      "require_absent",
+      "fresh_ram_type",
+      "production_ram_lock",
+      "registry_inspection",
+      "create_fresh_registry"
+    ],
+    "initial_shared_capacity": 4,
+    "worker_identities": 6,
+    "warm_pool_created": 0,
+    "containers_created": 0,
+    "models_executed": 0,
+    "old_helpers_unchanged": true
+  },
+  "proposed_write_set": [
+    "fresh helper/task/receipt namespace",
+    "seven new scoped RAM directories: workspace boundary plus six slot roots",
+    "private ACL and no-content-index attributes on those seven new directories",
+    "only missing Defender exclusions for the six scoped slot paths",
+    "new exclusive private RAM ledger",
+    "new private containers directory and empty capacity-four registry; transient new SQLite WAL/SHM possible"
+  ],
+  "fixture_scope": "New /2 authority checks use exact current public diagnostic/prior receipt and packet bytes. Assembled run tests use installed configuration and actual six worker receipts, with explicit inert SYSTEM/ACL/RAM/private-index/transport boundaries and a derived fixture daemon-ID baseline. The Docker collector and temporary SQLite constructor are real unchanged production functions. No live Docker, worker, provider, or privileged task action ran.",
+  "failure_cases": [
+    "fresh-state refusal before writes",
+    "valid changed RAM observation preserved before comparison",
+    "valid changed Docker observation preserved before comparison",
+    "numeric native guard failure before RAM",
+    "post-RAM hold preserves new ledger and roots",
+    "numeric native guard failure before registry preserves RAM outputs",
+    "changed second Docker observation preserved before comparison",
+    "partial registry directory preserved without retry",
+    "exclusive RAM-ledger write failure preserves partial bytes"
+  ],
+  "report": {
+    "schema": "cochem-execution-foundation/2",
+    "success": "SCOPED_RAM_AND_EMPTY_REGISTRY_VERIFIED",
+    "held": "EXECUTION_FOUNDATION_HELD",
+    "docker_traces_maximum": 2,
+    "commands_per_trace_maximum": 4,
+    "safe_causal_error_chain": true
+  },
+  "execution": {
+    "apply_performed": false,
+    "system_acceptance": false,
+    "existing_state_modified": false,
+    "protected_files_modified": false,
+    "credentials_or_profiles_modified": false
+  }
+}

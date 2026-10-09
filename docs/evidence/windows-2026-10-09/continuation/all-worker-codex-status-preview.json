@@ -1,0 +1,23 @@
+{
+    "schema":  "cochem-six-worker-native-status-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "provider":  "codex",
+    "slots":  [
+                  "slot1",
+                  "slot2",
+                  "slot3",
+                  "slot4",
+                  "slot5",
+                  "slot6"
+              ],
+    "parallel_workers":  1,
+    "stop_on_first_failure":  true,
+    "wrapper_sha256":  "fa9568207019c554b2f3246e50f414e94901f0f5a5f6f843771610c21e95e60c",
+    "source_sha256":  "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+    "all_six_targets_checked":  true,
+    "holds":  [
+
+              ],
+    "worker_processes_executed":  0,
+    "activation_ready":  false
+}

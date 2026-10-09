@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import sqlite3
+from contextlib import closing
 
 import pytest
 
@@ -105,8 +106,9 @@ def test_fresh_install_needs_no_previous_directory(tmp_path):
 
 def test_wrong_sqlite_database_and_link_are_rejected(tmp_path):
     source, target = roots(tmp_path)
-    with sqlite3.connect(source / 'supervisor.db') as db:
+    with closing(sqlite3.connect(source / 'supervisor.db')) as db:
         db.execute('CREATE TABLE unrelated(value)')
+        db.commit()
     with pytest.raises(ValueError, match='not a supervisor'):
         migrate_budget_state(source, target)
     (source / 'supervisor.db').unlink()

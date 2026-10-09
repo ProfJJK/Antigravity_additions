@@ -1,0 +1,10 @@
+{
+  "schema": "cochem-identity-scope-doc-clarification/1",
+  "current_installed_eligible_identities": 6,
+  "current_installed_configuration_changed": false,
+  "proposed_active_identities": 4,
+  "existing_os_accounts_preserved": 6,
+  "changed_login_package_prepared": false,
+  "observed_sha256": "45b1b606c86ba25b3f240a353666e4cc9dd2e949174ffb8ff4b022a24c61676f",
+  "handoff_sha256": "7aac61fa1b3900cf0ae4abbdb6c5a62022c18d664957ce8838091877a5871e5f"
+}

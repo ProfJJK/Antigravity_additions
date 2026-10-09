@@ -1,0 +1,32 @@
+{
+  "activation_ready": false,
+  "canonical_source": ".sources/4.2.7_SRS.model-routing-2026-10-07.md",
+  "corpus_bytes": 2114293,
+  "direct_protected_file_read": false,
+  "documents": 137,
+  "failed_binding_accepted": true,
+  "failure": {
+    "error_type": "ValueError",
+    "phase": "final_verification",
+    "winerror": null
+  },
+  "frozen_validator_sha256": "9f3b6c00255d6e5c9bc0a6e6bec546ae5a60a8287c2b24a65a2f675f6d3e0496",
+  "generation": "g-abed1cd030c746559aed6bb30a47093a",
+  "index_bytes": 3747840,
+  "index_ratio": 1.7726209186711586,
+  "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+  "nonce": "38737f69225044da8ff05483a616febc",
+  "owner_amendment_sources": [
+    ".sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md"
+  ],
+  "reconstructed_matches_reported": false,
+  "reconstructed_original_sha256": "8697a64a36367dc01e000846ad205fef19bde7efb1c5e5835ec2ae9c16e2a0a4",
+  "reconstruction": "json.dumps(value, sort_keys=True, indent=2), UTF-8, no trailing newline; matches frozen producer serialization",
+  "reported_protected_receipt_sha256": "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+  "schema": "cochem-owner-receipt-reconciliation/1",
+  "sections": 1708,
+  "source": "Parsed owner-supplied receipt JSON, saved locally; not a direct protected-file read",
+  "source_file": "knowledge-resume-final-verification-owner-receipt.json",
+  "source_file_sha256": "c275d9f5ae7752aa539a575b0b43adaf115eb8fc23e691ded33d1998a15a5dee",
+  "system_verifier_applied": false
+}

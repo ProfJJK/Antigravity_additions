@@ -1,0 +1,58 @@
+{
+  "schema": "cochem-reviewed-windows-preparation/1",
+  "captured_utc": "2026-10-08T01:27:17.852787+00:00",
+  "host": "AETHERDESK",
+  "state": "PREPARED_NOT_APPLIED",
+  "scope": "Create-only disabled SYSTEM task registration with exact r3 runtime/configuration bindings; no start, enable, triggers, restart or provisioning. Actual WinPS5.1 disposable control-file copying and complete function flow with simulated scheduler effects; ordinary metadata preview returned no holds.",
+  "artifacts": {
+    "register-stopped-warden-r3.ps1": {
+      "sha256": "eccc593f36cbf488a54775b4343bcf3cf8b261b7cd81e5536fb7f2f18466a198",
+      "bytes": 15935
+    },
+    "test_stopped_warden_registration.py": {
+      "sha256": "628e16419d8ade436d74e8631cd8e82a4b0c75ea07d86cd2cb90ec5fd2c780e8",
+      "bytes": 14066
+    },
+    "stopped-warden-registration-initial.xml": {
+      "sha256": "52c54ea2337287720ac605e88a1b75e6aa648ee15b379ee1edd7762336feb318",
+      "bytes": 11527
+    },
+    "stopped-warden-registration-followup.xml": {
+      "sha256": "4d8208d02e647c99bc44fd7c9f511fa5d0bc586a67176cfa903d103cef4e0063",
+      "bytes": 5240
+    },
+    "stopped-warden-registration-readonly-preview.json": {
+      "sha256": "c38024ca5f22a113c7cb2c87418f527eb6a64758e56f65786df16607545e3fc5",
+      "bytes": 914
+    }
+  },
+  "final_tests": {
+    "tests": 40,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 40,
+    "suite_seconds": 22.173
+  },
+  "final_xml": "stopped-warden-registration-followup.xml",
+  "earlier_failed_fixture_runs_retained": true,
+  "review": {
+    "reviewer": "host_inspection",
+    "kind": "independent_read_only_source_review",
+    "source_sha256": "eccc593f36cbf488a54775b4343bcf3cf8b261b7cd81e5536fb7f2f18466a198",
+    "finding": "No concrete defect found. TASK_CREATE=2, disabled-at-definition, no triggers/restart/Run, exact known r3 daemon argv/config bytes, full custody, private task DACL/readback and fresh-root/no-overwrite handling align. Existing Hyper-V task excluded from changes.",
+    "reviewer_executed_tests_or_privileged_actions": false
+  },
+  "limitations": [
+    "Actual administrator registration and private task ACL/state readback remain unperformed. Preview is not a SYSTEM acceptance or permission grant.",
+    "Six existing identities and four shared slots remain unchanged; copied configuration SHA135cd9 remains exact. No authentication, credential copying, new accounts, database, knowledge, repair budget, R: or legacy task mutations.",
+    "Activation is deliberately unavailable in this helper. Later reviewed commissioning must combine native authentication/acceptance, monitoring, enable/start, and any boot/recovery definition with preserved history and honest outstanding SRS gates.",
+    "The paired held-budget core is separate and is not invoked by registration. Registration itself grants no repair spend or budget authority."
+  ],
+  "production_tasks_created": 0,
+  "native_or_model_commands_executed": 0,
+  "original_databases_opened": false,
+  "credentials_read_or_modified": false,
+  "installed_configuration_or_runtime_changed": false,
+  "linux_results_used": false
+}

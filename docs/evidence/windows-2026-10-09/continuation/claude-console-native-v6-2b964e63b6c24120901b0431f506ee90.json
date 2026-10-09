@@ -1,0 +1,21 @@
+{
+    "schema":  "cochem-claude-console-native-fixture/1",
+    "status":  "HELD",
+    "fixture_pid":  37160,
+    "launcher_pid":  16872,
+    "nonce":  "2b964e63b6c24120901b0431f506ee90",
+    "powershell_version":  "5.1.26100.9444",
+    "is_64_bit_process":  true,
+    "helper_sha256":  "74c41bf1b118a62d2decae8d7d9c2ffeb2c19d977033435267f8155fac1f7bf9",
+    "user_console_accessed":  false,
+    "native_provider_jobs_executed":  0,
+    "system_tasks_created":  0,
+    "synthetic_events_written":  0,
+    "borrowed_stdin_closed":  false,
+    "started_utc":  "2026-10-09T01:25:02.7576807Z",
+    "failure":  {
+                    "phase":  "launch_binding",
+                    "error_type":  "CommandNotFoundException"
+                },
+    "finished_utc":  "2026-10-09T01:25:02.9126565Z"
+}

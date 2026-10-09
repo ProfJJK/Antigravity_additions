@@ -1,0 +1,178 @@
+{
+    "schema":  "cochem-stopped-postinstall-readonly/1",
+    "checked_at_utc":  "2026-10-07T05:29:08.0745650Z",
+    "source_snapshot":  "VERIFIED",
+    "source_files_verified":  171,
+    "receipts":  [
+                     {
+                         "path":  "C:\\Program Files\\CoChem\\InstallGuard4.2.7-windows-20261006\\identity-precheck.json",
+                         "status":  "READ",
+                         "sha256":  "8c908d1217ce65619d96d1e943da9d4876f7a6943c6057f8884c0920b83d147b",
+                         "schema":  "cochem-fresh-identity-precheck/1",
+                         "nonce":  "27c861adcbd741798cf66d7c9bb1c8b4",
+                         "system_sid":  "S-1-5-18",
+                         "result":  "FRESH_TARGETS_ABSENT",
+                         "local_accounts_checked":  6,
+                         "credential_targets_checked":  6,
+                         "credential_blobs_dereferenced":  false,
+                         "checked_at_utc":  "2026-10-07T05:10:00.7361047Z"
+                     },
+                     {
+                         "path":  "C:\\Program Files\\CoChem\\InstallResume4.2.7-windows-20261006\\identity-precheck.json",
+                         "status":  "READ",
+                         "sha256":  "e2ddc34037c7087fae4e1d3d9e501c7ecbc71ee3a7029922c4ed7ca5078b2f43",
+                         "schema":  "cochem-fresh-identity-precheck/1",
+                         "nonce":  "dfb58647f9864d71831b4c3fb3fade0e",
+                         "system_sid":  "S-1-5-18",
+                         "result":  "FRESH_TARGETS_ABSENT",
+                         "local_accounts_checked":  6,
+                         "credential_targets_checked":  6,
+                         "credential_blobs_dereferenced":  false,
+                         "checked_at_utc":  "2026-10-07T05:20:51.5621480Z"
+                     }
+                 ],
+    "layout_status":  "SIX_IDENTITIES_MATCH",
+    "slots":  [
+                  {
+                      "slot":  "slot1",
+                      "identity":  "CoChem422Worker1",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1006",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot1",
+                      "credential_target":  "CoChem422/slot1",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot1",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  },
+                  {
+                      "slot":  "slot2",
+                      "identity":  "CoChem422Worker2",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1007",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot2",
+                      "credential_target":  "CoChem422/slot2",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot2",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  },
+                  {
+                      "slot":  "slot3",
+                      "identity":  "CoChem422Worker3",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1008",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot3",
+                      "credential_target":  "CoChem422/slot3",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot3",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  },
+                  {
+                      "slot":  "slot4",
+                      "identity":  "CoChem422Worker4",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1009",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot4",
+                      "credential_target":  "CoChem422/slot4",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot4",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  },
+                  {
+                      "slot":  "slot5",
+                      "identity":  "CoChem422Worker5",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1010",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot5",
+                      "credential_target":  "CoChem422/slot5",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot5",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  },
+                  {
+                      "slot":  "slot6",
+                      "identity":  "CoChem422Worker6",
+                      "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1011",
+                      "root":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot6",
+                      "credential_target":  "CoChem422/slot6",
+                      "account_metadata_matches":  true,
+                      "path_metadata":  {
+                                            "path":  "C:\\ProgramData\\CoChemPipeline427\\workers\\slot6",
+                                            "status":  "INACCESSIBLE",
+                                            "hresult":  -2147024891
+                                        }
+                  }
+              ],
+    "private_directory_metadata":  {
+                                       "path":  "C:\\ProgramData\\CoChemPipeline427\\private",
+                                       "status":  "INACCESSIBLE",
+                                       "hresult":  -2147024891
+                                   },
+    "private_contents_read":  false,
+    "token_contents_read":  false,
+    "credential_store_accessed":  false,
+    "tasks":  [
+                  {
+                      "name":  "CoChem-4.2.7-Install-Preflight",
+                      "status":  "INACCESSIBLE_OR_READ_FAILED",
+                      "hresult":  -2147024891
+                  },
+                  {
+                      "name":  "CoChem-4.2.7-Install-Resume-Preflight",
+                      "status":  "INACCESSIBLE_OR_READ_FAILED",
+                      "hresult":  -2147024891
+                  },
+                  {
+                      "name":  "CoChem-4.2.2-Provision",
+                      "status":  "INACCESSIBLE_OR_READ_FAILED",
+                      "hresult":  -2147024891
+                  },
+                  {
+                      "name":  "CoChem-4.2.7-Warden",
+                      "status":  "MISSING",
+                      "hresult":  -2147024894
+                  },
+                  {
+                      "name":  "CoChem-4.2.7-Supervisor",
+                      "status":  "MISSING",
+                      "hresult":  -2147024894
+                  },
+                  {
+                      "name":  "CoChemHostWarden_V412",
+                      "status":  "READ",
+                      "principal":  "ansac",
+                      "enabled":  true,
+                      "state":  4,
+                      "last_result":  267009,
+                      "last_run":  "\/Date(1791245287000)\/",
+                      "trigger_count":  1,
+                      "action_count":  1
+                  },
+                  {
+                      "name":  "Mount_CoChem_RAMDisk",
+                      "status":  "INACCESSIBLE_OR_READ_FAILED",
+                      "hresult":  -2147024891
+                  }
+              ],
+    "runtime_custody":  {
+                            "root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+                            "status":  "INCOMPLETE_BOUNDED",
+                            "entries":  10373,
+                            "files":  8953,
+                            "remaining":  3324
+                        },
+    "installed_revision":  {
+                               "status":  "HELD_UNVERIFIED_CUSTODY"
+                           },
+    "system_acceptance":  false,
+    "activation_ready":  false
+}

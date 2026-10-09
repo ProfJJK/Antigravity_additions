@@ -1,0 +1,27 @@
+CURRENT STATUS: knowledge verified; r3 installed; six worker receipts verified.
+Do not rerun old worker tests, index recovery, successful verifier or earlier installers.
+
+The installed r3 receipt and direct read-only verification passed: 166 source files,
+109 application assets, unchanged configuration and zero holds. The installer
+records 15,013 verified custody entries. Four shared slots and Chapter 06 routing
+remain. Do not rerun the installer or the old worker batch.
+
+REQUESTED OWNER STEP: run once in Administrator PowerShell, wait for completion,
+and return final JSON or error. Preserve any partial folder and do not rerun:
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\inspect-execution-prerequisites-r3.ps1" -Apply
+
+This fresh Docker/R: inspection passed 45 preparation tests and independent review.
+Its preview has zero holds; Apply first validates private evidence and exact six
+completed task bindings. It creates only its own helper/config/report root and
+SYSTEM inspection task. It does not provision RAM/containers or start the pipeline.
+Existing R:, startup task, credentials, databases, budgets and knowledge are preserved.
+
+Prepared for later steps: scoped RAM/empty registry (44 Windows preparation tests),
+protected disposable project import (27), and corrected r3 native sign-in/status
+helpers (156). All passed independent review. These are preparation results;
+none of those phases has run on the protected deployment. Their commands have
+not been issued. Complete only the Docker/R: inspection requested above now.
+
+Full handoff/evidence:
+D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\docs\WINDOWS_MORNING_HANDOFF_4.2.7_2026-10-07.md

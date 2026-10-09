@@ -1,0 +1,24 @@
+{
+  "schema": "cochem-live-workflow-owner-approval/1",
+  "status": "OWNER_APPROVED_BOTH_PREPARED_TESTS",
+  "owner_answer": "Approved—run both tests",
+  "approved_initial_requests": [
+    "Synthetic study-note SRS/WBS",
+    "Addition and pytest in the registered disposable calculator project"
+  ],
+  "approved_model_inputs": [
+    "Fixture code",
+    "Generated test artifacts",
+    "Canonical pipeline requirements",
+    "Test diagnostics"
+  ],
+  "approved_destinations": ["OpenAI through existing Codex subscription", "Anthropic through eligible Claude subscription"],
+  "canonical_chapter_06_routing_unchanged": true,
+  "credentials_and_unrelated_project_data_excluded": true,
+  "exact_scope_file": "LIVE_WORKFLOW_TEST_SCOPE_20261009.json",
+  "exact_scope_sha256": "b35b01c72d68b58909a717c8641ef3c1bd48a191427237ec8cb5caefdd411949",
+  "no_further_approval_required_for_this_scope": true,
+  "model_jobs_submitted": 0,
+  "current_execution_hold": "Warden resident memory above the canonical 50 MiB limit; admission paused",
+  "performance_threshold_changes_approved": false
+}

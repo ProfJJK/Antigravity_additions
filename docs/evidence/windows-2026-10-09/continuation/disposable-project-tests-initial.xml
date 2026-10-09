@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="27" time="9.729" timestamp="2026-10-07T10:52:36.078903-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_real_git_import_exact_objects_reference_and_idempotence_refusal" time="0.271" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_pre_mutation_refusals_preserve_targets[bundle]" time="0.008" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_pre_mutation_refusals_preserve_targets[identity]" time="0.008" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_pre_mutation_refusals_preserve_targets[occupied]" time="0.010" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_pre_mutation_refusals_preserve_targets[template]" time="0.009" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[extra_ref]" time="0.274" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[changed_ref]" time="0.265" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[extra_config]" time="0.372" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[alternate]" time="0.350" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[worktree]" time="0.349" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_repository_verification_rejects_drift_without_repair[extra_object]" time="0.359" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_absent_ref_precondition_rejects_overwrite" time="0.233" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_file_id_info_matches_python_312_files_and_directories" time="0.447" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_programdata_ancestor_custody_read_only" time="0.400" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_dotnet_inherit_only_vs_effective_untrusted_grant[False]" time="0.397" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_dotnet_inherit_only_vs_effective_untrusted_grant[True]" time="0.387" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_git_custody_and_in_memory_drift_refusal[valid]" time="0.736" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_git_custody_and_in_memory_drift_refusal[hash]" time="0.565" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_git_custody_and_in_memory_drift_refusal[identity]" time="0.554" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_git_custody_and_in_memory_drift_refusal[alias]" time="0.581" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_git_custody_and_in_memory_drift_refusal[acl]" time="0.459" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_ps51_native_stderr_is_withheld_and_exit_handled[0]" time="0.486"><failure message="AssertionError: assert {'preference'...ue, 'exit': 0} == {'exit': 0, '...ence': 'Stop'}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'preference': 1} != {'preference': 'Stop'}&#10;  Use -v to get more diff">exit_code = 0
+
+    @pytest.mark.parametrize('exit_code',[0,2])
+    def test_actual_ps51_native_stderr_is_withheld_and_exit_handled(exit_code):
+        result=powershell(f"$exitCode={exit_code};"+r'''
+    $python='C:\Program Files\CoChem\Toolchain4.2.7-windows-20261006\Python312\python.exe'
+    $code="import sys; print('private-bootstrap-fixture',file=sys.stderr); sys.exit("+$exitCode+")"
+    $result=Invoke-PrivateImporter $python @('-I','-S','-B','-c',$code)
+    @{exit=$result.exit_code;unexpected=$result.unexpected_output;preference=$ErrorActionPreference}|ConvertTo-Json -Compress
+    ''')
+        assert result.returncode==0,result.stderr
+        assert 'private-bootstrap-fixture' not in result.stdout+result.stderr
+&gt;       assert json.loads(result.stdout)=={'exit':exit_code,'unexpected':True,'preference':'Stop'}
+E       AssertionError: assert {'preference'...ue, 'exit': 0} == {'exit': 0, '...ence': 'Stop'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'preference': 1} != {'preference': 'Stop'}
+E         Use -v to get more diff
+
+windows-deployment-next\test_disposable_project_import.py:166: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_actual_ps51_native_stderr_is_withheld_and_exit_handled[2]" time="0.430"><failure message="AssertionError: assert {'preference'...ue, 'exit': 2} == {'exit': 2, '...ence': 'Stop'}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'preference': 1} != {'preference': 'Stop'}&#10;  Use -v to get more diff">exit_code = 2
+
+    @pytest.mark.parametrize('exit_code',[0,2])
+    def test_actual_ps51_native_stderr_is_withheld_and_exit_handled(exit_code):
+        result=powershell(f"$exitCode={exit_code};"+r'''
+    $python='C:\Program Files\CoChem\Toolchain4.2.7-windows-20261006\Python312\python.exe'
+    $code="import sys; print('private-bootstrap-fixture',file=sys.stderr); sys.exit("+$exitCode+")"
+    $result=Invoke-PrivateImporter $python @('-I','-S','-B','-c',$code)
+    @{exit=$result.exit_code;unexpected=$result.unexpected_output;preference=$ErrorActionPreference}|ConvertTo-Json -Compress
+    ''')
+        assert result.returncode==0,result.stderr
+        assert 'private-bootstrap-fixture' not in result.stdout+result.stderr
+&gt;       assert json.loads(result.stdout)=={'exit':exit_code,'unexpected':True,'preference':'Stop'}
+E       AssertionError: assert {'preference'...ue, 'exit': 2} == {'exit': 2, '...ence': 'Stop'}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {'preference': 1} != {'preference': 'Stop'}
+E         Use -v to get more diff
+
+windows-deployment-next\test_disposable_project_import.py:166: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_failure_metadata_is_strictly_sanitized[expected]" time="0.384" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_failure_metadata_is_strictly_sanitized[secret]" time="0.411" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_failure_metadata_is_strictly_sanitized[success_without_failure]" time="0.375" /><testcase classname="windows-deployment-next.test_disposable_project_import" name="test_nonadministrator_apply_refuses_before_mutation" time="0.290" /></testsuite></testsuites>

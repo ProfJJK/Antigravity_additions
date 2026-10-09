@@ -1,0 +1,65 @@
+OPTIONAL PROTECTED ACCEPTANCE SETUP — PREPARED, NOT EXECUTED
+
+This batch is separate from the already reviewed basic first-start command.
+Oracle testing and the two observation services are not global first-use
+requirements. Do not wait for this optional batch merely to begin a usable
+pipeline. The original run-pipeline-commissioning-r3-v1.ps1 remains unchanged.
+
+When the owner chooses this later batch, use one elevated interactive Windows
+PowerShell console. Prepared command (not issued or executed by this preparation):
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-protected-acceptance-setup-r3-v1.ps1" -Apply -Interactive
+
+Without -Apply, the same script prints a read-only plan. It never creates a
+task or calls a provider during that preview. Ordinary-token private metadata
+holds remain explicit; absence is not inferred from access denied.
+
+The batch stages an independent supervisor runtime with explicitly unresolved
+budget authority. If the original controller has never been commissioned,
+it invokes the existing attended status-first/first-start series unchanged.
+Browser authorization is requested only where that frozen helper cannot reuse
+a verified session. Its current coverage can request up to twelve Codex/Claude
+profile authorizations; that is helper policy, not a universal SRS minimum.
+
+If a successful commissioning receipt already exists, the batch reattests the
+exact current task instance and SYSTEM process PID/creation/image. It never
+replays authentication/first-start, stops the Warden, or accepts an arbitrary
+replacement process. An already completed exact independent staging receipt
+can be reused; partial or mismatched state is held, never reset.
+
+It then installs the held observation service and the resource observer,
+both with their reviewed fresh namespaces. The held service observes but
+cannot restart, recover or repair the Warden, change releases, or spend money.
+The resource observer starts an unattended first-instance measurement window.
+Its initial samples are not a completed 48-hour result. A reboot or replacement
+controller requires new reviewed attestation; this package does not fake resume.
+
+ORACLE ORDERING CORRECTION
+Oracle maintenance acceptance is deliberately deferred in BOTH branches.
+Its reviewed helper preserves warden.lock and an Oracle scratch namespace.
+The unchanged first-start helper requires that lock absent and only the known
+Docker fixture in slot1 scratch. The two helpers therefore cannot run in that
+order. No preserved lock, fixture, task or receipt is deleted to make them fit.
+This supersedes the fresh-sequencing suggestion in
+oracle-operational-root-review-20261008.json, not the Oracle package's internal
+source/tests review. Actual Oracle acceptance remains pending for a separately
+reviewed maintenance/preservation disposition.
+
+SUCCESS IS LIMITED
+A successful result means the exact commissioned controller and the two held
+observation components reached their initial evidence boundaries. It does not
+establish accepted routed workflows/MCP results, full recovery or paid repair,
+legacy budget authority, genuine desktop-heap usage, recovery-latency evidence,
+or the completed 48-hour continuity window. Those remain separate engineering
+and acceptance work. Monitoring needs host availability, not owner supervision.
+
+FAILURE / INTERRUPTION
+The first failure stops later phases. A protected public metadata receipt records
+the phase; existing partial outputs and any running controller/observer remain.
+Do not rerun this command, stop tasks, delete files, reset ledgers, or repeat
+browser logins automatically. The retained receipts support the next review.
+
+No Apply, SYSTEM task, provider, controller call or model job was executed while
+preparing this package. Credentials, databases, repair budgets, six isolated
+identities, four shared slots, Chapter 06 routing and the existing 8 GiB R: drive
+and startup task are unchanged.

@@ -138,10 +138,12 @@ def test_workspace_capture_rejects_a_real_hardlink_to_external_material(tmp_path
 
 
 def _run_actual_pytest(case,node,root,selection):
+    from cochem_pipeline.pytest_assertions import ASSERTION_OBSERVER, bind_assertion_evidence
     root.mkdir()
     materialize(root,case.store.coding_files(node['payload']['snapshot_sha256']))
     report=root.parent/(root.name+'-junit.xml')
-    process=subprocess.run([sys.executable,'-I','-m','pytest',selection,
+    assertions=root.parent/(root.name+'-assertions.json')
+    process=subprocess.run([sys.executable,'-I','-c',ASSERTION_OBSERVER,str(assertions),str(root),selection,
         '--junitxml='+str(report),'-p','no:cacheprovider','-q'],cwd=root,
         capture_output=True,text=True,timeout=30)
     assert process.returncode in (0,1),process.stdout+process.stderr
@@ -153,6 +155,7 @@ def _run_actual_pytest(case,node,root,selection):
     evidence['commands'][0].update(junit=parse_junit(data),junit_cases=junit_cases(data),
         junit_sha256=hashlib.sha256(data).hexdigest(),stdout=process.stdout,stderr=process.stderr,
         exit_code=process.returncode)
+    bind_assertion_evidence(evidence['commands'][0]['junit_cases'], assertions.read_bytes(), evidence['source']['files'])
     return evidence
 
 
@@ -168,6 +171,32 @@ def test_actual_same_named_old_module_cannot_substitute_for_newly_sealed_regress
     assert case.state()['cycle']==2
     assert case.state()['sealed_tests_snapshot'] is None
     assert not any(job['kind']=='CODE_EDIT' for job in case.store.coding_workflow(case.workflow_id)['jobs'])
+
+
+@pytest.mark.parametrize('statement', [
+    'raise RuntimeError("before meaningful assertion")',
+    'raise RuntimeError("AssertionError: assert 1 == 2")',
+    'raise AssertionError("explicit raise rather than executed assertion")',
+])
+def test_actual_nonassertion_failure_cannot_authorize_code_edit(tmp_path, statement):
+    case = CodingFixture(tmp_path)
+    case.plan()
+    case.initial_research()
+    author = case.claim('CODE_TEST_AUTHOR')
+    before = case.store.coding_files(case.state()['current_snapshot'])
+    source = ('def test_regression():\n    ' + statement + '\n    assert 1 == 2\n').encode()
+    after = {**before, 'tests/test_regression.py': source}
+    case.complete_native(author, {'requirements_traced': ['REQ-1']},
+        {'changes': observed_changes(before, after, before, case.project, tests_only=True),
+         'snapshot_sha256': digest(manifest(after))}, after)
+    node = case.claim('CODE_TEST')
+    evidence = _run_actual_pytest(case, node, tmp_path / 'nonassertion-red', 'tests/test_regression.py')
+    assert evidence['commands'][0]['junit']['failures'] == 1
+    assert not any(item.get('assertion_failure') for item in evidence['commands'][0]['junit_cases'])
+    case.complete_controller(node, {'passed': False, 'test_receipt_sha256': digest(evidence)}, evidence)
+    assert case.state()['cycle'] == 2
+    assert case.state()['sealed_tests_snapshot'] is None
+    assert not any(job['kind'] == 'CODE_EDIT' for job in case.store.coding_workflow(case.workflow_id)['jobs'])
 
 
 @pytest.mark.parametrize('shape',['module','class','class_parameterized'])

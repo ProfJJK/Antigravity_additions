@@ -1,0 +1,128 @@
+{
+  "schema": "cochem-oracle-native-operational-preparation/1",
+  "prepared_at_utc": "2026-10-08T02:58:32.3761913Z",
+  "files": [
+    {
+      "name": "run-oracle-native-acceptance-r3-v1.py",
+      "sha256": "56e78536c2ce85e04d519b13a3347ea620bdf0ab105ed537a0cc9b4afedd9a0d",
+      "bytes": 19408
+    },
+    {
+      "name": "check-oracle-native-acceptance-r3-v1.ps1",
+      "sha256": "196a696c4f6c5626a34b83d77ae28444edfa88aeac8274b0e69de8096987760c",
+      "bytes": 21845
+    },
+    {
+      "name": "test_oracle_native_operational_r3_v1.py",
+      "sha256": "fceefd2faac12dcd3e8e55fbee96e76ccacc46bacc7251942b17cf68a62fbe8a",
+      "bytes": 16980
+    },
+    {
+      "name": "oracle-native-components-r3-v1.py",
+      "sha256": "e32634f56bd67199cde3a7b6501030da892f540fa40e184ac0206639b847d1a0",
+      "bytes": 28302
+    },
+    {
+      "name": "oracle-rogue-fixture-r3-v1.py",
+      "sha256": "137ffae58caee103a8025b7325f64580026ad6aefb10e95c3feba8f4494f0205",
+      "bytes": 2065
+    },
+    {
+      "name": "test_oracle_native_components_r3_v1.py",
+      "sha256": "efdfadfecd12db051000b900ac5d570e4e8cbf3bdb6b254462d41264f81326b7",
+      "bytes": 15256
+    },
+    {
+      "name": "ORACLE_NATIVE_METHOD_INTEGRATION_R3.txt",
+      "sha256": "205adcf63d7500422939805d135e256528e2f5352c46e195812eb5f69c0d6475",
+      "bytes": 3698
+    },
+    {
+      "name": "oracle-native-operational-draft-tests.xml",
+      "sha256": "ecb626a9a1943389e6e15a50d17e60ffb46ed66faf1aa475e3e140d44d56b832",
+      "bytes": 27788
+    },
+    {
+      "name": "oracle-native-operational-followup-tests.xml",
+      "sha256": "2ff8f42d59086c744d568daaefe4315904aee2dbf88936e651275181ad2ef6e6",
+      "bytes": 13395
+    },
+    {
+      "name": "oracle-native-operational-followup-2-tests.xml",
+      "sha256": "73195547d979753044084e5c98029d808cb08623c85a2a4e299748a0d6232c94",
+      "bytes": 4583
+    },
+    {
+      "name": "oracle-native-operational-followup-3-tests.xml",
+      "sha256": "db730f3a20630cee6af2fd28419d7b2763f9232604325224fd8e06ef61ccf3c7",
+      "bytes": 5765
+    },
+    {
+      "name": "oracle-native-operational-followup-4-tests.xml",
+      "sha256": "839ae6d682f0b71c5698fbf7cae058be55ee34058cbcbea34998517c461fc76d",
+      "bytes": 5924
+    },
+    {
+      "name": "oracle-native-operational-final-tests.xml",
+      "sha256": "cb090d294b39e6f4f71784faf8c88a2037db9f679d7b4e5833082fae0890f5bc",
+      "bytes": 12408
+    }
+  ],
+  "tests": {
+    "final_xml": "oracle-native-operational-final-tests.xml",
+    "passed": 69,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 14.571,
+    "pytest_terminal_seconds": 14.66,
+    "operational_tests": 31,
+    "method_component_tests": 38,
+    "scope": "Ordinary Windows disposable fixtures and inert protected-copy/task boundaries; actual service-lock interoperability tested on disposable files. No SYSTEM task or worker execution.",
+    "earlier_failures_preserved": true
+  },
+  "operational_entry": {
+    "wrapper": "check-oracle-native-acceptance-r3-v1.ps1",
+    "helper": "run-oracle-native-acceptance-r3-v1.py",
+    "root": "C:\\Program Files\\CoChem\\OracleNativeAcceptance4.2.7-windows-20261008-r3-v1",
+    "task": "CoChem-4.2.7-OracleNativeAcceptance-20261008-r3-v1",
+    "private_fixture": "C:\\ProgramData\\CoChemPipeline427\\private\\oracle-native-acceptance-20261008-r3-v1",
+    "ram_fixture": "R:\\CoChem427-windows-20261007\\slot1\\.cochem-scratch\\oracle-native-acceptance-20261008-r3-v1",
+    "installed_runtime": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3"
+  },
+  "maintenance": {
+    "initial_daemon_tasks_disabled_or_absent": true,
+    "exact_consumed_commissioning_task_supported_only_disabled_terminal_no_instances": true,
+    "maintained_production_byte_zero_lock": true,
+    "existing_lock_bytes_identity_acl_preserved": true,
+    "absent_lock_create_new_zero_only": true,
+    "direct_daemon_process_census": true,
+    "worker_identity_exclusion": "All six production identities; selected identity handed to unchanged native launch path",
+    "tasks_stopped_or_deleted": 0,
+    "automatic_retry": false,
+    "order_before_held_supervisor_activation": true,
+    "global_first_start_prerequisite": false
+  },
+  "acceptance_scope": {
+    "actual_installed_Oracle_SlotMonitor_Runtime_trip_Runtime_cancel_NativeRunner_terminate_WindowsProcess_close": true,
+    "full_Runtime_construction": false,
+    "fresh_JobStore_and_stale_completion_fencing": true,
+    "production_JobStore_opened": false,
+    "system_execution_pending": true,
+    "physical_acceptance_complete": false,
+    "full_srs_acceptance": false
+  },
+  "preparation_actions": {
+    "apply_executed": false,
+    "full_wrapper_host_preview_executed": false,
+    "protected_installation_changed": false,
+    "native_workers_launched": 0,
+    "model_jobs_executed": 0,
+    "production_tasks_mutated": 0,
+    "old_files_preserved": true
+  },
+  "review": {
+    "root_review": "Parent read final operational maintenance, commissioning binding, byte lock, fixture paths and bounded parent failure transport; no concrete blocker reported before archival.",
+    "future_cutover": "Establish maintenance safely in a later consolidated operation or defer the fixture; never stop owner work merely to run this acceptance."
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "provenance": "Owner pasted the protected knowledge-acceptance.json after the first continuation attempt. Original file bytes and SHA256 have not yet been independently inspected.",
+  "receipt": {
+    "budgets_modified": false,
+    "configuration_modified": false,
+    "daemon_started": false,
+    "failure": {"error_type": "WindowsIsolationError", "phase": "new_index", "winerror": null},
+    "finished_at_unix_ms": 1791378635667,
+    "helper_sha256": "832eb45e9629f2bcde75eff58a455135934118bc5ab9f45c7d2870c9db0950ca",
+    "index_created_new": true,
+    "legacy_full_continuity_verified": false,
+    "native_model_jobs_executed": 0,
+    "nonce": "d4606fa578ae401b81ace37cd8e2909b",
+    "operator_review_required": true,
+    "original_databases_read_or_modified": false,
+    "payload_inventory_sha256": "edb97ec08cfdc6e451c9a875b4e9f300dc67b8e9af03b32feada9d6251240892",
+    "pipeline_config_sha256": "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+    "production_permission_checks_used": true,
+    "schema": "cochem-private-knowledge-system-acceptance/1",
+    "source_databases_imported": false,
+    "started_at_unix_ms": 1791378634141,
+    "status": "KNOWLEDGE_ACCEPTANCE_FAILED",
+    "system_sid": "S-1-5-18"
+  },
+  "index_created_new_flag_scope": "The helper sets this after creating and validating the state directory; it does not establish successful index publication.",
+  "next_phases_started": false,
+  "original_artifacts_must_be_preserved": true,
+  "automatic_retry_allowed": false,
+  "activation_ready": false
+}

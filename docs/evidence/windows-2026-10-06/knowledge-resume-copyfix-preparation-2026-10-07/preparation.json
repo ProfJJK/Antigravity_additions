@@ -1,0 +1,71 @@
+{
+  "activation_ready": false,
+  "agent_applied_recovery": false,
+  "agent_registered_system_task": false,
+  "archive_is_standalone_executable_package": false,
+  "artifacts": [
+    {
+      "file": "resume-private-knowledge-copyfix.ps1",
+      "length": 20057,
+      "sha256": "71b4e2474a6802c36c8c9cebb2330449bd5e776fa2de3b5d293f333c1528404f"
+    },
+    {
+      "file": "test_knowledge_resume_copyfix.py",
+      "length": 11951,
+      "sha256": "a12278313abf46b2b81ce6f15d8921e55f98cc68b833ffd7d98b31da721e4069"
+    },
+    {
+      "file": "knowledge-resume-copyfix-final-tests.xml",
+      "length": 2595,
+      "sha256": "45bb6897399ee059405d5193648708dd2542f3fd3733e88a890d624d647e8a1b"
+    },
+    {
+      "file": "knowledge-resume-copyfix-initial-tests.xml",
+      "length": 11213,
+      "sha256": "7aa83077605db295ad934f06fd32f1c25ff1bfee7c3d1e11664b06760a536575"
+    },
+    {
+      "file": "knowledge-resume-copyfix-readonly-preview.json",
+      "length": 1853,
+      "sha256": "8c710a7ed55d8a5d0e73bbbf05246fc023cf9e756d6437178e60416380b8faee"
+    }
+  ],
+  "cause": "PowerShell singleton nested-array concatenation flattened the first source/hash pair; original Apply created the private resume root then failed at Get-Item path C, before copying helpers or registering resume task.",
+  "date": "2026-10-07",
+  "execution_location": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next",
+  "fix": "Named PSCustomObject records for three exact helpers; complete source read/hash/identity/length validation before first exclusive copy; preserve original Python target, failed wrapper and evidence.",
+  "host": "AETHERDESK",
+  "native_model_jobs_executed": 0,
+  "original_artifacts_unchanged": {
+    "resume-private-knowledge.ps1": "fdfbd0e313acdb75047d5ef51768654c58c9193991607e04d08c7dc35590bdfa",
+    "resume-private-knowledge.py": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b"
+  },
+  "preview": {
+    "existing_root_private_empty_check_deferred": true,
+    "existing_root_reused_only_if_empty": true,
+    "holds": [],
+    "mode": "READ_ONLY_PLAN"
+  },
+  "production_state_or_acl_modified_by_agent": false,
+  "reviewers": [
+    "root",
+    "native_next"
+  ],
+  "root_recovery_gate": {
+    "administrator_must_verify": "Exact ordinary private SYSTEM/Admin FullControl OI+CI root, zero entries, no resume task; reject any difference without cleanup or retry",
+    "creation_and_last_write_utc": "2026-10-07T14:08:15.5776970Z",
+    "nonadmin_empty_root_claim": false,
+    "root": "C:\\Program Files\\CoChem\\KnowledgeResume4.2.7-windows-20261007-r2"
+  },
+  "schema": "cochem-knowledge-resume-copyfix-preparation/1",
+  "status": "REVIEWED_PREPARED_NOT_APPLIED_BY_AGENT",
+  "tests": {
+    "errors": 0,
+    "failed": 0,
+    "initial_diagnostic_preserved": "10 passed /2 fixture failures caused by missing explicit Utility module import in test harness; corrected harness only.",
+    "junit_seconds": 5.914,
+    "passed": 14,
+    "scope": "Actual Windows PowerShell5.1 copy loop and exact Apply try-body through simulated task-construction boundary; no real scheduled task. Disposable ordinary-user ACL fixtures, real CreateNew copy/hash/Win32 file-identity checks.",
+    "skipped": 0
+  }
+}

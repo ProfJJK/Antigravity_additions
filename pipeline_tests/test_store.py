@@ -47,12 +47,16 @@ def finish(store, job, output, provider=None):
 
 def manifest(count=6):
     return {"chapters": [{"chapter_id": f"ch-{index}", "title": f"Chapter {index}",
-                           "requirements": ["REQ-1"]} for index in range(count)]}
+                           "requirements": ["REQ-1"], 'wbs_tasks_defined': [
+                               {'id': f'ch-{index}-declared', 'description': 'Implement assigned requirement',
+                                'requirements': ['REQ-1']}]} for index in range(count)]}
 
 
 def chapter(job):
     return {"chapter_id": job["chapter_id"], "requirements_traced": job["payload"]["requirements"],
-            "wbs_tasks_defined": [{"task_id": f"{job['chapter_id']}-01", "description": "Implement and verify requirement"}],
+            "wbs_tasks_defined": job['payload']['wbs_tasks_defined'] + [
+                {'id': f"{job['chapter_id']}-01", 'description': 'Verify requirement',
+                 'requirements': job['payload']['requirements']}],
             "artifact_uri": f"db://{job['workflow_id']}/{job['chapter_id']}",
             "artifact_text": f"# {job['payload']['title']}\nRequirement: REQ-1\nVerified structured chapter."}
 
@@ -63,6 +67,11 @@ def seeded(tmp_path, count=6):
     job = store.claim("manifest-worker")
     finish(store, job, manifest(count))
     return store, workflow["workflow_id"]
+
+
+def synthesis_output(job, text='Complete document'):
+    return {'artifact_text': text, **{key: job['payload'][key] for key in (
+        'chapter_hashes', 'chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter')}}
 
 
 def test_submit_is_durable_idempotent_and_preserves_legacy_tables(tmp_path):
@@ -143,7 +152,7 @@ def test_six_chapter_scatter_with_four_worker_limit_and_real_overlap(tmp_path):
     synthesis = store.claim("synthesis-controller")
     assert synthesis["kind"] == "SYNTHESIS"
     assert len(synthesis["payload"]["chapter_hashes"]) == 6
-    output = {"artifact_text": "# Complete SRS/WBS", "chapter_hashes": synthesis["payload"]["chapter_hashes"]}
+    output = synthesis_output(synthesis, '# Complete SRS/WBS')
     finish(store, synthesis, output)
     final = store.workflow(workflow_id)
     assert final["root"]["status"] == "COMPLETED"
@@ -192,7 +201,7 @@ def test_synthesis_rejects_wrong_hashes_or_unreserved_provider_receipt(tmp_path)
     drafting = store.claim("chapter-owner")
     finish(store, drafting, chapter(drafting))
     synthesis = store.claim("synthesis-owner")
-    output = {"artifact_text": "Complete document", "chapter_hashes": synthesis["payload"]["chapter_hashes"]}
+    output = synthesis_output(synthesis)
     with pytest.raises(ValueError, match="receipt"):
         finish(store, synthesis, output, "codex" if synthesis["route"]["provider"] != "codex" else "claude")
     with pytest.raises(ValueError, match="hashes"):
@@ -483,6 +492,125 @@ def test_synthesis_coverage_is_controller_computed_hashed_and_records_overlaps(t
     assert output_digest(coverage) == synthesis['payload']['coverage_report_sha256']
     event = next(item for item in store.events(workflow_id) if item['event'] == 'SYNTHESIS_RELEASED')
     assert event['details']['coverage_report_sha256'] == output_digest(coverage)
+
+
+@pytest.mark.parametrize('mutation', ['missing', 'empty', 'duplicate', 'unowned', 'oversized'])
+def test_manifest_requires_bounded_unique_owned_wbs_before_atomic_scatter(tmp_path, mutation):
+    store = JobStore(tmp_path / 'jobs.db')
+    workflow = store.submit('Preserve the whole WBS', ['REQ-1'], 2)
+    node = store.claim('manifest')
+    output = manifest(2)
+    first, second = output['chapters']
+    if mutation == 'missing':
+        first.pop('wbs_tasks_defined')
+    elif mutation == 'empty':
+        first['wbs_tasks_defined'] = []
+    elif mutation == 'duplicate':
+        second['wbs_tasks_defined'] = first['wbs_tasks_defined']
+    elif mutation == 'unowned':
+        first['wbs_tasks_defined'][0]['requirements'] = ['REQ-other']
+    else:
+        first['wbs_tasks_defined'][0]['description'] = 'x' * 16385
+    with pytest.raises(ValueError, match='[Ww][Bb][Ss]'):
+        finish(store, node, output)
+    assert store.get(node['job_id'])['output'] is None
+    assert not any(job['kind'] == 'CHAPTER_DRAFT' for job in store.workflow(workflow['workflow_id'])['jobs'])
+
+
+def test_structured_wbs_and_full_accepted_output_survive_scatter_gather_and_reopen(tmp_path):
+    store, workflow = seeded(tmp_path, 1)
+    draft = store.claim('chapter')
+    assert draft['payload']['wbs_tasks_defined'] == manifest(1)['chapters'][0]['wbs_tasks_defined']
+    output = chapter(draft)
+    output['additional_commitment'] = {'retention': 'Keep this unique accepted structured commitment'}
+    accepted = finish(store, draft, output)
+    reopened = JobStore(store.path)
+    synthesis = reopened.claim('synthesis')
+    payload = synthesis['payload']
+    assert payload['chapters'][0]['accepted_output'] == output
+    assert payload['chapters'][0]['output_sha256'] == output_digest(output) == accepted['output_sha256']
+    assert payload['chapter_output_hashes'] == {draft['chapter_id']: output_digest(output)}
+    assert payload['chapter_hashes'] == {draft['chapter_id']: artifact_digest(output['artifact_text'])}
+    assert payload['coverage_report']['chapter_output_hashes'] == payload['chapter_output_hashes']
+    assert payload['wbs_tasks_by_chapter'] == {draft['chapter_id']: output['wbs_tasks_defined']}
+    finish(reopened, synthesis, synthesis_output(synthesis))
+    assert reopened.workflow(workflow)['status'] == 'COMPLETED'
+    assert reopened.get(draft['job_id'])['output'] == output
+
+
+@pytest.mark.parametrize('mutation', ['drop', 'change'])
+def test_chapter_cannot_drop_or_change_manifest_wbs_declaration(tmp_path, mutation):
+    store, _ = seeded(tmp_path, 1)
+    job = store.claim('chapter')
+    output = chapter(job)
+    if mutation == 'drop':
+        output['wbs_tasks_defined'] = output['wbs_tasks_defined'][1:]
+    else:
+        output['wbs_tasks_defined'][0] = {**output['wbs_tasks_defined'][0], 'description': 'Replaced commitment'}
+    with pytest.raises(ValueError, match='preserve every owned manifest'):
+        finish(store, job, output)
+    assert store.get(job['job_id'])['output'] is None
+
+
+@pytest.mark.parametrize('key', ['chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter'])
+@pytest.mark.parametrize('mutation', ['missing', 'changed'])
+def test_synthesis_cannot_omit_or_change_accepted_output_commitments(tmp_path, key, mutation):
+    store, _ = seeded(tmp_path, 1)
+    draft = store.claim('chapter')
+    finish(store, draft, chapter(draft))
+    node = store.claim('synthesis')
+    output = synthesis_output(node)
+    if mutation == 'missing':
+        output.pop(key)
+    else:
+        output[key] = 'wrong' if key == 'coverage_report_sha256' else {}
+    with pytest.raises(ValueError, match='commitments'):
+        finish(store, node, output)
+    assert store.get(node['job_id'])['output'] is None
+
+
+def test_synthesis_rechecks_gather_payload_against_immutable_accepted_outputs(tmp_path):
+    store, _ = seeded(tmp_path, 1)
+    draft = store.claim('chapter')
+    finish(store, draft, chapter(draft))
+    node = store.claim('synthesis')
+    changed = json.loads(canonical_json(node['payload']))
+    changed['chapters'][0]['accepted_output']['wbs_tasks_defined'][0]['description'] = 'Lost original task'
+    with sqlite3.connect(store.path) as conn:
+        conn.execute('UPDATE pipeline_jobs SET payload_json=? WHERE job_id=?', (canonical_json(changed), node['job_id']))
+    with pytest.raises(ValueError, match='input commitments'):
+        finish(store, node, synthesis_output(node))
+    assert store.get(draft['job_id'])['output']['wbs_tasks_defined'][0]['description'] == 'Implement assigned requirement'
+
+
+@pytest.mark.parametrize('kind', ['CHAPTER_DRAFT', 'SYNTHESIS'])
+def test_active_legacy_document_attempt_gets_explicit_compatibility_hold_without_rewriting_outputs(tmp_path, kind):
+    from cochem_pipeline.document_governance import DocumentCommitmentHold
+    store, workflow = seeded(tmp_path, 1)
+    draft = store.claim('chapter')
+    if kind == 'SYNTHESIS':
+        finish(store, draft, chapter(draft))
+        node = store.claim('synthesis')
+        output = synthesis_output(node)
+        removed = 'chapter_output_hashes'
+    else:
+        node, output, removed = draft, chapter(draft), 'wbs_tasks_defined'
+    legacy_payload = {key: value for key, value in node['payload'].items() if key != removed}
+    with sqlite3.connect(store.path) as conn:
+        conn.execute('UPDATE pipeline_jobs SET payload_json=? WHERE job_id=?', (canonical_json(legacy_payload), node['job_id']))
+        original_outputs = conn.execute('SELECT * FROM pipeline_outputs ORDER BY job_id').fetchall()
+    before = store.get(node['job_id'])
+    with pytest.raises(DocumentCommitmentHold, match='preserving accepted outputs and budgets') as error:
+        finish(store, node, output)
+    assert store.fail(node['job_id'], node['attempt_id'], node['fencing_token'], str(error.value),
+                      retry=True, category=error.value.category, hold_scope=error.value.hold_scope)
+    after = store.get(node['job_id'])
+    assert after['routing']['failure_count'] == before['routing']['failure_count']
+    assert after['routing']['dispatches'] == before['routing']['dispatches']
+    assert after['attempts'] == before['attempts']
+    assert store.claim('must-not-launch-incomplete-plan') is None
+    with sqlite3.connect(store.path) as conn:
+        assert conn.execute('SELECT * FROM pipeline_outputs ORDER BY job_id').fetchall() == original_outputs
 
 
 def test_document_governing_requirements_are_captured_once_and_inherited(tmp_path):

@@ -1,0 +1,69 @@
+{
+    "schema":  "cochem-powershell-parse/1",
+    "platform":  "Windows",
+    "interpreter":  "5.1.26100.9444",
+    "files":  [
+                  {
+                      "path":  "scripts/build_windows_cpu_probe.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/inspect_agy_windows.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/inspect_windows_prerequisites.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/install_mcp_windows.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/install_pipeline_windows.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/install_supervisor_windows.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/login_pipeline_worker.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/login_supervisor_worker.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/plan_aetherdesk_427_cutover.ps1",
+                      "errors":  [
+
+                                 ]
+                  },
+                  {
+                      "path":  "scripts/provision_ramdisk_windows.ps1",
+                      "errors":  [
+
+                                 ]
+                  }
+              ],
+    "error_count":  0,
+    "scope":  "Windows PowerShell 5.1 parser only; no installers executed"
+}

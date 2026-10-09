@@ -1,0 +1,47 @@
+{
+  "arguments": [
+    "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2\\venv\\Scripts\\python.exe",
+    "-I",
+    "-m",
+    "pytest",
+    "pipeline_tests",
+    "mcp_tests",
+    "supervisor_tests",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2\\pytest-scratch",
+    "--junitxml=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2\\publication-canonical-windows-tests.xml"
+  ],
+  "counts": {},
+  "credential_environment_vars_inherited": false,
+  "exit_code": 124,
+  "junit_sha256": null,
+  "native_resource_acceptance_opt_in": false,
+  "production_state_modified": false,
+  "provider_model_jobs_started": false,
+  "repository": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent",
+  "run_root": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2",
+  "schema": "cochem-publication-canonical-windows-validation/1",
+  "source_binding": {
+    "dependencies": {
+      "fastmcp": "2.14.7",
+      "mcp": "1.30.0",
+      "numpy": "2.5.3",
+      "psutil": "7.2.2",
+      "pydantic": "2.13.5",
+      "pytest": "9.1.1",
+      "watchdog": "6.0.0"
+    },
+    "isolated": true,
+    "prefix": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2\\venv",
+    "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+    "source_modules": {
+      "cochem_mcp": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_mcp\\__init__.py",
+      "cochem_pipeline": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_pipeline\\__init__.py",
+      "cochem_supervisor": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_supervisor\\__init__.py"
+    }
+  },
+  "system_tasks_modified": false,
+  "venv": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\publication-validation-20261009-4723f9a40a664b9a943e7c6d80b0a8f2\\venv"
+}

@@ -176,6 +176,20 @@ def test_unknown_gemini_result_protocol_is_rejected(tmp_path):
         load_config(write_config(tmp_path, raw))
 
 
+def test_agy_staged_stream_configuration_requires_exact_transport_but_not_activation(tmp_path):
+    raw = config_document(tmp_path, 1)
+    spec = raw['providers']['gemini']
+    spec['protocol'] = 'agy-stream-json'
+    arguments = ['--input-format', 'stream-json', '--output-format', 'stream-json', '--model', '{model}']
+    spec['arguments'] = list(arguments)
+    spec['inference_only']['arguments'] = list(arguments)
+    config = load_config(write_config(tmp_path, raw))
+    assert config.providers['gemini']['protocol'] == 'agy-stream-json'
+    spec['inference_only']['arguments'] += ['--continue']
+    with pytest.raises(ValueError, match='fresh prompt'):
+        load_config(write_config(tmp_path, raw))
+
+
 def test_operator_token_cannot_use_relative_or_worker_visible_location(tmp_path):
     for location in ("relative/token", str(tmp_path / "slots" / "0" / "controller.token")):
         raw = config_document(tmp_path, 1)

@@ -1,0 +1,96 @@
+{
+  "schema": "cochem-native-preparation-evidence/1",
+  "captured_at_utc": "2026-10-07T11:34:57.025568+00:00",
+  "host": "AETHERDESK",
+  "status": "PREPARED_NOT_EXECUTED",
+  "installed_runtime_binding": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+  "bound_to_runtime_r1": false,
+  "source_files": [
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "sha256": "39a163887514ab0153cd14c036dc60151c0f4752f90df15de31dc7076f1b5e59",
+      "bytes": 15881
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "sha256": "904ba27a9ad6dfe096fd29b7206cc41e8bd8556367cb457a522c710eda156fe6",
+      "bytes": 15366
+    }
+  ],
+  "support_files": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "sha256": "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+      "bytes": 21908
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "sha256": "fa9568207019c554b2f3246e50f414e94901f0f5a5f6f843771610c21e95e60c",
+      "bytes": 13162
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "sha256": "71ccffb11b7cff16acd1306cf73f0ff2440cca28c72643f5d1d009bede83bf8b",
+      "bytes": 7547
+    }
+  ],
+  "tests": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\claude-login-bridge-final-tests.xml",
+      "sha256": "c3d91bea2f67d62ec94d8f7204c12c26fb0884bae7b403391f77a3f47d099eb5",
+      "bytes": 11442,
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 4.213,
+      "timestamp": "2026-10-07T06:23:35.744947-05:00",
+      "platform": "actual Windows, ordinary-user inert fixtures; no SYSTEM/native login acceptance"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status-final-tests.xml",
+      "sha256": "da518a9f803546abbe8eafb8dc5d6638a0f81edf6da7120a37fbd551c804e413",
+      "bytes": 15281,
+      "tests": 89,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_seconds": 9.198,
+      "timestamp": "2026-10-07T01:03:15.934902-05:00",
+      "platform": "actual Windows, ordinary-user inert fixtures; no SYSTEM/native login acceptance"
+    }
+  ],
+  "read_only_previews": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\claude-login-bridge-readonly-preview-final.json",
+      "sha256": "e528f853af72e818d8095e7210f518e5b01e60155ed58423d58b147978be80bd",
+      "bytes": 596
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\all-worker-codex-status-preview.json",
+      "sha256": "3314e3feb31ee82aed700d797ef8b1c9793583b5706d1da0a0ca781164677363",
+      "bytes": 720
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-claude-status-preview.json",
+      "sha256": "ebc12cbfd8656661c0a6d6621a5654935c020af8a7d51feb407e6fac562967e2",
+      "bytes": 816
+    }
+  ],
+  "independent_review": "Reviewed by separate native_next agent; no remaining concrete defect after destination pin/held-handle and transport fixes",
+  "login_commands_executed": 0,
+  "native_status_commands_executed": 0,
+  "model_jobs_executed": 0,
+  "privileged_install_or_task_actions_executed": 0,
+  "authentication_verified": false,
+  "activation_ready": false,
+  "linux_results_combined": false,
+  "remaining_human_steps": [
+    "Attended per-worker browser subscription login",
+    "Claude callback or one-line paste-code runtime acceptance",
+    "Separate native authentication status acceptance"
+  ],
+  "input_scope": "One bounded UTF-8 line via private CreateNew file; never argv/environment or public error content; publication stops before native stdin is fed",
+  "credential_copying": false,
+  "original_frozen_morning_entrypoint_modified": false
+}

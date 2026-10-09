@@ -1,0 +1,13 @@
+{
+  "exit_code": 1,
+  "counts": {
+    "tests": 1588,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 66,
+    "passed": 1521
+  },
+  "source_drift": [],
+  "source_manifest_sha256": "85f8039acdbbd9de1ed77a61c6defddfacb7be27b188ce1238e2960c2f7a9f0b",
+  "elapsed_seconds": 152.806
+}

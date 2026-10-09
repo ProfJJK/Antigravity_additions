@@ -2,12 +2,53 @@
 from __future__ import annotations
 
 import ctypes as C
+import hashlib
 import json
 import os
 from pathlib import Path
 import re
 import time
 import uuid
+
+
+def attestation_source_hashes():
+    """Identify the installed collectors used by a readiness capture."""
+    from . import windows, ramdisk, containers
+    return {module.__name__: hashlib.sha256(Path(module.__file__).read_bytes()).hexdigest()
+            for module in (windows, ramdisk, containers)} | {
+                __name__: hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+
+
+def attest_controller_identity():
+    """Read the current process token; account configuration is not evidence."""
+    from . import windows as win
+    api = win._api()
+    token = win.HANDLE()
+    process = api['kernel32'].GetCurrentProcess()
+    win._check(api['advapi32'].OpenProcessToken(process, 0x8, C.byref(token)), 'Open controller observation token')
+    try:
+        user = win._SID_AND_ATTRIBUTES.from_buffer(win._token_info(token, 1))
+        sid = win._sid_text(user.Sid)
+        return {'pid': os.getpid(), 'token_sid': sid, 'is_system': sid == win.SYSTEM_SID,
+                'boot_id': win.current_boot_identity() if sid == win.SYSTEM_SID else None,
+                'checked_at': time.time(),
+                'source': 'current_windows_process_token',
+                'source_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+    finally:
+        win._close(token)
+
+
+def topology_configuration(config):
+    """Public trust-boundary configuration only; never credential targets."""
+    ram, docker = getattr(config, 'ramdisk', None), getattr(config, 'docker', None)
+    return {'operator_name': getattr(config, 'operator_name', None),
+            'workers': {slot: value.get('name') for slot, value in getattr(config, 'workers', {}).items()},
+            'slot_roots': {slot: str(path) for slot, path in getattr(config, 'slot_roots', {}).items()},
+            'docker_endpoint': getattr(docker, 'endpoint', None),
+            'docker_server_executables': list(getattr(docker, 'pipe_server_executables', ())),
+            'ram_mount_root': getattr(ram, 'mount_root', None),
+            'ram_workspace_subdirectory': getattr(ram, 'workspace_subdirectory', ''),
+            'ram_size_mb': getattr(ram, 'size_mb', None), 'ram_backing': getattr(ram, 'backing', None)}
 
 
 def _terminate_unknown_identity():
@@ -161,7 +202,9 @@ def execution_readiness(config, *, provision=False):
     win.validate_layout(config.private_root,config.slot_roots,identities,require_defender=True)
     win.validate_controller_token(config.token_file,config.operator_name,identities)
     from .planning_governance import planning_readiness
-    checks = {'planning':planning_readiness(config.coding_projects)}
+    controller_identity = attest_controller_identity()
+    checks = {'planning':planning_readiness(config.coding_projects),
+              'controller_identity': {'ready': controller_identity['is_system'], 'evidence': controller_identity}}
     try:
         from .knowledge import KnowledgeService,provision_knowledge
         if provision:
@@ -220,6 +263,7 @@ def execution_readiness(config, *, provision=False):
             boundary = verify_docker_access_boundary(config.docker.endpoint,identities,
                 trusted_operator=config.operator_name,trusted_server_executables=config.docker.pipe_server_executables)
             evidence = runner.preflight()
+            evidence['daemon_id'] = runner._daemon_identity
             evidence['worker_access'] = boundary
             checks['docker'] = {'ready':True,'evidence':evidence}
         except Exception as exc:
@@ -237,6 +281,8 @@ def execution_readiness(config, *, provision=False):
     except Exception as exc:
         checks['hardware'] = {'ready':False,'error':str(exc)[:2048]}
     report = {'schema':1,'checked_at':time.time(),'provisioned':bool(provision),
+              'boot_id':win.current_boot_identity(), 'attestation_source_sha256':attestation_source_hashes(),
+              'topology_configuration':topology_configuration(config),
               'ready':all(value['ready'] for value in checks.values()),'checks':checks,
               'native_models_executed':False,'projects':sorted(config.coding_projects)}
     target = config.private_root/'execution-readiness.json'

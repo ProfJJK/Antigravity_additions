@@ -1,0 +1,47 @@
+{
+    "schema":  "cochem-stopped-runtime-update/1",
+    "mode":  "FRESH_STOPPED_RUNTIME_READY",
+    "target_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "previous_runtime_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "previous_install_receipt_sha256":  "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+    "previous_source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "source_manifest_sha256":  "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "source_files":  166,
+    "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "configuration_unchanged":  true,
+    "only_config_change":  null,
+    "preserved_denial_receipt_sha256":  "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+    "preserved_denial_task_terminal_check_deferred":  false,
+    "preserved_worker_cleanup_verified":  false,
+    "accounts_provisioned":  0,
+    "tasks_changed":  0,
+    "credentials_modified":  false,
+    "databases_modified":  false,
+    "ram_modified":  false,
+    "pipeline_started":  false,
+    "activation_ready":  false,
+    "holds":  [
+
+              ],
+    "verified_entries":  15013,
+    "verification":  {
+                         "revision":  {
+                                          "schema":  "cochem-installed-revision/1",
+                                          "verified":  true,
+                                          "read_only":  true,
+                                          "files":  109,
+                                          "source_sha256":  "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+                                          "acceptance_files":  0,
+                                          "acceptance_sha256":  null
+                                      },
+                         "configuration_parsed":  true,
+                         "ram_workspace_root":  "R:\\CoChem427-windows-20261007",
+                         "no_system_or_model_execution":  true
+                     },
+    "runtime_bindings":  {
+                             "pyvenv_sha256":  "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+                             "venv_python_sha256":  "560b9ef7d856608ab8da02ded2dc8a1951ad1f424c382c0ec6a698874165a18e",
+                             "base_python_sha256":  "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+                             "base_root":  "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312"
+                         }
+}

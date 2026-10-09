@@ -1,0 +1,195 @@
+{
+  "activation_ready": false,
+  "actual_read_only_preview": {
+    "activation_ready": false,
+    "automatic_retry_allowed": false,
+    "max_shared_slots": 4,
+    "model_jobs_executed": 0,
+    "pipeline_started": false,
+    "provider_calls_executed": 0,
+    "remaining": "Attended native sign-ins, Docker physical execution, native routed workflow, history/budget reconciliation and sustained acceptance remain separate.",
+    "results": [
+      {
+        "phase": "inspection",
+        "report": {
+          "activation_ready": false,
+          "all_six_success_and_terminal_task_checks_deferred": true,
+          "existing_state_changes": 0,
+          "helper_sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+          "holds": [],
+          "mode": "READ_ONLY_PLAN",
+          "preflight_executed": false,
+          "private_knowledge_receipt_checks_deferred": true,
+          "proposed_creates": [
+            "fresh helper root",
+            "fresh empty Docker CLI config directory",
+            "fresh SYSTEM task and receipt"
+          ],
+          "runtime": {
+            "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+            "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+            "revision": {
+              "acceptance_files": 0,
+              "acceptance_sha256": null,
+              "files": 109,
+              "read_only": true,
+              "schema": "cochem-installed-revision/1",
+              "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+              "verified": true
+            },
+            "source_files_verified": 166,
+            "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1"
+          },
+          "schema": "cochem-execution-prerequisites-plan/1",
+          "target_root": "C:\\Program Files\\CoChem\\ExecutionPrerequisites4.2.7-windows-20261007-r3",
+          "task_name": "CoChem-4.2.7-ExecutionPrerequisites-20261007-r3"
+        }
+      },
+      {
+        "phase": "foundation",
+        "report": {
+          "activation_ready": false,
+          "all_prior_success_receipt_and_task_checks_deferred": true,
+          "automatic_retry_allowed": false,
+          "containers_created": 0,
+          "existing_database_changes": 0,
+          "helper_sha256": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1",
+          "holds": [
+            "Successful read-only prerequisite receipt is not present."
+          ],
+          "mode": "READ_ONLY_PLAN",
+          "proposed_creates": [
+            "fresh helper root, isolated Docker CLI config, packet, SYSTEM task and receipt",
+            "R:\\CoChem427-windows-20261007 plus exactly six slot roots",
+            "fresh private ramdisk-state.json",
+            "fresh private containers directory and empty containers.db with transient WAL/SHM"
+          ],
+          "provisioning_executed": false,
+          "ram_volume_or_startup_task_changes": 0,
+          "runtime": {
+            "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+            "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+            "revision": {
+              "acceptance_files": 0,
+              "acceptance_sha256": null,
+              "files": 109,
+              "read_only": true,
+              "schema": "cochem-installed-revision/1",
+              "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+              "verified": true
+            },
+            "source_files_verified": 166,
+            "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1"
+          },
+          "schema": "cochem-execution-foundation-plan/1",
+          "scoped_changes": [
+            "ACL and no-content-index flags on seven new RAM directories",
+            "only missing six Defender exclusions"
+          ],
+          "system_fresh_state_revalidation_deferred": true,
+          "target_root": "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3",
+          "task_name": "CoChem-4.2.7-ExecutionFoundation-20261007-r3"
+        }
+      },
+      {
+        "phase": "project",
+        "report": {
+          "activation_ready": false,
+          "bundle_sha256": "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+          "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+          "git_custody_paths": 12,
+          "helper_sha256": "3224bbc544a9f46ef402cb6bc483bdaa854bbfdf94737323e5408ae94e87ce1d",
+          "holds": [
+            "Data-parent custody requires the owner Administrator token."
+          ],
+          "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+          "mode": "READ_ONLY_PLAN",
+          "models_executed": 0,
+          "project_code_executed": false,
+          "r3_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+          "runtime": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+          "schema": "cochem-private-project-import-plan/1",
+          "session": "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3",
+          "shared_slots": 4,
+          "target": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+          "target_state": "ABSENT",
+          "tasks_created": 0,
+          "worker_identities": 6
+        }
+      }
+    ],
+    "schema": "cochem-return-setup-series/1",
+    "status": "READ_ONLY_PLAN",
+    "worker_identities": 6
+  },
+  "archive_scope": "Exact outer/leaf/test/evidence snapshots; live scripts still require their separately pinned sibling and repository dependencies.",
+  "automatic_retry_or_resume": false,
+  "existing_leaf_scripts_modified": false,
+  "files": {
+    "inspect-execution-prerequisites-r3.ps1": {
+      "bytes": 19238,
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887"
+    },
+    "install-disposable-project.ps1": {
+      "bytes": 25131,
+      "sha256": "66bd5b039411b726b246fe4c4a57f8514a8fdbd40978283d2f74c1d922a2ec0d"
+    },
+    "provision-execution-foundation-r3.ps1": {
+      "bytes": 15640,
+      "sha256": "402c27276b56b42cac3c8ecc6fa5b8fd0da4361c57c3abd5c2bf2d432724208c"
+    },
+    "return-setup-series-r3-preview-v2.json": {
+      "bytes": 9817,
+      "sha256": "6d73c3a7ca4d9f5dcb9c63846f5c8dbcea57b6b166015a643a0514bd68f3a9a7"
+    },
+    "return-setup-series-r3-tests-v2.xml": {
+      "bytes": 3791,
+      "sha256": "59eac2b8602790cefba89c25202c2bd18e1b2bc5753fb25f03db15378df25b20"
+    },
+    "return-setup-series-r3-tests-v3.xml": {
+      "bytes": 4281,
+      "sha256": "87c117201d671029f864e8b9a6b26ecaeafaa2af6e0763936328248fad27b685"
+    },
+    "return-setup-series-r3-tests.xml": {
+      "bytes": 2368,
+      "sha256": "d864e2c756344e5ee8683a281f17a152676ab9ab906f43705001fc7eb754c178"
+    },
+    "run-return-setup-r3.ps1": {
+      "bytes": 10852,
+      "sha256": "9d3e2bfbbbb58526605c9b88055c652b5cf962cd02b15dc424369cf8c6708d77"
+    },
+    "test_return_setup_series_r3.py": {
+      "bytes": 9094,
+      "sha256": "ecb9beb451df916ab25c9364a8682fe16c547f1447efcc8ed41ec6730a34435c"
+    }
+  },
+  "findings_and_repairs": [
+    "Initial test collection failed on a fixture raw-string terminator; no deployment ran.",
+    "Independent review found project failure JSON emitted before a throw was lost. Bounded incremental capture now republishes only its validated safe metadata; actual child-throw fixture covers the path. Frozen leaf scripts unchanged."
+  ],
+  "independent_review": {
+    "result": "Passed at frozen source pin",
+    "reviewer": "host_inspection"
+  },
+  "linux_results_used": false,
+  "live_entrypoint": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-return-setup-r3.ps1",
+  "maximum_shared_slots": 4,
+  "phases": [
+    "inspection",
+    "foundation",
+    "project"
+  ],
+  "privileged_execution_performed": false,
+  "recorded_utc": "2026-10-07T18:16:34.464514+00:00",
+  "schema": "cochem-return-series-preparation/1",
+  "status": "PREPARED_REVIEWED_NOT_EXECUTED",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 24,
+    "scope": "Actual PS5.1 file holds, scoped child scripts, safe failure streaming and simulated leaf results; ordinary Apply refusal. No privileged leaf applied.",
+    "seconds": "7.418",
+    "skipped": 0
+  },
+  "worker_identities": 6
+}

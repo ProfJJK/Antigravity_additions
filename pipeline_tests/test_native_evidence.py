@@ -90,7 +90,8 @@ def test_real_sqlite_completion_retains_usage_atomically_with_transition(tmp_pat
     store = JobStore(tmp_path / 'jobs.db')
     store.submit('Persist numeric native metadata', ['REQ-1'], 1)
     node = store.claim('metadata-fixture')
-    output = {'chapters': [{'chapter_id': 'one', 'title': 'One', 'requirements': ['REQ-1']}]}
+    output = {'chapters': [{'chapter_id': 'one', 'title': 'One', 'requirements': ['REQ-1'],
+        'wbs_tasks_defined': [{'id': 'one-task', 'description': 'Document requirement', 'requirements': ['REQ-1']}]}]}
     # This actual Python child establishes only the storage receipt fixture PID.
     process = subprocess.run([sys.executable, '-c', 'import os; print(os.getpid())'],
                              capture_output=True, text=True, check=True)

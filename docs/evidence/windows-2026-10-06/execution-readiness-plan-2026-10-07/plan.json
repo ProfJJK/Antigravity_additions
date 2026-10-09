@@ -1,0 +1,166 @@
+{
+  "actions_this_inspection": {
+    "activation_ready": false,
+    "credentials_read": false,
+    "docker_api_called": false,
+    "docker_cli_executed": false,
+    "engine_or_model_executed": false,
+    "private_databases_opened": false,
+    "protected_writes": false,
+    "readiness_api_invoked": false,
+    "tasks_changed": false
+  },
+  "captured_utc": "2026-10-07T14:57:29.546190+00:00",
+  "code_scope": "Read actual protected r2 installed source without executing it. Current read-only host observations are executable hashes/link metadata, exact R path metadata and matching Docker pipe names only.",
+  "disabled_draft_findings": {
+    "approved_for_execution": false,
+    "must_not_reenable_in_place": [
+      "Old20261006 runtime/config and53-file source inventory",
+      "Old knowledge-success receipt path which contains preserved failure",
+      "Fresh RAM paths at R root instead of scoped subtree",
+      "Old whole-root boundary precondition incompatible with preserving owner R root",
+      "Generic execution_readiness is mutating even when provision=False"
+    ],
+    "source_sha256": "cadd1e8d017aec4f06177faf66d563b29801ef2282070e3cb007386417e11907"
+  },
+  "future_explicit_mutation_phase_after_read_only_preflight_passes": [
+    "Pin reviewed new helper and successful preflight receipts first. Recheck absence and R/startup baseline immediately before any write; save private CreateNew preflight receipt with explicit substeps.",
+    "Use installed r2 RamdiskManager.ensure only for exact adopted workspace R:\\CoChem427-windows-20261007: atomically create protected child, six slot scratch roots, their indexing attributes and six exact Defender exclusions; create new private ramdisk-state.json. Never touch R root DACL/indexing, resize/format, startup task, unrelated files, persistent native profiles or repair budgets.",
+    "A fresh DockerRunner constructor creates private containers/containers.db and schema/owner/capacity metadata, including WAL policy. Its preflight itself performs info/image checks only. Fresh registry requires prior ownership census; no prior ledger means no inference of ownership of existing Docker resources.",
+    "Full execution_readiness(config,provision=False) must be separately recognized as mutating: KnowledgeService constructor+refresh, current process scheduling/resource limits, fresh Docker registry, hardware sampling and overwrite of execution-readiness.json. Do not call as a read-only collector or until remaining Git executable/dependency custody is established.",
+    "Post-check exact R root owner/DACL/attributes/device/startup hash, unrelated-root preservation, scoped private worker boundaries, six exact exclusions and new ledgers. Bind knowledge current generation/index/source/corpus pins unchanged, four shared slots, Docker cap4/warm_target2 and Chapter06 routing. Preserve every partial output on failure; no automatic retry."
+  ],
+  "host": "AETHERDESK",
+  "operational_helper_created": false,
+  "pins_available_now": {
+    "base_python_sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+    "installation_receipt_sha256": "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+    "installed_assets": 109,
+    "installed_modules": {
+      "containers.py": "736cf378bfa6e298a47a8adbbca5e7b9ac6b3334e8bd1b8f0b91f1592c344f8e",
+      "deployment.py": "3e3eca79e1f8e552c1c837cdd6c81fed2daa193abba3a03445368e6a20939a63",
+      "hardware_guard.py": "d015562164733b085697ac44031c2d51e8c30fe68dbd03f11933287e873bed3d",
+      "knowledge.py": "65e1dc17a5bee38f19e47abb24dd97864fcdcd4bc08fd28ab9199d311869d7b2",
+      "operations_policy.py": "06bc54e218596bee4103da96a179f49a9551bae23d0380a31b0f005a53323f86",
+      "planning_governance.py": "c742783ec863d177b07f937e677484132bbdfbd42b28df8934dd59547e2a5dad",
+      "ramdisk.py": "a148b2f5092e44fae42240f01d5243024629c99f1ec689c41d8d8a444c7d6104",
+      "resource_limits.py": "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318",
+      "windows.py": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba"
+    },
+    "installed_revision_sha256": "064a2c9c18b1adb489d0514b1b0e2979e80e72b6af33b2bdc9d95211c0a61f5d",
+    "known_file_metadata": [
+      {
+        "bytes": 44829104,
+        "links": 1,
+        "mtime_ns": 1791041263050421300,
+        "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c",
+        "state": "OBSERVED"
+      },
+      {
+        "bytes": 156463536,
+        "links": 1,
+        "mtime_ns": 1791041252224389100,
+        "path": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+        "sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a",
+        "state": "OBSERVED"
+      },
+      {
+        "bytes": 46936,
+        "links": 2,
+        "mtime_ns": 1783009868000000000,
+        "path": "C:\\Program Files\\Git\\cmd\\git.exe",
+        "sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a",
+        "state": "OBSERVED"
+      },
+      {
+        "bytes": 55552,
+        "links": 1,
+        "mtime_ns": 1778353905387674000,
+        "path": "C:\\Windows\\System32\\imdisk.exe",
+        "sha256": "3a6a94c98a4b87e59a136052c50da070c99706db3bcd54ef5b148784b21f75dd",
+        "state": "OBSERVED"
+      },
+      {
+        "attributes": 22,
+        "inode": 1407374883553285,
+        "path": "R:\\",
+        "state": "OBSERVED"
+      },
+      {
+        "error_type": "FileNotFoundError",
+        "path": "R:\\CoChem427-windows-20261007",
+        "state": "NOT_FOUND"
+      }
+    ],
+    "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+    "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "preserved_ram_task": {
+      "device_bytes": 8589934592,
+      "exported_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "filesystem_bytes": 8589930496,
+      "path": "\\Mount_CoChem_RAMDisk",
+      "refresh_baseline_before_any_future_adoption": true
+    },
+    "published_knowledge": {
+      "documents": 137,
+      "files": 138,
+      "generation": "g-abed1cd030c746559aed6bb30a47093a",
+      "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+      "owner_result_file": "published-knowledge-verification-owner-result.json",
+      "owner_result_file_sha256": "dcdcbf2b6266d53d2dc99195115b347fefd1429d67e3a2079f3d615ee5c07284",
+      "protected_receipt": "C:\\Program Files\\CoChem\\KnowledgePublishedVerification4.2.7-windows-20261007-r2\\published-verification.json",
+      "protected_receipt_sha256": "f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b",
+      "scope": "Actual owner-run SYSTEM immutable/read-only acceptance; preserve FILETIME values as integer metadata.",
+      "sections": 1708
+    },
+    "pyvenv_sha256": "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+    "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "source_files": 166,
+    "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "venv_python_sha256": "560b9ef7d856608ab8da02ded2dc8a1951ad1f424c382c0ec6a698874165a18e"
+  },
+  "read_only_preflight_before_any_execution_state_write": [
+    "Fresh versioned protected helper root/task only after reviewed wrapper custody and immutable source pins; never reuse disabled draft or failed setup roots.",
+    "Under SYSTEM revalidate complete r2/base runtime custody,166source pins,109installed revision,config/layout, six exact worker receipts and new published-knowledge receipt/current immutable index; no KnowledgeService construction or refresh.",
+    "Verify managed daemons terminal and disabled/absent; distinguish absent from denied for new private containers root,ramdisk-state.json,execution-readiness.json and exact R scoped workspace. Existing unknown state causes a hold, never reset.",
+    "Capture current R volume identity/8GiB/device backing/root owner+DACL+attributes+startup-task XML before; require lifecycle adopt_existing and workspace_subdirectory CoChem427-windows-20261007. Assert read-only _validate_adopted_parent contract, never repair R root ACL.",
+    "Revalidate exact Docker CLI/backend file pins, protected ancestry/link custody and actual selected pipe server process identity. Known pipe names alone do not prove engine or ACL health.",
+    "Run bounded explicit-local-pipe SYSTEM Docker info/image inspection and actual six restricted-worker access denials on selected pipe plus existing Desktop API aliases. No pull/build/run/delete. Census CoChem owner labels and name prefix without constructing DockerRunner.",
+    "Require pinned Linux image and memory/swap/CPU/PID/seccomp enforcement; distinguish Linux results from fresh Windows evidence. Hashes/name presence now are not these checks."
+  ],
+  "remaining_blocks_or_limits": [
+    "Six worker success receipts pending at plan capture.",
+    "SYSTEM-only private fresh-state absence, Docker endpoint process/ACL denial, image availability and cgroup capability remain untested on Windows in this phase.",
+    "Configured Git cmd launcher has2 hardlinks; dependency/actual-alias custody remains incomplete. This is an unreviewed trust prerequisite, not a claim that installed validate_code_path necessarily rejects it. Do not run generic readiness Git--version until reviewed.",
+    "Disposable project is not yet protected/imported; planning_readiness only checks contract shape and explicitly does not prove project bytes.",
+    "Production preflight does not create warm containers; warm_target2 and max_containers4 configuration alone are not warm-pool acceptance.",
+    "Native subscription/isolated-integration and supervisor legacy budget holds remain separate. None authorizes activation or model jobs."
+  ],
+  "schema": "cochem-r2-execution-readiness-preparation-plan/1",
+  "six_worker_inputs_still_required": {
+    "expected_slots": [
+      "slot1",
+      "slot2",
+      "slot3",
+      "slot4",
+      "slot5",
+      "slot6"
+    ],
+    "helper_sha256": "78c0006a225fa98211f038c380552d9651a86c9198b518603e989747f315bb45",
+    "not_proven_by_these_receipts": [
+      "Docker API denial",
+      "RAM scratch permissions",
+      "warm pool containers",
+      "native subscription logins",
+      "repair identity containment"
+    ],
+    "receipt_name": "worker-denial-acceptance.json",
+    "receipt_roots": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot{1..6}",
+    "required": "Pin all six exact receipt hashes/nonces/SIDs and successful terminal tasks; assert slot identity, restricted token/Job containment and cleanup_verified. Preserve all receipts. These old-runtime receipts are usable only with unchanged windows.py/layout/identity bindings and explicit old-to-r2 sole-RAM-config-delta proof.",
+    "schema": "cochem-worker-denial-acceptance/1",
+    "status": "HANDLE_DENIALS_VERIFIED"
+  },
+  "smallest_next_implementation": "After the six worker receipts arrive, implement one fresh r2-only SYSTEM read-only Docker/RAM preflight package using reviewed custody/typed copy/terminal receipt functions. Keep operational provisioning separate or gated strictly after its complete success. This resolves actual SYSTEM pipe/image/access/fresh-state uncertainty without creating RAM ledgers, a Docker registry, or rewriting knowledge/readiness state.",
+  "status": "PLAN_ONLY_AWAITING_REVIEW_AND_SIX_WORKER_RECEIPTS"
+}

@@ -1,0 +1,45 @@
+{
+  "schema": "cochem-docker-physical-plan/2",
+  "mode": "READ_ONLY_PLAN",
+  "helper_sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+  "runtime": {
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "revision": {
+      "schema": "cochem-installed-revision/1",
+      "verified": true,
+      "read_only": true,
+      "files": 109,
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "acceptance_files": 0,
+      "acceptance_sha256": null
+    },
+    "source_files_verified": 166
+  },
+  "target_root": "C:\\Program Files\\CoChem\\DockerExecutionAcceptance4.2.7-windows-20261007-r3-v2",
+  "task_name": "CoChem-4.2.7-DockerPhysical-20261007-r3-v2",
+  "all_prior_success_receipt_and_task_checks_deferred": true,
+  "system_empty_registry_and_ram_revalidation_deferred": true,
+  "containers_executed": false,
+  "proposed_creates": [
+    "fresh protected helper/config/packet/task/receipt namespace",
+    "fresh fixed RED/GREEN subtree inside slot1",
+    "exactly two single-use owned Docker containers"
+  ],
+  "declared_mutations": [
+    "existing foundation empty registry: two lease/demand/tombstone rows and two production receipts; transient WAL/SHM",
+    "scoped new RAM fixture subtree ACL/index flags",
+    "production ownership-verified removal of both new containers; retain quarantine if unverifiable"
+  ],
+  "final_live_container_target": 0,
+  "shared_capacity": 4,
+  "maximum_prepared": 2,
+  "chapter06_coding_workflow_tested": false,
+  "native_model_jobs": 0,
+  "legacy_database_or_budget_changes": 0,
+  "ram_ledger_or_volume_changes": 0,
+  "activation_ready": false,
+  "automatic_retry_allowed": false,
+  "holds": []
+}

@@ -1,0 +1,114 @@
+{
+  "measured_at": 1791338492.2773867,
+  "cpu": {
+    "available": true,
+    "count": 24,
+    "percent": 9.8,
+    "physical_count": 16,
+    "physical_count_available": true,
+    "physical_count_source": "psutil.cpu_count(logical=False)",
+    "physical_count_error": null,
+    "source": "psutil.cpu_count/cpu_affinity/cpu_percent",
+    "temperature_available": false,
+    "temperature_celsius": null,
+    "temperature_source": "LibreHardwareMonitor WMI root/LibreHardwareMonitor:Sensor",
+    "temperature_error": "CPU temperature requires a running LibreHardwareMonitor WMI provider with CPU sensors enabled: Resource probe executable failed privileged code-path validation: The Warden must run as NT AUTHORITY\\SYSTEM, not an administrator or an agent account",
+    "error": null
+  },
+  "memory": {
+    "available": true,
+    "total_mb": 65291.97265625,
+    "available_mb": 37802.91015625,
+    "source": "psutil.virtual_memory",
+    "error": null
+  },
+  "commit": {
+    "available": true,
+    "total_mb": 40604.45703125,
+    "limit_mb": 69387.97265625,
+    "free_mb": 28783.515625,
+    "source": "Windows GetPerformanceInfo",
+    "error": null,
+    "process_memory_available": true,
+    "process_private_mb": 13.62890625,
+    "process_working_set_mb": 24.90625,
+    "process_memory_error": null,
+    "process_memory_source": "psutil.Process.memory_info (Windows private/rss)"
+  },
+  "gpus": {
+    "available": false,
+    "devices": [],
+    "source": "nvidia-smi",
+    "error": "Resource probe executable failed privileged code-path validation: The Warden must run as NT AUTHORITY\\SYSTEM, not an administrator or an agent account"
+  },
+  "disks": {
+    "available": true,
+    "volumes": [
+      {
+        "path": "C:\\",
+        "volume": "C:\\",
+        "device": "C:\\",
+        "volume_identity_available": true,
+        "total_mb": 859087.28125,
+        "free_mb": 383798.40234375,
+        "io_devices": [],
+        "io_mapping_available": false
+      },
+      {
+        "path": "D:\\",
+        "volume": "D:\\",
+        "device": "D:\\",
+        "volume_identity_available": true,
+        "total_mb": 1953512.99609375,
+        "free_mb": 1642704.18359375,
+        "io_devices": [],
+        "io_mapping_available": false
+      },
+      {
+        "path": "R:\\",
+        "volume": "R:\\",
+        "device": "R:\\",
+        "volume_identity_available": true,
+        "total_mb": 8191.99609375,
+        "free_mb": 8159.47265625,
+        "io_devices": [],
+        "io_mapping_available": false
+      }
+    ],
+    "io": {
+      "available": true,
+      "read_mb_s": 0.0,
+      "write_mb_s": 14.336768615210213,
+      "total_mb_s": 14.336768615210213,
+      "total_iops": 404.2553190978694,
+      "source": "psutil.disk_io_counters",
+      "scope": "host",
+      "devices": [
+        {
+          "id": "PhysicalDrive0",
+          "read_mb_s": 0.0,
+          "write_mb_s": 0.0,
+          "total_mb_s": 0.0,
+          "total_iops": 0.0
+        },
+        {
+          "id": "PhysicalDrive1",
+          "read_mb_s": 0.0,
+          "write_mb_s": 14.336768615210213,
+          "total_mb_s": 14.336768615210213,
+          "total_iops": 404.2553190978694
+        },
+        {
+          "id": "PhysicalDrive2",
+          "read_mb_s": 0.0,
+          "write_mb_s": 0.0,
+          "total_mb_s": 0.0,
+          "total_iops": 0.0
+        }
+      ],
+      "errors": [],
+      "sample_seconds": 0.09400000001187436
+    },
+    "errors": []
+  }
+}

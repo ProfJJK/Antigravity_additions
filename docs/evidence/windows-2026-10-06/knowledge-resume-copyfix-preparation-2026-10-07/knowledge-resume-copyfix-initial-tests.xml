@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="12" time="5.269" timestamp="2026-10-07T09:16:33.981871-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_exact_ps51_three_record_copy_loop_with_real_exclusive_file_copy" time="0.680"><failure message="AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable &#10;  program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.&#10;  At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24356\test_exact_ps51_three_record_c0\fixture.ps1:47 char:8&#10;  +    if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash ...&#10;  +        ~~~~~~~~~~~~&#10;      + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : CommandNotFoundException&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-File', 'C:\\U...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24356/test_exact_ps51_three_record_c0')
+
+    def test_exact_ps51_three_record_copy_loop_with_real_exclusive_file_copy(tmp_path):
+        incoming,destination=setup(tmp_path)
+        body=script_prefix(incoming,destination)+r"""
+    try{
+     Assert-ExistingEmptyResumeRoot $root
+     $records=@(Get-ResumeCopyRecords)
+     if($records.Count -ne 3){throw 'Not three typed records'}
+     Confirm-ResumeCopyRecords $records
+     if(@(Get-ChildItem -LiteralPath $root -Force).Count -ne 0){throw 'Source checking wrote destination'}
+     Copy-ResumeRecords $records
+     if(@(Get-ChildItem -LiteralPath $root -Force).Count -ne 3){throw 'Not three copied helpers'}
+     foreach($record in $records){
+       if($record.Source -eq 'C' -or -not [IO.Path]::IsPathRooted($record.Source)){throw 'Flattened source path'}
+       if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash.ToLowerInvariant() -cne $record.Sha256){throw 'Copied bytes differ'}
+     }
+     'THREE_COPIES_VERIFIED'
+    }finally{foreach($stream in $held){$stream.Dispose()}}
+    """
+        result=run(tmp_path,body)
+&gt;       assert result.returncode==0,result.stdout+result.stderr
+E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+E         program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+E         At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24356\test_exact_ps51_three_record_c0\fixture.ps1:47 char:8
+E         +    if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash ...
+E         +        ~~~~~~~~~~~~
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : CommandNotFoundException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-File', 'C:\\U...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n").returncode
+
+windows-deployment-next\test_knowledge_resume_copyfix.py:95: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_every_record_checked_before_any_destination_copy[third_bytes]" time="0.463" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_every_record_checked_before_any_destination_copy[first_path_C]" time="0.385" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_every_record_checked_before_any_destination_copy[missing_record]" time="0.399" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_every_record_checked_before_any_destination_copy[duplicate_record]" time="0.393" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_preserved_root_gate_refuses_changes_without_writes[child]" time="0.397" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_preserved_root_gate_refuses_changes_without_writes[wrong_creation_time]" time="0.400" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_preserved_root_gate_refuses_changes_without_writes[wrong_path]" time="0.374" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_preserved_root_gate_refuses_changes_without_writes[private_acl_rejected]" time="0.415" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_preserved_root_gate_refuses_changes_without_writes[file_not_directory]" time="0.368" /><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_exact_apply_body_reaches_simulated_task_only_after_three_verified_copies" time="0.712"><failure message="AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable &#10;  program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.&#10;  At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24356\test_exact_apply_body_reaches_0\fixture.ps1:71 char:6&#10;  +  if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash.T ...&#10;  +      ~~~~~~~~~~~~&#10;      + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : CommandNotFoundException&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-File', 'C:\\U...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24356/test_exact_apply_body_reaches_0')
+
+    def test_exact_apply_body_reaches_simulated_task_only_after_three_verified_copies(tmp_path):
+        incoming,destination=setup(tmp_path)
+        body=script_prefix(incoming,destination)+r"""
+    $Apply=$true;$python='C:\fixture-runtime\python.exe';$basePython='C:\fixture-runtime\base.exe'
+    $basePythonRoot='C:\fixture-runtime\base';$venvConfig='C:\fixture-runtime\pyvenv.cfg'
+    $installRoot='C:\fixture-runtime';$oldInstall='C:\fixture-old';$receiptHash='receipt';$manifestHash='manifest';$configHash='config'
+    $originalHash='original';$diagnosticHash='diagnostic';$taskName='FIXTURE-NO-TASK-WILL-RUN'
+    $actualHold=(Get-Command Hold-PinnedFile).ScriptBlock
+    function Hold-PinnedFile {
+     param([string]$Path,[string]$Hash,[long]$Maximum=1048576,[switch]$LocalSource)
+     if($Path -in @($source,(Join-Path $diagnosticRoot 'diagnose-knowledge-state.py'),(Join-Path $originalRoot 'accept-private-knowledge.py')) -or $Path.StartsWith($root+'\')){
+       &amp; $actualHold $Path $Hash $Maximum -LocalSource:$LocalSource;return
+     }
+     $text='{}'
+     if($Path.EndsWith('install-after.json')){$text='{"mode":"FRESH_STOPPED_RUNTIME_READY","source_files":166,"source_manifest_sha256":"manifest","configuration_sha256":"config","verification":{"revision":{"verified":true}}}'}
+     [pscustomobject]@{Text=$text}
+    }
+    function Read-HeldText {param($Stream)$Stream.Text}
+    function Assert-R2VenvBinding {param($Text)}
+    function Assert-ScopedConfigDelta {param($Original,$Candidate)}
+    function Get-RuntimeFiles {param($Manifest)for($n=0;$n -lt 166;$n++){[pscustomobject]@{destination=('C:\fixture-source\'+$n);sha256='fixture'}}}
+    function Get-ExactTaskOrAbsent {param($Name)$null}
+    function Assert-StoppedDaemons {}
+    function Assert-CodeTreeOnce {param($Path)}
+    function Assert-PreservedTask {param($Task,$Root,$File,$Arguments,$Result)}
+    $fakeScheduler=[pscustomobject]@{}
+    $fakeScheduler|Add-Member ScriptMethod Connect {}
+    $fakeScheduler|Add-Member ScriptMethod GetFolder {param($Path)[pscustomobject]@{}}
+    $fakeScheduler|Add-Member ScriptMethod NewTask {param($Flags)throw 'SIMULATED_TASK_BOUNDARY_REACHED'}
+    function New-Object {param($ComObject)if($ComObject -ne 'Schedule.Service'){throw 'Unexpected COM fixture'};$fakeScheduler}
+    $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($wrapper,[ref]$tokens,[ref]$errors)
+    $main=@($ast.EndBlock.Statements|Where-Object{$_ -is [Management.Automation.Language.TryStatementAst]})
+    if($main.Count -ne 1){throw 'Exactly one full Apply try body expected'}
+    $reached=$false
+    try{. ([scriptblock]::Create($main[0].Extent.Text))}catch{if($_.Exception.Message -notmatch 'SIMULATED_TASK_BOUNDARY_REACHED'){throw};$reached=$true}
+    if(-not $reached -or @(Get-ChildItem -LiteralPath $root -Force).Count -ne 3){throw 'Full Apply path failed before task boundary'}
+    foreach($record in @(Get-ResumeCopyRecords)){
+     if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash.ToLowerInvariant() -cne $record.Sha256){throw 'Full Apply copied wrong bytes'}
+    }
+    'EXACT_APPLY_BODY_REACHED_SIMULATED_TASK_WITH_THREE_FILES'
+    """
+        result=run(tmp_path,body)
+&gt;       assert result.returncode==0,result.stdout+result.stderr
+E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+E         program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+E         At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24356\test_exact_apply_body_reaches_0\fixture.ps1:71 char:6
+E         +  if((Get-FileHash -LiteralPath (Join-Path $root $record.Name)).Hash.T ...
+E         +      ~~~~~~~~~~~~
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : CommandNotFoundException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-File', 'C:\\U...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n").returncode
+
+windows-deployment-next\test_knowledge_resume_copyfix.py:184: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_knowledge_resume_copyfix" name="test_frozen_prior_helpers_untouched_and_python_target_unchanged" time="0.001" /></testsuite></testsuites>

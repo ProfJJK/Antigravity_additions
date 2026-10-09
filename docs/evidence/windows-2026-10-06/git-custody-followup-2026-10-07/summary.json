@@ -1,0 +1,96 @@
+{
+  "schema": "cochem-git-custody-followup/1",
+  "captured_utc": "2026-10-07T15:30:38.116665+00:00",
+  "status": "STATIC_BINARY_DEPENDENCY_AND_ALIAS_CUSTODY_ESTABLISHED",
+  "platform": "actual Windows AETHERDESK ordinary-user inspection, separate from Linux evidence",
+  "previous_evidence": {
+    "path": "docs\\evidence\\windows-2026-10-06\\protected-project-preparation-2026-10-07.json",
+    "sha256": "5abab7df6c8cf6ed90b32fdbc243a3f36dfccd93dce3e676ae7e2f98979bf9d6"
+  },
+  "observed": {
+    "binary_paths": 12,
+    "distinct_file_objects": 8,
+    "unique_binary_alias_paths": 16,
+    "file_and_ancestor_acl_paths": 24,
+    "trusted_owners": true,
+    "effective_untrusted_write_grants": 0,
+    "reparse_entries": 0,
+    "unresolved_static_imports": 0,
+    "non_windows_dependency_names": [
+      "libiconv-2.dll",
+      "libintl-8.dll",
+      "libpcre2-8-0.dll",
+      "zlib1.dll"
+    ],
+    "configured_git_path": "C:\\Program Files\\Git\\cmd\\git.exe",
+    "configured_launcher_sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a",
+    "native_git_sha256": "77965c1ffd7d5d0f7d55ddbec10ad540efa61e58f36eae565cde0f36fab8fe53",
+    "bundle_sha256": "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+    "bundle_bytes": 622,
+    "all_binary_hashes_alias_sets_and_metadata_stable_after_capture": true
+  },
+  "checks_run": [
+    "CreateFileW GENERIC_READ with FILE_SHARE_READ only holds each inspected binary against write/delete while hashing and checking aliases/ACLs.",
+    "FindFirstFileNameW/FindNextFileNameW enumerated every hardlink name; count equals file link count and every name matches its volume/file ID inside C:\\Program Files\\Git.",
+    "Bounded PE32/PE32+ import and delay-import directory parsing (64 files maximum,32MiB/file) followed every non-platform import in each native executable directory.",
+    "Get-Acl used SecurityIdentifier values; each file/alias/ancestor to Program Files has trusted SYSTEM/Administrators/TrustedInstaller owner, no reparse and no effective untrusted write/delete-child/DACL/owner grant. Inherit-only ACEs were distinguished.",
+    "Rehashed all held binaries and compared their metadata/alias sets after ACL capture.",
+    "Revalidated the unchanged622-byte disposable bundle hash. No model, project, Git CLI or SYSTEM command was executed."
+  ],
+  "test_scope": "This reversible read-only collector was checked by its actual Windows bounded identity/hash/import/ACL invariants; no redundant fixture suite was added. It is not acceptance of Git subprocess behavior.",
+  "resolved_previous_unknown": "The installed Git alias and non-system static dependency inventory is now complete within the fixed local-plumbing scope. Existing protected hardlinks are not a vulnerability; no Git replacement or global ACL/link repair is indicated. Do not weaken the existing generic single-link payload copier.",
+  "remaining_authorized_deployment_checks": [
+    "Immediately before a future privileged operation, repeat the exact recorded alias/identity/hash/owner/ACL checks under the administrator/SYSTEM context and hold the verified executable/DLL handles throughout fixed commands.",
+    "Attest ProgramData\\CoChemPipeline427\\projects parent custody and fresh windows-acceptance target absence with an authorized privileged token. Ordinary-user inaccessible paths are not absence proof.",
+    "Static PE closure does not attest modules/helpers dynamically loaded by arbitrary Git operations. Scope the project importer to reviewed local builtins and clean environment with inherited configuration, hooks, filters, lazy fetch, replacement objects, protocols and maintenance disabled.",
+    "No existing project files or repositories may be overwritten; preserve a fresh partial target/report on any error without automatic retry."
+  ],
+  "smallest_next_action": {
+    "action": "Prepare one fresh-only protected bare-project import helper using existing trusted Git, rather than installing/replacing Git. Parent review before owner execution.",
+    "target": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+    "branch": "pipeline/accepted",
+    "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+    "baseline_tree": "0e7fe3edd935e4a839d17cb99b30b08db18d8ae9",
+    "fixed_scope": [
+      "Create private SYSTEM/Administrators ACLs before first project bytes and a fresh empty template/hooks location; do not change existing parent ACLs.",
+      "Use only pinned absolute Git runtime, clean child environment and fixed local plumbing: fresh bare init, verified bundle pack import, absent-ref compare-and-swap to the exact baseline, and bounded object/tree verification. Do not checkout or run project code.",
+      "Verify three exact files/seven bundle objects, absence of remotes/alternates/worktrees/reparse entries, exact private custody and unchanged bundle/source pins; bind success to a fresh receipt.",
+      "Keep this outside any already-issued r3 installer/worker command; no accounts/auth, daemon activation, DB/budget, RAM or task changes are needed for the project import itself."
+    ]
+  },
+  "upstream_reference": {
+    "url": "https://raw.githubusercontent.com/git-for-windows/MINGW-packages/main/mingw-w64-git/git-wrapper.c",
+    "scope": "Current upstream source explains installation-relative wrapper delegation and environment preparation. It is reference context only, not proof of the exact installed binary build or observed child path."
+  },
+  "unperformed": {
+    "git_commands": true,
+    "project_code_execution": true,
+    "system_execution": true,
+    "protected_state_creation": true,
+    "credentials_or_user_git_configuration_reads": true,
+    "dynamic_loaded_module_attestation": true,
+    "project_import": true
+  },
+  "artifacts": [
+    {
+      "path": "inspect_git_custody.py",
+      "bytes": 12519,
+      "sha256": "7d55d71ba7b673d84af88f439ed5e7575450aeb40888267213b29c4045e82fbf"
+    },
+    {
+      "path": "inspect-git-acls.ps1",
+      "bytes": 1356,
+      "sha256": "b800b701caff4ea727acdea5c40d54bf654ad79cbe432d5d9e0c2e0fa8cf88d9"
+    },
+    {
+      "path": "acl-paths.json",
+      "bytes": 1201,
+      "sha256": "0a656359be333d4ad72ca9546c5af73da8b7abaeb2e819905e10db68eb366829"
+    },
+    {
+      "path": "git-static-custody.json",
+      "bytes": 67334,
+      "sha256": "ebfd2ef955b22d9765d0c171ee7c4c2f4bf70507369c21411897848240af121e"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema": "cochem-independent-preparation-review/1",
+  "date": "2026-10-07",
+  "reviewer": "host_inspection",
+  "author": "install_repairs",
+  "source_sha256": "91ce79837b6ef316ed22ee7d1719ef44607c464afd93d4ca7ce49111b1071ebb",
+  "tests_sha256": "f9bf704bcb4bf09d7d12698d32bc2928474bbf5e962e757d5c59e0fd35fce79e",
+  "prior_preparation_sha256": "2f91c37c7719a44fbb392c102de45434b75ff7fc8d79205fc0e66287df5a6ce6",
+  "result": "No concrete safety or accuracy finding",
+  "source_review": [
+    "Reads filesystem metadata, hashes its own source, task XML and classified process command lines; does not publish task actions or raw command lines.",
+    "Inspects fixed controls and immediate CoChem roots; observed reparse ancestors are refused.",
+    "Distinguishes access denial, not found and other errors; does not infer quiescence or zero spend.",
+    "Does not open database or credential contents, write files, alter tasks/processes, call providers or migrate budget authority."
+  ],
+  "bound_qualification": "32-root and 256-process caps bound accepted downstream/report scope after collection, not a universal wall-clock bound. CIM has a 15-second operation timeout; filesystem and COM calls do not.",
+  "author_tests": {"passed": 13, "failed": 0, "errors": 0, "skipped": 0, "junit_seconds": "3.859", "xml_sha256": "e136a5ca0516ab7eee035d4cb67c72ca4ddfed709afed184065bf660b14d42cb"},
+  "reviewer_executed_diagnostic_or_tests": false,
+  "frozen_archive_changed": false,
+  "administrator_execution_verified": false
+}

@@ -1,0 +1,2119 @@
+{
+  "schema": "cochem-git-static-custody-inspection/1",
+  "captured_utc": "2026-10-07T15:27:19.015717+00:00",
+  "scope": "Ordinary-user held-read binary bytes, PE imports/delay imports, complete actual hardlink names and SID/DACL ancestry. No Git/project command or SYSTEM execution.",
+  "configured_launcher": "C:\\Program Files\\Git\\cmd\\git.exe",
+  "binaries": [
+    {
+      "path": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 52354345668347357,
+        "links": 2,
+        "bytes": 46936,
+        "mtime_ns": 1783009868000000000,
+        "creation_ns": 1783477015555921400,
+        "attributes": 32
+      },
+      "sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\cmd\\git-lfs.exe",
+        "C:\\Program Files\\Git\\cmd\\git.exe"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll",
+          "shell32.dll",
+          "shlwapi.dll",
+          "user32.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\bin\\git.exe",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 6192449487799476,
+        "links": 1,
+        "bytes": 46936,
+        "mtime_ns": 1783009868000000000,
+        "creation_ns": 1783477015512334800,
+        "attributes": 32
+      },
+      "sha256": "22fead8244ef3a7225fb800099a4e43eca8bcec0466774917669599c2f19a05a",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\bin\\git.exe"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll",
+          "shell32.dll",
+          "shlwapi.dll",
+          "user32.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 7318349394658676,
+        "links": 4,
+        "bytes": 4383064,
+        "mtime_ns": 1783009868000000000,
+        "creation_ns": 1783477016404333700,
+        "attributes": 32
+      },
+      "sha256": "77965c1ffd7d5d0f7d55ddbec10ad540efa61e58f36eae565cde0f36fab8fe53",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\git-receive-pack.exe",
+        "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-archive.exe",
+        "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-pack.exe",
+        "C:\\Program Files\\Git\\mingw64\\bin\\git.exe"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "advapi32.dll",
+          "kernel32.dll",
+          "libiconv-2.dll",
+          "libintl-8.dll",
+          "libpcre2-8-0.dll",
+          "msvcrt.dll",
+          "ntdll.dll",
+          "user32.dll",
+          "ws2_32.dll",
+          "zlib1.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 1970324837731275,
+        "links": 1,
+        "bytes": 4383064,
+        "mtime_ns": 1783009868000000000,
+        "creation_ns": 1783477019037670200,
+        "attributes": 32
+      },
+      "sha256": "77965c1ffd7d5d0f7d55ddbec10ad540efa61e58f36eae565cde0f36fab8fe53",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "advapi32.dll",
+          "kernel32.dll",
+          "libiconv-2.dll",
+          "libintl-8.dll",
+          "libpcre2-8-0.dll",
+          "msvcrt.dll",
+          "ntdll.dll",
+          "user32.dll",
+          "ws2_32.dll",
+          "zlib1.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580977108,
+        "links": 2,
+        "bytes": 1143148,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016875092800,
+        "attributes": 32
+      },
+      "sha256": "7a282a854e01be726c6cccfe46f548c716aa45b3014818468253aaa4efbcd067",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580977124,
+        "links": 2,
+        "bytes": 298731,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016908779100,
+        "attributes": 32
+      },
+      "sha256": "0537c3dd2378218508ebe3cc416d72a99ee2d24ae1c5525e23458f32544ef861",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "advapi32.dll",
+          "kernel32.dll",
+          "libiconv-2.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libpcre2-8-0.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 12947848928875548,
+        "links": 2,
+        "bytes": 717955,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016954080100,
+        "attributes": 32
+      },
+      "sha256": "c135a87ed0f11eae8ffc4cb469671ff0b3f5d71fab5fb024e9b1e7241ca25b52",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libpcre2-8-0.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libpcre2-8-0.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\zlib1.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580987036,
+        "links": 2,
+        "bytes": 128488,
+        "mtime_ns": 1782926550000000000,
+        "creation_ns": 1783477017297189000,
+        "attributes": 32
+      },
+      "sha256": "93e9243a44c29200eeacaf9658efe2558581770e4b11ca4b500e18e424a6e3b5",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\zlib1.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\zlib1.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580977108,
+        "links": 2,
+        "bytes": 1143148,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016875092800,
+        "attributes": 32
+      },
+      "sha256": "7a282a854e01be726c6cccfe46f548c716aa45b3014818468253aaa4efbcd067",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580977124,
+        "links": 2,
+        "bytes": 298731,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016908779100,
+        "attributes": 32
+      },
+      "sha256": "0537c3dd2378218508ebe3cc416d72a99ee2d24ae1c5525e23458f32544ef861",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "advapi32.dll",
+          "kernel32.dll",
+          "libiconv-2.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libpcre2-8-0.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 12947848928875548,
+        "links": 2,
+        "bytes": 717955,
+        "mtime_ns": 1782926548000000000,
+        "creation_ns": 1783477016954080100,
+        "attributes": 32
+      },
+      "sha256": "c135a87ed0f11eae8ffc4cb469671ff0b3f5d71fab5fb024e9b1e7241ca25b52",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\libpcre2-8-0.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libpcre2-8-0.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\zlib1.dll",
+      "metadata": {
+        "volume": 1165398947986148826,
+        "file_id": 5066549580987036,
+        "links": 2,
+        "bytes": 128488,
+        "mtime_ns": 1782926550000000000,
+        "creation_ns": 1783477017297189000,
+        "attributes": 32
+      },
+      "sha256": "93e9243a44c29200eeacaf9658efe2558581770e4b11ca4b500e18e424a6e3b5",
+      "hardlink_aliases": [
+        "C:\\Program Files\\Git\\mingw64\\bin\\zlib1.dll",
+        "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\zlib1.dll"
+      ],
+      "pe": {
+        "machine": "0x8664",
+        "imports": [
+          "kernel32.dll",
+          "msvcrt.dll"
+        ],
+        "delay_imports": []
+      }
+    }
+  ],
+  "static_dependency_edges": [
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "import": "libiconv-2.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "import": "libintl-8.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "import": "libpcre2-8-0.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\bin\\libpcre2-8-0.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "import": "zlib1.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\bin\\zlib1.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "import": "libiconv-2.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "import": "libintl-8.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "import": "libpcre2-8-0.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libpcre2-8-0.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "import": "zlib1.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\zlib1.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll",
+      "import": "libiconv-2.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll"
+    },
+    {
+      "from": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll",
+      "import": "libiconv-2.dll",
+      "resolved_installed_candidate": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll"
+    }
+  ],
+  "windows_platform_import_names": [
+    "advapi32.dll",
+    "kernel32.dll",
+    "msvcrt.dll",
+    "ntdll.dll",
+    "shell32.dll",
+    "shlwapi.dll",
+    "user32.dll",
+    "ws2_32.dll"
+  ],
+  "unresolved_imports": [],
+  "acl_entries": [
+    {
+      "path": "C:\\Program Files",
+      "owner_sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464G:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464D:PAI(A;OICIIO;GA;;;CO)(A;OICIIO;GA;;;SY)(A;;0x1301bf;;;SY)(A;OICIIO;GA;;;BA)(A;;0x1301bf;;;BA)(A;OICIIO;GXGR;;;BU)(A;;0x1200a9;;;BU)(A;CIIO;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;;0x1200a9;;;AC)(A;OICIIO;GXGR;;;AC)(A;;0x1200a9;;;S-1-15-2-2)(A;OICIIO;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 1245631,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 1245631,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": false
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": false
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\bin",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\bin\\git.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\cmd",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\cmd\\git-lfs.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\cmd\\git.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-receive-pack.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-archive.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git-upload-pack.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libiconv-2.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libintl-8.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\libpcre2-8-0.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\zlib1.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-3-0",
+          "type": "Allow",
+          "rights": 268435456,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": -1610612736,
+          "inheritance": "ContainerInherit, ObjectInherit",
+          "propagation": "InheritOnly",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\git.exe",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libiconv-2.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libintl-8.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\libpcre2-8-0.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files\\Git\\mingw64\\libexec\\git-core\\zlib1.dll",
+      "owner_sid": "S-1-5-32-544",
+      "trusted_owner": true,
+      "reparse": false,
+      "sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "effective_untrusted_writers": [],
+      "aces": [
+        {
+          "sid": "S-1-5-18",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-544",
+          "type": "Allow",
+          "rights": 2032127,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-5-32-545",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-1",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        },
+        {
+          "sid": "S-1-15-2-2",
+          "type": "Allow",
+          "rights": 1179817,
+          "inheritance": "None",
+          "propagation": "None",
+          "inherited": true
+        }
+      ]
+    }
+  ],
+  "all_observed_alias_owners_and_ancestors_trusted": true,
+  "static_non_system_import_closure_complete": true,
+  "limitations": [
+    "Static dependency closure is not a dynamic loaded-module attestation or SYSTEM execution proof.",
+    "Windows platform/API-set imports use the OS trust boundary; their entire transitive platform closure is not inventoried.",
+    "Existing Git links were enumerated and inspected; no ACL/link changes and no weakening of single-link payload helpers.",
+    "Only metadata and bytes of installed binaries were read; no Git configuration, credentials, project state, protected DB, RAM or tasks were read or modified."
+  ]
+}

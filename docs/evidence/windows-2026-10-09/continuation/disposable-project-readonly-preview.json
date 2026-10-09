@@ -1,0 +1,23 @@
+{
+    "schema":  "cochem-private-project-import-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "target":  "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+    "target_state":  "ABSENT",
+    "session":  "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3",
+    "runtime":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "r3_install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "config_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "layout_sha256":  "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+    "bundle_sha256":  "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+    "helper_sha256":  "3224bbc544a9f46ef402cb6bc483bdaa854bbfdf94737323e5408ae94e87ce1d",
+    "git_custody_paths":  12,
+    "worker_identities":  6,
+    "shared_slots":  4,
+    "project_code_executed":  false,
+    "models_executed":  0,
+    "tasks_created":  0,
+    "activation_ready":  false,
+    "holds":  [
+                  "Data-parent custody requires the owner Administrator token."
+              ]
+}

@@ -1,0 +1,122 @@
+{
+  "schema": "cochem-desktop-heap-acquisition-audit/1",
+  "captured_at_utc": "2026-10-08T02:10:33.7352636Z",
+  "status": "ACQUISITION_CONTRACT_BLOCKED_WITHIN_CURRENT_NONINTRUSIVE_SCOPE",
+  "conclusion": "No verified supported method was found on this Windows host for continuous desktop-heap used/capacity acquisition under the current no-debugger, no-driver, no-trace, no-boot-change constraints. This is a bounded technical impasse, not a proof that Windows has no internal measurement or that a vendor-supported collector cannot exist.",
+  "scope": "Read existing Windows evidence and local source; inspect primary API documentation and the original source of one newly located diagnostic tool. No new host inventory, heap measurement, debugger, trace, privileged command, token/controller call or executable download/run.",
+  "existing_windows_evidence": [
+    {
+      "file": "desktop-heap-installed-provider-contract-20261007.json",
+      "sha256": "e821480b4c94881040f03205c4e40027da35538c9cb9621743c46f9e595ef590",
+      "finding": "Previously inspected signed win32kbase.sys and installed Win32k provider metadata do not expose a verified complete desktop used/capacity contract. The manifest has 369 event descriptors and 290 templates but no desktop-heap usage field. Classic Win32k has no static Events descriptors. This audit did not repeat the scan or infer that dynamic/internal events cannot exist."
+    },
+    {
+      "file": "desktop-heap-collector-research-2026-10-07.json",
+      "sha256": "ea33fc45038a18c8fa427bd844fa3c8a2894770ff982a2d854adea8e00b229df",
+      "finding": "Previous scoped actual-host metadata identified Windows 11 Pro 10.0.26300/26H2 and WPR/WPA, but no resolved debugger/LiveKD/dheapmon command or complete ordinary-user acquisition route. Existing observations are reused as historical evidence, not recaptured."
+    }
+  ],
+  "documented_routes": [
+    {
+      "route": "User32 desktop query",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getuserobjectinformationw",
+      "finding": "UOI_HEAPSIZE returns the desktop heap size in KB. The documented information classes do not include allocated used bytes. An HDESK can identify the desktop and capacity, but cannot alone produce the required ratio.",
+      "usable_for_required_usage": false
+    },
+    {
+      "route": "Process heap summary/enumeration",
+      "urls": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-heapsummary",
+        "https://learn.microsoft.com/en-us/windows/win32/api/heapapi/nf-heapapi-getprocessheaps"
+      ],
+      "finding": "HeapSummary requires a HeapCreate/GetProcessHeap handle. GetProcessHeaps enumerates the caller's default/private heaps. Neither documented contract accepts a User32 desktop object or establishes desktop-heap allocations. Passing HDESK or guessing an internal pointer would not be a supported adapter.",
+      "usable_for_required_usage": false
+    },
+    {
+      "route": "GUI object counts",
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getguiresources",
+      "finding": "GetGuiResources reports USER/GDI handle counts and peaks, not object bytes or desktop allocation capacity. No conversion to desktop used bytes was made.",
+      "usable_for_required_usage": false
+    },
+    {
+      "route": "Process virtual memory/system memory",
+      "urls": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/memoryapi/nf-memoryapi-virtualqueryex",
+        "https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-performance_information"
+      ],
+      "finding": "VirtualQueryEx describes page ranges, state, protection and mapping. PERFORMANCE_INFORMATION exposes system commit/physical/cache/kernel-pool totals. These contracts do not expose live allocation accounting for the monitored desktop. Mapped/committed bytes and RSS cannot be relabeled desktop used bytes.",
+      "usable_for_required_usage": false
+    },
+    {
+      "route": "Documented kernel debugger extension",
+      "urls": [
+        "https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-dskheap",
+        "https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/performing-local-kernel-debugging"
+      ],
+      "finding": "!dskheap is a real documented desktop diagnostic, grouped by session/window station/desktop and displaying heap size KB plus integer Used Rate. Its documentation does not specify rate rounding, exact allocated bytes, PID binding or continuous freshness. Local kernel debugging uses Administrator access and changing kernel state; LiveKD snapshots need not describe one instant. This route does not meet the present execution constraints and is not proposed as an owner setup chore.",
+      "usable_for_required_usage": false
+    }
+  ],
+  "new_candidate_rejected": {
+    "name": "DesktopHeapDiag",
+    "provenance": "Original author's public repository, reached through a Microsoft Q&A link; not represented as an installed Microsoft-signed or officially supported Windows collector.",
+    "urls": [
+      "https://github.com/leonardomsft/DesktopHeapDiag/blob/master/README.MD",
+      "https://github.com/leonardomsft/DesktopHeapDiag/blob/master/main.cpp"
+    ],
+    "finding": "The README explicitly describes allocations until exhaustion. The source repeatedly registers window classes with 4096 extra class bytes until RegisterClassEx fails, then unregisters them. It estimates remaining capacity from successful registration counts and SharedSection registry limits. It does not query an actual live allocated-byte counter or validate the failure reason as heap exhaustion.",
+    "disposition": "Rejected for continuous nonintrusive acceptance: it deliberately pressures the shared desktop and returns an estimate. No binary was downloaded or run; no source copied into production. This new finding closes a concrete apparent no-driver alternative rather than requesting another host probe.",
+    "executed": false
+  },
+  "identity_contract": {
+    "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getthreaddesktop",
+    "finding": "Desktop association belongs to a thread and can change; desktop objects are shared. The eventual collector must witness the target process creation identity and relevant thread-to-desktop/session/window-station mapping. A current interactive desktop sample, a SYSTEM account label, or PID attached after measurement does not establish the target desktop's usage. Association APIs do not fill the missing usage measurement."
+  },
+  "current_acceptance_contract": {
+    "srs_file": "4.2.7_SRS.md",
+    "srs_sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+    "requirements": [
+      "S427-HOST-006",
+      "S427-AC-003",
+      "S427-PERF-005"
+    ],
+    "native_desktop_heap_percentage_strictly_below": 15,
+    "continuous_duration_seconds": 172800,
+    "repository_performance_source_sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+    "installed_r3_performance_source_sha256": "3a6e1b0f5a62005c09ba07b4261bfef0e4d5f3962af9f087ae91b81ca2bab9e2",
+    "input_required_fields": [
+      "pid",
+      "process_created_at",
+      "measured_at",
+      "used_bytes",
+      "allocation_limit_bytes",
+      "source"
+    ],
+    "freshness_seconds_inclusive": [
+      0,
+      10
+    ],
+    "missing_source_result": {
+      "available": false,
+      "passed": false
+    },
+    "continuity_note": "The repository's corrected observer also limits completed-sample gaps to ten seconds. This is a conservative harness rule derived from evidence freshness, not a universal SRS sampling frequency; the installed r3 bytes are unchanged.",
+    "precision_note": "A documented conservative upper bound from a rounded rate could potentially prove the strict ceiling, but it needs explicit precision/provenance and a separately reviewed input schema. A displayed percentage must never be multiplied into fabricated exact used_bytes. No such source/precision contract was established here."
+  },
+  "decision": {
+    "ready_to_implement_truthful_usage_collector": false,
+    "native_desktop_heap_samples": 0,
+    "external_missing_fact": "A supported, current-build-tested source of the target desktop's allocated use and capacity, with meaningful measurement time, desktop identity and known precision.",
+    "bounded_path_forward": "Keep the desktop-heap row unavailable while implementing and running other real resource observation. Resume acquisition engineering only when a concrete vendor-supported source or already approved diagnostic contract is supplied; a further generic Administrator inventory will not create the missing contract. An explicit owner amendment could change the acceptance obligation, but is a separate decision and has not been applied or requested by this audit.",
+    "acceptance_claim": "No <15% or 48-hour desktop-heap certification. Other successful Windows evidence remains separately scoped."
+  },
+  "mutations": {
+    "runtime_source": false,
+    "frozen_r3": false,
+    "controller_or_worker": false,
+    "credentials": false,
+    "drivers_or_boot": false,
+    "traces_or_debugger": false,
+    "new_evidence_file_only": true
+  }
+}

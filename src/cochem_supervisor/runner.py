@@ -123,10 +123,17 @@ def validate_provider_spec(spec: Mapping[str, Any]) -> None:
                          'claude': ('extended',), 'gemini': ('extended', 'high')}
     if effort is not None and effort not in supported_efforts[provider]:
         raise ValueError("Repair reasoning effort must match the exact routed model")
+    if 'integration_hold' in spec:
+        if spec.get('allowed_tools'):
+            raise ValueError('Integration holds cannot configure native repair tools')
+        from cochem_pipeline.provider_integration import require_integration_ready
+        require_integration_ready(provider, spec)
     if provider == "gemini":
+        from cochem_pipeline.agy_protocol import require_serving_model_contract
+        require_serving_model_contract(spec)
         from cochem_pipeline.config import validate_subscription_probe
         validate_subscription_probe(spec.get("subscription_probe"))
-        if spec.get("protocol") not in ("gemini-json", "terminal-json"):
+        if spec.get("protocol") not in ("gemini-json", "terminal-json", "agy-stream-json"):
             raise ValueError("Repair Agy requires an explicit native terminal protocol")
         arguments = spec.get("arguments")
         if not isinstance(arguments, list) or arguments.count("{model}") != 1 or any(not isinstance(v,str) or "\x00" in v for v in arguments):
@@ -283,7 +290,7 @@ def verified_repair_output(spec: Mapping[str, Any], stdout: str, stderr: str = "
     """Validate native terminal evidence, without trusting generated identity text."""
     validate_provider_spec(spec)
     try:
-        if spec["provider"] in ("claude", "gemini"):
+        if spec["provider"] in ("claude", "gemini") and spec.get("protocol") != "agy-stream-json":
             records = [strict_json(stdout)]
         else:
             records = [strict_json(line) for line in stdout.splitlines() if line.strip()]
@@ -575,7 +582,14 @@ class RepairRunner:
                 evidence.update(validate_gemini_version(spec, version, agy_digest))
             return evidence
         except (ValueError, TypeError, KeyError, OSError) as exc:
-            raise NativeRepairProtocolError('Selected repair capability is not verified before budget admission') from exc
+            failure = NativeRepairProtocolError('Selected repair capability is not verified before budget admission')
+            if 'integration_hold' in spec:
+                failure.integration_evidence = getattr(exc, 'integration_evidence',
+                    {'provider': spec.get('provider'), 'scope': 'isolated_pipeline_integration',
+                     'state': 'evidence_invalid', 'category': 'compatibility'})
+                failure.args = ('Isolated pipeline integration verification pending: ' +
+                    failure.integration_evidence.get('reason', 'bound evidence could not be verified'),)
+            raise failure from exc
 
     def run(self, provider_spec: Mapping[str, Any], identity: Mapping[str, str], workspace: Path,
             evidence: Mapping[str, Any], log_dir: Path, timeout_seconds: int,
@@ -692,6 +706,8 @@ class RepairRunner:
                 effort_binary_digest(provider_spec, binding)
             except (ValueError, TypeError, KeyError, OSError) as exc:
                 raise NativeRepairProtocolError('Native repair effort executable changed before inference') from exc
+        from cochem_pipeline.worker import native_prompt_text
+        prompt = native_prompt_text(provider, provider_spec, prompt)
         process = self.run_process(identity, argv, workspace, logs / "inference", stdin_text=prompt,
                                    timeout_seconds=remaining, heartbeat=heartbeat)
         raw = Path(process["stdout_path"]).read_text(encoding="utf-8", errors="replace")

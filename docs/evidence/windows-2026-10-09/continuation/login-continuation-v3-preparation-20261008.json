@@ -1,0 +1,123 @@
+{
+  "schema": "cochem-attended-login-continuation-preparation/1",
+  "prepared_utc": "2026-10-08T13:35:47.2058173Z",
+  "host": "AETHERDESK",
+  "status": "ATTENDED_CONTINUATION_READY_NOT_APPLIED",
+  "user_reported_failed_provider": "codex",
+  "user_reported_failed_slot": "slot5",
+  "user_reported_cause": "missed_device_approval",
+  "prior_profile_progress_reported": 4,
+  "current_subscription_sessions_not_yet_rechecked": true,
+  "readiness_gate": "READY_OR_PAUSE_BEFORE_LOGIN",
+  "manual_codex_continuation": "new_guid_and_fresh_status_per_deliberate_invocation",
+  "automatic_retry_allowed": false,
+  "first_start_still_single_and_fresh": true,
+  "claude_prior_failed_session_guard_preserved": true,
+  "existing_protected_state_modified": false,
+  "provider_login_executed": false,
+  "system_tasks_executed": false,
+  "model_jobs_executed": 0,
+  "controller_started": false,
+  "linux_results_included": false,
+  "windows_ordinary_suites": [
+    {
+      "file": "native-auth-checkpoint-r3-v3-tests-initial.xml",
+      "tests": 29,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": "13.465"
+    },
+    {
+      "file": "login-continuation-commissioning-r3-v3-tests-final.xml",
+      "tests": 116,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": "34.453"
+    }
+  ],
+  "source_and_evidence": [
+    {
+      "name": "worker-native-auth-status-six-r3-v3.py",
+      "bytes": 28454,
+      "sha256": "7efa8d272fcd96701157e381036f7e4ec763551857f4c57091d7bf61977fcfc1"
+    },
+    {
+      "name": "check-worker-native-auth-status-six-r3-v3.ps1",
+      "bytes": 24802,
+      "sha256": "84983fad313a8ff8112882d22c9a2d53d89681d3172dabd57726fec8095ad1f3"
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v3.ps1",
+      "bytes": 23983,
+      "sha256": "8bccc9de2553b60cfc2fdf81b8352a3bc6ae184d02445a1cb02ff5847e5a079a"
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v3.ps1",
+      "bytes": 17990,
+      "sha256": "0c375dfb36d761bdce5bcffb905bc00146b9bbc6de32f45d81aea8bd0f6b0747"
+    },
+    {
+      "name": "commission-first-warden-r3-v3.py",
+      "bytes": 31492,
+      "sha256": "9770007a8c658a73e68ccc0c370eeaab2cc6568cf20cd009601e8c35c25de755"
+    },
+    {
+      "name": "commission-first-warden-r3-v3.ps1",
+      "bytes": 19543,
+      "sha256": "153b77a003329c0295da867cf87dae24b2aa36549e6003e00998fca39bd92db9"
+    },
+    {
+      "name": "run-pipeline-commissioning-r3-v3.ps1",
+      "bytes": 31587,
+      "sha256": "dda02eeee0006509fc8c32319f74e089e4a79fbfdda659bbb8a443eaa8640aa0"
+    },
+    {
+      "name": "login-continuation-v3-functions.ps1",
+      "bytes": 5492,
+      "sha256": "d80c8d42e15540adc4e5be6e9f49db89004291c12e0fc53ba99cfbbc035ffd64"
+    },
+    {
+      "name": "test_native_auth_checkpoint_r3_v3.py",
+      "bytes": 24987,
+      "sha256": "70c6996fecc049545968a304cb40396f2ff4b32182285e79f0d3a52e1161c8c6"
+    },
+    {
+      "name": "test_login_continuation_commissioning_r3_v3.py",
+      "bytes": 8857,
+      "sha256": "40d6fe75e5dea52d93bcf2f95dff4d18515b090608686ed48296e4e094cd5843"
+    },
+    {
+      "name": "native-auth-checkpoint-r3-v3-tests-initial.xml",
+      "bytes": 5407,
+      "sha256": "0f2bbba365ab1dfc8a2cba191894764c75dbfa2d9e4017212f209a0cef2e9b94"
+    },
+    {
+      "name": "login-continuation-commissioning-r3-v3-tests-final.xml",
+      "bytes": 22703,
+      "sha256": "179939905717be60f6beedfc3dc725b0d93920df9e4fcfc074712f0681a8fc8e"
+    },
+    {
+      "name": "native-auth-checkpoint-r3-v3-preview-final.json",
+      "bytes": 2585,
+      "sha256": "ecd31daac30f2675c39062e1f562a8b04bf03856c3ac729454576a3d12cbd4fc"
+    },
+    {
+      "name": "login-continuation-commissioning-r3-v3-preview.json",
+      "bytes": 7357,
+      "sha256": "79cc3b1a62c8a5757db2fb051c4c2543ef46949cc76dce144698aea3bc776ab2"
+    },
+    {
+      "name": "RETURN_SETUP_CONTINUE.txt",
+      "bytes": 3599,
+      "sha256": "ba6797d069cc87be9229f8e4d917c270fb7d97a4ed62fddbaf9b1142d3484994"
+    }
+  ],
+  "independent_review": {
+    "reviewer": "correctness_repairs",
+    "result": "PASS",
+    "combined_sha256": "dda02eeee0006509fc8c32319f74e089e4a79fbfdda659bbb8a443eaa8640aa0",
+    "scope": "Final helper pins, phase assignment/parser, mutex cleanup, attempt binding and partial-activation fencing"
+  }
+}

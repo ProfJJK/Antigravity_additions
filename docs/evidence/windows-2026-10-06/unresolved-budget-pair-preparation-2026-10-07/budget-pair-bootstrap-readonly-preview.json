@@ -1,0 +1,10 @@
+{
+  "schema": "cochem-unresolved-budget-pair/1",
+  "mode": "READ_ONLY_PLAN",
+  "new_private_root": "C:\\ProgramData\\CoChemPipeline427\\private\\unresolved-budget-staging-20261007",
+  "evidence_sha256": "1cf291591724b6edef17ba7e8d48fc6cce75830872ff6183ac1139aa313a3177",
+  "activation_ready": false,
+  "protected_launcher_required": true,
+  "historical_allowance": null,
+  "source_ledgers_opened": false
+}

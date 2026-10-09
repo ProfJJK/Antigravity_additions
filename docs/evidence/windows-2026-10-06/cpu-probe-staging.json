@@ -1,0 +1,25 @@
+{
+  "schema": "cochem-cpu-probe-staging/1",
+  "bundle": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\cpu-probe-bundle-v2",
+  "manifest_sha256": "defbb5b713e1cd81316b0d16dc16a49c37e9c170365c7699b18a47be6f24ef65",
+  "archive_sha256": "086d9f1b5a99e643edc2cfaaac16051685b551e4c5ac0b32a57c58c0e529c001",
+  "source_sha256": "4185467c1e1e4c4b9e837384fb83a374d9d4396213f9a99ebfc8baf71d13aafd",
+  "source_current_matches": true,
+  "bundle_files": 45,
+  "hash_mismatches": [],
+  "capabilities_exit_code": 0,
+  "capabilities": {
+    "schema": "cochem-cpu-probe-capabilities/1",
+    "library_version": "0.9.6.0",
+    "cpu_only": true,
+    "supported_cpu": "Intel direct core/package sensors",
+    "installs_driver": false,
+    "writes_settings": false
+  },
+  "protected_installation": false,
+  "driver_installed_by_session": false,
+  "driver_loaded_by_session": false,
+  "temperature_measurement_executed": false,
+  "system_accepted": false,
+  "scope": "Compiled artifact and capabilities only; sensor fixtures are not real hardware readings"
+}

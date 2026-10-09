@@ -1,0 +1,45 @@
+{
+  "schema": "cochem-current-chat-mcp-integration/1",
+  "recorded_at_utc": "2026-10-08T02:43:50.246388+00:00",
+  "status": "CURRENT_CODEX_TOOL_CATALOG_AVAILABLE_CONTROLLER_CONNECTION_REFUSED",
+  "platform": "actual Windows operator process",
+  "tool_catalog_discovery": {
+    "method": "functions.ALL_TOOLS metadata enumeration",
+    "count": 15,
+    "names": [
+      "mcp__cochem_pipeline__knowledge_read",
+      "mcp__cochem_pipeline__knowledge_search",
+      "mcp__cochem_pipeline__knowledge_status",
+      "mcp__cochem_pipeline__pipeline_cancel",
+      "mcp__cochem_pipeline__pipeline_code",
+      "mcp__cochem_pipeline__pipeline_code_cancel",
+      "mcp__cochem_pipeline__pipeline_code_resume",
+      "mcp__cochem_pipeline__pipeline_code_status",
+      "mcp__cochem_pipeline__pipeline_health",
+      "mcp__cochem_pipeline__pipeline_operator_view",
+      "mcp__cochem_pipeline__pipeline_projects",
+      "mcp__cochem_pipeline__pipeline_provider_preflight_submit",
+      "mcp__cochem_pipeline__pipeline_resume_routing",
+      "mcp__cochem_pipeline__pipeline_status",
+      "mcp__cochem_pipeline__pipeline_submit"
+    ],
+    "current_chat_catalog_loaded": true
+  },
+  "actual_call": {
+    "name": "mcp__cochem_pipeline__pipeline_health",
+    "arguments": {},
+    "is_error": true,
+    "winerror": 10061,
+    "disposition": "connection_refused",
+    "controller_health_verified": false,
+    "read_only_operation": true
+  },
+  "model_jobs_submitted": 0,
+  "daemon_or_task_changes": 0,
+  "token_handling": "The configured MCP client uses its normal authentication path; no token contents were printed, copied or archived.",
+  "owner_reconnection_action_required_for_this_chat": false,
+  "full_pipeline_running_verified": false,
+  "full_srs_acceptance": false,
+  "previous_connection_evidence_preserved": true,
+  "next": "Successful reviewed first-start and live health/workflow evidence remain necessary."
+}

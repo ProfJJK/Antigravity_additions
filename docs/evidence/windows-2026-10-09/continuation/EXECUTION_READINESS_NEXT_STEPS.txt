@@ -1,0 +1,67 @@
+Execution readiness — prerequisites for the next reviewed helper
+
+Keep initialize-execution-readiness.py disabled (APPROVED_FOR_EXECUTION=False).
+It targets the old installation and whole-volume RAM boundary. Do not enable it
+by changing that flag. No replacement executable is ready for execution yet.
+
+The original three-phase command failed in knowledge acceptance and must not be
+rerun. The later SYSTEM diagnostic passed; the fresh repaired r2 runtime has a
+successful installation receipt. Complete the separate reviewed knowledge
+recovery and six-worker acceptance before freezing a new readiness input bundle.
+Future receipt hashes and index generation must not be invented from plans.
+Preserve every failed or partial result; no automatic retry or cleanup.
+
+Required evidence bindings:
+- Fresh stopped runtime: C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r2,
+  successful install-after.json, exact source manifest SHA256
+  df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8,
+  live protected custody and installed revision verification. Replace the old
+  draft's 53-file runtime inventory with the actual verified r2 package bindings.
+- New config SHA256:
+  135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c.
+  The original failed knowledge receipt references the old config:
+  2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6.
+  Validate that original receipt binding, then prove the sole config change is
+  ramdisk.workspace_subdirectory = CoChem427-windows-20261007. Preserve both
+  hashes; do not relabel old receipts as acceptance of the new RAM namespace.
+  Bind new recovery/worker receipts to their actual runtime/configuration.
+- Knowledge: actual successful SYSTEM receipt/helper/inventory/config bindings,
+  protected current generation, manifest digest, index digest and integrity.
+  Verify the same generation and bytes before and after readiness.
+- Six workers: actual successful, ordered slot1..slot6 receipts with pinned
+  helper, expected SID/layout/config, actual token/Job evidence and verified
+  cleanup; preserve receipt hashes. These checks do not yet attest the new RAM
+  subtree or Docker pipe boundary.
+
+Next helper's live SYSTEM preflight must prove:
+- Correct protected r2 interpreter/source/config and four shared slots across
+  six identities; pipeline daemons remain disabled, stopped and without instances.
+- Existing Mount_CoChem_RAMDisk task XML and 8 GiB device/NTFS identity match the
+  preserved baseline. Capture original R:\ ACL, attributes and boot/volume identity
+  durably before mutations. Do not require or apply the old whole-root worker DACL;
+  use the scoped adoption parent-control check instead.
+- R:\CoChem427-windows-20261007 is absent, as are the new private containers
+  registry, ramdisk-state.json and execution-readiness.json. Permission errors or
+  uncertain/existing state are holds, never proof of absence or a zero budget.
+- Selected Docker daemon/server identity, actual worker pipe denial and read-only
+  CoChem resource ownership census pass before writes. Existing scoped resources
+  require explicit ownership reconciliation; unrelated resources remain untouched.
+
+Permitted initialization must be stated accurately: create the new protected RAM
+subtree and six scratch directories, their ACL/indexing metadata and exact Defender
+exclusions; create new RAM bookkeeping/container registry/readiness evidence.
+Production execution_readiness(provision=False) also refreshes knowledge and
+changes its own scheduling. It is non-inference, not read-only. Bind accepted
+knowledge beforehand so any generation/index change becomes a failed postcondition.
+
+Hard postconditions: R:\ root ACL AND attributes equal the captured originals;
+task XML, device/volume identity, size and label are unchanged; config/knowledge
+commitments remain unchanged; daemons remain stopped. Never format, remount,
+resize or change startup settings, and never alter unrelated R: file ACLs/content.
+Use a fresh protected helper root and unique bounded SYSTEM task with nonce-bound
+receipt, terminal task result and verified cleanup. Preserve partial state on failure.
+
+This step must not migrate legacy jobs, Oracle/supervisor state or repair budgets,
+perform logins, run model jobs or activate the pipeline. Project/Oracle workflows,
+native integration and later activation remain separate acceptance. A successful
+doctor report alone does not verify project bytes or workflow execution.

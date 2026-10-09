@@ -1,0 +1,310 @@
+{
+  "private_root": "C:\\ProgramData\\CoChemPipeline427\\private",
+  "knowledge": {
+    "enabled": true,
+    "source_root": "C:\\Program Files\\CoChem\\Knowledge4.2.7-windows-20261006\\.sources",
+    "wiki_root": "C:\\Program Files\\CoChem\\Knowledge4.2.7-windows-20261006\\wiki",
+    "manifest_path": "C:\\Program Files\\CoChem\\Knowledge4.2.7-windows-20261006\\v4.1.2_manifest.json",
+    "state_root": "C:\\ProgramData\\CoChemPipeline427\\private\\knowledge-windows-20261006"
+  },
+  "slot_roots": {
+    "slot1": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot1",
+    "slot2": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot2",
+    "slot3": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot3",
+    "slot4": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot4",
+    "slot5": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot5",
+    "slot6": "C:\\ProgramData\\CoChemPipeline427\\workers\\slot6"
+  },
+  "workers": {
+    "slot1": {
+      "name": "CoChem422Worker1",
+      "credential_target": "CoChem422/slot1"
+    },
+    "slot2": {
+      "name": "CoChem422Worker2",
+      "credential_target": "CoChem422/slot2"
+    },
+    "slot3": {
+      "name": "CoChem422Worker3",
+      "credential_target": "CoChem422/slot3"
+    },
+    "slot4": {
+      "name": "CoChem422Worker4",
+      "credential_target": "CoChem422/slot4"
+    },
+    "slot5": {
+      "name": "CoChem422Worker5",
+      "credential_target": "CoChem422/slot5"
+    },
+    "slot6": {
+      "name": "CoChem422Worker6",
+      "credential_target": "CoChem422/slot6"
+    }
+  },
+  "operator_name": "AETHERDESK\\ansac",
+  "token_file": "C:\\Users\\ansac\\CoChem427\\controller.token",
+  "port": 47824,
+  "providers": {
+    "codex": {
+      "executable": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe",
+      "model": "gpt-6.1-sol"
+    },
+    "claude": {
+      "executable": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe",
+      "model": "claude-opus-5-5",
+      "effort_contracts": {}
+    },
+    "gemini": {
+      "executable": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\agy.exe",
+      "model": "gemini-3.1-pro-preview",
+      "arguments": null,
+      "protocol": "gemini-json",
+      "subscription_probe": null,
+      "inference_only": null,
+      "effort_contracts": {},
+      "integration_hold": {
+        "schema": "native-integration-hold/1",
+        "state": "verification_pending",
+        "scope": "isolated_pipeline_integration",
+        "reason": "The owner confirms Agy is available, signed in and functioning. Isolated pipeline worker authentication, inference-only controls and native serving-model receipts have not yet been verified; this is not a provider outage or owner-login failure.",
+        "evidence_path": "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\native-contract-agy-1.3.1-followup.json",
+        "evidence_sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5",
+        "executable_sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+        "version": "1.3.1",
+        "finding_ids": [
+          "AGY-AUTH",
+          "AGY-ISOLATION",
+          "AGY-IDENTITY"
+        ]
+      }
+    }
+  },
+  "timeout_seconds": 1800,
+  "lease_seconds": 1800,
+  "heartbeat_seconds": 5,
+  "max_attempts": 3,
+  "context_budget": 16384,
+  "reserved_fraction": 0.25,
+  "min_free_memory_mb": 1024,
+  "min_free_disk_mb": 512,
+  "rules": [],
+  "routing": {
+    "backlog_threshold": 8,
+    "backoff_base_seconds": 30.0,
+    "backoff_jitter_fraction": 0.2,
+    "backoff_max_seconds": 600.0,
+    "failure_cooldowns": {
+      "auth": 300.0,
+      "backlog": 30.0,
+      "busy": 30.0,
+      "code": 0.0,
+      "compatibility": 300.0,
+      "configuration": 300.0,
+      "context": 0.0,
+      "protocol": 30.0,
+      "provider": 30.0,
+      "quota": 300.0,
+      "resource": 30.0,
+      "timeout": 30.0,
+      "unknown": 30.0
+    },
+    "max_dispatches": 0,
+    "max_routing_cycles": 0,
+    "max_routing_seconds": 0.0,
+    "model_limits": {},
+    "policy_version": 2,
+    "provider_limits": {
+      "claude": {
+        "max_concurrency": 20,
+        "quota_pool": "claude"
+      },
+      "codex": {
+        "max_concurrency": null,
+        "quota_pool": "codex"
+      },
+      "gemini": {
+        "max_concurrency": null,
+        "quota_pool": "gemini"
+      }
+    },
+    "quota_pool_limits": {
+      "claude": null,
+      "codex": null,
+      "gemini": null
+    },
+    "tiers": {
+      "1-3": [
+        {
+          "model": "gemini-3.8-flash",
+          "provider": "gemini",
+          "reasoning_effort": null
+        },
+        {
+          "model": "claude-haiku-4-5",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6-luna",
+          "provider": "codex",
+          "reasoning_effort": "low"
+        }
+      ],
+      "10": [
+        {
+          "model": "claude-fable-5-1",
+          "provider": "claude",
+          "reasoning_effort": "extended"
+        },
+        {
+          "model": "gpt-6-astra",
+          "provider": "codex",
+          "reasoning_effort": "ultra"
+        }
+      ],
+      "4-6": [
+        {
+          "model": "claude-sonnet-5-5",
+          "provider": "claude",
+          "reasoning_effort": null
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "provider": "codex",
+          "reasoning_effort": "medium"
+        },
+        {
+          "model": "gemini-3.8-flash",
+          "provider": "gemini",
+          "reasoning_effort": "extended"
+        }
+      ],
+      "7-9": [
+        {
+          "model": "gpt-6.1-sol",
+          "provider": "codex",
+          "reasoning_effort": "high"
+        },
+        {
+          "model": "claude-opus-5-5",
+          "provider": "claude",
+          "reasoning_effort": "extended"
+        },
+        {
+          "model": "gemini-3.1-pro-preview",
+          "provider": "gemini",
+          "reasoning_effort": "high"
+        }
+      ]
+    }
+  },
+  "hardware": {
+    "gpu_required": true,
+    "windows_commit_required": true,
+    "cpu_temperature_required": true,
+    "cpu_temperature_probe": "C:\\Program Files\\CoChem\\CpuSensors4.2.7-windows-20261006\\cochem-cpu-temperature.exe",
+    "disk_io_required": true,
+    "sample_seconds": 0.05,
+    "sample_interval_seconds": 1.0,
+    "recovery_seconds": 10.0,
+    "recovery_samples": 3,
+    "ramp_up_step": 1,
+    "critical_pressure_seconds": 5.0,
+    "max_cpu_percent": 95.0,
+    "critical_cpu_percent": 99.0,
+    "cpu_temperature_pause_c": 85.0,
+    "cpu_temperature_critical_c": 95.0,
+    "gpu_temperature_pause_c": 85.0,
+    "gpu_temperature_critical_c": 92.0,
+    "gpu_vram_throttle_percent": 80.0,
+    "gpu_vram_pause_percent": 90.0,
+    "gpu_vram_critical_percent": 98.0,
+    "min_free_memory_mb": 1024.0,
+    "critical_free_memory_mb": 256.0,
+    "per_agent_memory_mb": 256.0,
+    "min_free_commit_mb": 6144.0,
+    "critical_free_commit_mb": 512.0,
+    "min_free_disk_mb": 512.0,
+    "critical_free_disk_mb": 128.0,
+    "max_disk_mb_s": 120.0,
+    "max_disk_iops": 4000.0
+  },
+  "execution_limits": {
+    "memory_limit_mb": 2048,
+    "cpu_rate_percent": 20,
+    "max_processes": 16,
+    "e_core_policy": "required",
+    "affinity_mask": null,
+    "node_heap_mb": 512,
+    "launch_jitter_min_ms": 100,
+    "launch_jitter_max_ms": 500,
+    "poll_jitter_min_ms": 100,
+    "poll_jitter_max_ms": 500
+  },
+  "ramdisk": {
+    "enabled": true,
+    "mount_root": "R:\\",
+    "size_mb": 8192,
+    "min_free_mb": 512,
+    "reserve_host_memory_mb": 4096,
+    "backing": "auto",
+    "imdisk_executable": "C:\\Windows\\System32\\imdisk.exe",
+    "claude_project_cache": true,
+    "lifecycle": "adopt_existing",
+    "workspace_subdirectory": "CoChem427-windows-20261007",
+    "startup_wait_seconds": 120
+  },
+  "docker": {
+    "enabled": true,
+    "image": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+    "allowed_images": [
+      "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2"
+    ],
+    "commands": [
+      {
+        "name": "project-tests",
+        "argv": [
+          "python",
+          "-m",
+          "pytest",
+          "tests",
+          "-q"
+        ],
+        "kind": "pytest",
+        "timeout_seconds": 30
+      }
+    ],
+    "executable": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+    "endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+    "memory_mb": 4096,
+    "cpus": 2.0,
+    "pids_limit": 512,
+    "tmpfs_mb": 2048,
+    "max_containers": 4,
+    "max_source_mb": 128,
+    "max_source_files": 20000,
+    "output_limit_bytes": 1048576,
+    "junit_limit_bytes": 4194304,
+    "cleanup_timeout_seconds": 30,
+    "pipe_server_executables": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe"
+    ],
+    "warm_pool_size": 2
+  },
+  "coding_projects": {
+    "windows-acceptance": {
+      "repository": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+      "branch": "pipeline/accepted",
+      "allowed_paths": [
+        "src"
+      ],
+      "test_paths": [
+        "tests"
+      ],
+      "auto_integrate": true,
+      "test_strategy": "red_green"
+    }
+  },
+  "git_executable": "C:\\Program Files\\Git\\cmd\\git.exe",
+  "max_execution_slots": 4
+}

@@ -1,0 +1,355 @@
+{
+  "schema": "cochem-native-login-runtime-audit/1",
+  "captured_utc": "2026-10-07T16:05:40.393736+00:00",
+  "scope": "Ordinary-user read-only exact public source/config/runtime file inspection; no provider executable or status/login/model commands invoked. No credential/profile files read. Existing artifacts unchanged.",
+  "sources": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\HUMAN_NATIVE_LOGIN.txt",
+      "bytes": 3433,
+      "sha256": "9b4411c43a67cb1e4bd50dff4341823d4667c3110d5c9dd587c1a2ce92689ec1",
+      "last_write_utc": "2026-10-07T11:25:08.388992+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "bytes": 21908,
+      "sha256": "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+      "last_write_utc": "2026-10-07T05:55:12.878386+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "bytes": 13162,
+      "sha256": "fa9568207019c554b2f3246e50f414e94901f0f5a5f6f843771610c21e95e60c",
+      "last_write_utc": "2026-10-07T05:57:07.037290+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "bytes": 7547,
+      "sha256": "71ccffb11b7cff16acd1306cf73f0ff2440cca28c72643f5d1d009bede83bf8b",
+      "last_write_utc": "2026-10-07T06:03:06.855849+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "bytes": 15881,
+      "sha256": "39a163887514ab0153cd14c036dc60151c0f4752f90df15de31dc7076f1b5e59",
+      "last_write_utc": "2026-10-07T11:23:34.348128+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "bytes": 15366,
+      "sha256": "904ba27a9ad6dfe096fd29b7206cc41e8bd8556367cb457a522c710eda156fe6",
+      "last_write_utc": "2026-10-07T11:23:34.894919+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker.ps1",
+      "bytes": 6858,
+      "sha256": "e3d4d93f58446e05e4d585ac9215410527f8d1ec2a884153dbf69feb4ee7b32a",
+      "last_write_utc": "2026-10-07T05:01:07.809912+00:00"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\InstallGuard4.2.7-windows-20261006\\repository\\scripts\\login_pipeline_worker.ps1",
+      "bytes": 6858,
+      "sha256": "e3d4d93f58446e05e4d585ac9215410527f8d1ec2a884153dbf69feb4ee7b32a",
+      "last_write_utc": "2026-10-07T05:10:00.142992+00:00"
+    }
+  ],
+  "installed_runtimes": [
+    {
+      "root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+      "files": [
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\.venv\\Lib\\site-packages\\cochem_pipeline\\resource_limits.py",
+          "bytes": 15768,
+          "sha256": "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318",
+          "last_write_utc": "2026-10-07T05:21:18.150150+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\.venv\\Lib\\site-packages\\cochem_pipeline\\windows.py",
+          "bytes": 61790,
+          "sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+          "last_write_utc": "2026-10-07T05:21:18.159157+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\pipeline.json",
+          "bytes": 9472,
+          "sha256": "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+          "last_write_utc": "2026-10-07T05:36:54.480391+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\.venv\\pyvenv.cfg",
+          "bytes": 379,
+          "sha256": "d6ebb0d905488486e5a438a8a30a589f256f3499515baf1dd9d4ab71693b5f95",
+          "last_write_utc": "2026-10-07T05:21:06.185351+00:00"
+        }
+      ]
+    },
+    {
+      "root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+      "files": [
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2\\.venv\\Lib\\site-packages\\cochem_pipeline\\resource_limits.py",
+          "bytes": 15768,
+          "sha256": "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318",
+          "last_write_utc": "2026-10-07T13:44:58.694578+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2\\.venv\\Lib\\site-packages\\cochem_pipeline\\windows.py",
+          "bytes": 61790,
+          "sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+          "last_write_utc": "2026-10-07T13:44:58.687580+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2\\pipeline.json",
+          "bytes": 9533,
+          "sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+          "last_write_utc": "2026-10-07T13:44:52.396129+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2\\.venv\\pyvenv.cfg",
+          "bytes": 187,
+          "sha256": "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+          "last_write_utc": "2026-10-07T13:44:52.596864+00:00"
+        }
+      ]
+    },
+    {
+      "root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+      "files": [
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\resource_limits.py",
+          "bytes": 16590,
+          "sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+          "last_write_utc": "2026-10-07T15:36:00.666401+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\windows.py",
+          "bytes": 61790,
+          "sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+          "last_write_utc": "2026-10-07T15:36:00.668401+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\pipeline.json",
+          "bytes": 9533,
+          "sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+          "last_write_utc": "2026-10-07T15:35:54.719446+00:00"
+        },
+        {
+          "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\pyvenv.cfg",
+          "bytes": 187,
+          "sha256": "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+          "last_write_utc": "2026-10-07T15:35:54.894846+00:00"
+        }
+      ]
+    }
+  ],
+  "r3_install_receipt": {
+    "path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\install-after.json",
+    "bytes": 2713,
+    "sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "last_write_utc": "2026-10-07T15:38:18.368018+00:00"
+  },
+  "source_references": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\HUMAN_NATIVE_LOGIN.txt",
+      "line": 30,
+      "text": "powershell.exe -NoProfile -File \"C:\\Program Files\\CoChem\\InstallGuard4.2.7-windows-20261006\\repository\\scripts\\login_pipeline_worker.ps1\" -Slot slot1 -Provider codex -Executable \"C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe\" -InstallRoot \"C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\""
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\HUMAN_NATIVE_LOGIN.txt",
+      "line": 39,
+      "text": "powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1\" -Provider claude -Apply"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 20,
+      "text": "INSTALL = Path(r\"C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\")"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 21,
+      "text": "NATIVE = Path(r\"C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\")"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 23,
+      "text": "BASE_PYTHON = Path(r'C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe')"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 24,
+      "text": "VENV_CONFIG_SHA256 = 'd6ebb0d905488486e5a438a8a30a589f256f3499515baf1dd9d4ab71693b5f95'"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 158,
+      "text": "return win.launch_worker(identity, argv, cwd, empty, output, errors, limits=limits)"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 235,
+      "text": "or digest_file(INSTALL / '.venv/pyvenv.cfg') != VENV_CONFIG_SHA256):"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 244,
+      "text": "root = Path(r'C:\\Program Files\\CoChem') / f'NativeStatus4.2.7-windows-20261006-{slot}-{provider}'"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "line": 322,
+      "text": "limits = ResourceLimits.from_dict(config['execution_limits'])"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 21,
+      "text": "$installRoot='C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006'"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 22,
+      "text": "$targetRoot=\"C:\\Program Files\\CoChem\\NativeStatus4.2.7-windows-20261006-$Slot-$Provider\""
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 24,
+      "text": "$basePythonRoot='C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312'"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 29,
+      "text": "$native=\"C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\$Provider.exe\""
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 73,
+      "text": "function Assert-VenvBinding {"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "line": 84,
+      "text": "if(Test-Path -LiteralPath $pin[0] -PathType Leaf){$stream=Open-VerifiedFile $pin[0] $pin[1] (Get-Item -LiteralPath $pin[0]).Length;try{if($pin[0] -eq $venvConfig){$reader=[IO.StreamReader]::new($stream,[Text.Encoding]::UTF8);Assert-VenvBinding $reader.ReadToEnd()}}finally{$stream.Dispose()}}"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "line": 41,
+      "text": "$root=\"C:\\Program Files\\CoChem\\NativeStatus4.2.7-windows-20261006-$slot-$Provider\""
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "line": 52,
+      "text": "if($Result.schema -ne 'cochem-worker-native-status-task-result/1' -or $Result.slot -cne $Slot -or $Result.provider -cne $Provider -or $Result.status -ne 'NATIVE_SUBSCRIPTION_AUTHENTICATION_VERIFIED' -or $Result.cleanup_verified -ne $true -or $Result.last_task_result -ne 0 -or $Result.native_model_jobs_executed -ne 0 -or $Result.pipeline_started -ne $false -or $Result.ready_for_inference -ne $false -or $Result.receipt_path -cne \"C:\\Program Files\\CoChem\\NativeStatus4.2.7-windows-20261006-$Slot-$Provider\\worker-native-status.json\" -or $Result.receipt_sha256 -notmatch '^[a-f0-9]{64}$'){throw \"Slot $Slot did not return a complete successful bound receipt; batch stopped.\"}"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "line": 72,
+      "text": "$config='C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\pipeline.json'"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "line": 28,
+      "text": "INSTALL = Path(r'C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006')"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "line": 29,
+      "text": "NATIVE = Path(r'C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe')"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "line": 273,
+      "text": "limits = ResourceLimits.from_dict(config['execution_limits'])"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "line": 283,
+      "text": "spec['root'], stdin, output, output, limits=limits)"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "line": 15,
+      "text": "$installRoot='C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006'"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "line": 16,
+      "text": "$basePythonRoot='C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312'"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "line": 20,
+      "text": "$nativeRoot='C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006'"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "line": 96,
+      "text": "foreach($definition in @(Import-PinnedFunctions (Join-Path $external 'check-worker-native-status.ps1') 'fa9568207019c554b2f3246e50f414e94901f0f5a5f6f843771610c21e95e60c' @('Assert-CodeTreeOnce','Assert-VenvBinding'))){. ([scriptblock]::Create($definition))}"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "line": 102,
+      "text": "if($pair[0] -eq $venvConfig){$reader=[IO.StreamReader]::new($stream,[Text.Encoding]::UTF8);Assert-VenvBinding $reader.ReadToEnd()}"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker.ps1",
+      "line": 9,
+      "text": "[string]$InstallRoot = \"$env:ProgramFiles\\CoChem\\Pipeline4.2.7-r2\""
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker.ps1",
+      "line": 57,
+      "text": "$InstallRoot = Assert-ProtectedLoginInstallation -Path $InstallRoot"
+    }
+  ],
+  "findings": [
+    {
+      "id": "NATIVE-RUNTIME-01",
+      "result": "Fresh r3 status and Claude bridge variants required",
+      "detail": "The status helper and Claude bridge both hardcode the 20261006 installation and pass ResourceLimits to launch_worker. They retain the old f005 resource_limits module, whereas installed r3 contains reviewed de7 Job-limit ordering repair. Unchanged windows.py hash alone does not attest that dependency."
+    },
+    {
+      "id": "NATIVE-RUNTIME-02",
+      "result": "Exact r3 uv binding required",
+      "detail": "Old wrappers/status support pin d6ebb pyvenv.cfg and validate the old stdlib format. r3 pins 0c2b pyvenv.cfg with six uv keys. Merely replacing the installation path is insufficient."
+    },
+    {
+      "id": "NATIVE-RUNTIME-03",
+      "result": "Generic Codex login must select r3 explicitly",
+      "detail": "The protected generic helper exists with matching e3d hash and accepts InstallRoot. Its windows.login_worker path does not pass ResourceLimits, so this audit does not attribute the affinity-order failure to that path. Current guide nevertheless selects the old runtime. Its historical task/log lifecycle is unchanged by this audit."
+    },
+    {
+      "id": "NATIVE-RUNTIME-04",
+      "result": "Keep reviewed native provider contracts unchanged",
+      "detail": "Codex status login status, Claude status --setting-sources empty auth status --json, Claude login --setting-sources empty auth login --claudeai, and Codex login --device-auth remain the reviewed argv. Agy isolated integration hold remains unchanged. This audit establishes no authentication state or serving-model readiness."
+    }
+  ],
+  "proposed_smallest_remediation": {
+    "stage": "SCOPE_REPORTED_NOT_IMPLEMENTED",
+    "new_files": [
+      "worker-native-status-r3.py",
+      "check-worker-native-status-r3.ps1",
+      "check-all-worker-native-status-r3.ps1",
+      "worker_claude_login_bridge_r3.py",
+      "login_pipeline_worker_interactive_r3.ps1",
+      "HUMAN_NATIVE_LOGIN_R3.txt"
+    ],
+    "bindings": [
+      "Actual r3 installation receipt and frozen166 source manifest",
+      "r3 installed109-asset revision aggregate and explicit resource_limits de7 hash",
+      "Current config135cd9 and unchanged layout8430, six identities/four shared slots/Chapter06",
+      "Actual six-key uv pyvenv0c2b and protected base/launcher",
+      "Unchanged native executable pins and provider argv/status parsers"
+    ],
+    "behavior": [
+      "New versioned private roots/tasks; preserve originals",
+      "Keep Claude one-line private attended bridge and cleanup proof",
+      "Use reviewed native stderr/exit capture and bounded sanitized failures",
+      "No automatic authentication, credentials copying, policy/routing changes, daemon activation, or model jobs"
+    ]
+  },
+  "commands_executed": {
+    "provider_status": 0,
+    "provider_login": 0,
+    "model_jobs": 0,
+    "privileged_apply": 0
+  },
+  "linux_results_used": false
+}

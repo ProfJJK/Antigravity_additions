@@ -142,7 +142,9 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
         call('claim',{'owner':'outer-manifest-'+nonce})
         manifest_job=job('MANIFEST_GENERATOR',status='IN_PROGRESS')
         _require(manifest_job['attempt_id'] and manifest_job['fencing_token']==1,'Claim did not persist its fence')
-        manifest={'chapters':[{'chapter_id':key,'title':'Chapter '+key,'requirements':[requirement]} for key in chapter_ids]}
+        manifest={'chapters':[{'chapter_id':key,'title':'Chapter '+key,'requirements':[requirement],
+            'wbs_tasks_defined':[{'id':key+'-task','description':'Verify '+nonce,'requirements':[requirement]}]}
+            for key in chapter_ids]}
         before=jobs()
         rejected=complete(manifest_job,manifest,attempt_id=uuid.uuid4().hex)
         _require('error_type' in rejected,'Stale attempt was not rejected')
@@ -167,7 +169,7 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
             _require(len(ownership)==1 and ownership[0]['slot']=='outer-slot-'+str(index),'Persistent chapter ownership is absent')
             text='Immutable chapter '+key+' '+nonce
             output={'chapter_id':key,'requirements_traced':[requirement],
-                    'wbs_tasks_defined':[{'task_id':key+'-task','description':'Verify '+nonce}],
+                    'wbs_tasks_defined':[{'id':key+'-task','description':'Verify '+nonce,'requirements':[requirement]}],
                     'artifact_uri':f'db://{workflow}/{key}','artifact_text':text}
             before=jobs()
             wrong={**output,'chapter_id':'unowned-'+nonce}
@@ -187,7 +189,9 @@ def run_blackbox(candidate: Path, workspace: Path, private_report: Path, invoke,
         checks.append('chapter ownership, exact artifact hashes, immutability and single synthesis barrier')
         call('claim',{'owner':'outer-synthesis'})
         synthesis=job('SYNTHESIS',status='IN_PROGRESS')
-        output={'artifact_text':'Synthesis '+nonce,'chapter_hashes':artifacts}
+        gathered=json.loads(synthesis['payload_json'])
+        output={'artifact_text':'Synthesis '+nonce, **{key:gathered[key] for key in
+            ('chapter_hashes','chapter_output_hashes','coverage_report_sha256','wbs_tasks_by_chapter')}}
         before=jobs()
         bad=receipt(output,row=synthesis); bad['requested_model']='wrong-'+nonce
         _require('error_type' in complete(synthesis,output,receipt=bad),'Synthesis with a forged reserved model was accepted')

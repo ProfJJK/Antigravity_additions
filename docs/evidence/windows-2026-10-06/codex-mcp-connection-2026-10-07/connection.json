@@ -1,0 +1,77 @@
+{
+  "activation_ready": false,
+  "archive_path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\codex-connection-20261008T011353Z-05b57a5c",
+  "client_config_path": "C:\\Users\\ansac\\CoChem427\\pipeline-client-r3.json",
+  "codex_config_after_sha256": "a0721e9cdf08179d9a71aa744f798f8bc9a135def7f239aaa8ad7ef868af4b59",
+  "codex_config_before_sha256": "102b34a264b11988fd29f635178bc52ecb8e278ca61ac265d4a481d6bd048c6e",
+  "codex_config_path": "C:\\Users\\ansac\\.codex\\config.toml",
+  "config_backup_path": "C:\\Users\\ansac\\.codex\\config.toml.before-cochem-codex-connection-20261008T011353Z-05b57a5c",
+  "controller_tool_calls": 0,
+  "credentials_modified": false,
+  "daemon_started": false,
+  "databases_opened": false,
+  "entry": {
+    "args": [
+      "-I",
+      "-B",
+      "-m",
+      "cochem_pipeline",
+      "mcp",
+      "--client-config",
+      "C:\\Users\\ansac\\CoChem427\\pipeline-client-r3.json"
+    ],
+    "command": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Scripts\\python.exe",
+    "enabled": true,
+    "startup_timeout_sec": 20,
+    "tool_timeout_sec": 60
+  },
+  "existing_mcp_server_names": [
+    "node_repl"
+  ],
+  "installed_revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "model_jobs_submitted": 0,
+  "running_chat_tool_catalog_reloaded": false,
+  "schema": "cochem-codex-stdio-connection/1",
+  "source_sha256": "de8741c843df2cc12ce81fbdf3ee78f0c7c6bc8449b3efd1aff3c6c768a4d1d4",
+  "status": "CODEX_MCP_REGISTERED_STDIO_VERIFIED_CONTROLLER_NOT_STARTED",
+  "stdio": {
+    "controller_tool_calls": 0,
+    "instructions_sha256": "4864d318b09d31d54d7cefd71f63f91ee025ab2c39bb5ee57d36c63bdbd8bb02",
+    "model_jobs_submitted": 0,
+    "protocol_version": "2025-11-25",
+    "requests_sent": [
+      "initialize",
+      "notifications/initialized",
+      "tools/list"
+    ],
+    "server_name": "CoChem Pipeline 4.2.7",
+    "server_version": "1.30.0",
+    "tool_count": 15,
+    "tool_names": [
+      "knowledge_read",
+      "knowledge_search",
+      "knowledge_status",
+      "pipeline_cancel",
+      "pipeline_code",
+      "pipeline_code_cancel",
+      "pipeline_code_resume",
+      "pipeline_code_status",
+      "pipeline_health",
+      "pipeline_operator_view",
+      "pipeline_projects",
+      "pipeline_provider_preflight_submit",
+      "pipeline_resume_routing",
+      "pipeline_status",
+      "pipeline_submit"
+    ]
+  },
+  "unrelated_config_bytes_preserved": true
+}

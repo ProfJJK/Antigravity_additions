@@ -1,0 +1,14 @@
+{
+  "schema": "cochem-post-foundation-next-step-readiness/1",
+  "observation_summary": "summary.json",
+  "observation_summary_sha256": "a4cdfc4a3c0d65625467470fcd76fb845b1de45f7939ff91b0b168c531aa3dcb",
+  "evidence": {
+    "docker-execution-r3-v2-after-foundation-review.json": "ff5077ffa04b98ceb9f0de917eec272b5624e006ab63f076469488817479a9f8",
+    "docker-execution-r3-v2-preview-after-foundation.json": "363bd9218cb4bb0d83430d11b601429119dac4b50cb0f04384863119287bf598"
+  },
+  "default_preview_holds": [],
+  "physical_acceptance_executed": false,
+  "exact_prior_tasks_and_current_private_state_deferred_to_administrator_and_system": true,
+  "source_pins_changed": false,
+  "next_phase": "Reviewed physical Docker-v2 acceptance; completed foundation/project continuation must not be repeated."
+}

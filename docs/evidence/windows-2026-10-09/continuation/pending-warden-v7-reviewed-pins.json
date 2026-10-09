@@ -1,0 +1,17 @@
+{
+  "task-private-acl-v8.ps1": "f48d47e33c6a8885d35199456e24f1e606c771ee215c92037686e4399e1f1c47",
+  "resume-pending-warden-r3-v7.ps1": "a34a1bf07dfa0546752e650eb20e0babdea32bbd5a19c0620112fc878defc873",
+  "install-held-supervisor-observation-r3-v3.ps1": "f16cd5e39352d038b6ad81a25effc6a428308eee0106f88f3e42d20dcb939ad6",
+  "install-resource-observer-r3-v5.ps1": "ad64a859ad069a728cc57c324aedc5d48b44a072352e40b2bbed143d57e7c69f",
+  "run-post-commissioning-setup-r3-v4.ps1": "933aac1f6ca8ab9bf959aa4578a18284fb0aef5d57e93fc2c834da557e1e13c4",
+  "run-pending-warden-setup-r3-v7.ps1": "136cb5ddb505fcde6ac7e7494b42ce299e6258bcc6b7c0ec04e912f09d8c8d9c",
+  "commission-first-warden-r3-v5.py": "8ae682483caff2c178ab096b481699a5fea12c62519c5002bb75cbedad9e8c9e",
+  "commission-first-warden-r3-v5.ps1": "a40e093839f8482937a814a236b4a50775e741f30f2514c3ae9715fab371363e",
+  "register-stopped-warden-r3.ps1": "eccc593f36cbf488a54775b4343bcf3cf8b261b7cd81e5536fb7f2f18466a198",
+  "check-worker-native-status-r3.ps1": "18f58ebb448d8a0c6329dd187d4a9a27fa9cbe942cd05e906bb7aabc67e787a7",
+  "protected-code-inspection-v4.ps1": "5c01543cbb8b8d64b2b9f1bab4a13f87f8ff9e1ab3e82dfb6fc547144c77b95d",
+  "install-held-supervisor-observation-r3-v2.ps1": "9fb90f828ff3b0a7776af9bc48acd99eb2a520508a80271a1e87b785a2ce7313",
+  "install-resource-observer-r3-v4.ps1": "106d95dd5b22613cb871f3649d4376dc0a75745b6fce38469ddf94d2fcb9ec65",
+  "run-post-commissioning-setup-r3-v3.ps1": "31ad291744eda4a2a453912b64c1b969c943b3fee70b387a503def6d6cd6589d",
+  "run-reboot-setup-r3-v6.ps1": "dd74da76d96676bc0c1f3d013d7c11661bb04f760759af91c96ec04b72622041"
+}

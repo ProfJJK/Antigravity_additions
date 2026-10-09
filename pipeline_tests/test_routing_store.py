@@ -36,7 +36,8 @@ def fail(store, node, category="quota", **options):
 
 
 def completion(node):
-    output = {"chapters": [{"chapter_id": "chapter-one", "title": "Note", "requirements": ["REQ-1"]}]}
+    output = {"chapters": [{"chapter_id": "chapter-one", "title": "Note", "requirements": ["REQ-1"],
+        'wbs_tasks_defined': [{'id': 'note-task', 'description': 'Document note', 'requirements': ['REQ-1']}]}]}
     route = node["route"]
     receipt = {"execution_kind": "controller-storage-contract-fixture", "provider": route["provider"],
                "requested_model": route["model"], "requested_effort": route.get("reasoning_effort"),
@@ -218,7 +219,9 @@ def test_legacy_live_attempt_is_not_given_a_fabricated_route_and_new_claims_wait
     assert current.get(running['job_id'])['route'] is None
     assert current.get(running['job_id'])['routing'] is None
     assert current.claim('cannot-ignore-live-legacy', worker_slot='new-slot') is None
-    output = {'chapters': [{'chapter_id':'chapter-one','title':'Note','requirements':['REQ-1']}]}
+    output = {'chapters': [
+        {'chapter_id':'chapter-one','title':'Note','requirements':['REQ-1'], 'wbs_tasks_defined': [
+            {'id': 'note-task', 'description': 'Document note', 'requirements': ['REQ-1']}]}]}
     receipt = {'provider':'codex','pid':os.getpid(),'exit_code':0,'session_id':'legacy-storage-contract',
                'output_sha256':output_digest(output)}
     # Explicit controller storage-contract closure acknowledgement; no native
@@ -301,7 +304,8 @@ def test_real_process_cleanup_barrier_survives_cancel_or_fatal_sibling(tmp_path,
     if ending=='fatal_sibling':
         manifest = store.claim('manifest',worker_slot='manifest-identity')
         output,receipt = completion(manifest)
-        output['chapters'].append({'chapter_id':'chapter-two','title':'Second note','requirements':['REQ-1']})
+        output['chapters'].append({'chapter_id':'chapter-two','title':'Second note','requirements':['REQ-1'],
+            'wbs_tasks_defined': [{'id': 'second-task', 'description': 'Document second note', 'requirements': ['REQ-1']}]})
         receipt['output_sha256']=output_digest(output)
         store.complete(manifest['job_id'],manifest['attempt_id'],manifest['fencing_token'],output,receipt)
     owned = store.claim('physical-fixture',worker_slot='physical-identity',requires_cleanup=True,
@@ -309,7 +313,7 @@ def test_real_process_cleanup_barrier_survives_cancel_or_fatal_sibling(tmp_path,
     child = subprocess.Popen([sys.executable,'-c',"import sys; print('fixture-ready',flush=True); sys.stdin.buffer.read(1)"],
                              stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     try:
-        assert child.stdout.readline()==b'fixture-ready\n'
+        assert child.stdout.readline().rstrip(b'\r\n')==b'fixture-ready'
         if ending=='cancel':
             store.cancel_workflow(workflow['workflow_id'])
         else:

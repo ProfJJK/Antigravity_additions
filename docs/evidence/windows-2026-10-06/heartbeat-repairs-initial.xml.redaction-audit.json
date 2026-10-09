@@ -1,0 +1,10 @@
+{
+  "original_sha256": "1c0ac6c0b5ab4f98f36a9e26044a4fc4a751a7a562796929fbc44fba8bf18d45",
+  "original_source_preserved": true,
+  "publication_file": "docs/evidence/windows-2026-10-06/heartbeat-repairs-initial.xml",
+  "reason": "A pytest failure captured a credential environment value; redact the public copy.",
+  "redacted_sha256": "0be8b6ecc776dc0c2e296c2b719ce9cacdde4d585214a840710d1714ef0ed228",
+  "redacted_value_occurrences": 2,
+  "schema": "cochem-publication-redaction/1",
+  "xml_result_attributes_and_structure_preserved": true
+}

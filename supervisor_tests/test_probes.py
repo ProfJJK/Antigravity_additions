@@ -117,17 +117,21 @@ def test_real_job_store_public_projection_matches_independent_smoke_validator(tm
     identifier = workflow["workflow_id"]
     fixture = workflow_fixture(identifier)
     manifest = {"chapters": [
-        {"chapter_id": "startup", "title": "Startup", "requirements": ["SUPERVISOR-1"]},
-        {"chapter_id": "shutdown", "title": "Shutdown", "requirements": ["SUPERVISOR-2"]},
+        {"chapter_id": "startup", "title": "Startup", "requirements": ["SUPERVISOR-1"],
+         'wbs_tasks_defined': [{'id': 'startup-task', 'description': 'Explicit contract fixture', 'requirements': ['SUPERVISOR-1']}]},
+        {"chapter_id": "shutdown", "title": "Shutdown", "requirements": ["SUPERVISOR-2"],
+         'wbs_tasks_defined': [{'id': 'shutdown-task', 'description': 'Explicit contract fixture', 'requirements': ['SUPERVISOR-2']}]},
     ]}
     while (node := store.claim("explicit-contract-fixture-controller")) is not None:
         if node["kind"] == "MANIFEST_GENERATOR":
             reference, output = fixture["jobs"][1], manifest
         elif node["kind"] == "CHAPTER_DRAFT":
             reference = fixture["jobs"][2 + node["payload"]["chapter_index"]]
-            output = reference["output"]
+            output = {**reference["output"], 'wbs_tasks_defined': node['payload']['wbs_tasks_defined']}
         else:
-            reference, output = fixture["jobs"][-1], fixture["jobs"][-1]["output"]
+            reference = fixture["jobs"][-1]
+            from pipeline_tests.test_store import synthesis_output
+            output = synthesis_output(node, fixture['jobs'][-1]['output']['artifact_text'])
         route = node["route"]
         receipt = {**reference["receipt"], "output_sha256": digest(output),
             "provider":route["provider"],"requested_model":route["model"],"reported_model":route["model"],

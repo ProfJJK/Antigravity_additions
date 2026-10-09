@@ -1,0 +1,70 @@
+{
+  "schema": "cochem-knowledge-recovery-and-worker-boundaries-preparation/1",
+  "captured_utc": "2026-10-07T14:03:17.3401167Z",
+  "host": "AETHERDESK",
+  "artifacts": [
+    {
+      "name": "resume-knowledge-and-check-workers.ps1",
+      "sha256": "e51f9c94d241eae4708b8f9d556f7fa09a98ed877c58787c67debd136eb4f2b9"
+    },
+    {
+      "name": "test_resume_knowledge_and_check_workers.py",
+      "sha256": "25ff001585d09834628c13b0d4766e84a9b2b302f880d75b3e674eb829be03a0"
+    },
+    {
+      "name": "resume-knowledge-and-check-workers-tests.xml",
+      "sha256": "94f11dd9723c5e80541f9349353d8b2603134495720bcc4680165bd147f26075"
+    },
+    {
+      "name": "resume-knowledge-and-check-workers-preview.json",
+      "sha256": "b6c63edd2f37bb0e00b2731455b612d16572277a81dbe4b2e22fbaae5a2240ba"
+    }
+  ],
+  "outer_wrapper_sha256": "e51f9c94d241eae4708b8f9d556f7fa09a98ed877c58787c67debd136eb4f2b9",
+  "knowledge_resume_wrapper_sha256": "fdfbd0e313acdb75047d5ef51768654c58c9193991607e04d08c7dc35590bdfa",
+  "knowledge_resume_python_sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+  "focused_tests": {
+    "passed": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_time_seconds": 5.772,
+    "pytest_terminal_reported_seconds": 5.85,
+    "scope": "Inert plan/order/failure-per-slot and result guards, nonadmin refusal, real PowerShell child diagnostic output preserved across a subsequent throw; no production phase executed."
+  },
+  "previous_knowledge_helper_tests": {
+    "passed": 36,
+    "provenance": "Reviewed frozen resume helper tests reported by installer agent/root; not rerun by outer preparation."
+  },
+  "actual_default_preview": {
+    "mode": "READ_ONLY_PLAN",
+    "exit_code": 0,
+    "holds": [],
+    "max_execution_slots": 4,
+    "worker_identities": 6
+  },
+  "review": "Root and native_next independently reviewed the frozen outer wrapper; no concrete blocker found.",
+  "phase_order": [
+    "r2 knowledge resume with preserved original corpus/state/lock/task/evidence commitments",
+    "Only on full success: six sequential host-boundary checks via preserved original runtime/config with verified continuity"
+  ],
+  "controls": [
+    "Every constituent support pin remains held throughout both preflights and all applied phases.",
+    "Both preflights complete before the first mutation.",
+    "Missing/incomplete/failed recovery receipt prevents worker checks.",
+    "Validated bounded failure metadata remains visible before rethrow; arbitrary captured content is not echoed.",
+    "Stop on first failure; no automatic retry, cleanup or activation."
+  ],
+  "knowledge_runtime": "Pipeline4.2.7-windows-20261007-r2",
+  "worker_boundary_runtime": "Preserved Pipeline4.2.7-windows-20261006; evidence does not claim new RAM/Docker or current-runtime workflow acceptance.",
+  "pipeline_model_routing": "Chapter 06 unchanged",
+  "owner_command_status": "Requested by root and pending at archive time",
+  "applied_by_agent": false,
+  "models_executed": 0,
+  "logins_executed": 0,
+  "repair_budgets_modified": false,
+  "ram_modified": false,
+  "pipeline_started": false,
+  "activation_ready": false,
+  "original_artifacts_preserved": true
+}

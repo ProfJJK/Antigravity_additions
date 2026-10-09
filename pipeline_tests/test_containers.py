@@ -38,7 +38,7 @@ def prepared_metadata(runner):
 
 
 def test_snapshot_content_digest_is_independent_of_timestamps_and_archive_bytes(tmp_path):
-    (tmp_path/'module.py').write_text('answer=42\n')
+    (tmp_path/'module.py').write_bytes(b'answer=42\n')
     archive, first = source_snapshot(tmp_path, policy())
     os.utime(tmp_path/'module.py', (1, 1))
     _, second = source_snapshot(tmp_path, policy())
@@ -60,12 +60,22 @@ def test_snapshot_refuses_credentials(tmp_path, name):
 def test_snapshot_refuses_symlinks_and_hardlinks(tmp_path):
     source=tmp_path/'source';source.mkdir()
     target=tmp_path/'outside';target.write_text('outside')
-    (source/'link').symlink_to(target)
+    try:
+        (source/'link').symlink_to(target)
+    except OSError as error:
+        if getattr(error,'winerror',None)==1314:
+            pytest.skip('Native symlink creation requires Developer Mode or elevation; denial remains unverified')
+        raise
     with pytest.raises(ContainerError, match='ordinary'):
         source_snapshot(source, policy())
-    (source/'link').unlink();os.link(target,source/'link')
-    with pytest.raises(ContainerError, match='ordinary'):
-        source_snapshot(source, policy())
+
+
+def test_snapshot_refuses_native_hardlinks_without_symlink_privilege(tmp_path):
+    source=tmp_path/'source';source.mkdir()
+    target=tmp_path/'outside';target.write_bytes(b'outside')
+    os.link(target,source/'hardlink')
+    with pytest.raises(ContainerError,match='ordinary'):
+        source_snapshot(source,policy())
 
 
 @pytest.mark.parametrize('xml', [b'<testsuite tests="0"/>',
@@ -318,6 +328,9 @@ def test_real_failed_pytest_retains_red_assertion_evidence(tmp_path,docker_image
     assert item['junit']['failures']==1 and item['junit']['errors']==0
     assert item['junit_cases'][0]['status']=='failed'
     assert '1 == 2' in item['junit_cases'][0]['diagnostic']
+    assert item['junit_cases'][0]['assertion_failure']['exception_type']=='AssertionError'
+    assert item['junit_cases'][0]['assertion_failure']['phase']=='call'
+    assert item['assertions_sha256'] and item['assertion_observer_sha256']
 
 
 def test_real_pytest_collection_error_is_not_a_red_assertion(tmp_path,docker_image):
@@ -671,6 +684,8 @@ def test_uncertain_creation_absence_is_not_cleanup_even_after_controller_stopped
     runner=DockerRunner(policy(),tmp_path)
     record=runner._reserve('_warm_','uncertain',preparing=True)
     runner._daemon_identity='real-daemon-id-fixture'
+    # This is an uncertain-RPC registry contract, not native boot attestation.
+    monkeypatch.setattr(runner,'_native_boot_identity',lambda:None)
     runner._begin_creation(record)
     monkeypatch.setattr(runner,'_inspect_owned',lambda record:None)
     result=runner.confirm_attempt_cleanup('uncertain',controller_stopped=True)

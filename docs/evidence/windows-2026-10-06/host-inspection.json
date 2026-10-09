@@ -1,0 +1,460 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-10-07T01:53:57.3511041Z",
+  "scope": "Read-only Windows workstation discovery; no model inference, service/task changes, login, database reads, or deployment acceptance",
+  "host": "AETHERDESK",
+  "operator": "ansac",
+  "elevated_administrator": false,
+  "initial_shared_slots": 4,
+  "pipeline_routing": "Chapter 06 durable job board",
+  "linux_evidence_included": false,
+  "os": {
+    "Caption": "Microsoft Windows 11 Pro",
+    "Version": "10.0.26300",
+    "BuildNumber": "26300",
+    "OSArchitecture": "64-bit",
+    "TotalVisibleMemorySize": 66858980,
+    "FreePhysicalMemory": 39120976,
+    "LastBootUpTime": "2026-10-05T19:07:27.589352-05:00"
+  },
+  "cpu": {
+    "Name": "13th Gen Intel(R) Core(TM) i7-13700K",
+    "NumberOfCores": 16,
+    "NumberOfLogicalProcessors": 24
+  },
+  "clis": [
+    {
+      "name": "Python PATH",
+      "path": "C:\\Python314\\python.exe",
+      "observed_version": "3.14.7",
+      "sha256": "4942B86A6597E5AEE0128DAA00050ED79BC21F6E709A78EB19CBFEB0C2F39AC9"
+    },
+    {
+      "name": "Python standalone",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "observed_version": "3.13.5",
+      "sha256": "5341746F92483A93E44C313DE830F2FBA2956F0759094404A16B2FED06C9A2ED"
+    },
+    {
+      "name": "Anaconda",
+      "path": "C:\\Users\\ansac\\anaconda3\\python.exe",
+      "observed_version": "3.13.9",
+      "sha256": "7679E53FA969789309E81FDAD0D52B8CDA5F83C9ABF7CB31A3C58BF24B31E264"
+    },
+    {
+      "name": "uv Python",
+      "path": "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+      "observed_version": "3.12.13",
+      "sha256": "D8E3F0ADF246DB00358C0C4ED349CF714898178F9558FB0E944F79F5C07F8EAA"
+    },
+    {
+      "name": "Node",
+      "path": "C:\\Program Files\\nodejs\\node.exe",
+      "observed_version": "24.19.0",
+      "sha256": "3602F2BB1A10F2CBAB4C36886218A33C1AB3DB87290E73B033C46C77147D0237"
+    },
+    {
+      "name": "npm",
+      "path": "C:\\Program Files\\nodejs\\npm.cmd",
+      "observed_version": "11.17.0",
+      "sha256": "21B46C69AD6E2F231F02A9E120F4BA6C8E75FEF5A45637103002EAB99F888AB8"
+    },
+    {
+      "name": "Ollama",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+      "observed_version": "0.35.1",
+      "sha256": "3CC17C238B081ADF2BD3A206E52A063B637AF1BF283D95B4FFD73A2BDEC8B027"
+    },
+    {
+      "name": "Agy",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+      "observed_version": "1.3.0",
+      "sha256": "C1B0001989C4051A41F5104484DE182DB5014FA155053C8088BAACF1663063BF"
+    },
+    {
+      "name": "Claude",
+      "path": "C:\\Users\\ansac\\.local\\bin\\claude.exe",
+      "observed_version": "2.1.280",
+      "sha256": "0E4195524B73EB77EFBDF3E2B36DE5322A29F0CA575DFD2D9B4F946B1D425469"
+    },
+    {
+      "name": "Codex",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.exe",
+      "observed_version": "0.160.0",
+      "sha256": "FDDA5FA3CF3FB3D000B876720742857676293E4315E4B045FAE6F8BD7E866D1D"
+    },
+    {
+      "name": "GitHub CLI",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\GitHubCLI\\bin\\gh.exe",
+      "observed_version": "2.55.0",
+      "sha256": "1EEF2CA012FCA49688DD1BCE82C6E111D0E66C11CEFE68CA22EF1047C1BA9FAB"
+    },
+    {
+      "name": "uv",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\hermes\\bin\\uv.exe",
+      "observed_version": "0.12.17",
+      "sha256": "2019CDF564CB8F749262F5F021CEDC75A99ABB1C6081227CA340BBCDA972611D"
+    }
+  ],
+  "native_auth": {
+    "codex_status": "Logged in using ChatGPT",
+    "claude_logged_in": true,
+    "claude_auth_method": "claude.ai",
+    "claude_api_provider": "firstParty",
+    "isolated_worker_auth": "unverified; no pipeline worker local accounts visible",
+    "agy_login_contract": "No login or auth subcommand in installed --help; unverified",
+    "gemini_cli_on_path": false
+  },
+  "agy_help": {
+    "inspector": "scripts/inspect_agy_windows.ps1",
+    "version_exit": 0,
+    "help_exit": 0,
+    "version": "1.3.0",
+    "headless": "--print or --prompt",
+    "model_selector": "--model",
+    "effort_values": [
+      "low",
+      "medium",
+      "high",
+      "xhigh",
+      "max"
+    ],
+    "input_formats": [
+      "text",
+      "stream-json"
+    ],
+    "output_formats": [
+      "text",
+      "json",
+      "stream-json"
+    ],
+    "stdin": "Help documents NDJSON stdin for stream-json with stream-json output",
+    "timeout": "--print-timeout",
+    "login_subcommand_observed": false,
+    "json_model_receipt_schema_verified": false,
+    "extra_help_probe": "help --help exited 1: unknown subcommand --help",
+    "model_jobs_invoked": 0
+  },
+  "tasks": [
+    {
+      "name": "ClaudeTokenRefresh",
+      "path": "\\",
+      "state": "Ready",
+      "principal": "ansac",
+      "run_level": "Limited",
+      "execute": "C:\\Python314\\python.exe",
+      "arguments": "d:\\__CoChem\\__agentic\\.scripts\\claude_token_refresh.py",
+      "working_directory": "d:\\__CoChem\\__agentic\\.scripts",
+      "triggers": [
+        "MSFT_TaskTimeTrigger"
+      ],
+      "last_run": "2026-10-06T16:03:29-05:00",
+      "last_result": 0
+    },
+    {
+      "name": "CoChem V4.1.2 Swarm",
+      "path": "\\",
+      "state": "Ready",
+      "principal": "ansac",
+      "run_level": "Highest",
+      "execute": "D:\\__CoChem\\__agentic\\v4.1.2\\start_pipeline.bat",
+      "arguments": "",
+      "working_directory": "D:\\__CoChem\\__agentic\\v4.1.2",
+      "triggers": [
+        "MSFT_TaskLogonTrigger"
+      ],
+      "last_run": "2026-10-05T19:09:11-05:00",
+      "last_result": 0
+    },
+    {
+      "name": "CoChemHostWarden_V412",
+      "path": "\\",
+      "state": "Running",
+      "principal": "ansac",
+      "run_level": "Highest",
+      "execute": "C:\\WINDOWS\\System32\\cmd.exe",
+      "arguments": "/d /s /c \"set \"PYTHONPATH=D:\\__CoChem\\__agentic\\v4.1.2\\src;C:\\Users\\ansac\\AppData\\Roaming\\Python\\Python314\\site-packages\" && \"C:\\Python314\\python.exe\" -m cochem.warden.mcp_server --transport http --port 47821 >> \"D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\warden\\mcp_server.log\" 2>&1\"",
+      "working_directory": "D:\\__CoChem\\__agentic\\v4.1.2\\src",
+      "triggers": [
+        "MSFT_TaskBootTrigger"
+      ],
+      "last_run": "2026-10-05T19:08:07-05:00",
+      "last_result": 267009
+    },
+    {
+      "name": "CoChem_Ecosystem_Backup",
+      "path": "\\",
+      "state": "Ready",
+      "principal": "ansac",
+      "run_level": "Limited",
+      "execute": "PowerShell.exe",
+      "arguments": "-ExecutionPolicy Bypass -WindowStyle Hidden -File C:\\Users\\ansac\\cochem_backup.ps1",
+      "working_directory": "",
+      "triggers": [
+        "MSFT_TaskDailyTrigger"
+      ],
+      "last_run": "2026-10-06T03:00:01-05:00",
+      "last_result": 0
+    }
+  ],
+  "ram_disk": {
+    "volume": {
+      "DeviceID": "R:",
+      "FileSystem": "NTFS",
+      "Size": 8589930496,
+      "FreeSpace": 8555827200,
+      "VolumeName": ""
+    },
+    "imdisk_query": "Drive letter: R\r\nNo image file.\r\nSize: 8589934592 bytes (8 GB), Virtual Memory, HDD, Modified.",
+    "driver": {
+      "Name": "ImDisk",
+      "State": "Running",
+      "StartMode": "Auto",
+      "PathName": "C:\\WINDOWS\\system32\\DRIVERS\\imdisk.sys"
+    },
+    "helper": {
+      "Name": "ImDskSvc",
+      "Status": "Running",
+      "StartType": "Automatic"
+    },
+    "expected_startup_task": "CoChem_EnsureRamdisk",
+    "expected_task_visible": false,
+    "startup_launcher": "C:\\Users\\ansac\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\cochem_startup.vbs",
+    "launcher_requires_label": "COCHEM_RAM",
+    "observed_label": "",
+    "risk": "Existing launcher requires label absent from observed R:. Expected task not visible in non-elevated inspection; do not recreate, format, relabel, or resize automatically.",
+    "modified": false
+  },
+  "relevant_listeners": [
+    {
+      "LocalAddress": "::",
+      "LocalPort": 11434,
+      "Process": "ollama",
+      "OwningProcess": 29932
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 47821,
+      "Process": "python",
+      "OwningProcess": 10668
+    }
+  ],
+  "wsl": {
+    "version": "2.7.11.0",
+    "kernel": "6.18.33.2-2",
+    "distributions": [
+      {
+        "name": "Ubuntu",
+        "state": "Running",
+        "version": 2
+      },
+      {
+        "name": "docker-desktop",
+        "state": "Running",
+        "version": 2
+      }
+    ],
+    "config_path": "C:\\Users\\ansac\\.wslconfig",
+    "config_lines": [
+      "[wsl2]",
+      "processors=12",
+      "memory=41943040000"
+    ],
+    "modified": false
+  },
+  "docker": {
+    "client": {
+      "Version": "29.8.1",
+      "ApiVersion": "1.56",
+      "Os": "windows",
+      "Arch": "amd64",
+      "Context": "desktop-linux"
+    },
+    "server": {
+      "Version": "29.8.1",
+      "ApiVersion": "1.56",
+      "Os": "linux",
+      "Arch": "amd64",
+      "KernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+      "Platform": {
+        "Name": "Docker Desktop 4.93.0 (240920)"
+      }
+    },
+    "info": {
+      "OSType": "linux",
+      "Architecture": "x86_64",
+      "NCPU": 12,
+      "MemTotal": 41069174784,
+      "Containers": 5,
+      "ContainersRunning": 0,
+      "ContainersStopped": 5,
+      "MemoryLimit": true,
+      "SwapLimit": true,
+      "PidsLimit": true,
+      "CgroupVersion": "2"
+    },
+    "images": [
+      {
+        "Repository": "cochem-executor",
+        "Tag": "latest",
+        "Digest": "sha256:e6e418e632e4045c9d80c8df103e8784b12a23a7123b6d47726c198758c1784a",
+        "ID": "e6e418e632e4",
+        "Size": "1.09GB"
+      },
+      {
+        "Repository": "ferpa-sandbox",
+        "Tag": "latest",
+        "Digest": "sha256:af0a1be9ba9ec2f913e5df2b45c3096b42782f77fcde781a5af558621249d413",
+        "ID": "af0a1be9ba9e",
+        "Size": "325MB"
+      },
+      {
+        "Repository": "cochem_exec",
+        "Tag": "latest",
+        "Digest": "sha256:e103080bfadb11222cf1695e47ede9ada7ebab7d80e82d71d9205d0adb946f1c",
+        "ID": "e103080bfadb",
+        "Size": "916MB"
+      },
+      {
+        "Repository": "v3-watchdog",
+        "Tag": "latest",
+        "Digest": "sha256:138c70e197b4995eace0541f582173d318a4a91c23df958086cd0e86b27b1985",
+        "ID": "138c70e197b4",
+        "Size": "761MB"
+      },
+      {
+        "Repository": "v3-mcp-server",
+        "Tag": "latest",
+        "Digest": "sha256:ba484116af7dc47e9d6f8ae94cd66a46e88a83b0a3fc27c9274fad6622b727f4",
+        "ID": "ba484116af7d",
+        "Size": "761MB"
+      },
+      {
+        "Repository": "v3-kanban-worker",
+        "Tag": "latest",
+        "Digest": "sha256:af0e509f04d4e8573b8ed315d623837549d5ec01ccdb0fb739fd39e75b6a2625",
+        "ID": "af0e509f04d4",
+        "Size": "761MB"
+      },
+      {
+        "Repository": "python",
+        "Tag": "3.14-slim",
+        "Digest": "sha256:51dafde81dbdb6ebde285137a295cf18a47ca95234fe388a343719cb97305b3d",
+        "ID": "51dafde81dbd",
+        "Size": "180MB"
+      },
+      {
+        "Repository": "python",
+        "Tag": "3.14.7-slim",
+        "Digest": "sha256:51dafde81dbdb6ebde285137a295cf18a47ca95234fe388a343719cb97305b3d",
+        "ID": "51dafde81dbd",
+        "Size": "180MB"
+      },
+      {
+        "Repository": "alpine",
+        "Tag": "latest",
+        "Digest": "sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6",
+        "ID": "294b683cb724",
+        "Size": "13MB"
+      },
+      {
+        "Repository": "busybox",
+        "Tag": "latest",
+        "Digest": "sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e",
+        "ID": "fd7dc98638c8",
+        "Size": "6.81MB"
+      }
+    ],
+    "containers": [
+      {
+        "ID": "cad0983efee1",
+        "Names": "v3-mcp-server-1",
+        "Image": "v3-mcp-server",
+        "State": "exited",
+        "Status": "Exited (255) 10 days ago"
+      },
+      {
+        "ID": "184a0dcfebe0",
+        "Names": "v3-kanban-worker-1",
+        "Image": "v3-kanban-worker",
+        "State": "exited",
+        "Status": "Exited (255) 10 days ago"
+      },
+      {
+        "ID": "5e7f61ecf99f",
+        "Names": "v3-watchdog-1",
+        "Image": "v3-watchdog",
+        "State": "exited",
+        "Status": "Exited (255) 10 days ago"
+      },
+      {
+        "ID": "c855ae48668b",
+        "Names": "v3-kanban-worker-2",
+        "Image": "v3-kanban-worker",
+        "State": "exited",
+        "Status": "Exited (255) 10 days ago"
+      },
+      {
+        "ID": "15ba8c2f62d1",
+        "Names": "v3-kanban-worker-3",
+        "Image": "v3-kanban-worker",
+        "State": "exited",
+        "Status": "Exited (255) 10 days ago"
+      }
+    ],
+    "boundary_denial_verified": false
+  },
+  "gpu": {
+    "nvidia_smi": "NVIDIA GeForce RTX 3090, 616.92, 24576 MiB, 30",
+    "hwinfo_running": true,
+    "cpu_temperature_attested": false
+  },
+  "inspected_roots": [
+    {
+      "path": "C:\\ProgramData\\CoChem",
+      "exists": true
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427",
+      "exists": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline422",
+      "exists": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427",
+      "exists": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426",
+      "exists": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2",
+      "exists": true
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0",
+      "exists": true
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions",
+      "exists": true
+    }
+  ],
+  "holds": [
+    "No 4.2.7 protected installation or worker accounts visible at inspected conventional roots.",
+    "Existing legacy Warden owns port 47821; preserve task/state and avoid competing Warden.",
+    "R: is correct 8 GiB ImDisk virtual-memory backing; startup ownership/blank label discrepancy unresolved.",
+    "Agy login and process-derived JSON/effort model receipts unverified.",
+    "Claude subscription auth exists but ANTHROPIC_API_KEY presence requires preventing paid API fallback in worker execution.",
+    "Docker boundary denial, worker ACLs, Job Objects, pipeline queue test, reboot test, routed inference, and 48-hour stability unrun.",
+    "Existing databases and corpus were inventoried by filename/size only, never opened or replaced."
+  ],
+  "api_key_presence": {
+    "ANTHROPIC_API_KEY": true,
+    "value_collected": false,
+    "configuration_modified": false
+  }
+}

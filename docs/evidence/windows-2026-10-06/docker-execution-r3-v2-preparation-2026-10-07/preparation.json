@@ -1,0 +1,122 @@
+{
+  "schema": "cochem-docker-physical-preparation-archive/2",
+  "status": "PREPARED_CONDITIONAL_ON_ACTUAL_FOUNDATION_AND_PRIVATE_PROJECT_SUCCESS",
+  "source_records": [
+    {
+      "path": "accept-docker-execution-r3-v2.py",
+      "sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+      "bytes": 27944
+    },
+    {
+      "path": "accept-docker-execution-r3-v2.ps1",
+      "sha256": "725d98487322166740f67c0911f3d12aab62f344c4518290caaf1450f0d6a9eb",
+      "bytes": 21004
+    },
+    {
+      "path": "test_docker_execution_r3_v2.py",
+      "sha256": "f0d3f9c97b550fdf5cc48adea8d7ca590eca1050e061084d23ad847fdbcf34b0",
+      "bytes": 38290
+    },
+    {
+      "path": "docker-execution-r3-v2-tests-final-v2.xml",
+      "sha256": "92211c97b194040798e96a457d3e9ad6e69e7e531c7b61dc2dfed9eee1909b03",
+      "bytes": 10230
+    },
+    {
+      "path": "docker-execution-r3-v2-preview-v2.json",
+      "sha256": "9763f75f3cc53b99c2f31ee53e40043b8cab9a67f7faa45017e008c1e86054c1",
+      "bytes": 2005
+    },
+    {
+      "path": "docker-execution-r3-v2-preparation-v2.json",
+      "sha256": "2ba4b318dacf314450f623d160fcdd25c583f2c091a3d61773cf4788170935af",
+      "bytes": 4991
+    },
+    {
+      "path": "docker-execution-r3-v2-independent-review-final.json",
+      "sha256": "89eaa8d2237984872e4eb421802fedc00c9e9a7927e52e4754f1203421efde63",
+      "bytes": 3539
+    },
+    {
+      "path": "provision-execution-foundation-r3-v2.py",
+      "sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+      "bytes": 25200
+    },
+    {
+      "path": "provision-execution-foundation-r3-v2.ps1",
+      "sha256": "0df813342fa8070d1f2f6041ccbc24a7d8ec0d5c94baa269eec02c243e043ca0",
+      "bytes": 23283
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.py",
+      "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+      "bytes": 24727
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.ps1",
+      "sha256": "06522b04378d8d0b6cb915102e7fce1125700d96f68159c13e9d26a5c1c52e0b",
+      "bytes": 25620
+    },
+    {
+      "path": "accept-docker-execution-r3-v1.py",
+      "sha256": "3ac01c18be77c18b6c80601a681f7b3c082424e88d2f79a29fe15dc9a63aa0c5",
+      "bytes": 25236
+    },
+    {
+      "path": "accept-docker-execution-r3-v1.ps1",
+      "sha256": "380386520ace322d7967382d8778b9751bb510f13ce391cd7e92ee3b000bf035",
+      "bytes": 17358
+    },
+    {
+      "path": "RETURN_SETUP.txt",
+      "sha256": "9029bb62ddd4d43b4506afaba31ce03687de11294e47a47c8b77e1a4fe5bfe57",
+      "bytes": 7042
+    },
+    {
+      "path": "MORNING_SETUP.txt",
+      "sha256": "e452bff1b76ecc2b2a8c117c47a2ae662f08f7daca9752244a446d8adfec63bf",
+      "bytes": 334
+    }
+  ],
+  "ordinary_windows_preparation_tests": {
+    "passed": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": "10.985"
+  },
+  "foundation_preparation_sha256": "5265820aa096715bc02f8a894df12a506f2f0ba4ccb07c963f769ce5eff99f83",
+  "independent_review_sha256": "89eaa8d2237984872e4eb421802fedc00c9e9a7927e52e4754f1203421efde63",
+  "default_preview_holds": [
+    "Successful scoped foundation receipt is not present."
+  ],
+  "execution": {
+    "apply_performed": false,
+    "actual_physical_acceptance": false,
+    "provider_or_model_calls": 0,
+    "pipeline_started": false,
+    "activation_ready": false
+  },
+  "scope": {
+    "max_owned_container_creation_attempts": 2,
+    "shared_capacity": 4,
+    "warm_preparation": 2,
+    "fixed_red_green_fixture": true,
+    "automatic_retry_allowed": false,
+    "native_identities_excluded": 6,
+    "existing_R_volume_and_startup_task_preserved": true,
+    "existing_databases_and_repair_budgets_preserved": true
+  },
+  "failure_diagnostics": {
+    "fifth_pinned_diagnostic_support_definitions_only": true,
+    "numeric_cause_codes_preserved": true,
+    "raw_messages_withheld": true,
+    "guard_or_transport_decisions_changed": false
+  },
+  "limitations": [
+    "Ordinary tests simulate privileged/Docker boundaries; no physical Docker operation occurred.",
+    "Missing successful foundation receipt is an expected live prerequisite, not a passed deployment phase.",
+    "The historical exact foundation failure cause remains unknown.",
+    "Linux results are separate."
+  ]
+}

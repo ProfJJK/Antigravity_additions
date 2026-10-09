@@ -1,0 +1,91 @@
+{
+  "schema": "cochem-private-project-import-preparation/1",
+  "host": "AETHERDESK",
+  "captured_utc": "2026-10-07T15:58:05.101555+00:00",
+  "status": "PREPARED_REVIEWED_PRIVILEGED_APPLY_UNRUN",
+  "tests": {
+    "passed": 27,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 9.121,
+    "scope": "12 actual ordinary-user disposable Git init/import/CAS/reference/tree/blob/config/object-drift and repeat refusal tests;15 Windows PowerShell5.1 cross-language FILE_ID_INFO, actual Git custody, actual ProgramData ancestor ACL, .NET effective/inherit-only ACE, native stderr and error sanitization tests. Nonadministrator Apply was tested only to verify refusal before mutation. No administrator import was executed."
+  },
+  "initial_diagnostics_preserved": [
+    "First12 pure Git tests passed.",
+    "Initial combined27-test run passed25 and failed2 fixture expectations because PowerShell serialized ActionPreference.Stop as enum1; explicit string serialization corrected the fixture. Native exit and stderr withholding were already correct.",
+    "During draft review, corrected old BY_HANDLE_FILE_INFORMATION identity mismatch by using full FILE_ID_INFO uint64 volume/128-bit file ID; actual cross-language file/directory fixture and complete Git custody preview pass.",
+    "Corrected .NET PropagationFlags.InheritOnly to named enum2; native ACE bit8 is not used for .NET flags. Actual ProgramData ancestor and effective/inherit-only fixtures pass."
+  ],
+  "bindings": {
+    "r3_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "r3_source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+    "git_static_custody_sha256": "ebfd2ef955b22d9765d0c171ee7c4c2f4bf70507369c21411897848240af121e",
+    "bundle_sha256": "08b7006e1eaf4a69503c7dbefd4e0e340734fcff9d6cb011a509a63cff0dff87",
+    "branch": "pipeline/accepted",
+    "baseline_commit": "c52a3a97eb085e6bafbbd14bd6a75f3274288530",
+    "baseline_tree": "0e7fe3edd935e4a839d17cb99b30b08db18d8ae9",
+    "target": "C:\\ProgramData\\CoChemPipeline427\\projects\\windows-acceptance",
+    "session": "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3",
+    "worker_identities": 6,
+    "shared_slots": 4
+  },
+  "preview_holds": [
+    "Data-parent custody requires the owner Administrator token."
+  ],
+  "preview_target_probe": "ABSENT under ordinary-user GetFileAttributesW; privileged Apply still rechecks target absence and exact existing parent custody. Win32 access-denied is separately INACCESSIBLE.",
+  "operation_scope": [
+    "Owner-elevated direct helper; no scheduled task or SYSTEM launch.",
+    "Existing pinned native git-core git.exe used for fixed local builtins; configured cmd\\git.exe and existing installation/config remain unchanged.12Git binary paths/all observed aliases held against writes/deletion with exact hashes/FILE_ID_INFO/alias/DACL freshness.",
+    "Fresh private SYSTEM/Administrators directories created atomically before bytes. Parent boundary is validated, never repaired; all pre-existing project/session collisions refuse.",
+    "Fresh bare init with empty template and explicit core.symlinks=false; strict verified7-object pack import; absent-ref CAS; exact branch/tree/3file content/object/control/private-custody verification. No checkout or project execution.",
+    "Child environment constructed from fixed values; user/systemGit config, hooks/filters, protocols/lazyfetch/replacement objects/signing/auto-maintenance disabled. safe.directory applies only to exact validated private target via commandline, not global config.",
+    "Failure preserves all partial new directories/evidence with no retry/cleanup, and exposes only validated internal failure codes.",
+    "No accounts, credentials, login/model jobs, existing databases or budgets, R drive/startup, daemon or existing helper modifications."
+  ],
+  "limitations": [
+    "Administrator ownership/DACL creation and actual protected project import remain unrun.",
+    "Static Git dependency custody and ordinary-user real plumbing tests are not proof of arbitrary dynamic helpers or SYSTEM Git execution.",
+    "This preparation does not authorize pipeline activation or prove coding workflow/worker acceptance."
+  ],
+  "independent_review": "Parent reviewed draft and concrete corrections; host_inspection final fullsource review reported no remaining concrete defect at Python3224bbc/wrapper66bd5b.",
+  "artifacts": [
+    {
+      "name": "import-disposable-project.py",
+      "bytes": 11865,
+      "sha256": "3224bbc544a9f46ef402cb6bc483bdaa854bbfdf94737323e5408ae94e87ce1d"
+    },
+    {
+      "name": "install-disposable-project.ps1",
+      "bytes": 25131,
+      "sha256": "66bd5b039411b726b246fe4c4a57f8514a8fdbd40978283d2f74c1d922a2ec0d"
+    },
+    {
+      "name": "test_disposable_project_import.py",
+      "bytes": 10846,
+      "sha256": "a7ad8d03a62a85da7054a4cb827d97322ae99f611b00d0564681b160de36d176"
+    },
+    {
+      "name": "disposable-project-python-initial.xml",
+      "bytes": 2228,
+      "sha256": "3162a999845176ebf5141274816e3faac13865b9c48e2c773778ee4159cea0d0"
+    },
+    {
+      "name": "disposable-project-tests-initial.xml",
+      "bytes": 7575,
+      "sha256": "13d79daac214fececd6dad436e989290b619d44283ab23d93436b33e810e2dab"
+    },
+    {
+      "name": "disposable-project-tests-final.xml",
+      "bytes": 4599,
+      "sha256": "61160d9f93da630e6caec510a60585b7850fbbc26a1a633c4a847a6485a1f666"
+    },
+    {
+      "name": "disposable-project-readonly-preview.json",
+      "bytes": 1147,
+      "sha256": "52b57e3f0cce9a53525cfcedacc906dce98f57a92d54519342488509d0b0cc69"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "schema": "cochem-windows-privilege-followup/1",
+  "recorded_at_utc": "2026-10-07T03:15:07.138928+00:00",
+  "ordinary_user_report_sha256": "6d563cb30ce4da0cec8464cfb0e3321169f0239651417c9f900912b193313cc3",
+  "inspector_sha256": "3fb4167f9e2d3c12dbc5f79ae33298526943a1ada42e7ca89a6d611c43e1decd",
+  "current_inspector_matches": true,
+  "ordinary_user_identity": "AETHERDESK\\ansac",
+  "administrator": false,
+  "system": false,
+  "uac_attempt": {
+    "result": "CANCELED",
+    "message": "Earlier Start-Process -Verb RunAs returned: The operation was canceled by the user.",
+    "elevated_output_exists": false,
+    "inspection_executed_elevated": false,
+    "automatic_retry": false
+  },
+  "ram_volume": {
+    "DeviceID": "R:",
+    "Size": 8589930496,
+    "FreeSpace": 8555827200,
+    "FileSystem": "NTFS",
+    "VolumeName": ""
+  },
+  "startup_task": {
+    "name": "CoChem_EnsureRamdisk",
+    "unavailable": true,
+    "error": "No MSFT_ScheduledTask objects found with property 'TaskName' equal to 'CoChem_EnsureRamdisk'.  Verify the value of the property and retry."
+  },
+  "cpu_sensor_count": 0,
+  "holds": [
+    "LibreHardwareMonitor CPU sensors: Invalid namespace ",
+    "This report is non-elevated; protected discovery remains incomplete.",
+    "Administrator discovery does not establish SYSTEM deployment acceptance."
+  ],
+  "scope": "Actual ordinary-user evidence and canceled elevation; no SYSTEM acceptance"
+}

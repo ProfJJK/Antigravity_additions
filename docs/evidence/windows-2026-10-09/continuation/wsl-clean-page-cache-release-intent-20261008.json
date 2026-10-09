@@ -1,0 +1,11 @@
+{
+  "recorded_utc": "2026-10-09T02:48:03.7146803Z",
+  "distribution": "Ubuntu",
+  "before_linux_cached_kib": 32600464,
+  "drop_caches_value": 1,
+  "scope": "One-time clean Linux page-cache release for Windows deployment diagnostics; no task/process stop or persistent configuration change",
+  "dirty_pages_discarded": false,
+  "schema": "cochem-wsl-clean-page-cache-release-intent/1",
+  "before_windows_commit_free_mib": 2779.7,
+  "automatic_repeat": false
+}

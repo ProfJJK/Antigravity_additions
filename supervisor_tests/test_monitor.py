@@ -408,7 +408,8 @@ def test_wal_committed_failure_is_seen_without_immutable_stale_reads(tmp_path):
         conn.close()
 
 
-@pytest.mark.parametrize("content", ["{", "[]", '{"timestamp":10000}', "x"*65537])
+@pytest.mark.parametrize("content", ["{", "[]", '{"timestamp":10000}', "x"*65537],
+                         ids=["malformed-json", "wrong-shape", "missing-fields", "oversized"])
 def test_malformed_heartbeat_never_claims_healthy(tmp_path, content):
     board(tmp_path)
     (tmp_path / "supervisor_status.json").write_text(content, encoding="utf-8")

@@ -1,0 +1,3446 @@
+{
+  "schema": "cochem-legacy-migration-discovery/1",
+  "observed_at_utc": "2026-10-07T02:38:17.028061+00:00",
+  "scope": "Read-only native Windows schemas/counts and selected historical metadata; no state changes or inference",
+  "roots": [
+    {
+      "root": "D:\\__CoChem\\__agentic\\v4.1.2",
+      "databases": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+          "bytes": 1740800,
+          "modified_ns": 1791089882082192400,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "blackboard_events": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "event_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "domain",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "event_type",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "payload_json",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "timestamp",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 18
+            },
+            "jobs": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "job_type",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "status",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "payload_json",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "priority",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "attempts",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "max_attempts",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "lease_owner",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "lease_expires_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "not_before",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "result_path",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "created_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "error_log",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 136
+            },
+            "layer1_queue": {
+              "columns": [
+                {
+                  "name": "request_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "status",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 322
+            },
+            "layer1_slots": {
+              "columns": [
+                {
+                  "name": "slot_id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "agent_id",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 0
+            },
+            "recovery_telemetry": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "timestamp",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "tier",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "action",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "details",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 72
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "jobs_by_status": [
+            {
+              "status": "COMPLETED",
+              "rows": 136,
+              "recorded_attempts_sum": 164,
+              "recorded_attempts_max": 3
+            }
+          ],
+          "attempt_scope": "Current job counters only; not lifetime paid calls, currency, or proof of live processes",
+          "recovery_tier_summary": [
+            {
+              "tier": 1,
+              "rows": 17,
+              "first_timestamp": "2026-09-30 03:33:47",
+              "last_timestamp": "2026-10-01 00:32:48"
+            },
+            {
+              "tier": 2,
+              "rows": 1,
+              "first_timestamp": "2026-09-30 20:00:36",
+              "last_timestamp": "2026-09-30 20:00:36"
+            },
+            {
+              "tier": 3,
+              "rows": 54,
+              "first_timestamp": "2026-09-30 07:47:23",
+              "last_timestamp": "2026-10-03 22:11:16"
+            }
+          ],
+          "recovery_scope": "Legacy VM recovery telemetry; not a model-call budget ledger",
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db-wal",
+              "bytes": 0,
+              "modified_ns": 1791340126980048300
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1791340696958297100
+            }
+          ]
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\knowledge_index.db",
+          "bytes": 1949696,
+          "modified_ns": 1790854641783226500,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "documents": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "doc_path",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "title",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "line_count",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "sha256",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 86
+            },
+            "fts_index": {
+              "columns": [
+                {
+                  "name": "doc_path",
+                  "type": ""
+                },
+                {
+                  "name": "section_title",
+                  "type": ""
+                },
+                {
+                  "name": "content",
+                  "type": ""
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_config": {
+              "columns": [
+                {
+                  "name": "k",
+                  "type": ""
+                },
+                {
+                  "name": "v",
+                  "type": ""
+                }
+              ],
+              "rows": 1
+            },
+            "fts_index_content": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "c0",
+                  "type": ""
+                },
+                {
+                  "name": "c1",
+                  "type": ""
+                },
+                {
+                  "name": "c2",
+                  "type": ""
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_data": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "block",
+                  "type": "BLOB"
+                }
+              ],
+              "rows": 115
+            },
+            "fts_index_docsize": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "sz",
+                  "type": "BLOB"
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_idx": {
+              "columns": [
+                {
+                  "name": "segid",
+                  "type": ""
+                },
+                {
+                  "name": "term",
+                  "type": ""
+                },
+                {
+                  "name": "pgno",
+                  "type": ""
+                }
+              ],
+              "rows": 113
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "knowledge_path_prefix_counts": [
+            {
+              "prefix": "D:/__CoChem/__agentic/v4.1.2/wiki",
+              "documents": 83
+            },
+            {
+              "prefix": "C:/Users/ansac/.gemini/antigravity",
+              "documents": 3
+            }
+          ],
+          "knowledge_other_path_count": 0,
+          "knowledge_scope": "Source path ownership only; document titles and contents not selected",
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.1.2\\knowledge_index.db-wal",
+              "bytes": 0,
+              "modified_ns": 1790787234348435000
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.1.2\\knowledge_index.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1790797556062045300
+            }
+          ]
+        }
+      ],
+      "watchdog_states": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\watchdog_state.json",
+          "bytes": 483,
+          "modified_ns": 1791204397148881500,
+          "sha256": "42e98a5bcd980ebb7d3d3039c6b638e6f8914dd4f787c7d8247f90fbd16a69c6",
+          "selected_state": {
+            "recovery_pid": null,
+            "recovery_started": 1791086683.6967525,
+            "recovery_create_time": 1791086683.4626584,
+            "last_trigger_ts": 1791086683.6967525,
+            "last_recovery_outcome": "LAUNCHED",
+            "consecutive_cycle_failures": 0,
+            "frozen_pid_count": 0
+          },
+          "process_liveness_verified": false
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\watchdog_heartbeat.json",
+          "bytes": 285,
+          "modified_ns": 1791204397147881700,
+          "sha256": "8e86083fce6a532954ce2b8bf684d89aabeaca4706999f379d357684037bdc41",
+          "selected_state": {
+            "last_recovery_outcome": "LAUNCHED",
+            "consecutive_cycle_failures": 0,
+            "pid": 17928,
+            "ts": 1791204397.1468823,
+            "cycle": 3,
+            "verdict": "HEALTHY",
+            "frozen_pid_count": 0
+          },
+          "process_liveness_verified": false
+        }
+      ],
+      "repair_loop_states": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks\\state\\loop_state.json",
+          "bytes": 96250,
+          "modified_ns": 1791080558255249000,
+          "sha256": "00e4c503d2f80b53461d855e00a99766320623709d27749e8c945bb4f6dcc9db",
+          "targets": 94,
+          "statuses": {
+            "AWAITING_AUDIT": 3,
+            "PASSED": 15,
+            "PENDING": 76
+          },
+          "recorded_rounds_sum": 84,
+          "recorded_rounds_max": 5,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks\\state_1\\loop_state.json",
+          "bytes": 14591,
+          "modified_ns": 1790976864872696700,
+          "sha256": "3420adb141a4aeb6407c0610b6ca6749193fafb6cc8a929b3ead192fb625fbd5",
+          "targets": 20,
+          "statuses": {
+            "PENDING": 19,
+            "AWAITING_AUDIT": 1
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks\\state_2\\loop_state.json",
+          "bytes": 14552,
+          "modified_ns": 1790976864888308800,
+          "sha256": "37ed154c5899336713144c3ba8b90757d04751e12321ff5958834672e0ccca9e",
+          "targets": 20,
+          "statuses": {
+            "PENDING": 19,
+            "AWAITING_AUDIT": 1
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks\\state_3\\loop_state.json",
+          "bytes": 12813,
+          "modified_ns": 1790976864895319100,
+          "sha256": "d0b865260764a0fccecf3840f8e657d3f95672965b32349c8fb94f1a6d607968",
+          "targets": 19,
+          "statuses": {
+            "PENDING": 19
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks\\state_4\\loop_state.json",
+          "bytes": 22810,
+          "modified_ns": 1790976864903363100,
+          "sha256": "e45c3f232c53c38af83dd3a258e482eb446ed330715238352f982fb813a01731",
+          "targets": 19,
+          "statuses": {
+            "PENDING": 19
+          },
+          "recorded_rounds_sum": 8,
+          "recorded_rounds_max": 2,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        }
+      ],
+      "launch_receipts": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T073958Z\\recovery_launch.json",
+          "bytes": 459,
+          "modified_ns": 1790753998526812600,
+          "sha256": "73216ecc3acd8129454eaecae63a35669375113b6653d38ab933cef287b92521",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790753998,
+          "recovery_pid": 3456,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T073958Z_1\\recovery_launch.json",
+          "bytes": 463,
+          "modified_ns": 1790753998512571500,
+          "sha256": "c4ac374265a98179a1ccb867d2a72e59f0913b080ca9049fab540f0aaceb9a65",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790753998,
+          "recovery_pid": 37452,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T085228Z\\recovery_launch.json",
+          "bytes": 460,
+          "modified_ns": 1790758348920778500,
+          "sha256": "1acc014aac47ce95da8507371c11cba22674dc0e073c7630536b1d0c157db335",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790758348,
+          "recovery_pid": 15852,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20260930T085258Z\\recovery_launch.json",
+          "bytes": 459,
+          "modified_ns": 1790758378919215500,
+          "sha256": "fbbf6fb76387ad627d6b7c622e7d2af56537cb2b25a55572c38b41de79933323",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790758378,
+          "recovery_pid": 4820,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T003825Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790815110322636000,
+          "sha256": "96cda474d6811ec860782f99d614402b5314bb596543a8066dbc4d4455c4bb65",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815110,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T004228Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790815348221171300,
+          "sha256": "4ed19cf120e79eb15bb6dd457e02b143fe5c4fc3fa865823d9c6a7fafea8febf",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815348,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T004258Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790815378269214900,
+          "sha256": "3a4e16b71fe77b13146509cec1ede2745439663f7820f18919180626be6f0d84",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815378,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T020258Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790820178502213300,
+          "sha256": "9ed4f355bfc3dfdff39e7ef6d294b6c64b6cdaac22679c773dfb98093c257007",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790820178,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221620Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790892980909129500,
+          "sha256": "d9c06a3e5bb61550b79317c79f7f1771d41303cd6895f99c4571a40fda8ed8f8",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790892980,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221720Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893040894492200,
+          "sha256": "ee74988046dfd75b7f86df266e5937e81223b3d942b52a2dd3ff595c984d254b",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893040,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221750Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893070989592800,
+          "sha256": "3983362a10385cdc72ed6e2e1a4b303e29659c675f0ca42e491bfff6c91cf114",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893070,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221820Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893100908759800,
+          "sha256": "b5359b0fe850afe0f074f421e538b2c42d27d195d67f99af273b207fdfa4b4d7",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893100,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221850Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893131132458200,
+          "sha256": "651605c9ccdfddee5aec279c732f926f1a70d58e60f6b726589c8933a0c8d206",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893131,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221920Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893160855286500,
+          "sha256": "9470d6424ad72c9a2a0727efcb8b0c5decb2c5f7651ec21479928a51e9648b33",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893160,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T221950Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893190907329700,
+          "sha256": "8dfa754a40754a1f552a8a28f9ba239f266b8928dd87581cefecbe606fc397f9",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893190,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222020Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893221048409900,
+          "sha256": "49b9375a750980a8c41f888c99b830e717140684f4a6f3a725344269c5f0b6a3",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893221,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222050Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893251066155900,
+          "sha256": "14781d298abb450b465c169704e099e89d7492f9af81d335c5f93a2a8eb7e568",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893251,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222120Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893281205430400,
+          "sha256": "e57a55e0e0a02cbda6dea1facc00d8a4c848004a38ba6a2c93b84a216e6493a7",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893281,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222150Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893311347005300,
+          "sha256": "1bae82add49062f3954007c9724cd607a29a28914f854c91479dce7fe5d57779",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893311,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222220Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893341058180500,
+          "sha256": "9cc84d92aebdb5d34a2354aa2e7b0ce89fe54e87803e4d87b5e3031b8b911154",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893341,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222250Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893371231024300,
+          "sha256": "72ca47adc2c6ca1eac7a5970e03e5decfbcc20b96e5e570c6727ff90dd53b1c9",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893371,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261001T222320Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893401078767800,
+          "sha256": "3016322f3393543e7cdfd0ba25225b1adf90fa856894ba1cd52a6c70b9cf844d",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893401,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123152Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030714482496400,
+          "sha256": "80a1543b16b6208b49a35ad653321c3128a6cdd282968170b9f878a45a8f5984",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030714,
+          "recovery_pid": 36196,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123352Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030833080777600,
+          "sha256": "6801f1807852fb1a76d0409d2c891e1dfcced7c389450ce60eb132186dc24abd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030833,
+          "recovery_pid": 44628,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123422Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030863087247700,
+          "sha256": "8081cd91e5203a2184f75c7d305ed3e95e0bdbd973fc81d23d53c8b69ec5345c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030863,
+          "recovery_pid": 50744,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123552Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030953130050000,
+          "sha256": "546622715787fca0f1afdac4f101f71dd387c61f2944dab30f519786985b20fd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030953,
+          "recovery_pid": 37784,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123722Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031043125843700,
+          "sha256": "47bb98aa0f4b3d10807de4adc719361344a3ad3c9b7a5e4db875fa038a2d1edd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031043,
+          "recovery_pid": 57580,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123752Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031073125084100,
+          "sha256": "05fe051e31a51f291b3144a9f5a534b98deb6461f150fcd36289e71a9c7bda41",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031073,
+          "recovery_pid": 57444,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123822Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031103059099100,
+          "sha256": "77991b8a4a5b48dc0b83c2a9d4b017baf131a7b31583750609cb000b35c433a6",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031103,
+          "recovery_pid": 52896,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123852Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031133163947900,
+          "sha256": "6071268510c3436758135a08a7a1cb18d5f0e18b6de8430f2791aa2a260d3811",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031133,
+          "recovery_pid": 62480,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T123922Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791031163086293800,
+          "sha256": "5523ecbfcdca98fecd5b86b5ef8aa580605f772f8dfbf5570b856db7e3b028c5",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031163,
+          "recovery_pid": 7440,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T124122Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031283173331500,
+          "sha256": "5e61cdfde82053b4756dd687419b8db421b469a1b81b5573139eb5abd2f96ba8",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031283,
+          "recovery_pid": 33264,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T124152Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791031313009924600,
+          "sha256": "04b68c9c5465bf72993eafd30e9ecfe234de9038ecffa5d0cc262775e220e8fd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031313,
+          "recovery_pid": 40456,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T124222Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031343122325100,
+          "sha256": "9b63edc2933a61101824ddc1c950b8f61b4b60f116d6c399a31186d5c0b51f4c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031343,
+          "recovery_pid": 30892,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T124252Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031373104692600,
+          "sha256": "47494ae36e90689997883d4bc31a63a7c5f3010dd6077a48b619c6616cdee9f0",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031373,
+          "recovery_pid": 28404,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T161022Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791043823465521900,
+          "sha256": "ae7079ac5a82b0936791f35b09f730c330b81cbab49097755068af6541bbeb52",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791043823,
+          "recovery_pid": 5508,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T164923Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791046163276815600,
+          "sha256": "9c249c3fe6ec61f97e10e626cdf461b861b3452b16e0ab97eef551701beeb74e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791046163,
+          "recovery_pid": 34708,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T203006Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791059406407360500,
+          "sha256": "eaedd579178e8ea2e54a3c453b873aa8453b721cac28e5dcfbe8c5ee5d5284f3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791059406,
+          "recovery_pid": 46092,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T210436Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791061476495317800,
+          "sha256": "6ac67cf01f353c6c1b543b329964b01ada5ff04506d93add00f8d1105d6944ae",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791061476,
+          "recovery_pid": 57512,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261003T220506Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791065106599335800,
+          "sha256": "e6d04501fad951fec5a6a1f79745d1f810aa682aeb6effb926068370250b567e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791065106,
+          "recovery_pid": 32036,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T001710Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791073034972018200,
+          "sha256": "af4c7c509ce26cd93abd302e81ce67e6f1eec9eca78cbbfa01b3f42bdff8b885",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791073034,
+          "recovery_pid": 22964,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T001840Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791073211694446000,
+          "sha256": "b8f22eb65717364bf12cd7f6eb2c9be691fe950a170690aa814d6ae63368a38c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791073211,
+          "recovery_pid": 23948,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T011140Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791076312643386400,
+          "sha256": "d8880579f217dacf3e56d89a49dd57b842bd6248fd58af125b540a5b76062e7a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791076311,
+          "recovery_pid": 30844,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T034147Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791085309050885400,
+          "sha256": "79fe2b8e6cbc05ec76d92f441b3096067a6676b0e1ff57ac44565b6865568207",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791085309,
+          "recovery_pid": 17956,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T034847Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791085728992918700,
+          "sha256": "9b2de37421229093fd1c91518ad52252562381053004f83c3759df6299d37cdd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791085728,
+          "recovery_pid": 14540,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T035447Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791086090308008900,
+          "sha256": "5238adc72f5c9004116c8662eddf6d5dfb619940b14a4f21f251af5faa8636c7",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791086090,
+          "recovery_pid": 40688,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T035517Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791086120129490300,
+          "sha256": "58af327e73e1ab77df72a57a2fd9016378369b54bfa04134e43aa11e096cec34",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791086120,
+          "recovery_pid": 33008,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T040012Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791086414399091200,
+          "sha256": "9736390aaec51771c5afc5d712da465f2a4b126e4e5d4bbc3a71f059410fcb9e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791086414,
+          "recovery_pid": 24504,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog\\bundles\\20261004T040442Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791086683694746300,
+          "sha256": "95fd3bb8cde4ed1960e143936fcb6e73fd45d460519bebdf362364a7afa9ce86",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791086683,
+          "recovery_pid": 29048,
+          "bundle_day": "20261004"
+        }
+      ],
+      "launch_receipt_errors": [],
+      "knowledge_roots": {
+        ".sources": {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\.sources",
+          "exists": false,
+          "is_directory": false
+        },
+        "wiki": {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\wiki",
+          "exists": true,
+          "is_directory": true
+        },
+        "v4.1.2_manifest.json": {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\v4.1.2_manifest.json",
+          "exists": true,
+          "is_directory": false
+        }
+      },
+      "source_commitments": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\start_pipeline.bat",
+          "bytes": 931,
+          "modified_ns": 1791130673071262900,
+          "sha256": "5c6ac2e416861e6bc10dbe754249fcf79cc56137ec55ee01b9223fcee52f0133",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\cochem_master_loop_shard_1.py",
+          "bytes": 42024,
+          "modified_ns": 1790980814168405300,
+          "sha256": "29929bb2b6e888e903c4228612f261e39d8940b952683361d2ab50deeb475f80",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\warden\\mcp_server.py",
+          "bytes": 18331,
+          "modified_ns": 1790770679385803900,
+          "sha256": "85e64c7fcc418f72eda04ec483e10f9df692c0788b1d2a0e0d96c8c3877be133",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\warden\\ladder.py",
+          "bytes": 6927,
+          "modified_ns": 1791004193319949300,
+          "sha256": "9289cbfec18a9bc48785dacef1146f9c83846d364798913117c3ae002bb05261",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\warden\\vm_control.py",
+          "bytes": 74228,
+          "modified_ns": 1791004193885004300,
+          "sha256": "dde453023d705074c95a0d9401885c98023e41865fc651a4bbf3eb682f72bd4a",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\watchdog\\watchdog_sre.py",
+          "bytes": 81284,
+          "modified_ns": 1791062117129903500,
+          "sha256": "a131175ff3fecadbdfc427eae3e0345f85107c39ae43a8f021e356f5115916f5",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\dsp\\worker_daemon.py",
+          "bytes": 50233,
+          "modified_ns": 1791080829552209000,
+          "sha256": "1d7b9c6a2d43c26c1e1841e1469092947361192a226061b26e91cf43564c4eec",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.1.2\\src\\cochem\\knowledge\\server.py",
+          "bytes": 21673,
+          "modified_ns": 1790794658946535600,
+          "sha256": "cef4be1d7d990675f989bda3f430107aad65e15bdd56f2ce3be89127150161e8",
+          "metadata_unchanged_during_read": true
+        }
+      ],
+      "launch_outcomes": {
+        "LAUNCHED": 31,
+        "EXECUTABLE_MISSING": 18
+      },
+      "modern_state_files": {
+        "supervisor.db": false,
+        "component-recovery.db": false,
+        "repair-quarantine.json": false,
+        "release-journal.json": false,
+        "current.json": false
+      }
+    },
+    {
+      "root": "D:\\__CoChem\\__agentic\\v4.2.0",
+      "databases": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db",
+          "bytes": 2416640,
+          "modified_ns": 1791253341068412200,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "blackboard_events": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "event_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "domain",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "event_type",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "payload_json",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "timestamp",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 18
+            },
+            "jobs": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "job_type",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "status",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "payload_json",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "priority",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "attempts",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "max_attempts",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "lease_owner",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "lease_expires_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "not_before",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "result_path",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "created_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "error_log",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "parent_job_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "fencing_token",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 486
+            },
+            "layer1_queue": {
+              "columns": [
+                {
+                  "name": "request_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "status",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 1377
+            },
+            "layer1_slots": {
+              "columns": [
+                {
+                  "name": "slot_id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "agent_id",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 4
+            },
+            "obs_file_stability": {
+              "columns": [
+                {
+                  "name": "path_str",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "first_seen_size",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "first_seen_time",
+                  "type": "REAL"
+                },
+                {
+                  "name": "last_seen_size",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "last_seen_time",
+                  "type": "REAL"
+                },
+                {
+                  "name": "is_stable",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "enqueued",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 152
+            },
+            "quota_state": {
+              "columns": [
+                {
+                  "name": "provider",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "current_usage",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "quota_limit",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "cost_per_upload",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "last_reset_date",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 1
+            },
+            "recovery_telemetry": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "timestamp",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "tier",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "action",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "details",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 72
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "jobs_by_status": [
+            {
+              "status": "COMPLETED",
+              "rows": 188,
+              "recorded_attempts_sum": 207,
+              "recorded_attempts_max": 6
+            },
+            {
+              "status": "PENDING",
+              "rows": 291,
+              "recorded_attempts_sum": 121,
+              "recorded_attempts_max": 7
+            },
+            {
+              "status": "RUNNING",
+              "rows": 7,
+              "recorded_attempts_sum": 27,
+              "recorded_attempts_max": 7
+            }
+          ],
+          "attempt_scope": "Current job counters only; not lifetime paid calls, currency, or proof of live processes",
+          "recovery_tier_summary": [
+            {
+              "tier": 1,
+              "rows": 17,
+              "first_timestamp": "2026-09-30 03:33:47",
+              "last_timestamp": "2026-10-01 00:32:48"
+            },
+            {
+              "tier": 2,
+              "rows": 1,
+              "first_timestamp": "2026-09-30 20:00:36",
+              "last_timestamp": "2026-09-30 20:00:36"
+            },
+            {
+              "tier": 3,
+              "rows": 54,
+              "first_timestamp": "2026-09-30 07:47:23",
+              "last_timestamp": "2026-10-03 22:11:16"
+            }
+          ],
+          "recovery_scope": "Legacy VM recovery telemetry; not a model-call budget ledger",
+          "quota_numeric_state": [
+            {
+              "provider": "youtube",
+              "current_usage": 0,
+              "quota_limit": 10000,
+              "cost_per_upload": 1600,
+              "last_reset_date": "2026-10-03"
+            }
+          ],
+          "quota_scope": "Provider upload quota; never treat as supervisor repair spend",
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db-wal",
+              "bytes": 0,
+              "modified_ns": 1791255445683425100
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1791255445683425100
+            }
+          ]
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\knowledge_index.db",
+          "bytes": 1949696,
+          "modified_ns": 1790854641783226500,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "documents": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "doc_path",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "title",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "line_count",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "sha256",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 86
+            },
+            "fts_index": {
+              "columns": [
+                {
+                  "name": "doc_path",
+                  "type": ""
+                },
+                {
+                  "name": "section_title",
+                  "type": ""
+                },
+                {
+                  "name": "content",
+                  "type": ""
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_config": {
+              "columns": [
+                {
+                  "name": "k",
+                  "type": ""
+                },
+                {
+                  "name": "v",
+                  "type": ""
+                }
+              ],
+              "rows": 1
+            },
+            "fts_index_content": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "c0",
+                  "type": ""
+                },
+                {
+                  "name": "c1",
+                  "type": ""
+                },
+                {
+                  "name": "c2",
+                  "type": ""
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_data": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "block",
+                  "type": "BLOB"
+                }
+              ],
+              "rows": 115
+            },
+            "fts_index_docsize": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "sz",
+                  "type": "BLOB"
+                }
+              ],
+              "rows": 1096
+            },
+            "fts_index_idx": {
+              "columns": [
+                {
+                  "name": "segid",
+                  "type": ""
+                },
+                {
+                  "name": "term",
+                  "type": ""
+                },
+                {
+                  "name": "pgno",
+                  "type": ""
+                }
+              ],
+              "rows": 113
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "knowledge_path_prefix_counts": [
+            {
+              "prefix": "D:/__CoChem/__agentic/v4.1.2/wiki",
+              "documents": 83
+            },
+            {
+              "prefix": "C:/Users/ansac/.gemini/antigravity",
+              "documents": 3
+            }
+          ],
+          "knowledge_other_path_count": 0,
+          "knowledge_scope": "Source path ownership only; document titles and contents not selected",
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\knowledge_index.db-wal",
+              "bytes": 0,
+              "modified_ns": 1790787234348435000
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\knowledge_index.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1790797556062045300
+            }
+          ]
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db",
+          "bytes": 45056,
+          "modified_ns": 1791170936843097800,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "jobs": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "job_type",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "priority",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "status",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "payload_json",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "lease_owner",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "lease_expires_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "attempts",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "error_log",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "created_at",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "updated_at",
+                  "type": "INTEGER"
+                }
+              ],
+              "rows": 24
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "jobs_by_status": [
+            {
+              "status": "PENDING",
+              "rows": 24,
+              "recorded_attempts_sum": 0,
+              "recorded_attempts_max": 0
+            }
+          ],
+          "attempt_scope": "Current job counters only; not lifetime paid calls, currency, or proof of live processes",
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db-wal",
+              "bytes": 0,
+              "modified_ns": 1791340126987140500
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1791340697000730300
+            }
+          ]
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db",
+          "bytes": 12288,
+          "modified_ns": 1791207168984028400,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "watermarks": {
+              "columns": [
+                {
+                  "name": "task_id",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "rule_hash",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 0
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": [
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db-wal",
+              "bytes": 0,
+              "modified_ns": 1791207168985035400
+            },
+            {
+              "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db-shm",
+              "bytes": 32768,
+              "modified_ns": 1791340697007236000
+            }
+          ]
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\wikirag.db",
+          "bytes": 8192,
+          "modified_ns": 1791200653579099000,
+          "mode": "SQLite URI mode=ro, query_only, bounded read transaction",
+          "tables": {
+            "rules": {
+              "columns": [
+                {
+                  "name": "id",
+                  "type": "INTEGER"
+                },
+                {
+                  "name": "category",
+                  "type": "TEXT"
+                },
+                {
+                  "name": "rule_text",
+                  "type": "TEXT"
+                }
+              ],
+              "rows": 12
+            }
+          },
+          "modern_supervisor_compatible": false,
+          "modern_component_compatible": false,
+          "modern_pipeline_schema_present": false,
+          "repair_budget_remaining": null,
+          "transaction_integrity_check": "ok",
+          "main_file_metadata_unchanged_during_inspection": true,
+          "wal_files": []
+        }
+      ],
+      "watchdog_states": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\watchdog_state.json",
+          "bytes": 793,
+          "modified_ns": 1791245192360488000,
+          "sha256": "320c4424656094bcabc473e7d5533c3a597bec90f848776679c9d6fb4c42c7cf",
+          "selected_state": {
+            "recovery_pid": null,
+            "recovery_started": 1791243512.36622,
+            "recovery_create_time": 1791243512.3615265,
+            "last_trigger_ts": 1791243512.36622,
+            "last_recovery_outcome": "LAUNCHED",
+            "consecutive_cycle_failures": 0,
+            "frozen_pid_count": 0
+          },
+          "process_liveness_verified": false
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\watchdog_heartbeat.json",
+          "bytes": 812,
+          "modified_ns": 1791245192359459300,
+          "sha256": "3e46ae3b0e81f011b160d02df17ada00c06c4b43e8fe78264088851ab2e59e86",
+          "selected_state": {
+            "last_recovery_outcome": "LAUNCHED",
+            "consecutive_cycle_failures": 0,
+            "pid": 28700,
+            "ts": 1791245192.3594594,
+            "cycle": 627,
+            "verdict": "COLLAPSED",
+            "frozen_pid_count": 0
+          },
+          "process_liveness_verified": false
+        }
+      ],
+      "repair_loop_states": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks\\state\\loop_state.json",
+          "bytes": 91946,
+          "modified_ns": 1791084748934992500,
+          "sha256": "904400c84d942824a8453b8ca3a6c63863ca0f51ae6eca92a4c1a1612b71bb49",
+          "targets": 92,
+          "statuses": {
+            "AWAITING_AUDIT": 3,
+            "PASSED": 15,
+            "PENDING": 74
+          },
+          "recorded_rounds_sum": 83,
+          "recorded_rounds_max": 5,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks\\state_1\\loop_state.json",
+          "bytes": 14591,
+          "modified_ns": 1791084748935991700,
+          "sha256": "bd0e980d81936113f9a9831667fd37854a9200bcab9e409e72a0c3eeec9c4748",
+          "targets": 20,
+          "statuses": {
+            "PENDING": 19,
+            "AWAITING_AUDIT": 1
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks\\state_2\\loop_state.json",
+          "bytes": 14552,
+          "modified_ns": 1791084748935991700,
+          "sha256": "ae167a6208cd71eb75c75376a37303120189451ce6841e5ffb7f292ba62a4c1b",
+          "targets": 20,
+          "statuses": {
+            "PENDING": 19,
+            "AWAITING_AUDIT": 1
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks\\state_3\\loop_state.json",
+          "bytes": 12813,
+          "modified_ns": 1791084748935991700,
+          "sha256": "fb4b50c02417857d4d228f1d2afffbf98fcc5b73b4081d2e5bd9b4d735642fc0",
+          "targets": 19,
+          "statuses": {
+            "PENDING": 19
+          },
+          "recorded_rounds_sum": 6,
+          "recorded_rounds_max": 3,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks\\state_4\\loop_state.json",
+          "bytes": 22810,
+          "modified_ns": 1791084748935991700,
+          "sha256": "12e65630c080c652275ac7f3adc7154ab2f78ec0efa4fe68f892c6e88716c3dc",
+          "targets": 19,
+          "statuses": {
+            "PENDING": 19
+          },
+          "recorded_rounds_sum": 8,
+          "recorded_rounds_max": 2,
+          "scope": "Per-target historical loop counters; not incident/day paid-call reservations"
+        }
+      ],
+      "launch_receipts": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20260930T073958Z\\recovery_launch.json",
+          "bytes": 459,
+          "modified_ns": 1790753998526812600,
+          "sha256": "73216ecc3acd8129454eaecae63a35669375113b6653d38ab933cef287b92521",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790753998,
+          "recovery_pid": 3456,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20260930T073958Z_1\\recovery_launch.json",
+          "bytes": 463,
+          "modified_ns": 1790753998512571500,
+          "sha256": "c4ac374265a98179a1ccb867d2a72e59f0913b080ca9049fab540f0aaceb9a65",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790753998,
+          "recovery_pid": 37452,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20260930T085228Z\\recovery_launch.json",
+          "bytes": 460,
+          "modified_ns": 1790758348920778500,
+          "sha256": "1acc014aac47ce95da8507371c11cba22674dc0e073c7630536b1d0c157db335",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790758348,
+          "recovery_pid": 15852,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20260930T085258Z\\recovery_launch.json",
+          "bytes": 459,
+          "modified_ns": 1790758378919215500,
+          "sha256": "fbbf6fb76387ad627d6b7c622e7d2af56537cb2b25a55572c38b41de79933323",
+          "outcome": "LAUNCHED",
+          "timestamp": 1790758378,
+          "recovery_pid": 4820,
+          "bundle_day": "20260930"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T003825Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790815110322636000,
+          "sha256": "96cda474d6811ec860782f99d614402b5314bb596543a8066dbc4d4455c4bb65",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815110,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T004228Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790815348221171300,
+          "sha256": "4ed19cf120e79eb15bb6dd457e02b143fe5c4fc3fa865823d9c6a7fafea8febf",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815348,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T004258Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790815378269214900,
+          "sha256": "3a4e16b71fe77b13146509cec1ede2745439663f7820f18919180626be6f0d84",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790815378,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T020258Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790820178502213300,
+          "sha256": "9ed4f355bfc3dfdff39e7ef6d294b6c64b6cdaac22679c773dfb98093c257007",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790820178,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221620Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790892980909129500,
+          "sha256": "d9c06a3e5bb61550b79317c79f7f1771d41303cd6895f99c4571a40fda8ed8f8",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790892980,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221720Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893040894492200,
+          "sha256": "ee74988046dfd75b7f86df266e5937e81223b3d942b52a2dd3ff595c984d254b",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893040,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221750Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893070989592800,
+          "sha256": "3983362a10385cdc72ed6e2e1a4b303e29659c675f0ca42e491bfff6c91cf114",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893070,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221820Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893100908759800,
+          "sha256": "b5359b0fe850afe0f074f421e538b2c42d27d195d67f99af273b207fdfa4b4d7",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893100,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221850Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893131132458200,
+          "sha256": "651605c9ccdfddee5aec279c732f926f1a70d58e60f6b726589c8933a0c8d206",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893131,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221920Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893160855286500,
+          "sha256": "9470d6424ad72c9a2a0727efcb8b0c5decb2c5f7651ec21479928a51e9648b33",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893160,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T221950Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893190907329700,
+          "sha256": "8dfa754a40754a1f552a8a28f9ba239f266b8928dd87581cefecbe606fc397f9",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893190,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222020Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893221048409900,
+          "sha256": "49b9375a750980a8c41f888c99b830e717140684f4a6f3a725344269c5f0b6a3",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893221,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222050Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893251066155900,
+          "sha256": "14781d298abb450b465c169704e099e89d7492f9af81d335c5f93a2a8eb7e568",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893251,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222120Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893281205430400,
+          "sha256": "e57a55e0e0a02cbda6dea1facc00d8a4c848004a38ba6a2c93b84a216e6493a7",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893281,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222150Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893311347005300,
+          "sha256": "1bae82add49062f3954007c9724cd607a29a28914f854c91479dce7fe5d57779",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893311,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222220Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893341058180500,
+          "sha256": "9cc84d92aebdb5d34a2354aa2e7b0ce89fe54e87803e4d87b5e3031b8b911154",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893341,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222250Z\\recovery_launch.json",
+          "bytes": 484,
+          "modified_ns": 1790893371231024300,
+          "sha256": "72ca47adc2c6ca1eac7a5970e03e5decfbcc20b96e5e570c6727ff90dd53b1c9",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893371,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261001T222320Z\\recovery_launch.json",
+          "bytes": 485,
+          "modified_ns": 1790893401078767800,
+          "sha256": "3016322f3393543e7cdfd0ba25225b1adf90fa856894ba1cd52a6c70b9cf844d",
+          "outcome": "EXECUTABLE_MISSING",
+          "timestamp": 1790893401,
+          "recovery_pid": null,
+          "bundle_day": "20261001"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123152Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030714482496400,
+          "sha256": "80a1543b16b6208b49a35ad653321c3128a6cdd282968170b9f878a45a8f5984",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030714,
+          "recovery_pid": 36196,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123352Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030833080777600,
+          "sha256": "6801f1807852fb1a76d0409d2c891e1dfcced7c389450ce60eb132186dc24abd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030833,
+          "recovery_pid": 44628,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123422Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030863087247700,
+          "sha256": "8081cd91e5203a2184f75c7d305ed3e95e0bdbd973fc81d23d53c8b69ec5345c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030863,
+          "recovery_pid": 50744,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123552Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791030953130050000,
+          "sha256": "546622715787fca0f1afdac4f101f71dd387c61f2944dab30f519786985b20fd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791030953,
+          "recovery_pid": 37784,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123722Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031043125843700,
+          "sha256": "47bb98aa0f4b3d10807de4adc719361344a3ad3c9b7a5e4db875fa038a2d1edd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031043,
+          "recovery_pid": 57580,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123752Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031073125084100,
+          "sha256": "05fe051e31a51f291b3144a9f5a534b98deb6461f150fcd36289e71a9c7bda41",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031073,
+          "recovery_pid": 57444,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123822Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031103059099100,
+          "sha256": "77991b8a4a5b48dc0b83c2a9d4b017baf131a7b31583750609cb000b35c433a6",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031103,
+          "recovery_pid": 52896,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123852Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031133163947900,
+          "sha256": "6071268510c3436758135a08a7a1cb18d5f0e18b6de8430f2791aa2a260d3811",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031133,
+          "recovery_pid": 62480,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T123922Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791031163086293800,
+          "sha256": "5523ecbfcdca98fecd5b86b5ef8aa580605f772f8dfbf5570b856db7e3b028c5",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031163,
+          "recovery_pid": 7440,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T124122Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031283173331500,
+          "sha256": "5e61cdfde82053b4756dd687419b8db421b469a1b81b5573139eb5abd2f96ba8",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031283,
+          "recovery_pid": 33264,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T124152Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791031313009924600,
+          "sha256": "04b68c9c5465bf72993eafd30e9ecfe234de9038ecffa5d0cc262775e220e8fd",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031313,
+          "recovery_pid": 40456,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T124222Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031343122325100,
+          "sha256": "9b63edc2933a61101824ddc1c950b8f61b4b60f116d6c399a31186d5c0b51f4c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031343,
+          "recovery_pid": 30892,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T124252Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791031373104692600,
+          "sha256": "47494ae36e90689997883d4bc31a63a7c5f3010dd6077a48b619c6616cdee9f0",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791031373,
+          "recovery_pid": 28404,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T161022Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791043823465521900,
+          "sha256": "ae7079ac5a82b0936791f35b09f730c330b81cbab49097755068af6541bbeb52",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791043823,
+          "recovery_pid": 5508,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T164923Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791046163276815600,
+          "sha256": "9c249c3fe6ec61f97e10e626cdf461b861b3452b16e0ab97eef551701beeb74e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791046163,
+          "recovery_pid": 34708,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T203006Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791059406407360500,
+          "sha256": "eaedd579178e8ea2e54a3c453b873aa8453b721cac28e5dcfbe8c5ee5d5284f3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791059406,
+          "recovery_pid": 46092,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T210436Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791061476495317800,
+          "sha256": "6ac67cf01f353c6c1b543b329964b01ada5ff04506d93add00f8d1105d6944ae",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791061476,
+          "recovery_pid": 57512,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261003T220506Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791065106599335800,
+          "sha256": "e6d04501fad951fec5a6a1f79745d1f810aa682aeb6effb926068370250b567e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791065106,
+          "recovery_pid": 32036,
+          "bundle_day": "20261003"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T001710Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791073034972018200,
+          "sha256": "af4c7c509ce26cd93abd302e81ce67e6f1eec9eca78cbbfa01b3f42bdff8b885",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791073034,
+          "recovery_pid": 22964,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T001840Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791073211694446000,
+          "sha256": "b8f22eb65717364bf12cd7f6eb2c9be691fe950a170690aa814d6ae63368a38c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791073211,
+          "recovery_pid": 23948,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T035632Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791086195221279200,
+          "sha256": "557f2824041dbae9b9966276542eaa061cc8190646dd207681e90899c05a1a43",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791086195,
+          "recovery_pid": 11340,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T162639Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791131201930534500,
+          "sha256": "41d8b7a68a6c1961265cd08cecbe3d54b2162939dd56101bd26cadb9be4ee413",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791131201,
+          "recovery_pid": 38440,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T162709Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791131229698739100,
+          "sha256": "7a896004b50ab1f735860fb39be7f7b239ec89467e0ed2c0b74b7112a367ad24",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791131229,
+          "recovery_pid": 34456,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T163139Z\\recovery_launch.json",
+          "bytes": 503,
+          "modified_ns": 1791131499655085900,
+          "sha256": "87456a19cb982c52813de5753439d5a19334ad91199fc455c5546d9152add37f",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791131499,
+          "recovery_pid": 29812,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T163209Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791131529782383500,
+          "sha256": "74656a702fcf9c4d1c761a2a1d1074d84e1f7877366b15211f528e5a4479db69",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791131529,
+          "recovery_pid": 38076,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T164439Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791132279752203100,
+          "sha256": "f5ab9f726f18d908fa80c240a564a738dc3e9bb728b2cd91c1aa7103dd34dcdf",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791132279,
+          "recovery_pid": 32284,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T171809Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791134289766777200,
+          "sha256": "ab3afd9d7eaa2bbf98d05aa5258b478181cc34f187610440f5425c33230bda6b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791134289,
+          "recovery_pid": 1672,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T172139Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791134499799657500,
+          "sha256": "f368172d6612178a19a4b4c8b54ffa9c413520c0f7b16363a0a488c40bbff644",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791134499,
+          "recovery_pid": 37592,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T172809Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791134889829074200,
+          "sha256": "8c339dc97c9709feaead6bb6bebfbb700d84c80b36e271d0543c20de444e006a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791134889,
+          "recovery_pid": 28128,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T172909Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791134949787241300,
+          "sha256": "93b5d966ebdb0abc6f88baa863d7d13bf418ccc50ade006d065cd0f51862a0d3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791134949,
+          "recovery_pid": 14244,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T173039Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791135039753729100,
+          "sha256": "f0d9f827f114c2a70ea9bc026e35d189f056ab85c8bec0f4ddd94f9bba5dddac",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791135039,
+          "recovery_pid": 26344,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T173439Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791135279774763800,
+          "sha256": "c22aa5d00abe42544cdfbe6254baed1eef14ba9af03b2a745fceca180f0ca370",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791135279,
+          "recovery_pid": 40964,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T222547Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791152749852893800,
+          "sha256": "98a0447a5d1f8da7a1129b986f790106e5e988cb7ce5621af3a8b41042df8ca2",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791152749,
+          "recovery_pid": 37496,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T223047Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791153047808268200,
+          "sha256": "a7f69eb4bd74450a0bea32a1af65ecf4e182a8a54dbd696464f87813f927459d",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791153047,
+          "recovery_pid": 41436,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T225643Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791154605680772400,
+          "sha256": "ef221f36cdaa2264de26eafdb34feadcb8382a9c215a5b08366149d0c6ec8c6b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791154605,
+          "recovery_pid": 38568,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T233838Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157119448925700,
+          "sha256": "7b563c361577134f456b13d3478fdbf96334579d7ffe210dc9110a02371587f1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157119,
+          "recovery_pid": 32664,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234338Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791157425909378800,
+          "sha256": "178430a244fea7a94908c54cc518719ae15f9c4e59a39e11171c3e69844d80f1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157425,
+          "recovery_pid": 45240,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234408Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157454969290900,
+          "sha256": "5fd3f93d67f6b5c25032591ae82200a5264388b1bc2e9e008be373266ae61bb7",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157454,
+          "recovery_pid": 30212,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234508Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791157514730203200,
+          "sha256": "61565599e15b1da9dd1c9db8146a0d3a880d683671c6a4c42d69f85787e1e75e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157514,
+          "recovery_pid": 8972,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234538Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791157544574498000,
+          "sha256": "d0a351084b634a8a338f2b161a16723b6a64b3341f4d951da2bcfa9bf7ccbd6a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157544,
+          "recovery_pid": 13716,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234738Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157664695346100,
+          "sha256": "c3327ab307d41c65a99d85391747c7e1a2feb6a89a5807a928e6223e803cd683",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157664,
+          "recovery_pid": 42376,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234808Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157693953525000,
+          "sha256": "5a507bea16b2fc9c06875ce8840707a08d119a1f68de4b9c44d06bb3d502ff01",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157693,
+          "recovery_pid": 33416,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234838Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157723656180100,
+          "sha256": "5d5920547dc14c5001344131876f3f9882c609fedc33adfbc9c61ac404c93918",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157723,
+          "recovery_pid": 10592,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T234938Z\\recovery_launch.json",
+          "bytes": 499,
+          "modified_ns": 1791157785582665500,
+          "sha256": "f8088d84baa7861175fe773c9059eca3b4bae8e220f7373fb5d69e72fc3458b8",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157785,
+          "recovery_pid": 33764,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235008Z\\recovery_launch.json",
+          "bytes": 488,
+          "modified_ns": 1791157814422832800,
+          "sha256": "be4c31533a98b5edde85a212a8bc17f7609eeed70884835c20c5674c6cef2c81",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157814,
+          "recovery_pid": 24700,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235038Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791157844056112300,
+          "sha256": "986bcce949b8a573827416c5a000c926ce206108753187873f06b2a927db5074",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157844,
+          "recovery_pid": 7088,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235308Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791157994843472100,
+          "sha256": "1750e879fb0adb212e7c25b76ac3171fe0903f57ebf5e3413622aa077be93e71",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791157994,
+          "recovery_pid": 45504,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235338Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791158024942261100,
+          "sha256": "a7044cc49ed4cc6157453ac9f11285188962cbd89b9a2f9246c171df3929bdb7",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158024,
+          "recovery_pid": 28864,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235438Z\\recovery_launch.json",
+          "bytes": 499,
+          "modified_ns": 1791158085550789300,
+          "sha256": "ccba1ccbb149bdfd6d26e7fd40f558c30d9ec446caef1f528047c3f1f7c6c696",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158085,
+          "recovery_pid": 31384,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235708Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791158234909058500,
+          "sha256": "e51cfd02cacc1a2e89832401c8371294adf55710772759bf365fbabbeff89c91",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158234,
+          "recovery_pid": 37024,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235738Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791158263970689000,
+          "sha256": "4772a0ce082fe4d7cacf02123f8ca72044cb630544bd696aea38bcd0f687bed5",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158263,
+          "recovery_pid": 43636,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T235908Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791158354601775600,
+          "sha256": "76a77bf0902761a54ef7e8daf0158b5eec1de50f9bc3cf0f59dd42fdddec602a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158354,
+          "recovery_pid": 14356,
+          "bundle_day": "20261004"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T000038Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791158444276111900,
+          "sha256": "e492ac10e9275aa75521f9e238e1a11248186be74b0c24a24115cd4fdf77c385",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791158444,
+          "recovery_pid": 14748,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T001654Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791159419826508000,
+          "sha256": "513fc34fba50e524a02f12f9f87248a21af28dc38a410947ffc5010c74027872",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159419,
+          "recovery_pid": 12216,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002143Z\\recovery_launch.json",
+          "bytes": 498,
+          "modified_ns": 1791159709401879200,
+          "sha256": "c394b8da9e776d92a4a236ec8aed4cc3dfd7887b4bd00787d419f5121c4bfdf6",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159709,
+          "recovery_pid": 34880,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002213Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791159739004499300,
+          "sha256": "d808f819345ae159f1bbb3961b1f4bc2a88c0a10c87accda9b1d8a5b5e663cf6",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159739,
+          "recovery_pid": 42176,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002313Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791159798522105500,
+          "sha256": "f938ffb1bea93d1961622d5ae6a09e5543230780c906d54b59aa9d0d83f067fc",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159798,
+          "recovery_pid": 38812,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002343Z\\recovery_launch.json",
+          "bytes": 488,
+          "modified_ns": 1791159830371786300,
+          "sha256": "affda6d1e204feff186de3a47942325ec3b47836ea0915a8510d8e212fb0441c",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159830,
+          "recovery_pid": 33008,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002413Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791159858710224100,
+          "sha256": "9e7e1817da68f897daf4f06e7da1123037550112035e674e9aecd48a192dc68b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791159858,
+          "recovery_pid": 24780,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002643Z\\recovery_launch.json",
+          "bytes": 498,
+          "modified_ns": 1791160007774650100,
+          "sha256": "63617bf9290685bef7c0f552f01b6daae7bcb1d3754c6eea9b37e9becea5fe00",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160007,
+          "recovery_pid": 26852,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002713Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791160038027462000,
+          "sha256": "38d20d9e147f4c5f7bd0a24da585a0241fb7a4ed2d40a85026fa0f9079da9720",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160038,
+          "recovery_pid": 22412,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002743Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791160070735326400,
+          "sha256": "f3a50d6a2b0db9879b6f9d1b59d7bd2b42317522570396e4d9d2f62e8c7693d9",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160070,
+          "recovery_pid": 39036,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002813Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791160099656821500,
+          "sha256": "733753bd09203df9d7557789ad29099bba06ab5cd81cde009554479a08791fc9",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160099,
+          "recovery_pid": 33944,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T002943Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791160188719465000,
+          "sha256": "7247ad4ff919f1f63fd31ad2badf00f070ff5f804ff6ae64fdfbea52470f96a5",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160188,
+          "recovery_pid": 33916,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T003143Z\\recovery_launch.json",
+          "bytes": 499,
+          "modified_ns": 1791160305723333600,
+          "sha256": "efda1c219631a4687e3b96302531dd8859b2493505d379fd5d19c8315d011da4",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160305,
+          "recovery_pid": 4632,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T003213Z\\recovery_launch.json",
+          "bytes": 486,
+          "modified_ns": 1791160334317397200,
+          "sha256": "4b0409fa34f064c7422b68b7d6c092b396e542c7970cfbc8934e109268c9ee67",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160334,
+          "recovery_pid": 37752,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T003243Z\\recovery_launch.json",
+          "bytes": 488,
+          "modified_ns": 1791160364155760100,
+          "sha256": "2f3aee0b2efe65013d7197514be9ced79cafa64288dfbefafd46af1d7bb35a41",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160364,
+          "recovery_pid": 44844,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T003713Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791160635971974300,
+          "sha256": "1f008115010668c74855e8f1c4574f727b6c98fb48d31e774a819e0710e72b18",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160635,
+          "recovery_pid": 7808,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T003743Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791160666431525400,
+          "sha256": "cd88bfd6c977599e05216053217801b5e14100e0b1dcbaff67688fa0678e00f7",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791160666,
+          "recovery_pid": 42284,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T004043Z\\recovery_launch.json",
+          "bytes": 490,
+          "modified_ns": 1791161709093796300,
+          "sha256": "be560947a3b981c06ff71f6c130a8f61e58ecb6269674c99eb2ddf7c41ca2367",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791161709,
+          "recovery_pid": 5292,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T005513Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791161713851461000,
+          "sha256": "12681e91427d9214659a3cb1d54689d0ac6da5bb2db1833371af2a3f345edd73",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791161713,
+          "recovery_pid": 9472,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T010013Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791162013718177700,
+          "sha256": "355bcd3ae1af6c0d7986bd74cf5f3512a1f4f465255d08f6cc3695d2666015a1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791162013,
+          "recovery_pid": 14680,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T012443Z\\recovery_launch.json",
+          "bytes": 487,
+          "modified_ns": 1791163484382026800,
+          "sha256": "46a5a74c753567e89e4b14a541bbf75f94634c13a71f31e7baf568dfdd71534f",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791163484,
+          "recovery_pid": 21204,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T013313Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791163998843999300,
+          "sha256": "3a6ac2157f8379ded221ef7661acab2de71ea8264324c10cd2a2992fab625aeb",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791163998,
+          "recovery_pid": 30184,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T013413Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791164058747955000,
+          "sha256": "d4dfccd1933d1b57bbf0a22c2ac2633d2bdc12ba8fbdbbf152beeee2e319eee8",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164058,
+          "recovery_pid": 16560,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T013613Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791164180062492200,
+          "sha256": "5d1e46e05bec999fe99d50bbda8dc9ca9a4a4752e65281ede28c0fe29ec7c6a1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164180,
+          "recovery_pid": 10080,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T013713Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791164239736409100,
+          "sha256": "045db37c15b57ab655d9e27378e6d148f9e191e5442ea4c41f8681568987531a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164239,
+          "recovery_pid": 45032,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T013943Z\\recovery_launch.json",
+          "bytes": 487,
+          "modified_ns": 1791164392242295500,
+          "sha256": "5469792a9f404300b225af97c30eaa8546ceb6128cfc904820fc5f03c7e61754",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164392,
+          "recovery_pid": 31156,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T014013Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791164420615973900,
+          "sha256": "b18797edfa40fd382211bc27652fb2eee304af82d8e64764cd736d535efd1c54",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164420,
+          "recovery_pid": 15756,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T014113Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791164479869251300,
+          "sha256": "b4c0613813b0c67fe3234c7697c78edff8d5b6bca7424ccf439884f46f5389d3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164479,
+          "recovery_pid": 45724,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T014143Z\\recovery_launch.json",
+          "bytes": 500,
+          "modified_ns": 1791164510757125800,
+          "sha256": "4a8bd05b0cb701c47f6030665fbab189fc9f283bd2cbc17983b0622c447c61cf",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164510,
+          "recovery_pid": 45508,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T014313Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791164601758506200,
+          "sha256": "dd1497fdb6e93647fb9337214dabe7d7d90ebd0d89a93795b50d7bed5aa18bf8",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791164601,
+          "recovery_pid": 41900,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T015730Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791165452499907300,
+          "sha256": "6e1569ec15b0847f5f73f2a9f7a62868f38b94753c15b21ea69c3a4033ad822b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165452,
+          "recovery_pid": 15136,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T015801Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791165483428909500,
+          "sha256": "10c4bc20794f47c87fb5d8841902669abe84e6278df0186b18375a2236193c45",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165483,
+          "recovery_pid": 45648,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T015831Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791165512979053400,
+          "sha256": "5fa287279889a181ddf6f907d925c0552a48c19dac3f2b1c40842cfdac51b533",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165512,
+          "recovery_pid": 43736,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T015847Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791165529474591400,
+          "sha256": "c617926490bef81e2d37989c0602cf82b95e05fcde2e0a00d5793f7a87ad6746",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165529,
+          "recovery_pid": 30968,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T015917Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791165558850101400,
+          "sha256": "366ed9dbfad94c0e39a8d5b8f3b1654aa3d695417569c45f4e3f907193cff269",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165558,
+          "recovery_pid": 45500,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T020617Z\\recovery_launch.json",
+          "bytes": 486,
+          "modified_ns": 1791165983359294200,
+          "sha256": "3b95b0737d572baa2698e1f62d0991fd5a5fc4b0f66d6a81f7d33db26cbd197b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791165983,
+          "recovery_pid": 28348,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T020817Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791166102387553600,
+          "sha256": "6af9b48302b85bf270d7ffb52b1df2a83b0719590e26a0d3e1e0d5f7c4d5ffb1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791166102,
+          "recovery_pid": 42908,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T122337Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791203019909465300,
+          "sha256": "332f51d4472c63d9a705258898a79b0c65806bf7ed9dc68ec26e82c75172284f",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791203019,
+          "recovery_pid": 24412,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T122407Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791203049393099600,
+          "sha256": "20a4e1282d498c97309300c8d9c1123538081b9d4110e61f25d4fae85dcaedf3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791203049,
+          "recovery_pid": 34788,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T122837Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791203319430262000,
+          "sha256": "f2bac81c1a9402bfd7e7f4a166ab86da01782249ea5a45a27b56509b311fc0b7",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791203319,
+          "recovery_pid": 30772,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T123137Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791203498095596800,
+          "sha256": "0f2c43e80539f92d87ccdfc0d0460770a0fafde45d8f9da74d4f2cfa7c4329c4",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791203498,
+          "recovery_pid": 31888,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T123431Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791203671917111300,
+          "sha256": "4d9d868c2fe8e7cc3c6e0ff53605a890ffd17b6af7793fc6a74f0875636c5029",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791203671,
+          "recovery_pid": 3572,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T124001Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791204002342947300,
+          "sha256": "2de870cc435658c70c78219a422a61ce42eb12aec9260763ae050645e6995be0",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791204002,
+          "recovery_pid": 36664,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T124101Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791204062685328400,
+          "sha256": "f03c50c3b38920962e9041ff33a53dd5c92d69d85b1227172377927a84da94b0",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791204062,
+          "recovery_pid": 37520,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T124131Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791204092396181600,
+          "sha256": "11e4560a20840a6526c370f45443f9c8274a33790c72648ba2ee4ff6d563bfad",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791204092,
+          "recovery_pid": 34360,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T124201Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791204122685873200,
+          "sha256": "117576cb32f3b0fe6d44e449697d8b01d96470d31136532c3b5ad2f4969d82d3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791204122,
+          "recovery_pid": 34216,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T133248Z\\recovery_launch.json",
+          "bytes": 503,
+          "modified_ns": 1791207170042661200,
+          "sha256": "0b71051d0724eb4fee32b52a707cc08edbe8df659b7a8144f786d55678aa078e",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207170,
+          "recovery_pid": 27500,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T133318Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791207198448702900,
+          "sha256": "097a185fe2c8d0f609b390fe9d3f2c30dbe32d5dc9f7a1b89c59970b056c14da",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207198,
+          "recovery_pid": 21316,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T133618Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791207379210093100,
+          "sha256": "15cf418c2a9a3d91a5e4a8f331ccf72f19fd6c3bdc867bc62ce70a8e49a4658a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207379,
+          "recovery_pid": 7952,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T133648Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791207409750184700,
+          "sha256": "130a3c6d8d2a5936e067d33f02d1c9249adb17421cf15ae30c1339114e14f5a9",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207409,
+          "recovery_pid": 15064,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T133818Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791207499105855800,
+          "sha256": "00ba5a19f75162397f58712cef9e00bf7b3154fa1d52b5c24fc6e07131035b16",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207499,
+          "recovery_pid": 27052,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T134118Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791207678643387300,
+          "sha256": "6fdf86cf4a54501d43ed5fa12fd54e67cc962d506992c63c2438ddec4322d81b",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207678,
+          "recovery_pid": 33684,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T134148Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791207708492202300,
+          "sha256": "b3aaea4a4c0742dfa882002bab3e80909bcd96d3ed55bdee6d1b961580d24326",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207708,
+          "recovery_pid": 19948,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T134218Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791207738458816200,
+          "sha256": "9ed836f9704a3a8b27e25c33139199d930de1d8a96a1c3c189b432f9971578e1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791207738,
+          "recovery_pid": 38112,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T144248Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791211368448825400,
+          "sha256": "3262c9a11aa22147d56a4c03b510e8cc2c3b15fa63e845f687b7c7cdc3e9211a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791211368,
+          "recovery_pid": 35316,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T154318Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791214998481257300,
+          "sha256": "261446bb76232f62c57945444757b481d71e004c2b4155089a5ef50845824bf1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791214998,
+          "recovery_pid": 28424,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T171343Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791220423717863600,
+          "sha256": "ac5a0cb73e34c2e452d2a1fa2104358f88b91d1e1755b3c3fce27da89dbca655",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791220423,
+          "recovery_pid": 33472,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T182405Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791224645999416700,
+          "sha256": "ca7b803b838b28b5c8f1564c78bb7686ec84faeeae55f0a898df9b9b3765fc37",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791224645,
+          "recovery_pid": 26280,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T185701Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791226622288245100,
+          "sha256": "895dd3d39245bf6a511e5b0653c9a76194ed504c0a527ed9632d68522dcef335",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791226622,
+          "recovery_pid": 33276,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T211301Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791234781868116300,
+          "sha256": "9ec62b404b2a48ad35a2c170216eea3113641fccaeee53b2938b2d8b6b9a54f5",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791234781,
+          "recovery_pid": 35592,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T221731Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791238652285276500,
+          "sha256": "1f8956c3e04b7b5773bd80db4847fbbf521d0076971702bbc0f5480ce0f2ade1",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791238652,
+          "recovery_pid": 29960,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T223331Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791239612165859800,
+          "sha256": "c77c8cbaf571ab988bd439abea90ebceea9681b8810846f99fd31dd765d9fad4",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791239612,
+          "recovery_pid": 26748,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T223832Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791239912103378400,
+          "sha256": "8dabef319a6fad60346ad81896577b8e3efad1cc4e70a0d2745ba2f7331f706a",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791239912,
+          "recovery_pid": 27008,
+          "bundle_day": "20261005"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T233832Z\\recovery_launch.json",
+          "bytes": 502,
+          "modified_ns": 1791243512365220300,
+          "sha256": "85ae62c919ee6d7d6f95581c003b3f936180f132ebe79405daed660b4feb14a3",
+          "outcome": "LAUNCHED",
+          "timestamp": 1791243512,
+          "recovery_pid": 33392,
+          "bundle_day": "20261005"
+        }
+      ],
+      "launch_receipt_errors": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261004T035832Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791086315119566300,
+          "error_type": "JSONDecodeError"
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog\\bundles\\20261005T000108Z\\recovery_launch.json",
+          "bytes": 501,
+          "modified_ns": 1791158476463505300,
+          "error_type": "JSONDecodeError"
+        }
+      ],
+      "knowledge_roots": {
+        ".sources": {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\.sources",
+          "exists": false,
+          "is_directory": false
+        },
+        "wiki": {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\wiki",
+          "exists": true,
+          "is_directory": true
+        },
+        "v4.1.2_manifest.json": {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\v4.1.2_manifest.json",
+          "exists": true,
+          "is_directory": false
+        }
+      },
+      "source_commitments": [
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\start_pipeline.bat",
+          "bytes": 1022,
+          "modified_ns": 1791207163338669400,
+          "sha256": "949c9ee2767be93c137e0541249db91851dcd2e13a2f15f8cbc1b0811a70fb38",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\auto_architect_mcp.py",
+          "bytes": 7713,
+          "modified_ns": 1791201555505905600,
+          "sha256": "d56f5d177d8e60b0638b2f828699ebf7dc2b4492ae4c9c197630234659b29406",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\cochem_master_loop_shard_1.py",
+          "bytes": 42024,
+          "modified_ns": 1791084747031493200,
+          "sha256": "c66a2468630c366eab57ab0e9052749d7a33c3b33071d633533a4e71931fe2e6",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\warden\\mcp_server.py",
+          "bytes": 18331,
+          "modified_ns": 1790770679385803900,
+          "sha256": "85e64c7fcc418f72eda04ec483e10f9df692c0788b1d2a0e0d96c8c3877be133",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\warden\\ladder.py",
+          "bytes": 6927,
+          "modified_ns": 1791004193319949300,
+          "sha256": "9289cbfec18a9bc48785dacef1146f9c83846d364798913117c3ae002bb05261",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\warden\\vm_control.py",
+          "bytes": 74228,
+          "modified_ns": 1791004193885004300,
+          "sha256": "dde453023d705074c95a0d9401885c98023e41865fc651a4bbf3eb682f72bd4a",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\warden\\cochem_warden_oracle.py",
+          "bytes": 15085,
+          "modified_ns": 1791206384806452000,
+          "sha256": "da5d5759856660f23062e5b9f586448eb87abff6dbc907a2744c7b3da003a2df",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\watchdog\\watchdog_sre.py",
+          "bytes": 81284,
+          "modified_ns": 1791154803860621800,
+          "sha256": "a131175ff3fecadbdfc427eae3e0345f85107c39ae43a8f021e356f5115916f5",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\dsp\\worker_daemon.py",
+          "bytes": 58051,
+          "modified_ns": 1791244507753729800,
+          "sha256": "1886dc705c4f45d5d70bdbd1a8c8ed64f9fd14555fe43c3d9b9f49057f5a2653",
+          "metadata_unchanged_during_read": true
+        },
+        {
+          "path": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\knowledge\\server.py",
+          "bytes": 21673,
+          "modified_ns": 1790794658946535600,
+          "sha256": "cef4be1d7d990675f989bda3f430107aad65e15bdd56f2ce3be89127150161e8",
+          "metadata_unchanged_during_read": true
+        }
+      ],
+      "launch_outcomes": {
+        "LAUNCHED": 120,
+        "EXECUTABLE_MISSING": 18
+      },
+      "modern_state_files": {
+        "supervisor.db": false,
+        "component-recovery.db": false,
+        "repair-quarantine.json": false,
+        "release-journal.json": false,
+        "current.json": false
+      }
+    }
+  ],
+  "launch_deduplication": {
+    "distinct_receipt_hashes": 145,
+    "identical_copies_not_additional_attempts": 42,
+    "distinct_launched_receipts": 127,
+    "scope": "Byte-identical receipt deduplication only; no currency or complete paid-call totals inferred"
+  },
+  "repair_budget_remaining": null,
+  "absence_is_zero_spend": false,
+  "migration_executed": false,
+  "runtime_ownership": {
+    "evidence_scope": "Same-session native read-only task/process inventory plus source commitments; readable process scope does not exclude inaccessible elevated processes.",
+    "legacy_hyperv_task": {
+      "task_name": "CoChemHostWarden_V412",
+      "task_path": "\\",
+      "state": "Running",
+      "principal": "ansac",
+      "run_level": "Highest",
+      "execute": "C:\\WINDOWS\\System32\\cmd.exe",
+      "working_directory": "D:\\__CoChem\\__agentic\\v4.1.2\\src",
+      "verified_module": "cochem.warden.mcp_server",
+      "verified_transport": "http",
+      "verified_port": 47821,
+      "data_owner": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+      "writes_table": "recovery_telemetry",
+      "vm": "CoChem-Quarantine-VM",
+      "checkpoint": "CoChem-Golden-State",
+      "named_pipe": "\\\\.\\pipe\\cochem_warden_vm",
+      "responsibility": "Hyper-V quarantine-VM health and escalation; separate from the 4.2.7 pipeline controller and modern supervisor.",
+      "preservation": "Preserve independently. Do not stop, disable or pass as modern controller Warden merely by its name."
+    },
+    "legacy_live_ingress": {
+      "pid": 6728,
+      "executable": "C:\\Python314\\python.exe",
+      "script": "D:\\__CoChem\\__agentic\\v4.2.0\\auto_architect_mcp.py",
+      "created_at": "2026-10-05T19:09:45.471382-05:00",
+      "job_database": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db",
+      "knowledge_rules_database": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\wikirag.db",
+      "responsibility": "Existing MCP ingress with job-board write capability; worker interlock does not quiesce this process."
+    },
+    "existing_pipeline_mcp_processes": [
+      {
+        "pid": 32752,
+        "module": "cochem_pipeline",
+        "action": "mcp"
+      },
+      {
+        "pid": 32672,
+        "module": "cochem_pipeline",
+        "action": "mcp"
+      }
+    ],
+    "existing_repository_mcp_processes": [
+      {
+        "pid": 34580,
+        "module": "cochem_mcp"
+      },
+      {
+        "pid": 32260,
+        "module": "cochem_mcp"
+      },
+      {
+        "pid": 30884,
+        "module": "cochem_mcp"
+      },
+      {
+        "pid": 10244,
+        "module": "cochem_mcp"
+      }
+    ],
+    "controller_liveness": "Not established by these MCP process names. No protected SYSTEM controller acceptance inferred.",
+    "sre_interlock": {
+      "process": "1",
+      "user": "1",
+      "machine": null,
+      "preservation": "Preserve existing value. Legacy start_pipeline and watchdog exit when set to 1."
+    },
+    "start_pipeline_definition": {
+      "v412_and_v420": "Starts old Warden MCP48821, DSP toolkit48822, knowledge48823, DSP worker and watchdog if interlock permits; v420 additionally starts Oracle. Source definition, not proof these processes are running."
+    },
+    "legacy_oracle_definition": {
+      "script": "D:\\__CoChem\\__agentic\\v4.2.0\\src\\cochem\\warden\\cochem_warden_oracle.py",
+      "job_database": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db",
+      "tracking_database": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db",
+      "knowledge_rules_database": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\wikirag.db",
+      "liveness": "No matching process observed in readable scope."
+    },
+    "unassigned_separate_database": {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db",
+      "reason": "Different schema and 24 pending jobs; no authoritative live writer identified. Preserve separately, do not merge with root job_board.db."
+    }
+  },
+  "migration_assessment": {
+    "classification": "HOLD_LEGACY_BUDGET_AUTHORITY_AND_JOB_CONTRACT_MIGRATION",
+    "modern_migrator": {
+      "source": "src/cochem_supervisor/upgrade.py",
+      "sha256": "02ac6a9a4ab97a00b0d0c82db82b6ad7ec8be8e4fe191692f8d9abf41c2bc029",
+      "required_supervisor_tables": [
+        "supervisor_incidents",
+        "supervisor_attempts",
+        "supervisor_events"
+      ],
+      "required_component_tables": [
+        "components",
+        "recovery_events"
+      ],
+      "input_filenames": [
+        "supervisor.db",
+        "component-recovery.db"
+      ],
+      "compatibility": "None of the inspected legacy databases supplies these schemas. Missing named files must not be interpreted as no historical repairs. NO_PRIOR_LEDGER is not a legacy conversion."
+    },
+    "authority": {
+      "jobs": "Keep each root/db path and source identity separate; recorded RUNNING is not liveness. Legacy jobs do not contain modern captured Chapter06 model/effort/routing commitments.",
+      "watchdog": "Preserve state, cooldown/last-trigger values and all receipts. Duplicate receipts and malformed files prevent a complete authoritative paid-call reconstruction.",
+      "repair_loops": "Preserve per-target rounds/status and MAX_ROUNDS policy; these are historical loop counters, not exact modern supervisor or component reservations.",
+      "vm_telemetry": "Legacy Hyper-V tier/action records are independent from model spend.",
+      "upload_quota": "quota_state is youtube upload quota, not a model-repair budget.",
+      "knowledge": "Both root indexes reference 83 v4.1.2 wiki files and 3 user Antigravity files; preserve original source roots. The 11-document public export is not a replacement.",
+      "current_pointer_and_quarantine": "Modern filenames are absent at inspected roots only; no host-wide absence or fresh budget inferred."
+    },
+    "required_implementation_or_policy": [
+      "Bind immutable, private legacy snapshots and provenance to any migration receipt before activation. Existing modern ledger copier cannot provide this conversion.",
+      "Keep repair reservations held while historical budget authority is unknown. Do not reset counters or manufacture equivalent incident/day balances from receipt counts. A reviewed conservative carry-forward/import policy is needed if no authoritative modern ledger is found.",
+      "Keep historical job records immutable and held. Define explicit old-job continuation/import mapping; new admissions must capture Chapter06 routing, catalogue/scoring versions and current native contracts before reservation.",
+      "Preserve independent VM Warden ownership and ingress endpoints. Quiesce only identified writers when a consistent cutover is scheduled; do not kill unrelated MCP or legacy VM supervision.",
+      "Reconcile knowledge source path ownership and retained captures before protected indexing. Do not overwrite either existing knowledge database."
+    ],
+    "online_snapshot_proposal": {
+      "status": "PROPOSED_ONLY_NOT_EXECUTED",
+      "database_paths": [
+        "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+        "D:\\__CoChem\\__agentic\\v4.1.2\\knowledge_index.db",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\knowledge_index.db",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\db\\wikirag.db"
+      ],
+      "method": "SQLite backup API from read-only source connections to newly created private destinations, integrity-check each snapshot, hash closed outputs. Do not raw-copy a live database without its WAL. Each database backup is individually consistent; coordinated writer quiescence or explicit independent-snapshot scope is required for cross-file consistency.",
+      "additional_private_preservation": [
+        "D:\\__CoChem\\__agentic\\v4.1.2\\.evidence\\watchdog",
+        "D:\\__CoChem\\__agentic\\v4.1.2\\repair_tasks",
+        "D:\\__CoChem\\__agentic\\v4.1.2\\wiki",
+        "D:\\__CoChem\\__agentic\\v4.1.2\\v4.1.2_manifest.json",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\.evidence\\watchdog",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\repair_tasks",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\wiki",
+        "D:\\__CoChem\\__agentic\\v4.2.0\\v4.1.2_manifest.json",
+        "D:\\__CoChem\\__agentic\\.sources"
+      ],
+      "sensitive_snapshot_handling": "Raw jobs, knowledge and bundles remain private and must not be committed to repository evidence. Copying credentials is outside this proposal. Preserve existing originals, tasks, interlock and RAM disk."
+    },
+    "manual_decision_scope": "Do not ask for arbitrary database paths: seven identified files are listed. Remaining uncertainty is authority/continuation policy, not permission to discard history or treat absent ledgers as zero."
+  },
+  "discovery_utility": {
+    "path": "scripts/discover_legacy_windows_state.py",
+    "sha256": "5f4c3ae7e656e1b5fce264a3e627090c85216a06c67c732b747cf55179c249ef",
+    "tests": "docs/evidence/windows-2026-10-06/legacy-discovery-tests.xml",
+    "passed": 8,
+    "linux_results_included": false
+  }
+}

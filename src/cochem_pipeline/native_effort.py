@@ -84,10 +84,11 @@ def effort_contract(provider, model, effort, spec):
         if (len(args) != 2 or not (
                 (args[0] == '--thinking-level' and args[1] in
                  ('minimal', 'low', 'medium', 'high', 'MINIMAL', 'LOW', 'MEDIUM', 'HIGH'))
+                or (args[0] == '--effort' and args[1] in ('low', 'medium', 'high', 'xhigh', 'max'))
                 or (args[0] == '--thinking-budget' and re.fullmatch('[0-9]{1,6}', args[1])
                     and 1 <= int(args[1]) <= 131072))):
             raise ValueError('Agy reasoning effort requires a bounded reviewed thinking-only selector')
-        if effort == 'high' and args not in (['--thinking-level', 'high'], ['--thinking-level', 'HIGH']):
+        if effort == 'high' and args not in (['--thinking-level', 'high'], ['--thinking-level', 'HIGH'], ['--effort', 'high']):
             raise ValueError('Agy High must select native high; a reviewed contract cannot lower or alias it')
         inference = spec.get('inference_only', {})
         if contract['thinking_enabled'] is not None or any(
@@ -95,6 +96,8 @@ def effort_contract(provider, model, effort, spec):
                 for field in ('executable_sha256', 'version', 'version_arguments')):
             raise ValueError('Agy effort and inference-only contracts must identify the same native binary/version')
     metadata = contract['native_metadata']
+    if provider == 'gemini' and spec.get('protocol') == 'agy-stream-json' and metadata is not None:
+        raise ValueError('Agy stream has no verified native effort observation binding')
     if metadata is None:
         # An installed CLI may support selecting effort without returning it.
         # This proves only the reviewed invocation, never the actual effort.

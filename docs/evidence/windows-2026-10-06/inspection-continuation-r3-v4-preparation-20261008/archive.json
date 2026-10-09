@@ -1,0 +1,126 @@
+{
+  "schema": "cochem-inspection-continuation-archive/1",
+  "archived_at_utc": "2026-10-08T22:50:59.211826+00:00",
+  "status": "REVIEWED_REPAIR_PREPARED_NOT_APPLIED",
+  "files": [
+    {
+      "path": "inspection-continuation-v4-preparation-20261008.json",
+      "sha256": "f7c6364dd64a048695fd8f10e84360a1d8d02130fb97a59138a0796beb58e283",
+      "bytes": 4616
+    },
+    {
+      "path": "protected-code-inspection-v4.ps1",
+      "sha256": "5c01543cbb8b8d64b2b9f1bab4a13f87f8ff9e1ab3e82dfb6fc547144c77b95d",
+      "bytes": 7687
+    },
+    {
+      "path": "check-worker-native-auth-status-six-r3-v4.ps1",
+      "sha256": "4448e76eaeb30f2d2905f5aa6d3e14f0cc29b3d7e703321bb3df55afcba58e81",
+      "bytes": 23906
+    },
+    {
+      "path": "login_pipeline_worker_interactive_r3_v4.ps1",
+      "sha256": "6f2181eb8e5ba5dc701ee9d69b496de01ffa5d7d74880bfa96e702dbd2e5c150",
+      "bytes": 16910
+    },
+    {
+      "path": "login-six-workers-status-first-r3-v4.ps1",
+      "sha256": "c908a3b2ece9858e23b023cab0557cab5ccadd03c3efc0460317bd62a1598bdb",
+      "bytes": 24190
+    },
+    {
+      "path": "authenticate-native-profiles-status-first-r3-v4.ps1",
+      "sha256": "724c6ac99b4bbfa41a8da2c45892ee0efaa46deed458359194f308d4ee566dca",
+      "bytes": 17993
+    },
+    {
+      "path": "commission-first-warden-r3-v4.ps1",
+      "sha256": "6e8acd55bdc3a66a78846b8db5601f07baa9b84677197cffb7b1f86721bd720b",
+      "bytes": 19757
+    },
+    {
+      "path": "run-pipeline-commissioning-r3-v4.ps1",
+      "sha256": "fdd8f5fcacae85f2d80cb908d87d6fdad0b06c0783d2ff20fa2d59a458c4939d",
+      "bytes": 31659
+    },
+    {
+      "path": "worker-native-auth-status-six-r3-v3.py",
+      "sha256": "7efa8d272fcd96701157e381036f7e4ec763551857f4c57091d7bf61977fcfc1",
+      "bytes": 28454
+    },
+    {
+      "path": "commission-first-warden-r3-v3.py",
+      "sha256": "9770007a8c658a73e68ccc0c370eeaab2cc6568cf20cd009601e8c35c25de755",
+      "bytes": 31492
+    },
+    {
+      "path": "prepare-inspection-continuation-v4.py",
+      "sha256": "36ad267437552736250e1e35114d07371b38ea345f0c108e63de2366c1eb747f",
+      "bytes": 6036
+    },
+    {
+      "path": "test_inspection_continuation_v4.py",
+      "sha256": "5d8b6861ad256236442790ff1eeb577d0405124e6adc757ae05da691dbd1f1af",
+      "bytes": 4443
+    },
+    {
+      "path": "test_protected_code_inspection_v4.py",
+      "sha256": "4eba99778c87cb850ec2fb633c4c384d187503511845f3ffdc9e6773061e834a",
+      "bytes": 21158
+    },
+    {
+      "path": "inspection-v4-windows-measurement-165c8e06e5314cd0ae0a1a75a36d86c6.json",
+      "sha256": "b11bf59382c6d38f44cc601848320c1afdd9bb8781d832e70c70b48fcb359bd4",
+      "bytes": 1407
+    },
+    {
+      "path": "inspection-continuation-v4-tests-final.xml",
+      "sha256": "085504a25e134bd80ede9e451b44581a14835fe6340f0cb8b2ecc49b76b5bd54",
+      "bytes": 28334
+    },
+    {
+      "path": "protected-inspection-v4-fixtures-ordinary.xml",
+      "sha256": "1811a5113188307727fc94845f95e5fcf5fe173868a4e89db502faad7f0362e7",
+      "bytes": 5500
+    },
+    {
+      "path": "inspection-continuation-v4-preview-final.json",
+      "sha256": "79cc3b1a62c8a5757db2fb051c4c2543ef46949cc76dce144698aea3bc776ab2",
+      "bytes": 7357
+    },
+    {
+      "path": "RETURN_SETUP_CONTINUE.txt",
+      "sha256": "2b6a898fba3bacf2e0f760d31011de84f3e1c1bb61189ea3f68e411268f2c202",
+      "bytes": 4598
+    },
+    {
+      "path": "measure-protected-inspection-v3.ps1",
+      "sha256": "82ce054ee5e3e93b366945a77dc4fdf9ffdf6303c3e1955afaee1db95f637804",
+      "bytes": 2169
+    },
+    {
+      "path": "measure-protected-inspection-v4.ps1",
+      "sha256": "c1fa4d82768e1d2a7b5d3dac6377953185ae3cef057ee4e0bc9360bdec0a3f49",
+      "bytes": 3482
+    },
+    {
+      "path": "archive-inspection-continuation-v4.py",
+      "sha256": "cfd31ce49a4fe2827675e7f9ef9a39c278865af4ebeac21b32d5759f7cbeeee7",
+      "bytes": 3068
+    },
+    {
+      "path": "protected-inspection-v4-fixtures-20261008T174553-d5aeb500.stdout.json",
+      "sha256": "6f27d0fafba146f79f1342ba07305acb256890d4ba6e95d182a5d8623987f920",
+      "bytes": 7192
+    }
+  ],
+  "ordinary_windows_tests": 180,
+  "actual_installed_tree_scans": "PASSED_ORDINARY_WINDOWS_TOKEN",
+  "system_or_admin_acceptance": false,
+  "pipeline_started": false,
+  "model_jobs_executed": 0,
+  "credentials_or_databases_copied": false,
+  "linux_results_counted_as_windows": false,
+  "full_srs_acceptance": false,
+  "next": "Owner runs run-pipeline-commissioning-r3-v4.ps1 -Apply -Interactive; browser approval only for currently logged-out profiles."
+}

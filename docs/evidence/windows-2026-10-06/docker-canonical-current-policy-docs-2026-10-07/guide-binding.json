@@ -1,0 +1,8 @@
+{
+  "schema": "cochem-owner-involvement-guide-binding/1",
+  "guide_sha256": "e812b1b87d64fe06fb63ab3f3395da19b8a6b44191b6e6bd3990a5b85f7b2bc8",
+  "observed_sha256": "1d3979dd155e7631f8156bcb901db56de3bcc904f900f82f4476d81c732ecedd",
+  "commands_immediately_requested": 0,
+  "physical_timing_optimization_blocks_continuation": false,
+  "current_six_eligible_configuration_unchanged": true
+}

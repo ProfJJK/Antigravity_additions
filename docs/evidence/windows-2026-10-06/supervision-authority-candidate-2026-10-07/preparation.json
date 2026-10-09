@@ -1,0 +1,150 @@
+{
+  "schema": "cochem-supervision-authority-candidate/1",
+  "captured_utc": "2026-10-08T02:20:44.863363+00:00",
+  "state": "CANDIDATE_SOURCE_NOT_INSTALLED",
+  "source_changes": [
+    {
+      "path": "src/cochem_supervisor/engine.py",
+      "before_sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+      "candidate_sha256": "9ec21d808bfbb1c5dfe01a6dd41b0dc969f9fc92df4ff5de010c4890c1dddeea",
+      "change": "Continue sterile observation and authenticated controller health under an explicit or unreadable authority hold, publish the hold and real observation, and return before every actuator, route/CLI probe or budget-row write."
+    },
+    {
+      "path": "src/cochem_supervisor/replay.py",
+      "before_sha256": "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728",
+      "candidate_sha256": "d0a10b30e3f16d44a2906d855d46f44dc0fbad7249b8b43d6b67b98e4d94d60d",
+      "change": "Read and validate own and existing component-peer immutable authority holds through stable disposable SQLite snapshots. Held or malformed authority keeps allowance unknown; missing peer is unverified. A projection never verifies activation or historical completeness."
+    }
+  ],
+  "tests": {
+    "tests": 86,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 86,
+    "junit_seconds": 19.992,
+    "python": "3.12.13",
+    "platform": "Windows ordinary user",
+    "command_scope": [
+      "test_held_observation.py",
+      "test_legacy_budget_authority.py",
+      "test_replay_budget.py",
+      "test_engine.py"
+    ],
+    "fixture_boundaries": "New disposable real SQLite, real monitor parsing and actual engine/replay decisions. Privileged constructor, authenticated HTTP, and native lifecycle/provider boundaries are inert. No SYSTEM claim.",
+    "prior_failures_retained": "Initial 79 passed/6 failed: synthetic heartbeat omitted its required version. Follow-up 19 passed/2 failed: byte assertion did not account for existing SQLite read-only coordination sidecars. Production authority reader was not changed.",
+    "byte_preservation_scope": "Replay preserves source names and bytes, including the component peer. Held tick preserves every existing main DB/history byte; unchanged mode=ro authority reader may create normal empty WAL and SHM coordination files. No budget, attempt, charge, recovery, or history row is changed."
+  },
+  "independent_review": {
+    "reviewer": "root",
+    "status": "PASS_WITH_SCOPE_LIMITS",
+    "file": "supervision-authority-root-review-20261008.json",
+    "sha256": "5b70a725f6f3f9c997af672c1999a4991d1d91765e68a974d3130b3cef4e1122",
+    "scope": "Direct installed-to-candidate diff, final source pins and XML inventory; installed runtime and frozen owner startup preserved."
+  },
+  "canonical": {
+    "srs_path": "knowledge/.sources/4.2.7_SRS.model-routing-2026-10-07.md",
+    "srs_sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074",
+    "requirements": [
+      "S427-SRE-001",
+      "S427-SRE-003",
+      "S427-SRE-004",
+      "S427-SRE-005",
+      "S427-SRE-006",
+      "S427-SRE-007",
+      "S427-OPS-014",
+      "S427-DEPLOY-002",
+      "S427-DEPLOY-004"
+    ]
+  },
+  "remaining_prerequisites": {
+    "ordinary_new_workflows": "Do not wait for repair-history reconciliation. The separately reviewed six-profile authentication/controller commissioning and live planning/coding acceptance remain their own path.",
+    "independent_detection": "Candidate makes the established supervisor observe under an authority hold. Deployment still requires a separate protected supervisor interpreter, exact observer/psutil tree and tests, distinct repair identity/layout, protected baseline/release pointer and paired held ledger custody. A pure detector-only commissioning path can omit repair authentication; current full Supervisor constructor still validates its independent installation and repair layout.",
+    "paired_uncertainty_bootstrap": {
+      "source": "bootstrap-unresolved-budget-pair.py",
+      "sha256": "1c431c12f5b502664494fb09bf6c0ef75bea9e6fad7739f8478b3591a24dcc11",
+      "existing_tests": 31,
+      "state": "Reviewed new unpublished construction primitive; no protected launcher or installed pair",
+      "missing_implementation": "A fresh pinned SYSTEM staging wrapper binding complete runtime, exact new private root, current source/metadata and stopped activation; verify both immutable rows/triggers and completion before any future configuration references it. No old root reuse, missing-source zero-spend interpretation, retry/reset, or automatic release."
+    },
+    "non_model_recovery": "Canonical component recovery is separately bounded: three failures, at least 30 seconds and at most one durable component reservation that survives health/restart/upgrade. It does not spend a model call, but unknown component-attempt history is not permission for a fresh reservation. Current paired uncertainty holds intentionally block service start, Warden restart/recovery and release recovery; this candidate does not release them.",
+    "paid_repair": "Requires authoritative preserved incident/day generation and review charges plus original fingerprints, attempt identities, cooldowns and pending reviews; Chapter 06 routing; a separate authenticated repair account; primary containment/quiescence; protected candidate/reviewer/outer acceptance and bounded smoke. Limits remain two calls per incident, four per UTC day and 1800-second cooldown; smoke retains its separate three-dispatch bound.",
+    "history_reconciliation": "Use already recorded source locations and preserved snapshots. Later reviewed metadata inspection and consistent paused-writer capture may resolve exact modern ledger authority. Preserve original DB/WAL, snapshots and lineage. Legacy job attempts/completions do not prove paid launches. Missing or incomplete paid/recovery evidence stays unknown and held; no fabricated modern charges, zero-spend claim, allowance reset or automatic continuation of old requests.",
+    "installation_boundary": "Do not invoke generic install_supervisor_windows.ps1 against the commissioned Warden: it provisions execution and uses earlier migration/task paths. Prepare a new independent staging/cutover with current r3 bindings, preserving active Warden/config/pointer, all six accounts, four seats, Chapter 06, R volume/task, databases and budgets. No auto-deploy activation before reviewed ownership transfer."
+  },
+  "human_required": {
+    "now": "No additional repair/history action or spend estimate. Agent engineering and source/evidence reconciliation can continue.",
+    "later_admin": "One reviewed independent supervisor installation/cutover, preferably bundled with other necessary setup; no manual test sequence.",
+    "later_auth": "Only when paid independent repair is enabled: status-first sign-ins for its distinct repair profile, up to two conditional Codex/Claude browser approvals. Read-only detection needs no provider login.",
+    "policy_decision": "Only if authoritative evidence remains incomplete or the owner chooses a particular old request for continuation. Keep the existing hold until a concrete reviewed decision; never ask the owner to guess historical spend."
+  },
+  "frozen_installed_runtime_changed": false,
+  "frozen_startup_or_bootstrap_changed": false,
+  "legacy_databases_or_tokens_read": false,
+  "protected_tasks_or_configuration_changed": false,
+  "system_or_provider_or_docker_calls": 0,
+  "paid_jobs_submitted": 0,
+  "linux_results_used": false,
+  "artifacts": {
+    "engine.py.before-r3": {
+      "sha256": "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64",
+      "bytes": 64779
+    },
+    "engine.py.candidate": {
+      "sha256": "9ec21d808bfbb1c5dfe01a6dd41b0dc969f9fc92df4ff5de010c4890c1dddeea",
+      "bytes": 65835
+    },
+    "engine.py.narrow.diff": {
+      "sha256": "13100e7e4ba627a8ad45f8a773fbf1e8416cd64a3a157a155447abc58fa63e75",
+      "bytes": 2023
+    },
+    "replay.py.before-r3": {
+      "sha256": "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728",
+      "bytes": 11754
+    },
+    "replay.py.candidate": {
+      "sha256": "d0a10b30e3f16d44a2906d855d46f44dc0fbad7249b8b43d6b67b98e4d94d60d",
+      "bytes": 13886
+    },
+    "replay.py.narrow.diff": {
+      "sha256": "b55e8ce0d5eab7c687355456d635d132442360737574db0c70fc3b1236786dc4",
+      "bytes": 4902
+    },
+    "test_held_observation.py": {
+      "sha256": "4ed7a40327ef4ea76473dc5aef180734f307ec0267f2047d23483500b9cec677",
+      "bytes": 6626
+    },
+    "test_replay_budget.py": {
+      "sha256": "2fdc8ec0f02bcbdb0a3e030a941f162edab7681f09c1688188115f60fb73385a",
+      "bytes": 10157
+    },
+    "test_legacy_budget_authority.py": {
+      "sha256": "b70c55fdba7cd10db676d237d1b190b00a81e1294b9edea2b4c98bf432bcffd2",
+      "bytes": 14639
+    },
+    "inspect-supervision-authority-gaps-r3-v1.py": {
+      "sha256": "af6ab6abfbbf134aaaf74582100a64650364fb9f68e524da9852d02ed243e22d",
+      "bytes": 3828
+    },
+    "supervision-authority-gaps-r3-reproduction-20261007.json": {
+      "sha256": "86f88629c21dacc696c925df3631fa7e75054ca74ca66e170772050d76df845c",
+      "bytes": 2158
+    },
+    "supervision-authority-candidate-tests-initial.xml": {
+      "sha256": "30769dde44912e6ef8c6641b7710937ab4bd462fcfad8bc67fd9680adf96daf3",
+      "bytes": 20407
+    },
+    "supervision-authority-candidate-tests-followup.xml": {
+      "sha256": "120252840eaf268c1cdd21f6ffe35aad7965574b9bb6729c5b6027ca52a00fab",
+      "bytes": 9355
+    },
+    "supervision-authority-candidate-tests-final.xml": {
+      "sha256": "02442922757be864c01297267bf0397ae302b8c43ede72f742179fd9dfffcd14",
+      "bytes": 13783
+    },
+    "supervision-authority-root-review-20261008.json": {
+      "sha256": "5b70a725f6f3f9c997af672c1999a4991d1d91765e68a974d3130b3cef4e1122",
+      "bytes": 3261
+    }
+  }
+}

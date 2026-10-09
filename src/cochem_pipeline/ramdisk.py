@@ -60,10 +60,16 @@ class RamdiskConfig:
     claude_project_cache: bool = True
     lifecycle: str = "auto"
     startup_wait_seconds: int = 120
+    workspace_subdirectory: str = ""
 
     @property
     def adopted_drive(self) -> bool:
         return len(PureWindowsPath(self.mount_root).parts) == 1
+
+    @property
+    def workspace_root(self) -> Path:
+        mount = Path(self.mount_root)
+        return mount / self.workspace_subdirectory if self.workspace_subdirectory else mount
 
     def __post_init__(self):
         if type(self.enabled) is not bool or type(self.claude_project_cache) is not bool:
@@ -80,6 +86,11 @@ class RamdiskConfig:
         if ((self.lifecycle == "adopt_existing" and not self.adopted_drive)
                 or (self.lifecycle == "managed_directory" and self.adopted_drive)):
             raise ValueError("Drive roots must be adopted; only dedicated directory mounts may be managed")
+        if (not isinstance(self.workspace_subdirectory, str)
+                or self.workspace_subdirectory and (not self.adopted_drive
+                    or not _SLOT.fullmatch(self.workspace_subdirectory)
+                    or self.workspace_subdirectory.upper() in _RESERVED_NAMES)):
+            raise ValueError("RAM workspace subdirectory must be one safe component on an adopted drive")
         if type(self.startup_wait_seconds) is not int or not 0 <= self.startup_wait_seconds <= 600:
             raise ValueError("RAM startup wait must be an integer between zero and 600 seconds")
         executable = PureWindowsPath(self.imdisk_executable)
@@ -278,7 +289,7 @@ def mount_recovery_action(prior: dict | None, config: RamdiskConfig, boot_id: in
 def _equivalent_ledger_config(value, config: RamdiskConfig) -> bool:
     """New default-only settings do not invalidate a protected older ledger."""
     try:
-        original_fields = set(RamdiskConfig.__dataclass_fields__) - {"lifecycle", "startup_wait_seconds"}
+        original_fields = set(RamdiskConfig.__dataclass_fields__) - {"lifecycle", "startup_wait_seconds", "workspace_subdirectory"}
         if not isinstance(value, dict) or not original_fields <= value.keys():
             return False
         prior = RamdiskConfig.from_dict(value)
@@ -420,6 +431,48 @@ def _no_content_index(path: Path, *, apply: bool = False) -> None:
         raise RamdiskError("RAM workspace is not excluded from Windows content indexing")
 
 
+def _validate_adopted_parent(mount: Path) -> None:
+    """Prove a protected child cannot be replaced without taking over R:.
+
+    DELETE on a volume root does not delete its protected children. In contrast,
+    DELETE_CHILD or control of the volume DACL/owner would let an unrelated user
+    replace the pipeline boundary. Ordinary root reads/creates remain allowed.
+    Never rewrite the owner's volume ACL or inherited rights in subtree mode.
+    """
+    from . import windows as win
+    win.require_system()
+    if len(PureWindowsPath(str(mount)).parts) != 1:
+        raise RamdiskError("Adopted subtree parent must be the exact volume root")
+    ordinary_tree(mount)
+    owner, _, rules = win._acl(mount)
+    trusted = {win.SYSTEM_SID, win.ADMIN_SID, win.TRUSTED_INSTALLER_SID}
+    if owner not in trusted or not rules or any(
+            sid not in trusted and not flags & 8 and mask & 0x100C0040
+            for sid, mask, flags in rules):
+        raise RamdiskError("Adopted volume root permits untrusted replacement of its protected subtree")
+
+
+def _create_adopted_boundary(path: Path, worker_sids: list[str]) -> None:
+    """CreateNew directory with final protected ACL, never a writable interval."""
+    from . import windows as win
+    win.require_system()
+    api = win._api()
+    descriptor = win.HANDLE()
+    sddl = "O:SYG:SYD:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)" + "".join(
+        f"(A;;0x100020;;;{sid})" for sid in worker_sids)
+    win._check(api["advapi32"].ConvertStringSecurityDescriptorToSecurityDescriptorW(
+        sddl, 1, C.byref(descriptor), None), "Build adopted RAM subtree ACL")
+    try:
+        create = api["kernel32"].CreateDirectoryW
+        create.restype, create.argtypes = win.BOOL, [win.LPWSTR, C.POINTER(win._SECURITY_ATTRIBUTES)]
+        security = win._SECURITY_ATTRIBUTES(C.sizeof(win._SECURITY_ATTRIBUTES), descriptor, False)
+        win._check(create(str(path), C.byref(security)), "Create protected adopted RAM subtree")
+    finally:
+        api["kernel32"].LocalFree(descriptor)
+    ordinary_tree(path)
+    win._validate_boundary(path, worker_sids)
+
+
 def exclude_tree_from_indexing(root: Path, *, maximum_entries: int = 250000) -> int:
     """Mark a closed worker's exact tree without following nested reparse links.
 
@@ -454,7 +507,7 @@ class RamWorkspace:
 
     @property
     def root(self) -> Path:
-        return Path(self.config.mount_root) / self.slot
+        return self.config.workspace_root / self.slot
 
     @property
     def scratch(self) -> Path:
@@ -476,14 +529,19 @@ class RamWorkspace:
         if (observed["volume_serial"], observed["device_number"]) != (self.volume_serial, self.device_number):
             raise RamdiskError("RAM disk was replaced after this workspace was admitted")
         mount = Path(self.config.mount_root)
-        ordinary_tree(mount.parent)
-        win._validate_control_ancestors(mount.parent)
-        owner, protected, rules = win._acl(mount)
+        boundary = self.config.workspace_root
+        if self.config.workspace_subdirectory:
+            _validate_adopted_parent(mount)
+            ordinary_tree(boundary)
+        else:
+            ordinary_tree(mount.parent)
+            win._validate_control_ancestors(mount.parent)
+        owner, protected, rules = win._acl(boundary)
         if (owner != win.SYSTEM_SID or not protected or not rules
                 or any((sid in {win.SYSTEM_SID, win.ADMIN_SID} and (mask != win.FULL_CONTROL or flags != 3))
                        or (sid not in {win.SYSTEM_SID, win.ADMIN_SID} and (mask != 0x100020 or flags != 0))
                        for sid, mask, flags in rules)):
-            raise RamdiskError("RAM volume ACL permits untrusted replacement or sibling access")
+            raise RamdiskError("RAM workspace boundary ACL permits untrusted replacement or sibling access")
         # This sole mount reparse is allowed. Every descendant remains an
         # ordinary directory, checked without Path.resolve() changing its name.
         current = Path(os.path.abspath(cwd or self.root))
@@ -766,15 +824,30 @@ class RamdiskManager:
                     and (observed["volume_serial"], observed["device_number"]) != (
                         prior["observed"]["volume_serial"], prior["observed"]["device_number"])):
                 raise RamdiskError("Active RAM volume was replaced without a controller lifecycle transition")
-            # Workers may traverse the volume root but cannot replace slot
-            # roots or enumerate sibling directories through this boundary.
-            win._protect_boundary(mount, worker_sids)
-            win._validate_boundary(mount, worker_sids)
-            ordinary_tree(mount.parent)
-            win._validate_control_ancestors(mount.parent)
-            _no_content_index(mount, apply=True)
+            # An explicitly scoped adopted drive retains its root ACL/indexing
+            # and all unrelated contents. Only our protected subtree is owned.
+            boundary = self.config.workspace_root
+            if self.config.workspace_subdirectory:
+                _validate_adopted_parent(mount)
+                try:
+                    boundary.lstat()
+                except FileNotFoundError:
+                    _create_adopted_boundary(boundary, worker_sids)
+                else:
+                    ordinary_tree(boundary)
+                    if prior is None:
+                        raise RamdiskError("Existing adopted RAM subtree has no ownership ledger; preserve it")
+                    win._validate_boundary(boundary, worker_sids)
+            else:
+                # Existing dedicated-volume/directory configurations retain
+                # their established root boundary contract.
+                win._protect_boundary(boundary, worker_sids)
+                win._validate_boundary(boundary, worker_sids)
+                ordinary_tree(mount.parent)
+                win._validate_control_ancestors(mount.parent)
+            _no_content_index(boundary, apply=True)
             for slot, identity in self.identities.items():
-                root = mount / slot
+                root = boundary / slot
                 if root.exists():
                     metadata = root.lstat()
                     if stat.S_ISLNK(metadata.st_mode) or getattr(metadata, "st_file_attributes", 0) & 0x400:
@@ -801,9 +874,13 @@ class RamdiskManager:
                         "boot_id": boot_id, "checked_at": time.time(),
                         "backup": str(backup) if backup else None, "slots": sorted(self.workspaces),
                         "lifecycle_action": action, "adopted_existing_drive": self.config.adopted_drive,
+                        "workspace_root": str(boundary),
+                        "volume_root_metadata_preserved": bool(self.config.workspace_subdirectory),
                         "resize": resize_capability(self.config),
                         "auth_profiles": "persistent_native_profiles_unchanged",
-                        "search_not_content_indexed": True, "defender_exact_roots_verified": True}
+                        "search_not_content_indexed": True,
+                        "search_not_content_indexed_scope": str(boundary),
+                        "defender_exact_roots_verified": True}
             self._save_state(evidence)
             return evidence
         finally:
@@ -844,7 +921,7 @@ class RamdiskManager:
         if (observed["volume_serial"], observed["device_number"]) != (
                 prior["observed"]["volume_serial"], prior["observed"]["device_number"]):
             raise RamdiskError("RAM volume identity differs from its private ownership ledger")
-        _no_content_index(Path(self.config.mount_root))
+        _no_content_index(self.config.workspace_root)
         exclusions = win.defender_exclusions()
         for slot, identity in self.identities.items():
             descriptor = RamWorkspace(self.config, slot, identity.name, observed["volume_serial"],

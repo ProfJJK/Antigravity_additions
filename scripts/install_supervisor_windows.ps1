@@ -30,7 +30,7 @@ function Install-FrozenEnvironment {
     $savedEnvironment = $env:UV_PROJECT_ENVIRONMENT
     try {
         $env:UV_PROJECT_ENVIRONMENT = Join-Path $InstallRoot '.venv'
-        Invoke-Checked -Executable $Uv -Arguments @('sync','--project',$sourceRoot,'--frozen','--no-editable','--extra','mcp','--extra','dev','--python',$Python,'--no-python-downloads')
+        Invoke-Checked -Executable $Uv -Arguments @('sync','--project',$sourceRoot,'--frozen','--no-editable','--link-mode','copy','--extra','mcp','--extra','dev','--python',$Python,'--no-python-downloads')
     }
     finally { $env:UV_PROJECT_ENVIRONMENT = $savedEnvironment }
 }

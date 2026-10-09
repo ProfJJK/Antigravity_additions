@@ -41,15 +41,31 @@ def _ordinary(path, *, directory=False):
 
 def _private(root, *, create=True):
     root = Path(root).absolute()
-    if create:
-        root.mkdir(mode=0o700, parents=True, exist_ok=True)
-    _ordinary(root, directory=True)
     if os.name == 'nt':
-        from .windows import require_system, validate_private_directory
+        from .windows import require_system, validate_private_directory, _acl, SYSTEM_SID, FULL_CONTROL
         require_system()
+        if create:
+            try:
+                _ordinary(root, directory=True)
+            except FileNotFoundError:
+                # Create missing ancestors one at a time beneath an effective
+                # private parent. Never fall back to the token default DACL or
+                # Python's mode 0700 OWNER RIGHTS ACL on Windows.
+                parent = _private(root.parent)
+                _,_,rules = _acl(parent)
+                if not any(sid == SYSTEM_SID and mask == FULL_CONTROL
+                           and flags & 3 == 3 and not flags & (4 | 8)
+                           for sid,mask,flags in rules):
+                    raise PermissionError('Private directory parent must inherit SYSTEM full control to files and directories')
+                root.mkdir(exist_ok=True)
+        _ordinary(root, directory=True)
         validate_private_directory(root)
-    elif root.stat().st_uid != os.geteuid() or stat.S_IMODE(root.stat().st_mode) & 0o077:
-        raise PermissionError('Operational evidence directory must be controller-owned mode 0700')
+    else:
+        if create:
+            root.mkdir(mode=0o700, parents=True, exist_ok=True)
+        _ordinary(root, directory=True)
+        if root.stat().st_uid != os.geteuid() or stat.S_IMODE(root.stat().st_mode) & 0o077:
+            raise PermissionError('Operational evidence directory must be controller-owned mode 0700')
     return root
 
 
@@ -162,7 +178,7 @@ def archive_evidence(root, relative_paths, *, policy=None, now=None):
         if source.stat().st_size+total>policy.max_archive_bytes:
             raise ValueError('Archive exceeds the reviewed byte budget')
         target = destination/relative
-        target.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+        _private(target.parent)
         if source.suffix == '.db':
             with closing(sqlite3.connect(source.as_uri()+'?mode=ro', uri=True)) as db, closing(sqlite3.connect(target)) as backup:
                 page_size=db.execute('PRAGMA page_size').fetchone()[0]

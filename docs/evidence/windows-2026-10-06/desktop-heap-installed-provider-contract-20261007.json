@@ -1,0 +1,120 @@
+{
+  "schema": "cochem-desktop-heap-installed-provider-contract/1",
+  "captured_at_utc": "2026-10-08T01:33:11.4579826Z",
+  "status": "NO_COMPLETE_NONINTRUSIVE_USAGE_CONTRACT_ESTABLISHED",
+  "scope": "Ordinary-user provider metadata and performance-counter registration queries only; no event payloads, trace session, debugger, dump, process attachment, driver action or privileged command.",
+  "manifest_provider": {
+    "name": "Microsoft-Windows-Win32k",
+    "id": "8c416c79-d49b-4f01-a467-e56d3aa8234c",
+    "event_descriptors": 369,
+    "descriptions_present": 25,
+    "templates_present": 290,
+    "heap_named_description_template_task_matches": 0,
+    "desktop_task_matches": [
+      {
+        "id": 58,
+        "task": "DesktopResolutionFailure",
+        "fields": [
+          "ProcessId",
+          "FailureStatus"
+        ]
+      }
+    ],
+    "broader_memory_allocation_commit_candidates": [
+      {
+        "ids": [
+          135,
+          136
+        ],
+        "task": "PointerFrameCommit",
+        "fields": [
+          "FrameId",
+          "PointerCount",
+          "PendingPointerCount"
+        ]
+      },
+      {
+        "ids": [
+          151
+        ],
+        "task": "DCompCommitBatch",
+        "fields": [
+          "channelHandle",
+          "pBatch",
+          "batchID",
+          "isNinja"
+        ]
+      },
+      {
+        "ids": [
+          540
+        ],
+        "task": "DCompSyncInfoCommit",
+        "fields": [
+          "pSyncInfo"
+        ]
+      }
+    ],
+    "used_capacity_contract_found": false
+  },
+  "classic_provider": {
+    "name": "Win32k",
+    "events_property_is_null": true,
+    "manifest_event_descriptors": 0,
+    "event_payloads_read": 0,
+    "note": "A PowerShell null-array count was corrected: this provider did not expose one actual event descriptor. No conclusion about historical event 243 occurrence is made."
+  },
+  "desktop_counter_sets": [
+    "Remote Desktop Virtual Channel"
+  ],
+  "resource": {
+    "path": "C:\\Windows\\System32\\win32kbase.sys",
+    "bytes": 3420160,
+    "version": "10.0.26100.9444 (WinBuild.160101.0800)",
+    "sha256": "a78ed89e69a0a12809af16da7da8bece1609e9acffc297b962c24245b745443d",
+    "signature_status": "Valid",
+    "signer": "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "signer_thumbprint": "BAC13DF18B37E808208A39D3A54CCE975FAC8C1D"
+  },
+  "primary_sources": [
+    "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getuserobjectinformationw",
+    "https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/-dskheap",
+    "https://learn.microsoft.com/en-us/windows/win32/memory/memory-management-tracing-events",
+    "https://learn.microsoft.com/en-us/troubleshoot/windows-server/performance/desktop-heap-limitation-out-of-memory",
+    "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/wevtutil"
+  ],
+  "interpretation": "The actual registered Win32k metadata and desktop-named performance counters do not establish the required used/capacity measurement source. Incomplete descriptions, dynamic providers and undocumented OS internals mean this is not a proof that no collector can exist. No values were inferred from object counts, RSS, desktop capacity or absence of events.",
+  "implemented_interface": {
+    "repository_source": "src/cochem_pipeline/performance_acceptance.py",
+    "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+    "consumer": "desktop_heap_evidence(path,pid,created_at,now)",
+    "required_fields": [
+      "used_bytes",
+      "allocation_limit_bytes",
+      "measured_at",
+      "process_created_at",
+      "pid",
+      "source"
+    ],
+    "retains_raw_provenance": true,
+    "collector_included": false,
+    "source_file_bound_bytes": 1048576,
+    "freshness_seconds_inclusive": [
+      0,
+      10
+    ],
+    "threshold": "100 * used_bytes / allocation_limit_bytes < 15",
+    "continuous_observation_policy": "At most 10 seconds between completed samples on both clocks; this is the repaired harness continuity policy, not an SRS-prescribed sampling rate."
+  },
+  "integration_options": [
+    "Keep the existing strict byte interface and implement acquisition only after a supported source supplies actual current service-desktop usage and capacity, bound to Warden PID/creation and desktop/session identity. Its publisher must provide coherent protected fresh evidence; source/hash/version and acquisition latency require real validation.",
+    "A documented conservative used-rate upper bound could be represented by a separately reviewed, explicitly labelled validator/schema. It must not be multiplied into fictitious exact used bytes; no such source contract has been validated here.",
+    "If no acquisition route fits the owner constraints, only an explicit owner SRS amendment can change the desktop-heap acceptance obligation. Current code still records unavailable/failure, while other deployment work can proceed independently."
+  ],
+  "next_owner_probe_requested": false,
+  "native_heap_samples": 0,
+  "system_or_worker_jobs_executed": 0,
+  "driver_or_boot_changes": false,
+  "frozen_r3_modified": false,
+  "acceptance_complete": false
+}

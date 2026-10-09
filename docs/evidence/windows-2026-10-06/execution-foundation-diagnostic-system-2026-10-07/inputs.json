@@ -1,0 +1,16 @@
+{
+    "schema":  "cochem-foundation-diagnostic-inputs/1",
+    "install_receipt_sha256":  "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "knowledge_receipt_sha256":  "f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b",
+    "workers":  {
+                    "slot1":  "b9e9fd56c77ac54f97f136b562881a554ed18f6f4f216ccacc0fdf43c51f2c85",
+                    "slot2":  "7ebac1cedc48cf60c52af7c9b5ff4e883b4325c8d92a6826c935a9e5f7b5322d",
+                    "slot3":  "c8518fb7c3f126c1c550e36072441eb520a3e76d91f75735d5f3ac832af954ee",
+                    "slot4":  "f81613cb152f9b5369908f796f55572e3f5779d2253515233b98aafc9e2b1344",
+                    "slot5":  "84d7043f2044d52e2cfd31bdd373d424821ed3e3a234cef74590b2cfb427283b",
+                    "slot6":  "5f987ba0f47d27417c0724277d70c52105dd1a96f04dd0a102fe7175d55f2970"
+                },
+    "preflight_receipt_sha256":  "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "failed_foundation_receipt_sha256":  "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "failed_foundation_packet_sha256":  "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6"
+}

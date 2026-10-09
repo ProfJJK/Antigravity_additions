@@ -1,0 +1,74 @@
+{
+  "admission": {
+    "action": "pause_admission",
+    "capacity": 0,
+    "reasons": {
+      "known_codes": [],
+      "unrecognized_count": 2
+    },
+    "state": "paused"
+  },
+  "admission_capacity": 0,
+  "controller": {
+    "instance_id": "c867588c063c4362beca10358ebf79ef",
+    "pid": 5788
+  },
+  "controller_guard": {
+    "action": "none",
+    "allowed_logical_processor_count": 8,
+    "checked_at": 1791513810.2356825,
+    "cpu_limit_percent": 5,
+    "cpu_percent": 2.6625,
+    "memory_limit_mb": 50,
+    "private_mb": 39.2578125,
+    "ready": true,
+    "reasons": {
+      "known_codes": [],
+      "unrecognized_count": 0
+    },
+    "rss_mb": 39.48046875,
+    "sample_age_seconds": 0.050818681716918945,
+    "state": "healthy"
+  },
+  "hardware_guard": {
+    "action": "pause_admission",
+    "capacity": 0,
+    "commit": {
+      "free_mb": 2318.47265625,
+      "limit_mb": 76607.20703125
+    },
+    "cpu": {
+      "count": 8,
+      "percent": 19.8,
+      "physical_count": 16,
+      "temperature_celsius": 91.0
+    },
+    "cpu_temperature_available": true,
+    "critical_reason_count": 0,
+    "measured_at": 1791513810.2326813,
+    "memory": {
+      "available_mb": 10012.0859375,
+      "total_mb": 65291.97265625
+    },
+    "policy": {
+      "cpu_temperature_critical_c": 95.0,
+      "cpu_temperature_pause_c": 85.0,
+      "min_free_commit_mb": 6144.0,
+      "min_free_memory_mb": 1024.0,
+      "per_agent_memory_mb": 4096
+    },
+    "reason_count": 2,
+    "sample_age_seconds": 0.053819894790649414,
+    "state": "paused"
+  },
+  "http_get_calls": 1,
+  "http_post_calls": 0,
+  "model_jobs_submitted": 0,
+  "production_acl_changes": 0,
+  "recorded_at": 1791513810.2865012,
+  "schema": "cochem-live-admission-safe-readonly/1",
+  "startup_receipt_sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+  "tasks_changed": 0,
+  "token_contents_retained": false,
+  "v2_root_absent": true
+}

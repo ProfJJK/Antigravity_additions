@@ -16,6 +16,7 @@ import uuid
 
 from .io import write_json
 from .releases import _plain_ancestors, _stat_plain
+from .budget_authority import verify_preserved as verify_budget_authority_preserved
 
 
 def _checked_json(path: Path) -> dict:
@@ -56,7 +57,9 @@ def _copy_ledger(old: Path, new: Path, expected: str, *, component: bool = False
                 origin.backup(destination)
         if _ledger_digest(temporary, component=component) != expected:
             raise ValueError('Source ledger changed during upgrade; stop its writer first')
-        with temporary.open('rb') as stream:
+        # Windows FlushFileBuffers (used by fsync) requires a writable handle.
+        # Only the new consistent backup is opened writable; the source stays ro.
+        with temporary.open('r+b') as stream:
             os.fsync(stream.fileno())
         os.replace(temporary, new)
     finally:
@@ -153,6 +156,7 @@ def preserve_advanced_budget_state(source_private: Path, target_private: Path) -
             with closing(sqlite3.connect(origin.as_uri()+'?mode=ro',uri=True)) as old, \
                  closing(sqlite3.connect(destination.as_uri()+'?mode=ro',uri=True)) as new:
                 old.row_factory=new.row_factory=sqlite3.Row
+                verify_budget_authority_preserved(old,new)
                 table='recovery_events' if component else 'supervisor_events'
                 for row in old.execute('SELECT * FROM '+table):
                     stored=new.execute('SELECT * FROM '+table+' WHERE id=?',(row['id'],)).fetchone()

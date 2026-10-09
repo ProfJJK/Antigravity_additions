@@ -1,0 +1,24 @@
+{
+  "schema": "cochem-system-cpu-acceptance/1",
+  "nonce": "c989180a972049ef985bfefc5daf38e0",
+  "system_sid": "S-1-5-18",
+  "started_at_unix_ms": 1791351143868,
+  "status": "CPU_SAMPLE_VALID",
+  "hardware_probe_invoked": true,
+  "device_containment_tested": false,
+  "worker_denials_tested": false,
+  "pipeline_started": false,
+  "sensor_scope": "CPU direct Intel core/package only",
+  "script_sha256": "e3b4b1055254baaf2a4b68f7bd39a225b9c9b2c987d348e63ea34f607b0e8b0b",
+  "module_sha256": {
+    "cochem_pipeline.cpu_temperature": "e24c84847d15236d4b0668637c7d06ea9ae03669b1dbd056523b75c15eb73f59",
+    "cochem_pipeline.resource_telemetry": "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a",
+    "cochem_pipeline.windows": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba"
+  },
+  "bundle_manifest_sha256": "defbb5b713e1cd81316b0d16dc16a49c37e9c170365c7699b18a47be6f24ef65",
+  "maximum_celsius": 68.0,
+  "sampled_at_unix_ms": 1791351146004,
+  "sensor_count": 17,
+  "response_sha256": "76b1eb4801b3ef1c568e56f253863ee2fe375fe143dd794b26a16bdf742b2be8",
+  "completed_at_unix_ms": 1791351146038
+}

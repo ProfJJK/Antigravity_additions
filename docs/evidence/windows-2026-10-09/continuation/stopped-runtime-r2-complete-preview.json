@@ -1,0 +1,19 @@
+{
+    "schema":  "cochem-stopped-runtime-update/1",
+    "mode":  "READ_ONLY_PLAN",
+    "target_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "source_files":  166,
+    "configuration_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "only_config_change":  "ramdisk.workspace_subdirectory",
+    "accounts_provisioned":  0,
+    "tasks_changed":  0,
+    "credentials_modified":  false,
+    "databases_modified":  false,
+    "ram_modified":  false,
+    "pipeline_started":  false,
+    "activation_ready":  false,
+    "holds":  [
+
+              ]
+}

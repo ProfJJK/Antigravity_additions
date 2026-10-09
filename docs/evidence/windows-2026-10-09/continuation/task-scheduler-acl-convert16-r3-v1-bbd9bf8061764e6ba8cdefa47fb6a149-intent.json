@@ -1,0 +1,13 @@
+{
+    "schema":  "cochem-task-acl-conversion-intent/1",
+    "nonce":  "bbd9bf8061764e6ba8cdefa47fb6a149",
+    "task_name":  "CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2",
+    "current_user_sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+    "prior_receipt_sha256":  "00bd4af0b3d05de9d072e16cd562e105f43060f78df3ea099eb0b0d6ff015bd9",
+    "xml_before_sha256":  "b116f23d0b9293a86e97d800db2bef0b4b958d6aa57d81141d17c3fc5f9458ac",
+    "source_sha256":  "677b1b43177ee79708e1e976571c206c35f186a1292ea894544c3fa392d9de25",
+    "setter_flags":  16,
+    "requested_sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:P(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)",
+    "automatic_retry_allowed":  false,
+    "created_utc":  "2026-10-09T01:59:04.9761255Z"
+}

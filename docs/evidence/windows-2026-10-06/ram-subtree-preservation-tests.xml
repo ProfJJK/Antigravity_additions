@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="5" tests="96" time="0.606" timestamp="2026-10-07T00:55:34.360697-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[..]" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[.]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[../escape]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[a\\b]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[a/b]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[a:stream]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[NUL]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[COM1]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[trailing.]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[trailing ]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[wild*]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_names_cannot_escape_alias_or_redirect[None]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_is_explicit_adopted_only_and_ledger_bound" time="0.000"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'subdirectory'&#10;  Actual message: 'RAM disk requires an exact local drive root or dedicated NTFS directory mount'">def test_subtree_is_explicit_adopted_only_and_ledger_bound():
+        old = ram.RamdiskConfig(enabled=True)
+        scoped = replace(old, workspace_subdirectory='CoChem427')
+        assert scoped.workspace_root == Path('R:\\') / 'CoChem427'
+        assert ram.RamWorkspace(scoped, 'slot1', 'Worker1', 1, 7, Path('private')).root == scoped.workspace_root / 'slot1'
+&gt;       with pytest.raises(ValueError, match='subdirectory'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'subdirectory'
+E         Actual message: 'RAM disk requires an exact local drive root or dedicated NTFS directory mount'
+
+pipeline_tests\test_ramdisk_adopted_subtree.py:26: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[1245631-0-True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[1179817-0-True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[1073741824-0-True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[64-0-False]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[262144-0-False]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[524288-0-False]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[268435456-0-False]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_preserves_ordinary_owner_use_but_blocks_child_replacement[268435456-8-True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_adopted_parent_rejects_untrusted_owner_and_nonroot" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_directory_creation_receives_final_protected_acl_atomically_and_refuses_collision" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_initial_adoption_only_mutates_new_subtree_and_private_ledger" time="0.030" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_existing_unowned_subtree_is_preserved_before_any_metadata_write" time="0.008" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_untrusted_adopted_root_blocks_creation_before_writes" time="0.003" /><testcase classname="pipeline_tests.test_ramdisk_adopted_subtree" name="test_subtree_link_cannot_redirect_system_creation" time="0.003"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_subtree_link_cannot_redir0\\volume\\owner-data' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_subtree_link_cannot_redir0\\volume\\CoChem427'">adopted_fixture = namespace(manager=&lt;cochem_pipeline.ramdisk.RamdiskManager object at 0x000001A534A48DA0&gt;, config=RamdiskConfig(enabled=...'Worker2', credential_target='fixture/2')}, monkeypatch=&lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A53136B260&gt;)
+
+    def test_subtree_link_cannot_redirect_system_creation(adopted_fixture):
+        f = adopted_fixture
+&gt;       f.config.workspace_root.symlink_to(f.other, target_is_directory=True)
+
+pipeline_tests\test_ramdisk_adopted_subtree.py:179: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_subtree_link_cannot_redir0/volume/CoChem427')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_subtree_link_cannot_redir0/volume/owner-data')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_subtree_link_cannot_redir0\\volume\\owner-data' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_subtree_link_cannot_redir0\\volume\\CoChem427'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_default_adopts_existing_r_drive_without_any_creation_or_formatting" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[R:]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[D:\\temp]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[\\\\server\\share\\folder]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[relative]" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[D:\\x\\..\\escape]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[D:\\x\\bad:ads]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[D:\\x\\wild*card]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_reject_drive_letters_unc_escapes_and_unsafe_mount_names[D:\\x\\nul\x00]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[enabled-1]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[size_mb-True]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[size_mb-0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[size_mb-1048577]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[min_free_mb-0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[min_free_mb-8192]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[reserve_host_memory_mb-0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[backing-file]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[imdisk_executable-imdisk.exe]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_invalid_ram_storage_settings_fail_closed[imdisk_executable-C:\\Windows\\other.exe]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_unknown_configuration_cannot_silently_weaken_mount_policy" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_real_backup_preserves_files_and_links_without_following_them" time="0.003"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_preserves_fil0\\outside' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_preserves_fil0\\tdd_runs\\hostile-link'">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_preserves_fil0')
+
+    def test_real_backup_preserves_files_and_links_without_following_them(tmp_path):
+        mount = tmp_path / "tdd_runs"
+        mount.mkdir()
+        (mount / "important.py").write_bytes(b"original\x00bytes")
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        (outside / "secret").write_text("unchanged")
+&gt;       (mount / "hostile-link").symlink_to(outside, target_is_directory=True)
+
+pipeline_tests\test_ramdisk.py:86: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_preserves_fil0/tdd_runs/hostile-link')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_preserves_fil0/outside')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_preserves_fil0\\outside' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_preserves_fil0\\tdd_runs\\hostile-link'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_real_backup_rejects_linked_mount_and_backup_ancestor" time="0.003"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_rejects_linke0\\mount' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_rejects_linke0\\linked'">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_rejects_linke0')
+
+    def test_real_backup_rejects_linked_mount_and_backup_ancestor(tmp_path):
+        mount = tmp_path / "mount"
+        mount.mkdir()
+        (mount / "keep").write_text("keep")
+        linked = tmp_path / "linked"
+&gt;       linked.symlink_to(mount, target_is_directory=True)
+
+pipeline_tests\test_ramdisk.py:102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_rejects_linke0/linked')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_real_backup_rejects_linke0/mount')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_rejects_linke0\\mount' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_real_backup_rejects_linke0\\linked'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_physical_paths_reject_a_symlink_in_any_ancestor" time="0.002"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_physical_paths_reject_a_s0\\actual' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_physical_paths_reject_a_s0\\link'">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_physical_paths_reject_a_s0')
+
+    def test_physical_paths_reject_a_symlink_in_any_ancestor(tmp_path):
+        actual = tmp_path / "actual"
+        actual.mkdir()
+        (actual / "child").mkdir()
+        link = tmp_path / "link"
+&gt;       link.symlink_to(actual, target_is_directory=True)
+
+pipeline_tests\test_ramdisk.py:114: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_physical_paths_reject_a_s0/link')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_physical_paths_reject_a_s0/actual')
+target_is_directory = True
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_physical_paths_reject_a_s0\\actual' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_physical_paths_reject_a_s0\\link'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_driver_query_distinguishes_nonpageable_ram_from_pageable_and_disk_files" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_auto_attests_existing_pageable_or_nonpageable_backing_without_conversion" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change1]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change2]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change3]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change4]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_wrong_native_volume_properties_are_not_accepted[change5]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_truncated_kernel_device_responses_fail_closed[]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_truncated_kernel_device_responses_fail_closed[\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_truncated_kernel_device_responses_fail_closed[\x07\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00@\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x10\x11\x00\x00R\x00 \x00\]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_only_an_exact_imdisk_mount_reparse_target_is_accepted" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_selective_cache_junction_cannot_authorize_auth_home_or_another_slot" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_cache_junction_encoder_rejects_nonlocal_or_ambiguous_targets[\\\\server\\share\\cache]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_cache_junction_encoder_rejects_nonlocal_or_ambiguous_targets[D:\\root\\..\\secret]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_cache_junction_encoder_rejects_nonlocal_or_ambiguous_targets[D:\\root\\cache:ads]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_cache_junction_encoder_rejects_nonlocal_or_ambiguous_targets[relative]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_native_report_must_confirm_actual_project_cache_and_persistent_auth_directory" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_crash_and_reboot_recovery_preserve_exact_owned_mount_boundary" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adopted_drive_waits_and_reattests_after_startup_without_recreation" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_legacy_directory_ledger_gets_only_new_default_fields" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings1]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings2]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings3]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings4]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_adoption_configuration_cannot_authorize_drive_recreation[settings5]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_occupancy_and_scratch_age_are_real_bounded_and_do_not_claim_disk_savings" time="0.003"><failure message="OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\outside-d4a7bc456a20470aab8fea882d2e5bf0' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_occupancy_and_scratch_age0\\slot1\\.cochem-scratch\\link'">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_occupancy_and_scratch_age0')
+
+    def test_occupancy_and_scratch_age_are_real_bounded_and_do_not_claim_disk_savings(tmp_path):
+        from cochem_pipeline.ramdisk import workspace_observation
+        scratch = tmp_path / 'slot1' / '.cochem-scratch'
+        scratch.mkdir(parents=True)
+        data = scratch / 'actual.bin'
+        data.write_bytes(b'x' * 100)
+        os.utime(data, (1000, 1000))
+        external = tmp_path.parent / ('outside-' + uuid.uuid4().hex)
+        external.write_bytes(b'do not count')
+        try:
+&gt;           (scratch / 'link').symlink_to(external)
+
+pipeline_tests\test_ramdisk.py:270: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/test_occupancy_and_scratch_age0/slot1/.cochem-scratch/link')
+target = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24326/outside-d4a7bc456a20470aab8fea882d2e5bf0')
+target_is_directory = False
+
+    def symlink_to(self, target, target_is_directory=False):
+        """
+        Make this path a symlink pointing to the target path.
+        Note the order of arguments (link, target) is the reverse of os.symlink.
+        """
+        if not hasattr(os, "symlink"):
+            raise NotImplementedError("os.symlink() not available on this system")
+&gt;       os.symlink(target, self, target_is_directory)
+E       OSError: [WinError 1314] A required privilege is not held by the client: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\outside-d4a7bc456a20470aab8fea882d2e5bf0' -&gt; 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24326\\test_occupancy_and_scratch_age0\\slot1\\.cochem-scratch\\link'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:1386: OSError</failure></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change0]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change1]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change2]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change3]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change4]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change5]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change6]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_corrupt_or_reconfigured_lifecycle_records_cannot_authorize_unmount[change7]" time="0.000" /><testcase classname="pipeline_tests.test_ramdisk" name="test_no_linux_directory_can_impersonate_a_native_ram_mount" time="0.000"><skipped type="pytest.skip" message="Non-Windows fail-closed contract">D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\pipeline_tests\test_ramdisk.py:299: Non-Windows fail-closed contract</skipped></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_slot_names_cannot_alias_or_escape_ram_roots[names0]" time="0.002" /><testcase classname="pipeline_tests.test_ramdisk" name="test_slot_names_cannot_alias_or_escape_ram_roots[names1]" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_slot_names_cannot_alias_or_escape_ram_roots[names2]" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_slot_names_cannot_alias_or_escape_ram_roots[names3]" time="0.001" /><testcase classname="pipeline_tests.test_ramdisk" name="test_real_windows_imdisk_mount_acl_and_ram_io" time="0.000"><skipped type="pytest.skip" message="Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG">D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\pipeline_tests\test_ramdisk.py:321: Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG</skipped></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_real_windows_worker_writes_through_selective_cache_and_keeps_auth_home_physical" time="0.000"><skipped type="pytest.skip" message="Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG">D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\pipeline_tests\test_ramdisk.py:360: Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG</skipped></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_real_windows_installed_claude_selects_the_bound_project_cache_without_inference" time="0.000"><skipped type="pytest.skip" message="Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG">D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\pipeline_tests\test_ramdisk.py:405: Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG</skipped></testcase><testcase classname="pipeline_tests.test_ramdisk" name="test_real_verified_ram_startup_cleanup_removes_prior_project_before_reuse" time="0.000"><skipped type="pytest.skip" message="Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1">D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\pipeline_tests\test_ramdisk.py:436: Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1</skipped></testcase></testsuite></testsuites>

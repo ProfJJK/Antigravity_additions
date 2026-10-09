@@ -1,0 +1,194 @@
+{
+  "base_interpreter_sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+  "cleanup_verified": true,
+  "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "daemon_states_verified_before_and_after": true,
+  "device": "\\\\?\\GLOBALROOT\\Device\\PawnIO",
+  "device_acl": {
+    "acceptable": true,
+    "aces": [
+      {
+        "flags": 0,
+        "mask": 2032127,
+        "sid": "S-1-5-18",
+        "type": "allow"
+      },
+      {
+        "flags": 0,
+        "mask": 2032127,
+        "sid": "S-1-5-32-544",
+        "type": "allow"
+      }
+    ],
+    "dacl_present": true,
+    "owner_sid": "S-1-5-32-544",
+    "protected": true,
+    "query": "READ_CONTROL/GetKernelObjectSecurity owner+DACL; no SACL/IOCTL",
+    "sddl": "O:BAD:P(A;;FA;;;SY)(A;;FA;;;BA)",
+    "sddl_sha256": "26dfcb19fa10ac8405c8542ec100ce1ac91a836e9937b50b1a7b32acb58ce074"
+  },
+  "docker_denial_tested": false,
+  "finished_at_unix_ms": 1791387781907,
+  "helper_sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "installed_driver_file_sha256": "f92de04e5a02256e86ffa1b4252fe669282198b7329227f40e51bca9267d133d",
+  "ioctls_sent": 0,
+  "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+  "logon_uses_existing_system_worker_credential": true,
+  "nonce": "7adb4973bab74861b5b3995c61a6a46e",
+  "original_failed_receipt_sha256": "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+  "pipeline_started": false,
+  "process": {
+    "creation_time_filetime": 134358613814369491,
+    "image_matches_reviewed_executable": true,
+    "native_resource_limits": {
+      "affinity_group": 0,
+      "affinity_mask": 16711680,
+      "affinity_mask_hex": "0xff0000",
+      "below_normal_priority": true,
+      "cpu_rate_percent": 20,
+      "cpu_set_ids": [
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279
+      ],
+      "e_core_policy": "required",
+      "efficiency_class": 0,
+      "kill_on_job_close": true,
+      "launch_jitter_max_ms": 500,
+      "launch_jitter_min_ms": 100,
+      "logical_processors": [
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "max_processes": 16,
+      "memory_limit_mb": 2048,
+      "native_limits_verified": true,
+      "node_heap_mb": 512,
+      "poll_jitter_max_ms": 500,
+      "poll_jitter_min_ms": 100,
+      "topology_source": "GetSystemCpuSetInformation",
+      "topology_verified": true
+    },
+    "owned_job_membership_verified": true,
+    "pid": 17200,
+    "profile_directory_sha256": "b372d4687c281e627c003a4eeaca334d58488580b73155999a42ea7736aa59f0",
+    "source": "owned_windows_process_handle_and_child_token",
+    "token_details": {
+      "administrators_enabled": false,
+      "elevated": false,
+      "sid": "S-1-5-21-4108184938-3023548017-2507294638-1008"
+    },
+    "token_matches_selected_worker": true,
+    "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1008"
+  },
+  "repair_identity_tested": false,
+  "resource_limits_sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "runtime_custody_verified": true,
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "schema": "cochem-worker-denial-acceptance/1",
+  "slot": "slot3",
+  "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+  "started_at_unix_ms": 1791387780232,
+  "status": "HANDLE_DENIALS_VERIFIED",
+  "system_sid": "S-1-5-18",
+  "tested_target_contents_read": 0,
+  "windows_runtime_sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+  "worker_dispatch_attempted": true,
+  "worker_released": true,
+  "worker_result": {
+    "contents_read": 0,
+    "handles": {
+      "controller": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "device_generic_read_write": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "device_lhm_mask3": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "device_zero_access": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "device_zero_access_overlapped": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "own_workspace": {
+        "classification": "OPENED_AND_CLOSED",
+        "opened": true,
+        "winerror": 0
+      },
+      "private": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "sibling_slot1": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "sibling_slot2": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "sibling_slot4": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "sibling_slot5": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      },
+      "sibling_slot6": {
+        "classification": "DENIED",
+        "opened": false,
+        "winerror": 5
+      }
+    },
+    "ioctls_sent": 0,
+    "nonce": "7adb4973bab74861b5b3995c61a6a46e",
+    "pid": 17200,
+    "schema": "cochem-worker-handle-denial/1",
+    "slot": "slot3",
+    "token": {
+      "administrators_enabled": false,
+      "elevated": false,
+      "sid": "S-1-5-21-4108184938-3023548017-2507294638-1008"
+    }
+  }
+}

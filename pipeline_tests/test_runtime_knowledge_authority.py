@@ -4,23 +4,37 @@ from __future__ import annotations
 from importlib.resources import files
 import hashlib
 import json
+from pathlib import Path
+import shutil
 import threading
 import time
 from types import SimpleNamespace
 
 import pytest
 
-from cochem_pipeline.knowledge import KnowledgeConfig, KnowledgeService
+from cochem_pipeline.knowledge import KnowledgeConfig, KnowledgeError, KnowledgeService
 from cochem_pipeline.knowledge_authority import KnowledgeAuthority
 from cochem_pipeline.planning_governance import canonical_authority
 from pipeline_tests.test_service import endpoint
 
 
 @pytest.fixture
-def registered(tmp_path):
+def portable_knowledge_permissions(monkeypatch):
+    # These tests exercise real ordinary files, hashes, FTS5 and generation
+    # changes. The explicit permission boundary is portable; it is not a
+    # Windows SYSTEM/ACL acceptance test or a production guard bypass.
+    from cochem_pipeline import knowledge
+    monkeypatch.setattr(knowledge, '_protected',
+        lambda path, *, directory=False, private=False: knowledge._ordinary(path, directory=directory))
+    monkeypatch.setattr(knowledge, '_private_directory',
+        lambda path, *, exist_ok=False: path.mkdir(mode=0o700, exist_ok=exist_ok))
+
+
+@pytest.fixture
+def registered(tmp_path, portable_knowledge_permissions):
     services = []
 
-    def build(*, old_spec=False, old_amendment=False):
+    def build(*, old_spec=False, old_amendment=False, catalog_edit=None, committed=False):
         root = tmp_path / ('corpus-' + str(len(services)))
         private = tmp_path / ('private-' + str(len(services)))
         root.mkdir(); private.mkdir(mode=0o700)
@@ -44,6 +58,15 @@ def registered(tmp_path):
         manifest = root / 'v4.1.2_manifest.json'
         manifest.write_text(json.dumps({'manifest_version': '4.2.7', 'documents': entries,
                                         'srs_documents': ['wiki/00_skeleton.md']}))
+        if committed:
+            # Copy exact committed archive/manifest bytes into this disposable
+            # fixture. Existing historical source pins in the repo never change.
+            shutil.rmtree(root)
+            shutil.copytree(Path(__file__).resolve().parents[1] / 'knowledge', root)
+        if catalog_edit:
+            catalog = json.loads(manifest.read_text(encoding='utf-8'))
+            catalog_edit(root, catalog)
+            manifest.write_text(json.dumps(catalog), encoding='utf-8')
         config = KnowledgeConfig(enabled=True, source_root=str(root / '.sources'),
             wiki_root=str(root / 'wiki'), state_root=str(private / 'knowledge'), manifest_path=str(manifest))
         service = KnowledgeService(config)
@@ -64,6 +87,63 @@ def test_actual_installed_specification_and_owner_amendment_match_registered_byt
     assert result['authority_matches_capture'] is True
     assert result['owner_amendments'][0]['matches_capture'] is True
     assert result['observed_specification_sha256'] == canonical_authority()['specification_sha256']
+    assert result['authority_source'] == '.sources/4.2.7_SRS.md'
+    assert result['owner_amendments'][0]['resolved_source'] == '.sources/SRS_ADDENDUM_4.2.7.md'
+
+
+def test_actual_committed_versioned_catalog_resolves_current_bytes_without_rewriting_history(registered):
+    corpus = registered(committed=True)
+    manifest = corpus.manifest.read_bytes()
+    pins = (corpus.service.state / 'sources.json').read_bytes()
+    old_sources = {name: (corpus.root / '.sources' / name).read_bytes()
+        for name in ('4.2.7_SRS.md', 'SRS_ADDENDUM_4.2.7.md')}
+    result = corpus.authority.status()
+    assert result['ready'] and result['authority_matches_capture'] is True
+    assert result['authority_source'] == '.sources/4.2.7_SRS.model-routing-2026-10-07.md'
+    assert result['owner_amendments'][0]['resolved_source'] == '.sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md'
+    assert corpus.service.read('.sources/4.2.7_SRS.md')['authority'] == 'historical_source'
+    assert corpus.manifest.read_bytes() == manifest
+    assert (corpus.service.state / 'sources.json').read_bytes() == pins
+    assert all((corpus.root / '.sources' / name).read_bytes() == raw for name, raw in old_sources.items())
+
+
+@pytest.mark.parametrize('source', ['4.2.7_SRS.md', 'SRS_ADDENDUM_4.2.7.md'])
+def test_duplicate_exact_captured_source_is_ambiguous_and_blocks_admission(registered, source):
+    def duplicate(root, catalog):
+        row = next(row for row in catalog['documents'] if row['path'] == '.sources/' + source)
+        alias = '.sources/duplicate-' + source
+        (root / alias).write_bytes((root / row['path']).read_bytes())
+        catalog['documents'].append({**row, 'path': alias})
+    corpus = registered(catalog_edit=duplicate)
+    result = corpus.authority.status()
+    assert result['index_ready'] and not result['ready']
+    assert result['authority_matches_capture'] is False
+    assert 'no unique captured source authority' in result['authority_reason']
+
+
+@pytest.mark.parametrize('field,value', [('authority', 'historical_source'), ('authority_revision', 'prior-revision')])
+def test_current_amendment_requires_its_exact_authority_and_revision(registered, field, value):
+    def change(_, catalog):
+        next(row for row in catalog['documents'] if 'ADDENDUM' in row['path'])[field] = value
+    result = registered(catalog_edit=change).authority.status()
+    assert result['index_ready'] and not result['ready']
+    assert result['authority_matches_capture'] is False
+
+
+def test_matching_wiki_copy_cannot_replace_missing_archive_authority(registered):
+    raw = b'# Captured fixture requirement\nThis source exists only as a wiki entry.\n'
+    captured = canonical_authority()
+    captured['specification_sha256'] = hashlib.sha256(raw).hexdigest()
+    def wiki_only(root, catalog):
+        row = next(row for row in catalog['documents'] if row['path'] == '.sources/4.2.7_SRS.md')
+        alias = 'wiki/current-copy.md'
+        (root / alias).write_bytes(raw)
+        catalog['documents'].append({**row, 'path': alias, 'sha256': captured['specification_sha256']})
+        row['authority'] = 'historical_source'
+    corpus = registered(catalog_edit=wiki_only)
+    result = KnowledgeAuthority(corpus.service, captured).status()
+    assert result['index_ready'] and not result['ready']
+    assert result['authority_matches_capture'] is False
 
 
 @pytest.mark.parametrize('metadata_field,changed', [('authority', 'historical_source'), ('authority_revision', 'older-revision')])
@@ -113,6 +193,49 @@ def test_same_generation_source_is_rechecked_after_thirty_seconds(registered, mo
     assert corpus.authority.status()['authority_matches_capture'] is None
 
 
+@pytest.mark.parametrize('phase', ['before_read', 'after_read', 'between_sources'])
+def test_generation_publication_during_resolution_never_inherits_ready(registered, monkeypatch, phase):
+    corpus = registered()
+    original_read = corpus.service.read
+    reads = 0
+
+    def publish_during_read(path):
+        nonlocal reads
+        reads += 1
+        if phase == 'before_read' and reads == 1:
+            corpus.service.refresh(full=True)
+        result = original_read(path)
+        if (phase == 'after_read' and reads == 1) or (phase == 'between_sources' and reads == 2):
+            corpus.service.refresh(full=True)
+        return result
+
+    monkeypatch.setattr(corpus.service, 'read', publish_during_read)
+    result = corpus.authority.status(force=True)
+    assert not result['ready'] and result['authority_matches_capture'] is None
+    assert 'cannot be verified' in result['authority_reason']
+
+
+def test_resolver_refuses_stale_generation_before_reading_source(registered, monkeypatch):
+    corpus = registered()
+    before = corpus.service.status()
+    corpus.service.refresh(full=True)
+    monkeypatch.setattr(corpus.service, 'read', lambda _: pytest.fail('Stale selection must not read source'))
+    captured = canonical_authority()
+    with pytest.raises(KnowledgeError, match='generation changed before'):
+        corpus.service.read_authority_source(sha256=captured['specification_sha256'],
+            authority='current_normative', authority_revision=captured['specification_revision'],
+            generation=before['generation'], manifest_sha256=before['manifest_sha256'])
+
+
+def test_versioned_captured_source_tamper_remains_closed(registered):
+    corpus = registered(committed=True)
+    assert corpus.authority.status()['ready']
+    path = corpus.root / '.sources/4.2.7_SRS.model-routing-2026-10-07.md'
+    path.write_bytes(path.read_bytes() + b'\nUnratified source replacement.\n')
+    result = corpus.authority.status(force=True)
+    assert not result['ready'] and result['authority_matches_capture'] is None
+
+
 def test_authenticated_knowledge_status_reports_production_authority_hold(endpoint, registered):
     corpus = registered(old_amendment=True)
     endpoint.controller.knowledge = corpus.service
@@ -124,11 +247,14 @@ def test_authenticated_knowledge_status_reports_production_authority_hold(endpoi
     assert result['ready'] is False
 
 
-def test_actual_controller_tick_holds_real_queue_when_active_rag_disagrees(registered, tmp_path):
+def test_actual_controller_tick_holds_real_queue_when_active_rag_disagrees(registered, tmp_path, monkeypatch):
     from cochem_pipeline.admission import JointAdmission
     from cochem_pipeline.oracle import ContextEngine, Oracle
     from cochem_pipeline.runtime import BASELINE, Runtime
     from cochem_pipeline.store import JobStore
+    from cochem_pipeline import oracle as oracle_module
+    # Explicit portable SQLite tracking boundary, not a SYSTEM identity claim.
+    monkeypatch.setattr(oracle_module, '_protect_tracking_path', lambda path: path)
     corpus = registered(old_spec=True)
     store = JobStore(tmp_path / 'actual-jobs.db', governing_requirements=canonical_authority())
     workflow = store.submit('Keep this real queued task unclaimed', ['REQ-1'], 1)

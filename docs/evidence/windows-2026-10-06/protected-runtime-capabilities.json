@@ -1,0 +1,33 @@
+{
+  "schema": "cochem-protected-runtime-capabilities/1",
+  "observed_at_utc": "2026-10-07T04:51:32.8690757Z",
+  "identity": "AETHERDESK\\ansac",
+  "scope": "Ordinary-user execution only; no driver installation, temperature measurement, native inference or SYSTEM acceptance",
+  "python": {
+    "path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+    "sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+    "exit_code": 0,
+    "stdout": [
+      "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe"
+    ]
+  },
+  "uv": {
+    "path": "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+    "sha256": "2019cdf564cb8f749262f5f021cedc75a99abb1c6081227ca340bbcda972611d",
+    "exit_code": 0,
+    "stdout": [
+      "uv 0.12.17 (635500036 2026-09-18 x86_64-pc-windows-msvc)"
+    ]
+  },
+  "cpu_capabilities": {
+    "path": "C:\\Program Files\\CoChem\\CpuSensors4.2.7-windows-20261006\\cochem-cpu-temperature.exe",
+    "sha256": "3ab73685d74144bcddeb07c1f3e5bb93c9a1e58af5438f918be2ff1b85114d39",
+    "exit_code": 0,
+    "stdout": [
+      "{\"schema\":\"cochem-cpu-probe-capabilities/1\",\"library_version\":\"0.9.6.0\",\"cpu_only\":true,\"supported_cpu\":\"Intel direct core/package sensors\",\"installs_driver\":false,\"writes_settings\":false}"
+    ]
+  },
+  "sensor_measurement_performed": false,
+  "system_acceptance_performed": false
+}

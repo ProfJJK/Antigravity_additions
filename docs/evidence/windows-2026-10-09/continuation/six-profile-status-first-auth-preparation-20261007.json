@@ -1,0 +1,119 @@
+{
+  "schema": "cochem-six-profile-status-first-auth-preparation/1",
+  "status": "PREPARED_INDEPENDENTLY_REVIEWED_NOT_APPLIED",
+  "host": "AETHERDESK",
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "runtime_install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "identity_count": 6,
+  "concurrent_shared_capacity": 4,
+  "maximum_browser_authorizations": 12,
+  "actual_browser_authorizations_required": null,
+  "provider_order": [
+    "codex",
+    "claude"
+  ],
+  "valid_isolated_subscription_sessions_reused": true,
+  "login_only_after_explicit_valid_logged_out_status": true,
+  "unknown_or_unreadable_state_stops": true,
+  "partial_state_preserved_and_automatic_repeat_refused": true,
+  "status_checks_use_actual_worker_token_profile_image_job": true,
+  "no_owner_credential_copy": true,
+  "agy_owner_availability_not_disputed": true,
+  "agy_integration_hold_preserved": true,
+  "chapter06_routing_unchanged": true,
+  "configuration_accounts_existing_databases_budgets_ramdisk_and_startup_task_unchanged": true,
+  "native_commands_executed_during_preparation": 0,
+  "logins_executed_during_preparation": 0,
+  "model_jobs_executed_during_preparation": 0,
+  "privileged_tasks_created_during_preparation": 0,
+  "activation_ready": false,
+  "tests": {
+    "interpreter": "Windows CPython 3.12.13",
+    "powershell": "Windows PowerShell 5.1",
+    "passed": 68,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 17.793,
+    "native_admin_and_task_boundaries_inert": true,
+    "includes": [
+      "real native status parsers and complete Python run with inert launches",
+      "six identity status-first decisions and first-failure stop",
+      "real CreateNew status-helper copies and simulated exact task registration",
+      "bound terminal task and protected receipt decision checks",
+      "sanitized failure projection without raw stderr or secret output",
+      "actual provider Apply-tail journals and exact login arguments",
+      "actual combined provider Apply-tail ordering and partial-failure journals",
+      "six retained final status proof hashes"
+    ],
+    "prior_assembled_run_note": "62 passed; six fixture failures were JSON serialization of ActionPreference enum as 1 rather than expected string. Only fixture output casting changed before final 68-pass run. Prior result retained."
+  },
+  "preview": {
+    "native_commands": 0,
+    "hold_count": 12,
+    "holds": "Only ordinary-token denial of six private worker root metadata checks for each provider; Administrator preflight remains required and was not simulated as passed."
+  },
+  "independent_review": {
+    "reviewer": "/root/host_inspection",
+    "result": "PASS_NO_REMAINING_CONCRETE_FINDING",
+    "scope": "Final exact four source pins, added assembled fixture source, final XML, and actual default preview reviewed read-only.",
+    "reviewer_executed_providers_or_tasks_or_apply": false,
+    "finding_resolved": "Restored sanitized bound failure receipt path/hash/phase/type/winerror/native exit through the console chain."
+  },
+  "rejected_four_profile_evidence": "../four-worker-proposal-rejected-2026-10-07/disposition.json",
+  "command_requires": "Owner AETHERDESK\\ansac in elevated 64-bit interactive Windows PowerShell 5.1; Apply and Interactive switches; no redirection. Default invocation remains read-only.",
+  "entrypoint": "authenticate-native-profiles-status-first-r3-v1.ps1",
+  "files": [
+    {
+      "name": "worker-native-auth-status-six-r3-v1.py",
+      "sha256": "cd93a330a2d4c578871b4d479067cc5f65f5ddd49bf2a6154c2910f63b5d1ea5",
+      "bytes": 28186
+    },
+    {
+      "name": "check-worker-native-auth-status-six-r3-v1.ps1",
+      "sha256": "60bb748c981f989efbfdee76ece1b1c88986de2debd844ec72d10c2e24b20cd4",
+      "bytes": 24367
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v1.ps1",
+      "sha256": "9e742d4df0b7faa07a6073dc4bc7f15ccf2924df9a14443a5c662bfbc7ff0361",
+      "bytes": 21568
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v1.ps1",
+      "sha256": "85801beaa1bfaaaa41ad0727162e2e6ac244051078465c0d892c66a32c34b44f",
+      "bytes": 13651
+    },
+    {
+      "name": "test_status_first_native_six_r3_v1.py",
+      "sha256": "422baecccdf9f2188de96e851f2106f9c578799cefafdb35683712864db4f456",
+      "bytes": 33415
+    },
+    {
+      "name": "status-first-native-six-r3-v1-tests-initial.xml",
+      "sha256": "66c30d13b994ebf3abc1396ad666f6b37e07c13ec3c2db3daffe21588ac13409",
+      "bytes": 5880
+    },
+    {
+      "name": "status-first-native-six-r3-v1-tests-followup.xml",
+      "sha256": "85d1953aab0088c1e6e5e3c41e0377c22719057f9f239aadd9a49f681613b626",
+      "bytes": 8694
+    },
+    {
+      "name": "status-first-native-six-r3-v1-tests-assembled.xml",
+      "sha256": "535a8b9fd331484978c3789855023c2eb91df3d1e11727422a7c175162ee848e",
+      "bytes": 40524
+    },
+    {
+      "name": "status-first-native-six-r3-v1-tests-final.xml",
+      "sha256": "e6de4b06d33601b7b2eeae76b03ae8a0412ab675571b4dfbecc8fd5c0e2bdcee",
+      "bytes": 12588
+    },
+    {
+      "name": "status-first-native-six-r3-v1-preview-final.json",
+      "sha256": "680d1dcd965251fbd0c8e68004fb9b771caa643fae1a8c4086f28d77cf70deeb",
+      "bytes": 2529
+    }
+  ]
+}

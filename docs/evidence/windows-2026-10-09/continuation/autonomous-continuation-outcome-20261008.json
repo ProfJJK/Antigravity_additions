@@ -1,0 +1,80 @@
+{
+  "additional_browser_logins_required_for_monitoring": 0,
+  "bounded_live_readiness_status": "READINESS_NOT_ESTABLISHED",
+  "clock_verification_defect_repaired_in_prepared_continuation": true,
+  "configured_shared_capacity": 4,
+  "continuous_48h_acceptance_complete": false,
+  "controller_and_held_observer_started_before_this_preparation": true,
+  "evidence": {
+    "RETURN_SETUP_RUNNING_MONITOR_V8.txt": {
+      "bytes": 2950,
+      "sha256": "5a01d01523453e5b40f45a953264590dc88478e9ca8f9850458578e088ea0409"
+    },
+    "await-live-admission-readonly-r3-v1.py": {
+      "bytes": 4253,
+      "sha256": "bedf36d32b244598281c5d4fb30808d580a16ae2e5e5804d5ac1be9f974337b0"
+    },
+    "continue-live-prepost-r3-v1.py": {
+      "bytes": 15155,
+      "sha256": "ecd0ff981cff06b5abdc4ac3ceae81e55a9557c7d313c1829850d1eb33053068"
+    },
+    "live-admission-readonly-window-20261008.json": {
+      "bytes": 5522,
+      "sha256": "65149e46d92c39a7176149d7a2b5dc221ffbcf766898ee9f742cb1c6ce3cb6a4"
+    },
+    "live-prepost-continuation-r3-v1-inspection-final.json": {
+      "bytes": 522,
+      "sha256": "f24eb7cd862c260e82f1710401bfef4868f633331060909750acacfc06dbe85c"
+    },
+    "live-prepost-continuation-r3-v1-tests-passed-final.xml": {
+      "bytes": 4599,
+      "sha256": "a4d242dd6465c9e7d638310c0ff3fc66fc56a1bd2367ee7371c0868e58b248ef"
+    },
+    "post-existing-root-live-readiness-safe-20261009.json": {
+      "bytes": 3011,
+      "sha256": "a37cca5db207ece84388b0af5c1c69509d28eab16bfa0f38af562f6be9e70f6e"
+    },
+    "prepost-journal-r3-v2-readonly-reconciliation-20261008.json": {
+      "bytes": 1058,
+      "sha256": "03a22b4d60cb1470c3ce67e9b372a0eb04a027325e47323d8054458db9a44b81"
+    },
+    "running-held-observer-recovery-v1-preview-final.json": {
+      "bytes": 802,
+      "sha256": "ba4bd527a761b4471ee371e9ed1afd90f0cdbe6301ccaad052b258112a6727d0"
+    },
+    "running-monitoring-continuation-v8-preparation-20261008.json": {
+      "bytes": 9256,
+      "sha256": "f45ad18f3751191afde694d32e8a4889187ab3a9c41c1577ab674b0c4519f9e6"
+    },
+    "wsl-clean-page-cache-release-result-20261008.json": {
+      "bytes": 1727,
+      "sha256": "a3c835a8127e63da461e02546bdb11f75474d3a79e98cc82be6f5c9bd1efc276"
+    }
+  },
+  "existing_ram_drive_startup_credentials_databases_budgets_preserved": true,
+  "explicit_prepost_continuation_prepared_but_not_executed": true,
+  "full_srs_acceptance": false,
+  "host": "AETHERDESK",
+  "linux_results_counted_as_windows": false,
+  "live_codex_mcp_connectivity_verified": true,
+  "live_model_jobs_submitted": 0,
+  "monitoring_recovery_apply_performed": false,
+  "original_live_attempt_stopped_before_post": true,
+  "owner_action": "Run run-running-monitoring-continuation-r3-v8.ps1 -Apply -Interactive once in Administrator Windows PowerShell",
+  "owner_action_reason": "Private task and SYSTEM process attestation, protected activation receipt publication, resource recorder task creation",
+  "pipeline_model_routing": "Chapter 06 unchanged",
+  "positive_capacity_samples": 0,
+  "prepost_continuation_windows_cases_passed": 24,
+  "prepost_tests_http_and_model_providers": "inert fixtures; actual Windows ACLs and journal handles",
+  "provider_profiles_previously_authenticated": 12,
+  "readiness_sample_count": 24,
+  "resource_observer_started": false,
+  "schema": "cochem-autonomous-windows-continuation-outcome/1",
+  "status": "MONITORING_RECOVERY_PREPARED_LIVE_ADMISSION_PAUSED",
+  "temperature_celsius_range": [
+    75.0,
+    96.0
+  ],
+  "temperature_or_performance_thresholds_changed": false,
+  "worker_identities": 6
+}

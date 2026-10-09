@@ -1,0 +1,81 @@
+--- installed-r3/replay.py
++++ candidate/replay.py
+@@ -6,7 +6,8 @@
+ from pathlib import Path
+ from contextlib import contextmanager
+ import shutil
+-import sqlite3
++import sqlite3
++import stat
+ import tempfile
+ import time
+ from datetime import datetime, timezone
+@@ -82,7 +83,7 @@
+             connection.close()
+ 
+ 
+-def project_budget(fingerprint, *, config=None, ledger_path=None, now=None):
++def project_budget(fingerprint, *, config=None, ledger_path=None, now=None):
+     """Read a consistent existing ledger snapshot without schema or budget writes.
+ 
+     Missing evidence stays unknown. Expired leases are reported for recovery,
+@@ -97,8 +98,9 @@
+             type(policy['max_per_day']) is not int or not 1<=policy['max_per_day']<=4 or
+             type(policy['cooldown_seconds']) is not int or policy['cooldown_seconds']<1800):
+         raise ValueError('Replay requires canonical production repair budget limits')
+-    result={'known':False,'read_only':True,'observed_at':timestamp,
+-        'scope':'repair generation and asymmetric review; deployment smoke has a separate three-dispatch limit',
++    result={'known':False,'read_only':True,'observed_at':timestamp,
++        'scope':'repair generation and asymmetric review; deployment smoke has a separate three-dispatch limit',
++        'historical_spend_verified':False,'supervisor_activation_verified':False,
+         'configured_limits':policy,'effective_limits':None,'charged_model_calls':None,
+         'remaining_model_calls':None,'eligible_to_reserve':None,'blockers':[],
+         'next_successful_repair_requires_at_least_model_calls':2}
+@@ -112,10 +114,43 @@
+     day=datetime.fromtimestamp(timestamp,timezone.utc).date().isoformat()
+     try:
+         with _read_snapshot(source) as connection:
+-            names={row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+-            if not {'supervisor_incidents','supervisor_attempts'}<=names:
+-                raise ValueError('Current ledger schema is unavailable')
+-            status=connection.execute('SELECT status FROM supervisor_incidents WHERE fingerprint=?',(fingerprint,)).fetchone()
++            names={row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
++            if not {'supervisor_incidents','supervisor_attempts'}<=names:
++                raise ValueError('Current ledger schema is unavailable')
++            if 'unresolved_budget_authority' in names:
++                from .budget_authority import status as authority_status
++                authority=authority_status(connection)
++                result['budget_authority']=authority
++                if authority['blocked']:
++                    result.update(eligible_to_reserve=False,
++                        blockers=['unresolved legacy repair budget authority'])
++                    return result
++            # The engine also holds when its separate component ledger is
++            # unresolved. Capture that peer through the same disposable-copy
++            # reader, never a connection that could create source WAL/SHM.
++            # Its absence does not establish historical authority.
++            peer=source.with_name('component-recovery.db')
++            try:
++                info=peer.lstat()
++            except FileNotFoundError:
++                result['component_budget_authority']=None
++            else:
++                if (not stat.S_ISREG(info.st_mode) or info.st_nlink!=1
++                        or getattr(info,'st_file_attributes',0)&0x400):
++                    raise ValueError('Component budget authority must be an ordinary single-link file')
++                with _read_snapshot(peer) as component_connection:
++                    table=component_connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='unresolved_budget_authority'").fetchone()
++                    if table is None:
++                        result['component_budget_authority']=None
++                    else:
++                        from .budget_authority import status as authority_status
++                        authority=authority_status(component_connection)
++                        result['component_budget_authority']=authority
++                        if authority['blocked']:
++                            result.update(eligible_to_reserve=False,
++                                blockers=['unresolved component recovery budget authority'])
++                            return result
++            status=connection.execute('SELECT status FROM supervisor_incidents WHERE fingerprint=?',(fingerprint,)).fetchone()
+             incident_count,incident_limit=connection.execute(
+                 'SELECT count(*),min(max_per_incident) FROM supervisor_attempts WHERE fingerprint=?',(fingerprint,)).fetchone()
+             day_count,day_limit=connection.execute(

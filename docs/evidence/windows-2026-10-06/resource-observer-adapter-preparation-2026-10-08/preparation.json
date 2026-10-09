@@ -1,0 +1,147 @@
+{
+  "actual_windows_evidence": [
+    "Ordinary-user query/synchronize handles: native PID creation FILETIME, handle count, CPU-time counters and exited-process refusal.",
+    "Actual -I -S -B interpreter imports only standard library, exact observer package and protected psutil; pipeline/MCP/requests imports refused.",
+    "Ordinary temporary-file shared reads, exact byte commitments, replacement after reader close, bounded JSON and alias refusal.",
+    "Actual ordinary token and ACL query; SYSTEM enforcement refuses ordinary token."
+  ],
+  "disposable_evidence": [
+    "Exact copied performance loop: simulated 48h and suspension/gap failures; no actual 48h elapsed.",
+    "Native/heartbeat binding mutations, 15s monotonic sequence stall, post-collection identity check, slow-final-call census budget.",
+    "CreateNew failure receipt before copied loop catch, output collision/no retry, positive short adapter flow with simulated process boundary.",
+    "Exact seven-source manifest, changes/extra directories/files/hardlinks/outside-path refusal and unreleased entry refusal."
+  ],
+  "files": [
+    {
+      "path": "package/observe_resources.py",
+      "sha256": "13339a6b59df7fb13315b074fba5abc7abce6f2391a18441c7b515136c2f6674",
+      "size": 7531
+    },
+    {
+      "path": "package/detector_bootstrap.py",
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5",
+      "size": 2971
+    },
+    {
+      "path": "package/cochem_supervisor/__init__.py",
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17",
+      "size": 77
+    },
+    {
+      "path": "package/cochem_supervisor/windows.py",
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b",
+      "size": 7788
+    },
+    {
+      "path": "package/cochem_supervisor/resource_observation.py",
+      "sha256": "b0c04462953dd86674064fb83efc40d1ddc14be44741cbd6752bb050bdd74be9",
+      "size": 13949
+    },
+    {
+      "path": "package/cochem_supervisor/performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+      "size": 18919
+    },
+    {
+      "path": "package/cochem_supervisor/shared_io.py",
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0",
+      "size": 2061
+    },
+    {
+      "path": "package/source-manifest.json",
+      "sha256": "82e5a766450be4a4b05092f338f58066cb5c53dab1ef905282158ee73cde3793",
+      "size": 1228
+    },
+    {
+      "path": "test_resource_observer_r3.py",
+      "sha256": "adeb047f1ae79e4a230658f222015d1dc92edb97aa8bc82ce13fde49b8c2cb7a",
+      "size": 22649
+    },
+    {
+      "path": "resource-observer-r3-initial.xml",
+      "sha256": "f215fa65db8ef0dc738e20db36f13772cbc8293a819ab1f2a5fa0f7178928734",
+      "size": 9052
+    },
+    {
+      "path": "resource-observer-r3-followup.xml",
+      "sha256": "1728be839b1e2d18b5330afe8d5f0bebd9b9059c54156339ec67d687e1d70b47",
+      "size": 5692
+    },
+    {
+      "path": "resource-observer-r3-boundary.xml",
+      "sha256": "44dda4e2aa93867fb520090c27b63eba31ae1b404ec2f842a5d56f6be9394cb8",
+      "size": 6483
+    },
+    {
+      "path": "resource-observer-r3-timing.xml",
+      "sha256": "c990e9eba94ad2c681e9f9f2cb2ba311360ac136363d4d02fd50455f4327238d",
+      "size": 6634
+    },
+    {
+      "path": "resource-observer-r3-preparation-tests.xml",
+      "sha256": "2187869ff1a0c42a11e524e76454149a6e4f7fa2e93c8c0110b9fe23e2edecbf",
+      "size": 8071
+    },
+    {
+      "path": "resource-observer-r3-readonly-preview.json",
+      "sha256": "3780ac19139463bb839bb920f74b2cb0446493c67fece4f9036d20d8caed1dcb",
+      "size": 730
+    },
+    {
+      "path": "record-resource-observer-preparation.py",
+      "sha256": "bb93d9fdceaccb92a7aaf96894dc26f89dd7a298221ae89c9e933992aa2d3a1c",
+      "size": 8477
+    }
+  ],
+  "future_read_scope": {
+    "cpu_temperature": "Allowlisted controller-published fresh sensor metadata, no duplicate probe; not independent thermal acceptance.",
+    "descendant_limit": "64-process and0.5s census budget; incomplete/late/disappearing processes remain incomplete, not zero.",
+    "desktop_heap": "Unavailable/failed. No fabricated used bytes, capacity-only substitutes or invasive exhaustion probes.",
+    "heartbeat": "Private bounded atomic snapshot; instance/source/freshness/nondecreasing sequence with <=15s advancement interval.",
+    "held_controller_query_handle": "Commissioned PID/native creation FILETIME/SYSTEM/physical base-Python identity; never terminate or adjust.",
+    "queue": "Committed bounded snapshot and six-identity/four-slot topology only; no job text or task creation.",
+    "resources": "Exact copied native root-process RSS/normalized CPU/handles each second; bounded descendant native FILETIME/handles/RSS/cumulative CPU ticks every30s."
+  },
+  "heap_acquisition_audit": {
+    "path": "docs\\evidence\\windows-2026-10-06\\desktop-heap-acquisition-bounded-audit-20261008.json",
+    "sha256": "4e4394fd30edc6acbb3458733420e573aa40a80c01141837ea4adea4ee82d237"
+  },
+  "independent_review": "Root reviewed adapter/entry source; separate final review record pending exact freeze.",
+  "next_implementation": [
+    "Review/freeze a fresh-only administrator installer which verifies complete protected base Python and psutil dependency trees and copies exactly this manifest into a new code root.",
+    "Create the new SYSTEM/Admin-only observation parent with final private inherited ACL before any metadata bytes; preserve all existing outputs and deny repeats.",
+    "Bind the actual successful commissioning receipt bytes, controller creation identity and fixed source/runtime/config pins before task registration.",
+    "Register a separate single no-trigger SYSTEM task with -I -S -B, bounded49h runtime/no restart, durable intent and strict task readback; release the currently disabled entry only in that reviewed successor.",
+    "Start once and return an honest monitoring-started receipt after real initial samples; observe unattended, no synchronous48h wait and no automatic completion certificate."
+  ],
+  "owner_required_later": "One reviewed elevated observer installation/start can be included in a later owner batch. Continuous observation is unattended; no owner heap measurements or repeated diagnostic chores are requested.",
+  "prepared_at_utc": "2026-10-08T02:26:16.114604+00:00",
+  "remaining_engineering_gates": [
+    "Protected installer/complete dependency custody and task lifecycle not implemented or approved in this candidate.",
+    "Actual native desktop/session/window-station used/capacity source unavailable.",
+    "Independent monitor/recovery timing evidence absent; resource observer is not a recovery actuator or the full sterile SRE detector.",
+    "Native-child snapshots may miss processes between samples; actual workload and provenance still required for broader acceptance."
+  ],
+  "schema": "cochem-external-resource-observer-preparation/1",
+  "scope": {
+    "controller_calls": 0,
+    "frozen_runtime_or_startup_modified": false,
+    "full_srs_acceptance": false,
+    "original_database_opens": 0,
+    "previous_failed_fixture_reports_preserved": true,
+    "protected_installation": false,
+    "providers_or_models_executed": false,
+    "real_48h_acceptance": false,
+    "scheduled_tasks_created_or_changed": false,
+    "system_execution": false
+  },
+  "source_manifest_sha256": "82e5a766450be4a4b05092f338f58066cb5c53dab1ef905282158ee73cde3793",
+  "status": "INACTIVE_ADAPTER_TESTED_PROTECTED_INSTALLER_NOT_RELEASED",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "seconds": 1.082,
+    "skipped": 0,
+    "tests": 49
+  }
+}

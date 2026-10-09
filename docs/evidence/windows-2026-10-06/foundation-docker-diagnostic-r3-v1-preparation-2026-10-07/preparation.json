@@ -1,0 +1,116 @@
+{
+  "activation_ready": false,
+  "actual_docker_commands_executed": 0,
+  "actual_system_tasks_created": 0,
+  "administrator_gate_requires_exact_old_task_terminal_result_2": true,
+  "archive_role": "Custody snapshot; live wrapper resolves frozen sibling helpers and repository copy helper. Not a standalone portable installer.",
+  "created_utc": "2026-10-07T23:23:21.448487+00:00",
+  "entrypoint": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\diagnose-foundation-docker-r3-v1.ps1",
+  "existing_state_writes": false,
+  "files": {
+    "RETURN_SETUP.txt": {
+      "bytes": 7360,
+      "sha256": "c982eb308e426f3ed09630e38f41f6307426c3c7388929e8d292c3184b99846f"
+    },
+    "check-worker-denials-r3.ps1": {
+      "bytes": 21523,
+      "sha256": "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d"
+    },
+    "diagnose-foundation-docker-r3-v1.ps1": {
+      "bytes": 25620,
+      "sha256": "06522b04378d8d0b6cb915102e7fce1125700d96f68159c13e9d26a5c1c52e0b"
+    },
+    "diagnose-foundation-docker-r3-v1.py": {
+      "bytes": 24727,
+      "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5"
+    },
+    "foundation-diagnostic-python-preparation-final.json": {
+      "bytes": 3220,
+      "sha256": "255a6d2d6ddc2d46dced59364897f686eeba36d200f50d4b1f2b374d2777b18f"
+    },
+    "foundation-diagnostic-python-preparation.json": {
+      "bytes": 2889,
+      "sha256": "0d2a12200d0d155cbd78cad8c6e7f228020969002b544af08d8c8c408cab53df"
+    },
+    "foundation-diagnostic-r3-v1-preview-final.json": {
+      "bytes": 2091,
+      "sha256": "8e18408d54c5ace1f93afc29e5bc38fc4d1f3ba17ac49386b3f8300da6e0c4d9"
+    },
+    "foundation-diagnostic-wrapper-tests-final.xml": {
+      "bytes": 15302,
+      "sha256": "2163305be801634259eb62a3ba53b74758d0f6cf21043da2ddd6ffa63b5327f6"
+    },
+    "foundation-diagnostic-wrapper-tests-initial.xml": {
+      "bytes": 9439,
+      "sha256": "bd8ff5d1509fe09951196e78ae56d16218bdc7bc2e82ab782ea824e93707b3cb"
+    },
+    "foundation-docker-diagnostic-r3-v1-tests-final.xml": {
+      "bytes": 8946,
+      "sha256": "6530bd99c1f91ab9a1ad10da47f357869279b2005d2125e34d185017f30a5174"
+    },
+    "foundation-docker-diagnostic-r3-v1-tests.xml": {
+      "bytes": 8262,
+      "sha256": "94c410373a0f95de3e490ad7bf7e51be1f704b4a18105d5963c5201add1578c1"
+    },
+    "inspect-execution-prerequisites-r3.ps1": {
+      "bytes": 19238,
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887"
+    },
+    "inspect-execution-prerequisites-r3.py": {
+      "bytes": 26808,
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a"
+    },
+    "provision-execution-foundation-r3.ps1": {
+      "bytes": 15640,
+      "sha256": "402c27276b56b42cac3c8ecc6fa5b8fd0da4361c57c3abd5c2bf2d432724208c"
+    },
+    "test_foundation_diagnostic_wrapper_r3.py": {
+      "bytes": 24470,
+      "sha256": "9f6dea78a5bf83668fe4d3e53b0f535cc4353b828ecbbedeb6886a4ff7292fc7"
+    },
+    "test_foundation_docker_diagnostic_r3_v1.py": {
+      "bytes": 18228,
+      "sha256": "4bb03f084b74dab7b42ed6e66bbf68a1f92c4144aa895e5a1636286cffac3c6d"
+    },
+    "worker-denial-acceptance-r3.py": {
+      "bytes": 36096,
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77"
+    }
+  },
+  "foundation_retry": false,
+  "historical_cause": "One server attestation before or after the owner-label Docker census failed; original native number was discarded. No specific Win32 cause or backend fault is inferred.",
+  "independent_review": {
+    "result": "No concrete finding at final06522/fc17 pins; review excludes actual diagnostic success",
+    "reviewer": "host_inspection"
+  },
+  "native_model_jobs_executed": 0,
+  "ordinary_windows_preparation_tests_passed": 124,
+  "planned_writes": [
+    "Fresh protected helper/config/input/receipt directory",
+    "One fresh no-trigger SYSTEM diagnostic task"
+  ],
+  "post_test_wrapper_change": "Only companion helper pin changed5b7e32... to finalfc17... after83-case suite. Function logic unchanged; final actual default preview validates final pin compatibility.",
+  "prior_task_terminal_state_directly_verified": false,
+  "provisioning_performed": false,
+  "schema": "cochem-foundation-diagnostic-preparation/1",
+  "status": "READY_FOR_OWNER_READ_ONLY_DIAGNOSTIC_NOT_EXECUTED",
+  "test_scope": "Ordinary Windows3.12.13 and actual WinPS5.1 disposable files/private named pipe with inert privileged/Docker/task boundaries. No actual Docker, SYSTEM or deployment execution.",
+  "tests": {
+    "foundation-diagnostic-wrapper-tests-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "junit_seconds": "30.799",
+      "sha256": "2163305be801634259eb62a3ba53b74758d0f6cf21043da2ddd6ffa63b5327f6",
+      "skipped": 0,
+      "tests": 83
+    },
+    "foundation-docker-diagnostic-r3-v1-tests-final.xml": {
+      "errors": 0,
+      "failures": 0,
+      "junit_seconds": "1.041",
+      "sha256": "6530bd99c1f91ab9a1ad10da47f357869279b2005d2125e34d185017f30a5174",
+      "skipped": 0,
+      "tests": 41
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "schema": "cochem-docker-v2-after-foundation-read-only-review/1",
+  "created_at_utc": "2026-10-08T00:16:44.127985+00:00",
+  "status": "PUBLIC_FOUNDATION_BINDINGS_VERIFIED_PREVIEW_NO_HOLDS",
+  "foundation_receipt_sha256": "9aea1e8f382ea8600cbd75d679f76acadc05da32774d9d8742cad08967ce1b41",
+  "foundation_status": "SCOPED_RAM_AND_EMPTY_REGISTRY_VERIFIED",
+  "foundation_schema": "cochem-execution-foundation/2",
+  "foundation_helper_sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "python_frozen_foundation_binding_executed_on_actual_public_bytes": true,
+  "protected_foundation_support_pins": {
+    "provision-execution-foundation-r3-v2.py": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+    "inspect-execution-prerequisites-r3.py": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+    "worker-denial-acceptance-r3.py": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+    "diagnose-foundation-docker-r3-v1.py": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5"
+  },
+  "historical_receipts_and_packets_unchanged": {
+    "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+    "diagnostic_packet_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+    "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "failed_foundation_packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6"
+  },
+  "receipt_claims": {
+    "ram_before_equals_after": true,
+    "docker_before_equals_before_registry": true,
+    "docker_observations": 2,
+    "completed_events_per_observation": 18,
+    "containers_created": 0,
+    "warm_pool_created": 0,
+    "registry_capacity": 4,
+    "registry_work_rows": 0,
+    "registry_integrity": "ok",
+    "ram_scoped_roots_verified": 6,
+    "defender_added_exact_roots_count": 6,
+    "ram_volume_or_startup_task_modified": false
+  },
+  "project_receipt": {
+    "path": "C:\\Program Files\\CoChem\\ProjectImport4.2.7-windows-20261007-r3\\project-import.json",
+    "visibility": "access_denied_to_ordinary_user; no absence inference or retry",
+    "owner_reported_status": "PRIVATE_BARE_PROJECT_VERIFIED",
+    "owner_reported_sha256": "9e31fba6cbacb975970653a9230d9093afa0adc6993fbe6b8c98805653a26283",
+    "independently_read": false,
+    "project_importer_depends_on_foundation": false,
+    "docker_acceptance_reads_project_content": false
+  },
+  "old_failed_receipt_acl_observation": {
+    "owner": "NT AUTHORITY\\SYSTEM",
+    "sddl": "O:SYG:SYD:(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)",
+    "ordinary_users_read_only": true
+  },
+  "preview": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\docker-execution-r3-v2-preview-after-foundation.json",
+    "sha256": "363bd9218cb4bb0d83430d11b601429119dac4b50cb0f04384863119287bf598",
+    "holds": [],
+    "all_prior_success_receipt_and_task_checks_deferred": true,
+    "system_empty_registry_and_ram_revalidation_deferred": true
+  },
+  "limitations": [
+    "No private registry or project contents were read.",
+    "Exact task/action/terminal checks and current SYSTEM RAM/registry/Docker authority checks remain enforced by the reviewed administrator/child path.",
+    "Default preview is metadata and file-custody inspection, not physical Docker acceptance."
+  ],
+  "apply_performed": false,
+  "docker_commands_executed": 0,
+  "model_provider_or_auth_calls": 0,
+  "private_databases_or_credentials_opened": false,
+  "frozen_sources_modified": false,
+  "preserved_failed_foundation_helper_pins": {
+    "provision-execution-foundation-r3.py": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1",
+    "inspect-execution-prerequisites-r3.py": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+    "worker-denial-acceptance-r3.py": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77"
+  }
+}

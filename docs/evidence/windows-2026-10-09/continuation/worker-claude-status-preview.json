@@ -1,0 +1,21 @@
+{
+    "schema":  "cochem-worker-native-status-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "slot":  "slot1",
+    "provider":  "claude",
+    "owner":  "AETHERDESK\\ansac",
+    "administrator":  false,
+    "source_sha256":  "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+    "native_sha256":  "0e4195524b73eb77efbdf3e2b36de5322a29f0ca575dfd2d9b4f946b1d425469",
+    "task_name":  "CoChem-4.2.7-NativeStatus-slot1-claude",
+    "target_root":  "C:\\Program Files\\CoChem\\NativeStatus4.2.7-windows-20261006-slot1-claude",
+    "native_status_timeout_seconds":  30,
+    "native_output_limit_bytes":  65536,
+    "native_status_commands_executed":  0,
+    "native_model_jobs_executed":  0,
+    "logins_executed":  0,
+    "pipeline_started":  false,
+    "holds":  [
+
+              ]
+}

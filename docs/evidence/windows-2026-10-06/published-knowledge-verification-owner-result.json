@@ -1,0 +1,28 @@
+{
+  "schema": "cochem-published-knowledge-verification-result/1",
+  "status": "PUBLISHED_KNOWLEDGE_READ_ONLY_VERIFIED",
+  "receipt_path": "C:\\Program Files\\CoChem\\KnowledgePublishedVerification4.2.7-windows-20261007-r2\\published-verification.json",
+  "receipt_sha256": "f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b",
+  "last_task_result": 0,
+  "task_preserved": true,
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+  "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+  "failed_resume_receipt_sha256": "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+  "generation": "g-abed1cd030c746559aed6bb30a47093a",
+  "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+  "documents": 137,
+  "sections": 1708,
+  "corpus_files": 138,
+  "integrity_check": "ok",
+  "root_metadata_differences": {
+    "bytes": {"before": 0, "after": 4096},
+    "metadata_sha256": {
+      "before": "7a91710d6b9c800ad902db134b79c9c6b03f90578f7ec651048c19e0237e2bca",
+      "after": "db6dcb73e71cc9508c51d6d73907ff2d195e2ec569f9e1813f64ee0084078e82"
+    },
+    "written_filetime": {"before": 134358522356663726, "after": 134358566632922499}
+  },
+  "existing_state_read_only": true,
+  "activation_ready": false
+}

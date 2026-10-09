@@ -1,0 +1,110 @@
+{
+  "schema": "cochem-docker-physical-v2-preparation/1",
+  "created_at_utc": "2026-10-07T23:41:27.876794+00:00",
+  "status": "PREPARED_CONDITIONAL_ON_SUCCESSFUL_FOUNDATION_V2",
+  "artifacts": {
+    "accept-docker-execution-r3-v2.py": {
+      "sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+      "bytes": 27944
+    },
+    "accept-docker-execution-r3-v2.ps1": {
+      "sha256": "725d98487322166740f67c0911f3d12aab62f344c4518290caaf1450f0d6a9eb",
+      "bytes": 21004
+    },
+    "test_docker_execution_r3_v2.py": {
+      "sha256": "f0d3f9c97b550fdf5cc48adea8d7ca590eca1050e061084d23ad847fdbcf34b0",
+      "bytes": 38290
+    },
+    "docker-execution-r3-v2-tests-final-v2.xml": {
+      "sha256": "92211c97b194040798e96a457d3e9ad6e69e7e531c7b61dc2dfed9eee1909b03",
+      "bytes": 10230
+    },
+    "docker-execution-r3-v2-preview-v2.json": {
+      "sha256": "9763f75f3cc53b99c2f31ee53e40043b8cab9a67f7faa45017e008c1e86054c1",
+      "bytes": 2005
+    }
+  },
+  "tests": {
+    "passed": 58,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 10.985,
+    "pytest_terminal_seconds": 11.03,
+    "python": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\venv-copy\\Scripts\\python.exe",
+    "scope": "ordinary disposable tests; simulated SYSTEM/task/Docker boundaries; no privileged or Docker execution"
+  },
+  "actual_read_only_preview": {
+    "mode": "READ_ONLY_PLAN",
+    "holds": [
+      "Successful scoped foundation receipt is not present."
+    ],
+    "runtime_revision_bound": true
+  },
+  "target_root": "C:\\Program Files\\CoChem\\DockerExecutionAcceptance4.2.7-windows-20261007-r3-v2",
+  "task_name": "CoChem-4.2.7-DockerPhysical-20261007-r3-v2",
+  "foundation": {
+    "root": "C:\\Program Files\\CoChem\\ExecutionFoundation4.2.7-windows-20261007-r3-v2",
+    "task": "CoChem-4.2.7-ExecutionFoundation-20261007-r3-v2",
+    "schema": "cochem-execution-foundation/2",
+    "required_status": "SCOPED_RAM_AND_EMPTY_REGISTRY_VERIFIED",
+    "helper_sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+    "wrapper_sha256": "0df813342fa8070d1f2f6041ccbc24a7d8ec0d5c94baa269eec02c243e043ca0",
+    "future_receipt_digest": "captured and held after complete semantic and exact terminal task/packet validation; not assumed installed"
+  },
+  "historical_commitments": {
+    "diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+    "diagnostic_packet_sha256": "8744b6a0b569b820404734a491dd7b1671ab2a439ccc27f7251dccbf75a7550d",
+    "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "failed_foundation_packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+    "old_failed_task_exit": 2,
+    "diagnostic_task_exit": 0,
+    "existing_tasks_modified_or_run": false,
+    "original_failure_cause_established": false
+  },
+  "preservation": {
+    "operational_function_asts_unchanged_from_v1": [
+      "bounded_runner_type",
+      "create_sources",
+      "digest",
+      "execute_cycle",
+      "receipt_summary",
+      "reserve_worker_identities",
+      "source_manifest"
+    ],
+    "frozen_v1_sha256": {
+      "accept-docker-execution-r3-v1.py": "3ac01c18be77c18b6c80601a681f7b3c082424e88d2f79a29fe15dc9a63aa0c5",
+      "accept-docker-execution-r3-v1.ps1": "380386520ace322d7967382d8778b9751bb510f13ce391cd7e92ee3b000bf035"
+    },
+    "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "shared_capacity": 4,
+    "warm_preparation": 2,
+    "native_occupancy": 0,
+    "max_creation_attempts": 2,
+    "automatic_retry_allowed": false,
+    "R_volume_root_or_startup_changes": false,
+    "model_or_auth_invocations": 0,
+    "legacy_database_or_budget_changes": 0
+  },
+  "project_importer": {
+    "name": "install-disposable-project.ps1",
+    "sha256": "66bd5b039411b726b246fe4c4a57f8514a8fdbd40978283d2f74c1d922a2ec0d",
+    "foundation_coupling": false,
+    "changes_required": false
+  },
+  "apply_performed": false,
+  "actual_physical_acceptance_claimed": false,
+  "review_status": "final source submitted to parent and independent reviewers; their review records are separate",
+  "diagnostics": {
+    "support_name": "diagnose-foundation-docker-r3-v1.py",
+    "support_sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+    "copied_python_files": 5,
+    "support_definitions_only": true,
+    "original_safe_failure_fields_preserved": true,
+    "allowlisted_error_chain_added": true,
+    "early_failure_fallback": "bounded root metadata only; no raw exception text",
+    "transport_or_guard_decisions_changed": false,
+    "tests": "allowlisted numeric231 and causal5; raw secret suppression; pre-support/top-entry fallback; strict PS projection; actual five exclusive copies to simulated task boundary"
+  },
+  "supersedes_preparation_sha256": "cfd7d4fe82f04f1e27e91306136d9c2ca69c8b364629bd28a3dd4f76546e4be0"
+}

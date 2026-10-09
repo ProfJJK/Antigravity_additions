@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="27" time="0.415" timestamp="2026-10-07T09:36:54.024349-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_exact_failed_publication_can_be_bound_without_reindexing" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[nonce-bad]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[generation-../other]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[index_sha256-bad]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[sections-1707]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[documents-136]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[module_pins-value5]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[failure-value6]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[source_bytes_preserved-1]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[index_ratio-1.0]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[activation_ready-True]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[index_bytes-5000]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[install_receipt_sha256-0000000000000000000000000000000000000000000000000000000000000000]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[pipeline_config_sha256-0000000000000000000000000000000000000000000000000000000000000000]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_incomplete_or_changed_failed_commitment_refused[source_manifest_sha256-0000000000000000000000000000000000000000000000000000000000000000]" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_real_ntfs_directory_growth_bug_and_narrow_readonly_comparator" time="0.018" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_no_extra_journal_or_sidecar_is_accepted[knowledge_index.db-wal]" time="0.006" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_no_extra_journal_or_sidecar_is_accepted[knowledge_index.db-shm]" time="0.003" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_no_extra_journal_or_sidecar_is_accepted[knowledge_index.db-journal]" time="0.004" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_no_extra_journal_or_sidecar_is_accepted[extra]" time="0.004" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_real_windows_held_read_only_index_allows_immutable_sqlite_and_blocks_writes" time="0.009"><failure message="PermissionError: [WinError 32] The process cannot access the file because it is being used by another process.">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24359/test_real_windows_held_read_on0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001FBFCB18320&gt;
+
+    def test_real_windows_held_read_only_index_allows_immutable_sqlite_and_blocks_writes(tmp_path,monkeypatch):
+        win=actual_windows();path=tmp_path/'knowledge_index.db';catalog,captured=database_fixture(path)
+        # Explicit ordinary-user permission fixture; actual file access masks,
+        # metadata identity, sharing exclusion and SQLite read-only URI remain real.
+        monkeypatch.setattr(win,'validate_private_path',lambda _:None)
+        before=path.read_bytes();sha=hashlib.sha256(before).hexdigest();metadata=D.metadata(path,win)
+&gt;       with V.held_private_bytes(path,134217728,win,D,sha) as (raw,digest,observed):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_published_knowledge_verification.py:108: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\..\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24359/test_real_windows_held_read_on0/knowledge_index.db')
+maximum = 134217728
+win = &lt;module 'cochem_pipeline.windows' from 'D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\src\\cochem_pipeline\\windows.py'&gt;
+D = &lt;module 'diagnose-knowledge-state' from 'C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\diagnose-knowledge-state.py'&gt;
+expected = 'd9350b6bd71f813de1cff87f9818b239accdcad09d694aa7299424932498ada6'
+
+    @contextmanager
+    def held_private_bytes(path,maximum,win,D,expected=None):
+        """Read-only Win32 handle denies concurrent write/delete; never creates."""
+        import msvcrt
+        win.validate_private_path(path)
+        before=D.metadata(path,win)
+        if before['directory'] or before['reparse'] or before['links']!=1 or before['bytes']&gt;maximum:
+            raise ValueError('Published file is not bounded ordinary single-link data')
+        kernel=win._api()['kernel32']
+        handle=kernel.CreateFileW(str(path),0x80000000,1,None,3,0x00200000,None)
+&gt;       if handle==ctypes.c_void_p(-1).value:raise ctypes.WinError(ctypes.get_last_error())
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       PermissionError: [WinError 32] The process cannot access the file because it is being used by another process.
+
+windows-deployment-next\verify-published-knowledge.py:107: PermissionError</failure></testcase><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_readonly_canonical_mismatch_does_not_repair_index[wrong_authority]" time="0.010" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_readonly_canonical_mismatch_does_not_repair_index[different_capture]" time="0.009" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_readonly_canonical_mismatch_does_not_repair_index[different_receipt]" time="0.009" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_readonly_canonical_mismatch_does_not_repair_index[document_hash]" time="0.009" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_pointer_commits_to_the_failed_generation_and_exact_sizes" time="0.000" /><testcase classname="windows-deployment-next.test_published_knowledge_verification" name="test_source_does_not_construct_knowledge_service_or_refresh_or_mutate_old_state" time="0.004"><failure message="AssertionError: assert 'replace' not in {'KnowledgeService', 'SetNamedSecurityInfoW', 'chmod', 'mkdir', 'provision_knowledge', 'refresh', ...}">def test_source_does_not_construct_knowledge_service_or_refresh_or_mutate_old_state():
+        import ast
+        tree=ast.parse((ROOT/'verify-published-knowledge.py').read_text())
+        forbidden={'KnowledgeService','refresh','provision_knowledge','mkdir','unlink','rmdir','replace','chmod','SetNamedSecurityInfoW'}
+        for node in ast.walk(tree):
+            if isinstance(node,ast.Call):
+                name=node.func.id if isinstance(node.func,ast.Name) else node.func.attr if isinstance(node.func,ast.Attribute) else ''
+&gt;               assert name not in forbidden
+E               AssertionError: assert 'replace' not in {'KnowledgeService', 'SetNamedSecurityInfoW', 'chmod', 'mkdir', 'provision_knowledge', 'refresh', ...}
+
+windows-deployment-next\test_published_knowledge_verification.py:150: AssertionError</failure></testcase></testsuite></testsuites>

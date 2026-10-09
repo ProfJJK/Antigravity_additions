@@ -1,0 +1,65 @@
+{
+  "schema": "cochem-agy-inference-candidate-review/1",
+  "reviewed_on": "2026-10-07",
+  "status": "research_only_not_a_native_contract",
+  "executed_native_commands": [],
+  "profile_or_configuration_changes": false,
+  "conclusion": "A protected custom primary agent is a documented candidate for withholding tools. It does not yet satisfy all existing pipeline admission requirements, especially global lifecycle configuration, authenticated subscription mode, exact Chapter 06 model identity and prevention of internal model fallback. Preserve the current integration hold; it is not provider unavailability.",
+  "observed_windows_baseline": {
+    "evidence": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-agy-1.3.1-followup.json",
+    "evidence_sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5",
+    "version": "1.3.1",
+    "executable_sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+    "help_stderr_sha256": "337622c6dcdcb204312277570c4173dda83f3cbf006629f0eabe657069071e7c",
+    "owner_status": "Owner confirms available, signed in and functioning; isolated worker authentication remains unverified.",
+    "help_observations": "Captured help includes --agent and --disable-slash-commands; the latter describes skill/slash expansion in print mode. No global all-hooks, all-MCP or model-fallback switch was demonstrated. Captured effort choices and timeout default differ from current web examples; future contract must bind the exact installed binary."
+  },
+  "official_sources": [
+    {
+      "url": "https://www.antigravity.google/docs/subagents/",
+      "supported_candidate": {
+        "name": "cochem-inference-candidate",
+        "description": "Candidate only; not installed or accepted.",
+        "tools": [],
+        "mainAgent": true,
+        "subagent": false,
+        "model": "inherit",
+        "mcpServers": [],
+        "skills": [],
+        "plugins": []
+      },
+      "assessment": "The documented tool list is an explicit whitelist. Empty tools plausibly removes the delegation tool as well as filesystem/shell tools; that is a candidate inference, not host evidence. subagent:false controls whether this agent may itself be invoked as a subagent. Agent discovery includes workspace, global and plugin locations. Empty dependency lists are not documented global disabling controls. A protected file alone cannot establish deterministic selection if another discovery location can shadow it."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/hooks/",
+      "assessment": "Lifecycle hooks can run around a model invocation or loop termination, independently of tool calls. Hook definitions may come from workspace/global files, CLI settings and plugins. Per-hook disabling exists; no complete global suppression contract was established by this review. Therefore an empty tools array is insufficient evidence for disables_hooks. Hook modelName is not documented as a backend serving-model receipt and adding a hook would conflict with the required hook-free contract."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/plugins/",
+      "assessment": "Plugins can supply agents, skills, rules, MCP and hooks. Listing and disabling installed plugins are documented, and desktop-to-CLI synchronization is documented. Empty custom-agent plugin dependencies do not prove all installed plugins are disabled. A future profile must have an exact, protected configuration inventory and tested native loading behavior; do not mutate the owner's existing plugins."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/skills/",
+      "assessment": "CLI skill locations include workspace, global CLI and plugin directories. The review has not established that disabling slash-command expansion also prevents all automatic skill discovery in stream-input mode. Treat these as separate properties requiring evidence."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/cli/headless/",
+      "assessment": "The documented transport accepts NDJSON prompts on stdin and --agent selects a primary agent. init records run configuration: its model and agent fields are requested overrides. They are not backend serving identity. Unknown requested model names fail in headless mode, but this does not establish behavior for quota or service failures. The documented terminal envelope has no independent serving-model field. Cached login is required, but the page does not supply an authenticated subscription-status predicate. Native examples use effort-suffixed model slugs, whose mapping to canonical IDs cannot be presumed."
+    }
+  ],
+  "existing_implementation_gaps": [
+    "inference_policy.gemini_inference_arguments accepts an exact set of binary/version/argv/provenance fields plus five required isolation booleans. It has no custom-agent/configuration-file inventory or discovery/custody commitment. Do not simply set those booleans true.",
+    "worker.gemini_binary_digest and validate_gemini_version verify the registered executable bytes and version before use; they do not currently verify the custom-agent dependency closure.",
+    "agy_protocol.require_serving_model_contract deliberately rejects agy-stream-json dispatch because no native actual-model contract has been verified. Its parser distinguishes native_selected_model from reported_model, which remains null. This guard must remain until evidence supports a new exact contract.",
+    "config.validate_subscription_probe requires verified native scalar fields or an exact line. Owner login confirmation, /model selection and /usage quota tables are not substitutes.",
+    "native_effort requires exact model/profile contracts; Extended is a pipeline profile requiring an evidenced native mapping. No observed Agy effort metadata contract is presently accepted."
+  ],
+  "next_technical_path": [
+    "Obtain a version-specific native contract for deterministic custom-agent selection and complete hook/MCP/plugin/skill discovery. Begin with bounded help and component-list discovery only; no prompt, login or settings mutation is authorized by this research artifact.",
+    "Design a protected custom-agent and configuration manifest, including absence commitments at alternate discovery locations, trusted ownership, non-reparse paths, hash verification immediately before launch and exclusion of worker-writable shadow configuration. Keep credential storage separate and unchanged. Treat this as new implementation work requiring adversarial fixtures for mutation, discovery collisions and inherited lifecycle handlers.",
+    "Confirm a native authentication/account-mode command for each isolated worker without exposing credentials. Require subscription-backed mode; do not infer it from successful owner usage.",
+    "Resolve exact canonical model identifiers, profile selectors, service/quota-failure fallback behavior and independent serving-model receipts through official native documentation and version-bound evidence. Do not alias effort-suffixed slugs or promote requested model metadata into observed identity.",
+    "Only after all prelaunch requirements are supported, add and review the narrow contract/validator implementation. Then run a bounded real model acceptance through an ordinary Chapter 06 job with captured routing and repair budgets, never a provider-forcing probe. Validate tools, hooks, MCP, delegation, terminal identity and cleanup. A post-hoc empty tools list alone is insufficient.",
+    "Until those conditions hold, retain the truthful integration hold and ordinary Chapter 06 spillover behavior. Do not label Agy unavailable, replace it with an SDK or paid API, or weaken the serving-model admission guard."
+  ]
+}

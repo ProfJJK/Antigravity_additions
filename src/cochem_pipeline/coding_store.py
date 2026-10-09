@@ -682,12 +682,14 @@ class CodingStoreMixin:
                                                               for values in matched.values())):
                     raise ValueError('A green gate requires every planned leaf test to actually execute and pass')
                 if job['payload']['phase'] == 'precode':
+                    from .pytest_assertions import executed_assertion_failure
                     state['precode_test'] = evidence
                     red = evidence.get('failure_category')=='tests_failed' and any(command.get('exit_code') == 1 and isinstance(command.get('junit'),dict)
                               and command['junit'].get('failures',0)>0 and command['junit'].get('errors',0)==0
                               and command['junit'].get('tests',0)>0 for command in evidence.get('commands',[]))
                     red = bool(red and planned and all(matched.values())
-                               and any(case.get('status')=='failed' for values in matched.values() for case in values)
+                               and any(executed_assertion_failure(case, identities[name])
+                                       for name,values in matched.items() for case in values)
                                and all(case.get('status') in ('passed','failed') for values in matched.values() for case in values)
                                and all(command.get('junit',{}).get('errors',0)==0 for command in evidence.get('commands',[])))
                     acceptable = red and state['project'].get('test_strategy','red_green')=='red_green'

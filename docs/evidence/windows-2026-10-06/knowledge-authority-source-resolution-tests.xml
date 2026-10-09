@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="20" time="2.862" timestamp="2026-10-07T00:03:26.018535-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_installed_specification_and_owner_amendment_match_registered_bytes" time="0.087" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_committed_versioned_catalog_resolves_current_bytes_without_rewriting_history" time="0.182" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_duplicate_exact_captured_source_is_ambiguous_and_blocks_admission[4.2.7_SRS.md]" time="0.078" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_duplicate_exact_captured_source_is_ambiguous_and_blocks_admission[SRS_ADDENDUM_4.2.7.md]" time="0.078" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_current_amendment_requires_its_exact_authority_and_revision[authority-historical_source]" time="0.067" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_current_amendment_requires_its_exact_authority_and_revision[authority_revision-prior-revision]" time="0.065" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_matching_wiki_copy_cannot_replace_missing_archive_authority" time="0.047"><failure message="FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24307\\test_matching_wiki_copy_cannot0\\corpus-0\\wiki\\docs'">registered = &lt;function registered.&lt;locals&gt;.build at 0x0000023B85D0AB60&gt;
+
+    def test_matching_wiki_copy_cannot_replace_missing_archive_authority(registered):
+        def wiki_only(root, catalog):
+            row = next(row for row in catalog['documents'] if row['path'] == '.sources/4.2.7_SRS.md')
+            alias = 'wiki/current-copy.md'
+            (root / alias).write_bytes((root / row['path']).read_bytes())
+            catalog['documents'].append({**row, 'path': alias})
+            row['authority'] = 'historical_source'
+&gt;       result = registered(catalog_edit=wiki_only).authority.status()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pipeline_tests\test_runtime_knowledge_authority.py:138: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+pipeline_tests\test_runtime_knowledge_authority.py:71: in build
+    service.refresh()
+src\cochem_pipeline\knowledge.py:484: in refresh
+    validated=self.validate()
+              ^^^^^^^^^^^^^^^
+src\cochem_pipeline\knowledge.py:396: in validate
+    _protected(parent,directory=True)
+pipeline_tests\test_runtime_knowledge_authority.py:28: in &lt;lambda&gt;
+    lambda path, *, directory=False, private=False: knowledge._ordinary(path, directory=directory))
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\knowledge.py:108: in _ordinary
+    info = path.lstat()
+           ^^^^^^^^^^^^
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:847: in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24307/test_matching_wiki_copy_cannot0/corpus-0/wiki/docs')
+follow_symlinks = False
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+&gt;       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24307\\test_matching_wiki_copy_cannot0\\corpus-0\\wiki\\docs'
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\pathlib.py:840: FileNotFoundError</failure></testcase><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_refresh_generation_rechecks_changed_authority_metadata_immediately[authority-historical_source]" time="0.104" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_refresh_generation_rechecks_changed_authority_metadata_immediately[authority_revision-older-revision]" time="0.100" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_valid_but_older_source_corpus_stays_unready_without_overwriting_pins[old_spec]" time="0.065" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_valid_but_older_source_corpus_stays_unready_without_overwriting_pins[old_amendment]" time="0.065" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_physical_source_tampering_is_unknown_and_never_an_inherited_ready_state" time="0.073" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_same_generation_source_is_rechecked_after_thirty_seconds" time="0.072" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[before_read]" time="0.097" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[after_read]" time="0.099" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_generation_publication_during_resolution_never_inherits_ready[between_sources]" time="0.096" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_resolver_refuses_stale_generation_before_reading_source" time="0.095" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_versioned_captured_source_tamper_remains_closed" time="0.149" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_authenticated_knowledge_status_reports_production_authority_hold" time="0.585" /><testcase classname="pipeline_tests.test_runtime_knowledge_authority" name="test_actual_controller_tick_holds_real_queue_when_active_rag_disagrees" time="0.141"><failure message="cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account">registered = &lt;function registered.&lt;locals&gt;.build at 0x0000023B85D419E0&gt;
+tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24307/test_actual_controller_tick_ho0')
+
+    def test_actual_controller_tick_holds_real_queue_when_active_rag_disagrees(registered, tmp_path):
+        from cochem_pipeline.admission import JointAdmission
+        from cochem_pipeline.oracle import ContextEngine, Oracle
+        from cochem_pipeline.runtime import BASELINE, Runtime
+        from cochem_pipeline.store import JobStore
+        corpus = registered(old_spec=True)
+        store = JobStore(tmp_path / 'actual-jobs.db', governing_requirements=canonical_authority())
+        workflow = store.submit('Keep this real queued task unclaimed', ['REQ-1'], 1)
+        runtime = Runtime.__new__(Runtime)
+        runtime.store = store
+        runtime.config = SimpleNamespace(job_db=store.path)
+        runtime.knowledge, runtime.knowledge_authority = corpus.service, corpus.authority
+        runtime.components = {}
+        runtime.active = {}
+        runtime.lock = threading.RLock()
+        runtime._context_drain_lock = threading.Lock()
+        runtime.event_cursor = 0
+        # Explicit admission stimulus only: this is not a physical hardware probe.
+        runtime.guard = SimpleNamespace(evaluate=lambda: {'capacity': 4, 'state': 'normal', 'action': 'none', 'reasons': []})
+        runtime.admission = JointAdmission(store, None, capacity=4)
+&gt;       with Oracle(ContextEngine(BASELINE, 16384, .25), tmp_path / 'oracle.db', lambda job: None) as oracle:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pipeline_tests\test_runtime_knowledge_authority.py:264: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\cochem_pipeline\oracle.py:292: in __init__
+    self.tracking_db = _protect_tracking_path(Path(tracking_db))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\cochem_pipeline\oracle.py:233: in _protect_tracking_path
+    require_system()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def require_system() -&gt; None:
+        """Require the actual LocalSystem SID; administrator elevation is insufficient."""
+        api = _api()
+        token = HANDLE()
+        _check(api["advapi32"].OpenProcessToken(api["kernel32"].GetCurrentProcess(), 0x8, C.byref(token)), "Open current token")
+        try:
+            user = _SID_AND_ATTRIBUTES.from_buffer(_token_info(token, 1))
+            if _sid_text(user.Sid) != SYSTEM_SID:
+&gt;               raise WindowsIsolationError("The Warden must run as NT AUTHORITY\\SYSTEM, not an administrator or an agent account")
+E               cochem_pipeline.windows.WindowsIsolationError: The Warden must run as NT AUTHORITY\SYSTEM, not an administrator or an agent account
+
+src\cochem_pipeline\windows.py:276: WindowsIsolationError</failure></testcase></testsuite></testsuites>

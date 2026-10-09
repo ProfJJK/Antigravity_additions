@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="2.842" timestamp="2026-10-06T23:54:27.805585-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_default_plan_does_not_launch_install_or_write_reports" time="1.764" /><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_install_switch_refuses_nonadministrator_before_any_write" time="0.396" /><testcase classname="pipeline_tests.test_pawnio_install_plan" name="test_private_task_xml_backup_preserves_encoding_and_refuses_overwrite" time="0.374"><failure message="AssertionError: Set-Acl : The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.&#10;  At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24300\test_private_task_xml_backup_p0\backup-test.ps1:35 &#10;  char:1&#10;  + Set-Acl -LiteralPath $stage -AclObject $acl&#10;  + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : PermissionDenied: (C:\Users\ansac\...ckup_p0\private:String) [Set-Acl], PrivilegeNotHeld &#10;     Exception&#10;      + FullyQualifiedErrorId : System.Security.AccessControl.PrivilegeNotHeldException,Microsoft.PowerShell.Commands.Se &#10;     tAclCommand&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : System.Security.AccessControl.PrivilegeNotHeldException,Microsoft.PowerShell.Commands.Se \n   tAclCommand\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24300/test_private_task_xml_backup_p0')
+
+    def test_private_task_xml_backup_preserves_encoding_and_refuses_overwrite(tmp_path: Path) -&gt; None:
+        # Load only file/ACL utilities; never evaluate installer dispatch.
+        harness = tmp_path / "backup-test.ps1"
+        harness.write_text(r'''
+    param([string]$Source,[string]$TestStage)
+    $ErrorActionPreference='Stop'; Set-StrictMode -Version Latest
+    Import-Module (Join-Path $PSHOME 'Modules\Microsoft.PowerShell.Security\Microsoft.PowerShell.Security.psd1') -ErrorAction Stop
+    $stage=Join-Path $TestStage 'private'; $operatorSid=[Security.Principal.WindowsIdentity]::GetCurrent().User.Value; $tokens=$null; $errors=$null
+    $ast=[Management.Automation.Language.Parser]::ParseFile($Source,[ref]$tokens,[ref]$errors)
+    if ($errors.Count) { throw ($errors | Out-String) }
+    $functions=@($ast.FindAll({param($n) $n -is [Management.Automation.Language.FunctionDefinitionAst] -and $n.Name -in @('Assert-PlainPath','Hash-Bytes','Get-PrivateDirectoryEvidence','Write-NewPrivateFile')},$true))
+    if ($functions.Count -ne 4) { throw 'Expected exactly the four file/ACL utilities.' }
+    foreach ($function in $functions) { . ([ScriptBlock]::Create($function.Extent.Text)) }
+    $directory=[IO.DirectoryInfo]::new($stage)
+    $acl=[Security.AccessControl.DirectorySecurity]::new()
+    $acl.SetAccessRuleProtection($true,$false)
+    $acl.SetOwner([Security.Principal.SecurityIdentifier]::new($operatorSid))
+    foreach ($sid in @($operatorSid,'S-1-5-18','S-1-5-32-544')) {
+        $acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new($sid),'FullControl','ContainerInherit,ObjectInherit','None','Allow'))
+    }
+    $directory.Create($acl)
+    $path=Join-Path $stage 'task.xml'
+    $xml='&lt;?xml version="1.0" encoding="UTF-16"?&gt;&lt;Task&gt;&lt;Name&gt;R preservation&lt;/Name&gt;&lt;/Task&gt;'
+    Write-NewPrivateFile $path $xml -TaskXml
+    $bytes=[IO.File]::ReadAllBytes($path)
+    if ($bytes[0] -ne 255 -or $bytes[1] -ne 254) { throw 'Expected UTF-16 LE BOM.' }
+    if ([IO.File]::ReadAllText($path) -cne $xml) { throw 'XML text changed.' }
+    $document=[xml]([IO.File]::ReadAllText($path))
+    if ($document.Task.Name -ne 'R preservation') { throw 'XML could not be parsed.' }
+    $refused=$false
+    try { Write-NewPrivateFile $path 'overwrite' } catch { $refused=$true }
+    if (-not $refused -or [IO.File]::ReadAllText($path) -cne $xml) { throw 'Existing backup was overwritten.' }
+    $outside=Join-Path (Split-Path -Parent $stage) 'outside-private-stage.json'
+    $refused=$false
+    try { Write-NewPrivateFile $outside '{}' } catch { $refused=$true }
+    if (-not $refused -or (Test-Path -LiteralPath $outside)) { throw 'Outside report path was accepted.' }
+    $acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new([Security.Principal.SecurityIdentifier]::new('S-1-1-0'),'Read','ContainerInherit,ObjectInherit','None','Allow'))
+    Set-Acl -LiteralPath $stage -AclObject $acl
+    $refused=$false; $unsafe=Join-Path $stage 'must-not-create.json'
+    try { Write-NewPrivateFile $unsafe '{}' } catch { $refused=$true }
+    if (-not $refused -or (Test-Path -LiteralPath $unsafe)) { throw 'Unrelated directory read grant was accepted.' }
+    [ordered]@{parse_errors=0;utf16_preserved=$true;overwrite_refused=$true;outside_refused=$true;private_acl_refused=$true;installer_executed=$false} | ConvertTo-Json
+    ''', encoding="utf-8")
+        result = run("-File", str(harness), "-Source", str(SCRIPT), "-TestStage", str(tmp_path))
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: Set-Acl : The process does not possess the 'SeSecurityPrivilege' privilege which is required for this operation.
+E         At C:\Users\ansac\AppData\Local\Temp\pytest-of-ansac\pytest-24300\test_private_task_xml_backup_p0\backup-test.ps1:35 
+E         char:1
+E         + Set-Acl -LiteralPath $stage -AclObject $acl
+E         + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : PermissionDenied: (C:\Users\ansac\...ckup_p0\private:String) [Set-Acl], PrivilegeNotHeld 
+E            Exception
+E             + FullyQualifiedErrorId : System.Security.AccessControl.PrivilegeNotHeldException,Microsoft.PowerShell.Commands.Se 
+E            tAclCommand
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...orId : System.Security.AccessControl.PrivilegeNotHeldException,Microsoft.PowerShell.Commands.Se \n   tAclCommand\n \n").returncode
+
+pipeline_tests\test_pawnio_install_plan.py:98: AssertionError</failure></testcase></testsuite></testsuites>

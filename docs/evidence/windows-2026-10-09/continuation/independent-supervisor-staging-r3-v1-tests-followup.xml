@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="45" time="16.135" timestamp="2026-10-07T21:46:04.138566-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[valid]" time="0.422"><failure message="AssertionError: assert {'refused': True, 'count': 0} == {'refused': F... 'count': 292}&#10;  &#10;  Differing items:&#10;  {'count': 0} != {'count': 292}&#10;  {'refused': True} != {'refused': False}&#10;  Use -v to get more diff">case = 'valid'
+
+    @pytest.mark.parametrize('case', ['valid', 'incomplete', 'bool_string', 'activation', 'bytes_bool', 'bytes_text', 'duplicate', 'escape', 'reserved', 'changed_source', 'missing_test'])
+    def test_actual_inventory_strict_ps51(case):
+        result = ps(f"$case='{case}';$inventory=Get-Content -LiteralPath '{MANIFEST}' -Raw|ConvertFrom-Json;" + r'''
+          $script:targetRoot=$inventory.target_root;$script:pairRoot=$inventory.unpublished_pair_root;$script:configHash=$inventory.pipeline_config_sha256;
+          $script:repo='D:\repo';$script:sourceRoot=$script:targetRoot+'\source';$script:acceptanceRoot=$script:targetRoot+'\acceptance';
+          $prior=Get-Content -LiteralPath 'C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r3\source-manifest.json' -Raw|ConvertFrom-Json;
+          switch($case){
+            'incomplete'{$inventory.complete_source_freeze=$false}'bool_string'{$inventory.complete_source_freeze='true'}
+            'activation'{$inventory.activation_authorized=$true}'bytes_bool'{$inventory.source_files[0].bytes=$true}
+            'bytes_text'{$inventory.source_files[0].bytes='123'}'duplicate'{$inventory.source_files[1].relative=$inventory.source_files[0].relative.ToUpper()}
+            'escape'{$inventory.source_files[0].relative='../secret'}'reserved'{$inventory.source_files[0].relative='src/AUX.py'}
+            'changed_source'{$inventory.source_files[0].sha256=('a'*64)}
+            'missing_test'{$inventory.acceptance_files=@($inventory.acceptance_files|Where-Object {$_.relative -ne 'knowledge/v4.1.2_manifest.json'})}
+          }
+          $refused=$false;$count=0;try{$rows=@(Get-StagingFiles $inventory $prior);$count=$rows.Count}catch{$refused=$true};
+          @{refused=$refused;count=$count}|ConvertTo-Json -Compress
+        ''')
+&gt;       assert result == {'refused': case != 'valid', 'count': 292 if case == 'valid' else 0}
+E       AssertionError: assert {'refused': True, 'count': 0} == {'refused': F... 'count': 292}
+E         
+E         Differing items:
+E         {'count': 0} != {'count': 292}
+E         {'refused': True} != {'refused': False}
+E         Use -v to get more diff
+
+windows-deployment-next\test_independent_supervisor_staging_r3_v1.py:62: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[incomplete]" time="0.376" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[bool_string]" time="0.307" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[activation]" time="0.290" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[bytes_bool]" time="0.322" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[bytes_text]" time="0.297" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[duplicate]" time="0.321" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[escape]" time="0.304" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[reserved]" time="0.299" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[changed_source]" time="0.323" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_inventory_strict_ps51[missing_test]" time="0.596" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[valid]" time="0.002" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[unsafe]" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[duplicate]" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[bytes_bool]" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[source_hash]" time="0.003" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[authority]" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_python_manifest_binding[not_frozen]" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_real_new_sqlite_pair_complete_without_authority_and_repeat_refused" time="0.180" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_failures_preserve_partial_outputs_without_retry[runtime]" time="0.029" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_failures_preserve_partial_outputs_without_retry[private]" time="0.032" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_failures_preserve_partial_outputs_without_retry[inheritance]" time="0.029" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_failures_preserve_partial_outputs_without_retry[partial_pair]" time="0.068" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_failures_preserve_partial_outputs_without_retry[post_verify]" time="0.113" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_real_hardlink_rejected_before_receipt" time="0.022" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_existing_private_child_preserved" time="0.013" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_default_python_preview_has_no_io" time="0.001" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_actual_full_source_acceptance_runtime_verifier" time="6.031" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[success]" time="0.271"><failure message="AssertionError: assert True == ('success' not in ('success', 'held'))">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24478/test_bound_receipt_projection_0')
+case = 'success'
+
+    @pytest.mark.parametrize('case', ['success', 'held', 'bad_pair_hash', 'invented_allowance', 'extra_ledger', 'unsafe_error'])
+    def test_bound_receipt_projection_preserves_safe_failure_details(tmp_path, case):
+        value = {'schema': 'cochem-independent-supervisor-staging/1', 'nonce': 'a' * 32,
+            'root': str(tmp_path), 'helper_sha256': 'b' * 64, 'manifest_sha256': 'c' * 64,
+            'status': 'INDEPENDENT_SUPERVISOR_STAGED_UNPUBLISHED', 'phase': 'complete',
+            'activation_ready': False, 'paid_repair_enabled': False, 'component_recovery_enabled': False,
+            'old_ledgers_opened': False, 'provider_or_model_calls': 0, 'active_warden_changed': False,
+            'pipeline_configuration_changed': False, 'partial_outputs_preserved': True,
+            'pair_creation_started': True, 'revision': {'verified': True, 'files': 109},
+            'paired_receipt_sha256': 'd' * 64, 'paired_evidence_sha256': '1cf291591724b6edef17ba7e8d48fc6cce75830872ff6183ac1139aa313a3177',
+            'ledger_sha256': {'supervisor.db': 'e' * 64, 'component-recovery.db': 'f' * 64}}
+        if case in ('held', 'unsafe_error'):
+            value.update(status='STAGING_HELD', phase='paired_hold_creation', failure={'phase': 'paired_hold_creation', 'error_type': 'PermissionError' if case == 'held' else 'private secret text', 'winerror': 5})
+        if case == 'bad_pair_hash': value['paired_evidence_sha256'] = '0' * 64
+        if case == 'invented_allowance': value['paid_repair_enabled'] = True
+        if case == 'extra_ledger': value['ledger_sha256']['old.db'] = 'a' * 64
+        (tmp_path / 'staging-receipt.json').write_text(json.dumps(value), encoding='utf-8')
+        result = ps(f"$script:controlRoot='{tmp_path}';$script:targetRoot='{tmp_path}';$exitCode={2 if case in ('held','unsafe_error') else 0};" + r'''
+          function Assert-ProtectedPath {param($Path)}
+          function Open-VerifiedFile {param($Path,$Hash,$Length)if((Get-FileHash -LiteralPath $Path).Hash.ToLowerInvariant() -cne $Hash){throw 'hash differs'};[IO.File]::OpenRead($Path)}
+          function Read-HeldText {param($Stream)$r=[IO.StreamReader]::new($Stream,[Text.Encoding]::UTF8,$true,4096,$true);try{$r.ReadToEnd()}finally{$r.Dispose()}}
+          $refused=$false;$safe=$null;try{$safe=Read-StagingResult ('a'*32) ('c'*64) ('b'*64) ([pscustomobject]@{LastTaskResult=$exitCode})}catch{$refused=$true}
+          @{refused=$refused;safe=$safe}|ConvertTo-Json -Depth 6 -Compress
+        ''')
+&gt;       assert result['refused'] == (case not in ('success', 'held'))
+E       AssertionError: assert True == ('success' not in ('success', 'held'))
+
+windows-deployment-next\test_independent_supervisor_staging_r3_v1.py:228: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[held]" time="0.277"><failure message="AssertionError: assert True == ('held' not in ('success', 'held'))">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24478/test_bound_receipt_projection_1')
+case = 'held'
+
+    @pytest.mark.parametrize('case', ['success', 'held', 'bad_pair_hash', 'invented_allowance', 'extra_ledger', 'unsafe_error'])
+    def test_bound_receipt_projection_preserves_safe_failure_details(tmp_path, case):
+        value = {'schema': 'cochem-independent-supervisor-staging/1', 'nonce': 'a' * 32,
+            'root': str(tmp_path), 'helper_sha256': 'b' * 64, 'manifest_sha256': 'c' * 64,
+            'status': 'INDEPENDENT_SUPERVISOR_STAGED_UNPUBLISHED', 'phase': 'complete',
+            'activation_ready': False, 'paid_repair_enabled': False, 'component_recovery_enabled': False,
+            'old_ledgers_opened': False, 'provider_or_model_calls': 0, 'active_warden_changed': False,
+            'pipeline_configuration_changed': False, 'partial_outputs_preserved': True,
+            'pair_creation_started': True, 'revision': {'verified': True, 'files': 109},
+            'paired_receipt_sha256': 'd' * 64, 'paired_evidence_sha256': '1cf291591724b6edef17ba7e8d48fc6cce75830872ff6183ac1139aa313a3177',
+            'ledger_sha256': {'supervisor.db': 'e' * 64, 'component-recovery.db': 'f' * 64}}
+        if case in ('held', 'unsafe_error'):
+            value.update(status='STAGING_HELD', phase='paired_hold_creation', failure={'phase': 'paired_hold_creation', 'error_type': 'PermissionError' if case == 'held' else 'private secret text', 'winerror': 5})
+        if case == 'bad_pair_hash': value['paired_evidence_sha256'] = '0' * 64
+        if case == 'invented_allowance': value['paid_repair_enabled'] = True
+        if case == 'extra_ledger': value['ledger_sha256']['old.db'] = 'a' * 64
+        (tmp_path / 'staging-receipt.json').write_text(json.dumps(value), encoding='utf-8')
+        result = ps(f"$script:controlRoot='{tmp_path}';$script:targetRoot='{tmp_path}';$exitCode={2 if case in ('held','unsafe_error') else 0};" + r'''
+          function Assert-ProtectedPath {param($Path)}
+          function Open-VerifiedFile {param($Path,$Hash,$Length)if((Get-FileHash -LiteralPath $Path).Hash.ToLowerInvariant() -cne $Hash){throw 'hash differs'};[IO.File]::OpenRead($Path)}
+          function Read-HeldText {param($Stream)$r=[IO.StreamReader]::new($Stream,[Text.Encoding]::UTF8,$true,4096,$true);try{$r.ReadToEnd()}finally{$r.Dispose()}}
+          $refused=$false;$safe=$null;try{$safe=Read-StagingResult ('a'*32) ('c'*64) ('b'*64) ([pscustomobject]@{LastTaskResult=$exitCode})}catch{$refused=$true}
+          @{refused=$refused;safe=$safe}|ConvertTo-Json -Depth 6 -Compress
+        ''')
+&gt;       assert result['refused'] == (case not in ('success', 'held'))
+E       AssertionError: assert True == ('held' not in ('success', 'held'))
+
+windows-deployment-next\test_independent_supervisor_staging_r3_v1.py:228: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[bad_pair_hash]" time="0.272" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[invented_allowance]" time="0.271" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[extra_ledger]" time="0.318" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_bound_receipt_projection_preserves_safe_failure_details[unsafe_error]" time="0.343" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_reviewed_native_copy_function_createnew_identity_and_hardlinks" time="0.516"><failure message="AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable &#10;  program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.&#10;  At line:11 char:134&#10;  + ... estination=(Join-Path $fixture 'copied');sha256=(Get-FileHash -Litera ...&#10;  +                                                      ~~~~~~~~~~~~&#10;      + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : CommandNotFoundException&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n&quot;).returncode">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24478/test_reviewed_native_copy_func0')
+
+    def test_reviewed_native_copy_function_createnew_identity_and_hardlinks(tmp_path):
+        (tmp_path / 'source').write_bytes(b'exact ordinary fixture')
+&gt;       result = ps(f"$fixture='{tmp_path}';" + r'''
+          $path='D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\stage_aetherdesk_427_payloads.ps1'
+          foreach($definition in @(Import-StagingFunctions $path '0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b' @('Get-LocalPath','Assert-NoReparseAncestors','Initialize-FileIdentity','Open-VerifiedFile','Copy-VerifiedPayload'))){. ([scriptblock]::Create($definition))}
+          Initialize-FileIdentity
+          function Assert-ProtectedPath {param($Path)if(-not [IO.Path]::GetFullPath($Path).StartsWith($fixture,[StringComparison]::OrdinalIgnoreCase)){throw 'outside fixture'};Assert-NoReparseAncestors $Path}
+          function New-CodeAcl {param([bool]$Directory)$acl=[Security.AccessControl.FileSecurity]::new();$acl.SetAccessRuleProtection($true,$false);$sid=[Security.Principal.WindowsIdentity]::GetCurrent().User;$acl.SetOwner($sid);$acl.AddAccessRule([Security.AccessControl.FileSystemAccessRule]::new($sid,[Security.AccessControl.FileSystemRights]::FullControl,[Security.AccessControl.AccessControlType]::Allow));$acl}
+          $source=Join-Path $fixture 'source';$record=[pscustomobject]@{source=$source;destination=(Join-Path $fixture 'copied');sha256=(Get-FileHash -LiteralPath $source).Hash.ToLowerInvariant();length=(Get-Item -LiteralPath $source).Length}
+          Copy-VerifiedPayload $record;$repeat=$false;try{Copy-VerifiedPayload $record}catch{$repeat=$true}
+          $null=New-Item -ItemType HardLink -Path (Join-Path $fixture 'alias') -Target $source
+          $record.destination=Join-Path $fixture 'blocked';$hardlink=$false;try{Copy-VerifiedPayload $record}catch{$hardlink=$true}
+          @{exact=([IO.File]::ReadAllText((Join-Path $fixture 'copied')) -ceq 'exact ordinary fixture');repeat_refused=$repeat;hardlink_refused=$hardlink;newtarget_absent=(-not(Test-Path -LiteralPath $record.destination))}|ConvertTo-Json -Compress
+        ''')
+
+windows-deployment-next\test_independent_supervisor_staging_r3_v1.py:234: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "$fixture='C:\\Users\\ansac\\AppData\\Local\\Temp\\pytest-of-ansac\\pytest-24478\\test_reviewed_native_copy_func0';\n ..._refused=$hardlink;newtarget_absent=(-not(Test-Path -LiteralPath $record.destination))}|ConvertTo-Json -Compress\n    "
+
+    def ps(body):
+        prelude = f"""$ErrorActionPreference='Stop';Set-StrictMode -Version Latest;$PSScriptRoot='{WORK}';
+        $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile('{PS}',[ref]$tokens,[ref]$errors);
+        if($errors.Count){{throw ($errors|Out-String)}};
+        foreach($f in $ast.FindAll({{param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]}},$true)){{. ([scriptblock]::Create($f.Extent.Text))}};
+        """
+        proc = subprocess.run([r'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', '-NoProfile', '-NonInteractive', '-Command', prelude + body], capture_output=True, text=True, timeout=40)
+&gt;       assert proc.returncode == 0, proc.stderr
+E       AssertionError: Get-FileHash : The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable 
+E         program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+E         At line:11 char:134
+E         + ... estination=(Join-Path $fixture 'copied');sha256=(Get-FileHash -Litera ...
+E         +                                                      ~~~~~~~~~~~~
+E             + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : CommandNotFoundException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...-FileHash:String) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : CommandNotFoundException\n \n").returncode
+
+windows-deployment-next\test_independent_supervisor_staging_r3_v1.py:41: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_task_absence_is_not_permission_denial[absent]" time="0.250" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_task_absence_is_not_permission_denial[exists]" time="0.235" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_task_absence_is_not_permission_denial[denied]" time="0.243" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_task_absence_is_not_permission_denial[wrong_missing]" time="0.240" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[success]" time="0.335" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[build_failure]" time="0.396" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_full_ps51_staging_apply_flow_uses_new_copy_then_private_task[changed_daemon]" time="0.349" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_real_task_definition_argv_registration_and_readback[success]" time="0.297" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_real_task_definition_argv_registration_and_readback[bad_working_directory]" time="0.314" /><testcase classname="windows-deployment-next.test_independent_supervisor_staging_r3_v1" name="test_real_task_definition_argv_registration_and_readback[bad_runlevel]" time="0.379" /></testsuite></testsuites>

@@ -1,0 +1,25 @@
+{
+  "schema": "cochem-installed-import-footprint/1",
+  "observed_at_unix": 1791425893.4502559,
+  "platform": "win32",
+  "python": "3.12.13",
+  "pid": 31140,
+  "created_at": 1791425893.177584,
+  "identity": "AETHERDESK\\ansac",
+  "rss_bytes": 37257216,
+  "handles": 229,
+  "imported_modules": [
+    "cochem_pipeline.__main__",
+    "cochem_pipeline.runtime",
+    "cochem_pipeline.containers",
+    "cochem_pipeline.knowledge",
+    "cochem_pipeline.operations_policy",
+    "cochem_pipeline.coding",
+    "cochem_pipeline.operator_views",
+    "cochem_pipeline.queue_launch"
+  ],
+  "scope": "Ordinary isolated installed-r3 process, module imports only. Runtime and controller were not constructed; no live SYSTEM memory or stability result is claimed.",
+  "invocation": "Installed r3 Python with -I -B and a fixed import-only body; no daemon, client or model command.",
+  "interpretation": "This one import-only footprint is below 50 MiB. It is not a bound on the initialized Warden, controller CPU, descendants, desktop heap or the 48-hour workload.",
+  "full_srs_acceptance": false
+}

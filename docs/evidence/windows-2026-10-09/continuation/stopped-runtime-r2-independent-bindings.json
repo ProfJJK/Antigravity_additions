@@ -1,0 +1,587 @@
+{
+    "schema":  "cochem-r2-independent-bindings/1",
+    "captured_utc":  "2026-10-07T13:49:24.9157114Z",
+    "status":  "R2_PUBLIC_BINDINGS_VERIFIED",
+    "installation_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "install_after_sha256":  "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+    "source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "pipeline_config_sha256":  "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "layout_sha256":  "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+    "pyvenv_sha256":  "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+    "venv_python_sha256":  "560b9ef7d856608ab8da02ded2dc8a1951ad1f424c382c0ec6a698874165a18e",
+    "base_python_sha256":  "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+    "interpreter_identity":  {
+                                 "executable":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2\\.venv\\Scripts\\python.exe",
+                                 "base_prefix":  "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312",
+                                 "base_executable":  "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                 "version":  "3.12.13"
+                             },
+    "source_files_verified":  166,
+    "installed_assets":  [
+                             {
+                                 "relative":  "cochem_mcp/__init__.py",
+                                 "length":  78,
+                                 "sha256":  "eb9a139a77dd51a5e1408148076908a9188894347b1149ad88ea841f693f1fe3"
+                             },
+                             {
+                                 "relative":  "cochem_mcp/__main__.py",
+                                 "length":  1304,
+                                 "sha256":  "ebb7f4bd84be62b8ea9ade44486d2ce65797f7c872e0226eee278d46c131f85f"
+                             },
+                             {
+                                 "relative":  "cochem_mcp/config.py",
+                                 "length":  7001,
+                                 "sha256":  "27b72f353879d1a7fd6b5034d2c151313f532d19565fdeb5dc6d3d391c01fdf7"
+                             },
+                             {
+                                 "relative":  "cochem_mcp/jobs.py",
+                                 "length":  7458,
+                                 "sha256":  "3aef70241813a8d8048fd3dae393942d023f566b8ca1f239ee98d34149f771aa"
+                             },
+                             {
+                                 "relative":  "cochem_mcp/providers.py",
+                                 "length":  14016,
+                                 "sha256":  "b52319f871f9e1a7d00f1036b12873b8a353b387e0bda2b32e082de229cc06fc"
+                             },
+                             {
+                                 "relative":  "cochem_mcp/server.py",
+                                 "length":  6232,
+                                 "sha256":  "22e77e7493a1697f1502c115c01a91e45b0a6ac731cb738c4422ff6bce093278"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/__init__.py",
+                                 "length":  105,
+                                 "sha256":  "14654e09f04c532fbad9d2f42bfc808439cd1cf102f4c60394b54f810aaa7895"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/__main__.py",
+                                 "length":  8831,
+                                 "sha256":  "6d9886bfa131aa4bcf72c7debbfaae5e36117d41f5c85b17b29572a0554c8705"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/admission.py",
+                                 "length":  15817,
+                                 "sha256":  "a1693b14c7cabc2eb829ee1a6d4fff0e2f30924999bda163b8d54cd3ec2f69db"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/agy_protocol.py",
+                                 "length":  6653,
+                                 "sha256":  "78d7bd0ee5cc73c9fc29bc983ef91a8e356cb59303a537948491d5f82efa9dda"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/agy_status.py",
+                                 "length":  7819,
+                                 "sha256":  "7bc872e2ff0b8799335edef2ebcd7916baf6886d9893bdb0f5f3b8d5abbbfeff"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding.py",
+                                 "length":  32684,
+                                 "sha256":  "5ac2454b6c41e862d59bad71c927723048a07f7a78b5b3b2ee1de4765e2cf6d5"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_acceptance.py",
+                                 "length":  41317,
+                                 "sha256":  "77369f7585970ab7ab7e8e965de9d711635c7dc63724b5101dc04884ed852a7f"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_checks.py",
+                                 "length":  4914,
+                                 "sha256":  "e9ba73a4896da29997fa61ebd12872f9633c0b72689bee9f40744602629a5f42"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_git.py",
+                                 "length":  39334,
+                                 "sha256":  "0015df23eb3c803f288c69983cc31d10220f407182aa0b5df67fe4c442ffa720"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_plan.py",
+                                 "length":  22057,
+                                 "sha256":  "421900bd106b47912d26f2199cc52104cb1ea2a76f41c0f37e8659f31c96f3aa"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_reconciliation.py",
+                                 "length":  9038,
+                                 "sha256":  "fa36306544e65ceb39f10650ed3e25acba5f174fd428e717772ef0a942f59fe2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/coding_store.py",
+                                 "length":  75073,
+                                 "sha256":  "947714ee0458d98dfaa02d7f0b9ca26d568af31fdab82e0a571e297c6cd269e9"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/config.py",
+                                 "length":  13508,
+                                 "sha256":  "fba7e9e5a8336e489587bd7fa7901fa3004e3a2fe965dbe618083a0ec43b440a"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/container_policy.py",
+                                 "length":  8918,
+                                 "sha256":  "86d5999fc6c9c34708733b0081ff501c9451ed8a2596888ef4d10062c28ec756"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/containers.py",
+                                 "length":  78340,
+                                 "sha256":  "736cf378bfa6e298a47a8adbbca5e7b9ac6b3334e8bd1b8f0b91f1592c344f8e"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/controller_guard.py",
+                                 "length":  2849,
+                                 "sha256":  "6daedd23b9c685e79b639b520041a84a74494c8a331606a3c6f0641e29562ade"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/cpu_temperature.py",
+                                 "length":  7024,
+                                 "sha256":  "e24c84847d15236d4b0668637c7d06ea9ae03669b1dbd056523b75c15eb73f59"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/crash.py",
+                                 "length":  2712,
+                                 "sha256":  "e46312bb93fe141d72701eadd4e1e14f34bff49b1388587b130c233a1e722da2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/deployment.py",
+                                 "length":  19441,
+                                 "sha256":  "3e3eca79e1f8e552c1c837cdd6c81fed2daa193abba3a03445368e6a20939a63"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/deployment_revision.py",
+                                 "length":  3624,
+                                 "sha256":  "dd0211cb94c5fe754f80fe229b7e124d78a705c0c3663498665d7659d78ed42a"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/diagnostics.py",
+                                 "length":  4426,
+                                 "sha256":  "a401592da2fc02208c4c811f67be83813aa1026bc26a0a1c622e2613848ca455"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/document_governance.py",
+                                 "length":  4669,
+                                 "sha256":  "23572cdf1aaaa1d9fbda4e15fc8242e9290238db44c5ff321321e2cc6276454b"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/failures.py",
+                                 "length":  14349,
+                                 "sha256":  "9cde65b860b606b5b74a95690ba75ca4c74d714361203f5bf8b7407a406c9b6e"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/hardware_guard.py",
+                                 "length":  24454,
+                                 "sha256":  "d015562164733b085697ac44031c2d51e8c30fe68dbd03f11933287e873bed3d"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/heartbeat.py",
+                                 "length":  2305,
+                                 "sha256":  "4792519e7e7504bd4b00251b23bd62f26cbe6f204ab70a830287847ce01e65ac"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/inference_policy.py",
+                                 "length":  8380,
+                                 "sha256":  "0bdd0cb37ee225504d6df4e754c5d0b12722f0e21506b6e013487f3c08176ed7"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/knowledge.py",
+                                 "length":  41425,
+                                 "sha256":  "65e1dc17a5bee38f19e47abb24dd97864fcdcd4bc08fd28ab9199d311869d7b2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/knowledge_authority.py",
+                                 "length":  7669,
+                                 "sha256":  "e7dd99cb0f9a6710d3a03cff2d983a58879fef0b68bd463c0f38607603ba1f27"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/knowledge_mcp.py",
+                                 "length":  682,
+                                 "sha256":  "845837e6c5c09242730c405f566b96f823713ab6aa076982da63ffb0953b5514"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/legacy_history.py",
+                                 "length":  12157,
+                                 "sha256":  "2c8d0c70ead8069bed691fb45c82bf405872924f5af702b9a4d67d342e855704"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/native_effort.py",
+                                 "length":  11893,
+                                 "sha256":  "7d75258b0e17fbf703a54d8bc9f2a72f8e0c105eae2274bd582f41ad9b6fb78c"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/native_evidence.py",
+                                 "length":  2919,
+                                 "sha256":  "0033a7c07750a7f630942c6414f57a030758e221c30ff000eea172bd71af8ec5"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/operations_policy.py",
+                                 "length":  23466,
+                                 "sha256":  "06bc54e218596bee4103da96a179f49a9551bae23d0380a31b0f005a53323f86"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/operator_views.py",
+                                 "length":  43947,
+                                 "sha256":  "7ecdc6313598bb831daf1eefecc9745a0e350473b6349da3aad062d126345660"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/oracle.py",
+                                 "length":  32969,
+                                 "sha256":  "11e593a6da0adba876b41ba979311b53af9d175dedd57b4c0b3946370eaa96bf"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/performance_acceptance.py",
+                                 "length":  15962,
+                                 "sha256":  "3a6e1b0f5a62005c09ba07b4261bfef0e4d5f3962af9f087ae91b81ca2bab9e2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/planning_governance.py",
+                                 "length":  19333,
+                                 "sha256":  "c742783ec863d177b07f937e677484132bbdfbd42b28df8934dd59547e2a5dad"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/provider_integration.py",
+                                 "length":  7493,
+                                 "sha256":  "4658e5e5ae7b70f937c21062291bc37629d4bbccd8a8843a6c445fd6957ab81b"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/pytest_assertions.py",
+                                 "length":  5136,
+                                 "sha256":  "d0dc8e921ce4205c2547f6494411f3e3313f7467d5b4a5a6ece651eb74f2dc7c"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/queue_launch.py",
+                                 "length":  31355,
+                                 "sha256":  "a0b4a866f2bc9455eba456ce08dbd7596d3a70b03c3cd9066972390f94ea1516"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/queue_profile.py",
+                                 "length":  16276,
+                                 "sha256":  "f912dcb2ac1cca4313fc4d3a487c2bcfe143bf49ab3e9d8f3bbb2426b43b70cf"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/ramdisk.py",
+                                 "length":  56264,
+                                 "sha256":  "a148b2f5092e44fae42240f01d5243024629c99f1ec689c41d8d8a444c7d6104"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/resource_limits.py",
+                                 "length":  15768,
+                                 "sha256":  "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/resource_telemetry.py",
+                                 "length":  24306,
+                                 "sha256":  "ad5ada81f1cc3ff683d4e43c706383594a4ab256dd1f3d62675f6a8a2f4d0e8a"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/routing.py",
+                                 "length":  24586,
+                                 "sha256":  "753be0fd65bd55deccd62812f2022f84467baf17cad13037a76c50a921b96521"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/routing_store.py",
+                                 "length":  39527,
+                                 "sha256":  "78e8672d6bb96afdc88172f86a91747d906f3f5b3000f25a36c4dc0b75e9553f"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/runtime.py",
+                                 "length":  39203,
+                                 "sha256":  "4fa4c09ceb749ffa5e220c5e59dd5f04a441672e049062902595a19dd14e5db0"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/server.py",
+                                 "length":  8757,
+                                 "sha256":  "04e61fb6e4abd0e04eb3f7ca37e32727f7d14d8bfe8de3157f69763ec224240f"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/service.py",
+                                 "length":  15114,
+                                 "sha256":  "646244f2f89cb7af43991ad0143c716005de44cdad340e3984552371f8f88de2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/4.2.7_SRS.md",
+                                 "length":  76701,
+                                 "sha256":  "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/SRS_ADDENDUM_4.2.7.md",
+                                 "length":  8893,
+                                 "sha256":  "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/acceptance_4.2.7.json",
+                                 "length":  203114,
+                                 "sha256":  "78df23b80ec04c03bcbdb671913770dfeb161c85efc1207aa50f650c57f96228"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/KNOWLEDGE_model-routing-2026-10-07.json",
+                                 "length":  820,
+                                 "sha256":  "89f69d6a0916b0c20f14321d5bc659c7c07f2a5f17efa62b97127db239a8524f"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/ROUTING_RESEARCH_2026-10-07.json",
+                                 "length":  24780,
+                                 "sha256":  "f05a926fa83e72abc7ce0cfc0dfa32746cff798241ff6258833bfa125a0c2de0"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/SOURCE_model-routing-2026-10-07.json",
+                                 "length":  30479,
+                                 "sha256":  "46972de1e4d61e94df5cc3f7d37425e2a2bdb513225ab5e4d67f1f87d1fbb9d9"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/SOURCE_model-routing-2026-10-07_initial.json",
+                                 "length":  30479,
+                                 "sha256":  "594b1273eca7ef3334114be3bd5f654470469d6f84251738d2ce68c2dcac19c2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/TESTS_model-routing-2026-10-07.xml",
+                                 "length":  495113,
+                                 "sha256":  "370e1e537388c24d4c2fe8aaeea293ceeb19a1d5c1d819a7ff47d925a286c509"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/TESTS_model-routing-2026-10-07_initial.xml",
+                                 "length":  496685,
+                                 "sha256":  "ea56e65985371b288fe77e0985626c3dcfaa0b28342d44fb1fc9f51e0a526ab2"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/VALIDATION_4.2.7-r2.json",
+                                 "length":  9034,
+                                 "sha256":  "27e583032030f63fcc9bac3d90abf1cb2d3336ee2f134a83be28370ff194a2fb"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/VALIDATION_model-routing-2026-10-07.json",
+                                 "length":  6105,
+                                 "sha256":  "0bf15b630f31594dac1d7bd1c38dfdc9112e97acfdb3c24838df7ef13632ec7d"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/outer_4.2.7-r2.json",
+                                 "length":  896,
+                                 "sha256":  "e18f85608632c64a353f5dab765bfd6227ae7b5ae3947998724c382dd30a009e"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/powershell_4.2.7-r2.json",
+                                 "length":  482,
+                                 "sha256":  "67aec82e4bc500b70fb640e30a19e91879f37fb9134138848b7165bd9589a9b4"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/protected_4.2.7-r2.json",
+                                 "length":  3071,
+                                 "sha256":  "0bbd299a78d560328bbe65f07551855e86a938ad9726250c58b93b25382331a5"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/protected_tests_4.2.7-r2.xml",
+                                 "length":  334987,
+                                 "sha256":  "ef5f55fdefc796821d74d78fe440500f312c58233ee3180c030c2ef76f41b8fb"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/source_4.2.7-r2.json",
+                                 "length":  27965,
+                                 "sha256":  "7ff2b44b256578efed6fc60d862753d90a68a20dec68956c88904dccaa234d73"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/docs/evidence/tests_4.2.7-r2.xml",
+                                 "length":  539718,
+                                 "sha256":  "6a967125359cb3bcc9a8ea8c23c85b4ec3f7d4e9cee86d77e63285306e5525e5"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/specification/requirements_4.2.7.json",
+                                 "length":  197713,
+                                 "sha256":  "c30185de12d6eff353ba971424a243219484561849fc1accf1566bcc943053f0"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/store.py",
+                                 "length":  82270,
+                                 "sha256":  "ba55f367a5c625ee1bfda0015c0dd69123b8cc4a52019b8d1cb76ac5c8d7d287"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/transport.py",
+                                 "length":  6630,
+                                 "sha256":  "1cf2b134c105307005c7018b59baac72f0e09bf4a711ee1d07cd8ae4772968c3"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/upgrade_preview.py",
+                                 "length":  9419,
+                                 "sha256":  "614c7493161168e4a8069fa9c4a77ab0c9010eca4bd42fdc351f81e1debe597f"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/windows.py",
+                                 "length":  61790,
+                                 "sha256":  "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba"
+                             },
+                             {
+                                 "relative":  "cochem_pipeline/worker.py",
+                                 "length":  59414,
+                                 "sha256":  "476f83a3f4e19b826d62bd02c0bacce19530de442d047ed9f66a25d0ace0284c"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/__init__.py",
+                                 "length":  107,
+                                 "sha256":  "2b9eb398c8b89873a4e2758ddde60d3a25550c97b8c4414304b8e79477eaa132"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/__main__.py",
+                                 "length":  5025,
+                                 "sha256":  "14326bd860b51f5221590c2594eae2eb31d896c45a7bd4c646a3317a8a50b22a"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/acceptance.py",
+                                 "length":  10227,
+                                 "sha256":  "cff3e854b1998d6be6877228021db15b5165a04fbe57c3c87cad1527e42ee220"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/blackbox.py",
+                                 "length":  17779,
+                                 "sha256":  "5148b1e2a449b61850dcbc00a692eab642c3a14076641e0b0844c848986249e7"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/blackbox_child.py",
+                                 "length":  3495,
+                                 "sha256":  "164083ec2c865a65c3728569b557cc6fd39c140eaeee2c25f85149c15b6df610"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/budget_authority.py",
+                                 "length":  9797,
+                                 "sha256":  "36157718119f518756619b5222be9e930dba82a1726fd4b1bed23d153a217852"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/cleanup.py",
+                                 "length":  11823,
+                                 "sha256":  "671f1b35dd7b8875d7b71987287ad6e0f22b65a0fd098026457b74b4f32fcf26"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/component_recovery.py",
+                                 "length":  9169,
+                                 "sha256":  "3f1336f3ec7d9a2e14289c1f032f2baa9cfb1ab0bed06648e39f9ff016ac871d"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/config.py",
+                                 "length":  12092,
+                                 "sha256":  "1efe7e02742c859233df61b90ded0c7076310b9b769abf9b32af7246ed6c4091"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/detector.py",
+                                 "length":  4654,
+                                 "sha256":  "28cb1cfc34b8b25c3fdaabb393db785986499079dfb0dd0a77a048157fa50a02"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/detector_bootstrap.py",
+                                 "length":  2971,
+                                 "sha256":  "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/diagnostics.py",
+                                 "length":  12038,
+                                 "sha256":  "6b14b332b2b24479c5a93009ec3c9f60c59d072b19e16cc0c7bdaf7be08e5b6a"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/engine.py",
+                                 "length":  64779,
+                                 "sha256":  "c2c34601eb5299dc47306e894b7d55743b56d39e79035534198df9bf6c742d64"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/io.py",
+                                 "length":  591,
+                                 "sha256":  "01cb258d886fc8f7b36d62add5df79a9a540b45abd55c877dfaf2714d6d2c04a"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/job_board.py",
+                                 "length":  20957,
+                                 "sha256":  "72a699b3091f8aad369dcc10b08666b87528173cb1eb5f98f061b46476179084"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/launcher.py",
+                                 "length":  1805,
+                                 "sha256":  "e0bc4485d7c3bef981dfc98b9f32d33c79d3b26378adad5cc64ca7937fa029e5"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/monitor.py",
+                                 "length":  32801,
+                                 "sha256":  "ffc2f6792b756f5a6b3538d3b202559585944c2dbbf57567e9af1fb1052eb13e"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/preflight.py",
+                                 "length":  6069,
+                                 "sha256":  "97fd98c53d35ac01e2486fc889d01e23e840fad8214ad279b51abbba764c8390"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/probes.py",
+                                 "length":  58975,
+                                 "sha256":  "881a864fa73a354be874099d51223547b7c6199fec79a2c33c02c64b45756743"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/process_observer.py",
+                                 "length":  7401,
+                                 "sha256":  "5b25808e8a9f5a325a692c6b85204d07d5368edc4f82a617358e5932d8bf40aa"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/reconciliation.py",
+                                 "length":  12119,
+                                 "sha256":  "fd8e7661bdfe4a4b260a305a9a85d8dc7c05624a6f02df73e051200da9ba6759"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/releases.py",
+                                 "length":  24063,
+                                 "sha256":  "5a73fdde21c4f9bd74f654eb7acc44cd6870ecd7e19c3c64f9326b92cc01f26f"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/repair_artifacts.py",
+                                 "length":  8305,
+                                 "sha256":  "677a7e85cdfb9643591c82aa99acbfcddb414ecaae2455c54189bcf55d14e675"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/replay.py",
+                                 "length":  11754,
+                                 "sha256":  "0ef1ef3c23cb7484edaac347c7af6a04d43b095789f16daae6642db244344728"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/runner.py",
+                                 "length":  46182,
+                                 "sha256":  "8fbd62ec0b8bdb7859c2d3a649868330790148b7e9108345e801aeabb5555b9f"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/shared_io.py",
+                                 "length":  2061,
+                                 "sha256":  "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/state.py",
+                                 "length":  30285,
+                                 "sha256":  "404abfa2971a8f4a865171fc8fee3fe2c51d7837b6d49975346e6bac3740ff74"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/structural.py",
+                                 "length":  3275,
+                                 "sha256":  "4b522bd5fdac8c3413e871ca3b84d3e486b4b17d6e4e3f44b8a8f2b9108571a6"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/upgrade.py",
+                                 "length":  10601,
+                                 "sha256":  "6394295fc31dd9f7dca5fa541c11137be9ada340e7a2e62fc41cd744651753fd"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/windows.py",
+                                 "length":  53975,
+                                 "sha256":  "86dc29a626bc5699be7063072f3dbe4966079dceba2df22985d332c1f4be99ab"
+                             },
+                             {
+                                 "relative":  "cochem_supervisor/workspace.py",
+                                 "length":  907,
+                                 "sha256":  "8ad1196d6c7fd8b3d10067dcd3119d1e26d1cc593f95f51dbea8f4c54d9cf3d0"
+                             }
+                         ],
+    "installed_revision_from_receipt":  {
+                                            "schema":  "cochem-installed-revision/1",
+                                            "verified":  true,
+                                            "read_only":  true,
+                                            "files":  109,
+                                            "source_sha256":  "064a2c9c18b1adb489d0514b1b0e2979e80e72b6af33b2bdc9d95211c0a61f5d",
+                                            "acceptance_files":  0,
+                                            "acceptance_sha256":  null
+                                        },
+    "custody":  {
+                    "prior_installer_full_tree_entries":  15013,
+                    "current_scope":  "Read file-handle/hash/ACL custody for listed source/application assets and public bindings plus their ancestors; no repeated dependency-wide scan.",
+                    "dependency_tree_rescanned":  false
+                },
+    "knowledge_service_invoked":  false,
+    "private_state_opened":  false,
+    "databases_opened":  false,
+    "models_executed":  0,
+    "pipeline_started":  false,
+    "activation_ready":  false
+}

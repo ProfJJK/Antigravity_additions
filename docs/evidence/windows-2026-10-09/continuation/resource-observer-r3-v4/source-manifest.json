@@ -1,0 +1,40 @@
+{
+  "schema": "cochem-external-observer-source-manifest/1",
+  "files": [
+    {
+      "path": "observe_resources.py",
+      "size": 17414,
+      "sha256": "77384c52d36c6e2b46d38e0ab9cb265daf5ef1f98459353822f4761cf6f6688f"
+    },
+    {
+      "path": "detector_bootstrap.py",
+      "size": 2971,
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5"
+    },
+    {
+      "path": "cochem_supervisor/__init__.py",
+      "size": 77,
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17"
+    },
+    {
+      "path": "cochem_supervisor/windows.py",
+      "size": 7788,
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b"
+    },
+    {
+      "path": "cochem_supervisor/resource_observation.py",
+      "size": 14510,
+      "sha256": "ec3fa5a9c8e20228b6f43b15c5c4b5c332e1d7191ca563afbd8507baa5e5a3d7"
+    },
+    {
+      "path": "cochem_supervisor/performance_acceptance.py",
+      "size": 18919,
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c"
+    },
+    {
+      "path": "cochem_supervisor/shared_io.py",
+      "size": 2061,
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0"
+    }
+  ]
+}

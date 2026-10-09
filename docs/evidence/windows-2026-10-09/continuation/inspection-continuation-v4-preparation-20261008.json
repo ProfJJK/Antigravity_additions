@@ -1,0 +1,124 @@
+{
+  "schema": "cochem-inspection-continuation-preparation/1",
+  "prepared_utc": "2026-10-08T22:47:50.0627505Z",
+  "host": "AETHERDESK",
+  "status": "PREPARED_NOT_APPLIED",
+  "reported_failure": "v3 protected tree inspection bound, before any login prompt",
+  "repair": "Exact ACL/reparse/file-handle checks retained using .NET enumeration, monotonic 600-second per-root bound, 50000-entry cap and bounded diagnostics",
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "shared_slots": 4,
+  "worker_identities": 6,
+  "authentication_protocol": "Unchanged v3 fresh attempt, current-session reuse, READY/PAUSE and single-start fencing",
+  "model_routing": "Chapter 06 unchanged",
+  "sources": [
+    {
+      "name": "protected-code-inspection-v4.ps1",
+      "sha256": "5c01543cbb8b8d64b2b9f1bab4a13f87f8ff9e1ab3e82dfb6fc547144c77b95d",
+      "bytes": 7687
+    },
+    {
+      "name": "check-worker-native-auth-status-six-r3-v4.ps1",
+      "sha256": "4448e76eaeb30f2d2905f5aa6d3e14f0cc29b3d7e703321bb3df55afcba58e81",
+      "bytes": 23906
+    },
+    {
+      "name": "login_pipeline_worker_interactive_r3_v4.ps1",
+      "sha256": "6f2181eb8e5ba5dc701ee9d69b496de01ffa5d7d74880bfa96e702dbd2e5c150",
+      "bytes": 16910
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v4.ps1",
+      "sha256": "c908a3b2ece9858e23b023cab0557cab5ccadd03c3efc0460317bd62a1598bdb",
+      "bytes": 24190
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v4.ps1",
+      "sha256": "724c6ac99b4bbfa41a8da2c45892ee0efaa46deed458359194f308d4ee566dca",
+      "bytes": 17993
+    },
+    {
+      "name": "commission-first-warden-r3-v4.ps1",
+      "sha256": "6e8acd55bdc3a66a78846b8db5601f07baa9b84677197cffb7b1f86721bd720b",
+      "bytes": 19757
+    },
+    {
+      "name": "run-pipeline-commissioning-r3-v4.ps1",
+      "sha256": "fdd8f5fcacae85f2d80cb908d87d6fdad0b06c0783d2ff20fa2d59a458c4939d",
+      "bytes": 31659
+    },
+    {
+      "name": "worker-native-auth-status-six-r3-v3.py",
+      "sha256": "7efa8d272fcd96701157e381036f7e4ec763551857f4c57091d7bf61977fcfc1",
+      "bytes": 28454
+    },
+    {
+      "name": "commission-first-warden-r3-v3.py",
+      "sha256": "9770007a8c658a73e68ccc0c370eeaab2cc6568cf20cd009601e8c35c25de755",
+      "bytes": 31492
+    },
+    {
+      "name": "prepare-inspection-continuation-v4.py",
+      "sha256": "36ad267437552736250e1e35114d07371b38ea345f0c108e63de2366c1eb747f",
+      "bytes": 6036
+    },
+    {
+      "name": "test_inspection_continuation_v4.py",
+      "sha256": "5d8b6861ad256236442790ff1eeb577d0405124e6adc757ae05da691dbd1f1af",
+      "bytes": 4443
+    },
+    {
+      "name": "test_protected_code_inspection_v4.py",
+      "sha256": "4eba99778c87cb850ec2fb633c4c384d187503511845f3ffdc9e6773061e834a",
+      "bytes": 21158
+    }
+  ],
+  "windows_evidence": [
+    {
+      "name": "inspection-v4-windows-measurement-165c8e06e5314cd0ae0a1a75a36d86c6.json",
+      "sha256": "b11bf59382c6d38f44cc601848320c1afdd9bb8781d832e70c70b48fcb359bd4"
+    },
+    {
+      "name": "inspection-continuation-v4-tests-final.xml",
+      "sha256": "085504a25e134bd80ede9e451b44581a14835fe6340f0cb8b2ecc49b76b5bd54"
+    },
+    {
+      "name": "protected-inspection-v4-fixtures-ordinary.xml",
+      "sha256": "1811a5113188307727fc94845f95e5fcf5fe173868a4e89db502faad7f0362e7"
+    },
+    {
+      "name": "inspection-continuation-v4-preview-final.json",
+      "sha256": "79cc3b1a62c8a5757db2fb051c4c2543ef46949cc76dce144698aea3bc776ab2"
+    }
+  ],
+  "old_scanner_observation": {
+    "entries": 15026,
+    "seconds": 115.6237301,
+    "status": "PASSED",
+    "reported_timeout_reproduced": false
+  },
+  "windows_tests": {
+    "wrappers": 148,
+    "scanner_fixtures": 32,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "review": {
+    "independent_read_only": "PASS",
+    "all_seven_ps_parse_errors": 0,
+    "generation_matches_final_bytes": true
+  },
+  "linux_results_counted_as_windows": false,
+  "administrator_or_system_execution_during_preparation": false,
+  "tasks_changed": 0,
+  "native_commands_executed": 0,
+  "logins_executed": 0,
+  "model_jobs_executed": 0,
+  "credentials_modified": false,
+  "databases_modified": false,
+  "budgets_modified": false,
+  "ram_or_startup_modified": false,
+  "controller_started": false,
+  "full_goal_complete": false,
+  "next": "Owner runs reviewed v4 attended commissioning command; current verified sessions reused and only logged-out profiles request browser approval."
+}

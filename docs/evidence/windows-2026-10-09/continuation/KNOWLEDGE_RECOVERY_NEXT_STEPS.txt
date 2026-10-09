@@ -1,0 +1,55 @@
+Knowledge recovery after the first failed continuation
+
+Do not rerun continue-stopped-setup.ps1, finish-reviewed-setup.ps1 or the original
+private knowledge installer. Their original one-shot roots/task/receipt remain
+preserved. The first attempt stopped before worker denials or runtime installation.
+
+Owner-reported original receipt:
+- status KNOWLEDGE_ACCEPTANCE_FAILED, phase new_index, WindowsIsolationError
+- nonce d4606fa578ae401b81ace37cd8e2909b
+- started 1791378634141, finished 1791378635667
+- helper 832eb45e9629f2bcde75eff58a455135934118bc5ab9f45c7d2870c9db0950ca
+- config 2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6
+- inventory edb97ec08cfdc6e451c9a875b4e9f300dc67b8e9af03b32feada9d6251240892
+The index_created_new flag means the state directory was created and validated;
+it does not mean a published index exists. The actual SYSTEM diagnostic verified
+the original receipt SHA256 as
+2cf8f1f4cafbb0537900af98349f6a3f4faec135a4061dd153f0cce78c1488dd.
+No raw private document or credential is needed.
+
+Reproduced cause: the installed Python 3.12.13 creates mode0700 Windows directories
+with an OWNER RIGHTS ACE. The knowledge generation's strict private-path check
+rejects that ACE. Its error handler may already have removed the failed generation;
+the actual SYSTEM diagnostic confirms only the state directory and one-byte
+writer.lock remain. Protected diagnostic receipt SHA256:
+18ceba4394b92bb6e1d320f49226359902af0084a72195a8139f699594bc0307.
+
+Safe continuation order:
+1. New bounded SYSTEM diagnostic: original task terminal/receipt/source bindings,
+   exact partial-state entries and ACLs; no database contents, service constructor,
+   index refresh, production ACL changes or deletion. Keep a new report/unique task.
+2. Repair knowledge and operational-record directory creation while retaining strict
+   validators. Inherit only a checked private parent with propagation of SYSTEM full
+   control on Windows; retain POSIX0700. Existing directories/ACLs stay untouched.
+3. Independently review/test/freeze a new r2 code-only runtime package. Preserve r1.
+   The code installer can run before knowledge acceptance: it does not initialize
+   or open that state. Keep old config/account/layout/toolchain commitments and the
+   exact scoped-RAM candidate; no daemon/account/credential/database provisioning.
+4. Bind the actual successful r2 installed revision/custody and the diagnostic's
+   original receipt/state commitments before making a separate resume-index helper.
+   It must verify all 138 corpus files and production private permissions, accept
+   only the proven empty partial-state shape, and refuse existing current.json,
+   sources.json, generation, journal or unknown entries. Reuse the original private
+   writer lock only when its exact known state is verified. Never overwrite the
+   original failed acceptance receipt, recreate the corpus, or reset any database.
+5. Create a fresh acceptance root/task/nonce for the resumed index. Use fixed r2
+   code, verify exact old/new config delta, new generation/integrity/canonical
+   authority/source pins, unchanged corpus/config and stopped daemons. Preserve
+   every artifact on failure; no automatic retry or cleanup of prior evidence.
+6. After actual successful knowledge acceptance, continue six worker checks and
+   later execution readiness with their new receipt/runtime bindings. Do not reuse
+   old acceptance labels to claim the changed runtime passed.
+
+The diagnostic and fresh r2 code-only installation have completed. Index recovery
+has not run. Its separate reviewed SYSTEM task and browser sign-ins require the
+owner's Administrator session as directed; do not rerun completed commands.

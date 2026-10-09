@@ -1,0 +1,167 @@
+{
+  "activation_ready": false,
+  "docker": {
+    "api_aliases": [
+      "npipe:////./pipe/dockerDesktopLinuxEngine",
+      "npipe:////./pipe/dockerDesktopWindowsEngine",
+      "npipe:////./pipe/docker_engine"
+    ],
+    "backend_sha256": "c1214651f9de3a00c37b90139e5ac7ed57f0c686a6401e311ecace59854c070a",
+    "cli_sha256": "1aaf3dd59c24ff4c83d930bc51ecac8bf6f6f4e7a310573ee69d14ca3a7ef85c",
+    "commands_executed": 4,
+    "containers_created_or_modified": false,
+    "denied_modes": [
+      "write",
+      "read",
+      "read_write"
+    ],
+    "engine": {
+      "daemon_id_sha256": "39a274add971e365d9a99fe0306bc0d48da477d212b34a8dc453829012c65fbd",
+      "linux": true,
+      "resource_limits_supported": {
+        "CpuCfsQuota": true,
+        "MemoryLimit": true,
+        "PidsLimit": true,
+        "SwapLimit": true
+      },
+      "seccomp_available": true
+    },
+    "image": {
+      "credential_named_environment_absent": true,
+      "image_declared_volumes": false,
+      "image_id": "sha256:d9d3e8644b6fc407c7d5ee7151fcb22470d74b8c14a4e6ef8cf8e9acb62877a2",
+      "linux": true
+    },
+    "ownership_census": {
+      "empty": true,
+      "identifiers_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "name_prefix_count": 0,
+      "owner_label_count": 0,
+      "union_count": 0
+    },
+    "raw_info_environment_labels_published": false,
+    "server": {
+      "executable": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "pid": 26816,
+      "process_created_filetime": 134357190020978742,
+      "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    },
+    "worker_access_denied_before_and_after": true,
+    "workers_per_alias": 6
+  },
+  "docker_import_custody": {
+    "backend_launched": false,
+    "cli_declared_imports": {
+      "delay_imports": [],
+      "imports": [
+        "kernel32.dll"
+      ],
+      "machine": "0x8664"
+    },
+    "kernel32_known_dll_registration_verified": true,
+    "system32_kernel32_protected_path_verified": true,
+    "unrelated_plugin_binaries_in_execution_scope": false
+  },
+  "docker_runner_constructed": false,
+  "existing_databases_modified": false,
+  "existing_files_or_acls_modified": false,
+  "existing_tasks_modified_or_run": false,
+  "finished_at_unix_ms": 1791414336544,
+  "fresh_state_after": {
+    "container_registry_root_absent": true,
+    "ram_ledger_absent": true,
+    "ram_workspace_absent": true,
+    "readiness_receipt_absent": true
+  },
+  "fresh_state_before": {
+    "container_registry_root_absent": true,
+    "ram_ledger_absent": true,
+    "ram_workspace_absent": true,
+    "readiness_receipt_absent": true
+  },
+  "helper_sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+  "holds": [],
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "knowledge": {
+    "current_bytes_unchanged": true,
+    "generation": "g-abed1cd030c746559aed6bb30a47093a",
+    "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+    "r2_to_r3_only_resource_limits_delta_verified": true,
+    "receipt_sha256": "f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b"
+  },
+  "knowledge_service_constructed": false,
+  "native_model_jobs_executed": 0,
+  "native_provider_authentication_performed": false,
+  "nonce": "fc64e3d3990049ed809b7189906dd0e9",
+  "own_fresh_docker_config_directory_used": true,
+  "own_fresh_receipt_created": true,
+  "packet_sha256": "b5bbab59e9574e34a9a6b5109e22120cb925d20ee37eed8f598339872aa7da94",
+  "ram_after": {
+    "filesystem_bytes": 8589930496,
+    "imdisk_query_ioctl_used": true,
+    "ram_modified": false,
+    "root_attributes": 22,
+    "root_device": 18215568536144889826,
+    "root_file_id": 1407374883553285,
+    "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+    "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+    "volume": {
+      "backing": "vm",
+      "configured_backing": "auto",
+      "device_number": 0,
+      "drive_letter": "R",
+      "filesystem": "NTFS",
+      "flags": 66064,
+      "nonpageable": false,
+      "size_bytes": 8589934592,
+      "target": "\\Device\\ImDisk0",
+      "volume_serial": 3400714210
+    }
+  },
+  "ram_before": {
+    "filesystem_bytes": 8589930496,
+    "imdisk_query_ioctl_used": true,
+    "ram_modified": false,
+    "root_attributes": 22,
+    "root_device": 18215568536144889826,
+    "root_file_id": 1407374883553285,
+    "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+    "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+    "volume": {
+      "backing": "vm",
+      "configured_backing": "auto",
+      "device_number": 0,
+      "drive_letter": "R",
+      "filesystem": "NTFS",
+      "flags": 66064,
+      "nonpageable": false,
+      "size_bytes": 8589934592,
+      "target": "\\Device\\ImDisk0",
+      "volume_serial": 3400714210
+    }
+  },
+  "ram_ensure_called": false,
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "schema": "cochem-execution-prerequisites/1",
+  "started_at_unix_ms": 1791414329840,
+  "status": "READ_ONLY_PREREQUISITES_VERIFIED",
+  "system_sid": "S-1-5-18",
+  "windows_worker_tokens_used_for_handle_probes": true,
+  "worker_receipt_sha256": {
+    "slot1": "b9e9fd56c77ac54f97f136b562881a554ed18f6f4f216ccacc0fdf43c51f2c85",
+    "slot2": "7ebac1cedc48cf60c52af7c9b5ff4e883b4325c8d92a6826c935a9e5f7b5322d",
+    "slot3": "c8518fb7c3f126c1c550e36072441eb520a3e76d91f75735d5f3ac832af954ee",
+    "slot4": "f81613cb152f9b5369908f796f55572e3f5779d2253515233b98aafc9e2b1344",
+    "slot5": "84d7043f2044d52e2cfd31bdd373d424821ed3e3a234cef74590b2cfb427283b",
+    "slot6": "5f987ba0f47d27417c0724277d70c52105dd1a96f04dd0a102fe7175d55f2970"
+  }
+}

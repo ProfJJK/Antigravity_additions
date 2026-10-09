@@ -1,0 +1,53 @@
+{
+  "schema": "cochem-resource-observer-v2-root-review/1",
+  "status": "SOURCE_REVIEW_PASSED_PROTECTED_INSTALLATION_NOT_APPLIED",
+  "recorded_at_utc": "2026-10-08T02:59:10.009005+00:00",
+  "preparation_sha256": "4ad77ded450eaadb5383551b60da9000dc37eefab732e49b4cc3b4470cfae390",
+  "installer_sha256": "5030df59a14fef74b1147660978becf95a839e9d6e7f9e403708ac5b319153f2",
+  "source_manifest_sha256": "b2f1329893ce13662271070a36821cb7129410bc7d5160ce37d17b9552f55f52",
+  "dependency_manifest_sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429",
+  "current_noncache_dependency_byte_pins_verified": 2788,
+  "tests": [
+    {
+      "path": "resource-observer-r3-v2-python-final.xml",
+      "sha256": "cb0f264ce8ab1a2740db51ba3e374c105e5cb639fba371d775ebf88f0ac83a31",
+      "tests": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "resource-observer-r3-v2-powershell-final.xml",
+      "sha256": "178aee1e622c2f12e572f2aa2b2abdbf4c626d332c40d3aaad86f439ea8f113a",
+      "tests": 46,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "current_distinct_tests": 104,
+  "reviewed_boundaries": [
+    "Independent sterile -I -S -B interpreter with exact seven-module closure, fixed psutil package and protected dependency inventory.",
+    "Historical bytecode is preserved; a fresh private empty cache prefix redirects cache reads and -B prevents cache writes.",
+    "New code and private state roots only; existing pipeline state, worker profiles, R:, credentials and budgets are unchanged.",
+    "Registration is disabled and never-run; one explicit start has durable CreateNew intent and exact task-instance readback.",
+    "Existing successful frozen first-start receipt and current exact Warden instance bind held native PID plus creation FILETIME.",
+    "Source and dependency bytes/custody are validated initially and finally; drift invalidates the observation.",
+    "Bounded sanitized public bootstrap/completion reports, with parent task-result failure reporting when child custody cannot be established.",
+    "Restart, reboot, ambiguous start and partial output never authorize automatic reuse, PID substitution, retry or state deletion."
+  ],
+  "actual_test_scope": "Ordinary Windows native/file/import observations plus explicitly inert privileged registration/start fixtures; no SYSTEM task was registered or executed.",
+  "known_limits": [
+    "Full 48-hour observation has not started or completed.",
+    "Genuine desktop-heap used/capacity and independent recovery-timing evidence remain unavailable.",
+    "Bounded descendant snapshots do not prove all worker lifetimes or every containment outcome.",
+    "This candidate binds the original reviewed r3-v1 first-start contract; a different startup path needs a separately reviewed binding."
+  ],
+  "observer_installed": false,
+  "observer_started": false,
+  "actual_48h_complete": false,
+  "full_srs_acceptance": false,
+  "frozen_startup_unchanged": true,
+  "human_action_now": null,
+  "next_action": "Include the reviewed installer and explicit start in the consolidated privileged setup after actual successful controller commissioning."
+}

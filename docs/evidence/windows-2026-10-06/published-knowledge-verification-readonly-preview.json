@@ -1,0 +1,20 @@
+{
+    "schema":  "cochem-published-knowledge-verification-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "source_sha256":  "9f3b6c00255d6e5c9bc0a6e6bec546ae5a60a8287c2b24a65a2f675f6d3e0496",
+    "runtime_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "install_receipt_sha256":  "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+    "source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "source_files":  166,
+    "target_root":  "C:\\Program Files\\CoChem\\KnowledgePublishedVerification4.2.7-windows-20261007-r2",
+    "task_name":  "CoChem-4.2.7-KnowledgePublishedVerification-20261007-r2",
+    "failed_resume_receipt_sha256":  "8cdaebaaf9338046ef928368160f9ea7eff792c22d0f46a3a23820a78c94e66b",
+    "existing_state_read_only":  true,
+    "knowledge_service_or_refresh_invoked":  false,
+    "private_receipt_and_terminal_task_checks_deferred":  true,
+    "verification_executed":  false,
+    "activation_ready":  false,
+    "holds":  [
+
+              ]
+}

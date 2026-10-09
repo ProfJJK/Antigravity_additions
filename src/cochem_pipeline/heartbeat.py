@@ -7,6 +7,22 @@ import time
 import uuid
 
 
+def _replace_heartbeat(source: Path, destination: Path) -> None:
+    """Keep atomic publication while tolerating brief Windows reader locks."""
+    deadline = time.monotonic() + 0.25
+    while True:
+        try:
+            os.replace(source, destination)
+            return
+        except OSError as error:
+            # Python/third-party readers may omit FILE_SHARE_DELETE. Never
+            # truncate the live document or turn persistent denial into success.
+            remaining = deadline - time.monotonic()
+            if os.name != 'nt' or getattr(error, 'winerror', None) not in (5, 32, 33) or remaining <= 0:
+                raise
+            time.sleep(min(0.01, remaining))
+
+
 class Heartbeat:
     def __init__(self, private_root: Path, version: str, interval: float = 2):
         self.path = Path(private_root)/'supervisor_status.json'
@@ -31,7 +47,7 @@ class Heartbeat:
                 json.dump(data,stream,ensure_ascii=False,allow_nan=False)
                 stream.flush()
                 os.fsync(stream.fileno())
-            os.replace(temporary,self.path)
+            _replace_heartbeat(temporary,self.path)
             self.last_write = observed
         finally:
             temporary.unlink(missing_ok=True)

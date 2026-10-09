@@ -23,10 +23,21 @@ quarantine and immutable evidence. Back up active SQLite consistently.
 
 Preserve both `supervisor.db` and `component-recovery.db` through the existing
 SYSTEM migration helper. Use the actual existing supervisor data directory as the previous-data source;
-the r2 installer preserves the current427 state by default. Do not initialize
+pass it explicitly as `-PreviousDataRoot`. The script's historical default is
+`CoChemSupervisor426`, not the current 4.2.7 ledger directory. Do not initialize
 new budget ledgers over an existing deployment. Paid repair budgets
 and component recovery budgets must not reset. A new protected acceptance
 snapshot is required because the execution contract changed.
+
+The pipeline installer's historical `-DataRoot` default is
+`C:\ProgramData\CoChemPipeline422`; the example's `CoChemPipeline427` is a
+fresh-layout illustration. Select the actual existing local data directory and
+pass it explicitly along with its matching token, worker roots and task names.
+The installers do not rename or migrate the pipeline database just because the
+package version changed. Keep the defaults for existing account/task identity
+compatibility, and review every path against the installed layout. If a protected
+code root contains different bytes, choose a fresh code root and pass that same
+`-InstallRoot` to its login helper; do not overwrite an old installation.
 
 Drain/stop the old daemon before activating the new installation. Its exclusive
 service lock prevents running a second Warden against the same private state.
@@ -38,6 +49,38 @@ the installed Agy version supports the required headless/profile contract. Bind
 Extended intent to reviewed native arguments/settings and observed metadata;
 disable native fallback/subagents and retain visible compatibility holds when
 the required restriction or profile cannot be verified.
+
+## Worker login and MCP client staging
+
+`scripts/login_pipeline_worker.ps1` defaults to `Pipeline4.2.7-r2` and accepts
+provisioned `slot1` through `slot256`. These are account identifiers, not an
+increase to the four shared execution slots. Use the installed layout's exact
+slot and the actual protected CLI executable. Each login uses that isolated
+worker's persistent profile; regular-account login does not authenticate it.
+
+For Agy select `-Provider gemini` and pass `-LoginContract` pointing to a protected,
+reviewed JSON file. The normal and repair helpers use the same native contract
+validator. Its fields are `provider` (`gemini`), `executable` (the exact executable
+path), `purpose` (`subscription-login`), `arguments` (the bounded literal native
+argv array), and `capability_reference` (the reviewed evidence reference).
+Populate it only after the installed CLI documents an actual subscription-login
+command. Help that does not expose login support leaves this step on hold; do
+not infer a command from another product. Login success, per-account subscription
+access and retention still require actual Windows verification.
+
+The unprivileged `scripts/install_mcp_windows.ps1` uses `uv sync --frozen
+--no-editable --extra mcp` with the release `uv.lock` and a selected installed
+Windows Python 3.12 or newer. Supply `-Uv` when uv is outside PATH, and use
+`-Python <absolute-python.exe> -PythonArgs @()` for an explicit interpreter.
+It stages `.venv-mcp`, restores the caller's `UV_PROJECT_ENVIRONMENT`, and
+preserves existing client JSON and controller/project mappings. A successful
+client installation is separate from authenticated stdio and native acceptance.
+
+`scripts/verify_cli_mcp.py` is retired. It exits nonzero without submitting work;
+its old unregistered workspace, model pinning and direct-edit behavior is not
+valid acceptance. Use bounded controller preflight from the
+[operations guide](OPERATIONS_4.2.7-r2.md), then the registered-project coding
+acceptance workflow. Every model job remains Chapter 06 routed.
 
 ## Activate the clean knowledge corpus
 

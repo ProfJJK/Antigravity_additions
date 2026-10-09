@@ -1,0 +1,181 @@
+{
+  "schema": "cochem-pawnio-dependency-staging/1",
+  "observed_at_utc": "2026-10-07T03:05:51.914917+00:00",
+  "status": "OFFICIAL_INSTALLERS_AUTHENTICATED_AND_STAGED_NOT_EXECUTED",
+  "scope": "Read-only primary-source research, static metadata/resource hashing and signature verification; new installer/source-evidence files downloaded only beneath operator LocalAppData CoChem staging.",
+  "official_provenance": {
+    "product_site": "https://pawnio.eu/",
+    "official_releases_repository": "https://github.com/namazso/PawnIO.Setup",
+    "chain": "PawnIO official site links its signed distribution to the namazso/PawnIO.Setup release repository. Assets were downloaded directly from those release URLs; no mirrors or package installation were used."
+  },
+  "downloaded_lhm_package": {
+    "version": "0.9.6",
+    "archive_sha256": "086d9f1b5a99e643edc2cfaaac16051685b551e4c5ac0b32a57c58c0e529c001",
+    "library_sha256": "6ebc194316536ba61af5be24508ad9fcbb2ecc685e716c12e787c79530f66bf0",
+    "gui_executable_sha256": "fe216a48a48a6048156a133a39b960437d781a4c9214e5abc0f26f666f61ba22",
+    "embedded_installer_resource": "LibreHardwareMonitor.Resources.PawnIO_setup.exe",
+    "embedded_installer_bytes": 3225016,
+    "embedded_installer_sha256": "a3a46226c5e2824f4cdd42be0eecbabfc672c86f7889710f5ab1e6ad385b47a0",
+    "exact_official_release_match": "2.1.0",
+    "inspection_method": "Windows PowerShell 5.1 .NET Framework ReflectionOnlyLoadFrom plus GetManifestResourceStream and SHA256; no Main entrypoint, GUI, sensor read or installer execution.",
+    "version_requirement_scope": "The GUI checks for PawnIO >=2.0.0.0; the library IsInstalled test only observes registry DisplayVersion. Neither check proves a working loaded driver. Exact bundled installer is 2.1.0, while 2.2.0 is a separately verified update candidate; no stronger minimum-version claim is inferred."
+  },
+  "intel_cpu_dependency": {
+    "host_cpu": "Intel Core i7-13700K",
+    "library_component": "LibreHardwareMonitor.PawnIo.IntelMsr",
+    "embedded_module": "LibreHardwareMonitor.Resources.PawnIo.IntelMSR.bin",
+    "driver_device": "\\\\?\\GLOBALROOT\\Device\\PawnIO",
+    "behavior": "IntelMsr loads the embedded module through PawnIO and invokes ioctl_read_msr; direct thermal readings require a working driver/module, not merely the registry version.",
+    "source_references": [
+      "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitorLib/PawnIo/PawnIo.cs",
+      "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitorLib/PawnIo/IntelMsr.cs"
+    ]
+  },
+  "staged_installers": [
+    {
+      "version": "2.1.0",
+      "file_version": "2.1.0.0",
+      "product_name": "PawnIO",
+      "release_url": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.1.0",
+      "release_api_url": "https://api.github.com/repos/namazso/PawnIO.Setup/releases/tags/2.1.0",
+      "published_at_utc": "2026-02-12T23:09:15Z",
+      "asset_id": 355034224,
+      "download_url": "https://github.com/namazso/PawnIO.Setup/releases/download/2.1.0/PawnIO_setup.exe",
+      "staged_path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\pawnio-2.1.0-reviewed\\PawnIO_setup.exe",
+      "bytes": 3225016,
+      "sha256": "a3a46226c5e2824f4cdd42be0eecbabfc672c86f7889710f5ab1e6ad385b47a0",
+      "github_asset_digest_matches": true,
+      "authenticode": {
+        "status": "Valid",
+        "signature_type": "Authenticode",
+        "signer_subject": "E=admin@namazso.eu, CN=namazso.eu, O=namazso, L=Debrecen, C=HU",
+        "signer_issuer": "CN=GLOBALTRUST 2015 CODESIGNING 1, OU=GLOBALTRUST Certification Service, O=e-commerce monitoring GmbH, L=Wien, S=Wien, C=AT",
+        "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5",
+        "signer_not_before_utc": "2024-08-02T08:02:18Z",
+        "signer_not_after_utc": "2027-08-05T10:02:18Z",
+        "timestamp_signer_organization": "Microsoft Corporation",
+        "timestamp_signer_thumbprint": "7587C337A84BB5BF291A58191AD102FFCDCF36BF"
+      },
+      "executed": false,
+      "role": "Exact installer embedded in downloaded LibreHardwareMonitor 0.9.6"
+    },
+    {
+      "version": "2.2.0",
+      "file_version": "2.2.0.0",
+      "product_name": "PawnIO",
+      "release_url": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.2.0",
+      "release_api_url": "https://api.github.com/repos/namazso/PawnIO.Setup/releases/tags/2.2.0",
+      "published_at_utc": "2026-03-15T15:49:08Z",
+      "asset_id": 374375077,
+      "download_url": "https://github.com/namazso/PawnIO.Setup/releases/download/2.2.0/PawnIO_setup.exe",
+      "staged_path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\pawnio-2.2.0-reviewed\\PawnIO_setup.exe",
+      "bytes": 3410960,
+      "sha256": "1f519a22e47187f70a1379a48ca604981c4fcf694f4e65b734aaa74a9fba3032",
+      "github_asset_digest_matches": true,
+      "authenticode": {
+        "status": "Valid",
+        "signature_type": "Authenticode",
+        "signer_subject": "E=admin@namazso.eu, CN=namazso.eu, O=namazso, L=Debrecen, C=HU",
+        "signer_issuer": "CN=GLOBALTRUST 2015 CODESIGNING 1, OU=GLOBALTRUST Certification Service, O=e-commerce monitoring GmbH, L=Wien, S=Wien, C=AT",
+        "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5",
+        "signer_not_before_utc": "2024-08-02T08:02:18Z",
+        "signer_not_after_utc": "2027-08-05T10:02:18Z",
+        "timestamp_signer_organization": "Microsoft Corporation",
+        "timestamp_signer_thumbprint": "DAACDA1851DE00EE1916479CD19663E18BA2C24F"
+      },
+      "executed": false,
+      "role": "Separately staged official update candidate; not the installer embedded in the downloaded LHM package"
+    }
+  ],
+  "primary_source_captures": [
+    {
+      "file": "MainForm-v0.9.6.cs",
+      "url": "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitor/UI/MainForm.cs",
+      "sha256": "fc1f87b6537956a692d37ff5adcf082d20c60bcae13cc443a9472b09fe9cbfdb",
+      "bytes": 54657
+    },
+    {
+      "file": "PawnIo-v0.9.6.cs",
+      "url": "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitorLib/PawnIo/PawnIo.cs",
+      "sha256": "42d1602c9af3d2524be661cac21f40fd87e38609482aa6ddab4cc39f369d746a",
+      "bytes": 5922
+    },
+    {
+      "file": "IntelMsr-v0.9.6.cs",
+      "url": "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitorLib/PawnIo/IntelMsr.cs",
+      "sha256": "2c65b8afb3ec17273bef35dccb4c0c497fad8e50f1aba8bc1b2be4ecc398c33c",
+      "bytes": 1422
+    },
+    {
+      "file": "PawnIO-2.1.0.inf.in",
+      "url": "https://raw.githubusercontent.com/namazso/PawnIO/2.1.0/PawnIO/PawnIO.inf.in",
+      "sha256": "b03152a1bfa8a0f2342863f832a97eeb5313ccaa5dc9ce68010d2f81236aaea0",
+      "bytes": 1240
+    },
+    {
+      "file": "PawnIO-driver-2.1.0.cpp",
+      "url": "https://raw.githubusercontent.com/namazso/PawnIO/2.1.0/PawnIO/src/driver.cpp",
+      "sha256": "50b7081d053763389d6ae13e1c269200dedda3f8f2065ddafded77a845754a23",
+      "bytes": 7438
+    }
+  ],
+  "documented_operational_behavior": {
+    "installation": {
+      "source": "https://raw.githubusercontent.com/LibreHardwareMonitor/LibreHardwareMonitor/v0.9.6/LibreHardwareMonitor/UI/MainForm.cs",
+      "observation": "LHM 0.9.6 offers installation when missing/outdated, extracts its embedded setup and launches it with -install, waits for completion, then deletes its extracted copy. This preparation did not invoke that GUI flow."
+    },
+    "driver_installation": {
+      "source": "https://raw.githubusercontent.com/namazso/PawnIO/2.1.0/PawnIO/PawnIO.inf.in",
+      "observation": "PawnIO 2.1.0 INF defines a Root\\PawnIO SoftwareDevice, copies its SYS driver, registers a kernel-driver service with demand start, and targets Windows build17763 or later."
+    },
+    "device_security": {
+      "source": "https://raw.githubusercontent.com/namazso/PawnIO/2.1.0/PawnIO/src/driver.cpp",
+      "observation": "PawnIO2.1.0 source creates the device with a protected SYSTEM/Administrators-only access descriptor. Installed-device ACL and worker denial still require actual Windows verification."
+    },
+    "edition": {
+      "source": "https://pawnio.eu/",
+      "observation": "Official signed and developer unrestricted/unsigned editions differ. Prepared deployment is for the normal official signed edition; no test-signing or nonadministrator driver access is proposed."
+    },
+    "uninstall": {
+      "source": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.0.1",
+      "observation": "The official release history documents installer behavior as an uninstaller when named uninstall.exe. Version2.1.0 release notes fix uninstall when TEMP and ProgramFiles are on different disks. Exact current installed uninstall registration cannot be verified before installation; no guessed uninstall flags or driver-store deletion commands were executed.",
+      "additional_source": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.1.0"
+    },
+    "upgrade": {
+      "source": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.2.0",
+      "observation": "Version2.2.0 documents upgrading from2.1.0 without prior uninstall. This is an available update path, not evidence an upgrade is needed on this host."
+    },
+    "reboot": {
+      "source": "https://github.com/namazso/PawnIO.Setup/releases/tag/2.2.0",
+      "observation": "Version2.2.0 documents returning ERROR_SUCCESS_REBOOT_REQUIRED from silent operation when restart is needed. No blanket no-reboot guarantee was found for2.1.0; the actual installer result and Windows pending-restart state must be reviewed during elevated installation.",
+      "reboot_performed": false
+    }
+  },
+  "current_host_readonly_observation": {
+    "observed_at_utc": "2026-10-07T03:03:20.4139368Z",
+    "operator_scope": "non-elevated",
+    "pawnio_uninstall_key_registry64_present": false,
+    "pawnio_uninstall_key_wow6432_present": false,
+    "win32_systemdriver_pawnio_record_count": 0,
+    "scope": "Registry and Win32_SystemDriver metadata only; no device handle opened and no claim of elevated/SYSTEM acceptance."
+  },
+  "remaining_elevated_actions": [
+    "Select the exact bundled2.1.0 or separately reviewed2.2.0 candidate explicitly, and reverify digest/signature immediately before any installation.",
+    "Perform the reviewed normal signed-driver installation under a successful elevated session; this task staged files only and did not satisfy UAC or execute the installer.",
+    "Record installed version, driver/catalog signature, device/service identity, security descriptor and required reboot status without weakening worker access boundaries.",
+    "Install the frozen CPU probe bundle into protected custody and execute a bounded real SYSTEM sample; validate direct CPU temperatures and fail-closed behavior before closing the thermal hold."
+  ],
+  "preservation_assertions": {
+    "installer_executed": false,
+    "driver_installed_or_loaded": false,
+    "services_modified": false,
+    "hwinfo_modified": false,
+    "startup_modified": false,
+    "ram_disk_modified": false,
+    "credentials_modified": false,
+    "sensor_read_attempted": false,
+    "source_or_config_changed": false,
+    "reboot_performed": false,
+    "hardware_acceptance": false
+  }
+}

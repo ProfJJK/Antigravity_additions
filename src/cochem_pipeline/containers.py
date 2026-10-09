@@ -8,7 +8,7 @@ JUnit are evidence; model prose is never used to establish test success.
 """
 from __future__ import annotations
 
-from contextlib import closing
+from contextlib import closing, nullcontext
 from dataclasses import dataclass
 import hashlib
 import io
@@ -345,7 +345,8 @@ class DockerRunner:
                                       ('creation_uncertain', 'INTEGER NOT NULL DEFAULT 0'),
                                       ('creation_boot_id', 'TEXT'), ('creation_daemon_id', 'TEXT'),
                                       ('request_started_at','REAL'),('reservation_started_at','REAL'),
-                                      ('prepared_at', 'REAL'), ('preparation_seconds', 'REAL')):
+                                      ('prepared_at', 'REAL'), ('preparation_seconds', 'REAL'),
+                                      ('pool_policy_json', 'TEXT')):
                 if name not in columns:
                     db.execute('ALTER TABLE containers ADD COLUMN ' + name + ' ' + declaration)
             db.execute('INSERT OR IGNORE INTO metadata VALUES(?,?)', ('owner', uuid.uuid4().hex))
@@ -405,6 +406,7 @@ class DockerRunner:
                   'endpoint': self.policy.endpoint, 'creation_uncertain': 0,
                   'creation_boot_id': None, 'creation_daemon_id': None}
         record.update(request_started_at=requested,reservation_started_at=now)
+        record['pool_policy_json'] = _canonical(self.policy.as_dict()).decode()
         if preparing:
             record['deadline'] = now + 120
         with closing(self._connect()) as db:
@@ -439,8 +441,8 @@ class DockerRunner:
             count = db.execute("SELECT count(*) FROM containers WHERE status!='REMOVED'").fetchone()[0]
             if count >= min(effective_limit, capacity_limit if capacity_limit is not None else self.policy.max_containers):
                 raise ContainerCapacityError('Configured container or hardware capacity is occupied')
-            db.execute('INSERT INTO containers(lease,name,container_id,image,job_id,attempt_id,created_at,deadline,status,policy_digest,label_job_hash,memory_mb,pool_digest,endpoint,request_started_at,reservation_started_at) '
-                       'VALUES(:lease,:name,:container_id,:image,:job_id,:attempt_id,:created_at,:deadline,:status,:policy_digest,:label_job_hash,:memory_mb,:pool_digest,:endpoint,:request_started_at,:reservation_started_at)', record)
+            db.execute('INSERT INTO containers(lease,name,container_id,image,job_id,attempt_id,created_at,deadline,status,policy_digest,label_job_hash,memory_mb,pool_digest,endpoint,request_started_at,reservation_started_at,pool_policy_json) '
+                       'VALUES(:lease,:name,:container_id,:image,:job_id,:attempt_id,:created_at,:deadline,:status,:policy_digest,:label_job_hash,:memory_mb,:pool_digest,:endpoint,:request_started_at,:reservation_started_at,:pool_policy_json)', record)
             db.commit()
         return record
 
@@ -532,8 +534,8 @@ class DockerRunner:
         except (ValueError, KeyError, IndexError, TypeError) as error:
             raise ContainerCleanupError('Invalid owned-container inspection') from error
 
-    def _verify_limits(self, value):
-        host, policy = value['HostConfig'], self.policy
+    def _verify_limits(self, value, *, policy=None):
+        host, policy = value['HostConfig'], policy or self.policy
         expected = {'NetworkMode': 'none', 'ReadonlyRootfs': True,
                     'Memory': policy.memory_mb * 1048576, 'MemorySwap': policy.memory_mb * 1048576,
                     'NanoCpus': int(policy.cpus * 1e9), 'PidsLimit': policy.pids_limit,
@@ -577,6 +579,22 @@ class DockerRunner:
                 raise
             raise ContainerCleanupError('Owned container teardown could not be verified') from error
 
+    def _reattest_warm(self, record, value, daemon_identity):
+        """Reconstruct only a protected, hash-bound profile; never guess old policy."""
+        captured = DockerPolicy.from_dict(json.loads(record.get('pool_policy_json') or 'null'))
+        if (captured.digest != record['policy_digest'] or captured.pool_digest != record['pool_digest']
+                or captured.image != record['image'] or captured.image not in self.policy.allowed_images
+                or captured.endpoint != self.policy.endpoint or captured.executable != self.policy.executable
+                or not record.get('creation_daemon_id') or record['creation_daemon_id'] != daemon_identity
+                or record.get('creation_uncertain')
+                or any(getattr(captured,key)>getattr(self.policy,key) for key in
+                       ('memory_mb','cpus','pids_limit','tmpfs_mb','max_containers'))):
+            raise ContainerError('Prepared container policy or engine identity drifted')
+        self._verify_limits(value, policy=captured)
+        if (not value.get('State', {}).get('Running') or record['deadline'] <= time.time()
+                or not _prepared_provenance(record, as_of=time.time())):
+            raise ContainerError('Prepared container readiness or timing is invalid')
+
     def _discover_owned(self):
         """Reconcile actual objects against ALL leases, including tombstones.
 
@@ -585,7 +603,9 @@ class DockerRunner:
         they are never adopted or removed using labels alone.
         """
         unknown, diagnostics = 0, []
+        scan_started=time.time()
         try:
+            self.preflight()
             listed = self._call(['ps', '--all', '--no-trunc', '--filter',
                                  'label=' + _LABEL_OWNER + '=' + self.owner,
                                  '--format', '{{.ID}}'], output_limit=65536)
@@ -611,13 +631,20 @@ class DockerRunner:
                         continue  # A concurrent verified cleanup completed.
                     if owned['Id'] != identifier:
                         raise ContainerCleanupError('Owner census contradicts protected container identity')
+                    invalid_warm = False
+                    if record['status'] == 'WARM':
+                        try:
+                            self._reattest_warm(record, owned, self._daemon_identity)
+                        except Exception as error:
+                            invalid_warm = True
+                            diagnostics.append({'container_id': identifier, 'reason': str(error)[:512]})
                     with closing(self._connect()) as db:
                         db.execute('BEGIN IMMEDIATE')
                         # Reopen only tombstones with actual independent identity
                         # proof, never from a supplied worker ID or a 404.
                         db.execute("UPDATE containers SET status='QUARANTINED',deadline=0,container_id=?,creation_uncertain=0 "
                                    "WHERE lease=? AND status='REMOVED'", (identifier, record['lease']))
-                        if (not owned.get('State', {}).get('Running')
+                        if (invalid_warm or not owned.get('State', {}).get('Running')
                                 or not _prepared_provenance(record, as_of=time.time())):
                             # Stopped or legacy/invalid prepared instances are
                             # unavailable even before idle TTL expiry. Drain
@@ -628,16 +655,30 @@ class DockerRunner:
                 except Exception as error:
                     unknown += 1
                     diagnostics.append({'container_id': identifier, 'reason': str(error)[:512]})
+            with closing(self._connect()) as db:
+                # Missing physical members cannot remain available. Do not
+                # retire a concurrently published preparation newer than census.
+                placeholders=','.join('?' for _ in identifiers) or 'NULL'
+                db.execute("UPDATE containers SET status='DRAINING',deadline=0 WHERE status='WARM' "
+                           f"AND prepared_at<=? AND container_id NOT IN ({placeholders})",
+                           [scan_started,*identifiers]) if identifiers else db.execute(
+                    "UPDATE containers SET status='DRAINING',deadline=0 WHERE status='WARM' AND prepared_at<=?",
+                    (scan_started,))
+                db.commit()
         except Exception as error:
             # An unobservable daemon cannot establish an empty physical census.
             unknown = max(1, unknown)
             diagnostics.append({'reason': str(error)[:512]})
+            # Unobservable engine state cannot leave apparently ready inventory.
+            with closing(self._connect()) as db:
+                db.execute("UPDATE containers SET status='QUARANTINED' WHERE status='WARM'")
+                db.commit()
         with closing(self._connect()) as db:
             db.execute("UPDATE metadata SET value=? WHERE key='unknown_owned'", (str(unknown),))
             db.commit()
         return diagnostics
 
-    def reap_orphans(self, active_attempt_ids=None, *, now=None, include_warm=False):
+    def reap_orphans(self, active_attempt_ids=None, *, now=None, include_warm=False, admission_lock=None):
         """Call every <=60 seconds and at controller startup.
 
         With no active-set argument, only expired leases are removed. A supplied
@@ -650,15 +691,26 @@ class DockerRunner:
             records = [dict(row) for row in db.execute("SELECT * FROM containers WHERE status!='REMOVED'")]
         removed, failures = [], []
         for record in records:
-            invalid_prepared = (record['status']=='WARM'
-                                and not _prepared_provenance(record, as_of=now))
-            if (not include_warm and not invalid_prepared
-                    and record['status'] in ('WARM', 'PREPARING') and record['deadline'] > now):
-                continue
-            if (record['deadline'] > now and (active_attempt_ids is None or record['attempt_id'] in active_attempt_ids)
-                    and not invalid_prepared
-                    and not (include_warm and record['status'] in ('WARM', 'PREPARING'))):
-                continue
+            with admission_lock if admission_lock is not None else nullcontext():
+                active=active_attempt_ids() if callable(active_attempt_ids) else active_attempt_ids
+                with closing(self._connect()) as db:
+                    db.execute('BEGIN IMMEDIATE')
+                    row=db.execute('SELECT * FROM containers WHERE lease=?',(record['lease'],)).fetchone()
+                    if row is None or row['status']=='REMOVED':
+                        continue
+                    record=dict(row)
+                    invalid_prepared = (record['status']=='WARM'
+                                        and not _prepared_provenance(record, as_of=now))
+                    if (not include_warm and not invalid_prepared
+                            and record['status'] in ('WARM', 'PREPARING') and record['deadline'] > now):
+                        continue
+                    if (record['deadline'] > now and (active is None or record['attempt_id'] in active)
+                            and not invalid_prepared
+                            and record['status'] not in ('DRAINING','QUARANTINED')
+                            and not (include_warm and record['status'] in ('WARM', 'PREPARING'))):
+                        continue
+                    db.execute("UPDATE containers SET status='DRAINING' WHERE lease=?",(record['lease'],))
+                    db.commit()
             try:
                 self._remove(record)
                 removed.append(record['lease'])
@@ -867,7 +919,7 @@ class DockerRunner:
                 'preparation_p95_seconds':preparation_p95, 'observed_arrivals_per_second':rate,
                 'sample_overflow':overflow, 'hardware_can_only_lower_target':True}
 
-    def prepare_pool(self, target=None):
+    def prepare_pool(self, target=None, *, admission_lock=None):
         """Precreate unused sandboxes outside the request path, subject to capacity.
 
         ``target`` is the hardware-admitted total capacity, including active and
@@ -901,7 +953,8 @@ class DockerRunner:
         prepared = []
         while self.census()['owned'] < target:
             try:
-                record = self._reserve('_warm_', 'warm-' + uuid.uuid4().hex, preparing=True, capacity_limit=target)
+                with admission_lock if admission_lock is not None else nullcontext():
+                    record = self._reserve('_warm_', 'warm-' + uuid.uuid4().hex, preparing=True, capacity_limit=target)
             except ContainerCapacityError:
                 break
             try:
@@ -917,7 +970,7 @@ class DockerRunner:
                 self._verify_limits(value)
                 if not value['State']['Running']:
                     raise ContainerError('Prepared container did not remain running')
-                with closing(self._connect()) as db:
+                with admission_lock if admission_lock is not None else nullcontext(), closing(self._connect()) as db:
                     db.execute('BEGIN IMMEDIATE')
                     published = int(db.execute("SELECT value FROM metadata WHERE key='capacity'").fetchone()[0])
                     owned = db.execute("SELECT count(*) FROM containers WHERE status!='REMOVED'").fetchone()[0]
@@ -939,12 +992,12 @@ class DockerRunner:
                 raise
         return {'prepared': prepared, 'drained': drained, 'census': self.census()}
 
-    def prepare_requested_profile(self, capacity):
+    def prepare_requested_profile(self, capacity, *, admission_lock=None):
         """Prepare one exact queued policy without taking an additional physical seat."""
         census=self.census()
         target=min(capacity,self.policy.max_containers)
         if census['owned']>target:
-            self.prepare_pool(target=max(0,target))
+            self.prepare_pool(target=max(0,target),admission_lock=admission_lock)
             census=self.census()
             if census['owned']>target:
                 return {'ready':False,'reason':'pressure_requires_active_seat_drain','census':census}
@@ -956,7 +1009,7 @@ class DockerRunner:
             return {'ready':False,'reason':'preallocated_capacity_unavailable','census':census}
         if census['owned']>=target and not self._retire_incompatible_warm():
             return {'ready':False,'reason':'all_preallocated_seats_active','census':self.census()}
-        self.prepare_pool(target=min(target,self.census()['owned']+1))
+        self.prepare_pool(target=min(target,self.census()['owned']+1),admission_lock=admission_lock)
         census=self.census()
         return {'ready':any(row['status']=='WARM' and row['pool_digest']==self.policy.pool_digest
                            and _prepared_provenance(row, as_of=time.time())
@@ -1085,9 +1138,11 @@ class DockerRunner:
                     break
                 argv = list(command.argv)
                 report_path = f'/work/results/{index}.xml'
+                assertion_path = f'/work/results/{index}-assertions.json'
                 if command.kind == 'pytest':
+                    from .pytest_assertions import ASSERTION_OBSERVER
                     # Isolated Python cannot import a project-supplied pytest.py shim.
-                    argv.insert(1, '-I')
+                    argv = [argv[0], '-I', '-c', ASSERTION_OBSERVER, assertion_path, '/work/source', *argv[3:]]
                     # A stable root binds JUnit classnames to the controller's
                     # sealed source-relative module/class identities, even if
                     # operator arguments select a deeper test directory.
@@ -1126,6 +1181,15 @@ class DockerRunner:
                     item['junit_sha256'] = _digest(report.stdout)
                     item['junit'] = parse_junit(report.stdout)
                     item['junit_cases'] = junit_cases(report.stdout)
+                    from .pytest_assertions import bind_assertion_evidence
+                    assertions = cycle_call(['exec', container_id, 'python', '-I', '-c', _READ_RESULT,
+                                             assertion_path, str(self.policy.junit_limit_bytes)],
+                                            output_limit=self.policy.junit_limit_bytes)
+                    if assertions.returncode or assertions.output_exceeded:
+                        raise ContainerError('Actual pytest assertion evidence is missing or exceeds its limit')
+                    item['assertions_sha256'] = _digest(assertions.stdout)
+                    item['assertion_observer_sha256'] = _digest(ASSERTION_OBSERVER.encode())
+                    bind_assertion_evidence(item['junit_cases'], assertions.stdout, source['files'])
                     if item['junit']['failures'] or item['junit']['errors']:
                         receipt['failure_category'] = 'tests_failed'
                 if receipt['failure_category']:

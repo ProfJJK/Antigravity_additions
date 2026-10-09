@@ -36,6 +36,7 @@ class HardwarePolicy:
     physical_cpu_count_required: bool = True
     windows_commit_required: bool = True
     cpu_temperature_required: bool = True
+    cpu_temperature_probe: str | None = None
     disk_io_required: bool = True
     sample_seconds: float = .05
     sample_interval_seconds: float = 1.
@@ -65,7 +66,10 @@ class HardwarePolicy:
     def __post_init__(self):
         for field in fields(self):
             value = getattr(self, field.name)
-            if field.name.endswith('_required'):
+            if field.name == 'cpu_temperature_probe':
+                from .cpu_temperature import validate_probe_path
+                validate_probe_path(value)
+            elif field.name.endswith('_required'):
                 if type(value) is not bool:
                     raise ValueError(f'{field.name} must be a boolean')
             elif field.name in {'recovery_samples', 'ramp_up_step'}:
@@ -361,7 +365,9 @@ class HardwareGuard:
             if not force and self._latest is not None and now-self._sampled_at < self.policy.sample_interval_seconds:
                 from copy import deepcopy
                 return deepcopy(self._latest)
-            measured = collect_resources(self.workspaces, sample_seconds=self.policy.sample_seconds)
+            probe = ({'cpu_temperature_probe': self.policy.cpu_temperature_probe}
+                     if self.policy.cpu_temperature_probe else {})
+            measured = collect_resources(self.workspaces, sample_seconds=self.policy.sample_seconds, **probe)
             decision = self._state.apply(assess_resources(measured,self.policy,self.max_agents),self.policy,time.monotonic())
             cpu, memory, disks = measured.get('cpu',{}), measured.get('memory',{}), measured.get('disks',{})
             volumes = disks.get('volumes',[])

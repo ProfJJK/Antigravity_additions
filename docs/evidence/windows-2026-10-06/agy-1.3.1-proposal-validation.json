@@ -1,0 +1,82 @@
+{
+  "schema": "cochem-agy-131-proposed-hold-validation/1",
+  "pipeline_configuration_shape_valid": true,
+  "supervisor_provider_preflight": "HELD_VERIFICATION_PENDING",
+  "supervisor_full_installed_configuration_validation": "DEFERRED: protected pipeline.reviewed.json is not installed; missing-file error was not bypassed",
+  "installed_or_activated": false,
+  "max_execution_slots": 4,
+  "planned_worker_identities": 6,
+  "routing_policy_version": 2,
+  "both_integrations_refuse_launch": true,
+  "hold": {
+    "scope": "isolated_pipeline_integration",
+    "state": "verification_pending",
+    "category": "compatibility",
+    "provider": "gemini",
+    "reason": "The owner confirms Agy is available, signed in and functioning. Isolated pipeline worker authentication, inference-only controls and native serving-model receipts have not yet been verified; this is not a provider outage or owner-login failure.",
+    "finding_ids": [
+      "AGY-AUTH",
+      "AGY-ISOLATION",
+      "AGY-IDENTITY"
+    ],
+    "evidence_path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-agy-1.3.1-followup.json",
+    "evidence_sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5",
+    "executable_sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+    "version": "1.3.1",
+    "staged_executable_present": false
+  },
+  "ramdisk": {
+    "enabled": true,
+    "mount_root": "R:\\",
+    "size_mb": 8192,
+    "min_free_mb": 512,
+    "reserve_host_memory_mb": 4096,
+    "backing": "auto",
+    "imdisk_executable": "C:\\Windows\\System32\\imdisk.exe",
+    "claude_project_cache": true,
+    "lifecycle": "adopt_existing",
+    "startup_wait_seconds": 120
+  },
+  "adopted_drive_creation_refused": true,
+  "repair_limits_preserved": {
+    "per_incident": 2,
+    "per_day": 4,
+    "cooldown_seconds": 1800
+  },
+  "old_capability_report_unchanged": true,
+  "native_model_jobs_executed": 0,
+  "files": [
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+      "sha256": "f3161c436ffeb6a519dcaece7bf2ffbef61445cee6b4cb9513147bd3b49371a3"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.supervisor.proposed.json",
+      "sha256": "7e5a309283ccc710a038402af1b513b64296685ec084368d0c31315408155ac0"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.stage.json",
+      "sha256": "cdff8ef3c8997e380d4365199a9333ef53737a84aa9d4fd9174b854425647456"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-agy-1.3.1-followup.json",
+      "sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\native-contract-followup.json",
+      "sha256": "c2296fde5dce1a5eadec12c50edf438c09da679b02cd878517653eaab17405d8"
+    }
+  ],
+  "focused_validation": {
+    "passed": 145,
+    "failed": 0,
+    "junit": "docs/evidence/windows-2026-10-06/agy-1.3.1-proposal-hold-focused-tests.xml"
+  },
+  "broader_diagnostic": {
+    "passed": 195,
+    "skipped": 5,
+    "failed": 4,
+    "failure_reason": "WinError1314 constructing four existing symlink fixtures; privileged acceptance remains pending",
+    "junit": "docs/evidence/windows-2026-10-06/agy-1.3.1-proposal-hold-tests.xml"
+  }
+}

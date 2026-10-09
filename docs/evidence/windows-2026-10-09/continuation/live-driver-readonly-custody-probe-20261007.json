@@ -1,0 +1,10 @@
+{
+  "schema": "cochem-live-driver-readonly-custody-probe/1",
+  "driver_sha256": "930467a019b8e91ac19ba877fa34890dc64fa2966af3df5c2806e9e186e467a4",
+  "status": "EXACT_RUNTIME_AND_OPERATOR_CUSTODY_VERIFIED_BEFORE_STARTUP",
+  "http_calls": 0,
+  "tokens_read": 0,
+  "production_writes": 0,
+  "held_code_files": 282,
+  "startup_receipt_checked": false
+}

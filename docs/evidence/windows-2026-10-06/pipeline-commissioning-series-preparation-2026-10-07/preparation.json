@@ -1,0 +1,80 @@
+{
+  "schema": "cochem-pipeline-commissioning-series-preparation/1",
+  "status": "REVIEWED_ATTENDED_COMMAND_READY_NOT_APPLIED",
+  "recorded_utc": "2026-10-08T02:03:34.646426+00:00",
+  "entrypoint": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-pipeline-commissioning-r3-v1.ps1",
+  "entrypoint_sha256": "44ed0b7d79b33afee6e35b36ddf2d37056e1e51f31806f05a21c2038c98d9bf1",
+  "operator_command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-pipeline-commissioning-r3-v1.ps1\" -Apply -Interactive",
+  "phases": [
+    "native_authentication",
+    "first_controller_start"
+  ],
+  "identities": 6,
+  "shared_slots": 4,
+  "chapter06_routing_unchanged": true,
+  "maximum_browser_authorizations": 12,
+  "actual_browser_authorizations_required": null,
+  "ordinary_windows_tests": {
+    "passed": 52,
+    "errors": 0,
+    "failed": 0,
+    "skipped": 0
+  },
+  "preview": {
+    "sha256": "844fff031313302d557b8489e23ab94973271ad4330a939718e54c70a50e54e4",
+    "holds": [
+      "native_authentication: codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+      "native_authentication: claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+    ],
+    "system_checks_deferred": true,
+    "tasks_registered": 0,
+    "model_jobs_submitted": 0
+  },
+  "files_sha256": {
+    "run-pipeline-commissioning-r3-v1.ps1": "44ed0b7d79b33afee6e35b36ddf2d37056e1e51f31806f05a21c2038c98d9bf1",
+    "test_pipeline_commissioning_series_r3.py": "7791ca2c19a903170e0ff48f4379a8e4e6a91677835eab5af3ecbfad356e63e9",
+    "pipeline-commissioning-series-tests-scope-guards.xml": "cc8eccfb433735e88213e068518c0bd7ebc7e4143f58b28dfed6672e15adf885",
+    "pipeline-commissioning-series-preview-final.json": "844fff031313302d557b8489e23ab94973271ad4330a939718e54c70a50e54e4",
+    "commission-first-warden-r3-v1.ps1": "75efe248449fa9be0317a85feb277d82a961d05594ee754d11b3b9d0ec4dfd1e",
+    "commission-first-warden-r3-v1.py": "bd6ed9cc62bc96777d5748e819c5f780ada2e58ce0d43bf7e5f2013ca72f451c",
+    "authenticate-native-profiles-status-first-r3-v1.ps1": "85801beaa1bfaaaa41ad0727162e2e6ac244051078465c0d892c66a32c34b44f"
+  },
+  "supporting_preparations": {
+    "authentication": {
+      "path": "six-profile-status-first-auth-2026-10-07/preparation.json",
+      "sha256": "d27318e6bb63820896d03a817b9158407567ec4d975884864ddd54e5398df518"
+    },
+    "first_start": {
+      "path": "first-warden-commissioning-preparation-2026-10-07/preparation.json",
+      "sha256": "6f70d3a5a8087e472ae260f0bcb0c0358364e5584f881423008ad35f59e95f8e"
+    },
+    "live_workflows": {
+      "path": "live-commissioning-driver-preparation-2026-10-07/preparation.json",
+      "sha256": "b2f07fa2b2305365a3ffd4b03ebd6e4e229875c176089e4a116d09a4cecf539d"
+    },
+    "codex_live_bridge": {
+      "path": "codex-live-bridge-r3-preparation-20261007/preparation.json",
+      "sha256": "9b5fa42ebdab6b2cfeb1ac727de0fc3c69632a26a03d42b8c40e0fe9161dee2b"
+    }
+  },
+  "guide_sha256": "9758ac01bc307a0e053419bcdd1dde15a8bd277bb24b2067d16476c2b1b546e2",
+  "controller_started": false,
+  "automatic_repair_enabled": false,
+  "full_srs_acceptance": false,
+  "installed_runtime_changed": false,
+  "credentials_changed": false,
+  "databases_modified": false,
+  "repair_budgets_modified": false,
+  "ram_volume_or_startup_task_changed": false,
+  "linux_evidence_included": false
+}

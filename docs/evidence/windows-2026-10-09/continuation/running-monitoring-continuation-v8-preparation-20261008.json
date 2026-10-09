@@ -1,0 +1,213 @@
+{
+  "schema": "cochem-running-monitoring-continuation-preparation/1",
+  "status": "PREPARED_NOT_APPLIED",
+  "prepared_utc": "2026-10-09T02:39:23.840708+00:00",
+  "owner_local_date": "2026-10-08",
+  "host": "AETHERDESK",
+  "observed_deployment": {
+    "controller_running": true,
+    "controller_pid": 5788,
+    "controller_instance_id": "c867588c063c4362beca10358ebf79ef",
+    "controller_native_first_start_scope": "owner-reported protected commissioning receipt, separately corroborated by ordinary OS listener and live MCP",
+    "controller_commissioning_sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3",
+    "held_observer_reported_running": true,
+    "held_observer_pid": 24608,
+    "held_observer_instance_id": "a0136f033e6b4045a484cbd3c9828cad",
+    "held_observer_activation_missing": true,
+    "resource_observer_not_started": true,
+    "ordinary_task_metadata_access": "denied; exact elevated native task/process verification remains required"
+  },
+  "defect": "PowerShell cast of Z epoch becomes Local DateTime; subtracting it from UtcNow introduces +21600 seconds and falsely rejects a fresh heartbeat",
+  "repair": "Correct only the imported Wait epoch expression to DateTimeOffset UTC; attest current observer/controller and two progressing heartbeats; publish missing activation without task action; new one-shot batch then starts unchanged resource recorder",
+  "source_pins": {
+    "resume-running-held-observer-r3-v1.ps1": "d234514ff3b0689047ae66074d6304ab712ed3e6627628840ef3c0892bccaa7a",
+    "run-running-monitoring-continuation-r3-v8.ps1": "c3f5bc81a6ff99c8e318b3285f18db0b76f59673b39c7c12c024c93b80938119",
+    "install-held-supervisor-observation-r3-v3.ps1": "f16cd5e39352d038b6ad81a25effc6a428308eee0106f88f3e42d20dcb939ad6",
+    "run-post-commissioning-setup-r3-v4.ps1": "933aac1f6ca8ab9bf959aa4578a18284fb0aef5d57e93fc2c834da557e1e13c4",
+    "install-resource-observer-r3-v5.ps1": "ad64a859ad069a728cc57c324aedc5d48b44a072352e40b2bbed143d57e7c69f",
+    "task-private-acl-v8.ps1": "f48d47e33c6a8885d35199456e24f1e606c771ee215c92037686e4399e1f1c47"
+  },
+  "ordinary_windows_test_runs": [
+    {
+      "file": "windows-utc-epoch-regression-tests-final.xml",
+      "sha256": "c7e31c22f5cbbb11d58c25a5b30724d433c15f632b52d027bbfba8471624ca7c",
+      "bytes": 2780,
+      "passed": 14,
+      "scope": "ordinary Windows; inert deployment IO except explicitly read-only native clocks"
+    },
+    {
+      "file": "running-held-wait-utc-tests-final.xml",
+      "sha256": "12a3215842ee11a3711b778d6d6d268d4a53233908b45a23e950b494ef5f7d1f",
+      "bytes": 3104,
+      "passed": 15,
+      "scope": "ordinary Windows; inert deployment IO except explicitly read-only native clocks"
+    },
+    {
+      "file": "running-held-observer-recovery-v1-tests-final.xml",
+      "sha256": "b9a58312c18f65aa31256873b2b7af2d14bf01713eb9fc32d74bd2b7dc140dac",
+      "bytes": 6457,
+      "passed": 31,
+      "scope": "ordinary Windows; inert deployment IO except explicitly read-only native clocks"
+    },
+    {
+      "file": "running-monitoring-v8-tests-initial.xml",
+      "sha256": "24a9c76188109cf5489a71a5ca1d303b37af758fd38b57389e177126f12074de",
+      "bytes": 3983,
+      "passed": 20,
+      "scope": "ordinary Windows; inert deployment IO except explicitly read-only native clocks"
+    },
+    {
+      "file": "running-monitoring-v8-source-match-tests-final.xml",
+      "sha256": "2cd2e8cbefa4278fcaee39c057ec587f8cbe33025a0b581dc2572f81ae3c9d9c",
+      "bytes": 411,
+      "passed": 1,
+      "scope": "ordinary Windows; inert deployment IO except explicitly read-only native clocks"
+    }
+  ],
+  "test_provenance": "31 recovery cases passed after a fixture-only exception wrapper expectation correction; 15 imported-Wait cases passed after a fixture-only variable-shadow correction; parent 20 inert-child cases and one actual-source reproduction case ran separately",
+  "system_deployment_apply_during_preparation": false,
+  "existing_controller_or_held_observer_restarted": false,
+  "model_jobs_submitted_by_monitoring_preparation": 0,
+  "live_read_only_mcp_verified": true,
+  "controller_get_telemetry_writes_possible": true,
+  "credentials_modified_by_monitoring_preparation": false,
+  "databases_modified_by_monitoring_preparation": false,
+  "existing_ram_drive_or_startup_task_modified": false,
+  "worker_identities": 6,
+  "shared_capacity": 4,
+  "routing": "Chapter 06 unchanged",
+  "paid_repair_enabled": false,
+  "component_recovery_enabled": false,
+  "continuous_48h_complete": false,
+  "live_model_workflows_accepted_by_this_preparation": false,
+  "linux_results_counted_as_windows": false,
+  "full_srs_acceptance": false,
+  "next": "Owner runs run-running-monitoring-continuation-r3-v8.ps1 -Apply -Interactive once; no browser authentication or earlier setup replay",
+  "archive_inventory": [
+    {
+      "file": "resume-running-held-observer-r3-v1.ps1",
+      "sha256": "d234514ff3b0689047ae66074d6304ab712ed3e6627628840ef3c0892bccaa7a",
+      "bytes": 19351
+    },
+    {
+      "file": "run-running-monitoring-continuation-r3-v8.ps1",
+      "sha256": "c3f5bc81a6ff99c8e318b3285f18db0b76f59673b39c7c12c024c93b80938119",
+      "bytes": 35333
+    },
+    {
+      "file": "install-held-supervisor-observation-r3-v3.ps1",
+      "sha256": "f16cd5e39352d038b6ad81a25effc6a428308eee0106f88f3e42d20dcb939ad6",
+      "bytes": 30083
+    },
+    {
+      "file": "run-post-commissioning-setup-r3-v4.ps1",
+      "sha256": "933aac1f6ca8ab9bf959aa4578a18284fb0aef5d57e93fc2c834da557e1e13c4",
+      "bytes": 33347
+    },
+    {
+      "file": "install-resource-observer-r3-v5.ps1",
+      "sha256": "ad64a859ad069a728cc57c324aedc5d48b44a072352e40b2bbed143d57e7c69f",
+      "bytes": 35146
+    },
+    {
+      "file": "task-private-acl-v8.ps1",
+      "sha256": "f48d47e33c6a8885d35199456e24f1e606c771ee215c92037686e4399e1f1c47",
+      "bytes": 4395
+    },
+    {
+      "file": "windows-utc-epoch-regression-tests-final.xml",
+      "sha256": "c7e31c22f5cbbb11d58c25a5b30724d433c15f632b52d027bbfba8471624ca7c",
+      "bytes": 2780
+    },
+    {
+      "file": "running-held-wait-utc-tests-final.xml",
+      "sha256": "12a3215842ee11a3711b778d6d6d268d4a53233908b45a23e950b494ef5f7d1f",
+      "bytes": 3104
+    },
+    {
+      "file": "running-held-observer-recovery-v1-tests-final.xml",
+      "sha256": "b9a58312c18f65aa31256873b2b7af2d14bf01713eb9fc32d74bd2b7dc140dac",
+      "bytes": 6457
+    },
+    {
+      "file": "running-monitoring-v8-tests-initial.xml",
+      "sha256": "24a9c76188109cf5489a71a5ca1d303b37af758fd38b57389e177126f12074de",
+      "bytes": 3983
+    },
+    {
+      "file": "running-monitoring-v8-source-match-tests-final.xml",
+      "sha256": "2cd2e8cbefa4278fcaee39c057ec587f8cbe33025a0b581dc2572f81ae3c9d9c",
+      "bytes": 411
+    },
+    {
+      "file": "archive-running-monitoring-continuation-v8.py",
+      "sha256": "f5a892e61377fae43449a78071f14de70929e8ef58dfc1f33fc5be1e24b0044e",
+      "bytes": 7242
+    },
+    {
+      "file": "prepare-running-monitoring-continuation-v8.py",
+      "sha256": "2fbbdb55f9c3cb53cc5e1c97e1e957ad2020591ad39bb01189603d1f1cccc8e7",
+      "bytes": 5059
+    },
+    {
+      "file": "record-running-monitoring-hold-v8.py",
+      "sha256": "2616fae321cd85e2b39eaccc6008114349a4e12e1e9faa035cc15da655856310",
+      "bytes": 3882
+    },
+    {
+      "file": "test_running_monitoring_continuation_v8.py",
+      "sha256": "cadf180f0a8c2ed1eec4a9903cea5b48276ca77fc080268a22b55e542c8b3827",
+      "bytes": 9548
+    },
+    {
+      "file": "test_resume_running_held_observer_r3_v1.py",
+      "sha256": "d6e946558690948b69653929c486345595bf3138d9aa493ceedcb6ac77c15eed",
+      "bytes": 13970
+    },
+    {
+      "file": "test_running_held_wait_utc.py",
+      "sha256": "c36456a4f15442b8b6a6619077d926494f4bb3be81e3f25c9fa576e3671b47dd",
+      "bytes": 10335
+    },
+    {
+      "file": "test_windows_utc_epoch_regression.py",
+      "sha256": "7b57bfec589f211cecc7ecead7486f8b89e1663f4416cb85025af8f9f041e05f",
+      "bytes": 11035
+    },
+    {
+      "file": "RETURN_SETUP_RUNNING_MONITOR_V8.txt",
+      "sha256": "5a01d01523453e5b40f45a953264590dc88478e9ca8f9850458578e088ea0409",
+      "bytes": 2950
+    },
+    {
+      "file": "windows-utc-epoch-evidence-20261008.json",
+      "sha256": "5f2ec6a68e39357a4917d92c59932fb44d733e3f6111bdb36b65d91e2b60e0d3",
+      "bytes": 939
+    },
+    {
+      "file": "running-monitoring-hold-observation-20261008.json",
+      "sha256": "532ea843d44cb602c031395c272bd3df057aaef9eb83e36dc0520f27d294dc91",
+      "bytes": 2371
+    },
+    {
+      "file": "post-start-codex-live-bridge-20261008.json",
+      "sha256": "e97db74ba0e4cf454b47760aff7f62a11e924df5b53f9cf1767d2550163b2fb3",
+      "bytes": 2808
+    },
+    {
+      "file": "post-start-ordinary-os-census-20261008.json",
+      "sha256": "85b5373070e9a55d223e55404e2f21822417d337bf28cb078f218349c2072cc8",
+      "bytes": 9312
+    },
+    {
+      "file": "running-held-observer-recovery-v1-tests-initial.xml",
+      "sha256": "4bef4abb9cb28c89a7e0408127269685efe8d067d94d9af42ee3df837973f9a4",
+      "bytes": 7421
+    },
+    {
+      "file": "running-held-wait-utc-tests-instance-fixture-initial.xml",
+      "sha256": "410cb65cc51bbe32eccd53d70d651a831d77a397575563d1bdd87d8ba62682fb",
+      "bytes": 3898
+    }
+  ]
+}

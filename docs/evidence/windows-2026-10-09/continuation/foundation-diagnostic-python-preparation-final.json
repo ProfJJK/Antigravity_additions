@@ -1,0 +1,50 @@
+{
+  "captured_platform": "Windows",
+  "diagnosis": {
+    "established": "The error type and exact collector control flow locate the historical failure in server attestation before or after the owner-label census.",
+    "instrumentation": "The exact pinned collector executes once. Transparent wrappers retain original return/raise decisions and record stage, before/after command, allowlisted operation and numeric error. Both cause and context are retained in a bounded sanitized graph; no retries or raw exception/CLI text.",
+    "not_established": "The original receipt omitted exception text and numeric codes; its exact native operation and Win32 cause cannot be recovered from that receipt.",
+    "ordinary_native_fixture": "A unique disposable local named pipe, created and opened only with the ordinary test token, returned ERROR_PIPE_BUSY (231) on a second handle attempt. No bytes were read or written. This reproduces one possible indistinguishable legacy error encoding, not the actual historical failure."
+  },
+  "fixture_boundaries": "Full-run tests use the real frozen support, installed configuration, actual six success receipts and actual public prior metadata. Protected custody, private knowledge bytes, RAM observations, task/controller identity and Docker transport are explicit inert fixtures. The Docker baseline is derived fixture data. Separate tests verify exact current public receipt and packet hashes.",
+  "helper": {
+    "path": "diagnose-foundation-docker-r3-v1.py",
+    "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5"
+  },
+  "operation_audit": "All direct _check labels in the installed attest_docker_pipe_server, require_system, _account_sid, _sid_text, _token_info, and _acl routines are allowlisted; arbitrary messages remain unpublished.",
+  "original_evidence": {
+    "failed_foundation_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "original_error_type": "WindowsIsolationError",
+    "original_failure_phase": "docker_owner_census",
+    "original_ram_provision_started": false,
+    "original_registry_provision_started": false,
+    "original_winerror": null,
+    "successful_preflight_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e"
+  },
+  "python": "3.12.13",
+  "schema": "cochem-foundation-diagnostic-python-preparation/1",
+  "scope": {
+    "existing_state_modified": false,
+    "live_docker_calls": 0,
+    "model_jobs": 0,
+    "old_helpers_unchanged": true,
+    "privileged_tasks_created": 0,
+    "protected_files_modified": 0,
+    "provider_authentication": false,
+    "system_acceptance": false
+  },
+  "status": "PREPARED_NOT_EXECUTED",
+  "supersedes_preparation_sha256": "0d2a12200d0d155cbd78cad8c6e7f228020969002b544af08d8c8c408cab53df",
+  "tests": {
+    "errors": 0,
+    "failed": 0,
+    "junit_seconds": 1.041,
+    "passed": 41,
+    "path": "test_foundation_docker_diagnostic_r3_v1.py",
+    "pytest_reported_seconds": 1.11,
+    "sha256": "4bb03f084b74dab7b42ed6e66bbf68a1f92c4144aa895e5a1636286cffac3c6d",
+    "skipped": 0,
+    "xml": "foundation-docker-diagnostic-r3-v1-tests-final.xml",
+    "xml_sha256": "6530bd99c1f91ab9a1ad10da47f357869279b2005d2125e34d185017f30a5174"
+  }
+}

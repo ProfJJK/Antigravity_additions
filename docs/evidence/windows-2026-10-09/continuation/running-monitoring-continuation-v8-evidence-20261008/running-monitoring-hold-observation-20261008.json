@@ -1,0 +1,51 @@
+{
+  "schema": "cochem-running-monitoring-hold-observation/1",
+  "status": "RUNNING_HELD_OBSERVER_REPORTED_HEALTHY_AFTER_FALSE_STALE_FAILURE",
+  "observed_utc": "2026-10-09T02:30:49.355720+00:00",
+  "fixed_metadata": [
+    {
+      "path": "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1\\installer-failure.json",
+      "sha256": "b2012c0ec8bbfaaa2982020915ec693321bc858ff71f4839c19bb5ba4e5b5d0b"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1\\provisioning.json",
+      "sha256": "beff7c79325f1c123ba7ae01aba4e810c033769063ba4aae5f9a9c5a67656e50"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1\\start-intent.json",
+      "sha256": "3800a4a09d7513d074bb3d0928f15d216d03b48bb4d86a349d3b32e952e65c1b"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\WardenCommissioning4.2.7-windows-20261007-r3-v1\\commissioning.json",
+      "sha256": "4bf82adb21852c52df8dd20c112b8df912b4813c225aa66cdfdcb272fe148bd3"
+    }
+  ],
+  "runtime_sha256_at_observation": "34aaf773858d5ac4127cceea5862007df23e8d257c10835991422c98feffd2d0",
+  "runtime": {
+    "schema": "cochem-held-supervisor-runtime/1",
+    "status": "HELD_SUPERVISOR_OBSERVATION_RUNNING",
+    "pid": 24608,
+    "instance_id": "a0136f033e6b4045a484cbd3c9828cad",
+    "process_creation_filetime": 134359860348047610,
+    "service_identity": "SYSTEM",
+    "observed_controller_state": "healthy",
+    "paid_repair_enabled": false,
+    "component_recovery_enabled": false,
+    "warden_actuation_enabled": false,
+    "full_srs_acceptance": false,
+    "sequence": 60,
+    "checked_at": 1791513049.314269
+  },
+  "correct_utc_age_seconds": 0.04144692420959473,
+  "task_metadata_independently_accessible": false,
+  "process_token_independently_attested_by_this_observation": false,
+  "controller_health_and_mcp_independently_verified": true,
+  "live_bridge_evidence": "post-start-codex-live-bridge-20261008.json",
+  "activation_receipt_present": false,
+  "tasks_changed": 0,
+  "processes_started_or_stopped": 0,
+  "model_jobs_submitted": 0,
+  "credentials_or_databases_modified": false,
+  "linux_results_counted_as_windows": false,
+  "next": "Attest exact already-running observer under elevated native task/process witnesses; publish missing activation receipt without restarting it"
+}

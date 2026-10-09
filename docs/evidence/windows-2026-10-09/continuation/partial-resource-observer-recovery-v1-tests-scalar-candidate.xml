@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="34" time="16.319" timestamp="2026-10-09T07:33:10.532867-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_full_custody_and_private_state_before_any_publication" time="0.549" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[existing-activation]" time="0.474" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[existing-recovery]" time="0.536" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[extra-file]" time="0.639" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[pin-drift]" time="0.500" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[dependency-drift]" time="0.476" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[source-drift]" time="0.621" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[nonempty-state]" time="0.570" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[task-drift]" time="0.544" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[controller-ended]" time="0.501" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_preflight_refusal_preserves_partial_state_without_writes_or_start[native-ended]" time="0.510" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_completes_existing_registration_then_starts_original_task_once" time="0.574" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[existing-activation]" time="0.488" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[existing-recovery]" time="0.519" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[nonempty-state]" time="0.521" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[task-drift]" time="0.543" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[controller-ended]" time="0.482" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[native-ended]" time="0.497" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_rechecks_all_guards_before_root_and_registration_publication[snapshot-drift]" time="0.583" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_failure_after_intent_preserves_outputs_and_never_retries_start[publication-fails-2-0]" time="0.528" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_failure_after_intent_preserves_outputs_and_never_retries_start[start-held-3-1]" time="0.516" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_recovery_ast_has_no_registration_recopy_or_task_permission_mutation" time="0.338" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_all_source_pins_and_exports_match_exact_frozen_support" time="0.007" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[$true-boolean-True]" time="0.317" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[$false-boolean-False]" time="0.311" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[0-integer-0]" time="0.551" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[[long]267011-integer-267011]" time="0.202"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;S S=&quot;Error&quot;&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">value = '[long]267011', kind = 'integer', expected = 267011
+
+    @pytest.mark.parametrize('value,kind,expected', [
+        ('$true', 'boolean', True), ('$false', 'boolean', False), ('0', 'integer', 0),
+        ('[long]267011', 'integer', 267011), ('[short]2', 'integer', 2),
+        ('$true', 'integer', 'TYPE_REFUSED'), ("'2'", 'integer', 'TYPE_REFUSED'),
+        ('1.0', 'integer', 'TYPE_REFUSED'), ("'false'", 'boolean', 'TYPE_REFUSED'),
+        ('0', 'boolean', 'TYPE_REFUSED'),
+    ])
+    def test_definition_projection_scalar_fields_do_not_coerce_unknown_types(value, kind, expected):
+&gt;       r = ps(f"@{{value=(Get-PartialResourceScalar {value} {q(kind)})}}|ConvertTo-Json")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "@{value=(Get-PartialResourceScalar [long]267011 'integer')}|ConvertTo-Json"
+helper = False
+
+    def ps(body, helper=False):
+        prefix = "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest\n"
+        for path in ([SOURCE, W / 'resource-observer-duration-r3-v1.ps1'] if helper else [SOURCE]):
+            prefix += r'''$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile(PATH,[ref]$t,[ref]$e)
+    if($e.Count){throw 'Parse failure'}
+    foreach($f in $a.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+    '''.replace('PATH', q(path))
+        encoded = base64.b64encode((prefix + body).encode('utf-16le')).decode()
+        p = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=35)
+&gt;       assert p.returncode == 0, p.stdout + p.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;S S="Error"&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:30: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[[short]2-integer-2]" time="0.215"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;S S=&quot;Error&quot;&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">value = '[short]2', kind = 'integer', expected = 2
+
+    @pytest.mark.parametrize('value,kind,expected', [
+        ('$true', 'boolean', True), ('$false', 'boolean', False), ('0', 'integer', 0),
+        ('[long]267011', 'integer', 267011), ('[short]2', 'integer', 2),
+        ('$true', 'integer', 'TYPE_REFUSED'), ("'2'", 'integer', 'TYPE_REFUSED'),
+        ('1.0', 'integer', 'TYPE_REFUSED'), ("'false'", 'boolean', 'TYPE_REFUSED'),
+        ('0', 'boolean', 'TYPE_REFUSED'),
+    ])
+    def test_definition_projection_scalar_fields_do_not_coerce_unknown_types(value, kind, expected):
+&gt;       r = ps(f"@{{value=(Get-PartialResourceScalar {value} {q(kind)})}}|ConvertTo-Json")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "@{value=(Get-PartialResourceScalar [short]2 'integer')}|ConvertTo-Json"
+helper = False
+
+    def ps(body, helper=False):
+        prefix = "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest\n"
+        for path in ([SOURCE, W / 'resource-observer-duration-r3-v1.ps1'] if helper else [SOURCE]):
+            prefix += r'''$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile(PATH,[ref]$t,[ref]$e)
+    if($e.Count){throw 'Parse failure'}
+    foreach($f in $a.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+    '''.replace('PATH', q(path))
+        encoded = base64.b64encode((prefix + body).encode('utf-16le')).decode()
+        p = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=35)
+&gt;       assert p.returncode == 0, p.stdout + p.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;S S="Error"&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:30: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[$true-integer-TYPE_REFUSED]" time="0.208"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;S S=&quot;Error&quot;&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">value = '$true', kind = 'integer', expected = 'TYPE_REFUSED'
+
+    @pytest.mark.parametrize('value,kind,expected', [
+        ('$true', 'boolean', True), ('$false', 'boolean', False), ('0', 'integer', 0),
+        ('[long]267011', 'integer', 267011), ('[short]2', 'integer', 2),
+        ('$true', 'integer', 'TYPE_REFUSED'), ("'2'", 'integer', 'TYPE_REFUSED'),
+        ('1.0', 'integer', 'TYPE_REFUSED'), ("'false'", 'boolean', 'TYPE_REFUSED'),
+        ('0', 'boolean', 'TYPE_REFUSED'),
+    ])
+    def test_definition_projection_scalar_fields_do_not_coerce_unknown_types(value, kind, expected):
+&gt;       r = ps(f"@{{value=(Get-PartialResourceScalar {value} {q(kind)})}}|ConvertTo-Json")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "@{value=(Get-PartialResourceScalar $true 'integer')}|ConvertTo-Json"
+helper = False
+
+    def ps(body, helper=False):
+        prefix = "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest\n"
+        for path in ([SOURCE, W / 'resource-observer-duration-r3-v1.ps1'] if helper else [SOURCE]):
+            prefix += r'''$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile(PATH,[ref]$t,[ref]$e)
+    if($e.Count){throw 'Parse failure'}
+    foreach($f in $a.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+    '''.replace('PATH', q(path))
+        encoded = base64.b64encode((prefix + body).encode('utf-16le')).decode()
+        p = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=35)
+&gt;       assert p.returncode == 0, p.stdout + p.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;S S="Error"&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:30: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types['2'-integer-TYPE_REFUSED]" time="0.202"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;S S=&quot;Error&quot;&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">value = "'2'", kind = 'integer', expected = 'TYPE_REFUSED'
+
+    @pytest.mark.parametrize('value,kind,expected', [
+        ('$true', 'boolean', True), ('$false', 'boolean', False), ('0', 'integer', 0),
+        ('[long]267011', 'integer', 267011), ('[short]2', 'integer', 2),
+        ('$true', 'integer', 'TYPE_REFUSED'), ("'2'", 'integer', 'TYPE_REFUSED'),
+        ('1.0', 'integer', 'TYPE_REFUSED'), ("'false'", 'boolean', 'TYPE_REFUSED'),
+        ('0', 'boolean', 'TYPE_REFUSED'),
+    ])
+    def test_definition_projection_scalar_fields_do_not_coerce_unknown_types(value, kind, expected):
+&gt;       r = ps(f"@{{value=(Get-PartialResourceScalar {value} {q(kind)})}}|ConvertTo-Json")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "@{value=(Get-PartialResourceScalar '2' 'integer')}|ConvertTo-Json"
+helper = False
+
+    def ps(body, helper=False):
+        prefix = "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest\n"
+        for path in ([SOURCE, W / 'resource-observer-duration-r3-v1.ps1'] if helper else [SOURCE]):
+            prefix += r'''$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile(PATH,[ref]$t,[ref]$e)
+    if($e.Count){throw 'Parse failure'}
+    foreach($f in $a.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+    '''.replace('PATH', q(path))
+        encoded = base64.b64encode((prefix + body).encode('utf-16le')).decode()
+        p = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=35)
+&gt;       assert p.returncode == 0, p.stdout + p.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;S S="Error"&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:30: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[1.0-integer-TYPE_REFUSED]" time="0.214"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;S S=&quot;Error&quot;&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">value = '1.0', kind = 'integer', expected = 'TYPE_REFUSED'
+
+    @pytest.mark.parametrize('value,kind,expected', [
+        ('$true', 'boolean', True), ('$false', 'boolean', False), ('0', 'integer', 0),
+        ('[long]267011', 'integer', 267011), ('[short]2', 'integer', 2),
+        ('$true', 'integer', 'TYPE_REFUSED'), ("'2'", 'integer', 'TYPE_REFUSED'),
+        ('1.0', 'integer', 'TYPE_REFUSED'), ("'false'", 'boolean', 'TYPE_REFUSED'),
+        ('0', 'boolean', 'TYPE_REFUSED'),
+    ])
+    def test_definition_projection_scalar_fields_do_not_coerce_unknown_types(value, kind, expected):
+&gt;       r = ps(f"@{{value=(Get-PartialResourceScalar {value} {q(kind)})}}|ConvertTo-Json")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:145: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+body = "@{value=(Get-PartialResourceScalar 1.0 'integer')}|ConvertTo-Json"
+helper = False
+
+    def ps(body, helper=False):
+        prefix = "$ErrorActionPreference='Stop';Set-StrictMode -Version Latest\n"
+        for path in ([SOURCE, W / 'resource-observer-duration-r3-v1.ps1'] if helper else [SOURCE]):
+            prefix += r'''$t=$null;$e=$null;$a=[Management.Automation.Language.Parser]::ParseFile(PATH,[ref]$t,[ref]$e)
+    if($e.Count){throw 'Parse failure'}
+    foreach($f in $a.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+    '''.replace('PATH', q(path))
+        encoded = base64.b64encode((prefix + body).encode('utf-16le')).decode()
+        p = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded],
+                           capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=35)
+&gt;       assert p.returncode == 0, p.stdout + p.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;S S="Error"&gt;Unable to find type [short]._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:4 char:86_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+ ... $Value -is [int] -or $Value -is [long] -or $Value -is [short] -or $Va ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+                                                           ~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : InvalidOperation: (short:TypeName) [], ParentContainsErrorRecordException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No..._&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : TypeNotFound_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_partial_resource_observer_recovery_r3_v1.py:30: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types['false'-boolean-TYPE_REFUSED]" time="0.327" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_scalar_fields_do_not_coerce_unknown_types[0-boolean-TYPE_REFUSED]" time="0.326" /><testcase classname="windows-deployment-next.test_partial_resource_observer_recovery_r3_v1" name="test_definition_projection_reports_normalized_duration_and_safe_actual_fields_only" time="0.441" /></testsuite></testsuites>

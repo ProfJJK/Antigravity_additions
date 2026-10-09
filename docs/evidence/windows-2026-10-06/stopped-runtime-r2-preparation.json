@@ -1,0 +1,99 @@
+{
+  "schema": "cochem-stopped-runtime-r2-preparation/1",
+  "captured_utc": "2026-10-07T13:26:30.9306192Z",
+  "host": "AETHERDESK",
+  "scope": "Fresh code-only revision prepared after first knowledge acceptance failed; no retry, repair or deletion of existing state.",
+  "source_manifest": {
+    "path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\stopped-runtime-r2-source-20261007.json",
+    "sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8"
+  },
+  "source_files": 166,
+  "changes_from_r1": {
+    "added": [],
+    "removed": [],
+    "changed": [
+      "src/cochem_pipeline/knowledge.py",
+      "src/cochem_pipeline/operations_policy.py"
+    ]
+  },
+  "source_repair_tests": {
+    "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\knowledge-operations-private-directory-python312-tests.xml",
+    "sha256": "bd1dde46e843429c74ac43355d73fb6c52f3f7bd078bcd6bd0ed824ce3277200",
+    "passed": 86,
+    "skipped": 2
+  },
+  "installer": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-stopped-runtime-r2.ps1",
+    "sha256": "1cf9d391bf54b1a4b530636ebbb3746cadc3844b0fe13a60eabb13deb9987896"
+  },
+  "only_installer_delta_from_r1": "Fresh target Pipeline4.2.7-windows-20261007-r1 becomes Pipeline4.2.7-windows-20261007-r2",
+  "preserved_r1_installer": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-stopped-runtime-r1.ps1",
+    "sha256": "b8ff6b7d2518e881e17ea5d62d22b645a0b29d5277c2b3a4643892e8c1c6e247"
+  },
+  "preserved_r1_manifest": {
+    "path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\stopped-runtime-r1-source-20261007.json",
+    "sha256": "b643d5903b886e5fc3841dc0f379de992bde17dee0c202800b3cc7991998e18f"
+  },
+  "candidate_config": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\pipeline.scoped-ram.candidate.json",
+    "sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c"
+  },
+  "installer_tests": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test_stopped_runtime_r2.py",
+    "sha256": "c29fa0f808cde2dba9e1ce5f06326da7f5af1169d8195555af4cc2b2b6a3d683"
+  },
+  "junit": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\stopped-runtime-r2-tests.xml",
+    "sha256": "3666693fddcb1ba3a239284c104c8530b71e0c305c52827fd886f8316c3853d7"
+  },
+  "passed": 31,
+  "skipped": 0,
+  "test_scope": "Inert security/control-flow; real native stderr and exact Windows PowerShell Python argument transport; repaired parser validation explicitly refuses KnowledgeService construction.",
+  "preview_artifact": {
+    "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\stopped-runtime-r2-complete-preview.json",
+    "sha256": "e156c4d40d1a287b4e6b1247d46f9f343c3a99cb3ab9f725893434b4ead2f9c4"
+  },
+  "preview": {
+    "schema": "cochem-stopped-runtime-update/1",
+    "mode": "READ_ONLY_PLAN",
+    "target_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+    "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+    "source_files": 166,
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "only_config_change": "ramdisk.workspace_subdirectory",
+    "accounts_provisioned": 0,
+    "tasks_changed": 0,
+    "credentials_modified": false,
+    "databases_modified": false,
+    "ram_modified": false,
+    "pipeline_started": false,
+    "activation_ready": false,
+    "holds": []
+  },
+  "recommended_order": [
+    "Owner installs fresh r2 code-only runtime after review.",
+    "Inspect actual r2 success receipt, source/dependency commitments and protected custody.",
+    "Separately reviewed SYSTEM index recovery preserves failed root/task/receipt/state/writer.lock.",
+    "Six worker denial checks, then later execution-readiness preparation."
+  ],
+  "preservation": [
+    "Original protected runtime/config and existing worker identities retained.",
+    "All r1 helpers, source manifest, tests and previews retained.",
+    "Failed knowledge attempt/task/receipt/state/writer.lock are not read, overwritten, deleted or repaired by this installer.",
+    "R drive/root metadata/startup task, credentials, databases and repair budgets are untouched."
+  ],
+  "max_execution_slots": 4,
+  "worker_identities": 6,
+  "pipeline_model_routing": "Chapter 06 unchanged",
+  "applied": false,
+  "knowledge_index_initialized": false,
+  "pipeline_started": false,
+  "activation_ready": false,
+  "limits": [
+    "Passing previews/tests do not prove elevated installation or successful SYSTEM knowledge recovery.",
+    "Do not rerun the old continuation entrypoint against already-created knowledge targets.",
+    "New runtime remains stopped and unselected; no account/state/RAM/daemon provisioning is part of the installer."
+  ],
+  "source_changed_after_freeze": false
+}

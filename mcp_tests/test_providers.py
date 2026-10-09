@@ -100,6 +100,7 @@ def test_linux_rejects_windows_cli_even_when_wsl_interop_could_launch_it(monkeyp
 
 
 @pytest.mark.parametrize("magic", [b"\x7fELF", b"#!/usr/bin/env node\n"])
+@pytest.mark.skipif(os.name == "nt", reason="Linux executable discovery requires real POSIX paths; Windows drive paths are correctly rejected")
 def test_linux_accepts_native_file_named_exe(monkeypatch, tmp_path, magic):
     monkeypatch.setattr(providers, "_is_windows", lambda: False)
     executable = tmp_path / "claude.exe"
@@ -109,6 +110,7 @@ def test_linux_accepts_native_file_named_exe(monkeypatch, tmp_path, magic):
 
 
 @pytest.mark.parametrize("name", ["claude.exe", "codex"])
+@pytest.mark.skipif(os.name == "nt", reason="Linux executable discovery requires real POSIX paths; Windows drive paths are correctly rejected")
 def test_linux_rejects_pe_executable_with_any_name(monkeypatch, tmp_path, name):
     monkeypatch.setattr(providers, "_is_windows", lambda: False)
     executable = tmp_path / name
@@ -118,6 +120,7 @@ def test_linux_rejects_pe_executable_with_any_name(monkeypatch, tmp_path, name):
         providers.resolve_executable("claude", str(executable))
 
 
+@pytest.mark.skipif(os.name == "nt", reason="Linux executable discovery requires a real POSIX symlink and path")
 def test_linux_rejects_extensionless_path_symlink_to_windows_pe(monkeypatch, tmp_path):
     monkeypatch.setattr(providers, "_is_windows", lambda: False)
     windows_executable = tmp_path / "claude.exe"
@@ -133,6 +136,7 @@ def test_linux_rejects_extensionless_path_symlink_to_windows_pe(monkeypatch, tmp
         providers.resolve_executable("claude")
 
 
+@pytest.mark.skipif(os.name == "nt", reason="Linux executable discovery requires real POSIX paths; Windows drive paths are correctly rejected")
 def test_linux_rejects_unrecognized_exe_format(monkeypatch, tmp_path):
     monkeypatch.setattr(providers, "_is_windows", lambda: False)
     executable = tmp_path / "claude.exe"

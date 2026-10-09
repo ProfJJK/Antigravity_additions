@@ -1,0 +1,13 @@
+{
+  "actual_windows_directory_bytes_after": 4096,
+  "actual_windows_directory_bytes_before": 0,
+  "comparator_passes_when_only_directory_byte_field_normalized": true,
+  "frozen_comparator_rejected": true,
+  "frozen_python_sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+  "production_sources_modified": false,
+  "production_state_accessed": false,
+  "root_identity_and_security_unchanged": true,
+  "schema": "cochem-disposable-preservation-comparison-proof/1",
+  "scope": "Disposable ordinary-user fixtures; production lock pin substituted only in isolated in-memory test module",
+  "writer_lock_metadata_unchanged": true
+}

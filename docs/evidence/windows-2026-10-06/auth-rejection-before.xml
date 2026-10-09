@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="4" time="2.203" timestamp="2026-10-06T22:18:55.950218-05:00" hostname="AetherDesk"><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs[True]" time="0.231"><failure message="ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine">endpoint = namespace(controller=&lt;pipeline_tests.test_service.DatabaseController object at 0x000002C5E477B500&gt;, port=59058, token=...aNmbw4XQpzh_JN9AmT0jAYKchzI6ewG_mEm1n1fo', client=&lt;cochem_pipeline.service.ControlClient object at 0x000002C5E7E7C380&gt;)
+valid_json = True
+
+    @pytest.mark.parametrize("valid_json", [True, False])
+    def test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs(endpoint, valid_json):
+        body = json.dumps({"objective": "untrusted" * 32768}).encode() if valid_json else b"invalid-json" * 32768
+    
+        def fragments():
+            # Force the body to arrive after headers, as a normal HTTP client may
+            # do. Immediate server close leaves unread TCP data on Windows.
+            for offset in range(0, len(body), 8192):
+                yield body[offset:offset + 8192]
+                time.sleep(.002)
+    
+        connection = http.client.HTTPConnection("127.0.0.1", endpoint.port, timeout=3)
+        try:
+&gt;           connection.request("POST", "/submit", fragments(), {
+                "Authorization": "Bearer wrong",
+                "Content-Length": str(len(body)),
+                "Content-Type": "application/json",
+            })
+
+pipeline_tests\test_service_auth_rejection.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1358: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1404: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1353: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1152: in _send_output
+    self.send(chunk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;http.client.HTTPConnection object at 0x000002C5E7DF5A90&gt;
+data = b'steduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntr...teduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrusteduntrust'
+
+    def send(self, data):
+        """Send `data' to the server.
+        ``data`` can be a string object, a bytes object, an array object, a
+        file-like object that supports a .read() method, or an iterable object.
+        """
+    
+        if self.sock is None:
+            if self.auto_open:
+                self.connect()
+            else:
+                raise NotConnected()
+    
+        if self.debuglevel &gt; 0:
+            print("send:", repr(data))
+        if hasattr(data, "read") :
+            if self.debuglevel &gt; 0:
+                print("sending a readable")
+            encode = self._is_textIO(data)
+            if encode and self.debuglevel &gt; 0:
+                print("encoding file using iso-8859-1")
+            while datablock := data.read(self.blocksize):
+                if encode:
+                    datablock = datablock.encode("iso-8859-1")
+                sys.audit("http.client.send", self, datablock)
+                self.sock.sendall(datablock)
+            return
+        sys.audit("http.client.send", self, data)
+        try:
+&gt;           self.sock.sendall(data)
+E           ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1077: ConnectionAbortedError</failure></testcase><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs[False]" time="0.491"><failure message="ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine">endpoint = namespace(controller=&lt;pipeline_tests.test_service.DatabaseController object at 0x000002C5E7CEE450&gt;, port=59060, token=...o3oG2_ag7h8Z9XqThir9ZvR9HM_RFOHxX9AEdgrd', client=&lt;cochem_pipeline.service.ControlClient object at 0x000002C5E7E7D370&gt;)
+valid_json = False
+
+    @pytest.mark.parametrize("valid_json", [True, False])
+    def test_unauthorized_fragmented_post_returns_401_without_reset_or_jobs(endpoint, valid_json):
+        body = json.dumps({"objective": "untrusted" * 32768}).encode() if valid_json else b"invalid-json" * 32768
+    
+        def fragments():
+            # Force the body to arrive after headers, as a normal HTTP client may
+            # do. Immediate server close leaves unread TCP data on Windows.
+            for offset in range(0, len(body), 8192):
+                yield body[offset:offset + 8192]
+                time.sleep(.002)
+    
+        connection = http.client.HTTPConnection("127.0.0.1", endpoint.port, timeout=3)
+        try:
+&gt;           connection.request("POST", "/submit", fragments(), {
+                "Authorization": "Bearer wrong",
+                "Content-Length": str(len(body)),
+                "Content-Type": "application/json",
+            })
+
+pipeline_tests\test_service_auth_rejection.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1358: in request
+    self._send_request(method, url, body, headers, encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1404: in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1353: in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1152: in _send_output
+    self.send(chunk)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;http.client.HTTPConnection object at 0x000002C5E7E7D220&gt;
+data = b'jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninva...d-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninvalid-jsoninva'
+
+    def send(self, data):
+        """Send `data' to the server.
+        ``data`` can be a string object, a bytes object, an array object, a
+        file-like object that supports a .read() method, or an iterable object.
+        """
+    
+        if self.sock is None:
+            if self.auto_open:
+                self.connect()
+            else:
+                raise NotConnected()
+    
+        if self.debuglevel &gt; 0:
+            print("send:", repr(data))
+        if hasattr(data, "read") :
+            if self.debuglevel &gt; 0:
+                print("sending a readable")
+            encode = self._is_textIO(data)
+            if encode and self.debuglevel &gt; 0:
+                print("encoding file using iso-8859-1")
+            while datablock := data.read(self.blocksize):
+                if encode:
+                    datablock = datablock.encode("iso-8859-1")
+                sys.audit("http.client.send", self, datablock)
+                self.sock.sendall(datablock)
+            return
+        sys.audit("http.client.send", self, data)
+        try:
+&gt;           self.sock.sendall(data)
+E           ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+
+C:\Users\ansac\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\http\client.py:1077: ConnectionAbortedError</failure></testcase><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_auth_rejection_is_immediate_and_incomplete_body_drain_is_bounded" time="0.510"><failure message="AssertionError: assert None == 'close'&#10; +  where None = getheader('Connection')&#10; +    where getheader = &lt;http.client.HTTPResponse object at 0x000002C5E7E7E260&gt;.getheader">endpoint = namespace(controller=&lt;pipeline_tests.test_service.DatabaseController object at 0x000002C5E7DF7E90&gt;, port=59062, token=...ZlnKQAfk2LBD26p5uAUYzq2tVP1ZZGmBHSPNETf9', client=&lt;cochem_pipeline.service.ControlClient object at 0x000002C5E7E7E420&gt;)
+
+    def test_auth_rejection_is_immediate_and_incomplete_body_drain_is_bounded(endpoint):
+        with socket.create_connection(("127.0.0.1", endpoint.port), timeout=3) as connection:
+            started = time.monotonic()
+            connection.sendall(b"POST /submit HTTP/1.1\r\nHost: localhost\r\n"
+                               b"Authorization: Bearer wrong\r\nContent-Length: 4194304\r\n\r\n")
+            response = http.client.HTTPResponse(connection)
+            response.begin()
+            assert response.status == 401
+&gt;           assert response.getheader("Connection") == "close"
+E           AssertionError: assert None == 'close'
+E            +  where None = getheader('Connection')
+E            +    where getheader = &lt;http.client.HTTPResponse object at 0x000002C5E7E7E260&gt;.getheader
+
+pipeline_tests\test_service_auth_rejection.py:49: AssertionError</failure></testcase><testcase classname="pipeline_tests.test_service_auth_rejection" name="test_repeated_real_control_client_rejects_wrong_token_without_job_creation" time="0.542" /></testsuite></testsuites>

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="54" time="2.716" timestamp="2026-10-07T00:20:10.669097-05:00" hostname="AetherDesk"><testcase classname="test_worker_native_status" name="test_exact_codex_status_is_authentication_evidence_only[stdout]" time="0.000" /><testcase classname="test_worker_native_status" name="test_exact_codex_status_is_authentication_evidence_only[stderr]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-23-bytes-0-1]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-23-bytes-0-True]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-23-bytes-43-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-56-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-37-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-43-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-1-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-65537-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_errors_extra_or_ambiguous_output_never_attest[bytes-23-bytes-1-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_codex_logged_out_exact_negative_result" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_native_subscription_fields_are_allowlisted_and_redacted[pro]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_native_subscription_fields_are_allowlisted_and_redacted[max]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_native_subscription_fields_are_allowlisted_and_redacted[team]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_native_subscription_fields_are_allowlisted_and_redacted[enterprise]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes1]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes2]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes3]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes4]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes5]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes6]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_non_subscription_or_incomplete_status_remains_unverified[changes7]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-59-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-54-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-2-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-8-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-1-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-192-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-197-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-190-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-200-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-195-bytes-13-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-195-bytes-0-1]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-195-bytes-0-True]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-196-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_malformed_inconsistent_or_error_output_never_attests[bytes-65537-bytes-0-0]" time="0.000" /><testcase classname="test_worker_native_status" name="test_claude_logged_out_status_is_an_explicit_negative" time="0.000" /><testcase classname="test_worker_native_status" name="test_agy_has_no_status_contract_in_this_helper" time="0.000" /><testcase classname="test_worker_native_status" name="test_combined_output_bound_is_enforced" time="0.000" /><testcase classname="test_worker_native_status" name="test_wait_observes_actual_temporary_file_size_before_accepting_exit" time="0.001" /><testcase classname="test_worker_native_status" name="test_wait_deadline_does_not_wait_for_status_child_indefinitely" time="0.001" /><testcase classname="test_worker_native_status" name="test_digest_reads_real_bytes_and_refuses_size_limit" time="0.009" /><testcase classname="test_worker_native_status" name="test_powershell_wrapper_syntax_defaults_and_source_pin" time="0.199" /><testcase classname="test_worker_native_status" name="test_task_wait_accepts_only_exact_completion_and_keeps_other_failures_closed" time="0.240" /><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[True-3-CoChem-4.2.7-Warden]" time="0.243"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Warden', enabled = True, state = 3
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[True-3-CoChem-4.2.7-Supervisor]" time="0.234"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Supervisor', enabled = True, state = 3
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[False-4-CoChem-4.2.7-Warden]" time="0.237"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Warden', enabled = False, state = 4
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[False-4-CoChem-4.2.7-Supervisor]" time="0.238"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Supervisor', enabled = False, state = 4
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[False-2-CoChem-4.2.7-Warden]" time="0.234"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Warden', enabled = False, state = 2
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_actual_deployment_daemon_names_prevent_native_launch[False-2-CoChem-4.2.7-Supervisor]" time="0.239"><failure message="assert 'Protected daemons must remain stopped and disabled' in &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;&#10; +  where &quot;Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot; = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n&quot;).stderr">task_name = 'CoChem-4.2.7-Supervisor', enabled = False, state = 2
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Production PowerShell guard with inert scheduler objects; no task/native execution')
+    @pytest.mark.parametrize('task_name', ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'])
+    @pytest.mark.parametrize('enabled,state', [(True, 3), (False, 4), (False, 2)])
+    def test_actual_deployment_daemon_names_prevent_native_launch(task_name, enabled, state):
+        def run_guard(script, names):
+            assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+            quoted_names = json.dumps(names).replace("'", "''")
+            prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+            prefix += r"""
+                $script:fakeFolder=[pscustomobject]@{};
+                $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                    if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                    return [pscustomobject]@{Enabled=$false;State=1}
+                };
+                $script:fakeScheduler=[pscustomobject]@{};
+                $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+                $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+                function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+            """
+            exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+            result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                    capture_output=True, text=True, timeout=15)
+            assert result.returncode != 0
+            assert 'Protected daemons must remain stopped and disabled' in result.stderr
+            raise RuntimeError('Actual selected task blocks native launch')
+        win = SimpleNamespace(_powershell=run_guard, launch_worker=lambda *a, **k: pytest.fail('Native launch must not be reached'))
+        report = {'native_status_dispatch_attempted': False, 'native_status_commands_executed': 0}
+        with pytest.raises(RuntimeError, match='blocks native launch'):
+&gt;           status.launch_status_process(win, None, None, None, None, None, None, None, report)
+
+test_worker_native_status.py:205: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+worker-native-status.py:152: in launch_status_process
+    require_stopped(win)
+worker-native-status.py:135: in require_stopped
+    win._powershell(r"""
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+script = "\n        $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\\')...sk.Enabled -or $task.State -in @(2,4))) {throw 'Protected daemons must remain stopped and disabled.'}\n        }\n    "
+names = ['CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor', 'CoChem-4.2.2-Warden', 'CoChem-4.2.3-Supervisor']
+
+    def run_guard(script, names):
+        assert {'CoChem-4.2.7-Warden', 'CoChem-4.2.7-Supervisor'} &lt;= set(names)
+        quoted_names = json.dumps(names).replace("'", "''")
+        prefix = f"$ErrorActionPreference='Stop';$data=ConvertFrom-Json -InputObject '{quoted_names}';$script:blockedTask='{task_name}';$script:enabled=${str(enabled).lower()};$script:state={state};"
+        prefix += r"""
+            $script:fakeFolder=[pscustomobject]@{};
+            $script:fakeFolder|Add-Member ScriptMethod GetTask {param($name)
+                if ($name -eq $script:blockedTask) {return [pscustomobject]@{Enabled=$script:enabled;State=$script:state}}
+                return [pscustomobject]@{Enabled=$false;State=1}
+            };
+            $script:fakeScheduler=[pscustomobject]@{};
+            $script:fakeScheduler|Add-Member ScriptMethod Connect {return};
+            $script:fakeScheduler|Add-Member ScriptMethod GetFolder {param($path) return $script:fakeFolder};
+            function New-Object {param($TypeName) if ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return $script:fakeScheduler};
+        """
+        exe = Path(os.environ['SystemRoot']) / 'System32/WindowsPowerShell/v1.0/powershell.exe'
+        result = subprocess.run([str(exe), '-NoProfile', '-NonInteractive', '-Command', prefix + script],
+                                capture_output=True, text=True, timeout=15)
+        assert result.returncode != 0
+&gt;       assert 'Protected daemons must remain stopped and disabled' in result.stderr
+E       assert 'Protected daemons must remain stopped and disabled' in "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n"
+E        +  where "Unexpected object\nAt line:10 char:90\n+ ... ($TypeName -ne 'Schedule.Service') {throw 'Unexpected object'};return .....perationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n" = CompletedProcess(args=['C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...erationStopped: (Unexpected object:String) [], RuntimeException\n    + FullyQualifiedErrorId : Unexpected object\n \n").stderr
+
+test_worker_native_status.py:200: AssertionError</failure></testcase><testcase classname="test_worker_native_status" name="test_wrapper_plan_holds_enabled_actual_deployment_daemon[CoChem-4.2.7-Warden]" time="0.232" /><testcase classname="test_worker_native_status" name="test_wrapper_plan_holds_enabled_actual_deployment_daemon[CoChem-4.2.7-Supervisor]" time="0.218" /></testsuite></testsuites>

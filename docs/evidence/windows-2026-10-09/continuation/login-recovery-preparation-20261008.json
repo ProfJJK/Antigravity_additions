@@ -1,0 +1,120 @@
+{
+  "schema": "cochem-login-recovery-preparation/1",
+  "prepared_utc": "2026-10-08T12:20:14.6144024Z",
+  "host": "AETHERDESK",
+  "status": "ATTENDED_CONTINUATION_PREPARED_NOT_APPLIED",
+  "source_files": [
+    {
+      "name": "worker-native-auth-status-six-r3-v2.py",
+      "sha256": "98d6e5400041fc51692703c0fd8d8ea2ade6e59bc3de49fb3efdd421dcd5f945",
+      "bytes": 28186
+    },
+    {
+      "name": "check-worker-native-auth-status-six-r3-v2.ps1",
+      "sha256": "8e76f70049813ca089054db26abe1167069993586cf269ecf77ff912aca10864",
+      "bytes": 24376
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v2.ps1",
+      "sha256": "86381bcdddc817637567edb1f737d142f6a9df01a1f256b6c9447d936ad6ee86",
+      "bytes": 22069
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v2.ps1",
+      "sha256": "75066bb3da5b3d2f1b65e113d5e5268e9f18a88f37bb695a863da9baeea8933b",
+      "bytes": 13651
+    },
+    {
+      "name": "commission-first-warden-r3-v2.py",
+      "sha256": "ff726500b649d5f037f3e11561afb71b2a6bf9f95dbf3e37edbc242ad4e1f8da",
+      "bytes": 31179
+    },
+    {
+      "name": "commission-first-warden-r3-v2.ps1",
+      "sha256": "97a4a0976437f404e63e849d01495188b0a26c7945e1c3ebe59b564cf471c085",
+      "bytes": 19204
+    },
+    {
+      "name": "run-pipeline-commissioning-r3-v2.ps1",
+      "sha256": "3b14ff276c59a6123d6c9dea141155c019a842ff4dffbc0b531b4cc9c77f9976",
+      "bytes": 24499
+    },
+    {
+      "name": "login-recovery-prior-functions-20261008.ps1",
+      "sha256": "db52ca4eec9dc5ad9eaffe168410c57e9974f84c5eb5a183e22c4040143214d0",
+      "bytes": 6220
+    },
+    {
+      "name": "test_native_auth_continuation_r3_v2.py",
+      "sha256": "081d5540167a6e212014a8643522a5f27e95af69232e1d1a06644c684498ad89",
+      "bytes": 26045
+    },
+    {
+      "name": "test_login_recovery_commissioning_r3_v2.py",
+      "sha256": "ebc8e0aa5e99edf9dfa941e8fb8f54953d25fe6409495b7657b6802850830895",
+      "bytes": 7892
+    },
+    {
+      "name": "native-auth-continuation-r3-v2-tests-initial.xml",
+      "sha256": "dbd2babea908237dc84b8543484e3c05452c8bf6536f5ff9f9f64e34b52fdffb",
+      "bytes": 4676
+    },
+    {
+      "name": "login-recovery-commissioning-r3-v2-tests-initial.xml",
+      "sha256": "889c9e14d09914c07076455625fe83093fee3061488dfa121cd4db30a777e138",
+      "bytes": 22536
+    },
+    {
+      "name": "login-recovery-commissioning-r3-v2-preview.json",
+      "sha256": "0c9b501c122fb1316b5ae3f72247eda787ba5336e1118e6f9e56469182a615d4",
+      "bytes": 7237
+    },
+    {
+      "name": "RETURN_SETUP_LOGIN_RECOVERY.txt",
+      "sha256": "dbba5d0dd0ff74f5e3605afe3d2decb51fc3506fccb416f8d30849e45f7c919f",
+      "bytes": 4163
+    }
+  ],
+  "windows_tests": [
+    {
+      "name": "native-auth-continuation-r3-v2-tests-initial.xml",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": "23.415"
+    },
+    {
+      "name": "login-recovery-commissioning-r3-v2-tests-initial.xml",
+      "tests": 115,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": "36.871"
+    }
+  ],
+  "preview_holds": [
+    "native_authentication: codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "native_authentication: claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+    "Prior failed-login receipts require owner read-only verification."
+  ],
+  "pipeline_started": false,
+  "provider_login_executed": false,
+  "model_jobs_executed": 0,
+  "credentials_copied": false,
+  "legacy_databases_opened": false,
+  "existing_state_modified": false,
+  "linux_results_included": false,
+  "independent_review": "PASS; native_next reviewed source bindings, preserved failure custody and first-start compatibility",
+  "owner_instruction": "Run the v2 command once; manually open the printed provider URL and authorize using its fresh code; leave console open."
+}

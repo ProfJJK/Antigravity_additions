@@ -1,0 +1,28 @@
+WINDOWS PIPELINE: MONITORING STARTED; MODEL TESTS APPROVED
+9 October 2026 - AETHERDESK
+
+The held supervisor activation and independent resource recorder first start
+both succeeded. Do not rerun any installation or recovery command.
+
+The owner approved the two prepared synthetic workflow tests, including their
+fixture code, generated artifacts, canonical pipeline requirements and test
+diagnostics sent through existing Codex / eligible Claude subscriptions.
+That approval is recorded in LIVE_WORKFLOW_TEST_APPROVAL_20261009.json.
+No further approval is needed for that scope.
+
+Actual Windows measurements show Warden resident memory around 62 MiB, above
+the canonical 50 MiB limit. Admission is paused. Temperature, available commit
+and controller CPU are healthy. No model test was submitted. Codex is examining
+the memory growth and preparing any required code repair, preserving the limit.
+There is currently no command or other answer required from the owner.
+
+The resource recorder is collecting evidence unattended. Its current window
+already contains a controller-memory budget violation; it cannot certify the
+sustained budget requirement. All samples and receipts are being preserved.
+A later compliant window would require separate evidence after the cause is
+resolved. No completed 48-hour, desktop-heap, recovery or full SRS acceptance
+is claimed by the successful recorder start.
+
+The controller and held supervisor remain running. Provider sign-ins, original
+credentials, databases and repair budgets, the 8 GiB R: drive/startup task,
+four shared slots and Chapter 06 routing remain preserved.

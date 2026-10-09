@@ -1,0 +1,41 @@
+{
+  "schema": "cochem-copy-stage-recovery-sequence-preparation/1",
+  "captured_utc": "2026-10-07T14:20:12.3313841Z",
+  "original_outer_preserved_sha256": "e51f9c94d241eae4708b8f9d556f7fa09a98ed877c58787c67debd136eb4f2b9",
+  "copyfix_wrapper_sha256": "71b4e2474a6802c36c8c9cebb2330449bd5e776fa2de3b5d293f333c1528404f",
+  "knowledge_python_unchanged_sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+  "sequence_tests_passed": 22,
+  "sequence_tests_junit_seconds": 6.365,
+  "copyfix_tests_passed": 14,
+  "copyfix_tests_junit_seconds": 5.914,
+  "actual_readonly_preview_holds": 0,
+  "private_root_empty_check_deferred_to_administrator": true,
+  "independent_review_passed": true,
+  "owner_command_status": "REQUESTED_RESULT_PENDING",
+  "apply_executed_by_chat": false,
+  "actual_system_resume_accepted": false,
+  "linux_results_used_as_windows_evidence": false,
+  "activation_ready": false,
+  "artifacts": [
+    {
+      "file": "recover-copy-stage-and-check-workers.ps1",
+      "sha256": "131e10b4f43744c595b3123971aed8b2e2c6887e912fa07d584cada94466a877",
+      "bytes": 11383
+    },
+    {
+      "file": "test_recover_copy_stage_and_check_workers.py",
+      "sha256": "735f8359f3bccc5f7a6d09aa20d372ec90bec61dfafda47edcf7d83fb68e0fc2",
+      "bytes": 6882
+    },
+    {
+      "file": "recover-copy-stage-and-check-workers-tests.xml",
+      "sha256": "aeb3d1f9db803a0b8443cb49a3a5dc5ba0a8268c6b13145ea29c761f0435eadc",
+      "bytes": 4258
+    },
+    {
+      "file": "recover-copy-stage-and-check-workers-preview.json",
+      "sha256": "daf032f1ead8cf3de3f58a833f8cae21cee266e0dbf86b526c075a599e3a41d3",
+      "bytes": 5146
+    }
+  ]
+}

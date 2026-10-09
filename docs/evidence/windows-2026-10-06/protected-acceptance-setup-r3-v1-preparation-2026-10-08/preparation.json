@@ -1,0 +1,271 @@
+{
+  "schema": "cochem-protected-acceptance-setup-preparation/1",
+  "prepared_utc": "2026-10-08T03:26:38.555537+00:00",
+  "status": "REVIEWED_OPTIONAL_BATCH_PREPARED_NOT_EXECUTED",
+  "files": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-protected-acceptance-setup-r3-v1.ps1",
+      "bytes": 33160,
+      "sha256": "0f5b7f7fd4938f49b9c364694c8a9591b61d47e40d1b338239179f74087647fc"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test_protected_acceptance_setup_r3_v1.py",
+      "bytes": 21644,
+      "sha256": "148aa563fa4dc9ae51d394aee791004f576cec1526a77e3a31c2ace12bb97f49"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\PROTECTED_ACCEPTANCE_SETUP_R3.txt",
+      "bytes": 4068,
+      "sha256": "1781e1c0654ae71a8ac85674dff7a7d3adb75c059d7de9d3547a9ed5501cb706"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-acceptance-setup-r3-v1-tests-final.xml",
+      "bytes": 11079,
+      "sha256": "503d480e4a9d803cc705cf349aae887071951fac67eea4f3e4b49e10336d93bd"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-acceptance-setup-r3-v1-preview-final.json",
+      "bytes": 25252,
+      "sha256": "dcbea3228ef88f314d34a62df08c6b5e39e5682a2838540e3233bd3fc3885b4c"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-acceptance-setup-r3-v1-tests-draft.xml",
+      "bytes": 9191,
+      "sha256": "8132a40f0cb03dbccbaf733d680c47e0a5092fb80e554378edfabbccd8d88df0"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-acceptance-setup-r3-v1-tests-bindings.xml",
+      "bytes": 2162,
+      "sha256": "fa64c65beaa55816ef44f3cf258464c872581fc8dce30b7670d77193007785b1"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-acceptance-setup-r3-v1-oracle-ordering.xml",
+      "bytes": 2067,
+      "sha256": "1b36932c0b3edf18e0ac42ee7f348ad28d2da92c526b6fb0f975be6d798b3f7f"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-reviewed-full-setup-r3-v1.ps1",
+      "bytes": 27459,
+      "sha256": "9b23d057ec93eb46fd3c898db294f9a13752a4e635c39a1c1715aabb5b63999f"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test_reviewed_full_setup_r3_v1.py",
+      "bytes": 12286,
+      "sha256": "512e6a024c434fbaf3d027b2e97b70432386fa1c956677195fff19786044528a"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\reviewed-full-setup-r3-v1-tests-initial.xml",
+      "bytes": 10276,
+      "sha256": "c2985985e4bc64e1b0a83d245f7c40c3ee40943b6076f6d129d13e852a76481d"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\reviewed-full-setup-r3-v1-tests-followup.xml",
+      "bytes": 11946,
+      "sha256": "885a85faf597df8395d9134b544abd48237e91c54cc3235fd02b9390b25c2469"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\reviewed-full-setup-r3-v1-tests-fixture-correction.xml",
+      "bytes": 419,
+      "sha256": "2a29f90887574df1f7c7d2f5f2cdb41f26da8188ae2ff8cf2290305af89c501f"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\reviewed-full-setup-r3-v1-preview-draft.json",
+      "bytes": 27120,
+      "sha256": "fa05a1c9512240a4a4bfaaeb6d546c1c6132c28255129810de3164050298c21c"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\archive-protected-acceptance-setup-r3-v1.py",
+      "bytes": 6945,
+      "sha256": "7a80129bc23f1437af5f7c705592c1961ef79ab02f8651cbb3d59fdc8737cf91"
+    }
+  ],
+  "phase_dependencies": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-independent-supervisor-staging-r3-v1.ps1",
+      "bytes": 22503,
+      "sha256": "4f8d3afa512ce81a73c114a384e208c39006ab3abe4771512a121ebf7ae7b098"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\independent-supervisor-staging-r3-v1.manifest.json",
+      "bytes": 55977,
+      "sha256": "6aec5eaf82205be34e5849e73700f2e817e157be5c5ddd4366f04e549b75f0c4"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-pipeline-commissioning-r3-v1.ps1",
+      "bytes": 18022,
+      "sha256": "44ed0b7d79b33afee6e35b36ddf2d37056e1e51f31806f05a21c2038c98d9bf1"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\commission-first-warden-r3-v1.py",
+      "bytes": 31179,
+      "sha256": "bd6ed9cc62bc96777d5748e819c5f780ada2e58ce0d43bf7e5f2013ca72f451c"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-held-supervisor-observation-r3-v1.ps1",
+      "bytes": 29910,
+      "sha256": "88c285591b579a432718dc5ab383b844e597299f5372c6a6f4dd98e9efdd38e5"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\held-supervisor-observation-r3-v1.py",
+      "bytes": 23934,
+      "sha256": "d2fd68543963a05ba918c6194729a8bca642322565235ab18c7ba17ccad17640"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\install-resource-observer-r3-v2.ps1",
+      "bytes": 34155,
+      "sha256": "5030df59a14fef74b1147660978becf95a839e9d6e7f9e403708ac5b319153f2"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-oracle-native-acceptance-r3-v1.ps1",
+      "bytes": 21845,
+      "sha256": "196a696c4f6c5626a34b83d77ae28444edfa88aeac8274b0e69de8096987760c"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-oracle-native-acceptance-r3-v1.py",
+      "bytes": 19408,
+      "sha256": "56e78536c2ce85e04d519b13a3347ea620bdf0ab105ed537a0cc9b4afedd9a0d"
+    }
+  ],
+  "prior_reviews_and_preparations": [
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\oracle-operational-root-review-20261008.json",
+      "bytes": 3662,
+      "sha256": "442540cc3b0d8b9a3d63277170e2a1c6d1a209a9d1a7d217d9fb2c52b6baef33"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\held-supervisor-observation-preparation-2026-10-07\\preparation.json",
+      "bytes": 4019,
+      "sha256": "edf540123f475bee0c4ce89e4bf5dac93d62d5d89e29d9efaa7dc6ae521bd3aa"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\resource-observer-installer-r3-v2-preparation-2026-10-08\\preparation.json",
+      "bytes": 9133,
+      "sha256": "4ad77ded450eaadb5383551b60da9000dc37eefab732e49b4cc3b4470cfae390"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\resource-observer-v2-root-review-20261008.json",
+      "bytes": 3184,
+      "sha256": "f1b6ab27210f8aac04a46b46c9cf183fcb374d647a9ad663cd57f4c0dbf5e98f"
+    }
+  ],
+  "actual_ordinary_windows_evidence": {
+    "final_distinct_tests": {
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "junit_seconds": 33.304,
+    "scope": [
+      "WinPS5.1 phase sequencing and failures",
+      "source-held bytes and CreateNew metadata",
+      "ordinary own-process native PID/creation/image/SID witness",
+      "atomic ordinary directory collision/ACL preservation",
+      "strict held observation dependency and receipt binding",
+      "real disposable Oracle byte lock with exact frozen first-start predicates"
+    ],
+    "preview_branch": "fresh",
+    "preview_holds": [
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      },
+      {
+        "phase": "first_start",
+        "code": "PHASE_PREFLIGHT_HOLD",
+        "detail": "native_authentication: claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+      }
+    ],
+    "private_system_preflight_completed": false,
+    "earlier_xmls_preserved_not_additive": true
+  },
+  "integration_review": {
+    "reviewer": "/root/host_inspection",
+    "candidate_sha256": "4186e405d8411422d32320a22dbf3a0fcfa437c4b4e2f449c4860764e28eb089",
+    "outcome": "No remaining concrete source finding.",
+    "subsequent_delta": "Root-authorized release metadata/comments only; final focused suite and preview recorded.",
+    "reviewer_executed_apply_or_tests": false
+  },
+  "oracle_sequencing_correction": {
+    "supersedes_only_fresh_sequence_guidance_in": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\oracle-operational-root-review-20261008.json",
+    "oracle_internal_source_and_test_review_preserved": true,
+    "oracle_physical_acceptance": "PENDING",
+    "both_branches": "DEFERRED_MAINTENANCE",
+    "not_global_first_start_prerequisite": true,
+    "frozen_oracle_preserves": [
+      "private/warden.lock",
+      "slot1/.cochem-scratch/oracle-native-acceptance-20261008-r3-v1"
+    ],
+    "frozen_first_start_rejects": [
+      "EXISTING_FIRST_START_STATE",
+      "SLOT1_EXPECTED_PHYSICAL_FIXTURE"
+    ],
+    "no_deletion_or_startup_successor": true
+  },
+  "scope": {
+    "original_basic_first_start_independent_and_unchanged": true,
+    "already_running_controller_restarted_or_replayed": false,
+    "current_instance_must_be_native_reattested": true,
+    "held_supervisor_can_repair_or_recover": false,
+    "paid_repair_enabled": false,
+    "legacy_budget_authority_resolved": false,
+    "workflow_acceptance_completed": false,
+    "desktop_heap_available": false,
+    "continuous_48h_complete": false,
+    "full_srs_acceptance": false,
+    "actual_protected_writes_or_tasks_or_provider_calls": 0,
+    "owner_command_issued": false,
+    "no_automatic_retry_stop_cleanup_or_resume": true
+  }
+}

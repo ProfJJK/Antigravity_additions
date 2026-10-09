@@ -10,6 +10,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import json
+import os
 from pathlib import Path
 import sqlite3
 import subprocess
@@ -77,7 +78,10 @@ schema_raw, payload_raw = prompt.split('Required output shape:\n', 1)[1].split(
 schema, payload = json.loads(schema_raw), json.loads(payload_raw)
 if 'chapters' in schema:
     result = {'chapters': [{'chapter_id': 'chapter-' + str(index),
-        'title': 'Fixture chapter ' + str(index), 'requirements': payload['requirements']}
+        'title': 'Fixture chapter ' + str(index), 'requirements': payload['requirements'],
+        'wbs_tasks_defined': [{'id': 'chapter-' + str(index) + '-task',
+                             'description': 'Deterministic integration fixture task',
+                             'requirements': payload['requirements']}]}
         for index in range(payload['chapter_count'])]}
 elif 'chapter_id' in schema:
     result = {**schema, 'requirements_traced': payload['requirements'],
@@ -87,7 +91,8 @@ elif 'chapter_id' in schema:
         'artifact_text': '# Fixture chapter\nStructured requirement and WBS integration evidence.'}
 else:
     result = {'artifact_text': '# Fixture synthesis\nDeterministically retained all chapter hashes.',
-              'chapter_hashes': payload['chapter_hashes']}
+              **{key: payload[key] for key in ('chapter_hashes', 'chapter_output_hashes',
+                                               'coverage_report_sha256', 'wbs_tasks_by_chapter')}}
 content = json.dumps(result, ensure_ascii=False)
 session = 'physical-fixture-session-' + str(os.getpid())
 if args.fixture_provider == 'codex':
@@ -144,7 +149,7 @@ def _fixture_provider_spec(route: dict) -> dict:
     effort = route.get("reasoning_effort")
     if effort is None or route["provider"] == "codex":
         return spec
-    binary = {"executable_sha256": hashlib.sha256(Path(sys.executable).read_bytes()).hexdigest(),
+    binary = {"executable_sha256": hashlib.sha256(Path(_fixture_executable()).read_bytes()).hexdigest(),
               "version": "labelled-physical-native-envelope-fixture-v1",
               "version_arguments": ["--version"]}
     native_effort = "high"
@@ -162,11 +167,24 @@ def _fixture_provider_spec(route: dict) -> dict:
     return spec
 
 
+def _fixture_executable():
+    # Windows venv python.exe is a redirector with a different child PID. This
+    # stdlib-only fixture uses the underlying same-version interpreter directly
+    # so the independently observed Popen PID remains the exact executing PID.
+    return getattr(sys, '_base_executable', sys.executable) if os.name == 'nt' else sys.executable
+
+
+def _controller_script(script):
+    # Independent interpreters must test this checkout, not an older installed
+    # wheel in the frozen environment used to run pytest itself.
+    return 'import sys; sys.path.insert(0, ' + repr(str(Path(__file__).resolve().parents[1] / 'src')) + ')\n' + script
+
+
 def _launch_fixture(script: Path, node: dict, root: Path, *, gate: Path | None = None,
                     failure: str | None = None, retry_after: float = .2) -> tuple:
     route = node["route"]
     marker = root / ("ready-" + node["attempt_id"] + ".json")
-    prefix = [sys.executable, str(script), "--fixture-provider", route["provider"],
+    prefix = [_fixture_executable(), str(script), "--fixture-provider", route["provider"],
               "--fixture-ready", str(marker)]
     if gate is not None:
         prefix.extend(["--fixture-gate", str(gate)])
@@ -432,7 +450,7 @@ def test_busy_native_processes_fall_through_second_third_then_persist_backoff(tm
         # Independent fresh interpreter reads the same wait and refuses an
         # early dispatch, just as a controller restarting from SQLite must.
         script = "from cochem_pipeline.store import JobStore; import json,sys; s=JobStore(sys.argv[1]); print(json.dumps({'claim':s.claim('restarted-controller',worker_slot='slot4'),'routing':s.get(sys.argv[2])['routing']}))"
-        child = subprocess.run([sys.executable, "-c", script, str(store.path), waiting["job_id"]],
+        child = subprocess.run([_fixture_executable(), "-c", _controller_script(script), str(store.path), waiting["job_id"]],
                                capture_output=True, text=True, timeout=10)
         assert child.returncode == 0, child.stderr
         observed = json.loads(child.stdout)
@@ -481,7 +499,7 @@ print(json.dumps(store.claim('independent-controller', max_workers=4,
     try:
         for number in range(6):
             marker = tmp_path / f"controller-ready-{number}.json"
-            process = subprocess.Popen([sys.executable, "-c", script, str(store.path), str(marker),
+            process = subprocess.Popen([_fixture_executable(), "-c", _controller_script(script), str(store.path), str(marker),
                                         str(gate), f"slot{number + 1}"],
                                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             executions.append((process, _wait_ready(marker, process), time.time()))
@@ -585,7 +603,7 @@ def test_real_controller_crash_after_route_claim_recovers_without_duplicate_rese
     store = JobStore(tmp_path / "job_board.db", routing_policy=_policy())
     workflow = store.submit("List checks", ["REQ-1"], 1)
     script = "from cochem_pipeline.store import JobStore; import json,os,sys; s=JobStore(sys.argv[1]); print(json.dumps(s.claim('abrupt-controller',lease_seconds=.1,worker_slot='slot1')),flush=True); os._exit(73)"
-    child = subprocess.run([sys.executable, "-c", script, str(store.path)], capture_output=True, text=True, timeout=10)
+    child = subprocess.run([_fixture_executable(), "-c", _controller_script(script), str(store.path)], capture_output=True, text=True, timeout=10)
     assert child.returncode == 73, child.stderr
     abandoned = json.loads(child.stdout)
     assert abandoned["route"]["reservation_id"]

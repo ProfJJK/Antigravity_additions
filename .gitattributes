@@ -10,5 +10,12 @@ docs/archive/knowledge_4.2.7_original/** -text -whitespace
 docs/SRS_ADDENDUM_4.2.7.md -text
 docs/requirements_4.2.7.json -text
 docs/acceptance_4.2.7.json -text
-docs/evidence/** -text
+docs/evidence/** -text -whitespace
 src/cochem_pipeline/specification/** -text
+# Windows deployment source/manifests use exact-byte commitments.
+src/** -text
+scripts/** -text
+config/windows/** -text
+pipeline_tests/** -text
+mcp_tests/** -text
+supervisor_tests/** -text

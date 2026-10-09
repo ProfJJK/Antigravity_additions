@@ -1,0 +1,32 @@
+{
+  "schema": "cochem-independent-review/1",
+  "reviewer": "/root/native_next",
+  "status": "PASS_NO_CONCRETE_FINDING",
+  "candidate": "verify-codex-live-bridge-r3.py",
+  "candidate_sha256": "6e263c86a21454d4afa025ff592a56cce40429bf1bd51c1c9ad1bfbfd25441e5",
+  "tests_sha256": "49287bb2f7db2acd4358a457c4dd43f8dcafb2d51f4eb3a0fa5ce70e48ea0734",
+  "xml_sha256": "9863b7192d6cd9510134020ec5a445f7585b35698dad36c95242f38f9e9fb479",
+  "recorded_tests": {
+    "passed": 42,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 8.196
+  },
+  "scope": [
+    "Complete source and test read, reviewed installed Windows ctypes call contracts",
+    "Ordinary child created suspended; exact three inherited pipe handles; Job assignment before resume",
+    "Owned unnamed kill-on-close Job contains venv launcher, interpreter and descendants; no existing PID opened for termination",
+    "Timeout and stderr/frame/envelope rejection reach owned Job cleanup and zero-active-process requirement",
+    "EOF or unsolicited notification never counts as a reply; exact expected response ID/envelope required and no raw response published",
+    "Fixed four read-only tool calls, exact fifteen-tool inventory and tested installed MCP SDK response shapes",
+    "Health/knowledge/project public projection contains allowlisted metadata only; stderr discarded; error strings not forwarded",
+    "Actual child/grandchild containment fixture and SDK server fixture are ordinary/inert, not live controller evidence"
+  ],
+  "reviewer_launched_children": false,
+  "reviewer_reran_tests": false,
+  "reviewer_read_tokens": false,
+  "reviewer_called_controller": false,
+  "reviewer_changed_source": false,
+  "full_host_acceptance": false
+}

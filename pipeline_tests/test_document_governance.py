@@ -9,7 +9,7 @@ import pytest
 from cochem_pipeline.document_governance import execution_contract
 from cochem_pipeline.planning_governance import digest, execution_contract as coding_contract
 from cochem_pipeline.store import JobStore, canonical_json
-from pipeline_tests.test_store import chapter, finish, manifest
+from pipeline_tests.test_store import chapter, finish, manifest, synthesis_output
 
 
 def _submit(store, kind, identifier='captured'):
@@ -53,8 +53,7 @@ def test_scatter_and_synthesis_release_preserve_original_contract(tmp_path):
     job = store.claim('synthesis')
     assert job['kind'] == 'SYNTHESIS'
     assert job['payload']['governing_requirements'] == captured
-    finish(store, job, {'artifact_text': '# Verified chapter coverage',
-                        'chapter_hashes': job['payload']['chapter_hashes']})
+    finish(store, job, synthesis_output(job, '# Verified chapter coverage'))
     final = store.workflow(workflow['workflow_id'])
     assert final['root']['status'] == 'COMPLETED'
     assert all(job['payload']['governing_requirements'] == captured for job in final['jobs'])

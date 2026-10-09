@@ -1,0 +1,97 @@
+{
+  "schema": "cochem-independent-supervisor-staging-preparation/1",
+  "status": "PREPARED_NOT_APPLIED_INDEPENDENT_REVIEW_PENDING",
+  "files": {
+    "stage-independent-supervisor-holds-r3-v1.py": {
+      "sha256": "215af8db414c7bbc4352c825dbf250b7bbc244a8a2dbc2d4addadc72cf1acb74",
+      "bytes": 10594
+    },
+    "install-independent-supervisor-staging-r3-v1.ps1": {
+      "sha256": "4f8d3afa512ce81a73c114a384e208c39006ab3abe4771512a121ebf7ae7b098",
+      "bytes": 22503
+    },
+    "test_independent_supervisor_staging_r3_v1.py": {
+      "sha256": "c6344ffee0dbc182a4e93736c1a3fa8543b822a163cb4735094c825467019b17",
+      "bytes": 24005
+    },
+    "freeze-independent-supervisor-staging-r3-v1.py": {
+      "sha256": "f948ed21337a3b7fefd82be5d94ba3c33d07448b22876d857981800d1cf323c7",
+      "bytes": 3005
+    },
+    "prepare-independent-supervisor-staging-r3-v1.py": {
+      "sha256": "48a079fb3eb4c7430f9a1711ac9e5015c029dab4747e611145a466e93e1bcefa",
+      "bytes": 14042
+    },
+    "acceptance-pytest-staging-r3-v1.ini": {
+      "sha256": "5f1925b4a423d125a0e653f5c876fada9293684bf6797381b303fc88c5712778",
+      "bytes": 25
+    },
+    "independent-supervisor-staging-r3-v1.plan.json": {
+      "sha256": "ce760e5350ad1e301cec4d240b6251244835d19867b534b0e4007a1c4954e902",
+      "bytes": 62618
+    },
+    "independent-supervisor-staging-r3-v1.manifest.json": {
+      "sha256": "6aec5eaf82205be34e5849e73700f2e817e157be5c5ddd4366f04e549b75f0c4",
+      "bytes": 55977
+    },
+    "independent-supervisor-staging-r3-v1-preview-final.json": {
+      "sha256": "1004ebaabb2f598bdf66b38fff2dac554bb3303bb6364387448cfcf9feaf9311",
+      "bytes": 893
+    },
+    "independent-supervisor-staging-r3-v1-tests-initial.xml": {
+      "sha256": "0ccb827365b8ad0704d9c2c8084df99a3fa74f7165a26615341b15444aab6e85",
+      "bytes": 8818
+    },
+    "independent-supervisor-staging-r3-v1-tests-followup.xml": {
+      "sha256": "eadac0e6611f83063e052dbe95e708546ee9f588870487469329dfc83a71596f",
+      "bytes": 21717
+    },
+    "independent-supervisor-staging-r3-v1-tests-followup2.xml": {
+      "sha256": "adec3246bfbe23aa955f6cbd3922b0618bacccd6b0894fff3c4aa665f560b277",
+      "bytes": 7720
+    },
+    "independent-supervisor-staging-r3-v1-tests-final.xml": {
+      "sha256": "fde58b710ee7c47e1f800fa16853901665541ccd03bd1cb97e91a8d837b0a653",
+      "bytes": 8089
+    }
+  },
+  "tests": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "47",
+    "time": "15.467",
+    "timestamp": "2026-10-07T21:47:52.947818-05:00",
+    "hostname": "AetherDesk",
+    "platform": "actual Windows ordinary ansac Python3.12.13 / Windows PowerShell5.1",
+    "SYSTEM_acceptance": false,
+    "real_temp_sqlite_and_native_file_copy": true,
+    "privileged_acl_identity_task_build_boundaries": "explicit inert fixture replacements",
+    "source_assets": "actual166 source +126 acceptance files +109 installed package assets in disposable copy"
+  },
+  "earlier_results": {
+    "initial": "36 passed; positive AST fixture lacked script-root context",
+    "followup": "41 passed; four fixture context/module import failures; no Apply",
+    "followup2": "45 passed before two added strict JSON scalar fixtures"
+  },
+  "permitted_on_future_reviewed_apply": [
+    "Fresh protected source/acceptance/uv venv/build files under new supervisor root",
+    "Fresh private unpublished paired unresolved-authority ledgers; no authority release API",
+    "One new no-trigger SYSTEM staging task and bounded sanitized receipt; preserve success or partial outputs"
+  ],
+  "forbidden": [
+    "Existing Warden/supervisor task changes",
+    "Existing pipeline config/pointer/account/profile/credential changes",
+    "Legacy ledger reads, resets or inferred fresh allowance",
+    "Provider/model/Docker calls or pipeline provisioning"
+  ],
+  "preserved_pipeline_configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "target": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1",
+  "unpublished_pair_root": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1\\unpublished-private\\unresolved-pair",
+  "source_only_plan_superseded_detail": "Concrete private pair is inside the fresh code-root private child; unused ProgramData proposal was not created.",
+  "remaining_activation": "Separate reviewed repair identity/workspace, held config and observation activation; no automatic Warden restart outside immutable authority.",
+  "human_action_now": null,
+  "full_srs_acceptance": false,
+  "no_apply_or_live_execution": true
+}

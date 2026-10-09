@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-16"?>
+<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">
+  <RegistrationInfo>
+    <SecurityDescriptor>O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:P(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)</SecurityDescriptor>
+    <Description>Inert ordinary-user ACL representation fixture. Disabled, no triggers, demand start disabled, never run; preserve for review.</Description>
+    <URI>\CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2</URI>
+  </RegistrationInfo>
+  <Principals>
+    <Principal id="Author">
+      <UserId>S-1-5-21-4108184938-3023548017-2507294638-1001</UserId>
+      <LogonType>InteractiveToken</LogonType>
+    </Principal>
+  </Principals>
+  <Settings>
+    <AllowStartOnDemand>false</AllowStartOnDemand>
+    <DisallowStartIfOnBatteries>true</DisallowStartIfOnBatteries>
+    <StopIfGoingOnBatteries>true</StopIfGoingOnBatteries>
+    <Enabled>false</Enabled>
+    <ExecutionTimeLimit>PT1M</ExecutionTimeLimit>
+    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>
+    <IdleSettings>
+      <Duration>PT10M</Duration>
+      <WaitTimeout>PT1H</WaitTimeout>
+      <StopOnIdleEnd>true</StopOnIdleEnd>
+      <RestartOnIdle>false</RestartOnIdle>
+    </IdleSettings>
+  </Settings>
+  <Triggers />
+  <Actions Context="Author">
+    <Exec>
+      <Command>C:\WINDOWS\System32\cmd.exe</Command>
+      <Arguments>/d /c exit 0</Arguments>
+    </Exec>
+  </Actions>
+</Task>

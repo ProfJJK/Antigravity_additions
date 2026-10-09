@@ -72,18 +72,47 @@ def document_contract():
         workflow["events"].append({"event": "COMPLETED", "job_id": job_id})
 
     completed("manifest", "MANIFEST_GENERATOR", "codex", {"chapters": [
-        {"chapter_id": f"chapter-{index}", "title": f"Fixture chapter {index}", "requirements": ["REQ-1"]}
+        {"chapter_id": f"chapter-{index}", "title": f"Fixture chapter {index}", "requirements": ["REQ-1"],
+         'wbs_tasks_defined': [{'id': f'task-{index}', 'description': 'Fixture task', 'requirements': ['REQ-1']}]}
         for index in range(6)]}, 90, 95)
     for index in range(6):
         completed(f"draft-{index}", "CHAPTER_DRAFT", "codex" if index % 2 == 0 else "claude",
                   {"chapter_id": f"chapter-{index}", "requirements_traced": ["REQ-1"],
-                   "wbs_tasks_defined": [{"task_id": f"task-{index}", "description": "Fixture task"}],
+                   "wbs_tasks_defined": [{'id': f'task-{index}', 'description': 'Fixture task', 'requirements': ['REQ-1']}],
                    "artifact_uri": f"db://{workflow_id}/chapter-{index}",
                    "artifact_text": f"Fixture chapter {index}: requirements and WBS."},
                   100 + 4 * (index // 4), 103 + 4 * (index // 4), index)
+        workflow['jobs'][-1]['payload'].update(
+            wbs_tasks_defined=workflow['jobs'][-1]['output']['wbs_tasks_defined'],
+            manifest_output_sha256=workflow['jobs'][1]['output_sha256'])
     hashes = {row["chapter_id"]: row["sha256"] for row in workflow["artifacts"]}
-    completed("synthesis", "SYNTHESIS", "gemini", {"artifact_text": "Fixture final SRS/WBS", "chapter_hashes": hashes}, 110, 115)
-    workflow["events"].append({"event": "SYNTHESIS_RELEASED", "details": {"chapter_hashes": hashes}})
+    chapters = workflow['jobs'][2:]
+    output_hashes = {job['chapter_id']: job['output_sha256'] for job in chapters}
+    wbs = {job['chapter_id']: job['output']['wbs_tasks_defined'] for job in chapters}
+    coverage = {'schema': 'cochem-document-coverage/4.2.7',
+        'requirements': [{'requirement': 'REQ-1', 'owning_chapters': list(hashes),
+            'traced_by_chapters': list(hashes), 'overlap': True, 'gap': False}],
+        'gaps': [], 'overlaps': ['REQ-1'], 'chapter_hashes': hashes, 'chapter_output_hashes': output_hashes,
+        'manifest_output_sha256': workflow['jobs'][1]['output_sha256'], 'complete': True}
+    commitments = {'chapter_hashes': hashes, 'chapter_output_hashes': output_hashes,
+                   'coverage_report_sha256': digest(coverage), 'wbs_tasks_by_chapter': wbs}
+    completed("synthesis", "SYNTHESIS", "gemini", {"artifact_text": "Fixture final SRS/WBS", **commitments}, 110, 115)
+    workflow['jobs'][-1]['payload'].update(**commitments, coverage_report=coverage,
+        chapters=[{'chapter_id': job['chapter_id'], 'accepted_output': copy.deepcopy(job['output']),
+                   'output_sha256': job['output_sha256'], 'sha256': job['artifact_sha256']} for job in chapters])
+    workflow["events"].append({"event": "SYNTHESIS_RELEASED", "details": {
+        'chapter_hashes': hashes, 'chapter_output_hashes': output_hashes,
+        'coverage_report': coverage, 'coverage_report_sha256': digest(coverage)}})
+    for job in workflow['jobs'][1:]:
+        policy = load_routing_policy()
+        scoring = score_task(job['kind'], job['payload'])
+        candidates = [target.as_dict() for target in policy.candidates(scoring['score'], job['kind'])]
+        selected = next(index for index, target in enumerate(candidates)
+                        if target['provider'] == job['receipt']['provider'])
+        job['routing'].update(score_details=scoring, candidates=candidates)
+        job['route'].update(**candidates[selected], score=scoring['score'], tier=scoring['tier'], candidate_index=selected)
+        job['receipt'].update(requested_model=job['route']['model'], reported_model=job['route']['model'],
+                              requested_effort=job['route']['reasoning_effort'])
     return workflow, providers
 
 
@@ -97,6 +126,25 @@ def test_pure_report_checks_hashes_routing_identity_barrier_and_overlap(document
     assert report["provider_counts"] == {"codex": 4, "claude": 3, "gemini": 1}
     assert report["jobs_without_reported_model_metadata"] == ["manifest"]
     assert report["stdout_content_independently_recomputed"] is False
+
+
+@pytest.mark.parametrize('key', ['chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter'])
+def test_acceptance_rejects_synthesis_missing_structured_commitments(document_contract, key):
+    workflow, providers = document_contract
+    synthesis = workflow['jobs'][-1]
+    synthesis['output'].pop(key)
+    synthesis['output_sha256'] = synthesis['receipt']['output_sha256'] = digest(synthesis['output'])
+    with pytest.raises(ValueError, match='commitments'):
+        acceptance.validate_workflow(workflow, providers, admission=workflow['acceptance_admission'])
+
+
+def test_acceptance_detects_structured_output_change_with_unchanged_artifact_text(document_contract):
+    workflow, providers = document_contract
+    chapter = workflow['jobs'][2]
+    chapter['output']['additional_commitment'] = {'important': 'new accepted output bytes'}
+    chapter['output_sha256'] = chapter['receipt']['output_sha256'] = digest(chapter['output'])
+    with pytest.raises(ValueError, match='chapter_output_hashes'):
+        acceptance.validate_workflow(workflow, providers, admission=workflow['acceptance_admission'])
 
 
 @pytest.mark.parametrize("field,value,reason", [

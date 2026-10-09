@@ -1,0 +1,23 @@
+{
+    "schema":  "cochem-knowledge-state-diagnostic-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "source_sha256":  "e799d3d932a42af251c5ea752530eb9bcee022196d0c22db60c75e481e67da87",
+    "target_root":  "C:\\Program Files\\CoChem\\KnowledgeDiagnostic4.2.7-windows-20261007-a",
+    "task_name":  "CoChem-4.2.7-KnowledgeDiagnostic-20261007-a",
+    "original_task_preserved":  true,
+    "state_scope":  "Exact failed new state root, direct children and one generation directory level; maximum 128 entries",
+    "state_file_data_access":  false,
+    "new_empty_synthetic_directories":  [
+                                            "fixture-inherited",
+                                            "fixture-mode700"
+                                        ],
+    "synthetic_directory_scope":  "New private diagnostic root only; preserved for review",
+    "admin_checks_deferred":  [
+                                  "exact original failed task terminal/action/exit binding",
+                                  "private original receipt/helper/inventory custody"
+                              ],
+    "system_diagnostic_executed":  false,
+    "holds":  [
+
+              ]
+}

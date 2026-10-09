@@ -1,0 +1,73 @@
+WINDOWS PIPELINE: ONE ATTENDED FIRST-START SESSION
+7 October 2026 - AETHERDESK
+
+The reviewed sign-in and first-start series is ready. This is the attended
+step for getting the controller running, not a claim of full SRS acceptance.
+No Docker timing test or completed installation needs repeating.
+
+WHAT TO DO WHEN CONVENIENT
+
+1. Open Start, type Windows PowerShell, choose Run as administrator, and accept
+   UAC under your ansac account. Use that interactive window for this session.
+2. Paste this entire single command and press Enter:
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pipeline-commissioning-r3-v1.ps1" -Apply -Interactive
+
+3. Follow browser/device instructions only when a profile is explicitly logged
+   out. Existing verified worker sessions are reused. There are six isolated
+   profiles with Codex/Claude coverage, so 0-12 approvals may be needed; the
+   actual number is unknown until their SYSTEM status checks run. Use your
+   existing subscriptions. No Agy sign-in, worker password, or credential copy
+   is requested. Do not paste login codes, tokens or provider output into chat.
+4. Let the command finish, then return its final JSON. If it stops or prints a
+   hold, return the failure instead and leave tasks/files/running state in place.
+   Do not rerun this consumed series or the earlier return/Docker commands.
+
+WHY THIS NEEDS YOU
+
+Windows administrator rights are needed for protected files and SYSTEM tasks;
+this chat runs as an ordinary ansac process. Provider browser consent is yours.
+The command performs preservation and checks automatically in that session.
+
+WHAT THE COMMAND DOES
+
+- Checks both providers in all six existing isolated profiles. It signs in only
+  profiles proved logged out; unknown status stops for engineering diagnosis.
+- Consumes pinned authentication proofs, preserves the four exact prior Docker
+  test files into new private retention, and checks untouched private state.
+- Registers one new Warden task and starts it once. Collects actual SYSTEM
+  process/launcher identity, progressing heartbeat/API and queue-observer proof.
+- Keeps four shared slots and all pipeline model routing on Chapter 06.
+- Leaves automatic repair disabled. It does not migrate old jobs or repair
+  budgets, reset credentials, recreate/format R:, alter its startup task, repeat
+  the Docker trial, or submit model jobs in this attended session.
+
+AFTER THE FIRST START
+
+Codex can run the prepared ordinary-process MCP bridge check and routed planning
+and coding driver without another administrator command for those checks.
+They have not run yet. Codex MCP registration and 15-tool discovery are already
+verified; the current chat tool catalog has not been reloaded.
+
+Do not reboot as part of this command. One later convenient controlled reboot
+is still needed for full recovery acceptance after recovery setup is ready.
+The required 48-hour observation is unattended machine availability, not
+48 hours of console supervision; normal work should remain possible.
+
+Automatic-repair historical spending authority and genuine desktop-heap usage
+acquisition remain engineering gaps. Unknown spending stays held. Legacy
+databases/history are preserved; old requests are not silently resumed.
+Full Windows workflow/recovery/resource/stability acceptance remains open.
+
+WINDOWS EVIDENCE, SEPARATE FROM LINUX
+
+Prepared ordinary Windows checks: authentication68; first-start47; combined
+sequencing52; live-workflow driver38; MCP live-bridge verifier42. Each has its
+own evidence scope; these are not actual SYSTEM startup/model acceptance.
+Actual combined preview completed with zero tasks/model jobs and only the
+expected ordinary-token worker-metadata holds. Private SYSTEM checks are
+explicitly deferred to the reviewed command.
+The physical Docker isolation/cleanup and <=30-second test cycles already
+passed. Its 2.697/2.659-second startup remains a nonblocking optimization miss.
+Existing credentials, databases, repair budgets, 8 GiB R: and
+Mount_CoChem_RAMDisk remain preserved.

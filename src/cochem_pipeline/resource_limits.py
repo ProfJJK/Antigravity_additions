@@ -18,6 +18,14 @@ class ResourcePolicyError(RuntimeError):
     """Native containment/topology is unavailable; hold rather than infer."""
 
 
+def _native_policy_error(operation: str):
+    """Keep the Win32 code/cause available to bounded failure receipts."""
+    cause = ctypes.WinError(ctypes.get_last_error())
+    error = ResourcePolicyError(operation)
+    error.winerror = cause.winerror
+    raise error from cause
+
+
 @dataclass(frozen=True)
 class ResourceLimits:
     memory_limit_mb: int = 2048
@@ -142,7 +150,7 @@ def native_cpu_sets() -> list[dict]:
         raise ResourcePolicyError('Windows returned an invalid CPU topology size')
     buffer = ctypes.create_string_buffer(size.value)
     if not query(buffer,len(buffer),ctypes.byref(size),None,0):
-        raise ResourcePolicyError(str(ctypes.WinError(ctypes.get_last_error())))
+        _native_policy_error('Read native CPU-set topology')
     try:
         return parse_cpu_sets(buffer.raw[:size.value])
     except ValueError as exc:
@@ -247,6 +255,15 @@ def _structures(limits: ResourceLimits, affinity_mask: int = 0) -> tuple[_Extend
     return extended,cpu
 
 
+def _query_job_information(query, handle, kind, structure):
+    returned = _DWORD()
+    expected = ctypes.sizeof(structure)
+    if not query(_HANDLE(handle),kind,ctypes.byref(structure),expected,ctypes.byref(returned)):
+        _native_policy_error('Read back worker Job Object limits')
+    if returned.value != expected:
+        raise ResourcePolicyError('Windows returned an incomplete or ambiguous Job Object limit record')
+
+
 def apply_job_limits(job_handle, limits: ResourceLimits) -> dict:
     """Set and read back all limits; failure prevents the caller resuming a child.
 
@@ -267,22 +284,26 @@ def apply_job_limits(job_handle, limits: ResourceLimits) -> dict:
     query = kernel.QueryInformationJobObject
     query.argtypes = [_HANDLE,ctypes.c_int,ctypes.c_void_p,_DWORD,ctypes.POINTER(_DWORD)]
     query.restype = ctypes.c_int
+    # Set legacy aggregate affinity before the explicit group affinity. Windows
+    # rejects setting JOB_OBJECT_LIMIT_AFFINITY after GroupInformationEx (87).
+    # Removing that flag is not equivalent: a subsequent class-9 update can
+    # widen the group mask. Keep both constraints and read everything back only
+    # after the final mutation; no child has been created or resumed here.
+    for info_class,structure in ((9,extended),(15,cpu)):
+        if not set_information(_HANDLE(value),info_class,ctypes.byref(structure),ctypes.sizeof(structure)):
+            _native_policy_error('Set worker aggregate Job Object limits')
     if host['affinity_mask']:
         group = _GroupAffinity(Mask=host['affinity_mask'],Group=host['affinity_group'])
         if not set_information(_HANDLE(value),14,ctypes.byref(group),ctypes.sizeof(group)):
-            raise ResourcePolicyError(str(ctypes.WinError(ctypes.get_last_error())))
+            _native_policy_error('Set worker processor group affinity')
         observed_group = _GroupAffinity()
-        if not query(_HANDLE(value),14,ctypes.byref(observed_group),ctypes.sizeof(observed_group),None):
-            raise ResourcePolicyError(str(ctypes.WinError(ctypes.get_last_error())))
-        if observed_group.Group != group.Group or observed_group.Mask != group.Mask:
+        _query_job_information(query,value,14,observed_group)
+        if (observed_group.Group != group.Group or observed_group.Mask != group.Mask
+                or any(observed_group.Reserved)):
             raise ResourcePolicyError('Windows did not retain the required E-core processor group affinity')
-    for info_class,structure in ((9,extended),(15,cpu)):
-        if not set_information(_HANDLE(value),info_class,ctypes.byref(structure),ctypes.sizeof(structure)):
-            raise ResourcePolicyError(str(ctypes.WinError(ctypes.get_last_error())))
     observed_extended,observed_cpu = _ExtendedLimits(),_CpuRate()
     for info_class,structure in ((9,observed_extended),(15,observed_cpu)):
-        if not query(_HANDLE(value),info_class,ctypes.byref(structure),ctypes.sizeof(structure),None):
-            raise ResourcePolicyError(str(ctypes.WinError(ctypes.get_last_error())))
+        _query_job_information(query,value,info_class,structure)
     required = extended.BasicLimitInformation.LimitFlags
     if (observed_extended.BasicLimitInformation.LimitFlags & required != required
             or observed_extended.JobMemoryLimit != extended.JobMemoryLimit

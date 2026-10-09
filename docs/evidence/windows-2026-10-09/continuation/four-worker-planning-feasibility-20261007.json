@@ -1,0 +1,65 @@
+{
+  "canonical": [
+    "S427-PLAN-002",
+    "S427-PLAN-006",
+    "S427-HOST-001"
+  ],
+  "captured_utc": "2026-10-08T01:16:30.689823+00:00",
+  "installed_store_path": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3\\.venv\\Lib\\site-packages\\cochem_pipeline\\store.py",
+  "installed_store_sha256": "ba55f367a5c625ee1bfda0015c0dd69123b8cc4a52019b8d1cb76ac5c8d7d287",
+  "model_jobs_executed": 0,
+  "next_scope": "Preserve six configured identities/four seats. Status-first authentication can still skip already valid sessions and request browser approval only for explicit logged-out profiles.",
+  "original_state_modified": false,
+  "previous_four_active_recommendation_corrected": true,
+  "proposed_configuration_applied": false,
+  "proposed_four_active_configuration_ready": false,
+  "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "reason": "One immutable chapter binding per workflow per OS worker identity. Four identities cannot execute the required six-chapter planning DAG; six identities can execute it under four concurrent seats.",
+  "results": [
+    {
+      "completed_chapters": 4,
+      "configured_identities": 4,
+      "distinct_bound_chapter_slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4"
+      ],
+      "first_four_reuse_claims": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "pending_chapters": 2,
+      "shared_capacity": 4,
+      "synthesis_status": "BLOCKED",
+      "workflow_status": "IN_PROGRESS"
+    },
+    {
+      "completed_chapters": 6,
+      "configured_identities": 6,
+      "distinct_bound_chapter_slots": [
+        "slot1",
+        "slot2",
+        "slot3",
+        "slot4",
+        "slot5",
+        "slot6"
+      ],
+      "first_four_reuse_claims": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "pending_chapters": 0,
+      "shared_capacity": 4,
+      "synthesis_status": "COMPLETED",
+      "workflow_status": "COMPLETED"
+    }
+  ],
+  "schema": "cochem-worker-pool-planning-feasibility/1",
+  "scope": "Actual ordinary Windows Python 3.12.13 and installed r3 SQLite/JointAdmission with deterministic storage receipts; no native model, authentication, privileged action or production state access.",
+  "status": "FOUR_ACTIVE_CONFIGURATION_REJECTED_FOR_FULL_PIPELINE"
+}

@@ -1,0 +1,169 @@
+{
+  "controller_modified": false,
+  "corpus_bytes": 2129418,
+  "document_count": 137,
+  "fixture_root": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\knowledge-memory-fixture-20261009-587aa645026a4d3ebf1f21737340f5f5",
+  "full_srs_acceptance": false,
+  "index_bytes": 2678784,
+  "permissions_explicitly_mocked_for_fixture": true,
+  "phases": [
+    {
+      "handles": 172,
+      "iterations": 0,
+      "phase": "fixture_before_refresh",
+      "pooled_readers": 0,
+      "private_mb": 15.22265625,
+      "python_current_mb": 0.00055694580078125,
+      "python_peak_mb": 0.0010862350463867188,
+      "rss_mb": 24.33984375,
+      "threads": 4
+    },
+    {
+      "handles": 172,
+      "iterations": 0,
+      "phase": "initial_generation_built",
+      "pooled_readers": 0,
+      "private_mb": 15.51171875,
+      "python_current_mb": 0.023926734924316406,
+      "python_peak_mb": 8.17939567565918,
+      "rss_mb": 26.11328125,
+      "threads": 4
+    },
+    {
+      "handles": 173,
+      "iterations": 0,
+      "phase": "initial_authority_checked",
+      "pooled_readers": 1,
+      "private_mb": 15.51171875,
+      "python_current_mb": 0.028093338012695312,
+      "python_peak_mb": 8.17939567565918,
+      "rss_mb": 26.171875,
+      "threads": 4
+    },
+    {
+      "handles": 173,
+      "iterations": 300,
+      "phase": "status_300",
+      "pooled_readers": 1,
+      "private_mb": 16.2109375,
+      "python_current_mb": 0.4241809844970703,
+      "python_peak_mb": 8.17939567565918,
+      "rss_mb": 26.56640625,
+      "threads": 4
+    },
+    {
+      "handles": 173,
+      "iterations": 100,
+      "phase": "forced_authority_100",
+      "pooled_readers": 1,
+      "private_mb": 16.2109375,
+      "python_current_mb": 0.4244251251220703,
+      "python_peak_mb": 8.17939567565918,
+      "rss_mb": 26.56640625,
+      "threads": 4
+    },
+    {
+      "handles": 173,
+      "iterations": 50,
+      "phase": "serial_unchanged_refresh_50",
+      "pooled_readers": 1,
+      "private_mb": 19.1171875,
+      "python_current_mb": 0.43447303771972656,
+      "python_peak_mb": 8.596199035644531,
+      "rss_mb": 29.62890625,
+      "threads": 4
+    },
+    {
+      "handles": 174,
+      "iterations": 50,
+      "phase": "background_unchanged_refresh_50",
+      "pooled_readers": 1,
+      "private_mb": 19.13671875,
+      "python_current_mb": 0.42885780334472656,
+      "python_peak_mb": 8.608070373535156,
+      "rss_mb": 29.828125,
+      "threads": 4
+    },
+    {
+      "handles": 173,
+      "iterations": 0,
+      "phase": "service_closed",
+      "pooled_readers": 0,
+      "private_mb": 15.18359375,
+      "python_current_mb": 0.4265937805175781,
+      "python_peak_mb": 8.608070373535156,
+      "rss_mb": 26.04296875,
+      "threads": 4
+    }
+  ],
+  "production_data_read": false,
+  "provider_calls": 0,
+  "python": "3.12.13",
+  "recorded_at": 1791578373.5482507,
+  "retained_python_allocations": [
+    {
+      "allocations": 70,
+      "bytes": 4480,
+      "file": "knowledge.py",
+      "line": 321
+    },
+    {
+      "allocations": 2,
+      "bytes": 464,
+      "file": "knowledge.py",
+      "line": 604
+    },
+    {
+      "allocations": 1,
+      "bytes": 400,
+      "file": "knowledge_authority.py",
+      "line": 91
+    },
+    {
+      "allocations": 3,
+      "bytes": 315,
+      "file": "knowledge.py",
+      "line": 104
+    },
+    {
+      "allocations": 3,
+      "bytes": 304,
+      "file": "knowledge_authority.py",
+      "line": 82
+    },
+    {
+      "allocations": 4,
+      "bytes": 221,
+      "file": "knowledge.py",
+      "line": 655
+    },
+    {
+      "allocations": 2,
+      "bytes": 176,
+      "file": "knowledge.py",
+      "line": 620
+    },
+    {
+      "allocations": 2,
+      "bytes": 128,
+      "file": "knowledge.py",
+      "line": 692
+    },
+    {
+      "allocations": 2,
+      "bytes": 88,
+      "file": "knowledge_authority.py",
+      "line": 58
+    },
+    {
+      "allocations": 1,
+      "bytes": 75,
+      "file": "knowledge.py",
+      "line": 520
+    }
+  ],
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "schema": "cochem-knowledge-memory-generated-fixture/1",
+  "section_count": 1781,
+  "tasks_changed": 0
+}

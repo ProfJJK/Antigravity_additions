@@ -1,0 +1,11 @@
+{
+  "schema": "cochem-human-involvement-clarification/1",
+  "prior_sha256": "2f26d09bfc480e46d0fd525eb773c47c3036def043278fa4dd98079f6c53daf2",
+  "updated_sha256": "0d3293aa412e2fd0310a0332e19e54e0b1583a8c147f9ec3000b933ba8a5705d",
+  "changed_fields": [
+    "remaining[0:3]",
+    "human_involvement_clarification"
+  ],
+  "original_preserved": true,
+  "deployment_changed": false
+}

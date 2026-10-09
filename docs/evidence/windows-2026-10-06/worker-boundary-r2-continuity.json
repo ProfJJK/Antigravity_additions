@@ -1,0 +1,103 @@
+{
+  "schema": "cochem-worker-boundary-r2-continuity/1",
+  "captured_utc": "2026-10-07T13:55:15.671592+00:00",
+  "host": "AETHERDESK",
+  "scope": "Read-only continuity review permits the original frozen package only for unchanged host/device/credential boundaries; it is not r2 RAM/Docker/runtime acceptance.",
+  "old_runtime": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+  "r2_runtime": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+  "old_config_sha256": "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+  "r2_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "sole_config_delta": {
+    "ramdisk.workspace_subdirectory": "CoChem427-windows-20261007"
+  },
+  "all_other_config_values_equal": true,
+  "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+  "both_layouts_identical": true,
+  "module_bindings": {
+    "windows.py": {
+      "old_sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+      "r2_sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+      "entire_module_unchanged": true
+    },
+    "resource_limits.py": {
+      "old_sha256": "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318",
+      "r2_sha256": "f00534312072ff9ead8f12da59a0b7cfd23915914aef67fc3abcda3e11458318",
+      "entire_module_unchanged": true
+    },
+    "ramdisk.py": {
+      "old_sha256": "3647c54291d377ca6986e6ef37ecef8d31ab16794039331fdd005f88b56e2dd1",
+      "r2_sha256": "a148b2f5092e44fae42240f01d5243024629c99f1ec689c41d8d8a444c7d6104",
+      "entire_module_unchanged": false
+    }
+  },
+  "ramdisk_ordinary_tree": {
+    "normalized_ast_equal": true,
+    "normalized_ast_sha256": "9c91db99d32f6fe8a1ee4d75f9ce7f1b9479bcbc451f87ac551c642b072c5681",
+    "normalization": "ast.dump(include_attributes=False)",
+    "scope": "Only ordinary_tree is imported by the denial helper; full ramdisk modules intentionally differ."
+  },
+  "original_frozen_helpers": {
+    "check-all-worker-denials.ps1": "7acbaa1e4a08d1e25cbf384afacc9f80f2a266036af7e51379de80ad1e0010da",
+    "check-worker-denials.ps1": "1576882fe655d27894aa6f9da25a14ae4ddd08540c865d51cc43b26fa3dd6f9d",
+    "worker-denial-acceptance.py": "78c0006a225fa98211f038c380552d9651a86c9198b518603e989747f315bb45"
+  },
+  "source_changes_old_to_r2": {
+    "added": [
+      "src/cochem_pipeline/legacy_history.py",
+      "src/cochem_supervisor/budget_authority.py"
+    ],
+    "removed": [],
+    "changed": [
+      "src/cochem_pipeline/deployment.py",
+      "src/cochem_pipeline/knowledge.py",
+      "src/cochem_pipeline/operations_policy.py",
+      "src/cochem_pipeline/ramdisk.py",
+      "src/cochem_supervisor/component_recovery.py",
+      "src/cochem_supervisor/engine.py",
+      "src/cochem_supervisor/state.py",
+      "src/cochem_supervisor/upgrade.py"
+    ]
+  },
+  "original_helper_runtime_binding": "Hardcoded original INSTALL/PYTHON paths remain unchanged. Merely changing a wrapper to r2 would fail its exact interpreter/helper-root guard.",
+  "preview": {
+    "artifact": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\six-worker-denials-preview-after-r2.json",
+    "sha256": "d507ce5eebd60c930c18b94b5a1b9b3ad23d6e279a7512758736fa91ced16572",
+    "exit_code": 0,
+    "holds": [],
+    "all_six_targets_checked": true,
+    "worker_processes_executed": 0
+  },
+  "max_execution_slots": 4,
+  "worker_identities": 6,
+  "pipeline_model_routing": "Chapter 06 unchanged",
+  "applicable_targets": [
+    "PawnIO device handle denial without IOCTLs",
+    "own persistent worker workspace access",
+    "sibling persistent worker workspace denial",
+    "controller token handle denial",
+    "protected private-root denial"
+  ],
+  "not_covered": [
+    "new scoped RAM workspace",
+    "Docker named pipe",
+    "repair identity",
+    "model/authentication behavior",
+    "current runtime workflow or activation"
+  ],
+  "next_phase_prerequisite": "Actual successful separately reviewed knowledge recovery receipt must be verified before asking the owner to run this standalone phase.",
+  "standalone_command": "powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-denials.ps1\" -Apply",
+  "live_apply_prerequisites": [
+    "Fresh six evidence roots/tasks; preserve any existing artifacts.",
+    "All managed daemons stopped/disabled with zero instances.",
+    "Protected original runtime/base interpreter/helper/driver bindings still valid.",
+    "Existing SYSTEM worker credential targets and actual six SID/layout mappings valid.",
+    "Actual target paths and device ACL safe; worker token/image/Job attested before release.",
+    "Every slot succeeds with verified cleanup; stop on first failure."
+  ],
+  "applied": false,
+  "worker_processes_executed": 0,
+  "device_handles_opened": 0,
+  "original_helpers_modified": false,
+  "private_state_opened": false,
+  "activation_ready": false
+}

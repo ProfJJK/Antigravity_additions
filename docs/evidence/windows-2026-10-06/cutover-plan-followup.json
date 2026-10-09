@@ -1,0 +1,303 @@
+{
+    "schema":  "cochem-windows-cutover-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "activation_ready":  false,
+    "checked_at_utc":  "2026-10-07T02:53:26.6150111Z",
+    "host":  "AETHERDESK",
+    "initial_shared_slots":  4,
+    "source_files_checked":  238,
+    "source_mismatches":  [
+
+                          ],
+    "input_sha256":  {
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.stage.json":  "cae92adde0cec2edddbbe947a2397251b446df43f13b5b9fbc84fbfda5b48b01",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json":  "2dc3d266762dc0e2c77d0219185ea623eacade4cd3673d00234c9b3a39d97202",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.supervisor.proposed.json":  "d6da1999838efd9c8727773a14ba0e4fd319bb79521b3734876cffb1b6e25c83",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\followup-source-manifest.json":  "1414a1e144165e157ce85a8db343c6c1f6eb457cbc7831d972748f5c964007ed",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\plan_aetherdesk_427_cutover.ps1":  "ae399f69e0c27272cc1a29f5e9fd2c2c040016335cfb83589fdbebc40833b769",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_pipeline_windows.ps1":  "896352905ad0c1db23532bbd43197371591cb57df418837b3ca940da85114269",
+                         "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_supervisor_windows.ps1":  "c3e4434fc7016b077bf79c45d6f4dc89d574bb953d9860e832087ad7b528f193"
+                     },
+    "native_payloads":  [
+                            {
+                                "name":  "uv Python",
+                                "source":  "C:\\Users\\ansac\\AppData\\Roaming\\uv\\python\\cpython-3.12-windows-x86_64-none\\python.exe",
+                                "captured_sha256":  "D8E3F0ADF246DB00358C0C4ED349CF714898178F9558FB0E944F79F5C07F8EAA",
+                                "observed_source_sha256":  "D8E3F0ADF246DB00358C0C4ED349CF714898178F9558FB0E944F79F5C07F8EAA",
+                                "destination":  "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                "observed_destination_sha256":  null
+                            },
+                            {
+                                "name":  "Agy",
+                                "source":  "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+                                "captured_sha256":  "C1B0001989C4051A41F5104484DE182DB5014FA155053C8088BAACF1663063BF",
+                                "observed_source_sha256":  "C1B0001989C4051A41F5104484DE182DB5014FA155053C8088BAACF1663063BF",
+                                "destination":  "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\agy.exe",
+                                "observed_destination_sha256":  null
+                            },
+                            {
+                                "name":  "Claude",
+                                "source":  "C:\\Users\\ansac\\.local\\bin\\claude.exe",
+                                "captured_sha256":  "0E4195524B73EB77EFBDF3E2B36DE5322A29F0CA575DFD2D9B4F946B1D425469",
+                                "observed_source_sha256":  "0E4195524B73EB77EFBDF3E2B36DE5322A29F0CA575DFD2D9B4F946B1D425469",
+                                "destination":  "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe",
+                                "observed_destination_sha256":  null
+                            },
+                            {
+                                "name":  "Codex",
+                                "source":  "C:\\Users\\ansac\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.exe",
+                                "captured_sha256":  "FDDA5FA3CF3FB3D000B876720742857676293E4315E4B045FAE6F8BD7E866D1D",
+                                "observed_source_sha256":  "FDDA5FA3CF3FB3D000B876720742857676293E4315E4B045FAE6F8BD7E866D1D",
+                                "destination":  "C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe",
+                                "observed_destination_sha256":  null
+                            },
+                            {
+                                "name":  "uv",
+                                "source":  "C:\\Users\\ansac\\AppData\\Local\\hermes\\bin\\uv.exe",
+                                "captured_sha256":  "2019CDF564CB8F749262F5F021CEDC75A99ABB1C6081227CA340BBCDA972611D",
+                                "observed_source_sha256":  "2019CDF564CB8F749262F5F021CEDC75A99ABB1C6081227CA340BBCDA972611D",
+                                "destination":  "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+                                "observed_destination_sha256":  null
+                            }
+                        ],
+    "holds":  [
+                  {
+                      "id":  "python-missing",
+                      "reason":  "python is not staged at C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe"
+                  },
+                  {
+                      "id":  "uv-missing",
+                      "reason":  "uv is not staged at C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe"
+                  },
+                  {
+                      "id":  "codex-missing",
+                      "reason":  "codex is not staged at C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\codex.exe"
+                  },
+                  {
+                      "id":  "claude-missing",
+                      "reason":  "claude is not staged at C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\claude.exe"
+                  },
+                  {
+                      "id":  "gemini-missing",
+                      "reason":  "gemini is not staged at C:\\Program Files\\CoChem\\Native4.2.7-windows-20261006\\agy.exe"
+                  },
+                  {
+                      "id":  "agy-native-contract",
+                      "reason":  "Agy subscription, stdin/result and inference-only contracts are not verified; no flags or attestations may be invented."
+                  },
+                  {
+                      "id":  "extended-effort-contracts",
+                      "reason":  "Protected native Extended/high bindings remain unverified; ordinary Chapter 06 spillover must remain visible."
+                  },
+                  {
+                      "id":  "previous-budget-root",
+                      "reason":  "Previous supervisor budget authority is unresolved. Do not use a default nonexistent directory or an empty replacement ledger."
+                  },
+                  {
+                      "id":  "migration-evidence",
+                      "reason":  "Consistent legacy backups, budget/history mapping, writer drain and rollback provenance require review before installation."
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Review Agy stdin/result/auth/inference-only and effort contracts from installed capabilities"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Copy exact native binaries/dependencies and pinned Python/uv to protected roots; attest ACLs"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Provision intended isolated identities only after migration review; existing operator logins do not authenticate workers"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Locate original repair/component budget authority and implement reviewed legacy migration"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Confirm existing R startup ownership without changing its volume/task"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Protected CPU-only LibreHardwareMonitorLib 0.9.6 probe compiled and tested as a staged artifact; reviewed PawnIO installation and real SYSTEM CPU temperatures remain unverified. The official current LHM GUI has no WMI provider; required thermal protection remains enabled"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "SYSTEM controller/worker/repair denial, Docker pipe/backend, Job Objects and RAM mapping unverified"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Different-provider routed planning/coding/reconciliation/repair and rollback not yet run"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Actual four-worker queue observation, reboot and 48-hour stability unrun"
+                  },
+                  {
+                      "id":  "retained-stage-hold",
+                      "reason":  "Disposable user-profile fixture must be copied to the configured protected project target with exact Git baseline/branch preserved and SYSTEM/controller/worker ACLs attested before activation"
+                  },
+                  {
+                      "id":  "system-acceptance",
+                      "reason":  "Protected full-tree/hardlink ACLs, independent identities, Docker pipe/backend denial, RAM mapping and native containment require actual SYSTEM evidence."
+                  },
+                  {
+                      "id":  "activation-review",
+                      "reason":  "This planner has no execution mode. Review exact installation/task/state changes and the legacy coexistence decision before any activation."
+                  }
+              ],
+    "commands_for_review":  [
+                                {
+                                    "id":  "pipeline-install",
+                                    "script":  "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_pipeline_windows.ps1",
+                                    "arguments":  [
+                                                      "-Python",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                                      "-Uv",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+                                                      "-OperatorName",
+                                                      "AETHERDESK\\ansac",
+                                                      "-WardenTaskName",
+                                                      "CoChem-4.2.7-Warden",
+                                                      "-SupervisorTaskName",
+                                                      "CoChem-4.2.7-Supervisor",
+                                                      "-InstallRoot",
+                                                      "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+                                                      "-DataRoot",
+                                                      "C:\\ProgramData\\CoChemPipeline427",
+                                                      "-TokenFile",
+                                                      "C:\\Users\\ansac\\CoChem427\\controller.token",
+                                                      "-Slots",
+                                                      "4",
+                                                      "-Config",
+                                                      "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json"
+                                                  ],
+                                    "prerequisites":  [
+                                                          "migration-reviewed",
+                                                          "protected-toolchain-and-native-contracts",
+                                                          "configuration-valid"
+                                                      ],
+                                    "effect":  "Creates protected source and copied frozen environment; SYSTEM provisioning creates identities/layout. Does not register daemon without explicit switch."
+                                },
+                                {
+                                    "id":  "supervisor-install",
+                                    "script":  "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_supervisor_windows.ps1",
+                                    "arguments":  [
+                                                      "-Python",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                                      "-Uv",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+                                                      "-OperatorName",
+                                                      "AETHERDESK\\ansac",
+                                                      "-WardenTaskName",
+                                                      "CoChem-4.2.7-Warden",
+                                                      "-SupervisorTaskName",
+                                                      "CoChem-4.2.7-Supervisor",
+                                                      "-InstallRoot",
+                                                      "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261006",
+                                                      "-PipelineRoot",
+                                                      "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+                                                      "-PipelineConfig",
+                                                      "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+                                                      "-DataRoot",
+                                                      "C:\\ProgramData\\CoChemSupervisor427-windows-20261006",
+                                                      "-PreviousDataRoot",
+                                                      null,
+                                                      "-ReleaseRoot",
+                                                      "C:\\Program Files\\CoChem\\PipelineReleases4.2.7-windows-20261006",
+                                                      "-LoginLogRoot",
+                                                      "C:\\Users\\ansac\\CoChem427\\native-login-logs"
+                                                  ],
+                                    "prerequisites":  [
+                                                          "pipeline-provisioned",
+                                                          "previous-budget-root-resolved",
+                                                          "budget-migration-reviewed"
+                                                      ],
+                                    "effect":  "Creates independent copied frozen environment and acceptance snapshot; SYSTEM provision and budget migration. Missing PreviousDataRoot means this command is incomplete."
+                                },
+                                {
+                                    "id":  "pipeline-register-disabled",
+                                    "script":  "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_pipeline_windows.ps1",
+                                    "arguments":  [
+                                                      "-Python",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                                      "-Uv",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+                                                      "-OperatorName",
+                                                      "AETHERDESK\\ansac",
+                                                      "-WardenTaskName",
+                                                      "CoChem-4.2.7-Warden",
+                                                      "-SupervisorTaskName",
+                                                      "CoChem-4.2.7-Supervisor",
+                                                      "-InstallRoot",
+                                                      "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+                                                      "-DataRoot",
+                                                      "C:\\ProgramData\\CoChemPipeline427",
+                                                      "-TokenFile",
+                                                      "C:\\Users\\ansac\\CoChem427\\controller.token",
+                                                      "-Slots",
+                                                      "4",
+                                                      "-Config",
+                                                      "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+                                                      "-RegisterDaemon"
+                                                  ],
+                                    "prerequisites":  [
+                                                          "migration-complete",
+                                                          "system-prerequisites-and-native-contracts-reviewed",
+                                                          "legacy-writer-disposition-reviewed"
+                                                      ],
+                                    "effect":  "Registers the proposed SYSTEM Warden stopped and disabled, with explicit reviewed configuration. Requires administrator execution; this planner does not execute it."
+                                },
+                                {
+                                    "id":  "supervisor-register-final",
+                                    "script":  "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\install_supervisor_windows.ps1",
+                                    "arguments":  [
+                                                      "-Python",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\Python312\\python.exe",
+                                                      "-Uv",
+                                                      "C:\\Program Files\\CoChem\\Toolchain4.2.7-windows-20261006\\uv\\uv.exe",
+                                                      "-OperatorName",
+                                                      "AETHERDESK\\ansac",
+                                                      "-WardenTaskName",
+                                                      "CoChem-4.2.7-Warden",
+                                                      "-SupervisorTaskName",
+                                                      "CoChem-4.2.7-Supervisor",
+                                                      "-InstallRoot",
+                                                      "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261006",
+                                                      "-PipelineRoot",
+                                                      "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006",
+                                                      "-PipelineConfig",
+                                                      "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.proposed.json",
+                                                      "-DataRoot",
+                                                      "C:\\ProgramData\\CoChemSupervisor427-windows-20261006",
+                                                      "-PreviousDataRoot",
+                                                      null,
+                                                      "-ReleaseRoot",
+                                                      "C:\\Program Files\\CoChem\\PipelineReleases4.2.7-windows-20261006",
+                                                      "-LoginLogRoot",
+                                                      "C:\\Users\\ansac\\CoChem427\\native-login-logs",
+                                                      "-Config",
+                                                      "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.supervisor.proposed.json",
+                                                      "-RegisterSupervisor"
+                                                  ],
+                                    "prerequisites":  [
+                                                          "pipeline-register-disabled-complete",
+                                                          "budget-state-verified",
+                                                          "rollback-and-restart-reviewed"
+                                                      ],
+                                    "effect":  "Final privileged configure bootstraps the reviewed release pointer, preserves original task XML, changes intended Warden action, and enables intended Warden/supervisor startup. This is the explicit activation boundary, never an automatic planner step."
+                                }
+                            ],
+    "commands_executed":  [
+
+                          ],
+    "required_order":  [
+                           "Resolve native/sensor/migration holds and source evidence.",
+                           "Stage complete exact Python distribution, uv and native payload dependencies with protected ACLs; frozen sync must use --link-mode copy.",
+                           "Back up and reconcile legacy databases, WAL, budgets, task XML, release/quarantine state and original baselines; preserve credentials and R startup.",
+                           "After explicit reviewed writer/task disposition, install/provision without daemon registration; run SYSTEM doctor/containment and per-account login.",
+                           "Review registration of one intended SYSTEM pipeline Warden and independent supervisor. Preserve legacy task identity; do not silently replace it.",
+                           "Bounded routed preflight, native planning/coding/repair/rollback; actual four-worker queue, reboot and 48-hour observation."
+                       ],
+    "migration_evidence":  ""
+}

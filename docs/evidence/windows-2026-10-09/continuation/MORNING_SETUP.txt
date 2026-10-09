@@ -1,0 +1,4 @@
+Superseded by RETURN_SETUP.txt in this directory.
+Use its current reviewed continuation order when you return. Do not repeat the old series, successful inspection or diagnostic.
+The previous guide is preserved as MORNING_SETUP.before-return-series.txt.
+Pipeline remains stopped; stop at the first error and preserve all artifacts.

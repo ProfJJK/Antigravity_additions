@@ -1,0 +1,59 @@
+{
+  "schema": "cochem-powershell-parse/1",
+  "platform": "Windows",
+  "interpreter": "7.6.5",
+  "files": [
+    {
+      "path": "scripts/build_windows_cpu_probe.ps1",
+      "sha256": "57de762779a47aa6886756ddee5112a7767ddf6afdf08f967c493597f8d61397",
+      "errors": []
+    },
+    {
+      "path": "scripts/inspect_agy_windows.ps1",
+      "sha256": "edf7153bda7e17ff338c189c380f162b3d74b7399b834c000c673dd99c7f9041",
+      "errors": []
+    },
+    {
+      "path": "scripts/inspect_windows_prerequisites.ps1",
+      "sha256": "fc839bc591795c9d8efe34e42fb20489e51e8007afd2ba0a3718dd1878ad4228",
+      "errors": []
+    },
+    {
+      "path": "scripts/install_mcp_windows.ps1",
+      "sha256": "1a491e5f5256f074f84e48ae5a10317a3c65b8c70abd96afd05b3826b2efa8d9",
+      "errors": []
+    },
+    {
+      "path": "scripts/install_pipeline_windows.ps1",
+      "sha256": "896352905ad0c1db23532bbd43197371591cb57df418837b3ca940da85114269",
+      "errors": []
+    },
+    {
+      "path": "scripts/install_supervisor_windows.ps1",
+      "sha256": "c3e4434fc7016b077bf79c45d6f4dc89d574bb953d9860e832087ad7b528f193",
+      "errors": []
+    },
+    {
+      "path": "scripts/login_pipeline_worker.ps1",
+      "sha256": "45690955d5aa78ae5c91b51452d44c2d68c4836eaa6540f5ca1f771421230799",
+      "errors": []
+    },
+    {
+      "path": "scripts/login_supervisor_worker.ps1",
+      "sha256": "431c133794164dc87d0c19898491d00550a8b0711f5d7d1d537374dd21242967",
+      "errors": []
+    },
+    {
+      "path": "scripts/plan_aetherdesk_427_cutover.ps1",
+      "sha256": "ae399f69e0c27272cc1a29f5e9fd2c2c040016335cfb83589fdbebc40833b769",
+      "errors": []
+    },
+    {
+      "path": "scripts/provision_ramdisk_windows.ps1",
+      "sha256": "f5be131e820dd6cba1b3fe39cc9f02adabc1fcfd0ca2ac4426d36b681c54f57d",
+      "errors": []
+    }
+  ],
+  "error_count": 0,
+  "scope": "Parser validation only; no script execution"
+}

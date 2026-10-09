@@ -1,0 +1,152 @@
+{
+  "schema": "cochem-execution-foundation-failure-observation/1",
+  "captured_utc": "2026-10-07T23:12:57.166838+00:00",
+  "host": "AETHERDESK",
+  "scope": "Ordinary-user bounded exact-byte reads of existing public protected receipts, safe metadata-only input packets, helper pins and installed configuration/revision. No helper imports or entrypoints, tasks, Docker commands, state constructors, credentials or database contents opened.",
+  "status": "INSPECTION_PASSED_FOUNDATION_HELD_BEFORE_RAM_AND_REGISTRY",
+  "inspection": {
+    "status": "READ_ONLY_PREREQUISITES_VERIFIED",
+    "receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "nonce": "fc64e3d3990049ed809b7189906dd0e9",
+    "started_at_unix_ms": 1791414329840,
+    "finished_at_unix_ms": 1791414336544,
+    "docker_fixed_read_only_commands": 4,
+    "scoped_owned_container_count": 0,
+    "worker_handle_denials_before_and_after": true,
+    "ram_before": {
+      "filesystem_bytes": 8589930496,
+      "imdisk_query_ioctl_used": true,
+      "ram_modified": false,
+      "root_attributes": 22,
+      "root_device": 18215568536144889826,
+      "root_file_id": 1407374883553285,
+      "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "volume": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      }
+    },
+    "ram_after": {
+      "filesystem_bytes": 8589930496,
+      "imdisk_query_ioctl_used": true,
+      "ram_modified": false,
+      "root_attributes": 22,
+      "root_device": 18215568536144889826,
+      "root_file_id": 1407374883553285,
+      "root_security_sha256": "638a2f7c393c454628587f4bf2e6ac6fda7ccf90b98bc735282631283ebbb208",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "volume": {
+        "backing": "vm",
+        "configured_backing": "auto",
+        "device_number": 0,
+        "drive_letter": "R",
+        "filesystem": "NTFS",
+        "flags": 66064,
+        "nonpageable": false,
+        "size_bytes": 8589934592,
+        "target": "\\Device\\ImDisk0",
+        "volume_serial": 3400714210
+      }
+    },
+    "docker_server": {
+      "executable": "C:\\Program Files\\Docker\\Docker\\resources\\com.docker.backend.exe",
+      "pid": 26816,
+      "process_created_filetime": 134357190020978742,
+      "token_sid": "S-1-5-21-4108184938-3023548017-2507294638-1001"
+    },
+    "knowledge_bytes_preserved": true
+  },
+  "foundation": {
+    "status": "EXECUTION_FOUNDATION_HELD",
+    "receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "nonce": "a92fe71e71224573a3738b5131ecfb36",
+    "started_at_unix_ms": 1791414359270,
+    "finished_at_unix_ms": 1791414362045,
+    "failure": {
+      "error_type": "WindowsIsolationError",
+      "phase": "docker_owner_census",
+      "winerror": null
+    },
+    "ram_provision_started": false,
+    "registry_provision_started": false,
+    "containers_created": 0,
+    "warm_pool_created": 0,
+    "project_phase": "NOT_REACHED_IN_REPORTED_OWNER_SERIES",
+    "owner_wrapper_reported_last_task_result": 2,
+    "last_task_result_provenance": "Owner wrapper result relayed in the task; not independently read from Task Scheduler by this archival collector.",
+    "direct_current_task_terminal_state_verified": false,
+    "direct_task_state": "UNKNOWN_ORDINARY_COM_ACCESS_DENIED_REPORTED_BY_PARENT",
+    "failure_cause_beyond_sanitized_phase": "NOT_ESTABLISHED_BY_THIS_ARCHIVAL_READ"
+  },
+  "bindings": {
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "revision": {
+      "schema": "cochem-installed-revision/1",
+      "verified": true,
+      "read_only": true,
+      "files": 109,
+      "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+      "acceptance_files": 0,
+      "acceptance_sha256": null
+    },
+    "knowledge_receipt_sha256": "f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b",
+    "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+    "all_six_worker_receipt_pins_match_archived_acceptance": true,
+    "protected_helper_bytes_match_frozen_pins": true,
+    "input_packet_bytes_match_receipt_pins": true,
+    "task_action_nonce_terminal_binding_rechecked_by_this_collector": false
+  },
+  "preservation": {
+    "original_receipts_copied_byte_for_byte": true,
+    "integer_precision": "Python arbitrary-precision integers; original FILETIME/device/file IDs retained without JavaScript Number conversion.",
+    "protected_deployment_artifacts_modified_by_archival": false,
+    "ram_volume_or_startup_task_modified_by_failed_foundation_reported": false,
+    "credentials_databases_budgets_changed": false,
+    "automatic_retry_allowed": false,
+    "later_return_steps_held": true,
+    "linux_results_used": false,
+    "pipeline_activated": false
+  },
+  "next_action": "A separately reviewed read-only diagnostic is being prepared. Do not rerun the original fresh-only return series or either completed/failed leaf; preserve all roots/tasks/receipts. Project/Docker acceptance/legacy diagnostic/attended login commands from the prior return sequence remain held.",
+  "files": {
+    "execution-foundation.json": {
+      "sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+      "bytes": 1808
+    },
+    "execution-prerequisites.json": {
+      "sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+      "bytes": 6301
+    },
+    "foundation-inputs.json": {
+      "sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+      "bytes": 995
+    },
+    "handoff-before.md": {
+      "sha256": "dd07556b216dd61f592679c78f1058e805441f12bf94759474e744514a2a81aa",
+      "bytes": 12038
+    },
+    "inspection-inputs.json": {
+      "sha256": "b5bbab59e9574e34a9a6b5109e22120cb925d20ee37eed8f598339872aa7da94",
+      "bytes": 896
+    },
+    "observed-before.json": {
+      "sha256": "3fe1be0ba5a57189e1ebe42f35effc7a1f8489a2ca6650e84a08f01a27d64ee1",
+      "bytes": 39335
+    },
+    "record-execution-foundation-failure-20261007.py": {
+      "sha256": "cea04d3eb763228c281b9acb551e53f027ea3585d4f3e674aeaf57fdebfec068",
+      "bytes": 18398
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "cochem-commissioning-series-independent-review/1",
+  "status": "REVIEWED_PREPARED_NOT_APPLIED",
+  "recorded_utc": "2026-10-08T02:03:34.646426+00:00",
+  "reviewer": "host_inspection",
+  "logic_reviewed_source_sha256": "d16347c8e175767cc17378b16eaffd2d4fbdb5f62289924a428d3fa7d6a7d2f7",
+  "published_source_sha256": "44ed0b7d79b33afee6e35b36ddf2d37056e1e51f31806f05a21c2038c98d9bf1",
+  "only_change_after_peer_logic_review": "Bind reviewed final first-start wrapper SHA256.",
+  "findings": [],
+  "ordinary_windows_tests": 52,
+  "checks": [
+    "Held source handles span preview and both child phases.",
+    "Only one exact missing-auth prerequisite may be deferred.",
+    "Authentication proves twelve provider/profile outcomes.",
+    "Any nonzero/ambiguous/unverified phase stops later phases.",
+    "Receipt validates SYSTEM process identity and heartbeat progress.",
+    "Monitoring is heartbeat/queue only; no repair or full acceptance claim."
+  ],
+  "system_apply_executed": false
+}

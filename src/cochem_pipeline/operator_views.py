@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import re
 import sqlite3
@@ -57,6 +58,59 @@ def _load(root, relative, default):
         return default
 
 
+def _source_freshness(root, candidate, artifact):
+    """Check the exact tested files, never a version label or an unbound manifest."""
+    capture = artifact if isinstance(artifact, dict) else {}
+    relative = candidate.get('tested_source_manifest', capture.get('tested_source_manifest'))
+    expected = candidate.get('tested_source_manifest_sha256', capture.get('tested_source_manifest_sha256'))
+    if relative is None and candidate.get('artifact') == 'docs/evidence/VALIDATION_4.2.7-r2.json':
+        relative = 'docs/evidence/source_4.2.7-r2.json'
+    result = {'status': 'unknown', 'verified': False, 'manifest': relative,
+              'expected_sha256': expected, 'changed': [], 'missing': [], 'uncommitted_source': []}
+    if not isinstance(relative, str) or not isinstance(expected, str) or not _SHA.fullmatch(expected):
+        result['reason'] = 'Hash-bound tested source and dependency manifest is missing'
+        return result
+    try:
+        raw = _document(root, relative)
+        result['observed_sha256'] = hashlib.sha256(raw).hexdigest()
+        if result['observed_sha256'] != expected:
+            raise ValueError('Tested source manifest hash mismatch')
+        manifest = json.loads(raw)
+        files = manifest['files']
+        if (not isinstance(files, dict) or not 1 <= len(files) <= 10000
+                or 'uv.lock' not in files
+                or not any(name.startswith('src/') and name.endswith('.py') for name in files)):
+            raise ValueError('Manifest must bind runtime source and the dependency lock')
+        content_hash = manifest.get('content_sha256', manifest.get('sha256'))
+        if content_hash is not None and content_hash != digest(files):
+            raise ValueError('Tested source manifest content commitment mismatch')
+        for filename, sha256 in files.items():
+            if not isinstance(filename, str) or not isinstance(sha256, str) or not _SHA.fullmatch(sha256):
+                raise ValueError('Malformed tested file commitment')
+            try:
+                actual = hashlib.sha256(_document(root, filename)).hexdigest()
+            except (OSError, ValueError):
+                result['missing'].append(filename)
+                continue
+            if actual != sha256:
+                result['changed'].append(filename)
+        for path in (root / 'src').rglob('*.py'):
+            filename = path.relative_to(root).as_posix()
+            if filename not in files:
+                result['uncommitted_source'].append(filename)
+            if len(result['uncommitted_source']) > 10000:
+                raise ValueError('Runtime source inventory exceeds the verification limit')
+        result['verified'] = not any(result[key] for key in ('changed', 'missing', 'uncommitted_source'))
+        result['status'] = 'current' if result['verified'] else 'stale'
+        result['files_checked'] = len(files)
+        result['dependency_lock_sha256'] = files['uv.lock']
+        result['reason'] = ('Tested source and dependency lock bytes match' if result['verified']
+                            else 'Installed source or dependency commitments changed or are missing')
+    except (OSError, ValueError, TypeError, KeyError, AttributeError) as exc:
+        result.update(status='stale', reason=str(exc)[:256])
+    return result
+
+
 def acceptance_dashboard(source_root):
     """Join every normative ID to physical evidence and a permanent checklist row."""
     root = Path(source_root)
@@ -88,6 +142,7 @@ def acceptance_dashboard(source_root):
     evidence_specification = evidence.get('specification_sha256') if isinstance(evidence, dict) else None
     rows = []
     artifact_hashes = {}
+    source_checks = {}
     for identifier in ids:
         definition = catalog.get(identifier, {})
         artifacts = []
@@ -113,6 +168,17 @@ def acceptance_dashboard(source_root):
                                             and catalog_source_verified and item['specification_sha256'] == specification_sha256)
                         item['verification'] = ('Verified deployment artifact and revision' if item['verified']
                                                 else 'Artifact hash, governing specification or revision mismatch')
+                        if item['verified']:
+                            binding = digest([item['artifact'], candidate.get('tested_source_manifest'),
+                                              candidate.get('tested_source_manifest_sha256')])
+                            if binding not in source_checks:
+                                source_checks[binding] = _source_freshness(
+                                    root, candidate, _load(root, item['artifact'], {}))
+                            item['source_freshness'] = source_checks[binding]
+                            item['historical_artifact_verified'] = True
+                            item['verified'] = item['source_freshness']['verified']
+                            if not item['verified']:
+                                item['verification'] = item['source_freshness']['reason']
                     except (OSError, ValueError):
                         item['verification'] = 'Artifact is missing, outside deployment, or exceeds the read limit'
                 artifacts.append(item)
@@ -136,6 +202,8 @@ def acceptance_dashboard(source_root):
     return {'specification_id': SPECIFICATION_ID, 'specification_sha256': specification_sha256,
         'revision': revision, 'catalog_complete': complete, 'duplicate_requirement_ids': duplicate_ids,
         'catalog_specification_sha256': ledger_specification, 'catalog_source_verified': catalog_source_verified,
+        'source_freshness': list(source_checks.values()),
+        'verification_scope': 'Exact tested deployment bytes and recorded platforms; not full semantic or target-host certification',
         'all_verified': complete and bool(rows) and verified == len(rows),
         'counts': {'mandatory': len(ids), 'verified': verified, 'unverified': len(ids) - verified},
         'requirements': rows, 'release_checklist': [{'id': row['id'], 'chapter': row['chapter'],
@@ -240,14 +308,68 @@ def resource_plot(samples):
             'continuous_monitoring_claimed': False, 'svg': ''.join(svg)}
 
 
+def _topology_capture(runtime):
+    from .deployment import attestation_source_hashes, topology_configuration
+    private = getattr(runtime.config, 'private_root', None)
+    report = _load(Path(private), 'execution-readiness.json', {}) if private else {}
+    if not isinstance(report, dict):
+        report = {}
+    checked = report.get('checked_at')
+    state, reason = 'unknown', 'No protected readiness capture'
+    if report:
+        sources = report.get('attestation_source_sha256')
+        boot = getattr(runtime, 'boot_id', None)
+        if (type(checked) not in (int, float) or not math.isfinite(checked)
+                or not 0 <= time.time() - checked <= 300):
+            state, reason = 'stale', 'Readiness capture is older than 300 seconds or has an invalid timestamp'
+        elif boot is None or report.get('boot_id') != boot:
+            state, reason = 'stale', 'Readiness capture does not identify the current controller boot'
+        elif not isinstance(sources, dict) or sources != attestation_source_hashes():
+            state, reason = 'stale', 'Readiness collector source commitments are missing or changed'
+        elif report.get('topology_configuration') != topology_configuration(runtime.config):
+            state, reason = 'drift', 'Trust-boundary configuration differs from the captured prerequisite checks'
+        else:
+            state, reason = 'current', 'Current boot, collector bytes and bounded observation age match'
+    sources = report.get('attestation_source_sha256')
+    public_sources = {name: value for name, value in sources.items()
+                      if name in {'cochem_pipeline.windows', 'cochem_pipeline.ramdisk',
+                                  'cochem_pipeline.containers', 'cochem_pipeline.deployment'}
+                      and isinstance(value, str) and _SHA.fullmatch(value)} if isinstance(sources, dict) else {}
+    return report, {'state': state, 'reason': reason, 'checked_at': checked,
+                    'source_sha256': public_sources,
+                    'capture_sha256': digest(report) if report else None,
+                    'max_age_seconds': 300}
+
+
+def _fields(value, allowed):
+    return {key: value[key] for key in allowed if key in value} if isinstance(value, dict) else {}
+
+
 def deployment_view(runtime, jobs, health):
     config = runtime.config
     workers = getattr(config, 'workers', {})
+    report, capture = _topology_capture(runtime)
+    checks = report.get('checks', {})
+    checks = checks if isinstance(checks, dict) else {}
+    controller = {}
+    controller_state = 'unknown'
+    if health.get('pid') == os.getpid():
+        try:
+            from .deployment import attest_controller_identity
+            controller = attest_controller_identity()
+            controller_state = 'current' if controller['is_system'] else 'drift'
+        except (OSError, ValueError, RuntimeError):
+            pass
     nodes = [{'id': 'controller', 'kind': 'controller', 'configured_identity': 'SYSTEM',
+              'configured_token_sid': 'S-1-5-18', 'observed_identity': controller,
+              'attestation_state': controller_state,
               'observed_pid': health.get('pid'), 'instance_id': health.get('instance_id')},
              {'id': 'database', 'kind': 'private_database', 'configured_path': str(getattr(config, 'job_db', runtime.store.path))}]
     edges = [{'from': 'controller', 'to': 'database', 'transport': 'SQLite'}]
     drift = []
+    if controller and controller.get('token_sid') != 'S-1-5-18':
+        drift.append({'node': 'controller', 'field': 'token_sid', 'configured': 'S-1-5-18',
+                      'observed': controller.get('token_sid')})
     receipts = [job['receipt'] for job in jobs if isinstance(job.get('receipt'), dict)]
     for number, (slot, identity) in enumerate(sorted(workers.items())):
         captured = [receipt for receipt in receipts if receipt.get('worker_slot') == slot
@@ -265,21 +387,113 @@ def deployment_view(runtime, jobs, health):
             drift.append({'slot': slot, 'field': 'worker_account', 'configured': expected, 'observed': accounts})
     docker = getattr(runtime, 'docker', None)
     if docker is not None:
+        trusted_sids = {'S-1-5-18'}
+        operator = getattr(config, 'operator_name', None)
+        operator_sid_known = not operator
+        if operator:
+            try:
+                from . import windows as win
+                trusted_sids.add(win._sid_text(win._account_sid(operator)))
+                operator_sid_known = True
+            except (OSError, ValueError, RuntimeError):
+                pass
+        docker_check = checks.get('docker', {})
+        docker_check = docker_check if isinstance(docker_check, dict) else {}
+        evidence = docker_check.get('evidence', {})
+        evidence = evidence if isinstance(evidence, dict) else {}
+        boundary = evidence.get('worker_access', {})
+        boundary = boundary if isinstance(boundary, dict) else {}
+        pipes = []
+        for endpoint, records in list(boundary.items())[:16]:
+            if not isinstance(records, list):
+                continue
+            safe = []
+            for record in records[:256]:
+                if not isinstance(record, dict):
+                    continue
+                safe.append({'slot': record.get('slot'), 'access_denied': record.get('access_denied') is True,
+                    'denied_modes': [mode for mode in ('read', 'write', 'read_write')
+                                     if mode in (record.get('denied_modes') or [])],
+                    'server': _fields(record.get('server'),
+                        ('pid', 'process_created_filetime', 'token_sid', 'executable', 'checked_at'))})
+            pipes.append({'endpoint': endpoint, 'workers': safe})
+        docker_state = capture['state'] if evidence else 'unknown'
+        observed_engine = getattr(docker, '_daemon_identity', None)
+        captured_engine = evidence.get('daemon_id')
+        if captured_engine and observed_engine and captured_engine != observed_engine:
+            drift.append({'node': 'docker', 'field': 'engine_id', 'configured': observed_engine, 'observed': captured_engine})
+            docker_state = 'drift'
+        if pipes and docker.policy.endpoint not in boundary:
+            drift.append({'node': 'docker', 'field': 'endpoint', 'configured': docker.policy.endpoint,
+                          'observed': [pipe['endpoint'] for pipe in pipes]})
+            docker_state = 'drift'
+        for pipe in pipes:
+            for worker in pipe['workers']:
+                server = worker['server']
+                if server.get('token_sid') not in trusted_sids:
+                    if operator_sid_known:
+                        drift.append({'node': 'docker', 'field': 'pipe_server_token_sid',
+                                      'configured': sorted(trusted_sids), 'observed': server.get('token_sid')})
+                        docker_state = 'drift'
+                    elif docker_state == 'current':
+                        docker_state = 'unknown'
+                allowed = getattr(docker.policy, 'pipe_server_executables', ())
+                if allowed and server.get('executable') not in allowed:
+                    drift.append({'node': 'docker', 'field': 'pipe_server_executable',
+                                  'configured': list(allowed), 'observed': server.get('executable')})
+                    docker_state = 'drift'
+                if worker.get('access_denied') is not True or set(worker.get('denied_modes') or ()) != {'read', 'write', 'read_write'}:
+                    drift.append({'node': 'docker', 'field': 'worker_access_denial',
+                                  'configured': True, 'observed': worker})
+                    docker_state = 'drift'
+        observed_slots = {record.get('slot') for pipe in pipes for record in pipe['workers']}
+        if docker_state == 'current' and (docker_check.get('ready') is not True
+                or not captured_engine or not observed_engine
+                or not pipes or not set(workers) <= observed_slots):
+            docker_state = 'unknown'
         nodes.append({'id': 'docker', 'kind': 'container_engine', 'configured_endpoint': docker.policy.endpoint,
-                      'observed_engine_id': getattr(docker, '_daemon_identity', None),
-                      'attestation': 'completed_engine_preflight' if getattr(docker, '_daemon_identity', None) else 'not_observed'})
+                      'observed_engine_id': observed_engine, 'captured_engine_id': captured_engine,
+                      'pipe_access_evidence': pipes, 'attestation_state': docker_state,
+                      'configured_server_token_sids': sorted(trusted_sids),
+                      'repair_access_state': 'captured' if any(str(slot).startswith('repair') for slot in observed_slots) else 'unknown',
+                      'capture': capture,
+                      'attestation': 'completed_engine_preflight' if observed_engine else 'not_observed'})
         edges.append({'from': 'controller', 'to': 'docker', 'transport': docker.policy.endpoint})
     ram = getattr(config, 'ramdisk', None)
     if ram is not None:
+        ram_check = checks.get('ramdisk', {})
+        ram_check = ram_check if isinstance(ram_check, dict) else {}
+        evidence = ram_check.get('evidence', {})
+        evidence = evidence if isinstance(evidence, dict) else {}
+        observed = _fields(evidence.get('observed'), ('device_number', 'target', 'size_bytes', 'backing',
+            'nonpageable', 'drive_letter', 'filesystem', 'volume_serial'))
+        ram_state = capture['state'] if observed else 'unknown'
+        comparisons = [('mount_root', ram.mount_root, evidence.get('mount_root')),
+                       ('size_bytes', ram.size_mb * 1024 * 1024, observed.get('size_bytes')),
+                       ('filesystem', 'NTFS', observed.get('filesystem'))]
+        backing = getattr(ram, 'backing', 'auto')
+        if backing != 'auto':
+            comparisons.append(('backing', backing, observed.get('backing')))
+        for field, expected, actual in comparisons:
+            if actual is not None and str(actual).casefold().rstrip('\\/') != str(expected).casefold().rstrip('\\/'):
+                drift.append({'node': 'ram', 'field': field, 'configured': expected, 'observed': actual})
+                ram_state = 'drift'
+        if ram_state == 'current' and (ram_check.get('ready') is not True or
+                any(key not in observed for key in ('device_number', 'target', 'size_bytes', 'backing', 'filesystem', 'volume_serial'))):
+            ram_state = 'unknown'
         nodes.append({'id': 'ram', 'kind': 'ram_volume', 'configured_path': ram.mount_root,
-                      'configured_size_mb': ram.size_mb, 'runtime_verified': getattr(runtime, 'ramdisk', None) is not None})
+                      'configured_size_mb': ram.size_mb, 'configured_backing': backing,
+                      'observed_path': evidence.get('mount_root'), 'observed_device': observed,
+                      'attestation_state': ram_state, 'capture': capture,
+                      'runtime_verified': ram_state == 'current'})
         edges.append({'from': 'controller', 'to': 'ram', 'transport': 'protected scratch'})
     def label(value):
         return str(value).replace('&', '&amp;').replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;').replace('\n', ' ')[:240]
     diagram = ['flowchart LR']
     for node in nodes:
         detail = node.get('observed_engine_id') or node.get('configured_path') or node.get('configured_identity') or node['kind']
-        diagram.append(f'  {node["id"]}["{label(node["kind"])}: {label(detail)}"]')
+        state = node.get('attestation_state', node.get('attestation', 'unknown'))
+        diagram.append(f'  {node["id"]}["{label(node["kind"])}: {label(detail)} ({label(state)})"]')
     diagram.extend(f'  {edge["from"]} -->|"{label(edge["transport"])}"| {edge["to"]}' for edge in edges)
     return {'nodes': nodes, 'edges': edges, 'mermaid': '\n'.join(diagram), 'observed_drift': drift,
             'receipt_window_complete': False, 'unobserved_is_healthy': False}

@@ -1,0 +1,56 @@
+{
+  "schema": "cochem-independent-docker-physical-v2-review/1",
+  "reviewer": "native_next",
+  "status": "NO_CONCRETE_FINDING_CONDITIONAL_READINESS",
+  "artifacts": [
+    {
+      "path": "accept-docker-execution-r3-v2.py",
+      "sha256": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f"
+    },
+    {
+      "path": "accept-docker-execution-r3-v2.ps1",
+      "sha256": "725d98487322166740f67c0911f3d12aab62f344c4518290caaf1450f0d6a9eb"
+    }
+  ],
+  "tests": {
+    "path": "docker-execution-r3-v2-tests-final-v2.xml",
+    "sha256": "92211c97b194040798e96a457d3e9ad6e69e7e531c7b61dc2dfed9eee1909b03",
+    "passed": 58,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 10.985,
+    "reviewer_repeated_tests": false
+  },
+  "preview": {
+    "path": "docker-execution-r3-v2-preview-v2.json",
+    "sha256": "9763f75f3cc53b99c2f31ee53e40043b8cab9a67f7faa45017e008c1e86054c1",
+    "holds": [
+      "Successful scoped foundation receipt is not present."
+    ],
+    "reviewer_ran_preview": false
+  },
+  "review_scope": [
+    "Full v1-to-v2 source diff and complete final physical helper flow read; v2 namespace and /2 foundation receipt/input controls align with final foundation620c/PS0df.",
+    "PS transitive continuation/diagnostic/original preflight imports, exact prior task actions and receipt/packet hashes inspected; native helper and all prerequisite streams are retained through verification.",
+    "Fifth copied diagnostic support fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5 is definitions-only, hash checked and held. It does not execute its own diagnostic run.",
+    "Original failure phase/type/code fields are retained; bounded allowlisted causal error chain adds actual numeric codes without raw exception strings, Docker metadata or secret output. Pre-support failure has a bounded safe fallback.",
+    "Six native identity exclusion mutexes, shared capacity four, exactly two warm-instance creation attempts, fixed RED/GREEN physical fixture, ownership-verified production cleanup, final zero-live census, no retry/reset/quarantine clearing remain unchanged.",
+    "The fixed fixture is physical Docker boundary acceptance, not Chapter06 model workflow acceptance. No provider/model calls or general readiness/knowledge refresh are introduced.",
+    "Read final58-test XML and exact byte hashes, including five-copy task-boundary, new authority, numeric/cause/raw suppression and inherited actual production-method fixtures; prior55-test evidence is retained separately."
+  ],
+  "conditional_next_step": "Only after the owner completes the actual foundation-v2 and private-project continuation successfully, reviews their bound receipts, and the physical helper's own stopped-daemon/fresh-scope/empty-registry/task checks pass, this package is ready for the separately reviewed owner execution. The current missing-foundation hold must not be bypassed.",
+  "execution": {
+    "apply_performed": false,
+    "live_docker_calls": 0,
+    "system_tasks_created": 0,
+    "protected_state_mutated": false,
+    "credentials_read": false,
+    "tests_rerun_by_reviewer": false
+  },
+  "limits": [
+    "Review is not physical acceptance. No Docker containers were created or executed by the reviewer.",
+    "Original foundation failure cause remains unknown; the successful read-only diagnostic did not establish a historical cause.",
+    "Actual foundation/project success is still a prerequisite to the ordered owner command; no automatic dependency activation is claimed."
+  ]
+}

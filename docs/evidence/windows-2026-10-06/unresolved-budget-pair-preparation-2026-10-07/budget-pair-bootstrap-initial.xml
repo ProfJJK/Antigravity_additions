@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="19" skipped="0" tests="31" time="1.454" timestamp="2026-10-07T20:16:19.427798-05:00" hostname="AetherDesk"><testcase classname="" name="test_real_pair_complete_reopens_without_spend_and_preserves_neighbors" time="0.069"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_real_pair_complete_reopen0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    def test_real_pair_complete_reopens_without_spend_and_preserves_neighbors(boundary, evidence):
+        old = boundary / 'old'; old.mkdir()
+        # These opaque neighboring fixture bytes must never be opened/interpreted.
+        for name in ('supervisor.db', 'supervisor.db-wal', 'job_board.db', 'secret'):
+            (old / name).write_bytes(b'untouched-' + name.encode())
+        before = snapshot(old)
+        root = boundary / 'fresh'
+&gt;       result = M.bootstrap_pair(root, evidence, now=100)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_real_pair_complete_reopen0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_existing_namespace_never_retried_or_changed[empty_directory]" time="0.003" /><testcase classname="" name="test_existing_namespace_never_retried_or_changed[file]" time="0.008" /><testcase classname="" name="test_existing_namespace_never_retried_or_changed[partial_pair]" time="0.007" /><testcase classname="" name="test_interrupted_pair_never_has_completion_or_automatic_resume[first_hold]" time="0.030" /><testcase classname="" name="test_interrupted_pair_never_has_completion_or_automatic_resume[second_constructor]" time="0.032" /><testcase classname="" name="test_interrupted_pair_never_has_completion_or_automatic_resume[second_hold]" time="0.038" /><testcase classname="" name="test_interrupted_pair_never_has_completion_or_automatic_resume[completion]" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_interrupted_pair_never_ha3')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000262E44BCCB0&gt;
+stage = 'completion'
+
+    @pytest.mark.parametrize('stage', ['first_hold', 'second_constructor', 'second_hold', 'completion'])
+    def test_interrupted_pair_never_has_completion_or_automatic_resume(boundary, evidence, monkeypatch, stage):
+        authority, state, component = M.dependencies()
+        def fail(*args, **kwargs): raise RuntimeError('synthetic interruption')
+        if stage == 'first_hold': monkeypatch.setattr(state.Ledger, 'hold_legacy_budget_authority', fail)
+        elif stage == 'second_constructor': monkeypatch.setattr(component.RecoveryLedger, '__init__', fail)
+        elif stage == 'second_hold': monkeypatch.setattr(component.RecoveryLedger, 'hold_legacy_budget_authority', fail)
+        else:
+            original = M.exclusive_json
+            def reject_completion(path, value):
+                if Path(path).name == M.RECEIPT: fail()
+                return original(path, value)
+            monkeypatch.setattr(M, 'exclusive_json', reject_completion)
+        root = boundary / 'partial'
+&gt;       with pytest.raises(RuntimeError, match='synthetic'): M.bootstrap_pair(root, evidence)
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_interrupted_pair_never_ha3/partial')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.0025141
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[supervisor.db-INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')]" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'supervisor.db'
+sql = "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[supervisor.db-INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)]" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_1')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'supervisor.db'
+sql = "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_1/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[component-recovery.db-INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)]" time="0.039"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_2')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'component-recovery.db'
+sql = "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_2/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[supervisor.db-DELETE FROM unresolved_budget_authority]" time="0.039"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_3')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'supervisor.db', sql = 'DELETE FROM unresolved_budget_authority'
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_3/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[component-recovery.db-UPDATE unresolved_budget_authority SET recorded_at=0]" time="0.039"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_4')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'component-recovery.db'
+sql = 'UPDATE unresolved_budget_authority SET recorded_at=0'
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_4/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset[component-recovery.db-INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority]" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_5')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'component-recovery.db'
+sql = 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'
+
+    @pytest.mark.parametrize('target,sql', [
+        ('supervisor.db', "INSERT INTO supervisor_attempts VALUES('x','x','code','{}','RUNNING',1,NULL,2,'1970-01-01',2,4,1800,'{}')"),
+        ('supervisor.db', "INSERT INTO supervisor_model_calls VALUES('call','attempt','fp','1970-01-01',1,'review','route',4)"),
+        ('component-recovery.db', "INSERT INTO components VALUES('warden',3,1,31,1,31,NULL)"),
+        ('supervisor.db', 'DELETE FROM unresolved_budget_authority'),
+        ('component-recovery.db', 'UPDATE unresolved_budget_authority SET recorded_at=0'),
+        ('component-recovery.db', 'INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority'),
+    ])
+    def test_actual_sql_guards_refuse_old_unguarded_spend_and_hold_reset(boundary, evidence, target, sql):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence, now=100)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:101: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_actual_sql_guards_refuse_5/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 100
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_guard_tampering_cannot_reuse_completion[supervisor.db-unresolved_authority_attempt_insert]" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'supervisor.db', trigger = 'unresolved_authority_attempt_insert'
+
+    @pytest.mark.parametrize('target,trigger', [
+        ('supervisor.db', 'unresolved_authority_attempt_insert'),
+        ('component-recovery.db', 'unresolved_authority_component_increment'),
+        ('component-recovery.db', 'recovery_no_delete'),
+    ])
+    def test_guard_tampering_cannot_reuse_completion(boundary, evidence, target, trigger):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.3513591
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_guard_tampering_cannot_reuse_completion[component-recovery.db-unresolved_authority_component_increment]" time="0.039"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re1')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'component-recovery.db'
+trigger = 'unresolved_authority_component_increment'
+
+    @pytest.mark.parametrize('target,trigger', [
+        ('supervisor.db', 'unresolved_authority_attempt_insert'),
+        ('component-recovery.db', 'unresolved_authority_component_increment'),
+        ('component-recovery.db', 'recovery_no_delete'),
+    ])
+    def test_guard_tampering_cannot_reuse_completion(boundary, evidence, target, trigger):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re1/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.3996246
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_guard_tampering_cannot_reuse_completion[component-recovery.db-recovery_no_delete]" time="0.036"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re2')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+target = 'component-recovery.db', trigger = 'recovery_no_delete'
+
+    @pytest.mark.parametrize('target,trigger', [
+        ('supervisor.db', 'unresolved_authority_attempt_insert'),
+        ('component-recovery.db', 'unresolved_authority_component_increment'),
+        ('component-recovery.db', 'recovery_no_delete'),
+    ])
+    def test_guard_tampering_cannot_reuse_completion(boundary, evidence, target, trigger):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_guard_tampering_cannot_re2/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.4498441
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_used_staging_ledgers_cannot_masquerade_as_fresh_pair" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_used_staging_ledgers_cann0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    def test_used_staging_ledgers_cannot_masquerade_as_fresh_pair(boundary, evidence):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_used_staging_ledgers_cann0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.4974148
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_foreign_or_partial_artifacts_preserved_and_refused[unexpected]" time="0.036"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+name = 'unexpected'
+
+    @pytest.mark.parametrize('name', ['unexpected', 'supervisor.db-wal', 'current.json'])
+    def test_foreign_or_partial_artifacts_preserved_and_refused(boundary, evidence, name):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.5464153
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_foreign_or_partial_artifacts_preserved_and_refused[supervisor.db-wal]" time="0.036"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa1')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+name = 'supervisor.db-wal'
+
+    @pytest.mark.parametrize('name', ['unexpected', 'supervisor.db-wal', 'current.json'])
+    def test_foreign_or_partial_artifacts_preserved_and_refused(boundary, evidence, name):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa1/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.5937889
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_foreign_or_partial_artifacts_preserved_and_refused[current.json]" time="0.040"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa2')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+name = 'current.json'
+
+    @pytest.mark.parametrize('name', ['unexpected', 'supervisor.db-wal', 'current.json'])
+    def test_foreign_or_partial_artifacts_preserved_and_refused(boundary, evidence, name):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:133: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_foreign_or_partial_artifa2/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.6459804
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_hardlink_state_is_rejected_without_modification" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_hardlink_state_is_rejecte0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    def test_hardlink_state_is_rejected_without_modification(boundary, evidence):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:141: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_hardlink_state_is_rejecte0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.697924
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_invalid_timestamp_has_no_filesystem_mutation[nan]" time="0.002" /><testcase classname="" name="test_invalid_timestamp_has_no_filesystem_mutation[inf]" time="0.002" /><testcase classname="" name="test_invalid_timestamp_has_no_filesystem_mutation[-1]" time="0.002" /><testcase classname="" name="test_invalid_timestamp_has_no_filesystem_mutation[True]" time="0.002" /><testcase classname="" name="test_private_boundary_failure_precedes_any_ledger" time="0.002" /><testcase classname="" name="test_mismatched_evidence_cannot_reinterpret_existing_pair" time="0.036"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_mismatched_evidence_canno0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    def test_mismatched_evidence_cannot_reinterpret_existing_pair(boundary, evidence):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_mismatched_evidence_canno0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.7569315
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_completed_receipt_cannot_claim_authority_or_activation" time="0.037"><failure message="pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED">boundary = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_completed_receipt_cannot_0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    def test_completed_receipt_cannot_claim_authority_or_activation(boundary, evidence):
+&gt;       root = boundary / 'fresh'; M.bootstrap_pair(root, evidence)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:169: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:247: in bootstrap_pair
+    ledgers = inspect_ledgers(root, evidence, recorded_at=now)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_completed_receipt_cannot_0/fresh')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+recorded_at = 1791422180.8052285
+
+    def inspect_ledgers(root, evidence, *, recorded_at=None):
+        """Inspect only this explicitly supplied unpublished pair; never create it."""
+        authority, state, component = dependencies()
+        expected = expected_triggers(authority, state, component)
+        _, digest = authority._evidence(evidence)
+        results = {}
+        for name in LEDGERS:
+            path = root / name
+            private(path)
+            # Connections are closed before completion hashes are captured. These
+            # are NEW unpublished ledgers; no old/live database is ever queried.
+            db = sqlite3.connect(path.as_uri() + '?mode=ro', uri=True, timeout=5)
+            try:
+                db.execute('PRAGMA query_only=ON')
+                db.execute('BEGIN')
+                observed = authority.status(db)
+                if (observed['state'] != authority.STATE or observed['blocked'] is not True
+                        or observed['evidence_sha256'] != digest
+                        or observed['historical_spend_verified'] is not False
+                        or observed['remaining_legacy_allowance'] is not None
+                        or recorded_at is not None and observed['recorded_at'] != recorded_at):
+                    raise BootstrapHeld('AUTHORITY_ROW_MISMATCH')
+                if db.execute('PRAGMA integrity_check').fetchall() != [('ok',)]:
+                    raise BootstrapHeld('LEDGER_INTEGRITY')
+                actual = dict(db.execute("SELECT name,sql FROM sqlite_schema WHERE type='trigger'"))
+                if any(actual.get(key) != value for key, value in expected[name].items()):
+&gt;                   raise BootstrapHeld('DURABLE_GUARD_CHANGED')
+E                   pair_bootstrap.BootstrapHeld: DURABLE_GUARD_CHANGED
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\bootstrap-unresolved-budget-pair.py:163: BootstrapHeld</failure></testcase><testcase classname="" name="test_cli_only_plans_and_has_no_apply_switch" time="0.011" /><testcase classname="" name="test_real_windows_private_boundary_rejects_non_system_before_creating" time="0.008"><failure message="AttributeError: module 'cochem_pipeline.windows' has no attribute 'current_identity'. Did you mean: 'current_boot_identity'?">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24431/test_real_windows_private_boun0')
+evidence = {'schema': 'cochem-unresolved-budget-evidence/1', 'reason': 'Disposable fixture: legacy spend is unknown, never a fres...urces': [{'kind': 'immutable_snapshot', 'sha256': '1111111111111111111111111111111111111111111111111111111111111111'}]}
+
+    @pytest.mark.skipif(os.name != 'nt', reason='Native Windows ordinary-token boundary test')
+    def test_real_windows_private_boundary_rejects_non_system_before_creating(tmp_path, evidence):
+        from cochem_pipeline import windows as win
+&gt;       if win.current_identity()['sid'] == win.SYSTEM_SID:
+           ^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: module 'cochem_pipeline.windows' has no attribute 'current_identity'. Did you mean: 'current_boot_identity'?
+
+C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\test_budget_pair_bootstrap.py:189: AttributeError</failure></testcase></testsuite></testsuites>

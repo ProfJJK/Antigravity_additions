@@ -1,0 +1,14 @@
+{
+  "schema": "cochem-preparation-status-document-update/1",
+  "preparation": "docs/evidence/windows-2026-10-06/execution-foundation-r3-v2-continuation-preparation-2026-10-07/preparation.json",
+  "preparation_sha256": "5265820aa096715bc02f8a894df12a506f2f0ba4ccb07c963f769ce5eff99f83",
+  "observed_sha256": "4a9ef43a0af0393019ae047f4cb792d61771f4c3f9864126fd3e5194e760cbd7",
+  "handoff_sha256": "a9e7f3e7b9214158f8509e42e81e75b08540f49f5e74f63aca5797659d047766",
+  "original_inventory_timestamp_preserved": "2026-10-07T14:11:50.4763689Z",
+  "owner_result_recorded_timestamp_preserved": "2026-10-07T23:32:06.564974+00:00",
+  "observation_time_scope_unchanged": true,
+  "historical_handoff_suffix_byte_identical": true,
+  "ordinary_tests_passed": 108,
+  "actual_continuation_provisioning_verified": false,
+  "return_setup_edited": false
+}

@@ -1,0 +1,43 @@
+{
+  "activation_ready": false,
+  "automatic_retry_allowed": false,
+  "containers_created": 0,
+  "credentials_or_native_profiles_modified": false,
+  "existing_tasks_modified_or_run": false,
+  "failure": {
+    "error_type": "WindowsIsolationError",
+    "phase": "docker_owner_census",
+    "winerror": null
+  },
+  "finished_at_unix_ms": 1791414362045,
+  "general_readiness_called": false,
+  "helper_sha256": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "knowledge_index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+  "knowledge_service_constructed_or_refreshed": false,
+  "legacy_databases_or_budgets_modified": false,
+  "native_model_jobs_executed": 0,
+  "nonce": "a92fe71e71224573a3738b5131ecfb36",
+  "operator_review_required": true,
+  "packet_sha256": "a3cd28986b36c284f77da67bcbf5535ec509810e6dcc3f99be678d56944667f6",
+  "partial_outputs_preserved": true,
+  "preflight_receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+  "ram_provision_started": false,
+  "ram_volume_or_startup_task_modified": false,
+  "registry_provision_started": false,
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "verified": true
+  },
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "schema": "cochem-execution-foundation/1",
+  "started_at_unix_ms": 1791414359270,
+  "status": "EXECUTION_FOUNDATION_HELD",
+  "system_sid": "S-1-5-18",
+  "warm_pool_created": 0
+}

@@ -15,6 +15,8 @@ import re
 import sqlite3
 import time
 
+from .shared_io import open_shared_text
+
 _MAX_ROWS = 256
 _MAX_ERROR = 2048
 _SECRET_NAME = r"(?:api[_ -]?key|access[_ -]?token|refresh[_ -]?token|auth(?:orization)?|password|passwd|secret|credential|bearer|token)"
@@ -174,7 +176,7 @@ def _heartbeat(root: Path, now: float, timeout: float) -> tuple[dict, list[dict]
     try:
         if path.is_symlink() or path.stat().st_size > 65536:
             raise ValueError("Heartbeat must be a bounded regular file")
-        with path.open("r", encoding="utf-8") as stream:
+        with open_shared_text(path) as stream:
             data = json.loads(stream.read(65537))
         if (not isinstance(data, dict) or not isinstance(data.get("instance_id"), str)
                 or not data["instance_id"] or len(data["instance_id"]) > 128

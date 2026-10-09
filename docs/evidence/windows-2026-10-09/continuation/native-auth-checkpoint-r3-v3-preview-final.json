@@ -1,0 +1,32 @@
+{
+    "schema":  "cochem-both-providers-status-first-plan/1",
+    "attempt":  "00000000000000000000000000000000",
+    "mode":  "READ_ONLY_PLAN",
+    "providers":  [
+                      "codex",
+                      "claude"
+                  ],
+    "identity_count":  6,
+    "shared_capacity":  4,
+    "maximum_browser_authorizations":  12,
+    "actual_browser_authorizations_required":  null,
+    "status_first":  true,
+    "configuration_changed":  false,
+    "model_jobs_executed":  0,
+    "activation_ready":  false,
+    "series_root":  "C:\\Program Files\\CoChem\\NativeAuthBoth4.2.7-windows-20261008-r3-v3-00000000000000000000000000000000",
+    "holds":  [
+                  "codex: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "codex: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "codex: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "codex: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "codex: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "codex: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot1 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot2 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot3 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot4 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot5 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity.",
+                  "claude: Worker slot6 root metadata is inaccessible in this token; Administrator preflight must establish its ordinary directory identity."
+              ]
+}

@@ -1,0 +1,182 @@
+#Requires -Version 5.1
+<# One attended series: reuse/authenticate native profiles, then commission one
+   Warden instance. Default is metadata-only. Never repeat a partial series. #>
+[CmdletBinding()]
+param([switch]$Apply,[switch]$Interactive)
+$ErrorActionPreference='Stop';Set-StrictMode -Version Latest
+foreach($module in @('Microsoft.PowerShell.Utility','Microsoft.PowerShell.Security')){Import-Module (Join-Path $PSHOME "Modules\$module\$module.psd1") -ErrorAction Stop}
+$identity=[Security.Principal.WindowsIdentity]::GetCurrent()
+$admin=[Security.Principal.WindowsPrincipal]::new($identity).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+if($PSVersionTable.PSEdition -ne 'Desktop' -or -not [Environment]::Is64BitProcess -or $env:COMPUTERNAME -ne 'AETHERDESK'){throw 'Use 64-bit Windows PowerShell 5.1 on AETHERDESK.'}
+if($Apply -and (-not $Interactive -or -not $admin -or $identity.Name -cne 'AETHERDESK\ansac' -or -not [Environment]::UserInteractive -or [Console]::IsInputRedirected -or [Console]::IsOutputRedirected -or $Host.Name -ne 'ConsoleHost')){throw 'Apply requires the owner in an elevated interactive ConsoleHost, with -Interactive and no redirected input/output.'}
+$programFiles='C:\Program Files'
+$installRoot='C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r3'
+$powershell='C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+$seriesRoot='C:\Program Files\CoChem\CommissioningSeries4.2.7-windows-20261007-r3-v1'
+$authSource=Join-Path $PSScriptRoot 'authenticate-native-profiles-status-first-r3-v1.ps1'
+$authHash='85801beaa1bfaaaa41ad0727162e2e6ac244051078465c0d892c66a32c34b44f'
+$activationSource=Join-Path $PSScriptRoot 'commission-first-warden-r3-v1.ps1'
+$activationHash='75efe248449fa9be0317a85feb277d82a961d05594ee754d11b3b9d0ec4dfd1e'
+$activationRoot='C:\Program Files\CoChem\WardenCommissioning4.2.7-windows-20261007-r3-v1'
+$held=[Collections.Generic.List[IO.FileStream]]::new()
+
+function Import-CommissioningFunctions {
+ param([string]$Path,[string]$Hash,[string[]]$Names)
+ $stream=[IO.File]::Open($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
+ try{
+  $sha=[Security.Cryptography.SHA256]::Create();try{$actual=[BitConverter]::ToString($sha.ComputeHash($stream)).Replace('-','').ToLowerInvariant()}finally{$sha.Dispose()}
+  if($actual -cne $Hash){throw 'Reviewed commissioning source changed; no phase was started.'}
+  $stream.Position=0;$reader=[IO.StreamReader]::new($stream,[Text.Encoding]::UTF8,$true,4096,$true);try{$text=$reader.ReadToEnd()}finally{$reader.Dispose()}
+  $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseInput($text,[ref]$tokens,[ref]$errors);if($errors.Count){throw 'Commissioning support source does not parse.'}
+  foreach($name in $Names){$nodes=@($ast.FindAll({param($n)$n -is [Management.Automation.Language.FunctionDefinitionAst]},$true)|Where-Object{$_.Name -ceq $name});if($nodes.Count -ne 1){throw 'Missing or duplicate commissioning function.'};$nodes[0].Extent.Text}
+  $held.Add($stream);$stream=$null
+ }finally{if($null -ne $stream){$stream.Dispose()}}
+}
+
+function Read-CommissioningAuthEvidence {
+ $root='C:\Program Files\CoChem\NativeAuthBoth4.2.7-windows-20261007-r3-v1'
+ Assert-SeriesPrivateRoot $root
+ $path=Join-Path $root 'series-complete.json';$control=Read-R3Control $path '' 65536
+ $value=(Read-R3Text $control)|ConvertFrom-Json
+ foreach($key in @('configuration_changed','provider_account_identity_verified','serving_model_verified','activation_ready')){if($value.$key -isnot [bool] -or $value.$key -ne $false){throw 'Authentication receipt has an invalid boolean flag.'}}
+ foreach($key in @('agy_integration_hold_preserved','series_preserved')){if($value.$key -isnot [bool] -or $value.$key -ne $true){throw 'Authentication preservation is not verified.'}}
+ foreach($key in @('model_jobs_executed','browser_login_commands_executed','existing_sessions_reused')){if(($value.$key -isnot [int] -and $value.$key -isnot [long]) -or $value.$key -lt 0 -or $value.$key -gt 12){throw 'Authentication receipt has an invalid count.'}}
+ if($value.schema -cne 'cochem-both-providers-status-first-result/1' -or $value.status -cne 'CODEX_AND_CLAUDE_SIX_PROFILE_AUTHENTICATION_VERIFIED' -or
+    $value.nonce -cnotmatch '^[a-f0-9]{32}$' -or $value.model_jobs_executed -ne 0 -or $value.configuration_changed -ne $false -or
+    $value.provider_account_identity_verified -ne $false -or $value.serving_model_verified -ne $false -or $value.activation_ready -ne $false -or
+    $value.agy_integration_hold_preserved -ne $true -or $value.series_preserved -ne $true -or @($value.provider_results).Count -ne 2){throw 'Combined native authentication completion is not the reviewed result.'}
+ $logins=0;$reused=0
+ for($index=0;$index -lt 2;$index++){
+  $provider=@('codex','claude')[$index];$proof=Read-CompletedProviderAuth $provider;$captured=$value.provider_results[$index]
+  if(($captured|ConvertTo-Json -Depth 8 -Compress) -cne ($proof|ConvertTo-Json -Depth 8 -Compress)){throw 'Combined authentication proof differs from retained provider receipts.'}
+  $logins+=$proof.login_commands_executed;$reused+=$proof.existing_sessions_reused
+ }
+ if($value.browser_login_commands_executed -ne $logins -or $value.existing_sessions_reused -ne $reused -or $logins+$reused -ne 12){throw 'Combined authentication counts do not cover twelve provider/profile pairs.'}
+ [pscustomobject]@{status=$value.status;profiles_verified=12;browser_login_commands_executed=$logins;existing_sessions_reused=$reused;receipt_path=$path;receipt_sha256=$control.Sha256}
+}
+
+function Assert-CommissioningRunningEvidence {
+ param($Value)
+ foreach($key in @('exactly_one_start_requested','monitoring_started')){if($Value.$key -isnot [bool] -or $Value.$key -ne $true){throw 'Controller commissioning flag is invalid.'}}
+ foreach($key in @('full_srs_acceptance','automatic_repair_enabled','automatic_retry_allowed')){if($Value.$key -isnot [bool] -or $Value.$key -ne $false){throw 'First start must not claim full acceptance or enable automatic repair/retry.'}}
+ foreach($key in @('authenticated_profiles_verified','model_jobs_submitted')){if(($Value.$key -isnot [int] -and $Value.$key -isnot [long]) -or $Value.$key -lt 0){throw 'Controller commissioning count is invalid.'}}
+ if($Value.schema -cne 'cochem-warden-commissioning/1' -or $Value.status -cne 'WARDEN_RUNNING_CONTROL_PLANE_VERIFIED' -or
+    $Value.runtime_root -cne $installRoot -or
+    $Value.install_receipt_sha256 -cne '3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6' -or
+    $Value.config_sha256 -cne '135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c' -or
+    $Value.source_manifest_sha256 -cne '6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1' -or
+    $Value.revision_sha256 -cne '309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4' -or
+    $Value.authenticated_profiles_verified -ne 12 -or $Value.task_name -cne 'CoChem-4.2.7-Warden' -or
+    $Value.exactly_one_start_requested -ne $true -or $Value.model_jobs_submitted -ne 0 -or $Value.full_srs_acceptance -ne $false -or
+    $Value.queue_launch_output -cne 'C:\ProgramData\CoChemPipeline427\private\queue-commissioning-20261007-r3-v1' -or $Value.monitoring_started -ne $true -or
+    $Value.monitoring_scope -cne 'heartbeat_and_queue_only' -or $Value.system_sid -cne 'S-1-5-18'){throw 'Controller commissioning receipt does not establish the reviewed first start.'}
+ $controller=$Value.controller
+ foreach($key in @('pid','creation_filetime','first_sequence','final_sequence')){if(($controller.$key -isnot [int] -and $controller.$key -isnot [long]) -or $controller.$key -le 0){throw 'Controller process/progress identifiers are invalid.'}}
+ if($controller.pid -gt 4294967295 -or $controller.instance_id -cnotmatch '^[a-f0-9]{32}$' -or $controller.final_sequence -le $controller.first_sequence){throw 'Controller process identity or heartbeat progress is invalid.'}
+ return $controller
+}
+
+function Read-CommissioningRunningEvidence {
+ $path=Join-Path $activationRoot 'commissioning.json'
+ $control=Read-R3Control $path '' 65536;$value=(Read-R3Text $control)|ConvertFrom-Json
+ $controller=Assert-CommissioningRunningEvidence $value
+ [pscustomobject]@{status=$value.status;receipt_path=$path;receipt_sha256=$control.Sha256;controller=$controller;full_srs_acceptance=$false;model_jobs_submitted=0}
+}
+
+function Assert-CommissioningPreview {
+ param([string]$Phase,$Value)
+ if($Phase -ceq 'native_authentication'){
+  if($Value.schema -cne 'cochem-both-providers-status-first-plan/1' -or $Value.mode -cne 'READ_ONLY_PLAN' -or
+     $Value.identity_count -ne 6 -or $Value.shared_capacity -ne 4 -or $Value.maximum_browser_authorizations -ne 12 -or
+     ($Value.providers -join ',') -cne 'codex,claude' -or $Value.model_jobs_executed -ne 0 -or
+     $Value.configuration_changed -ne $false -or $Value.activation_ready -ne $false -or $Value.status_first -ne $true){throw 'Native authentication preview differs from its reviewed contract.'}
+ }elseif($Phase -ceq 'first_controller_start'){
+  if($Value.schema -cne 'cochem-warden-commissioning-plan/1' -or $Value.mode -cne 'READ_ONLY_PLAN' -or
+     $Value.runtime_root -cne $installRoot -or $Value.identities -ne 6 -or $Value.shared_slots -ne 4 -or
+     $Value.auth_completion_present -isnot [bool] -or $Value.auth_completion_required -isnot [bool] -or $Value.auth_completion_required -ne $true -or
+     $Value.system_preflight_deferred -isnot [bool] -or $Value.system_preflight_deferred -ne $true -or
+     $Value.monitoring_scope -cne 'heartbeat_and_queue_only' -or $Value.model_jobs_submitted -ne 0){throw 'Controller first-start preview differs from its reviewed contract.'}
+  foreach($key in @('full_srs_acceptance','automatic_repair_enabled','automatic_retry_allowed')){if($Value.$key -isnot [bool] -or $Value.$key -ne $false){throw 'Controller first-start preview has an invalid acceptance/repair/retry flag.'}}
+ }else{throw 'Unknown commissioning preview phase.'}
+ foreach($hold in @($Value.holds)){if($hold -isnot [string] -or [string]::IsNullOrWhiteSpace($hold) -or $hold.Length -gt 2048){throw 'Preflight hold metadata is invalid.'}}
+ return $Value
+}
+
+function Get-CommissioningPreview {
+ param([string]$Phase)
+ $source=if($Phase -ceq 'native_authentication'){$authSource}else{$activationSource}
+ $prior=$ErrorActionPreference
+ try{$ErrorActionPreference='Continue';$output=@(& $powershell -NoLogo -NoProfile -NonInteractive -File $source 2>&1);$code=$LASTEXITCODE}finally{$ErrorActionPreference=$prior}
+ $text=($output|ForEach-Object{[string]$_}) -join [Environment]::NewLine
+ if($code -ne 0 -or $text.Length -gt 131072){throw "The read-only $Phase preflight did not complete (exit $code). No browser or controller phase was started."}
+ try{$value=$text|ConvertFrom-Json}catch{throw 'Commissioning preview did not return valid bounded metadata.'}
+ return Assert-CommissioningPreview $Phase $value
+}
+
+function Get-CommissioningPreviewHolds {
+ param($AuthPlan,$ActivationPlan)
+ foreach($hold in @($AuthPlan.holds)){"native_authentication: $hold"}
+ $expected='Completed status-first authentication is required before first start.'
+ $expectedCount=0
+ foreach($hold in @($ActivationPlan.holds)){
+  if($hold -ceq $expected -and $ActivationPlan.auth_completion_present -ceq $false){$expectedCount++;continue}
+  "first_controller_start: $hold"
+ }
+ if($ActivationPlan.auth_completion_present -ceq $false -and $expectedCount -ne 1){'Controller preflight did not explicitly identify its one pending authentication prerequisite.'}
+}
+
+function Invoke-CommissioningPhases {
+ param([scriptblock]$Invoke,[scriptblock]$Verify,[scriptblock]$Record)
+ foreach($phaseName in @('native_authentication','first_controller_start')){
+  & $Record $phaseName 'STARTED' $null
+  $code=& $Invoke $phaseName
+  if($code -isnot [int] -or $code -ne 0){throw 'Commissioning phase did not complete. Preserve its printed evidence; no later phase or automatic repeat was started.'}
+  $proof=& $Verify $phaseName
+  & $Record $phaseName 'VERIFIED' $proof
+ }
+}
+
+$ownsRoot=$false;$phase='preflight';$nonce=$null
+try{
+ if($activationHash -cnotmatch '^[a-f0-9]{64}$'){throw 'Combined commissioning is still being prepared; no Apply is available.'}
+ foreach($d in @(Import-CommissioningFunctions (Join-Path $PSScriptRoot 'login-six-workers-status-first-r3-v1.ps1') '9e742d4df0b7faa07a6073dc4bc7f15ccf2924df9a14443a5c662bfbc7ff0361' @('Initialize-SeriesDirectory','Assert-SeriesPrivateRoot','Write-SeriesRecord','Invoke-SeriesConsoleChild'))){. ([scriptblock]::Create($d))}
+ foreach($d in @(Import-CommissioningFunctions 'D:\Gdrive\__CoChem\GitHub-Repo\Antigravity_additions\scripts\stage_aetherdesk_427_payloads.ps1' '0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b' @('Assert-NoReparseAncestors','Assert-ProtectedPath','Initialize-FileIdentity','Open-VerifiedFile'))){. ([scriptblock]::Create($d))};Initialize-FileIdentity
+ foreach($d in @(Import-CommissioningFunctions (Join-Path $PSScriptRoot 'check-worker-native-status-r3.ps1') '18f58ebb448d8a0c6329dd187d4a9a27fa9cbe942cd05e906bb7aabc67e787a7' @('Read-R3Control','Read-R3Text','Assert-R3InstalledBindings'))){. ([scriptblock]::Create($d))}
+ foreach($d in @(Import-CommissioningFunctions (Join-Path $PSScriptRoot 'login_pipeline_worker_interactive_r3.ps1') '1ec70cd0beeacde2d11df1948ac009be92fbdd5e5cdb8cf78b3f7f6346920109' @('New-PrivateAcl','Get-ExactTaskOrAbsent'))){. ([scriptblock]::Create($d))}
+ foreach($d in @(Import-CommissioningFunctions $authSource $authHash @('Read-CompletedProviderAuth'))){. ([scriptblock]::Create($d))}
+ $held.Add((Open-VerifiedFile $activationSource $activationHash (Get-Item -LiteralPath $activationSource).Length))
+ $runtime=Assert-R3InstalledBindings
+ $authPlan=Get-CommissioningPreview 'native_authentication'
+ $activationPlan=Get-CommissioningPreview 'first_controller_start'
+ $scheduler=New-Object -ComObject 'Schedule.Service';$scheduler.Connect();$folder=$scheduler.GetFolder('\')
+ $holds=@(Get-CommissioningPreviewHolds $authPlan $activationPlan)
+ foreach($path in @($seriesRoot,'C:\Program Files\CoChem\NativeAuthBoth4.2.7-windows-20261007-r3-v1',$activationRoot)){if(Test-Path -LiteralPath $path -ErrorAction Stop){$holds+='Existing series/authentication/activation artifacts must be preserved; this entrypoint has no repeat or resume mode.'}}
+ foreach($name in @('CoChem-4.2.7-Warden','CoChem-4.2.7-Supervisor','CoChem-4.2.2-Warden','CoChem-4.2.3-Supervisor')){$task=Get-ExactTaskOrAbsent $folder $name;if($name -ceq 'CoChem-4.2.7-Warden' -and $null -ne $task){$holds+='An existing Warden task must be preserved.'}elseif($null -ne $task -and ($task.Enabled -or $task.State -notin @(1,3) -or $task.GetInstances(0).Count -ne 0)){$holds+='A managed daemon is not stopped and disabled.'}}
+ if(-not $Apply){[ordered]@{schema='cochem-pipeline-commissioning-series-plan/1';mode='READ_ONLY_PLAN';phases=@('native_authentication','first_controller_start');runtime=$runtime;identity_count=6;shared_capacity=4;maximum_browser_authorizations=12;actual_browser_authorizations_required=$null;automatic_repair_enabled=$false;full_srs_acceptance=$false;model_jobs_submitted=0;tasks_registered=0;series_root=$seriesRoot;phase_previews=@($authPlan,$activationPlan);holds=$holds}|ConvertTo-Json -Depth 9;return}
+ if($holds.Count){throw ($holds -join ' ')}
+ Assert-ProtectedPath (Split-Path -Parent $seriesRoot);Initialize-SeriesDirectory
+ [CoChemNativeLoginSeriesDirectory]::Create($seriesRoot);$ownsRoot=$true;Assert-SeriesPrivateRoot $seriesRoot
+ $nonce=[Guid]::NewGuid().ToString('N');$phase='reviewed_series';$script:completedPhases=[Collections.Generic.List[object]]::new()
+ Write-SeriesRecord (Join-Path $seriesRoot 'series-start.json') ([ordered]@{schema='cochem-pipeline-commissioning-series/1';status='IN_PROGRESS';nonce=$nonce;runtime=$runtime;auth_helper_sha256=$authHash;activation_helper_sha256=$activationHash;started_utc=[DateTime]::UtcNow.ToString('o')})
+ Write-SeriesRecord (Join-Path $seriesRoot 'preflight-authentication.json') $authPlan
+ Write-SeriesRecord (Join-Path $seriesRoot 'preflight-first-start.json') $activationPlan
+ Invoke-CommissioningPhases {
+  param($phaseName)
+  Write-Host "Running reviewed commissioning phase: $phaseName"
+  if($phaseName -ceq 'native_authentication'){Invoke-SeriesConsoleChild @('-NoProfile','-File',$authSource,'-Apply','-Interactive')}
+  else{Invoke-SeriesConsoleChild @('-NoProfile','-File',$activationSource,'-Apply')}
+ } {
+  param($phaseName)
+  if($phaseName -ceq 'native_authentication'){Read-CommissioningAuthEvidence}else{Read-CommissioningRunningEvidence}
+ } {
+  param($phaseName,$state,$proof)
+  Write-SeriesRecord (Join-Path $seriesRoot "$phaseName-$state.json") ([ordered]@{schema='cochem-pipeline-commissioning-event/1';nonce=$nonce;phase=$phaseName;state=$state;proof=$proof;observed_utc=[DateTime]::UtcNow.ToString('o')})
+  if($state -ceq 'VERIFIED'){$script:completedPhases.Add([pscustomobject]@{phase=$phaseName;proof=$proof})}
+ }
+ if($script:completedPhases.Count -ne 2){throw 'Commissioning did not verify both phases.'}
+ $result=[ordered]@{schema='cochem-pipeline-commissioning-series-result/1';status='WARDEN_RUNNING_NATIVE_PROFILES_AUTHENTICATED';nonce=$nonce;phases=@($script:completedPhases.ToArray());identity_count=6;shared_capacity=4;automatic_repair_enabled=$false;full_srs_acceptance=$false;model_jobs_submitted=0;finished_utc=[DateTime]::UtcNow.ToString('o');next='Codex performs live routed workflows and MCP checks; reboot and unattended stability acceptance remain.'}
+ Write-SeriesRecord (Join-Path $seriesRoot 'series-complete.json') $result;$result|ConvertTo-Json -Depth 9
+}catch{
+ if($ownsRoot){try{Write-SeriesRecord (Join-Path $seriesRoot 'series-failed.json') ([ordered]@{schema='cochem-pipeline-commissioning-series-failure/1';nonce=$nonce;phase=$phase;error_type=$_.Exception.GetType().Name;automatic_repeat_allowed=$false;partial_outputs_preserved=$true;full_srs_acceptance=$false})}catch{}}
+ throw
+}finally{foreach($stream in $held){$stream.Dispose()}}

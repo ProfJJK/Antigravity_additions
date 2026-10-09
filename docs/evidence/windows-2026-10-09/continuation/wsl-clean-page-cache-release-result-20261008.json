@@ -1,0 +1,46 @@
+{
+  "admission_at_after_sample": 1,
+  "cache_release": {
+    "automatic_repeat_allowed": false,
+    "distribution": "Ubuntu",
+    "drop_caches_value": 1,
+    "drop_clean_page_cache_exit_code": 0,
+    "sync_exit_code": 0
+  },
+  "commit_free_mib_after": 21088.1640625,
+  "commit_free_mib_before": 2318.47265625,
+  "cpu_celsius_after": 81.0,
+  "cpu_celsius_before": 91.0,
+  "credentials_or_repair_budgets_changed": false,
+  "evidence": {
+    "host-memory-read-only-census-20261008.json": {
+      "bytes": 1809,
+      "sha256": "1e14ff9cc1ead8ed8173b653af4b1592d3ce06e43fec0fb5db2539c4f766e2ce"
+    },
+    "post-cache-live-admission-safe-20261008.json": {
+      "bytes": 1892,
+      "sha256": "85fe7f6e08d737559e97e4e54a7f17be56837d50090b32f7efdd31b6f7af250b"
+    },
+    "post-start-live-admission-safe-20261008.json": {
+      "bytes": 1911,
+      "sha256": "7304ce32b274cc44295f1febef27497f5ae0ed0cc3ef98384abf47ffbafdfe83"
+    },
+    "prepost-journal-r3-v2-readonly-reconciliation-20261008.json": {
+      "bytes": 1058,
+      "sha256": "03a22b4d60cb1470c3ce67e9b372a0eb04a027325e47323d8054458db9a44b81"
+    },
+    "wsl-clean-page-cache-release-intent-20261008.json": {
+      "bytes": 468,
+      "sha256": "0df9a8676ccc3f4e7ea4cfce80cd2805b13d1c034aed566e957efc8960fc67ba"
+    }
+  },
+  "later_workflow_readiness_check": "controller_not_ready before first POST",
+  "linux_results_counted_as_windows": false,
+  "model_jobs_submitted": 0,
+  "persistent_memory_configuration_changed": false,
+  "ram_drive_or_startup_changed": false,
+  "running_apps_tasks_wsl_stopped": false,
+  "safety_thresholds_changed": false,
+  "schema": "cochem-one-time-cache-diagnostic-result/1",
+  "status": "CACHE_RELEASE_COMPLETED_WORKFLOW_NOT_SUBMITTED"
+}

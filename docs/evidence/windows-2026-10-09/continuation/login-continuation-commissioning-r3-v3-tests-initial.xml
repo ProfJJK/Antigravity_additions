@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="14" skipped="0" tests="116" time="51.944" timestamp="2026-10-08T08:29:42.028718-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_actual_config_and_uv_contract_unchanged" time="3.310" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_actual_windows_base_child_and_venv_parent_identity_only" time="0.153" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_actual_windows_named_object_collision_and_cleanup_only_fixture_names" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_auth_chain_covers_twelve_actual_shaped_slot_proofs" time="0.002" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[cleanup_verified-False]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[native_exit_code-1]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[helper_sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[config_sha256-ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[native_model_jobs_executed-1]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[daemon_states_verified_before_and_after-False]" time="0.002" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_bad_auth_leaf_prevents_first_start[native_status_commands_executed-True]" time="0.002" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_closed_registry_buffer_validation_without_source_sqlite_reopen[kwargs0]" time="0.022" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_closed_registry_buffer_validation_without_source_sqlite_reopen[kwargs1]" time="0.016" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_closed_registry_buffer_validation_without_source_sqlite_reopen[kwargs2]" time="0.015" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_closed_registry_buffer_validation_without_source_sqlite_reopen[kwargs3]" time="0.014" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_closed_registry_buffer_validation_without_source_sqlite_reopen[kwargs4]" time="0.013" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_empty_directory_includes_hidden_entry_and_never_deletes" time="0.008" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_failure_never_retries_and_preserves_partial_state[prior_task]" time="1.871" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_failure_never_retries_and_preserves_partial_state[runtime]" time="1.453" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_failure_never_retries_and_preserves_partial_state[source_drift]" time="1.767" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_failure_never_retries_and_preserves_partial_state[registration]" time="1.572" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_failure_never_retries_and_preserves_partial_state[wait]" time="1.785" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_entire_apply_function_real_three_payload_copies_simulated_scheduler" time="2.144" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_exact_docker_sources_preserved_create_new_before_normal_runtime_cleanup" time="0.051" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[pid-44]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[source_root-C:\\other]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[knowledge-value2]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[active-value3]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[quarantined_slots-value4]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_health_identity_and_workload_gates[admission_capacity-5]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_healthy_progress_sample_has_only_safe_identity_fields" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[]" time="0.872" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[$task.Enabled=$true]" time="0.834" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[$task.State=3]" time="2.485" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[$task.Instances=1]" time="1.059" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[$task.Definition.Settings.RestartCount=1]" time="0.868" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_new_disabled_task_readback_real_acl_parser[$task.Definition.Actions.Value.Arguments=&quot;other&quot;]" time="0.736" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_preservation_never_starts_from_changed_or_partial_fixture[extra]" time="0.009" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_preservation_never_starts_from_changed_or_partial_fixture[changed]" time="0.019" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_preservation_never_starts_from_changed_or_partial_fixture[receipt]" time="0.009" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_preservation_never_starts_from_changed_or_partial_fixture[partial]" time="0.011" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_six_production_exclusion_names_refuse_existing_and_release_all[None]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_six_production_exclusion_names_refuse_existing_and_release_all[0]" time="0.000" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_six_production_exclusion_names_refuse_existing_and_release_all[3]" time="0.000" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_six_production_exclusion_names_refuse_existing_and_release_all[5]" time="0.000" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_intent_is_durable_before_one_callback_and_blocks_retry" time="0.008" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_actual_apply_tail_retains_journals_and_exact_console_arguments[]" time="1.817"><failure message="AssertionError">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/login-continuation-v3-tests-initial-tmp/test_series_actual_apply_tail_0')
+failure = ''
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify'])
+    def test_actual_apply_tail_retains_journals_and_exact_console_arguments(tmp_path,failure):
+        text=SOURCE.read_text()
+        start=text.index(' if($holds.Count){throw ($holds -join')
+        tail='try{\n'+text[start:text.index('}finally{foreach($stream in $held)',start)]+'}'
+        tailfile=tmp_path/'tail.ps1';tailfile.write_text(tail)
+        root=tmp_path/'series'
+        code=(f"$seriesRoot='{root}';$authSource='reviewed-auth.ps1';$activationSource='reviewed-activation.ps1';"
+              f"$authHash='auth-pin';$activationHash='activation-pin';$failure='{failure}';"
+              "$runtime=[pscustomobject]@{fixture=$true};$authPlan=[pscustomobject]@{fixture='auth'};$activationPlan=[pscustomobject]@{fixture='start'};$holds=@();$ownsRoot=$false;$phase='preflight';$nonce=$null;")
+        code+=r'''
+        $script:calls=[Collections.Generic.List[object]]::new()
+        function Assert-ProtectedPath{param($Path)}
+        function Assert-SeriesPrivateRoot{param($Path)if(-not [IO.Directory]::Exists($Path)){throw 'fixture directory missing'}}
+        function Initialize-SeriesDirectory{
+          Add-Type -TypeDefinition 'using System.IO;public static class CoChemNativeLoginSeriesDirectory{public static void Create(string p){if(Directory.Exists(p))throw new IOException("exists");Directory.CreateDirectory(p);}}'
+        }
+        function Write-SeriesRecord{param($Path,$Value)$s=[IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$b=[Text.Encoding]::UTF8.GetBytes(($Value|ConvertTo-Json -Depth 15));$s.Write($b,0,$b.Length);$s.Flush($true)}finally{$s.Dispose()}}
+        function Invoke-SeriesConsoleChild{
+          param([string[]]$Arguments)
+          $script:calls.Add(@($Arguments))
+          if(($failure -ceq 'auth_exit' -and $Arguments -contains 'reviewed-auth.ps1') -or ($failure -ceq 'activation_exit' -and $Arguments -contains 'reviewed-activation.ps1')){return 2}
+          return 0
+        }
+        function Read-CommissioningAuthEvidence{if($failure -ceq 'auth_verify'){throw 'inert auth proof failure'};[pscustomobject]@{status='fixture-auth'}}
+        function Read-CommissioningRunningEvidence{if($failure -ceq 'activation_verify'){throw 'inert controller proof failure'};[pscustomobject]@{status='fixture-start'}}
+        $failed=$false
+        '''
+        # Suppress the product's intended console output in the fixture result only.
+        code+=f"try{{$null=. ([scriptblock]::Create([IO.File]::ReadAllText('{tailfile}')))}}catch{{$failed=$true}};"
+        code+="[ordered]@{failed=$failed;calls=@($script:calls.ToArray())}|ConvertTo-Json -Depth 8 -Compress"
+        # Write-Host is information output, so silence it while retaining all native effects inert.
+        value=ps("$InformationPreference='SilentlyContinue';function Write-Host{param($Object)};"+code)
+&gt;       assert value['failed']==bool(failure)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:144: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_actual_apply_tail_retains_journals_and_exact_console_arguments[auth_exit]" time="1.113"><failure message="IndexError: list index out of range">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/login-continuation-v3-tests-initial-tmp/test_series_actual_apply_tail_1')
+failure = 'auth_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify'])
+    def test_actual_apply_tail_retains_journals_and_exact_console_arguments(tmp_path,failure):
+        text=SOURCE.read_text()
+        start=text.index(' if($holds.Count){throw ($holds -join')
+        tail='try{\n'+text[start:text.index('}finally{foreach($stream in $held)',start)]+'}'
+        tailfile=tmp_path/'tail.ps1';tailfile.write_text(tail)
+        root=tmp_path/'series'
+        code=(f"$seriesRoot='{root}';$authSource='reviewed-auth.ps1';$activationSource='reviewed-activation.ps1';"
+              f"$authHash='auth-pin';$activationHash='activation-pin';$failure='{failure}';"
+              "$runtime=[pscustomobject]@{fixture=$true};$authPlan=[pscustomobject]@{fixture='auth'};$activationPlan=[pscustomobject]@{fixture='start'};$holds=@();$ownsRoot=$false;$phase='preflight';$nonce=$null;")
+        code+=r'''
+        $script:calls=[Collections.Generic.List[object]]::new()
+        function Assert-ProtectedPath{param($Path)}
+        function Assert-SeriesPrivateRoot{param($Path)if(-not [IO.Directory]::Exists($Path)){throw 'fixture directory missing'}}
+        function Initialize-SeriesDirectory{
+          Add-Type -TypeDefinition 'using System.IO;public static class CoChemNativeLoginSeriesDirectory{public static void Create(string p){if(Directory.Exists(p))throw new IOException("exists");Directory.CreateDirectory(p);}}'
+        }
+        function Write-SeriesRecord{param($Path,$Value)$s=[IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$b=[Text.Encoding]::UTF8.GetBytes(($Value|ConvertTo-Json -Depth 15));$s.Write($b,0,$b.Length);$s.Flush($true)}finally{$s.Dispose()}}
+        function Invoke-SeriesConsoleChild{
+          param([string[]]$Arguments)
+          $script:calls.Add(@($Arguments))
+          if(($failure -ceq 'auth_exit' -and $Arguments -contains 'reviewed-auth.ps1') -or ($failure -ceq 'activation_exit' -and $Arguments -contains 'reviewed-activation.ps1')){return 2}
+          return 0
+        }
+        function Read-CommissioningAuthEvidence{if($failure -ceq 'auth_verify'){throw 'inert auth proof failure'};[pscustomobject]@{status='fixture-auth'}}
+        function Read-CommissioningRunningEvidence{if($failure -ceq 'activation_verify'){throw 'inert controller proof failure'};[pscustomobject]@{status='fixture-start'}}
+        $failed=$false
+        '''
+        # Suppress the product's intended console output in the fixture result only.
+        code+=f"try{{$null=. ([scriptblock]::Create([IO.File]::ReadAllText('{tailfile}')))}}catch{{$failed=$true}};"
+        code+="[ordered]@{failed=$failed;calls=@($script:calls.ToArray())}|ConvertTo-Json -Depth 8 -Compress"
+        # Write-Host is information output, so silence it while retaining all native effects inert.
+        value=ps("$InformationPreference='SilentlyContinue';function Write-Host{param($Object)};"+code)
+        assert value['failed']==bool(failure)
+&gt;       assert value['calls'][0]==['-NoProfile','-File','reviewed-auth.ps1','-Apply','-Interactive']
+               ^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:145: IndexError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_actual_apply_tail_retains_journals_and_exact_console_arguments[activation_exit]" time="0.920"><failure message="IndexError: list index out of range">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/login-continuation-v3-tests-initial-tmp/test_series_actual_apply_tail_2')
+failure = 'activation_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify'])
+    def test_actual_apply_tail_retains_journals_and_exact_console_arguments(tmp_path,failure):
+        text=SOURCE.read_text()
+        start=text.index(' if($holds.Count){throw ($holds -join')
+        tail='try{\n'+text[start:text.index('}finally{foreach($stream in $held)',start)]+'}'
+        tailfile=tmp_path/'tail.ps1';tailfile.write_text(tail)
+        root=tmp_path/'series'
+        code=(f"$seriesRoot='{root}';$authSource='reviewed-auth.ps1';$activationSource='reviewed-activation.ps1';"
+              f"$authHash='auth-pin';$activationHash='activation-pin';$failure='{failure}';"
+              "$runtime=[pscustomobject]@{fixture=$true};$authPlan=[pscustomobject]@{fixture='auth'};$activationPlan=[pscustomobject]@{fixture='start'};$holds=@();$ownsRoot=$false;$phase='preflight';$nonce=$null;")
+        code+=r'''
+        $script:calls=[Collections.Generic.List[object]]::new()
+        function Assert-ProtectedPath{param($Path)}
+        function Assert-SeriesPrivateRoot{param($Path)if(-not [IO.Directory]::Exists($Path)){throw 'fixture directory missing'}}
+        function Initialize-SeriesDirectory{
+          Add-Type -TypeDefinition 'using System.IO;public static class CoChemNativeLoginSeriesDirectory{public static void Create(string p){if(Directory.Exists(p))throw new IOException("exists");Directory.CreateDirectory(p);}}'
+        }
+        function Write-SeriesRecord{param($Path,$Value)$s=[IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$b=[Text.Encoding]::UTF8.GetBytes(($Value|ConvertTo-Json -Depth 15));$s.Write($b,0,$b.Length);$s.Flush($true)}finally{$s.Dispose()}}
+        function Invoke-SeriesConsoleChild{
+          param([string[]]$Arguments)
+          $script:calls.Add(@($Arguments))
+          if(($failure -ceq 'auth_exit' -and $Arguments -contains 'reviewed-auth.ps1') -or ($failure -ceq 'activation_exit' -and $Arguments -contains 'reviewed-activation.ps1')){return 2}
+          return 0
+        }
+        function Read-CommissioningAuthEvidence{if($failure -ceq 'auth_verify'){throw 'inert auth proof failure'};[pscustomobject]@{status='fixture-auth'}}
+        function Read-CommissioningRunningEvidence{if($failure -ceq 'activation_verify'){throw 'inert controller proof failure'};[pscustomobject]@{status='fixture-start'}}
+        $failed=$false
+        '''
+        # Suppress the product's intended console output in the fixture result only.
+        code+=f"try{{$null=. ([scriptblock]::Create([IO.File]::ReadAllText('{tailfile}')))}}catch{{$failed=$true}};"
+        code+="[ordered]@{failed=$failed;calls=@($script:calls.ToArray())}|ConvertTo-Json -Depth 8 -Compress"
+        # Write-Host is information output, so silence it while retaining all native effects inert.
+        value=ps("$InformationPreference='SilentlyContinue';function Write-Host{param($Object)};"+code)
+        assert value['failed']==bool(failure)
+&gt;       assert value['calls'][0]==['-NoProfile','-File','reviewed-auth.ps1','-Apply','-Interactive']
+               ^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:145: IndexError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_actual_apply_tail_retains_journals_and_exact_console_arguments[auth_verify]" time="0.843"><failure message="IndexError: list index out of range">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/login-continuation-v3-tests-initial-tmp/test_series_actual_apply_tail_3')
+failure = 'auth_verify'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify'])
+    def test_actual_apply_tail_retains_journals_and_exact_console_arguments(tmp_path,failure):
+        text=SOURCE.read_text()
+        start=text.index(' if($holds.Count){throw ($holds -join')
+        tail='try{\n'+text[start:text.index('}finally{foreach($stream in $held)',start)]+'}'
+        tailfile=tmp_path/'tail.ps1';tailfile.write_text(tail)
+        root=tmp_path/'series'
+        code=(f"$seriesRoot='{root}';$authSource='reviewed-auth.ps1';$activationSource='reviewed-activation.ps1';"
+              f"$authHash='auth-pin';$activationHash='activation-pin';$failure='{failure}';"
+              "$runtime=[pscustomobject]@{fixture=$true};$authPlan=[pscustomobject]@{fixture='auth'};$activationPlan=[pscustomobject]@{fixture='start'};$holds=@();$ownsRoot=$false;$phase='preflight';$nonce=$null;")
+        code+=r'''
+        $script:calls=[Collections.Generic.List[object]]::new()
+        function Assert-ProtectedPath{param($Path)}
+        function Assert-SeriesPrivateRoot{param($Path)if(-not [IO.Directory]::Exists($Path)){throw 'fixture directory missing'}}
+        function Initialize-SeriesDirectory{
+          Add-Type -TypeDefinition 'using System.IO;public static class CoChemNativeLoginSeriesDirectory{public static void Create(string p){if(Directory.Exists(p))throw new IOException("exists");Directory.CreateDirectory(p);}}'
+        }
+        function Write-SeriesRecord{param($Path,$Value)$s=[IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$b=[Text.Encoding]::UTF8.GetBytes(($Value|ConvertTo-Json -Depth 15));$s.Write($b,0,$b.Length);$s.Flush($true)}finally{$s.Dispose()}}
+        function Invoke-SeriesConsoleChild{
+          param([string[]]$Arguments)
+          $script:calls.Add(@($Arguments))
+          if(($failure -ceq 'auth_exit' -and $Arguments -contains 'reviewed-auth.ps1') -or ($failure -ceq 'activation_exit' -and $Arguments -contains 'reviewed-activation.ps1')){return 2}
+          return 0
+        }
+        function Read-CommissioningAuthEvidence{if($failure -ceq 'auth_verify'){throw 'inert auth proof failure'};[pscustomobject]@{status='fixture-auth'}}
+        function Read-CommissioningRunningEvidence{if($failure -ceq 'activation_verify'){throw 'inert controller proof failure'};[pscustomobject]@{status='fixture-start'}}
+        $failed=$false
+        '''
+        # Suppress the product's intended console output in the fixture result only.
+        code+=f"try{{$null=. ([scriptblock]::Create([IO.File]::ReadAllText('{tailfile}')))}}catch{{$failed=$true}};"
+        code+="[ordered]@{failed=$failed;calls=@($script:calls.ToArray())}|ConvertTo-Json -Depth 8 -Compress"
+        # Write-Host is information output, so silence it while retaining all native effects inert.
+        value=ps("$InformationPreference='SilentlyContinue';function Write-Host{param($Object)};"+code)
+        assert value['failed']==bool(failure)
+&gt;       assert value['calls'][0]==['-NoProfile','-File','reviewed-auth.ps1','-Apply','-Interactive']
+               ^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:145: IndexError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_actual_apply_tail_retains_journals_and_exact_console_arguments[activation_verify]" time="0.883"><failure message="IndexError: list index out of range">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/login-continuation-v3-tests-initial-tmp/test_series_actual_apply_tail_4')
+failure = 'activation_verify'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify'])
+    def test_actual_apply_tail_retains_journals_and_exact_console_arguments(tmp_path,failure):
+        text=SOURCE.read_text()
+        start=text.index(' if($holds.Count){throw ($holds -join')
+        tail='try{\n'+text[start:text.index('}finally{foreach($stream in $held)',start)]+'}'
+        tailfile=tmp_path/'tail.ps1';tailfile.write_text(tail)
+        root=tmp_path/'series'
+        code=(f"$seriesRoot='{root}';$authSource='reviewed-auth.ps1';$activationSource='reviewed-activation.ps1';"
+              f"$authHash='auth-pin';$activationHash='activation-pin';$failure='{failure}';"
+              "$runtime=[pscustomobject]@{fixture=$true};$authPlan=[pscustomobject]@{fixture='auth'};$activationPlan=[pscustomobject]@{fixture='start'};$holds=@();$ownsRoot=$false;$phase='preflight';$nonce=$null;")
+        code+=r'''
+        $script:calls=[Collections.Generic.List[object]]::new()
+        function Assert-ProtectedPath{param($Path)}
+        function Assert-SeriesPrivateRoot{param($Path)if(-not [IO.Directory]::Exists($Path)){throw 'fixture directory missing'}}
+        function Initialize-SeriesDirectory{
+          Add-Type -TypeDefinition 'using System.IO;public static class CoChemNativeLoginSeriesDirectory{public static void Create(string p){if(Directory.Exists(p))throw new IOException("exists");Directory.CreateDirectory(p);}}'
+        }
+        function Write-SeriesRecord{param($Path,$Value)$s=[IO.File]::Open($Path,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$b=[Text.Encoding]::UTF8.GetBytes(($Value|ConvertTo-Json -Depth 15));$s.Write($b,0,$b.Length);$s.Flush($true)}finally{$s.Dispose()}}
+        function Invoke-SeriesConsoleChild{
+          param([string[]]$Arguments)
+          $script:calls.Add(@($Arguments))
+          if(($failure -ceq 'auth_exit' -and $Arguments -contains 'reviewed-auth.ps1') -or ($failure -ceq 'activation_exit' -and $Arguments -contains 'reviewed-activation.ps1')){return 2}
+          return 0
+        }
+        function Read-CommissioningAuthEvidence{if($failure -ceq 'auth_verify'){throw 'inert auth proof failure'};[pscustomobject]@{status='fixture-auth'}}
+        function Read-CommissioningRunningEvidence{if($failure -ceq 'activation_verify'){throw 'inert controller proof failure'};[pscustomobject]@{status='fixture-start'}}
+        $failed=$false
+        '''
+        # Suppress the product's intended console output in the fixture result only.
+        code+=f"try{{$null=. ([scriptblock]::Create([IO.File]::ReadAllText('{tailfile}')))}}catch{{$failed=$true}};"
+        code+="[ordered]@{failed=$failed;calls=@($script:calls.ToArray())}|ConvertTo-Json -Depth 8 -Compress"
+        # Write-Host is information output, so silence it while retaining all native effects inert.
+        value=ps("$InformationPreference='SilentlyContinue';function Write-Host{param($Object)};"+code)
+        assert value['failed']==bool(failure)
+&gt;       assert value['calls'][0]==['-NoProfile','-File','reviewed-auth.ps1','-Apply','-Interactive']
+               ^^^^^^^^^^^^^^^^^
+E       IndexError: list index out of range
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:145: IndexError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[]" time="0.513" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[capacity]" time="0.542" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[not_deferred]" time="0.472" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[string_deferred]" time="0.524" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[acceptance]" time="0.534" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[repair]" time="0.617" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[jobs]" time="0.655" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[scope]" time="0.358" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_first_start_preview_distinguishes_deferred_system_checks_and_limited_monitoring[mode]" time="0.686" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[]" time="0.689"><failure message="AssertionError">failure = ''
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+&gt;       assert value['failed'] == bool(failure)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:52: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[auth_exit]" time="0.688"><failure message="AssertionError">failure = 'auth_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[activation_exit]" time="0.596"><failure message="AssertionError">failure = 'activation_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[auth_verify]" time="0.606"><failure message="AssertionError">failure = 'auth_verify'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[activation_verify]" time="0.607"><failure message="AssertionError">failure = 'activation_verify'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[string_exit]" time="1.120"><failure message="AssertionError">failure = 'string_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_phase_order_and_stop_at_first_unverified_step[float_exit]" time="0.808"><failure message="AssertionError">failure = 'float_exit'
+
+    @pytest.mark.parametrize('failure', ['', 'auth_exit', 'activation_exit', 'auth_verify', 'activation_verify', 'string_exit', 'float_exit'])
+    def test_phase_order_and_stop_at_first_unverified_step(failure):
+        value = ps(f"$failure='{failure}';"+r'''
+        $script:events=[Collections.Generic.List[string]]::new();$failed=$false
+        try{Invoke-CommissioningPhases {
+          param($phase)
+          $script:events.Add('invoke:'+ $phase)
+          if($failure -ceq 'auth_exit' -and $phase -ceq 'native_authentication'){return 2}
+          if($failure -ceq 'activation_exit' -and $phase -ceq 'first_controller_start'){return 2}
+          if($failure -ceq 'string_exit'){return '0'}
+          if($failure -ceq 'float_exit'){return [double]0}
+          return 0
+        } {
+          param($phase)
+          $script:events.Add('verify:'+ $phase)
+          if($failure -ceq 'auth_verify' -and $phase -ceq 'native_authentication'){throw 'inert verification failure'}
+          if($failure -ceq 'activation_verify' -and $phase -ceq 'first_controller_start'){throw 'inert verification failure'}
+          [pscustomobject]@{phase=$phase}
+        } {
+          param($phase,$state,$proof)
+          $script:events.Add('record:'+ $phase+':'+$state)
+        }}catch{$failed=$true}
+        [ordered]@{failed=$failed;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+        assert value['failed'] == bool(failure)
+        events=value['events']
+&gt;       assert events[:2] == ['record:native_authentication:STARTED', 'invoke:native_authentication']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:54: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[]" time="0.584" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[other_hold]" time="0.488" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[absent_missing_auth_hold]" time="1.019" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[duplicate_expected_hold]" time="0.426" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[auth_present_with_hold]" time="0.428" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_preflight_only_defers_the_exact_pending_authentication_prerequisite[native_hold]" time="0.453" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[]" time="0.435" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[configuration]" time="0.406" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[false_monitor]" time="0.526" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[string_monitor]" time="0.848" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[float_count]" time="0.527" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[full_acceptance]" time="0.621" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[string_full_acceptance]" time="0.656" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[zero_pid]" time="0.330" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[string_pid]" time="0.306" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[pid_outside_dword]" time="0.318" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[missing_creation]" time="0.302" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[no_progress]" time="0.302" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[instance]" time="0.296" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[wrong_queue]" time="0.287" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[model_jobs]" time="0.286" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[wrong_task]" time="0.294" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[repair_enabled]" time="0.287" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[string_repair]" time="0.286" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[retry_enabled]" time="0.277" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[monitoring_scope]" time="0.279" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_running_receipt_requires_exact_typed_identity_and_progress[system_sid]" time="0.272" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_source_import_rejects_drift_and_keeps_verified_source_locked[]" time="0.268" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_source_import_rejects_drift_and_keeps_verified_source_locked[hash]" time="0.238" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_source_import_rejects_drift_and_keeps_verified_source_locked[duplicate]" time="0.278" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_series_source_import_rejects_drift_and_keeps_verified_source_locked[parse]" time="0.269" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[00000000000000000000000000000000]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[ccccccccccccccccccccccccccccccc]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[../other]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[None]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_rejects_unbound_or_preview_attempt[1]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[outer]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[provider]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[leaf]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[old_path]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[old_pin]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_first_start_requires_exact_attempt_on_all_authentication_levels[duplicate]" time="0.001" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_launch_and_preservation_functions_unchanged_from_reviewed_first_start" time="0.016" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_authentication_pause_skips_first_start_and_retains_a_bound_pause_event" time="0.300"><failure message="AssertionError: Invoke-CommissioningPhases : The term 'Invoke-CommissioningPhases' is not recognized as the name of a cmdlet, &#10;function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the &#10;path is correct and try again.&#10;At line:4 char:10&#10;+     $out=Invoke-CommissioningPhases {&#10;+          ~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;    + CategoryInfo          : ObjectNotFound: (Invoke-CommissioningPhases:String) [], ParentContainsErrorRecordExcepti &#10;   on&#10;    + FullyQualifiedErrorId : CommandNotFoundException">def test_authentication_pause_skips_first_start_and_retains_a_bound_pause_event():
+&gt;       result=series.ps(r'''
+        $script:events=[Collections.Generic.List[string]]::new()
+        function Read-CommissioningPausedAuthEvidence{[pscustomobject]@{attempt=$Attempt;status='AUTHENTICATION_PAUSED_BEFORE_LOGIN'}}
+        $out=Invoke-CommissioningPhases {
+          param($phase)$script:events.Add('invoke:'+$phase);return 20
+        } {param($phase)throw 'Completion verifier must not run on pause'} {
+          param($phase,$state,$proof)$script:events.Add('record:'+$phase+':'+$state)
+          if($state -ceq 'PAUSED' -and $proof.attempt -cne $Attempt){throw 'Pause binding changed'}
+        }
+        @{exit_code=$out;events=@($script:events.ToArray())}|ConvertTo-Json -Compress
+        ''')
+
+windows-deployment-next\test_login_continuation_commissioning_r3_v3.py:87: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+windows-deployment-next\test_login_continuation_commissioning_r3_v3.py:53: in &lt;lambda&gt;
+    series.ps=lambda body:original_series_ps(f"$Attempt='{ATTEMPT}';$commissionGate=$null;$priorCustody=[pscustomobject]@{{fixture=$true}};"+body)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+code = "$Attempt='cccccccccccccccccccccccccccccccc';$commissionGate=$null;$priorCustody=[pscustomobject]@{fixture=$true};\n  ...ause binding changed'}\n    }\n    @{exit_code=$out;events=@($script:events.ToArray())}|ConvertTo-Json -Compress\n    "
+
+    def ps(code):
+        loader = ("$ErrorActionPreference='Stop';Set-StrictMode -Version Latest;"
+                  "$tokens=$null;$errors=$null;"
+                  f"$ast=[Management.Automation.Language.Parser]::ParseFile('{SOURCE}',[ref]$tokens,[ref]$errors);"
+                  "if($errors.Count){throw 'Source parse error'};"
+                  "foreach($node in $ast.EndBlock.Statements){if($node -is [Management.Automation.Language.FunctionDefinitionAst]){. ([scriptblock]::Create($node.Extent.Text))}};"
+                  f"$installRoot='{INSTALL}';")
+        result = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', loader+code],
+                                capture_output=True, text=True, timeout=30)
+&gt;       assert result.returncode == 0, result.stdout+result.stderr
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Invoke-CommissioningPhases : The term 'Invoke-CommissioningPhases' is not recognized as the name of a cmdlet, 
+E       function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the 
+E       path is correct and try again.
+E       At line:4 char:10
+E       +     $out=Invoke-CommissioningPhases {
+E       +          ~~~~~~~~~~~~~~~~~~~~~~~~~~
+E           + CategoryInfo          : ObjectNotFound: (Invoke-CommissioningPhases:String) [], ParentContainsErrorRecordExcepti 
+E          on
+E           + FullyQualifiedErrorId : CommandNotFoundException
+
+windows-deployment-next\test_pipeline_commissioning_series_r3.py:24: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_native_mutex_rejects_concurrent_attempt_and_releases_without_changing_production_object" time="0.284" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_reported_prior_failures_have_versioned_slot_binding[slot1-v1]" time="0.393" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_reported_prior_failures_have_versioned_slot_binding[slot5-v2]" time="0.333" /><testcase classname="windows-deployment-next.test_login_continuation_commissioning_r3_v3" name="test_actual_preview_is_read_only_with_absent_first_start" time="0.611"><failure message="AssertionError: Reviewed commissioning source changed; no phase was started.&#10;  At C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pipeline-c&#10;  ommissioning-r3-v3.ps1:29 char:26&#10;  + ... -cne $Hash){throw 'Reviewed commissioning source changed; no phase wa ...&#10;  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : OperationStopped: (Reviewed commis...se was started.:String) [], RuntimeException&#10;      + FullyQualifiedErrorId : Reviewed commissioning source changed; no phase was started.&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...[], RuntimeException\n    + FullyQualifiedErrorId : Reviewed commissioning source changed; no phase was started.\n \n&quot;).returncode">def test_actual_preview_is_read_only_with_absent_first_start():
+        run=subprocess.run([PS,'-NoProfile','-NonInteractive','-File',str(series.SOURCE)],capture_output=True,text=True,timeout=60)
+&gt;       assert run.returncode==0,run.stdout+run.stderr
+E       AssertionError: Reviewed commissioning source changed; no phase was started.
+E         At C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pipeline-c
+E         ommissioning-r3-v3.ps1:29 char:26
+E         + ... -cne $Hash){throw 'Reviewed commissioning source changed; no phase wa ...
+E         +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : OperationStopped: (Reviewed commis...se was started.:String) [], RuntimeException
+E             + FullyQualifiedErrorId : Reviewed commissioning source changed; no phase was started.
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...[], RuntimeException\n    + FullyQualifiedErrorId : Reviewed commissioning source changed; no phase was started.\n \n").returncode
+
+windows-deployment-next\test_login_continuation_commissioning_r3_v3.py:127: AssertionError</failure></testcase></testsuite></testsuites>

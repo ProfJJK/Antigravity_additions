@@ -1,0 +1,23 @@
+{
+  "schema": "cochem-foundation-diagnostic-task-result/1",
+  "status": "FOUNDATION_READ_ONLY_DIAGNOSTIC_VERIFIED",
+  "receipt_path": "C:\\Program Files\\CoChem\\ExecutionFoundationDiagnostic4.2.7-windows-20261007-r3-v1\\foundation-diagnostic.json",
+  "receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+  "last_task_result": 0,
+  "failed_foundation_receipt_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+  "preflight_receipt_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+  "activation_ready": false,
+  "provisioning_performed": false,
+  "existing_state_modified": false,
+  "automatic_retry_allowed": false,
+  "docker_trace": {
+    "last_stage": "docker_pipe_denials_after",
+    "events_recorded": 18,
+    "failed_events": [],
+    "commands_started": 4,
+    "commands_returned": 4,
+    "retry_attempts": 0,
+    "original_guard_decisions_unchanged": true
+  },
+  "preservation_after_observation_verified": true
+}

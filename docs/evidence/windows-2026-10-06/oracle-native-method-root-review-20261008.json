@@ -1,0 +1,41 @@
+{
+  "schema": "cochem-oracle-method-root-review/1",
+  "status": "SOURCE_ONLY_REVIEW_PASSED_NOT_OPERATIONAL",
+  "recorded_at_utc": "2026-10-08T02:35:07.416979+00:00",
+  "files": {
+    "oracle-native-components-r3-v1.py": "e32634f56bd67199cde3a7b6501030da892f540fa40e184ac0206639b847d1a0",
+    "oracle-rogue-fixture-r3-v1.py": "137ffae58caee103a8025b7325f64580026ad6aefb10e95c3feba8f4494f0205",
+    "test_oracle_native_components_r3_v1.py": "efdfadfecd12db051000b900ac5d570e4e8cbf3bdb6b254462d41264f81326b7",
+    "oracle-native-method-integration-reviewed-tests.xml": "f7f3b06c2aefd7e4f8af8449af0c48a9bfe0fb091a5dc87995e4e0da5644241e"
+  },
+  "test_evidence": {
+    "tests": 38,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "test_scope": "ordinary Windows; disposable SQLite; native boundaries inert",
+  "reviewed_boundaries": [
+    "Actual installed Runtime.trip and Runtime.cancel are bound to a fresh real JobStore; no Runtime constructor.",
+    "Physical candidate retains parent/grandchild/Job handles and requires native empty-Job and exit evidence before durable cleanup release.",
+    "Actual launcher, NativeRunner managed cleanup and Job Object ownership remain unchanged.",
+    "Durable FAILED/fence advance, stale completion rejection and unrelated workflow preservation are required.",
+    "Real monotonic 501 complete Oracle calls must fit within one second; no invented Oracle timestamp.",
+    "Six existing worker exclusion names are retained; selected identity handoff is bounded by stopped/maintenance guards.",
+    "Fixed protected fixture cannot dispatch from the ordinary preparation location; no provider invocation."
+  ],
+  "operational_dependencies": [
+    "Fresh protected installation and source/config/dependency custody.",
+    "One-shot SYSTEM wrapper with preserved failure receipt and no automatic retry.",
+    "Real daemon exclusion held through execution; task/API snapshots alone do not exclude admission.",
+    "Exact R volume/startup baseline and fresh private/RAM path custody.",
+    "Actual SYSTEM/native execution and evidence review, separately from ordinary fixture tests."
+  ],
+  "full_service_acceptance": false,
+  "physical_acceptance_verified": false,
+  "worker_processes_executed_by_review": 0,
+  "system_tasks_executed_by_review": 0,
+  "provider_jobs_executed_by_review": 0,
+  "production_state_modified": false,
+  "next_action": "Prepare protected operational wrapper for consolidated privileged setup; no owner command yet."
+}

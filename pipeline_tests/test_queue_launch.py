@@ -23,7 +23,8 @@ def runtime(tmp_path):
 
 
 def complete_manifest(store, node):
-    output = {"chapters": [{"chapter_id": "c1", "title": "One", "requirements": ["R1"]}]}
+    output = {"chapters": [{"chapter_id": "c1", "title": "One", "requirements": ["R1"],
+        'wbs_tasks_defined': [{'id': 'c1-task', 'description': 'Document R1', 'requirements': ['R1']}]}]}
     route=node["route"]
     receipt = {"provider":route["provider"],"requested_model":route["model"],
         "requested_effort":route.get("reasoning_effort"),"selected_route":route,

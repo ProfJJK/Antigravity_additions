@@ -1,0 +1,166 @@
+{
+  "schema": "cochem-pawnio-installed-owner-followup/1",
+  "observed_at_utc": "2026-10-07T05:02:25.6423476Z",
+  "observation_identity": "AETHERDESK\\ansac",
+  "source_receipt": {
+    "private_path": "C:\\Users\\ansac\\AppData\\Local\\CoChem\\staging\\windows-427-20261006\\pawnio-2.1.0-install-20261007T045610Z-7d020ed3-after.json",
+    "sha256": "b88892b7722dd39767f08521429f90b269b7b9d928cfb773621c02322bd6bb43",
+    "reported_observation_start_utc": "2026-10-07T04:56:08.759151Z",
+    "note": "Source timestamp is wrapper start; installer completion occurred afterward.",
+    "wrapper_sha256": "a94c6389e4d30c96abaf48c218888969c802eda5f13d20b9203a10483f3e967e",
+    "identity": "AETHERDESK\\ansac",
+    "administrator": true
+  },
+  "installer": {
+    "owner_ran_interactively": true,
+    "arguments": "-install",
+    "exit_code": 0,
+    "verified_source": {
+      "bytes": 3225016,
+      "sha256": "a3a46226c5e2824f4cdd42be0eecbabfc672c86f7889710f5ab1e6ad385b47a0",
+      "signature": "Valid",
+      "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5"
+    },
+    "registry_after": [
+      {
+        "view": "Registry64",
+        "present": true,
+        "version": "2.1.0.0"
+      },
+      {
+        "view": "Registry32",
+        "present": false,
+        "version": null
+      }
+    ],
+    "driver_after": [
+      {
+        "Name": "PawnIO",
+        "State": "Running",
+        "Started": true,
+        "StartMode": "Manual",
+        "PathName": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\pawnio.inf_amd64_a92d2610b0f4c4c8\\PawnIO.sys"
+      }
+    ]
+  },
+  "preservation": {
+    "ram_task_xml_unchanged": true,
+    "ram_before": {
+      "task": "\\Mount_CoChem_RAMDisk",
+      "principal": "SYSTEM",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "last_result": 0,
+      "volume_size_bytes": 8589930496,
+      "expected_device_bytes": 8589934592,
+      "filesystem": "NTFS",
+      "label": "",
+      "task_started": false,
+      "volume_changed_by_helper": false
+    },
+    "ram_after": {
+      "task": "\\Mount_CoChem_RAMDisk",
+      "principal": "SYSTEM",
+      "task_xml_sha256": "1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928",
+      "last_result": 0,
+      "volume_size_bytes": 8589930496,
+      "expected_device_bytes": 8589934592,
+      "filesystem": "NTFS",
+      "label": "",
+      "task_started": false,
+      "volume_changed_by_helper": false
+    },
+    "restart_before": {
+      "component_servicing": false,
+      "windows_update": false,
+      "pending_file_rename": true,
+      "scope": "Flags only; existing flags do not establish a new installer-caused restart requirement."
+    },
+    "restart_after": {
+      "component_servicing": false,
+      "windows_update": false,
+      "pending_file_rename": true,
+      "scope": "Flags only; existing flags do not establish a new installer-caused restart requirement."
+    },
+    "automatic_reboot": false,
+    "scope": "No R task start, R format/resize, existing credentials, database or repair-budget changes were performed by the wrapper. Existing pending-file-rename flag predates installation."
+  },
+  "installed_file_metadata": [
+    {
+      "path": "C:\\Program Files\\PawnIO",
+      "directory": true,
+      "owner_sid": "S-1-5-32-544",
+      "acl_sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;CIIOID;GA;;;S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464)(A;ID;FA;;;SY)(A;OICIIOID;GA;;;SY)(A;ID;FA;;;BA)(A;OICIIOID;GA;;;BA)(A;ID;0x1200a9;;;BU)(A;OICIIOID;GXGR;;;BU)(A;OICIIOID;GA;;;CO)(A;ID;0x1200a9;;;AC)(A;OICIIOID;GXGR;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)(A;OICIIOID;GXGR;;;S-1-15-2-2)",
+      "reparse_point": false,
+      "sha256": null,
+      "file_version": null,
+      "signature": null,
+      "signer_thumbprint": null
+    },
+    {
+      "path": "C:\\Program Files\\PawnIO\\PawnIOLib.dll",
+      "directory": false,
+      "owner_sid": "S-1-5-32-544",
+      "acl_sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "reparse_point": false,
+      "sha256": "5af38af0b002a4f50e7e2ff94af6139162ac03677cc73811bf0ac11e0616c5e9",
+      "file_version": "2.1.0",
+      "signature": "Valid",
+      "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5"
+    },
+    {
+      "path": "C:\\Program Files\\PawnIO\\PawnIOUtil.exe",
+      "directory": false,
+      "owner_sid": "S-1-5-32-544",
+      "acl_sddl": "O:BAG:S-1-5-21-4108184938-3023548017-2507294638-1001D:AI(A;ID;FA;;;SY)(A;ID;FA;;;BA)(A;ID;0x1200a9;;;BU)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "reparse_point": false,
+      "sha256": "7d9cf87a6c54e661365aac8503889578acae101d7a1cfcbf660d1d2812b3a7d9",
+      "file_version": "2.1.0",
+      "signature": "Valid",
+      "signer_thumbprint": "F380DCC9F706E2756A5047B832FFE719E1BC35F5"
+    },
+    {
+      "path": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\pawnio.inf_amd64_a92d2610b0f4c4c8\\PawnIO.sys",
+      "directory": false,
+      "owner_sid": "S-1-5-18",
+      "acl_sddl": "O:SYG:SYD:AI(A;ID;FA;;;SY)(A;ID;0x1200a9;;;WD)(A;ID;0x1200a9;;;AC)(A;ID;0x1200a9;;;S-1-15-2-2)",
+      "reparse_point": false,
+      "sha256": "f92de04e5a02256e86ffa1b4252fe669282198b7329227f40e51bca9267d133d",
+      "file_version": "2.1.0",
+      "signature": "Valid",
+      "signer_thumbprint": "3847B761C2846DB72F61149176D09F9BB2D43E8A"
+    },
+    {
+      "path": "C:\\WINDOWS\\system32\\DriverStore\\FileRepository\\pawnio.inf_amd64_a92d2610b0f4c4c8",
+      "directory": true,
+      "owner_sid": "S-1-5-18",
+      "acl_sddl": "O:SYG:SYD:AI(A;OICIID;FA;;;SY)(A;OICIID;0x1200a9;;;WD)(A;OICIID;0x1200a9;;;AC)(A;OICIID;0x1200a9;;;S-1-15-2-2)",
+      "reparse_point": false,
+      "sha256": null,
+      "file_version": null,
+      "signature": null,
+      "signer_thumbprint": null
+    }
+  ],
+  "hwinfo": {
+    "path": "C:\\Program Files\\HWiNFO64\\HWiNFO64.EXE",
+    "version": "8.54-6090",
+    "sha256": "e4ce0c85c4288fa7e8eb12ebeece99efff4d81e0b13de53f091daabc81a3c9d3",
+    "signature": "Valid",
+    "signer_thumbprint": "9F2850A83C1012F296B700B76561F3B2B25DB1E6",
+    "edition": "Free",
+    "edition_basis": "User explicitly confirmed; no license data read.",
+    "current_process_count": 0,
+    "earlier_process_evidence": "Earlier workstation inventory reported running; this new observation is separate.",
+    "changed_or_launched": false,
+    "shared_memory_setting": "Not inspected after owner confirmed Free; no settings were changed.",
+    "official_license_reference": "https://www.hwinfo.com/licenses/",
+    "shared_memory_duration": "Parent verified current official Free limit of 12 hours; Pro unlimited."
+  },
+  "unrun": [
+    "No CPU temperature measurement",
+    "No SYSTEM CPU probe acceptance",
+    "No actual device ACL/access containment test",
+    "No worker or repair identity denial test",
+    "No GPU acceptance"
+  ]
+}

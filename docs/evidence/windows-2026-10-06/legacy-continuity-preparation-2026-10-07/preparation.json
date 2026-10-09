@@ -1,0 +1,46 @@
+{
+  "schema": "cochem-legacy-continuity-preparation/1",
+  "state": "READ_ONLY_DIAGNOSTIC_PREPARED_NOT_ISSUED_TO_OWNER",
+  "tests_passed": 13,
+  "administrator_run_performed": false,
+  "database_or_private_snapshot_opened": false,
+  "migration_or_paired_hold_applied": false,
+  "source_generation_diagnostic": "The first test-file generation command had a Python quoting SyntaxError before any write or test collection; corrected generation then passed13 focused tests. The no-tests JUnit is preserved.",
+  "assets": [
+    {
+      "name": "inspect-legacy-continuity.ps1",
+      "sha256": "91ce79837b6ef316ed22ee7d1719ef44607c464afd93d4ca7ce49111b1071ebb",
+      "bytes": 9780
+    },
+    {
+      "name": "test_legacy_continuity.py",
+      "sha256": "f9bf704bcb4bf09d7d12698d32bc2928474bbf5e962e757d5c59e0fd35fce79e",
+      "bytes": 5713
+    },
+    {
+      "name": "legacy-continuity-tests-initial.xml",
+      "sha256": "c126b52bc74ae3027c4a16e5a66df5cb3a9980a05f2ddddc4e7373168b5bab5a",
+      "bytes": 236
+    },
+    {
+      "name": "legacy-continuity-tests-followup.xml",
+      "sha256": "e136a5ca0516ab7eee035d4cb67c72ca4ddfed709afed184065bf660b14d42cb",
+      "bytes": 2522
+    },
+    {
+      "name": "legacy-continuity-ordinary-user.json",
+      "sha256": "23433c17d45291cadbc7e2a40d994e925be1bd1dd9c73d6b2578cfd3f982b4ec",
+      "bytes": 52511
+    },
+    {
+      "name": "unresolved-budget-evidence.proposed.json",
+      "sha256": "b7b822ff263720dfb443607f0e3cbf515d175b9b7784ea4fd15f8968b7ff3709",
+      "bytes": 1330
+    },
+    {
+      "name": "legacy-continuity-reconciliation.json",
+      "sha256": "e53bb3e34aee762caf34e7ee5c3fe46b7a8c7274e1c889a3d061f57f9638d44a",
+      "bytes": 9624
+    }
+  ]
+}

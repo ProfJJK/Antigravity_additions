@@ -1,0 +1,72 @@
+{
+  "schema": "cochem-administrator-r-followup-validation/1",
+  "recorded_at_utc": "2026-10-07T04:38:45.234408+00:00",
+  "scope": "Offline projection recovery and staged-config planner regressions on ordinary-user Windows; no additional Administrator or SYSTEM execution",
+  "powershell_projection_checks": {
+    "passed": 15,
+    "parse_errors": 0,
+    "version": "5.1.26100.9444",
+    "includes": [
+      "Parsed JSON string arrays and property strings",
+      "Wrapped string scalar",
+      "Empty string and null array positions",
+      "Boolean and numeric arrays",
+      "Nested private-field removal",
+      "COM/null task actions and nullable next-run time"
+    ]
+  },
+  "windows_planner_checks": {
+    "tests": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_reported_seconds": 14.28,
+    "junit": {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\administrator-r-stage-checks.xml",
+      "sha256": "6e7b14fbec36640c0941a3a386b1740afe0147660e27b9a7ea5d7de74f87d003",
+      "bytes": 3459
+    }
+  },
+  "curated_evidence": {
+    "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\evidence\\windows-2026-10-06\\administrator-r-startup-followup.json",
+    "sha256": "fe714906422439ec7a5405c82844ed3fcf09886e39f0ffffba5b859cf1ed41f5",
+    "bytes": 21764
+  },
+  "current_stage": {
+    "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\config\\windows\\aetherdesk-427.stage.json",
+    "sha256": "43cd08e35edda3096a8b09e8b377f7a0f95ae8083d25481bbed429efb1ffc19c",
+    "bytes": 11047
+  },
+  "continuation_document": {
+    "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\docs\\WINDOWS_CONTINUATION_4.2.7_2026-10-06.md",
+    "sha256": "69d4f8e5e909062c0b0498e6bb3a1aa54d85b165fc428772278098063eda8776",
+    "bytes": 17864
+  },
+  "helpers": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\share-admin-discovery.ps1",
+      "sha256": "8af4c42f7f7c736c7ee52d2bdc15fcd2feabd47912eb48de2bfd54b218a52c7f",
+      "bytes": 5373
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\test-discovery-projections.ps1",
+      "sha256": "d6043ae3e2bb208e30d2374a67c4d6eb9367d70c133226412ef3b6b55886eb1f",
+      "bytes": 4808
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\recover-admin-r-evidence.ps1",
+      "sha256": "fa212ef0fedee16b2342c3d37e932524857845ebae563df85872c92190fe8532",
+      "bytes": 7248
+    }
+  ],
+  "preserved": [
+    "Existing R: size, contents, label and startup task/XML",
+    "Legacy startup VBS",
+    "Credentials, databases and repair budgets",
+    "Original private/shared discovery reports",
+    "Earlier source manifests and acceptance artifacts"
+  ],
+  "shared_capacity": 4,
+  "pipeline_routing": "Chapter 06 unchanged",
+  "production_mutations": false
+}

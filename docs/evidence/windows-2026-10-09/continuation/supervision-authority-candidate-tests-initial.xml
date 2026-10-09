@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="85" time="20.466" timestamp="2026-10-07T21:14:51.679077-05:00" hostname="AetherDesk"><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[False-supervisor]" time="0.042"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob0')
+held = 'supervisor', controller_failure = False
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[False-component]" time="0.035"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob1')
+held = 'component', controller_failure = False
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[False-corrupt-peer]" time="0.028"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob2')
+held = 'corrupt-peer', controller_failure = False
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[True-supervisor]" time="0.028"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob3')
+held = 'supervisor', controller_failure = True
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[True-component]" time="0.035"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob4')
+held = 'component', controller_failure = True
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_held_tick_retains_real_observation_without_actuation_or_budget_writes[True-corrupt-peer]" time="0.024"><failure message="AssertionError: assert 'invalid' == 'stale'&#10;  &#10;  - stale&#10;  + invalid">tmp_path = WindowsPath('C:/Users/ansac/AppData/Local/Temp/pytest-of-ansac/pytest-24459/test_held_tick_retains_real_ob5')
+held = 'corrupt-peer', controller_failure = True
+
+    @pytest.mark.parametrize('held', ['supervisor', 'component', 'corrupt-peer'])
+    @pytest.mark.parametrize('controller_failure', [False, True])
+    def test_held_tick_retains_real_observation_without_actuation_or_budget_writes(tmp_path, held, controller_failure):
+        supervisor, observed, controller, publications, actuators = held_supervisor(
+            tmp_path, held, controller_failure=controller_failure)
+        before = snapshot(tmp_path)
+        result = supervisor.tick(ignore_startup_grace=True)
+        assert observed == [True] and controller == ['/health'] and actuators == []
+&gt;       assert result['health']['heartbeat'] == 'stale'
+E       AssertionError: assert 'invalid' == 'stale'
+E         
+E         - stale
+E         + invalid
+
+supervisor_tests\test_held_observation.py:85: AssertionError</failure></testcase><testcase classname="supervisor_tests.test_held_observation" name="test_detector_failure_does_not_fall_through_to_any_actuator" time="0.026" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_hold_preserves_original_charges_and_caps_after_reopen" time="0.045" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_pending_review_and_extra_spend_stay_held_without_erasing_checkpoint" time="0.046" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_component_health_remains_recordable_but_cannot_recover[False]" time="0.032" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_component_health_remains_recordable_but_cannot_recover[True]" time="0.041" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_hold_immutable_even_for_old_sql_callers[UPDATE unresolved_budget_authority SET recorded_at=0]" time="0.029" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_hold_immutable_even_for_old_sql_callers[DELETE FROM unresolved_budget_authority]" time="0.024" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_hold_immutable_even_for_old_sql_callers[INSERT OR REPLACE INTO unresolved_budget_authority SELECT * FROM unresolved_budget_authority]" time="0.022" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_persisted_sql_triggers_block_old_code_without_python_guards[attempt]" time="0.025" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_persisted_sql_triggers_block_old_code_without_python_guards[review]" time="0.028" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_persisted_sql_triggers_block_old_code_without_python_guards[lease]" time="0.033" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_persisted_sql_triggers_block_old_code_without_python_guards[component-new]" time="0.022" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_persisted_sql_triggers_block_old_code_without_python_guards[component-increment]" time="0.029" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_concurrent_callers_cannot_spend_after_hold_commit" time="0.326" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_hold_transaction_serializes_with_a_waiting_reservation" time="0.030" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_sqlite_backup_and_advanced_migration_preserve_both_holds" time="0.133" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_advanced_migration_refuses_lost_hold_or_rollback_guard[missing-hold]" time="0.062" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_advanced_migration_refuses_lost_hold_or_rollback_guard[missing-trigger]" time="0.058" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_engine_stops_before_native_board_or_lifecycle_actions[supervisor]" time="0.033" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_engine_stops_before_native_board_or_lifecycle_actions[component]" time="0.079" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_absent_marker_is_not_reported_as_verified_spend_or_zero_allowance" time="0.024" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_peer_read_refuses_real_linked_ancestor_even_when_leaf_missing" time="0.202" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_peer_read_does_not_treat_permission_error_as_missing" time="0.001" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[missing-source]" time="0.017" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[duplicate]" time="0.019" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[bad-hash]" time="0.021" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[bad-reason]" time="0.018" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[nan-time]" time="0.019" /><testcase classname="supervisor_tests.test_legacy_budget_authority" name="test_malformed_or_conflicting_provenance_cannot_replace_hold[changed-existing]" time="0.022" /><testcase classname="supervisor_tests.test_replay_budget" name="test_replay_counts_generation_and_review_without_mutating_current_ledger" time="0.048" /><testcase classname="supervisor_tests.test_replay_budget" name="test_replay_preserves_historical_lower_limits_and_cooldown" time="0.030" /><testcase classname="supervisor_tests.test_replay_budget" name="test_replay_never_recovers_or_refunds_an_expired_reservation" time="0.032" /><testcase classname="supervisor_tests.test_replay_budget" name="test_missing_or_corrupt_ledger_stays_unknown_and_is_not_created" time="0.006" /><testcase classname="supervisor_tests.test_replay_budget" name="test_fresh_existing_ledger_projects_available_calls_but_never_authorizes_execution" time="0.021" /><testcase classname="supervisor_tests.test_replay_budget" name="test_explicit_unresolved_history_keeps_projection_unknown_without_hiding_hold" time="0.039" /><testcase classname="supervisor_tests.test_replay_budget" name="test_empty_but_held_ledger_never_projects_two_or_four_new_calls" time="0.028" /><testcase classname="supervisor_tests.test_replay_budget" name="test_malformed_hold_cannot_restore_known_allowance[digest]" time="0.068" /><testcase classname="supervisor_tests.test_replay_budget" name="test_malformed_hold_cannot_restore_known_allowance[json]" time="0.060" /><testcase classname="supervisor_tests.test_replay_budget" name="test_malformed_hold_cannot_restore_known_allowance[evidence]" time="0.050" /><testcase classname="supervisor_tests.test_replay_budget" name="test_component_only_authority_hold_also_prevents_replay_repair_projection" time="0.044" /><testcase classname="supervisor_tests.test_replay_budget" name="test_unreadable_component_authority_never_becomes_a_fresh_allowance[invalid-sqlite]" time="0.025" /><testcase classname="supervisor_tests.test_replay_budget" name="test_unreadable_component_authority_never_becomes_a_fresh_allowance[malformed-authority]" time="0.046" /><testcase classname="supervisor_tests.test_replay_budget" name="test_unreadable_component_authority_never_becomes_a_fresh_allowance[directory]" time="0.018" /><testcase classname="supervisor_tests.test_engine" name="test_quarantined_identity_refuses_before_workspace_clear_or_new_reservation" time="0.066" /><testcase classname="supervisor_tests.test_engine" name="test_cached_failed_cli_probe_remains_visible_without_reexecuting_children" time="0.230" /><testcase classname="supervisor_tests.test_engine" name="test_failed_independent_validation_retries_until_durable_budget_is_exhausted[nonzero]" time="0.712" /><testcase classname="supervisor_tests.test_engine" name="test_failed_independent_validation_retries_until_durable_budget_is_exhausted[junit_failure]" time="0.791" /><testcase classname="supervisor_tests.test_engine" name="test_valid_candidate_held_by_deploy_policy_preserves_real_receipt_and_pointer" time="0.603" /><testcase classname="supervisor_tests.test_engine" name="test_restart_marker_is_not_forgotten_after_display_history_rolls_over" time="3.412" /><testcase classname="supervisor_tests.test_engine" name="test_restart_persists_private_bounded_diagnostics_before_request_event" time="0.110" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_health_probe_is_recorded_without_claiming_recovery" time="0.109" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_escalates_evidenced_code_only_after_verified_cleanup" time="1.212" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_with_environmental_evidence_never_authorizes_model[HTTP 429 quota exceeded]" time="0.256" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_with_environmental_evidence_never_authorizes_model[PermissionError: access denied]" time="0.264" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_with_environmental_evidence_never_authorizes_model[ConnectionError: connection refused]" time="0.265" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_with_environmental_evidence_never_authorizes_model[MemoryError: cannot allocate memory]" time="0.258" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_with_environmental_evidence_never_authorizes_model[Unknown failure]" time="0.260" /><testcase classname="supervisor_tests.test_engine" name="test_failed_restart_cannot_escalate_when_contained_stop_fails" time="0.279" /><testcase classname="supervisor_tests.test_engine" name="test_structured_startup_crash_can_repair_before_database_creation" time="0.547" /><testcase classname="supervisor_tests.test_engine" name="test_model_generated_regression_pass_cannot_bypass_outer_gate" time="0.397" /><testcase classname="supervisor_tests.test_engine" name="test_real_http_controller_outage_never_spends_on_model_repair[401]" time="0.605" /><testcase classname="supervisor_tests.test_engine" name="test_real_http_controller_outage_never_spends_on_model_repair[503]" time="0.687" /><testcase classname="supervisor_tests.test_engine" name="test_live_hardware_critical_hold_prevents_repair_and_cli_version_processes" time="0.094" /><testcase classname="supervisor_tests.test_engine" name="test_resolved_old_database_failure_cannot_reopen_or_spend_again" time="0.125" /><testcase classname="supervisor_tests.test_engine" name="test_explicit_once_tick_can_process_update_during_startup_grace" time="0.661" /><testcase classname="supervisor_tests.test_engine" name="test_missing_native_executable_cannot_authorize_repair_or_clear_workspace" time="0.065" /><testcase classname="supervisor_tests.test_engine" name="test_retry_evidence_uses_most_recent_failure_from_durable_history" time="0.054" /><testcase classname="supervisor_tests.test_engine" name="test_successful_deployment_commits_actual_release_pointer_and_resolves_incident" time="0.649" /><testcase classname="supervisor_tests.test_engine" name="test_failed_candidate_health_or_code_smoke_restores_pointer_and_allows_bounded_retry[None]" time="1.165" /><testcase classname="supervisor_tests.test_engine" name="test_failed_candidate_health_or_code_smoke_restores_pointer_and_allows_bounded_retry[code]" time="1.155" /><testcase classname="supervisor_tests.test_engine" name="test_external_quota_smoke_failure_rolls_back_and_blocks_further_model_spend" time="0.621" /><testcase classname="supervisor_tests.test_engine" name="test_unfinished_deployment_with_failed_recovery_prevents_new_paid_reservation" time="0.289" /><testcase classname="supervisor_tests.test_engine" name="test_actual_structural_corruption_freezes_before_repair_and_honors_environment[None]" time="0.424" /><testcase classname="supervisor_tests.test_engine" name="test_actual_structural_corruption_freezes_before_repair_and_honors_environment[Authentication failed]" time="0.118" /><testcase classname="supervisor_tests.test_engine" name="test_actual_structural_corruption_freezes_before_repair_and_honors_environment[MemoryError]" time="0.124" /><testcase classname="supervisor_tests.test_engine" name="test_actual_structural_corruption_freezes_before_repair_and_honors_environment[Provider unavailable]" time="0.131" /><testcase classname="supervisor_tests.test_engine" name="test_structural_stop_failure_never_authorizes_repair" time="0.112" /><testcase classname="supervisor_tests.test_engine" name="test_production_detector_launcher_reads_actual_board_in_sterile_subprocess" time="0.351" /><testcase classname="supervisor_tests.test_engine" name="test_asymmetric_srs_rejection_prevents_promotion_and_spends_both_original_calls" time="0.568" /></testsuite></testsuites>

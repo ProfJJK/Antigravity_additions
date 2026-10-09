@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.893" timestamp="2026-10-08T21:34:59.399551-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_live_commissioning_r3_v2" name="test_real_read_only_parent_grant_allowed_and_never_inherited_by_private_child" time="0.392"><failure message="AssertionError: Exception calling &quot;SetAccessControl&quot; with &quot;2&quot; argument(s): &quot;The process does not possess the 'SeSecurityPrivilege' &#10;  privilege which is required for this operation.&quot;&#10;  At line:1 char:461&#10;  + ... 638-1003)');[IO.Directory]::SetAccessControl('C:\Users\ansac\Document ...&#10;  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException&#10;      + FullyQualifiedErrorId : PrivilegeNotHeldException&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...      : NotSpecified: (:) [], MethodInvocationException\n    + FullyQualifiedErrorId : PrivilegeNotHeldException\n \n').returncode">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x00000238F06117F0&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x00000238F0611940&gt;)
+
+    def test_real_read_only_parent_grant_allowed_and_never_inherited_by_private_child(native):
+        parent, sid, win, scoped, private = native
+&gt;       set_fixture_acl(parent, sid, 0x1200A9)
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-v2-fixtures-20261008-43b032ea/test_real_read_only_parent_gra0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 1179817
+flags = 'OICI', additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+        assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+        sddl = (f'O:{sid}G:{sid}D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)'
+                f'(A;OICI;FA;;;{sid})(A;{flags};0x{mask:x};;;{EXTRA_SID})' + additional)
+        escaped = str(path).replace("'", "''")
+        script = ("Import-Module (Join-Path $PSHOME 'Modules\\Microsoft.PowerShell.Security\\Microsoft.PowerShell.Security.psd1');"
+                  "$acl=[Security.AccessControl.DirectorySecurity]::new();"
+                  f"$acl.SetSecurityDescriptorSddlForm('{sddl}');"
+                  f"[IO.Directory]::SetAccessControl('{escaped}',$acl)")
+        result = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script],
+                                capture_output=True, text=True, timeout=15)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: Exception calling "SetAccessControl" with "2" argument(s): "The process does not possess the 'SeSecurityPrivilege' 
+E         privilege which is required for this operation."
+E         At line:1 char:461
+E         + ... 638-1003)');[IO.Directory]::SetAccessControl('C:\Users\ansac\Document ...
+E         +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException
+E             + FullyQualifiedErrorId : PrivilegeNotHeldException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...      : NotSpecified: (:) [], MethodInvocationException\n    + FullyQualifiedErrorId : PrivilegeNotHeldException\n \n').returncode
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:50: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_live_commissioning_r3_v2" name="test_real_external_parent_write_or_replace_rights_refused_before_native_create[2]" time="0.224"><failure message="AssertionError: Exception calling &quot;SetAccessControl&quot; with &quot;2&quot; argument(s): &quot;The process does not possess the 'SeSecurityPrivilege' &#10;  privilege which is required for this operation.&quot;&#10;  At line:1 char:456&#10;  + ... 638-1003)');[IO.Directory]::SetAccessControl('C:\Users\ansac\Document ...&#10;  +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#10;      + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException&#10;      + FullyQualifiedErrorId : PrivilegeNotHeldException&#10;   &#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...      : NotSpecified: (:) [], MethodInvocationException\n    + FullyQualifiedErrorId : PrivilegeNotHeldException\n \n').returncode">native = (WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/li...copedWindows object at 0x00000238F0612660&gt;, &lt;run_live_commissioning_r3_v2.WindowsPrivate object at 0x00000238F035A350&gt;)
+mask = 2
+
+    @pytest.mark.parametrize('mask', [0x2, 0x4, 0x10, 0x100, 0x40, 0x10000, 0x40000, 0x80000, 0x40000000, 0x10000000])
+    def test_real_external_parent_write_or_replace_rights_refused_before_native_create(native, mask):
+        parent, sid, win, scoped, private = native
+&gt;       set_fixture_acl(parent, sid, mask)
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:113: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/live-v2-fixtures-20261008-43b032ea/test_real_external_parent_writ0/ordinary-parent')
+sid = 'S-1-5-21-4108184938-3023548017-2507294638-1001', mask = 2, flags = 'OICI'
+additional = ''
+
+    def set_fixture_acl(path, sid, mask, flags='OICI', additional=''):
+        assert 'pytest' in str(path).lower() or 'live-v2-fixtures' in str(path).lower()
+        sddl = (f'O:{sid}G:{sid}D:P(A;OICI;FA;;;SY)(A;OICI;FA;;;BA)'
+                f'(A;OICI;FA;;;{sid})(A;{flags};0x{mask:x};;;{EXTRA_SID})' + additional)
+        escaped = str(path).replace("'", "''")
+        script = ("Import-Module (Join-Path $PSHOME 'Modules\\Microsoft.PowerShell.Security\\Microsoft.PowerShell.Security.psd1');"
+                  "$acl=[Security.AccessControl.DirectorySecurity]::new();"
+                  f"$acl.SetSecurityDescriptorSddlForm('{sddl}');"
+                  f"[IO.Directory]::SetAccessControl('{escaped}',$acl)")
+        result = subprocess.run([PS, '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script],
+                                capture_output=True, text=True, timeout=15)
+&gt;       assert result.returncode == 0, result.stderr
+E       AssertionError: Exception calling "SetAccessControl" with "2" argument(s): "The process does not possess the 'SeSecurityPrivilege' 
+E         privilege which is required for this operation."
+E         At line:1 char:456
+E         + ... 638-1003)');[IO.Directory]::SetAccessControl('C:\Users\ansac\Document ...
+E         +                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+E             + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException
+E             + FullyQualifiedErrorId : PrivilegeNotHeldException
+E          
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoLogo', '-NoProfile', '-No...      : NotSpecified: (:) [], MethodInvocationException\n    + FullyQualifiedErrorId : PrivilegeNotHeldException\n \n').returncode
+
+windows-deployment-next\test_live_commissioning_r3_v2.py:50: AssertionError</failure></testcase></testsuite></testsuites>

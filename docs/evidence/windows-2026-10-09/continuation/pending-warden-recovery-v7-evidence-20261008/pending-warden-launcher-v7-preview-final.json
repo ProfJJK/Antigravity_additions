@@ -1,0 +1,22 @@
+{
+  "schema": "cochem-reboot-setup-launcher-plan/1",
+  "mode": "READ_ONLY_PLAN",
+  "phases": [
+    {
+      "phase": "pending_registration_recovery",
+      "file": "resume-pending-warden-r3-v7.ps1",
+      "sha256": "a34a1bf07dfa0546752e650eb20e0babdea32bbd5a19c0620112fc878defc873"
+    },
+    {
+      "phase": "monitoring_setup",
+      "file": "run-post-commissioning-setup-r3-v4.ps1",
+      "sha256": "933aac1f6ca8ab9bf959aa4578a18284fb0aef5d57e93fc2c834da557e1e13c4"
+    }
+  ],
+  "source_custody_verified": true,
+  "child_processes_started": 0,
+  "tasks_changed": 0,
+  "model_jobs_submitted": 0,
+  "full_srs_acceptance": false,
+  "automatic_retry": false
+}

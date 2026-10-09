@@ -1,0 +1,95 @@
+{
+    "acls":  {
+                 "owner:S-1-5-18":  null,
+                 "trusted-writer:S-1-5-18":  null,
+                 "owner:S-1-5-32-544":  null,
+                 "trusted-writer:S-1-5-32-544":  null,
+                 "owner:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464":  null,
+                 "trusted-writer:S-1-5-80-956008885-3418522649-1831038044-1853292631-2271478464":  null,
+                 "owner:S-1-5-32-545":  "UNTRUSTED_OWNER",
+                 "owner:S-1-1-0":  "UNTRUSTED_OWNER",
+                 "write:2":  "UNTRUSTED_WRITER",
+                 "write:4":  "UNTRUSTED_WRITER",
+                 "write:16":  "UNTRUSTED_WRITER",
+                 "write:256":  "UNTRUSTED_WRITER",
+                 "write:65536":  "UNTRUSTED_WRITER",
+                 "write:262144":  "UNTRUSTED_WRITER",
+                 "write:524288":  "UNTRUSTED_WRITER",
+                 "write:268435456":  "UNTRUSTED_WRITER",
+                 "write:1073741824":  "UNTRUSTED_WRITER",
+                 "read-execute":  null,
+                 "deny-writer":  null,
+                 "inherit-only-writer":  null,
+                 "inherited-writer":  "UNTRUSTED_WRITER",
+                 "effective-container-writer":  "UNTRUSTED_WRITER"
+             },
+    "maximum_entries":  50000,
+    "maximum_milliseconds":  600000,
+    "write_mask":  1343029526,
+    "is_administrator":  false,
+    "tree":  {
+                 "entries":  6,
+                 "acl_reads":  6,
+                 "verified_files":  3,
+                 "held_during_check":  3,
+                 "closed_after":  true
+             },
+    "single_file_entries":  1,
+    "callback_refusal":  {
+                             "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\tree\\a.txt; entries=1; elapsed_seconds=0.001; kind=FILE_IDENTITY_REFUSED; no Python was executed.",
+                             "exception":  "System.IO.IOException",
+                             "closed_after":  true
+                         },
+    "UNTRUSTED_OWNER":  {
+                            "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\tree; entries=1; elapsed_seconds=0.001; kind=UNTRUSTED_OWNER; no Python was executed.",
+                            "exception":  "System.IO.IOException",
+                            "identity_calls":  0
+                        },
+    "UNTRUSTED_WRITER":  {
+                             "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\tree; entries=1; elapsed_seconds=0.000; kind=UNTRUSTED_WRITER; no Python was executed.",
+                             "exception":  "System.IO.IOException",
+                             "identity_calls":  0
+                         },
+    "ACL_READ_FAILED":  {
+                            "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\tree; entries=1; elapsed_seconds=0.000; kind=ACL_READ_FAILED; no Python was executed.",
+                            "exception":  "System.IO.IOException",
+                            "identity_calls":  0
+                        },
+    "missing_root":  {
+                         "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\absent-root; entries=0; elapsed_seconds=0.000; kind=ROOT_METADATA_FAILED; no Python was executed.",
+                         "exception":  "System.IO.IOException"
+                     },
+    "hardlink":  {
+                     "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\hardlink; entries=2; elapsed_seconds=0.009; kind=FILE_IDENTITY_REFUSED; no Python was executed.",
+                     "exception":  "System.IO.IOException",
+                     "identity_calls":  1
+                 },
+    "reparse":  {
+                    "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\reparse; entries=2; elapsed_seconds=0.001; kind=REPARSE_ENTRY; no Python was executed.",
+                    "exception":  "System.IO.IOException",
+                    "identity_calls":  0,
+                    "actual_reparse_attribute":  true
+                },
+    "reparse_root":  {
+                         "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\reparse\\junction; entries=1; elapsed_seconds=0.000; kind=REPARSE_ENTRY; no Python was executed.",
+                         "exception":  "System.IO.IOException"
+                     },
+    "entry_boundary":  {
+                           "entries":  50000,
+                           "identity_calls":  49999,
+                           "acl_reads":  50000,
+                           "elapsed_seconds":  43.559886299999995
+                       },
+    "entry_overflow":  {
+                           "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\queue; entries=1; elapsed_seconds=0.114; kind=ENTRY_LIMIT; no Python was executed.",
+                           "exception":  "System.IO.IOException",
+                           "identity_calls":  0,
+                           "acl_reads":  1,
+                           "fixture_children":  50000
+                       },
+    "time_limit":  {
+                       "message":  "Protected code inspection refused; root=C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\protected-inspection-v4-fixtures-ordinary-tmp\\protected-inspection-v40\\tree; entries=1; elapsed_seconds=0.042; kind=TIME_LIMIT; no Python was executed.",
+                       "exception":  "System.IO.IOException",
+                       "identity_calls":  0
+                   }
+}

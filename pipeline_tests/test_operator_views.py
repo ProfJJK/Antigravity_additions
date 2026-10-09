@@ -7,6 +7,9 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import os
+
+import pytest
 
 from cochem_pipeline.operator_views import acceptance_dashboard, operator_snapshot, resource_plot
 from pipeline_tests.test_service import endpoint, request, submitted
@@ -97,8 +100,16 @@ def _catalog(tmp_path, *, platforms=('Windows',)):
     (tmp_path / 'docs/requirements_4.2.7.json').write_text(json.dumps(definitions))
     artifact = b'Physical test artifact bytes, explicitly a test fixture.\n'
     (tmp_path / 'docs/physical-result.txt').write_bytes(artifact)
+    (tmp_path / 'src').mkdir()
+    (tmp_path / 'src/controller.py').write_text('assert True\n')
+    (tmp_path / 'uv.lock').write_text('version = 1\n')
+    manifest = {'files': {name: hashlib.sha256((tmp_path / name).read_bytes()).hexdigest()
+                         for name in ('src/controller.py', 'uv.lock')}}
+    (tmp_path / 'docs/source.json').write_text(json.dumps(manifest))
+    manifest_hash = hashlib.sha256((tmp_path / 'docs/source.json').read_bytes()).hexdigest()
     evidence = {'specification_sha256': specification_sha256, 'evidence': [{'id': row['id'], 'artifact': 'docs/physical-result.txt',
         'sha256': hashlib.sha256(artifact).hexdigest(), 'platform': 'POSIX',
+        'tested_source_manifest': 'docs/source.json', 'tested_source_manifest_sha256': manifest_hash,
         'revision': 'owner-amendment-test', 'status': 'passed'} for row in definitions['requirements']]}
     (tmp_path / 'docs/acceptance_4.2.7.json').write_text(json.dumps(evidence))
     return definitions, evidence
@@ -188,6 +199,12 @@ def test_unobserved_deployment_identities_are_not_attested(endpoint):
 def test_real_http_latency_observation_is_bounded_metadata_not_request_content(endpoint, tmp_path):
     import sqlite3
     from cochem_pipeline.operations_policy import WorkloadObjectives
+    if os.name == 'nt':
+        from cochem_pipeline import windows
+        try:
+            windows.require_system()
+        except windows.WindowsIsolationError:
+            pytest.skip('Native protected metrics require the staged Windows SYSTEM acceptance session')
     root = tmp_path / 'protected-observations'
     root.mkdir(mode=0o700)
     objectives = WorkloadObjectives(root)

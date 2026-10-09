@@ -1,0 +1,29 @@
+{
+    "schema":  "cochem-config-only-staging/1",
+    "mode":  "READ_ONLY_PREVIEW",
+    "proposal_sha256":  "f3161c436ffeb6a519dcaece7bf2ffbef61445cee6b4cb9513147bd3b49371a3",
+    "candidate_sha256":  "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+    "layout_sha256":  "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+    "destination":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261006\\pipeline.json",
+    "destination_status":  "ABSENT",
+    "only_policy_change":  "integration_hold.evidence_path rebound to identical protected capture",
+    "installed_revision_verified":  true,
+    "installed_code_entries":  15963,
+    "protected_python_entries":  3727,
+    "parser":  {
+                   "parser_valid":  true,
+                   "worker_identities":  6,
+                   "max_shared_slots":  4,
+                   "knowledge_enabled":  true,
+                   "activation_ready":  false
+               },
+    "holds":  [
+
+              ],
+    "credentials_accessed":  false,
+    "databases_opened":  false,
+    "knowledge_index_created":  false,
+    "tasks_changed":  false,
+    "model_jobs_executed":  0,
+    "activation_ready":  false
+}

@@ -1,0 +1,22 @@
+{
+  "provenance": "Owner returned the completed Administrator PowerShell recovery result in chat on 2026-10-07; separate local inspection verifies installed artifacts",
+  "wrapper_sha256": "5a03e5b39c234930cf095ce3eea318a4e8bd2ec2c6c889377d0be6a92cf39d97",
+  "result": {
+    "schema": "cochem-stopped-install-resume/1",
+    "mode": "STOPPED_PIPELINE_INSTALL_INVOKED",
+    "original_source_files_verified": 171,
+    "original_receipt_sha256": "8c908d1217ce65619d96d1e943da9d4876f7a6943c6057f8884c0920b83d147b",
+    "original_task": "VERIFIED",
+    "original_artifacts_preserved": true,
+    "fresh_system_precheck": "PASSED",
+    "installer_invoked": true,
+    "worker_identities": 6,
+    "max_execution_slots": 4,
+    "daemon_registered": false,
+    "supervisor_migration_invoked": false,
+    "activation_ready": false
+  },
+  "system_acceptance_complete": false,
+  "native_authentication_verified": false,
+  "linux_results_included": false
+}

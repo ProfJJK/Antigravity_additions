@@ -1,0 +1,25 @@
+{
+  "schema": "cochem-windows-job-affinity-order-observation/1",
+  "date": "2026-10-07",
+  "host": "AETHERDESK",
+  "scope": "Actual ordinary-user anonymous empty Windows Jobs; no process assigned or launched in the ordering experiment; every Job handle closed",
+  "python_version": "3.12.13",
+  "protected_state_modified": false,
+  "system_or_worker_identity_used": false,
+  "existing_slot1_failure_receipt_sha256": "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+  "topology": {
+    "api": "GetSystemCpuSetInformation",
+    "cpu_sets": 24,
+    "efficiency_classes": {"0": 8, "1": 16},
+    "group": 0,
+    "selected_mask_hex": "0xff0000",
+    "logical_processors": [16, 17, 18, 19, 20, 21, 22, 23]
+  },
+  "observations": [
+    {"order": [14, 9], "extended_flags_hex": "0x2238", "class_14_succeeded": true, "class_9_succeeded": false, "class_9_winerror": 87},
+    {"order": [14, 9, 15], "extended_flags_hex": "0x2228", "all_set_calls_succeeded": true, "final_group_mask_hex": "0xffffff", "final_basic_affinity_hex": "0xff0000", "acceptable": false},
+    {"order": [9, 15, 14], "extended_flags_hex": "0x2238", "all_set_calls_succeeded": true, "final_group_mask_hex": "0xff0000", "final_basic_affinity_hex": "0xff0000", "acceptable": true}
+  ],
+  "interpretation": "The observed installed failure is consistent with setting class 14 before class 9 with JOB_OBJECT_LIMIT_AFFINITY. Topology discovery succeeds. Dropping the basic affinity flag widens group affinity on this host and is not a valid repair.",
+  "system_worker_denial_acceptance": "Still unverified; fresh installed-code and worker evidence required"
+}

@@ -34,7 +34,20 @@ def ratify(root,documents):
 
 
 @pytest.fixture
-def corpus(tmp_path):
+def portable_knowledge_permissions(monkeypatch):
+    if os.name == 'nt':
+        # Real SQLite/HTTP/MCP regression coverage, with an explicit permission
+        # fixture. Actual Windows creation/ACL behavior has its own test module;
+        # these retrieval tests are not SYSTEM acceptance.
+        from cochem_pipeline import knowledge
+        monkeypatch.setattr(knowledge, '_protected',
+            lambda path, *, directory=False, private=False: knowledge._ordinary(path, directory=directory))
+        monkeypatch.setattr(knowledge, '_private_directory',
+            lambda path, *, exist_ok=False: path.mkdir(mode=0o700, exist_ok=exist_ok))
+
+
+@pytest.fixture
+def corpus(tmp_path,portable_knowledge_permissions):
     root=tmp_path/'corpus';root.mkdir()
     private=tmp_path/'private';private.mkdir(mode=0o700)
     docs={'.sources/reference.md':'# Reference\nPermanent Ψ(r), ΔG°, kJ·mol⁻¹ observations.\n',
@@ -165,13 +178,22 @@ def test_code_fences_do_not_invent_links_or_sections(corpus):
     assert corpus.service.refresh()['section_count']==4
 
 
-def test_symlink_hardlink_and_manifest_desync_rejected(corpus,tmp_path):
+def test_symlink_rejected(corpus,tmp_path):
     outside=tmp_path/'outside.md';outside.write_text('secret',encoding='utf-8')
     target=corpus.root/'wiki/link.md'
-    target.symlink_to(outside)
+    try:
+        target.symlink_to(outside)
+    except OSError as error:
+        if os.name == 'nt' and error.winerror == 1314:
+            pytest.skip('Windows token lacks symlink creation privilege; junction/hardlink checks are separate')
+        raise
     with pytest.raises(KnowledgeError,match='without links'):
         corpus.service.refresh()
-    target.unlink();os.link(outside,target)
+
+
+def test_hardlink_and_manifest_desync_rejected(corpus,tmp_path):
+    outside=tmp_path/'outside.md';outside.write_text('secret',encoding='utf-8')
+    target=corpus.root/'wiki/link.md';os.link(outside,target)
     with pytest.raises(KnowledgeError,match='without links'):
         corpus.service.refresh()
     target.unlink();target.write_text('# Unratified\n',encoding='utf-8')
@@ -265,7 +287,7 @@ def test_real_authenticated_http_mcp_and_cli_retrieval(corpus,tmp_path):
                 assert bounded.isError
         asyncio.run(scenario())
         config=tmp_path/'client.json';config.write_text(json.dumps({'port':server.server_address[1],'token_file':str(token_file)}),encoding='utf-8')
-        environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parents[1]/'src')}
+        environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parents[1]/'src'),'PYTHONIOENCODING':'utf-8'}
         result=subprocess.run([sys.executable,'-m','cochem_pipeline','knowledge-search','--client-config',str(config),'fencing'],
             capture_output=True,text=True,encoding='utf-8',timeout=10,env=environment,
             creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0) if os.name=='nt' else 0)

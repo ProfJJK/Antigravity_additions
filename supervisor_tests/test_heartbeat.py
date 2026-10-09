@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 import os
 from pathlib import Path
 import secrets
@@ -15,6 +16,7 @@ from cochem_pipeline.heartbeat import Heartbeat
 from cochem_pipeline.service import ControlClient, ControlServer
 from cochem_pipeline.store import JobStore, output_digest
 from cochem_supervisor.monitor import read_observation
+from cochem_supervisor.shared_io import open_shared_text
 
 
 def test_completed_tick_writes_atomic_real_process_identity_and_throttles(tmp_path):
@@ -84,7 +86,8 @@ def test_concurrent_readers_only_observe_complete_json_documents(tmp_path):
     def read():
         while not done.is_set():
             try:
-                data = json.loads(heartbeat.path.read_text())
+                with open_shared_text(heartbeat.path) as stream:
+                    data = json.load(stream)
                 observations.append(data["sequence"])
             except BaseException as exc:
                 failures.append(exc)
@@ -101,6 +104,55 @@ def test_concurrent_readers_only_observe_complete_json_documents(tmp_path):
     assert observations and not failures
     assert not reader.is_alive()
     assert json.loads(heartbeat.path.read_text())["sequence"] == 21
+
+
+def test_shared_reader_observes_complete_snapshot_during_concurrent_publication(tmp_path):
+    heartbeat = Heartbeat(tmp_path, "4.2.7", interval=0)
+    heartbeat.completed_tick({"generation": "old"}, now=1000)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        with open_shared_text(heartbeat.path) as snapshot:
+            pending = pool.submit(heartbeat.completed_tick, {"generation": "new"}, now=1001)
+            old = json.load(snapshot)
+        assert pending.result(timeout=2)
+    with open_shared_text(heartbeat.path) as snapshot:
+        new = json.load(snapshot)
+    assert old["sequence"] == 1 and old["status"]["generation"] == "old"
+    assert new["sequence"] == 2 and new["status"]["generation"] == "new"
+    assert not list(tmp_path.glob(".heartbeat-*.tmp"))
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Actual Windows deny-delete file handle required")
+def test_windows_heartbeat_retries_brief_ordinary_reader_lock(tmp_path):
+    heartbeat = Heartbeat(tmp_path, "4.2.7", interval=0)
+    heartbeat.completed_tick({"generation": "old"}, now=1000)
+    entered = threading.Event()
+    def publish():
+        entered.set()
+        return heartbeat.completed_tick({"generation": "new"}, now=1001)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        with heartbeat.path.open("rb"):
+            pending = pool.submit(publish)
+            assert entered.wait(2)
+            time.sleep(0.04)
+            assert not pending.done()
+        assert pending.result(timeout=2)
+    assert json.loads(heartbeat.path.read_text())["status"]["generation"] == "new"
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Actual Windows deny-delete file handle required")
+def test_windows_persistent_reader_lock_fails_bounded_and_preserves_previous_document(tmp_path):
+    heartbeat = Heartbeat(tmp_path, "4.2.7", interval=0)
+    heartbeat.completed_tick({"generation": "old"}, now=1000)
+    original = heartbeat.path.read_bytes()
+    started = time.monotonic()
+    with heartbeat.path.open("rb"):
+        with pytest.raises(OSError) as caught:
+            heartbeat.completed_tick({"generation": "new"}, now=1001)
+    assert caught.value.winerror in (5, 32, 33)
+    assert time.monotonic() - started < 2
+    assert heartbeat.path.read_bytes() == original
+    assert heartbeat.last_write == 1000
+    assert not list(tmp_path.glob(".heartbeat-*.tmp"))
 
 
 def test_workflow_attempt_override_can_only_lower_budget_and_remains_immutable(tmp_path):
@@ -124,7 +176,8 @@ def test_lowered_workflow_budget_is_inherited_by_scattered_chapters(tmp_path):
     store = JobStore(tmp_path / "job_board.db", max_attempts=3)
     workflow = store.submit("SRS", ["REQ-1"], 1, max_attempts=1)
     manifest = store.claim("manifest-worker")
-    output = {"chapters": [{"chapter_id": "chapter-1", "title": "Requirements", "requirements": ["REQ-1"]}]}
+    output = {"chapters": [{"chapter_id": "chapter-1", "title": "Requirements", "requirements": ["REQ-1"],
+        'wbs_tasks_defined': [{'id': 'chapter-task', 'description': 'Document requirement', 'requirements': ['REQ-1']}]}]}
     # Storage-contract input; this test does not invoke or claim a model run.
     route=manifest["route"]
     receipt = {"provider": route["provider"], "requested_model":route["model"],

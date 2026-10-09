@@ -1,0 +1,131 @@
+{
+  "schema": "cochem-protected-acceptance-setup-plan/1",
+  "mode": "READ_ONLY_PLAN",
+  "operationally_released": true,
+  "branch": "commissioned",
+  "administrator": false,
+  "current_commissioned_instance_reattested": false,
+  "phases": [
+    {
+      "phase": "oracle_maintenance",
+      "mode": "deferred_maintenance"
+    },
+    {
+      "phase": "independent_staging",
+      "mode": "execute"
+    },
+    {
+      "phase": "first_start",
+      "mode": "reattest_current_instance"
+    },
+    {
+      "phase": "held_observation",
+      "mode": "execute"
+    },
+    {
+      "phase": "resource_observation",
+      "mode": "execute"
+    }
+  ],
+  "phase_previews": [
+    {
+      "phase": "independent_staging",
+      "plan": {
+        "schema": "cochem-independent-supervisor-staging-plan/2",
+        "mode": "READ_ONLY_PLAN",
+        "target_root": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1",
+        "unpublished_pair_root": "C:\\Program Files\\CoChem\\Supervisor4.2.7-windows-20261007-staging-v1\\unpublished-private\\unresolved-pair",
+        "manifest_sha256": "6aec5eaf82205be34e5849e73700f2e817e157be5c5ddd4366f04e549b75f0c4",
+        "source_and_test_files": 292,
+        "controls": 4,
+        "activation_ready": false,
+        "daemon_and_task_metadata_checks_deferred_to_admin": true,
+        "daemon_definitions_observed": false,
+        "warden_stop_required": false,
+        "new_one_shot_task_on_apply": "CoChem-4.2.7-StageIndependentSupervisor-20261007-v1",
+        "accounts_changed": 0,
+        "credentials_read": false,
+        "old_ledgers_opened": false,
+        "holds": []
+      }
+    },
+    {
+      "phase": "held_observation",
+      "plan": {
+        "schema": "cochem-held-supervisor-observation-plan/1",
+        "mode": "READ_ONLY_PLAN",
+        "staging_present": false,
+        "commissioning_present": false,
+        "target_root": "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1",
+        "data_root": "C:\\ProgramData\\CoChemSupervisor427-observation-20261007-r3-v1",
+        "task_metadata_and_private_identity_checks_deferred_to_system": true,
+        "paid_repair_enabled": false,
+        "component_recovery_enabled": false,
+        "warden_stop_required": false,
+        "oracle_acceptance_prerequisite": false,
+        "holds": [
+          "STAGING_NOT_INSTALLED",
+          "COMMISSIONING_NOT_COMPLETE"
+        ]
+      }
+    },
+    {
+      "phase": "resource_observation",
+      "plan": {
+        "schema": "cochem-resource-observer-install-plan/1",
+        "operation": "RegisterAndStart",
+        "administrator": false,
+        "holds": [
+          "Successful first-instance commissioning receipt is required."
+        ],
+        "source_manifest_sha256": "f44a356bd0bdd4d27aff35e3f3d204509b608f3b72e31a39698003803681ee59",
+        "dependency_manifest_sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429",
+        "code_root": "C:\\Program Files\\CoChem\\ResourceObservation4.2.7-windows-20261008-r3-v3",
+        "private_state_root": "C:\\Program Files\\CoChem\\ResourceObservationState4.2.7-windows-20261008-r3-v3",
+        "task_name": "CoChem-4.2.7-ResourceObservation-20261008-r3-v3",
+        "commissioning_present": false,
+        "full_dependency_custody_deferred": true,
+        "initial_registration_disabled": true,
+        "optional_single_start": true,
+        "duration_seconds": 172800,
+        "task_limit": "PT49H",
+        "no_restart_or_resume": true,
+        "source_files": 7,
+        "base_noncache_files": 2777,
+        "psutil_files": 11,
+        "historical_bytecode_untouched_and_redirected": true,
+        "full_srs_acceptance": false,
+        "desktop_heap_available": false
+      }
+    }
+  ],
+  "holds": [
+    {
+      "phase": "preflight",
+      "code": "COMMISSIONING_REQUIRED_NO_AUTHENTICATION_OR_STARTUP_IN_THIS_BATCH"
+    },
+    {
+      "phase": "held_observation",
+      "code": "PHASE_PREFLIGHT_HOLD",
+      "detail": "COMMISSIONING_NOT_COMPLETE"
+    },
+    {
+      "phase": "resource_observation",
+      "code": "PHASE_PREFLIGHT_HOLD",
+      "detail": "Successful first-instance commissioning receipt is required."
+    }
+  ],
+  "oracle_global_startup_prerequisite": false,
+  "oracle_deferred_maintenance": true,
+  "authentication_or_first_start_invoked": false,
+  "commissioning_required_before_apply": true,
+  "identities": 6,
+  "shared_capacity": 4,
+  "automatic_repair_enabled": false,
+  "full_srs_acceptance": false,
+  "workflows_accepted": false,
+  "owner_supervision_required": false,
+  "automatic_retry_or_resume": false,
+  "system_private_preflight_deferred": true,
+  "series_root": "C:\\Program Files\\CoChem\\PostCommissioningSetup4.2.7-windows-20261008-r3-v1"
+}

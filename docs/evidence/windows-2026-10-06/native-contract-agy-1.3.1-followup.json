@@ -1,0 +1,117 @@
+{
+  "schema": "windows-native-contract-followup/1",
+  "observed_at_utc": "2026-10-07T04:38:28.814214Z",
+  "platform": "Windows",
+  "invoking_account": "ansac",
+  "protected_worker_account_probed": false,
+  "evidence_kind": "installed-CLI-version-help-and-owner-account-noninference-status",
+  "native_model_jobs_executed": 0,
+  "authentication_change_requested": false,
+  "credential_contents_read": false,
+  "native_cache_or_credential_refresh_not_excluded": true,
+  "production_databases_changed": false,
+  "production_provider_contract_activated": false,
+  "existing_linux_results_relabelled_as_windows": false,
+  "owner_confirmation": "The owner confirms Agy is available, signed in and functioning. Pending findings concern the new isolated pipeline integration, not provider availability or the owner's login.",
+  "installed_executables": {
+    "gemini": {
+      "product": "Agy",
+      "path": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin\\agy.exe",
+      "version": "1.3.1",
+      "sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741"
+    }
+  },
+  "capture_provenance": {
+    "schema": "cochem-agy-owner-status-capture/1",
+    "capture_sha256": "56e6a64132b8333d54eb40528daa281c8803e050767e8c2c9e4e259d3099dfb5",
+    "private_capture_directory_name": "agy-status-20261007T043821Z",
+    "stable_executable_sha256_before_and_after_each_command": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+    "scope": "owner_account_only",
+    "raw_streams_kept_in_private_staging": true,
+    "child_api_environment_overrides_removed": true,
+    "diagnostic_reference": "docs/evidence/windows-2026-10-06/agy-status-diagnostic-1.3.1.json"
+  },
+  "probes": [
+    {
+      "probe": "version",
+      "arguments": ["--version"],
+      "exit_code": 0,
+      "elapsed_seconds": 0.219,
+      "stdout_bytes": 6,
+      "stdout_sha256": "10e2e117b01523891ca271a615ae36e9d5e52348fd7d642f66727602c1b8dcbe",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "probe": "help",
+      "arguments": ["--help"],
+      "exit_code": 0,
+      "elapsed_seconds": 0.203,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 2905,
+      "stderr_sha256": "337622c6dcdcb204312277570c4173dda83f3cbf006629f0eabe657069071e7c"
+    },
+    {
+      "probe": "model",
+      "arguments": ["-p", "/model"],
+      "exit_code": 0,
+      "elapsed_seconds": 2.61,
+      "stdout_bytes": 46,
+      "stdout_sha256": "0cc9a793305e6ef6b2d005703ebd36f67161f7018d656d015a621d711dc8c0e8",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "probe": "usage",
+      "arguments": ["-p", "/usage"],
+      "exit_code": 0,
+      "elapsed_seconds": 4.11,
+      "stdout_bytes": 254,
+      "stdout_sha256": "2ed199ffab5d982bd3afcac3c7a8a7e9489591602e3e0985e4ff3a3c3b7e3862",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "observations": {
+    "help": "1.3.1 help bytes match the earlier 1.3.0 help capture. The native stream formats, effort vocabulary and disable-slash-commands option are visible; no new all-tools/MCP/hooks/subagents/fallback disable contract or standalone auth subcommand was established.",
+    "selected_configuration": "The standalone model report identifies gemini-3.8-flash-high, Gemini 3.8 Flash (High). This is selected configuration, not actual serving-model identity, and is not substituted for a canonical Chapter 06 model ID.",
+    "quota_report": "The standalone usage report contains native group/window/remaining/reset rows. It has no account or authentication-mode field. Agy's Claude and GPT models group is not evidence about separate Claude Code or Codex subscriptions.",
+    "authentication": "Owner authentication is confirmed by the owner; machine-verifiable subscription authentication for the isolated identities remains unverified. Successful status output alone is not an authentication predicate.",
+    "isolation": "No native inference occurred. Native inference-only controls remain unverified; strict or sandbox permissions are not substitutes for disabling all tools, MCP, hooks, subagents and model fallback.",
+    "identity": "No serving-model or actual-effort receipt was produced by these non-inference status operations. Missing observed effort must remain explicit, never inferred from selected configuration."
+  },
+  "activation_blockers": [
+    {
+      "id": "AGY-AUTH",
+      "status": "unverified",
+      "detail": "New isolated worker/repair identities have not authenticated Agy. The observed standalone status reports lack an account/authentication-mode field and cannot independently verify subscription login. Interactive terminal and browser/code handoff are still required."
+    },
+    {
+      "id": "AGY-ISOLATION",
+      "status": "unverified",
+      "detail": "No supported observed 1.3.1 contract disables all native tools, MCP, hooks, subagents and model fallback. No inference-only attestations were activated."
+    },
+    {
+      "id": "AGY-IDENTITY",
+      "status": "compatibility-hold-before-dispatch",
+      "detail": "Selected model configuration and quota reports do not attest the actual serving model. Native result identity remains unverified; no model inference was launched to fabricate coverage."
+    }
+  ],
+  "historical_evidence": {
+    "original_report": "docs/evidence/windows-2026-10-06/native-contract-followup.json",
+    "original_report_sha256": "c2296fde5dce1a5eadec12c50edf438c09da679b02cd878517653eaab17405d8",
+    "original_version": "1.3.0",
+    "original_executable_sha256": "c1b0001989c4051a41f5104484de182db5014fa155053c8088baacf1663063bf",
+    "preserved_unchanged": true,
+    "first_status_capture": "agy-status-20261007T043530Z",
+    "first_status_capture_disposition": "Mixed-source: executable changed during capture; missing per-command bindings prevent version-specific attestation. Retained privately; not used to authorize the 1.3.1 proposal."
+  },
+  "proposal_disposition": "Repin only the new proposed installation's observed executable and capability evidence to 1.3.1; retain the identical verification_pending integration hold and all three finding IDs. No installed configuration, native credential, provider route or consumed budget is changed.",
+  "primary_sources": [
+    "https://www.antigravity.google/docs/cli/headless/",
+    "https://www.antigravity.google/docs/cli/commands/usage",
+    "https://www.antigravity.google/docs/cli/install/",
+    "https://www.antigravity.google/docs/cli/reference/"
+  ]
+}

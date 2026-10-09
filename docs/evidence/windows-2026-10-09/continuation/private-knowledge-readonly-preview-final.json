@@ -1,0 +1,24 @@
+{
+    "schema":  "cochem-private-knowledge-install-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "owner":  "AETHERDESK\\ansac",
+    "administrator":  false,
+    "source_inventory_sha256":  "edb97ec08cfdc6e451c9a875b4e9f300dc67b8e9af03b32feada9d6251240892",
+    "acceptance_helper_sha256":  "832eb45e9629f2bcde75eff58a455135934118bc5ab9f45c7d2870c9db0950ca",
+    "files_verified":  138,
+    "bytes_verified":  2156744,
+    "documents":  137,
+    "target_corpus":  "C:\\Program Files\\CoChem\\Knowledge4.2.7-windows-20261006",
+    "target_index_state":  "C:\\ProgramData\\CoChemPipeline427\\private\\knowledge-windows-20261006",
+    "index_absence":  "Must be verified by SYSTEM before corpus provisioning/index creation",
+    "target_acl":  "Protected SYSTEM/Admin FullControl only, before first private byte",
+    "task_name":  "CoChem-4.2.7-PrivateKnowledge-Acceptance",
+    "holds":  [
+
+              ],
+    "private_files_copied":  0,
+    "source_databases_read_or_modified":  false,
+    "models_executed":  0,
+    "configuration_changed":  false,
+    "daemon_started":  false
+}

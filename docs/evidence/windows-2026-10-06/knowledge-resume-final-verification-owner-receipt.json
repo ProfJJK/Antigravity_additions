@@ -1,0 +1,84 @@
+{
+  "activation_ready": false,
+  "budgets_modified": false,
+  "canonical_authority_matches_capture": true,
+  "canonical_source": ".sources/4.2.7_SRS.model-routing-2026-10-07.md",
+  "configuration_modified": false,
+  "corpus_bytes": 2114293,
+  "corpus_files": 138,
+  "corpus_manifest_sha256": "7c16c12d319aa89b78fcd83628be7e23250259ad9b05b0c246dbd48746d44ec5",
+  "corpus_reprovisioned": false,
+  "daemon_started": false,
+  "daemons_before": [
+    {
+      "name": "CoChem-4.2.7-Warden",
+      "present": false
+    },
+    {
+      "name": "CoChem-4.2.7-Supervisor",
+      "present": false
+    },
+    {
+      "name": "CoChem-4.2.2-Warden",
+      "present": false
+    },
+    {
+      "name": "CoChem-4.2.3-Supervisor",
+      "present": false
+    }
+  ],
+  "diagnostic_receipt_sha256": "18ceba4394b92bb6e1d320f49226359902af0084a72195a8139f699594bc0307",
+  "documents": 137,
+  "existing_acl_modified": false,
+  "failure": {
+    "error_type": "ValueError",
+    "phase": "final_verification",
+    "winerror": null
+  },
+  "finished_at_unix_ms": 1791383063372,
+  "generation": "g-abed1cd030c746559aed6bb30a47093a",
+  "helper_sha256": "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+  "index_bytes": 3747840,
+  "index_integrity_check": "ok",
+  "index_ratio": 1.7726209186711586,
+  "index_resume_started": true,
+  "index_sha256": "af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d",
+  "index_size_sla_met": true,
+  "install_receipt_sha256": "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+  "legacy_full_continuity_verified": false,
+  "module_pins": {
+    "knowledge.py": "65e1dc17a5bee38f19e47abb24dd97864fcdcd4bc08fd28ab9199d311869d7b2",
+    "knowledge_authority.py": "e7dd99cb0f9a6710d3a03cff2d983a58879fef0b68bd463c0f38607603ba1f27",
+    "operations_policy.py": "06bc54e218596bee4103da96a179f49a9551bae23d0380a31b0f005a53323f86",
+    "windows.py": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba"
+  },
+  "native_model_jobs_executed": 0,
+  "nonce": "38737f69225044da8ff05483a616febc",
+  "old_tasks_modified_or_run": false,
+  "operator_review_required": true,
+  "original_receipt_sha256": "2cf8f1f4cafbb0537900af98349f6a3f4faec135a4061dd153f0cce78c1488dd",
+  "owner_amendment_sources": [
+    ".sources/SRS_ADDENDUM_4.2.7.model-routing-2026-10-07.md"
+  ],
+  "payload_inventory_sha256": "edb97ec08cfdc6e451c9a875b4e9f300dc67b8e9af03b32feada9d6251240892",
+  "pipeline_config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "revision": {
+    "acceptance_files": 0,
+    "acceptance_sha256": null,
+    "files": 109,
+    "read_only": true,
+    "schema": "cochem-installed-revision/1",
+    "source_sha256": "064a2c9c18b1adb489d0514b1b0e2979e80e72b6af33b2bdc9d95211c0a61f5d",
+    "verified": true
+  },
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+  "schema": "cochem-private-knowledge-resume/1",
+  "sections": 1708,
+  "source_bytes_preserved": true,
+  "source_files_verified": 166,
+  "source_manifest_sha256": "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+  "source_pins_sha256": "df99c5cab0eebead545980d68e205aeed0b8649221aec03e0ec6b4ec7d9691ba",
+  "started_at_unix_ms": 1791383060665,
+  "status": "KNOWLEDGE_RESUME_HELD",
+  "system_sid": "S-1-5-18"
+}

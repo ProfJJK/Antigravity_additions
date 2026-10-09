@@ -1,0 +1,17 @@
+{
+    "schema":  "cochem-interactive-claude-login-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "slot":  "slot1",
+    "source_sha256":  "38a268482096c21036207536060e7380f5119d5aa7ce12f710e636d20df056bc",
+    "support_sha256":  "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+    "human_console_required":  true,
+    "maximum_input_lines":  1,
+    "maximum_input_bytes":  2048,
+    "native_output_suppressed_after_input":  true,
+    "login_commands_executed":  0,
+    "model_jobs_executed":  0,
+    "activation_ready":  false,
+    "holds":  [
+
+              ]
+}

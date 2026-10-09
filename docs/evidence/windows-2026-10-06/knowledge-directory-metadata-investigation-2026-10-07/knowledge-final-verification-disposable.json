@@ -1,0 +1,27 @@
+{
+  "lock_bytes_after": "0",
+  "lock_changes": {},
+  "preservation_ignored_fields": [
+    "relative",
+    "state",
+    "metadata_sha256",
+    "written_filetime"
+  ],
+  "production_lock_baseline_metadata_sha256": "9c885bd1583d736bbc8e32cd8b81d559800e45da71f246556d2638c52279b15d",
+  "root_changes": {
+    "bytes": {
+      "after": 4096,
+      "before": 0
+    },
+    "metadata_sha256": {
+      "after": "3901ed4a6e4b7916b85c9980bc27f56c6b55450d6d5113417060049ed75625c8",
+      "before": "a9aa0b740f2becdcc4b85c2a6e1a52072fc14a0c5055f5ba57421b971dac6d62"
+    },
+    "written_filetime": {
+      "after": 134358568598562818,
+      "before": 134358568598447686
+    }
+  },
+  "schema": "cochem-disposable-final-verification-investigation/1",
+  "scope": "Ordinary-user disposable directory, real Win32 metadata+msvcrt lock+SQLite; no production state reads or changes"
+}

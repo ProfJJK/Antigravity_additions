@@ -1,0 +1,120 @@
+{
+  "schema": "cochem-legacy-preservation-followup/1",
+  "observed_at_utc": "2026-10-07T02:57:20.693882+00:00",
+  "platform": "native Windows; operator session, not elevated and not SYSTEM",
+  "scope": "Independent read-only manifest, destination SHA256, inventory and sampled ACL review; no database rows, job payloads, credential values or private file inventory exported.",
+  "sqlite_snapshots": {
+    "status": "COMPLETE_PER_DATABASE",
+    "manifest_sha256": "28488116be2717225d5ecd0fb6b2d1409bfabbc115bc9a0d4335f1d1ccc760db",
+    "manifest_bytes": 2473,
+    "created_at_utc": "2026-10-07T02:44:05.092605+00:00",
+    "database_count": 7,
+    "total_bytes": 8122368,
+    "destination_files_independently_hashed": 7,
+    "destination_hash_or_size_mismatches": 0,
+    "destination_inventory_mismatches": 0,
+    "integrity_checks_recorded_ok": 7,
+    "integrity_check_scope": "Successful checks recorded by the online-backup implementation; this review rehashed destination bytes without opening snapshot tables.",
+    "source_open_mode": "SQLite URI mode=ro",
+    "consistency": "Each online SQLite backup is individually consistent; sources were not quiesced together.",
+    "implementation_sha256": "02f38e86aba9c6d1026953c03920cd10610ecb3e4ee52605035320560af90a9d"
+  },
+  "legacy_files": {
+    "status": "COMPLETE_PER_FILE",
+    "manifest_sha256": "eb98369eadd5a9d0ba7d862f832331d8f2bdf6b15e67021fe300f4cd4d485978",
+    "manifest_bytes": 2253223,
+    "created_at_utc": "2026-10-07T02:45:26.285776+00:00",
+    "selected_source_collection_count": 9,
+    "file_count": 6104,
+    "total_bytes": 506126075,
+    "destination_files_independently_hashed": 6104,
+    "destination_hash_or_size_mismatches": 0,
+    "destination_inventory_mismatches": 0,
+    "scope": "Private watchdog evidence, repair-loop state, wiki/manifests and shared source captures; per-file copies checked against source hashes before and after copying. No cross-file point-in-time guarantee.",
+    "credential_store_or_native_profile_selected": false,
+    "content_classification": "Raw historical files may contain sensitive material; no assertion that arbitrary historical payloads are secret-free.",
+    "preservation_implementation_sha256": "788adefddbf1f252950d267307be3694142cc5854ed99a83881f5ca3a8a506b8"
+  },
+  "private_storage_acl_review": {
+    "storage_class": "Operator-private LocalAppData staging; not protected SYSTEM migration authority",
+    "owner": "AETHERDESK\\ansac",
+    "allowed_principals": [
+      "AETHERDESK\\ansac",
+      "NT AUTHORITY\\SYSTEM",
+      "BUILTIN\\Administrators"
+    ],
+    "root_acl_inherited": true,
+    "root_dacl_protected": false,
+    "sampled_objects": 21,
+    "sampled_objects_with_unapproved_allow_aces": 0,
+    "scope": "Both roots and manifests, seven SQLite snapshots, nine collection directories and one content file. Full descendant ACL attestation was not performed.",
+    "required_before_migration": "Reverify hashes and create reviewed protected custody/ACLs before using snapshots as SYSTEM deployment authority; retain these originals."
+  },
+  "source_and_test_evidence": {
+    "source_manifest": "followup-source-manifest.json",
+    "source_manifest_sha256": "1414a1e144165e157ce85a8db343c6c1f6eb457cbc7831d972748f5c964007ed",
+    "source_files_independently_rehashed": 238,
+    "missing_files": 0,
+    "changed_files": 0,
+    "captured_native_windows_regression_result": {
+      "passed": 1346,
+      "skipped": 66,
+      "failures": 0,
+      "errors": 0
+    },
+    "scope": "Existing consolidated Windows test evidence, not a new test run and not SYSTEM/hardware/native-inference acceptance.",
+    "independent_verification_at_utc": "2026-10-07T02:55:24.551988+00:00",
+    "subsequent_source_changes_require_new_validation": true
+  },
+  "cpu_probe_review": {
+    "bundle": "cpu-probe-bundle-v2",
+    "manifest_sha256": "defbb5b713e1cd81316b0d16dc16a49c37e9c170365c7699b18a47be6f24ef65",
+    "bundle_files_independently_hashed": 45,
+    "hash_mismatches": 0,
+    "compiled_source_matches_frozen_tree": true,
+    "previous_code_review_findings_resolved": [
+      "canonical execution path and lexical reparse rejection",
+      "direct Intel core/package temperatures only with missing-final-reading failure",
+      "huge numeric values rejected before float conversion",
+      "explicit local staging destination and reparse-parent rejection"
+    ],
+    "protected_install": false,
+    "hardware_acceptance": false,
+    "sensor_sampling_performed_by_this_review": false,
+    "scope": "Read-only source/bundle review. Compiled capabilities evidence does not establish PawnIO driver availability or real CPU temperature."
+  },
+  "privileged_prerequisites": {
+    "source_manifest_sha256": "a59e8bc8a96b40aa35b6262f84efa4014d2bb630a5175b0b42465facc88cd213",
+    "observed_at_utc": "2026-10-07T02:33:24.8672601Z",
+    "identity": "AETHERDESK\\ansac",
+    "administrator": false,
+    "system": false,
+    "ram_volume_bytes": 8589930496,
+    "ram_volume_filesystem": "NTFS",
+    "ram_volume_label": "",
+    "ram_startup_task_verified": false,
+    "legacy_hyperv_warden_state": "Running",
+    "lhm_wmi_sensor_query": "Invalid namespace; zero sensor readings",
+    "elevated_or_system_acceptance_established": false,
+    "scope": "User-session read-only inspection only; canceled UAC is not successful elevation."
+  },
+  "preservation_operation_assertions": {
+    "sources_quiesced": false,
+    "cross_database_point_in_time": false,
+    "cross_file_point_in_time": false,
+    "migration_executed": false,
+    "production_state_switched": false,
+    "repair_budgets_reset": false,
+    "repair_budget_reconstructed": false,
+    "remaining_repair_budget": null,
+    "tasks_or_credentials_modified": false,
+    "ram_disk_or_startup_modified": false
+  },
+  "remaining_holds": [
+    "Legacy repair-budget authority and legacy-job continuation/routing mapping remain unresolved; snapshots do not authorize fresh or zero-spend ledgers.",
+    "Coordinate identified writers for a future consistent cutover; preserve independent Hyper-V Warden ownership and legacy ingress until their disposition is reviewed.",
+    "Protected snapshot custody, native SYSTEM/worker ACLs and actual deployment boundaries remain unverified.",
+    "CPU driver/protected installation and actual SYSTEM thermal measurements remain unverified; required temperature protection stays enabled.",
+    "Existing R startup task ownership remains unverified in the non-elevated scope."
+  ]
+}

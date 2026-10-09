@@ -1,0 +1,198 @@
+{
+    "schema":  "cochem-task-scheduler-acl-conversion-fixture/1",
+    "status":  "ORDINARY_USER_FLAGS2_TASK_CONVERTED_WITH_SETSD16",
+    "nonce":  "bbd9bf8061764e6ba8cdefa47fb6a149",
+    "task_name":  "CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2",
+    "powershell_version":  "5.1.26100.9444",
+    "administrator":  false,
+    "is_64_bit_process":  true,
+    "current_user_sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+    "prior_receipt_sha256":  "00bd4af0b3d05de9d072e16cd562e105f43060f78df3ea099eb0b0d6ff015bd9",
+    "tasks_registered":  0,
+    "security_descriptor_sets":  1,
+    "task_run_calls":  0,
+    "tasks_enabled":  0,
+    "tasks_deleted":  0,
+    "deployment_tasks_changed":  false,
+    "credentials_accessed":  false,
+    "pipeline_state_accessed":  false,
+    "started_utc":  "2026-10-09T01:59:04.7793107Z",
+    "before":  {
+                   "name":  "CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2",
+                   "enabled":  false,
+                   "state":  1,
+                   "instance_count":  0,
+                   "last_task_result":  267011,
+                   "last_run_time_utc":  "1999-11-30T06:00:00.0000000Z",
+                   "triggers":  0,
+                   "allow_demand_start":  false,
+                   "principal_sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                   "logon_type":  3,
+                   "run_level":  0,
+                   "action_path":  "C:\\WINDOWS\\System32\\cmd.exe",
+                   "action_arguments":  "/d /c exit 0",
+                   "service_descriptor":  {
+                                              "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)(A;;FR;;;S-1-5-21-4108184938-3023548017-2507294638-1001)",
+                                              "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                              "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                              "dacl_protected":  false,
+                                              "ace_count":  4,
+                                              "aces":  [
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                                           },
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-18"
+                                                           },
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-32-544"
+                                                           },
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  1179785,
+                                                               "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                                           }
+                                                       ]
+                                          },
+                   "task_file_security":  {
+                                              "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)",
+                                              "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                              "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                              "dacl_protected":  true,
+                                              "ace_count":  3,
+                                              "aces":  [
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-18"
+                                                           },
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-32-544"
+                                                           },
+                                                           {
+                                                               "type":  0,
+                                                               "flags":  0,
+                                                               "mask":  2032127,
+                                                               "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                                           }
+                                                       ]
+                                          }
+               },
+    "xml_before_sha256":  "b116f23d0b9293a86e97d800db2bef0b4b958d6aa57d81141d17c3fc5f9458ac",
+    "xml_before_bytes":  1586,
+    "requested_descriptor":  {
+                                 "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:P(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)",
+                                 "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                 "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                 "dacl_protected":  true,
+                                 "ace_count":  3,
+                                 "aces":  [
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                              },
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-18"
+                                              },
+                                              {
+                                                  "type":  0,
+                                                  "flags":  0,
+                                                  "mask":  2032127,
+                                                  "sid":  "S-1-5-32-544"
+                                              }
+                                          ]
+                             },
+    "security_descriptor_set_attempted":  true,
+    "after":  {
+                  "name":  "CoChem-Fixture-TaskAcl-20261008-bbd9bf8061764e6ba8cdefa47fb6a149-create2",
+                  "enabled":  false,
+                  "state":  1,
+                  "instance_count":  0,
+                  "last_task_result":  267011,
+                  "last_run_time_utc":  "1999-11-30T06:00:00.0000000Z",
+                  "triggers":  0,
+                  "allow_demand_start":  false,
+                  "principal_sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                  "logon_type":  3,
+                  "run_level":  0,
+                  "action_path":  "C:\\WINDOWS\\System32\\cmd.exe",
+                  "action_arguments":  "/d /c exit 0",
+                  "service_descriptor":  {
+                                             "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:PAI(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)(A;;FA;;;SY)(A;;FA;;;BA)",
+                                             "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                             "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                             "dacl_protected":  true,
+                                             "ace_count":  3,
+                                             "aces":  [
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                                          },
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-18"
+                                                          },
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-32-544"
+                                                          }
+                                                      ]
+                                         },
+                  "task_file_security":  {
+                                             "sddl":  "O:S-1-5-21-4108184938-3023548017-2507294638-1001G:S-1-5-21-4108184938-3023548017-2507294638-1001D:PAI(A;;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;S-1-5-21-4108184938-3023548017-2507294638-1001)",
+                                             "owner":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                             "group":  "S-1-5-21-4108184938-3023548017-2507294638-1001",
+                                             "dacl_protected":  true,
+                                             "ace_count":  3,
+                                             "aces":  [
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-18"
+                                                          },
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-32-544"
+                                                          },
+                                                          {
+                                                              "type":  0,
+                                                              "flags":  0,
+                                                              "mask":  2032127,
+                                                              "sid":  "S-1-5-21-4108184938-3023548017-2507294638-1001"
+                                                          }
+                                                      ]
+                                         }
+              },
+    "xml_after_sha256":  "b116f23d0b9293a86e97d800db2bef0b4b958d6aa57d81141d17c3fc5f9458ac",
+    "xml_after_bytes":  1586,
+    "xml_byte_identical":  true,
+    "finished_utc":  "2026-10-09T01:59:05.0033983Z"
+}

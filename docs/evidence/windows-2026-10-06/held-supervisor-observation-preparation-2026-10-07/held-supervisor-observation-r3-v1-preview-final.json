@@ -1,0 +1,17 @@
+{
+    "schema":  "cochem-held-supervisor-observation-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "staging_present":  false,
+    "commissioning_present":  false,
+    "target_root":  "C:\\Program Files\\CoChem\\SupervisorObservation4.2.7-windows-20261007-r3-v1",
+    "data_root":  "C:\\ProgramData\\CoChemSupervisor427-observation-20261007-r3-v1",
+    "task_metadata_and_private_identity_checks_deferred_to_system":  true,
+    "paid_repair_enabled":  false,
+    "component_recovery_enabled":  false,
+    "warden_stop_required":  false,
+    "oracle_acceptance_prerequisite":  false,
+    "holds":  [
+                  "STAGING_NOT_INSTALLED",
+                  "COMMISSIONING_NOT_COMPLETE"
+              ]
+}

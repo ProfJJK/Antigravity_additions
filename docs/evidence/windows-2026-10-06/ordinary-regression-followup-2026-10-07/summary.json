@@ -1,0 +1,267 @@
+{
+  "created_utc": "2026-10-07T18:48:32.686207+00:00",
+  "deselected_native_cli_calls": 2,
+  "files": {
+    "git-explicit-bindings-targeted-tests.xml": {
+      "bytes": 24171,
+      "sha256": "cab3f36168144f92cf88eebf9a251327395a081adc9c07573793f51685197010"
+    },
+    "ordinary-regression-20261007-r3-final/pytest.log": {
+      "bytes": 4579,
+      "sha256": "d9987d7f96496be2f6293933a61ef449991cbae74aa117617b2261b2164fa93e"
+    },
+    "ordinary-regression-20261007-r3-final/source-before.json": {
+      "bytes": 34496,
+      "sha256": "8a2336fe544c12b56ce48007d9aebc49d6d52fb56098f9121016cb472ba2cb78"
+    },
+    "ordinary-regression-20261007-r3-final/summary.json": {
+      "bytes": 715,
+      "sha256": "2f9457cf7228c0d7970dd62015d4a725ed9d06ac949e6d60790d8b3235b8241a"
+    },
+    "ordinary-regression-20261007-r3-final/tests.xml": {
+      "bytes": 630939,
+      "sha256": "5e397fff689273decb717be30847b25b48a7ae35c1f6febe2d916412a7db9914"
+    },
+    "ordinary-regression-20261007-r3-followup/pytest.log": {
+      "bytes": 28767,
+      "sha256": "e6ed6698389531752990507efd11ae90efd87f953063b1d904a4b5bd40ead866"
+    },
+    "ordinary-regression-20261007-r3-followup/source-before.json": {
+      "bytes": 34496,
+      "sha256": "1de8db461a80c530809314d515f4870428c2f0de54b050df35912bafe6d04fc4"
+    },
+    "ordinary-regression-20261007-r3-followup/summary.json": {
+      "bytes": 716,
+      "sha256": "237ea42049230a8a1dd737248f266a84227e8b0f92c198aeb5829a29f781113a"
+    },
+    "ordinary-regression-20261007-r3-followup/tests.xml": {
+      "bytes": 632492,
+      "sha256": "c79309689ee0ecd9a21a4cd845e4d8d02c85dc5df2ee0595d0dfd9f823ed90e5"
+    },
+    "ordinary-regression-20261007-r3/pytest.log": {
+      "bytes": 525762,
+      "sha256": "e423f30a426a9c8ef3cc0ad3ee2f38ce90a89e8248e4e95583df9aebea190672"
+    },
+    "ordinary-regression-20261007-r3/source-before.json": {
+      "bytes": 34383,
+      "sha256": "587dbc81e01d2516c0eadd1ac789b9dcf9073b11da91da6ae33b2c4485296bd9"
+    },
+    "ordinary-regression-20261007-r3/summary.json": {
+      "bytes": 719,
+      "sha256": "008365b8d25ce0e22923e4e275807c2e04ef1e0a0a3e72fd99ef9aa39bd07c18"
+    },
+    "ordinary-regression-20261007-r3/tests.xml": {
+      "bytes": 1069137,
+      "sha256": "f054cd47ba9e79a1f03e1681fec4e77a9b9e429bd731fda63cbd036430193073"
+    },
+    "ordinary-regression-remediation-tests.xml": {
+      "bytes": 168038,
+      "sha256": "3350f8daa1c8c892656e6faacf34c2c38dca92de9f48ed647b841332ae5d4eeb"
+    },
+    "run-ordinary-regression-r3-final.py": {
+      "bytes": 3460,
+      "sha256": "4b4db213dcaf8705b4b71e4d0d94570f09461f2b9f006d28a1c77e30fe4d4c91"
+    },
+    "run-ordinary-regression-r3-followup.py": {
+      "bytes": 3463,
+      "sha256": "5c53e5969b2eedf9a523e09e78d4ef7886ff055d74dfbab1b8a760d04bbd5422"
+    },
+    "run-ordinary-regression-r3.py": {
+      "bytes": 3454,
+      "sha256": "5bca412999d67d9d30818266ab69383aeaf421e572f1e3e346a86c3a2c4c4c6f"
+    },
+    "service-regression-followup-tests.xml": {
+      "bytes": 9318,
+      "sha256": "9b702eb25d5c852ce7150f1cad30b23c6eb63f643e99a8d2ed92d3de3b3ad81d"
+    },
+    "source/pipeline_tests/test_coding_git.py": {
+      "bytes": 26120,
+      "sha256": "29805de6ab77ded8474c799391c826a0b1af4d7037c85223733de4cf959c9eb4"
+    },
+    "source/pipeline_tests/test_coding_workflow.py": {
+      "bytes": 54491,
+      "sha256": "5652eaacaed47272a66eca6d8737a77c68d46b8164778cfea8c099b57b7ae7d0"
+    },
+    "source/pipeline_tests/test_deployment_revision.py": {
+      "bytes": 3553,
+      "sha256": "af417b631c2b1816c59566dd6872cd7b0c2973766ad337ff7ddb1c14634549c4"
+    },
+    "source/pipeline_tests/test_git_deadline.py": {
+      "bytes": 4231,
+      "sha256": "fcf833cd7c9099b9aafd8774642db9496982d7003f9a23fd01a170187dbdcdf6"
+    },
+    "source/pipeline_tests/test_ramdisk.py": {
+      "bytes": 25021,
+      "sha256": "09f8c2ea654ac0fa752fe16415fddab7542b6931df68ef7c96f13fd3a50c8186"
+    },
+    "source/pipeline_tests/test_service.py": {
+      "bytes": 22746,
+      "sha256": "d62c116a867b4e8eecf1569a07202969cd55cbfbdc364e8fbe42f056ecdfca82"
+    },
+    "source/pipeline_tests/test_upgrade_preview.py": {
+      "bytes": 4699,
+      "sha256": "edfc74fca4448bd2a66cb8b73c71c21194cfbac1e5bd6dd183e53bba37834d2e"
+    },
+    "source/pipeline_tests/test_windows_native_payload_staging.py": {
+      "bytes": 4865,
+      "sha256": "05b3370f37c7186ad02e1ee8cc47051aad7824df03c0e0798ee0aca767545bce"
+    },
+    "source/pipeline_tests/test_windows_payload_staging.py": {
+      "bytes": 7703,
+      "sha256": "8fb8052136d45a8438b069920fda59cdc2c94d8ec1d790ad84c85d4e01b81449"
+    },
+    "source/pipeline_tests/windows_test_context.py": {
+      "bytes": 1031,
+      "sha256": "7ecfd0d6f01257f2acd76f4b318de831211553af4c9ea4a62794e8e506ac300e"
+    },
+    "source/scripts/plan_aetherdesk_427_cutover.ps1": {
+      "bytes": 19451,
+      "sha256": "cd3ded2d82a038640951a6c8341bc4cb3a72c46ffebd5b29e52bfe4232cf23de"
+    },
+    "source/supervisor_tests/test_diagnostics.py": {
+      "bytes": 6862,
+      "sha256": "8d4c60e58fcc0d4e66f84882dfa84efdaa5a73662b97622eb0525d050784ef24"
+    },
+    "source/supervisor_tests/test_structural.py": {
+      "bytes": 9500,
+      "sha256": "ce13b9eb5424215123adf57982d7e5442121b057ca1e24b1f41595ba7f0db274"
+    }
+  },
+  "final_passed": 2708,
+  "final_result": {
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 387,
+      "tests": 3095
+    },
+    "exit_code": 0,
+    "linux_evidence_used": false,
+    "pipeline_activation_claimed": false,
+    "privileged_acceptance_claimed": false,
+    "python": "3.12.13",
+    "schema": "cochem-ordinary-windows-regression/1",
+    "scope": "Ordinary Windows process, disposable fixtures; privileged/Docker/model opt-ins absent; two native CLI capability calls deselected",
+    "seconds": 243.14,
+    "source_before_sha256": "8a2336fe544c12b56ce48007d9aebc49d6d52fb56098f9121016cb472ba2cb78",
+    "source_files": 307,
+    "source_unchanged": true,
+    "xml_sha256": "5e397fff689273decb717be30847b25b48a7ae35c1f6febe2d916412a7db9914"
+  },
+  "independent_review": "host_inspection reviewed capability gates, symlink handling, staging preservation and planner fix without findings; root reviewed explicit Git fixture bindings.",
+  "initial_failed_result_preserved": true,
+  "initial_result": {
+    "counts": {
+      "errors": 34,
+      "failures": 196,
+      "skipped": 168,
+      "tests": 3095
+    },
+    "exit_code": 1,
+    "linux_evidence_used": false,
+    "pipeline_activation_claimed": false,
+    "privileged_acceptance_claimed": false,
+    "python": "3.12.13",
+    "schema": "cochem-ordinary-windows-regression/1",
+    "scope": "Ordinary Windows process, disposable fixtures; privileged/Docker/model opt-ins absent; two native CLI capability calls deselected",
+    "seconds": 294.646,
+    "source_before_sha256": "587dbc81e01d2516c0eadd1ac789b9dcf9073b11da91da6ae33b2c4485296bd9",
+    "source_files": 306,
+    "source_unchanged": true,
+    "xml_sha256": "f054cd47ba9e79a1f03e1681fec4e77a9b9e429bd731fda63cbd036430193073"
+  },
+  "installed_r3_changed": false,
+  "intermediate_result": {
+    "counts": {
+      "errors": 0,
+      "failures": 1,
+      "skipped": 387,
+      "tests": 3095
+    },
+    "exit_code": 1,
+    "linux_evidence_used": false,
+    "pipeline_activation_claimed": false,
+    "privileged_acceptance_claimed": false,
+    "python": "3.12.13",
+    "schema": "cochem-ordinary-windows-regression/1",
+    "scope": "Ordinary Windows process, disposable fixtures; privileged/Docker/model opt-ins absent; two native CLI capability calls deselected",
+    "seconds": 243.646,
+    "source_before_sha256": "1de8db461a80c530809314d515f4870428c2f0de54b050df35912bafe6d04fc4",
+    "source_files": 307,
+    "source_unchanged": true,
+    "xml_sha256": "c79309689ee0ecd9a21a4cd845e4d8d02c85dc5df2ee0595d0dfd9f823ed90e5"
+  },
+  "linux_tests_run": false,
+  "pipeline_activated": false,
+  "privileged_coverage_inferred_from_skips": false,
+  "production_identity_guards_relaxed": false,
+  "repairs": [
+    "Read-only PowerShell cutover planner uses DirectoryInfo type for raw .NET parent traversal under StrictMode.",
+    "Real controller Git fixtures declare their actual SYSTEM prerequisite; explicit trusted Git executable is passed on Windows, including child processes.",
+    "Symlink fixtures skip only Windows ERROR_PRIVILEGE_NOT_HELD; unrelated errors still fail.",
+    "Fresh payload staging fixtures preserve existing protected roots and test collision refusal. Seven unreachable fresh-root inventory cases explicitly skip.",
+    "HTTP connection-cap test accepts Windows ConnectionAbortedError as well as reset/EOF for the rejected excess connection; a fresh authenticated request still proves handler slot recovery."
+  ],
+  "schema": "cochem-ordinary-regression-followup/1",
+  "scope": "Ordinary Windows3.12.13, real disposable fixtures and simulated boundaries as defined by each test; not SYSTEM, live Docker, provider/model or sustained acceptance.",
+  "skip_reasons": {
+    "Actual Warden priority/affinity requires native Windows resource acceptance": 1,
+    "Actual Windows symbolic-link creation privilege is unavailable; no symlink result is claimed": 8,
+    "Actual non-Windows CLI rejection contract": 2,
+    "Actual non-Windows capability rejection": 1,
+    "Actual non-Windows rejection": 1,
+    "Actual non-Windows rejection contract": 2,
+    "Actual non-Windows token rejection contract": 1,
+    "Creating real Windows links requires optional host policy; Linux verifies filesystem rejection": 1,
+    "Fresh native destination is unavailable; keep the actual installation and its preservation guard intact": 7,
+    "Host policy disallows real symlink creation": 1,
+    "Linux cannot attest native performance": 1,
+    "Linux executable discovery requires a real POSIX symlink and path": 1,
+    "Linux executable discovery requires real POSIX paths; Windows drive paths are correctly rejected": 5,
+    "Linux watchdog/process contract; Windows isolation has separate SYSTEM tests": 1,
+    "Linux/WSL-only operating system restriction": 2,
+    "Native Windows symlink creation privilege is unavailable": 2,
+    "Native protected metrics require the staged Windows SYSTEM acceptance session": 1,
+    "Native sibling-directory benchmark requires protected SYSTEM deployment": 1,
+    "Native symlink creation requires Developer Mode or elevation; denial remains unverified": 1,
+    "Non-Windows fail-closed capability checks": 1,
+    "Non-Windows fail-closed contract": 2,
+    "Non-Windows rejection is a platform-specific contract": 1,
+    "Normal Windows directories are case insensitive": 1,
+    "OS cannot create test link: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshots_reject_links_sy0\\\\outside' -> 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshots_reject_links_sy0\\\\source\\\\link'": 1,
+    "OS cannot create test link: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshots_reject_links_sy1' -> 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshots_reject_links_sy1\\\\source\\\\link'": 1,
+    "OS cannot create test symlink: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_recovery_required_does_no0\\\\missing-journal.json' -> 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_recovery_required_does_no0\\\\journal.json'": 1,
+    "OS cannot create test symlink: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshot_rejects_root_or_0\\\\source' -> 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_snapshot_rejects_root_or_0\\\\alias'": 1,
+    "OS does not permit this symlink: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_junit_missing_report_or_l0\\\\report.xml' -> 'C:\\\\Users\\\\ansac\\\\AppData\\\\Local\\\\Temp\\\\pytest-of-ansac\\\\pytest-24415\\\\test_junit_missing_report_or_l0\\\\linked.xml'": 1,
+    "Opt-in native Windows Job Object enforcement requires COCHEM_RUN_NATIVE_RESOURCE_TESTS=1": 4,
+    "POSIX executable fixture; parser and environment tests also run on Windows": 25,
+    "POSIX permission fixture": 1,
+    "POSIX symlink check; Windows reparse-point checks need the actual host": 1,
+    "Physical POSIX executable mismatch; no Windows identity emulation": 1,
+    "Physical Windows controller Git fixture requires actual SYSTEM; ordinary storage checks do not waive this boundary": 204,
+    "Portable fixture processes cannot attest Windows CLI inference": 1,
+    "Portable observer checks do not assert native SYSTEM identity": 4,
+    "Portable observer contract does not attest Windows SYSTEM identity": 1,
+    "Portable store observer does not simulate native Windows": 1,
+    "Private tracking integration requires actual SYSTEM service identity and provisioned DACLs on Windows": 16,
+    "Requires SYSTEM, installed native Claude and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+    "Requires SYSTEM, real ImDisk+AWEAlloc and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+    "Requires SYSTEM, real worker logons and COCHEM_WINDOWS_RAMDISK_CONFIG": 1,
+    "Requires SYSTEM, stopped disposable ImDisk slot and COCHEM_TEST_DISPOSABLE_RAM_CLEANUP=1": 1,
+    "Requires real Windows SYSTEM and COCHEM_WINDOWS_DEPLOYMENT_CONFIG": 9,
+    "Requires real Windows SYSTEM and explicit disposable-task test opt-in": 1,
+    "Set COCHEM_SUPERVISOR_WINDOWS_CONFIG and run installed Python as SYSTEM": 1,
+    "Set COCHEM_SUPERVISOR_WINDOWS_CONFIG to the installed supervisor.json and run its Python as SYSTEM": 5,
+    "Set COCHEM_TEST_DOCKER_IMAGE for physical external ownership verification": 1,
+    "Set COCHEM_TEST_DOCKER_IMAGE for physical external-container cleanup": 1,
+    "Set COCHEM_TEST_DOCKER_IMAGE to run actual local Docker acceptance": 30,
+    "Set COCHEM_WINDOWS_TEST_LAYOUT to a real provisioned windows-layout.json and run pytest as SYSTEM": 8,
+    "These names cannot be created through normal Windows file APIs": 8,
+    "This assertion proves the production boundary on POSIX only": 1,
+    "This check exercises the real non-Windows rejection path": 1,
+    "Unsupported-host refusal is a Linux contract": 1,
+    "Windows named pipe tests require the actual SYSTEM controller identity": 4,
+    "Windows token lacks symlink creation privilege; junction/hardlink checks are separate": 2,
+    "Windows uses fresh spawned processes, not fork": 1
+  }
+}

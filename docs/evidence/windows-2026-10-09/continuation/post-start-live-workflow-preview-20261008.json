@@ -1,0 +1,55 @@
+{
+  "schema": "cochem-live-commissioning-plan/1",
+  "mode": "PREVIEW_NO_IO",
+  "requests": {
+    "planning": {
+      "workflow_id": "windows427-r3-plan-986c5ab5d1d13f07fa1b",
+      "objective": "Produce a complete six-chapter SRS and WBS for a local study-note application covering import, search, spaced review, privacy, backup and acceptance validation.",
+      "requirements": [
+        "REQ-IMPORT",
+        "REQ-SEARCH",
+        "REQ-REVIEW",
+        "REQ-PRIVACY",
+        "REQ-BACKUP",
+        "REQ-VALIDATE"
+      ],
+      "chapter_count": 6
+    },
+    "coding": {
+      "workflow_id": "windows427-r3-code-986c5ab5d1d13f07fa1b",
+      "project_id": "windows-acceptance",
+      "objective": "Complete the disposable calculator project on its registered pipeline/accepted branch. Implement src/calculator.py add(left, right), replacing the existing return None with correct addition. Preserve the function signature. Add and execute pytest tests under tests for positive, negative, zero, and finite fractional inputs. Use the canonical planning, RED/GREEN, review and Git integration workflow; no external dependency, network operation or unrelated feature.",
+      "requirements": [
+        "REQ-ADD: add(left, right) returns the sum of numeric inputs without changing the signature.",
+        "REQ-TEST: pytest covers positive, negative, zero and finite fractional values, including a proven failing test before implementation.",
+        "REQ-INTEGRATE: all tests pass and only the registered disposable project branch receives the reviewed implementation."
+      ]
+    }
+  },
+  "runtime": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "pins": {
+    "config": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "install": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "manifest": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "revision": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "windows": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+    "python": "560b9ef7d856608ab8da02ded2dc8a1951ad1f424c382c0ec6a698874165a18e",
+    "base": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+    "venv": "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d",
+    "client": "9059f6e65d3259dff6e595f3f4f131983fd827088034db283913a7285411ea5b",
+    "planning_validator": "206cbeea48774042fa676ca71350ac3c17cd468619cc2cfbd7ba5bc999f6dca0",
+    "coding_validator": "77369f7585970ab7ab7e8e965de9d711635c7dc63724b5101dc04884ed852a7f"
+  },
+  "evidence_root": "C:\\Users\\ansac\\CoChem427\\live-commissioning-r3-v1",
+  "startup_receipt_required": "C:\\Program Files\\CoChem\\WardenCommissioning4.2.7-windows-20261007-r3-v1\\commissioning.json",
+  "native_or_http_calls": 0,
+  "tokens_read": 0,
+  "files_created": 0,
+  "shared_capacity": 4,
+  "identities": 6,
+  "routing": "unchanged Chapter 06",
+  "observation_seconds": 1800,
+  "automatic_resubmission": false,
+  "server_timeout_cancellation": false,
+  "activation_claimed": false
+}

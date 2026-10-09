@@ -1,0 +1,74 @@
+{
+  "schema": "cochem-resource-observer-independent-review/1",
+  "captured_at_utc": "2026-10-08T02:27:25.216132+00:00",
+  "status": "INACTIVE_CANDIDATE_REVIEW_PASSED",
+  "reviewer": "root, independent of adapter author",
+  "preparation_sha256": "56706a636aed34f84be5d92fae7107ec54bd22234af3e0d42f58e4d4078d3e10",
+  "manifest_sha256": "82e5a766450be4a4b05092f338f58066cb5c53dab1ef905282158ee73cde3793",
+  "verified_sources": [
+    {
+      "path": "observe_resources.py",
+      "sha256": "13339a6b59df7fb13315b074fba5abc7abce6f2391a18441c7b515136c2f6674",
+      "size": 7531
+    },
+    {
+      "path": "detector_bootstrap.py",
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5",
+      "size": 2971
+    },
+    {
+      "path": "cochem_supervisor/__init__.py",
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17",
+      "size": 77
+    },
+    {
+      "path": "cochem_supervisor/windows.py",
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b",
+      "size": 7788
+    },
+    {
+      "path": "cochem_supervisor/resource_observation.py",
+      "sha256": "b0c04462953dd86674064fb83efc40d1ddc14be44741cbd6752bb050bdd74be9",
+      "size": 13949
+    },
+    {
+      "path": "cochem_supervisor/performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+      "size": 18919
+    },
+    {
+      "path": "cochem_supervisor/shared_io.py",
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0",
+      "size": 2061
+    }
+  ],
+  "tests": {
+    "tests": 49,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xml_sha256": "2187869ff1a0c42a11e524e76454149a6e4f7fa2e93c8c0110b9fe23e2edecbf"
+  },
+  "review_findings_resolved": [
+    "Fresh timestamps cannot conceal a heartbeat sequence stalled for more than 15 monotonic seconds.",
+    "The retained native controller handle is rechecked after descendant and queue collection.",
+    "A final native call exceeding the descendant collection budget records its actual elapsed time and cannot mark the census complete.",
+    "Failures before the copied performance loop catch retain a fixed-code CreateNew outer receipt; retries and existing outputs are refused."
+  ],
+  "reviewed_boundaries": [
+    "Seven exact source files plus their manifest; fixed protected future entry, Python, psutil and output paths.",
+    "Sterile -I -S -B imports limited to standard library, exact observer package and psutil; harmless multiprocessing main alias must have exact module identity.",
+    "Native query/synchronize handles only; no process termination, task changes, model/controller calls or database opens in the adapter.",
+    "Root resources and bounded descendant metadata remain separate from full native-worker and desktop-heap attestation.",
+    "Exact reviewed performance source remains unchanged; missing heap and recovery timing keep full acceptance false even in simulated complete windows."
+  ],
+  "remaining_gates": [
+    "Protected installer, complete Python/psutil dependency custody, private output creation and task lifecycle are not released.",
+    "This candidate binds the first commissioned process instance. A reboot or restart needs a separately reviewed new attestation/window, never silent reuse or resume.",
+    "Real SYSTEM execution, actual workload, 48 elapsed hours, desktop-heap acquisition and independent recovery timing remain unverified."
+  ],
+  "findings": [],
+  "installed_or_started": false,
+  "activation_ready": false,
+  "full_srs_acceptance": false
+}

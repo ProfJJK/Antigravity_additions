@@ -1,0 +1,32 @@
+{
+  "schema": "cochem-deployment-presence-read-only/1",
+  "observed_at_utc": "2026-10-08T03:24:10.3202060Z",
+  "administrator": false,
+  "tasks": [
+    {
+      "name": "CoChem-4.2.7-Warden",
+      "present": false,
+      "hresult": -2147024894
+    },
+    {
+      "name": "CoChem-4.2.7-WardenCommissioning-r3-v1",
+      "present": false,
+      "hresult": -2147024894
+    },
+    {
+      "name": "CoChem-4.2.7-Supervisor",
+      "present": false,
+      "hresult": -2147024894
+    },
+    {
+      "name": "CoChem-4.2.7-HeldSupervisorObservation-20261007-r3-v1",
+      "present": false,
+      "hresult": -2147024894
+    }
+  ],
+  "startup_receipt_present": false,
+  "tasks_modified": false,
+  "credentials_accessed": false,
+  "model_jobs_submitted": 0,
+  "full_srs_acceptance": false
+}

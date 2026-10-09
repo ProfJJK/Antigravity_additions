@@ -70,6 +70,29 @@ class ExecutionRevokedError(RuntimeError):
     """Controller cancellation, shutdown or lease loss forbids another dispatch."""
 
 
+def native_prompt_text(provider, spec, prompt):
+    if provider == 'gemini' and spec.get('protocol') == 'agy-stream-json':
+        from .agy_protocol import encode_prompt
+        return encode_prompt(prompt)
+    return prompt
+
+
+def check_native_integration(provider, spec):
+    """Map a scoped pending integration to ordinary compatibility spillover."""
+    from .provider_integration import require_integration_ready, IntegrationVerificationHold
+    try:
+        require_integration_ready(provider, spec)
+    except (ValueError, OSError, TypeError) as exc:
+        failure = ProviderFailure('compatibility')
+        failure.summary = (str(exc) if isinstance(exc, IntegrationVerificationHold) else
+                           'Isolated pipeline integration evidence could not be verified')
+        failure.integration_evidence = (exc.integration_evidence if isinstance(exc, IntegrationVerificationHold)
+                                        else {'provider': provider, 'scope': 'isolated_pipeline_integration',
+                                              'state': 'evidence_invalid', 'category': 'compatibility'})
+        failure.args = (failure.summary,)
+        raise failure from exc
+
+
 def ramdisk_provider_failure(error):
     """Keep transient verified RAM pressure distinct from storage trust failures."""
     from .ramdisk import RamdiskError
@@ -135,28 +158,43 @@ def node_prompt(node: dict, context_xml: str = '') -> str:
     elif kind == 'MANIFEST_GENERATOR':
         contract = {
             'chapters': [{'chapter_id': 'unique-id', 'title': 'Chapter title',
-                          'requirements': ['one or more provided requirement IDs']}]
+                          'requirements': ['one or more provided requirement IDs'],
+                          'wbs_tasks_defined': [{'id': 'globally-unique-task-id', 'description': 'Implementable owned task',
+                                                 'requirements': ['provided requirement ID owned by this chapter']}]}]
         }
         instruction = ('Return exactly the requested chapter_count chapters. Cover every supplied requirement. '
-                       'Each chapter must own a nonempty subset; do not invent requirement IDs.')
+                       'Each chapter must own a nonempty subset; do not invent requirement IDs. '
+                       'Declare 1–256 structured WBS tasks per chapter with globally unique IDs, nonempty descriptions '
+                       'and owned requirements that cover all requirements assigned to the chapter.')
     elif kind == 'CHAPTER_DRAFT':
+        if not isinstance(payload.get('wbs_tasks_defined'), list) or not payload['wbs_tasks_defined']:
+            from .document_governance import DocumentCommitmentHold
+            raise DocumentCommitmentHold()
         contract = {
             'chapter_id': payload['chapter_id'], 'requirements_traced': payload['requirements'],
-            'wbs_tasks_defined': [{'id': 'task-id', 'description': 'Implementable task',
-                                  'requirements': payload['requirements']}],
+            'wbs_tasks_defined': payload['wbs_tasks_defined'],
             'artifact_uri': f"db://{node['workflow_id']}/{payload['chapter_id']}",
             'artifact_text': 'Full chapter Markdown, including its SRS and WBS',
         }
         instruction = ('Write only your assigned chapter. You have no access to siblings or the job database. '
                        'The Warden stores the artifact in SQLite; do not create a URI file or write a database. '
-                       'Trace every assigned requirement to the chapter and WBS.')
+                       'Trace every assigned requirement to the chapter and WBS. Preserve all supplied WBS declarations '
+                       'exactly in wbs_tasks_defined; you may append bounded additional tasks owned by this chapter.')
     elif kind == 'SYNTHESIS':
+        if any(key not in payload for key in ('chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter')):
+            from .document_governance import DocumentCommitmentHold
+            raise DocumentCommitmentHold()
         contract = {'artifact_text': 'Complete synthesized master SRS/WBS Markdown',
-                    'chapter_hashes': payload['chapter_hashes']}
+                    'chapter_hashes': payload['chapter_hashes'],
+                    'chapter_output_hashes': payload['chapter_output_hashes'],
+                    'coverage_report_sha256': payload['coverage_report_sha256'],
+                    'wbs_tasks_by_chapter': payload['wbs_tasks_by_chapter']}
         instruction = ('Synthesize all supplied, hash-verified chapters into one master document. '
                        'Preserve the supplied chapter_hashes map exactly; the Warden independently verifies it. '
                        'Use the controller-computed coverage_report to preserve every requested requirement and chapter ownership; '
-                       'reconcile reported overlaps without silently dropping any assigned requirement.')
+                       'reconcile reported overlaps without silently dropping any assigned requirement. '
+                       'Read each complete accepted_output, including its structured WBS and additional commitments. '
+                       'Preserve chapter_output_hashes, coverage_report_sha256 and wbs_tasks_by_chapter exactly.')
     elif kind == 'CODE_TEST_AUTHOR':
         contract = {'requirements_traced': payload['requirements'], 'reuse_tests': [],
                     'artifact_blocks':'<<<FILE: tests/test_example.py>>>\ndef test_example():\n    assert False\n<<<END FILE>>>',
@@ -260,6 +298,10 @@ def parse_payload(content: str) -> dict:
 
 
 def parse_gemini(raw: str, protocol: str, requested_model: str) -> dict:
+    if protocol == 'agy-stream-json':
+        from .agy_protocol import parse_stream
+        parse_stream(raw, requested_model)
+        raise ValueError('Agy actual-model identity is unverified; native init selection is insufficient')
     data = strict_json(raw)
     if not isinstance(data,dict) or data.get('error') or data.get('is_error'):
         raise ValueError('Gemini returned an error or unsupported result')
@@ -344,6 +386,8 @@ def provider_command(provider: str, prefix: list[str], model: str, workspace: st
                      spec: dict, reasoning_effort: str | None = None, *,
                      inference_only: bool = False, mcp_names=()) -> list[str]:
     """Build one explicit dispatch without substituting a model or effort alias."""
+    from .provider_integration import require_integration_ready
+    require_integration_ready(provider, spec)
     from .native_effort import effort_contract
     effort_binding = effort_contract(provider, model, reasoning_effort, spec)
     if type(inference_only) is not bool or (mcp_names and not inference_only):
@@ -377,7 +421,12 @@ def provider_command(provider: str, prefix: list[str], model: str, workspace: st
         return argv
     if provider != 'gemini':
         raise ValueError('Unsupported native provider')
+    from .agy_protocol import require_serving_model_contract
+    require_serving_model_contract(spec)
     arguments = gemini_inference_arguments(spec) if inference_only else spec['arguments']
+    if spec.get('protocol') == 'agy-stream-json':
+        from .agy_protocol import validate_arguments
+        validate_arguments(arguments)
     if inference_only and arguments.count('{model}') != 1:
         raise ValueError('Agy inference arguments must contain exactly one selected model placeholder')
     if effort_binding is not None:
@@ -638,6 +687,7 @@ class NativeRunner:
         from .inference_policy import (parse_codex_mcp_names, validate_codex_features,
                                        claude_inference_arguments, validate_claude_help)
         evidence = {'mode': 'inference-only', 'provider': provider, 'probes': []}
+        check_native_integration(provider, spec)
         names = ()
 
         def probe(argv, kind, maximum=4194304):
@@ -648,6 +698,9 @@ class NativeRunner:
 
         try:
             from .native_effort import effort_contract, effort_binary_digest, effort_version_evidence
+            if provider == 'gemini':
+                from .agy_protocol import require_serving_model_contract
+                require_serving_model_contract(spec)
             model = node['route']['model']
             binding = effort_contract(provider, model, reasoning_effort, spec)
             if binding is not None:
@@ -695,6 +748,7 @@ class NativeRunner:
         if node.get('worker_slot') != slot:
             raise ValueError('Selected attempt belongs to a different isolated worker slot')
         spec = self.config.providers[provider]
+        check_native_integration(provider, spec)
         # Every job is inference-only: native host tools could spawn uncounted
         # agents and evade the Chapter 06 board and Claude's shared CLI ceiling.
         inference_only = True
@@ -788,7 +842,7 @@ class NativeRunner:
                 gemini_binary_digest(spec)
         except (ValueError, TypeError, KeyError, OSError) as exc:
             raise ProviderFailure('compatibility') from exc
-        prompt = node_prompt(node,context_xml)
+        prompt = native_prompt_text(provider,spec,node_prompt(node,context_xml))
         started = time.time()
         with native_prompt_input(prompt) as input_pipe, (log_dir/'stdout.log').open('w+b') as out, (log_dir/'stderr.log').open('w+b') as err:
             if not heartbeat():

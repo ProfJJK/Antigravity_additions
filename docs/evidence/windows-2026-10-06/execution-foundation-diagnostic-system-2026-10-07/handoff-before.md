@@ -1,0 +1,165 @@
+# Windows setup handoff — 7 October 2026
+
+## Current state â€” return sequence held
+
+The owner's first return command passed the actual SYSTEM Docker/R inspection,
+then stopped in the foundation task at `docker_owner_census` with
+`WindowsIsolationError` (Win32 error unavailable). Its receipt is
+`EXECUTION_FOUNDATION_HELD`: RAM provisioning and registry provisioning had not
+started, and the project-import phase was not reached. No container or warm pool
+was created. This is a failed setup attempt, not a successful three-phase result.
+
+**Do not rerun `run-return-setup-r3.ps1`, either original leaf, or any later
+command in the previous return guide.** Preserve both roots, tasks, input packets
+and receipts. A new [read-only diagnostic](evidence/windows-2026-10-06/foundation-docker-diagnostic-r3-v1-preparation-2026-10-07/preparation.json)
+passed 41 Python and 83 Windows PowerShell preparation tests and independent review.
+Its final ordinary preview has zero holds; protected prior-task gates remain
+administrator checks. Run only `diagnose-foundation-docker-r3-v1.ps1 -Apply` from
+the live updated return guide and provide its sanitized result. It creates its
+own protected diagnostic root and on-demand SYSTEM task, makes the fixed read-only
+Docker observations once, and captures safe operation/native-code metadata.
+A diagnostic pass still does not release provisioning. Docker acceptance, the legacy diagnostic and both
+attended login series from the previous command list remain held.
+
+The [exact archived receipts and binding checks](evidence/windows-2026-10-06/execution-foundation-failure-2026-10-07/summary.json)
+record inspection SHA256
+`3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e`
+and failed foundation SHA256
+`bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336`.
+The passed inspection observed an empty scoped Docker resource census, denied
+all six worker tokens access to the checked Docker pipe aliases before and after,
+and preserved the 8 GiB R: volume and startup-task fingerprint. That prior pass
+does not override the later foundation failure or establish its precise cause.
+
+The owner wrapper reported foundation task result 2. Current task terminal state
+was **not independently verified** by this ordinary-user collector: Task Scheduler
+access was reported denied. The archived receipt binds its SYSTEM identity,
+nonce, helper, input packet, installed r3 revision and successful inspection.
+Original FILETIME/device/file identifiers remain exact Python integers and the
+original receipt bytes are retained unchanged.
+
+The pipeline remains stopped. The repaired r3 runtime, published knowledge
+verification and six successful worker-denial receipts remain valid historical
+evidence. Six identities share **four** slots; model jobs retain Chapter 06 routing.
+Existing credentials, databases, repair budgets, R: and its startup task remain
+preserved. This archival step ran no tasks, Docker/provider commands or deployment.
+
+The [previous handoff](evidence/windows-2026-10-06/execution-foundation-failure-2026-10-07/handoff-before.md)
+and [old return guide](evidence/windows-2026-10-06/return-setup-owner-guide-2026-10-07.txt)
+are historical references, not instructions to retry or continue. The preparation
+table below retains its pre-attempt history; the owner outcomes above are current.
+
+## Actual Windows deployment evidence
+
+- r3 root: `C:\Program Files\CoChem\Pipeline4.2.7-windows-20261007-r3`.
+  [Installed receipt](evidence/windows-2026-10-06/stopped-runtime-r3-installed-receipt.json)
+  SHA256 `3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6`.
+  The installer verified 15,013 custody entries. Independent public checks bound
+  166 frozen source files, 109 assets and unchanged r2 configuration.
+  r2 and every previous installation remain preserved; do not reinstall.
+- Configuration SHA256: `135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c`.
+  It selects future scoped `R:\CoChem427-windows-20261007`, six identities,
+  four shared slots and Chapter 06 catalogue 2 / scoring algorithm 1.
+- [Knowledge SYSTEM result](evidence/windows-2026-10-06/published-knowledge-verification-owner-result.json):
+  `PUBLISHED_KNOWLEDGE_READ_ONLY_VERIFIED`, 137 documents, 1,708 sections,
+  138 corpus files, SQLite integrity OK. Receipt
+  `f9a1244d201927b888be0a3e03978e1c19b2c33940d609b6ed1dbec36b54a40b`;
+  generation `g-abed1cd030c746559aed6bb30a47093a`, index
+  `af8fc1bf83885d4bfdf14c8273d250371578a1ed59c71a7a9f07296d954c0d8d`.
+  Do not rebuild or rerun recovery/the successful verifier.
+- [All six r3 SYSTEM worker receipts](evidence/windows-2026-10-06/worker-denials-r3-system-2026-10-07/summary.json)
+  passed exact nonce/SID/PID/handle checks and reported cleanup verified.
+  The archival check read existing evidence and did not rerun workers. The next
+  preflight validates exact terminal task definitions before new inspection.
+- The old slot1 failure and all earlier roots/tasks/receipts remain preserved.
+  Its cleanup field stays false; later evidence does not rewrite it. The r3
+  installer checked its task was terminal. The actual Job Object affinity-order
+  repair retained required E-core affinity and limits; see
+  [repair evidence](WINDOWS_JOB_AFFINITY_FIX_4.2.7_2026-10-07.md).
+- PawnIO 2.1.0 and one actual SYSTEM CPU sample (17 sensors, 68 C maximum) passed.
+  HWiNFO Free and its settings remain unchanged. One sample is not 48-hour evidence.
+- Existing 8 GiB ImDisk R: and `\Mount_CoChem_RAMDisk` scheduled startup task remain
+  preserved. Task XML SHA256
+  `1da7687a165ddfb425cb01147f4f5cbd3f7ba035947063ef396e268d7babc928`.
+  Original credentials, databases and repair budgets were not replaced/reset.
+
+## Completed ordinary Windows preparation
+
+| Package | Ordinary Windows tests | Actual privileged phase |
+| --- | ---: | --- |
+| [Three-step return wrapper](evidence/windows-2026-10-06/return-setup-series-r3-preparation-2026-10-07/preparation.json) | 24 passed | Not run |
+| [Docker/R inspection leaf](evidence/windows-2026-10-06/execution-prerequisites-r3-preparation-2026-10-07/preparation.json) | 45 passed | Not run |
+| [Scoped foundation leaf](evidence/windows-2026-10-06/execution-foundation-r3-preparation-2026-10-07/preparation.json) | 44 passed | Not run |
+| [Disposable project importer](evidence/windows-2026-10-06/disposable-project-import-preparation-2026-10-07/preparation.json) | 27 passed | Not run |
+| [Physical Docker candidate](evidence/windows-2026-10-06/docker-execution-r3-v1-preparation-2026-10-07/preparation.json) | 37 passed | Not run |
+| [r3 native login/status leaves](evidence/windows-2026-10-06/native-r3-login-status-preparation-2026-10-07/preparation.json) | 156 passed | Not run |
+| [Attended six-login series](evidence/windows-2026-10-06/attended-native-series-r3-preparation-2026-10-07/preparation.json) | 42 passed | Not run |
+| [Legacy metadata diagnostic](evidence/windows-2026-10-06/legacy-continuity-preparation-2026-10-07/preparation.json) | 13 passed | Administrator view pending |
+
+Every package passed independent review and is frozen with hashes. These are
+disposable-fixture/control-flow tests, including simulated privileged/provider
+boundaries where documented. The Docker candidate executes real production
+SQLite/lease/cleanup logic with an explicitly inert Docker transport in its
+tests. None of these preparation passes is physical Docker/SYSTEM/model acceptance.
+The [legacy diagnostic independent review](evidence/windows-2026-10-06/legacy-continuity-independent-review-2026-10-07.json)
+is recorded separately from its original frozen package. Its inventory caps bound
+accepted output scope, not a universal execution deadline.
+
+The [repository regression follow-up](evidence/windows-2026-10-06/ordinary-regression-followup-2026-10-07/summary.json)
+finished **2708 passed, 387 skipped, 2 deselected, zero failures/errors** on
+ordinary Windows Python 3.12.13. Source/test/script inventory stayed unchanged
+during the run. Real SYSTEM Git fixtures and unavailable symlink privileges are
+explicit skips; seven fresh-install native payload cases cannot run after the
+protected destination exists. Two native CLI capability calls were deselected.
+These gaps remain unexecuted coverage. Historical Linux results are separate.
+
+The initial broad run's 196 failures and 34 setup errors are preserved, along
+with its source inventory/XML/log. The next run had one Windows socket fixture
+failure: a deliberately rejected excess connection reported abort instead of
+reset/EOF. That result is also preserved. The test now accepts both terminal
+connection errors and still requires a fresh authenticated request to prove
+handler capacity was released. Production service behavior was unchanged.
+Repairs corrected Windows fixture prerequisites,
+explicit trusted Git bindings, staging-test preservation expectations and a real
+read-only cutover planner bug: raw .NET DirectoryInfo.Parent values lack the
+PowerShell PSIsContainer adaptation under StrictMode. Production token/ACL guards
+were not relaxed. These changes do not modify the installed r3 runtime or frozen
+deployment helper packages.
+
+## Remaining acceptance and implementation dependencies
+
+Legacy continuity remains unresolved. Seven snapshots map 646 jobs (324 historical
+completions, 322 held). Repair receipts/attempt counts cannot establish exact spend.
+The ordinary bounded metadata diagnostic still saw a legacy task/process and
+inaccessible private paths; it does not prove writer quiescence. The proposed
+unresolved-budget evidence was checked against r3's schema without opening or
+constructing real ledgers. Paired immutable budget-hold bootstrap is design only,
+not applied. Keep supervisor migration/installation held; never turn unknown spend
+into zero. See [budget preservation](WINDOWS_LEGACY_BUDGET_HOLD_4.2.7_2026-10-07.md).
+
+After protected setup and attended sign-ins, verify exact native account/model,
+inference-only and effort contracts, including Agy's subscription-only behavior.
+Then perform Chapter 06 routed planning, coding, different-provider reconciliation,
+Git integration/rollback and actual four-worker queue acceptance at the real
+database location. Fixed Docker RED/GREEN testing does not satisfy that workflow.
+
+The [desktop-heap research](evidence/windows-2026-10-06/desktop-heap-collector-research-2026-10-07.json)
+records a remaining native usage collector contract. Capacity APIs and USER/GDI
+object counts cannot establish used bytes. Documented debugger output gives a
+rounded rate, without verified precision, process/desktop association or a
+sustained acquisition method on this host. No collector was fabricated, debugger
+attached, trace started, boot setting changed or driver installed by this work.
+Obtain a reviewed actual sample/acquisition route before implementing its protected
+adapter. The unchanged harness requires samples at most ten seconds old, exact
+process creation-time binding and usage strictly below 15 percent.
+
+Controlled reboot/recovery and 48-hour resource/handle/desktop-heap observation
+remain separate required Windows acceptance. No six/eight-slot expansion or daemon
+activation is authorized by these preparation results. General readiness is not a
+read-only substitute: it can refresh knowledge and change state. The older
+`initialize-execution-readiness.py` draft remains disabled.
+
+The [machine-readable observation](../config/windows/aetherdesk-427.observed-20261007.json)
+distinguishes actual results, failed attempts, prepared steps and remaining work.
+The [previous handoff](evidence/windows-2026-10-06/morning-handoff-before-return-series-2026-10-07.md)
+is retained for history; its superseded commands must not be followed.

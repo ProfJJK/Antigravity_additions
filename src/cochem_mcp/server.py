@@ -14,8 +14,8 @@ from . import __version__
 from .jobs import JobManager
 
 
-def _structured_node_prompt(kind: str, payload: dict[str, Any], workflow_id: str) -> str:
-    """Validate manual node data without accepting controller-owned authority."""
+def _validate_structured_request(kind: str, payload: dict[str, Any], workflow_id: str) -> None:
+    """Validate a new planning request, which is not an executable DAG node."""
     if kind not in {"MANIFEST_GENERATOR", "CHAPTER_DRAFT"}:
         raise ValueError("kind must be MANIFEST_GENERATOR or CHAPTER_DRAFT; all DAG nodes belong to the controller")
     if not isinstance(workflow_id, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", workflow_id):
@@ -50,11 +50,9 @@ def _structured_node_prompt(kind: str, payload: dict[str, Any], workflow_id: str
             raise ValueError("payload.chapter_id must be a nonempty identifier")
         if not isinstance(payload.get("title"), str) or not payload["title"].strip():
             raise ValueError("payload.title must be a nonempty string")
-    # Enforce JSON-compatible finite data before the shared renderer accepts it.
+    # Native chapter prompts require accepted manifest commitments. A new user
+    # request precedes that manifest, so it must never enter the worker renderer.
     json.dumps(payload, ensure_ascii=False, allow_nan=False)
-    from cochem_pipeline.worker import node_prompt
-
-    return node_prompt({"kind": kind, "payload": payload, "workflow_id": workflow_id})
 
 
 def create_server(manager: JobManager) -> FastMCP:

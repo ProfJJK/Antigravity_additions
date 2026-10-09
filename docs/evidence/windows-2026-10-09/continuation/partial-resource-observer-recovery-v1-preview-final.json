@@ -1,0 +1,22 @@
+{
+    "schema":  "cochem-partial-resource-observer-recovery-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "administrator":  false,
+    "definition":  null,
+    "holds":  [
+                  "Exact preserved disabled task, partial registration, private empty state and running native daemon proofs require Administrator verification."
+              ],
+    "failure":  {
+                    "phase":  "definition_projection",
+                    "code":  "RESOURCE_RECOVERY_GUARD_OR_ACCESS_DENIAL",
+                    "error_type":  "UnauthorizedAccessException",
+                    "hresult":  -2147024891
+                },
+    "task_registration_requested":  0,
+    "payloads_copied":  0,
+    "task_action_limits_triggers_or_acl_modified":  false,
+    "optional_single_start":  true,
+    "automatic_restart_or_resume":  false,
+    "continuous_48h_complete":  false,
+    "full_srs_acceptance":  false
+}

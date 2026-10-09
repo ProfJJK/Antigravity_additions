@@ -1,0 +1,94 @@
+{
+  "activation_ready": false,
+  "actual_read_only_preview": {
+    "executed": true,
+    "holds": [
+      "Successful read-only prerequisite receipt is not present."
+    ],
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "private_and_prior_task_checks_deferred": true
+  },
+  "actual_windows_test_evidence": {
+    "errors": 0,
+    "failures": 0,
+    "native_boundaries": "SYSTEM/worker/token/ACL/task/R/Defender/Docker state calls are explicitly inert fixtures. Actual ordinary temporary SQLite constructor, immutable reads, exclusive files, Windows file handles and PS5.1 functions/control flow run.",
+    "positive_runtime_bindings": "Actual current r3 configuration, installed same-hash container constructor, exact frozen helper APIs, and six actual successful public r3 worker receipt bytes.",
+    "python": "3.12.13",
+    "seconds": "7.126",
+    "shell": "Windows PowerShell 5.1",
+    "skipped": 0,
+    "tests": 44
+  },
+  "apply_executed": false,
+  "archive_role": "Exact source/test/evidence custody. Live entrypoint resolves sibling frozen support files and the pinned original payload helper. Tests retain host-specific paths; archive is not a standalone deployment bundle.",
+  "created_utc": "2026-10-07T16:18:20.859946+00:00",
+  "excluded_actions": [
+    "No R volume/root ACL/indexing/startup task change.",
+    "No KnowledgeService or general readiness, provider auth, model jobs, budget or legacy DB changes.",
+    "No scratch/native cache setup, Docker image pull/build/run/container creation, warm pool or daemon activation.",
+    "No overwrite/reset/retry of partial outputs or existing target state."
+  ],
+  "files": {
+    "check-worker-denials-r3.ps1": {
+      "bytes": 21523,
+      "sha256": "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d"
+    },
+    "execution-foundation-r3-preview.json": {
+      "bytes": 2425,
+      "sha256": "d5a7200b966603bd377725b5239896f790eea4b51b5bdbb57cb603f910d3854f"
+    },
+    "execution-foundation-r3-tests.xml": {
+      "bytes": 7274,
+      "sha256": "7f6a0612815cac8b26ba5df222239e957109e83dd440270cf4b10e68c41673e6"
+    },
+    "inspect-execution-prerequisites-r3.ps1": {
+      "bytes": 19238,
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887"
+    },
+    "inspect-execution-prerequisites-r3.py": {
+      "bytes": 26808,
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a"
+    },
+    "provision-execution-foundation-r3.ps1": {
+      "bytes": 15640,
+      "sha256": "402c27276b56b42cac3c8ecc6fa5b8fd0da4361c57c3abd5c2bf2d432724208c"
+    },
+    "provision-execution-foundation-r3.py": {
+      "bytes": 19191,
+      "sha256": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1"
+    },
+    "stage_aetherdesk_427_payloads.ps1": {
+      "bytes": 12591,
+      "sha256": "0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b"
+    },
+    "test_execution_foundation_r3.py": {
+      "bytes": 28880,
+      "sha256": "8e2b32dcbd4e34e3df838c9d82a31cde082450b600be4ab7749316ea1ee4458a"
+    },
+    "worker-denial-acceptance-r3.py": {
+      "bytes": 36096,
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77"
+    }
+  },
+  "fresh_only_write_set": [
+    "One fresh protected helper/config/packet/receipt root and one no-trigger SYSTEM task.",
+    "R:\\CoChem427-windows-20261007 and six slot directories, seven scoped ACL/indexing settings total.",
+    "Only missing exact six scoped Defender exclusions, preserving all prior exclusions.",
+    "Exclusive new private ramdisk-state.json within exact installed production RAM mutex, approved READY/ADOPT/config/volume only.",
+    "Exclusive new private containers directory and containers.db with four-slot empty registry; transient WAL/SHM in new directory only."
+  ],
+  "independent_review": {
+    "result": "No concrete finding at archived source pins; parent approved archive.",
+    "reviewer": "host_inspection"
+  },
+  "live_entrypoint": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\provision-execution-foundation-r3.ps1",
+  "owner_apply_command_issued": false,
+  "preparation_findings": [
+    "Ordinary disposable actual SQLite WAL database: immutable connection PRAGMA journal_mode returns delete while durable file header versions are 02/02. Candidate validates durable header plus immutable integrity/schema/empty rows; rejects any sidecar before immutable read.",
+    "Initial malformed-registry test fixtures retained SQLite writer connections after context-manager commit; they now explicitly close before immutable validation. These were fixture issues, not production acceptance.",
+    "Full Python run, imported PS packet bindings, and actual three-helper exclusive copy-to-simulated-task path passed. No privileged acceptance inferred."
+  ],
+  "prerequisite_actual_success_pending": true,
+  "schema": "cochem-execution-foundation-preparation/1",
+  "status": "PREPARED_REVIEWED_NOT_ISSUED"
+}

@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="15" skipped="0" tests="23" time="28.428" timestamp="2026-10-08T19:17:16.854009-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[0-0-0-expected_phases0]" time="1.036"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;Obj S=&quot;progress&quot; RefId=&quot;0&quot;&gt;&lt;TN RefId=&quot;0&quot;&gt;&lt;T&gt;System.Management.Automation.PSCustomObject&lt;/T&gt;&lt;T&gt;System.Object&lt;/T&gt;&lt;/TN&gt;&lt;MS&gt;&lt;I64 N=&quot;SourceId&quot;&gt;1&lt;/I64&gt;&lt;PR N=&quot;Record&quot;&gt;&lt;AV&gt;Preparing modules for first use.&lt;/AV&gt;&lt;AI&gt;0&lt;/AI&gt;&lt;Nil /&gt;&lt;PI&gt;-1&lt;/PI&gt;&lt;PC&gt;-1&lt;/PC&gt;&lt;T&gt;Completed&lt;/T&gt;&lt;SR&gt;-1&lt;/SR&gt;&lt;SD&gt; &lt;/SD&gt;&lt;/PR&gt;&lt;/MS&gt;&lt;/Obj&gt;&lt;S S=&quot;Error&quot;&gt;Setup stopped. Preserve the child reports and all partial/running state; do not rerun after controller start or _x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:22 char:2_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+  throw 'Setup stopped. Preserve the child reports and all partial/run ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : OperationStopped: (Setup stopped. ... setup failure.:String) [], RuntimeException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : Setup stopped. Preserve the child reports and all partial/running state; do not rerun af _x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...&quot;Error&quot;&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas0')
+first = '0', second = '0', expected_exit = 0
+expected_phases = ['commissioning', 'monitoring_setup']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+&gt;       assert result.returncode == expected_exit, result.stdout + result.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;Obj S="progress" RefId="0"&gt;&lt;TN RefId="0"&gt;&lt;T&gt;System.Management.Automation.PSCustomObject&lt;/T&gt;&lt;T&gt;System.Object&lt;/T&gt;&lt;/TN&gt;&lt;MS&gt;&lt;I64 N="SourceId"&gt;1&lt;/I64&gt;&lt;PR N="Record"&gt;&lt;AV&gt;Preparing modules for first use.&lt;/AV&gt;&lt;AI&gt;0&lt;/AI&gt;&lt;Nil /&gt;&lt;PI&gt;-1&lt;/PI&gt;&lt;PC&gt;-1&lt;/PC&gt;&lt;T&gt;Completed&lt;/T&gt;&lt;SR&gt;-1&lt;/SR&gt;&lt;SD&gt; &lt;/SD&gt;&lt;/PR&gt;&lt;/MS&gt;&lt;/Obj&gt;&lt;S S="Error"&gt;Setup stopped. Preserve the child reports and all partial/running state; do not rerun after controller start or _x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:22 char:2_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+  throw 'Setup stopped. Preserve the child reports and all partial/run ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : OperationStopped: (Setup stopped. ... setup failure.:String) [], RuntimeException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : Setup stopped. Preserve the child reports and all partial/running state; do not rerun af _x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv..."Error"&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:97: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[20-0-20-expected_phases1]" time="1.247"><failure message="AssertionError: #&lt; CLIXML&#10;  &lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;&lt;Obj S=&quot;progress&quot; RefId=&quot;0&quot;&gt;&lt;TN RefId=&quot;0&quot;&gt;&lt;T&gt;System.Management.Automation.PSCustomObject&lt;/T&gt;&lt;T&gt;System.Object&lt;/T&gt;&lt;/TN&gt;&lt;MS&gt;&lt;I64 N=&quot;SourceId&quot;&gt;1&lt;/I64&gt;&lt;PR N=&quot;Record&quot;&gt;&lt;AV&gt;Preparing modules for first use.&lt;/AV&gt;&lt;AI&gt;0&lt;/AI&gt;&lt;Nil /&gt;&lt;PI&gt;-1&lt;/PI&gt;&lt;PC&gt;-1&lt;/PC&gt;&lt;T&gt;Completed&lt;/T&gt;&lt;SR&gt;-1&lt;/SR&gt;&lt;SD&gt; &lt;/SD&gt;&lt;/PR&gt;&lt;/MS&gt;&lt;/Obj&gt;&lt;S S=&quot;Error&quot;&gt;Setup stopped. Preserve the child reports and all partial/running state; do not rerun after controller start or _x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;At line:22 char:2_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+  throw 'Setup stopped. Preserve the child reports and all partial/run ..._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + CategoryInfo          : OperationStopped: (Setup stopped. ... setup failure.:String) [], RuntimeException_x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;    + FullyQualifiedErrorId : Setup stopped. Preserve the child reports and all partial/running state; do not rerun af _x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;&#10;assert 1 == 20&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...&quot;Error&quot;&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S=&quot;Error&quot;&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas1')
+first = '20', second = '0', expected_exit = 20
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+&gt;       assert result.returncode == expected_exit, result.stdout + result.stderr
+E       AssertionError: #&lt; CLIXML
+E         &lt;Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"&gt;&lt;Obj S="progress" RefId="0"&gt;&lt;TN RefId="0"&gt;&lt;T&gt;System.Management.Automation.PSCustomObject&lt;/T&gt;&lt;T&gt;System.Object&lt;/T&gt;&lt;/TN&gt;&lt;MS&gt;&lt;I64 N="SourceId"&gt;1&lt;/I64&gt;&lt;PR N="Record"&gt;&lt;AV&gt;Preparing modules for first use.&lt;/AV&gt;&lt;AI&gt;0&lt;/AI&gt;&lt;Nil /&gt;&lt;PI&gt;-1&lt;/PI&gt;&lt;PC&gt;-1&lt;/PC&gt;&lt;T&gt;Completed&lt;/T&gt;&lt;SR&gt;-1&lt;/SR&gt;&lt;SD&gt; &lt;/SD&gt;&lt;/PR&gt;&lt;/MS&gt;&lt;/Obj&gt;&lt;S S="Error"&gt;Setup stopped. Preserve the child reports and all partial/running state; do not rerun after controller start or _x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;At line:22 char:2_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+  throw 'Setup stopped. Preserve the child reports and all partial/run ..._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + CategoryInfo          : OperationStopped: (Setup stopped. ... setup failure.:String) [], RuntimeException_x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;    + FullyQualifiedErrorId : Setup stopped. Preserve the child reports and all partial/running state; do not rerun af _x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;
+E       assert 1 == 20
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv..."Error"&gt;   ter controller start or monitoring setup failure._x000D__x000A_&lt;/S&gt;&lt;S S="Error"&gt; _x000D__x000A_&lt;/S&gt;&lt;/Objs&gt;').returncode
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:97: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[1-0-1-expected_phases2]" time="0.884"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas2')
+first = '1', second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[0-1-1-expected_phases3]" time="0.899"><failure message="AssertionError: assert [] == ['commissioni...toring_setup']&#10;  &#10;  Right contains 2 more items, first extra item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas3')
+first = '0', second = '1', expected_exit = 1
+expected_phases = ['commissioning', 'monitoring_setup']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioni...toring_setup']
+E         
+E         Right contains 2 more items, first extra item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[0-20-1-expected_phases4]" time="1.150"><failure message="AssertionError: assert [] == ['commissioni...toring_setup']&#10;  &#10;  Right contains 2 more items, first extra item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas4')
+first = '0', second = '20', expected_exit = 1
+expected_phases = ['commissioning', 'monitoring_setup']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioni...toring_setup']
+E         
+E         Right contains 2 more items, first extra item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit['0'-0-1-expected_phases5]" time="2.905"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas5')
+first = "'0'", second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[[double]0-0-1-expected_phases6]" time="1.097"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas6')
+first = '[double]0', second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[[long]0-0-1-expected_phases7]" time="0.878"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas7')
+first = '[long]0', second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[$null-0-1-expected_phases8]" time="1.104"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas8')
+first = '$null', second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[@([int]0,[int]0)-0-1-expected_phases9]" time="0.886"><failure message="AssertionError: assert [] == ['commissioning']&#10;  &#10;  Right contains one more item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas9')
+first = '@([int]0,[int]0)', second = '0', expected_exit = 1
+expected_phases = ['commissioning']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioning']
+E         
+E         Right contains one more item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit[0-'0'-1-expected_phases10]" time="0.876"><failure message="AssertionError: assert [] == ['commissioni...toring_setup']&#10;  &#10;  Right contains 2 more items, first extra item: 'commissioning'&#10;  Use -v to get more diff">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_real_tail_and_actual_phas10')
+first = '0', second = "'0'", expected_exit = 1
+expected_phases = ['commissioning', 'monitoring_setup']
+
+    @pytest.mark.parametrize('first,second,expected_exit,expected_phases', [
+        ('0', '0', 0, ['commissioning', 'monitoring_setup']),
+        ('20', '0', 20, ['commissioning']),
+        ('1', '0', 1, ['commissioning']),
+        ('0', '1', 1, ['commissioning', 'monitoring_setup']),
+        ('0', '20', 1, ['commissioning', 'monitoring_setup']),
+        ("'0'", '0', 1, ['commissioning']),
+        ('[double]0', '0', 1, ['commissioning']),
+        ('[long]0', '0', 1, ['commissioning']),
+        ('$null', '0', 1, ['commissioning']),
+        ('@([int]0,[int]0)', '0', 1, ['commissioning']),
+        ('0', "'0'", 1, ['commissioning', 'monitoring_setup']),
+    ])
+    def test_real_tail_and_actual_phase_callback_stop_at_pause_failure_or_invalid_exit(tmp_path, first, second, expected_exit, expected_phases):
+        result, calls, host = actual_tail_fixture(tmp_path, first, second)
+        assert result.returncode == expected_exit, result.stdout + result.stderr
+&gt;       assert [call['phase'] for call in calls] == expected_phases
+E       AssertionError: assert [] == ['commissioni...toring_setup']
+E         
+E         Right contains 2 more items, first extra item: 'commissioning'
+E         Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:98: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_either_changed_source_blocks_both_children_before_any_phase[commissioning]" time="0.890"><failure message="StopIteration">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_either_changed_source_blo0')
+changed = 'commissioning'
+
+    @pytest.mark.parametrize('changed', ['commissioning', 'monitoring_setup'])
+    def test_either_changed_source_blocks_both_children_before_any_phase(tmp_path, changed):
+        result, calls, host = actual_tail_fixture(tmp_path, changed=changed)
+        assert result.returncode == 1 and calls == []
+&gt;       metadata = json.loads(next(line for line in host.splitlines() if line.startswith('{')))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:130: StopIteration</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_either_changed_source_blocks_both_children_before_any_phase[monitoring_setup]" time="0.886"><failure message="StopIteration">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/reboot-setup-launcher-v5-fixtures-20261008/test_either_changed_source_blo1')
+changed = 'monitoring_setup'
+
+    @pytest.mark.parametrize('changed', ['commissioning', 'monitoring_setup'])
+    def test_either_changed_source_blocks_both_children_before_any_phase(tmp_path, changed):
+        result, calls, host = actual_tail_fixture(tmp_path, changed=changed)
+        assert result.returncode == 1 and calls == []
+&gt;       metadata = json.loads(next(line for line in host.splitlines() if line.startswith('{')))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       StopIteration
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:130: StopIteration</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_source_reader_holds_exact_bytes_denies_writers_and_closes_on_refusal[valid]" time="1.256" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_source_reader_holds_exact_bytes_denies_writers_and_closes_on_refusal[changed_pin]" time="2.855" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_source_reader_holds_exact_bytes_denies_writers_and_closes_on_refusal[empty]" time="1.033" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_real_source_reader_holds_exact_bytes_denies_writers_and_closes_on_refusal[oversize]" time="1.064" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_actual_console_invoker_inherits_console_waits_disposes_and_refuses_delimiters[fixed-True]" time="1.240"><failure message="AssertionError: assert {'inherit': T...t': True, ...} == {'path': 'C:\...t': True, ...}&#10;  &#10;  Omitting 5 identical items, use -vv to show&#10;  Differing items:&#10;  {'working': ''} != {'working': 'C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next'}&#10;  Use -v to get more diff">argument = 'fixed', accepted = True
+
+    @pytest.mark.parametrize('argument,accepted', [('fixed', True), ('has"quote', False), ('has\rreturn', False), ('has\nnewline', False)])
+    def test_actual_console_invoker_inherits_console_waits_disposes_and_refuses_delimiters(argument, accepted):
+        body = '$argument=' + q(argument) + ';$powershell=' + q(PS) + ';$PSScriptRoot=' + q(W) + ';'
+        body += r'''
+        $script:calls=0;$script:waits=0;$script:refreshes=0;$script:disposals=0;$script:flags=$null
+        function Start-Process{
+          param($FilePath,$ArgumentList,$WorkingDirectory,[switch]$NoNewWindow,[switch]$Wait,[switch]$PassThru)
+          $script:calls++;$script:flags=@{path=$FilePath;arguments=$ArgumentList;working=$WorkingDirectory;inherit=[bool]$NoNewWindow;wait=[bool]$Wait;process=[bool]$PassThru}
+          $p=[pscustomobject]@{ExitCode=0}
+          $p|Add-Member ScriptMethod WaitForExit{$script:waits++}
+          $p|Add-Member ScriptMethod Refresh{$script:refreshes++}
+          $p|Add-Member ScriptMethod Dispose{$script:disposals++}
+          return $p
+        }
+        $accepted=$false;$code=$null
+        try{$code=Invoke-RebootConsoleChild @($argument);$accepted=$true}catch{}
+        @{accepted=$accepted;code=$code;calls=$calls;waits=$waits;refreshes=$refreshes;disposals=$disposals;flags=$flags}|ConvertTo-Json -Depth 4
+        '''
+        value = success(ps(body))
+        assert value['accepted'] == accepted
+        assert value['calls'] == int(accepted)
+        if accepted:
+            assert value['code'] == 0 and value['waits'] == value['refreshes'] == value['disposals'] == 1
+&gt;           assert value['flags'] == {'path': PS, 'arguments': '"fixed"', 'working': str(W), 'inherit': True, 'wait': True, 'process': True}
+E           AssertionError: assert {'inherit': T...t': True, ...} == {'path': 'C:\...t': True, ...}
+E             
+E             Omitting 5 identical items, use -vv to show
+E             Differing items:
+E             {'working': ''} != {'working': 'C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next'}
+E             Use -v to get more diff
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:192: AssertionError</failure></testcase><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_actual_console_invoker_inherits_console_waits_disposes_and_refuses_delimiters[has&quot;quote-False]" time="1.044" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_actual_console_invoker_inherits_console_waits_disposes_and_refuses_delimiters[has\rreturn-False]" time="1.143" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_actual_console_invoker_inherits_console_waits_disposes_and_refuses_delimiters[has\nnewline-False]" time="1.168" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_exact_frozen_source_pins_and_no_redirected_or_background_child_path" time="0.913" /><testcase classname="windows-deployment-next.test_reboot_setup_launcher_v5" name="test_one_actual_default_plan_is_metadata_only_and_keeps_acceptance_explicit" time="0.163"><failure message="AssertionError: AuthorizationManager check failed.&#10;      + CategoryInfo          : SecurityError: (:) [], ParentContainsErrorRecordException&#10;      + FullyQualifiedErrorId : UnauthorizedAccess&#10;  &#10;assert 1 == 0&#10; +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...      : SecurityError: (:) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : UnauthorizedAccess\n').returncode">def test_one_actual_default_plan_is_metadata_only_and_keeps_acceptance_explicit():
+        result = subprocess.run([PS, '-NoProfile', '-NonInteractive', '-File', str(SOURCE)], capture_output=True, text=True, timeout=30)
+&gt;       value = success(result)
+                ^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:215: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+result = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...      : SecurityError: (:) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : UnauthorizedAccess\n')
+
+    def success(result):
+&gt;       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: AuthorizationManager check failed.
+E             + CategoryInfo          : SecurityError: (:) [], ParentContainsErrorRecordException
+E             + FullyQualifiedErrorId : UnauthorizedAccess
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe', '-NoProfile', '-NonInteractiv...      : SecurityError: (:) [], ParentContainsErrorRecordException\n    + FullyQualifiedErrorId : UnauthorizedAccess\n').returncode
+
+windows-deployment-next\test_reboot_setup_launcher_v5.py:40: AssertionError</failure></testcase></testsuite></testsuites>

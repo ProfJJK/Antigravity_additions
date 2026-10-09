@@ -1,0 +1,48 @@
+{
+  "schema": "cochem-foundation-diagnostic-python-preparation/1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "captured_platform": "Windows",
+  "python": "3.12.13",
+  "helper": {
+    "path": "diagnose-foundation-docker-r3-v1.py",
+    "sha256": "5b7e32ddb94b4d5816b1051d35b0af85ff18ee8f93e780c3dea792822d6c6693"
+  },
+  "tests": {
+    "path": "test_foundation_docker_diagnostic_r3_v1.py",
+    "sha256": "b4473b20f06a472fd60c879339a56398fe2778ebc37c6c6206068e242eeedb0b",
+    "xml": "foundation-docker-diagnostic-r3-v1-tests.xml",
+    "xml_sha256": "94c410373a0f95de3e490ad7bf7e51be1f704b4a18105d5963c5201add1578c1",
+    "passed": 38,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 0.972,
+    "pytest_reported_seconds": 3.4
+  },
+  "original_evidence": {
+    "successful_preflight_sha256": "3b35d79919916670b12fb1756e543f40b9d837ef96b912a4752386fef504ba2e",
+    "failed_foundation_sha256": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "original_failure_phase": "docker_owner_census",
+    "original_error_type": "WindowsIsolationError",
+    "original_winerror": null,
+    "original_ram_provision_started": false,
+    "original_registry_provision_started": false
+  },
+  "diagnosis": {
+    "established": "The error type and exact collector control flow locate the historical failure in server attestation before or after the owner-label census.",
+    "not_established": "The original receipt omitted exception text and numeric codes; its exact native operation and Win32 cause cannot be recovered from that receipt.",
+    "ordinary_native_fixture": "A unique disposable local named pipe, created and opened only with the ordinary test token, returned ERROR_PIPE_BUSY (231) on a second handle attempt. No bytes were read or written. This reproduces one possible indistinguishable legacy error encoding, not the actual historical failure.",
+    "instrumentation": "The exact pinned collector executes once. Transparent wrappers retain original return/raise decisions and record stage, before/after command, allowlisted operation and numeric error. Both cause and context are retained in a bounded sanitized graph; no retries or raw exception/CLI text."
+  },
+  "scope": {
+    "system_acceptance": false,
+    "live_docker_calls": 0,
+    "privileged_tasks_created": 0,
+    "protected_files_modified": 0,
+    "existing_state_modified": false,
+    "provider_authentication": false,
+    "model_jobs": 0,
+    "old_helpers_unchanged": true
+  },
+  "fixture_boundaries": "Full-run tests use the real frozen support, installed configuration, actual six success receipts and actual public prior metadata. Protected custody, private knowledge bytes, RAM observations, task/controller identity and Docker transport are explicit inert fixtures. The Docker baseline is derived fixture data. Separate tests verify exact current public receipt and packet hashes."
+}

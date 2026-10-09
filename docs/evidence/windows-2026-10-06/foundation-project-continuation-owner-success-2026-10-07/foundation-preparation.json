@@ -1,0 +1,209 @@
+{
+  "schema": "cochem-foundation-continuation-preparation/2",
+  "status": "PREPARED_NOT_EXECUTED",
+  "platform": "Windows ordinary user",
+  "source_records": [
+    {
+      "path": "provision-execution-foundation-r3-v2.py",
+      "sha256": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+      "bytes": 25200
+    },
+    {
+      "path": "provision-execution-foundation-r3-v2.ps1",
+      "sha256": "0df813342fa8070d1f2f6041ccbc24a7d8ec0d5c94baa269eec02c243e043ca0",
+      "bytes": 23283
+    },
+    {
+      "path": "run-return-continuation-r3-v2.ps1",
+      "sha256": "a4e402081761ae01386ced7538e321d7dd766a7092c2c7b84afa6d8f0e621ad3",
+      "bytes": 10552
+    },
+    {
+      "path": "install-disposable-project.ps1",
+      "sha256": "66bd5b039411b726b246fe4c4a57f8514a8fdbd40978283d2f74c1d922a2ec0d",
+      "bytes": 25131
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.py",
+      "sha256": "fc17e670e9a6903ba6f99ac2fb38b634283fad910164c010a24f9917c9de5eb5",
+      "bytes": 24727
+    },
+    {
+      "path": "diagnose-foundation-docker-r3-v1.ps1",
+      "sha256": "06522b04378d8d0b6cb915102e7fce1125700d96f68159c13e9d26a5c1c52e0b",
+      "bytes": 25620
+    },
+    {
+      "path": "provision-execution-foundation-r3.py",
+      "sha256": "fc5b5946b710da9bce079c687783fbfea91fdb85b9fcb711960ad6657b0b4ab1",
+      "bytes": 19191
+    },
+    {
+      "path": "provision-execution-foundation-r3.ps1",
+      "sha256": "402c27276b56b42cac3c8ecc6fa5b8fd0da4361c57c3abd5c2bf2d432724208c",
+      "bytes": 15640
+    },
+    {
+      "path": "inspect-execution-prerequisites-r3.py",
+      "sha256": "17a9a795fd755dc2e4955b1039784b4e19fd854aee399227e9d9427428eec41a",
+      "bytes": 26808
+    },
+    {
+      "path": "inspect-execution-prerequisites-r3.ps1",
+      "sha256": "5c3c043b9f10d70096d077fd0fd00f10edfb27739c4996d9477239b0692b4887",
+      "bytes": 19238
+    },
+    {
+      "path": "worker-denial-acceptance-r3.py",
+      "sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+      "bytes": 36096
+    },
+    {
+      "path": "check-worker-denials-r3.ps1",
+      "sha256": "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d",
+      "bytes": 21523
+    },
+    {
+      "path": "return-continuation-r3-v2-independent-review.json",
+      "sha256": "f0ea4a79c11ce3902674c74b02f831772f3cf99bf5a73b1a5e91a4d4dc1b7f0f",
+      "bytes": 2514
+    },
+    {
+      "path": "foundation-continuation-r3-v2-install-repairs-review.json",
+      "sha256": "491b1d3b1bd2f643ebb73de9c3fcd47f110674bd5356511cecdd5f89caeca92c",
+      "bytes": 5154
+    },
+    {
+      "path": "execution-foundation-r3-v2-python-preparation.json",
+      "sha256": "e79cfd2850135ca2f74b8ca8a827d01e64bd942389a0deaedf01a04a9474d152",
+      "bytes": 3682
+    },
+    {
+      "path": "execution-foundation-r3-v2-tests-final.xml",
+      "sha256": "45414d097cdca1c3bdb0cab40a6360cde42856de31f774c7fbbdf0d50095f4a9",
+      "bytes": 7292
+    },
+    {
+      "path": "foundation-continuation-wrapper-tests-final.xml",
+      "sha256": "56e1c8e697e1946553534640270e1f66aeace019554f6f47289825033a3cc832",
+      "bytes": 9101
+    },
+    {
+      "path": "return-continuation-r3-v2-tests-final.xml",
+      "sha256": "037c28cd4f84e013595ae54d495e7c7932c5f3a2b24dab399bf0e1d1570b3535",
+      "bytes": 4483
+    },
+    {
+      "path": "return-continuation-r3-v2-preview-final.json",
+      "sha256": "2f1d74f64358be9989639337bd2f46b75faecf95d6615fb590b74852d998b0c7",
+      "bytes": 6850
+    },
+    {
+      "path": "test_execution_foundation_r3_v2.py",
+      "sha256": "4008910fecd5ff111e95fe9bf883b4a77965074985791a3365646a7a208be8ba",
+      "bytes": 17495
+    },
+    {
+      "path": "test_foundation_continuation_wrapper_r3_v2.py",
+      "sha256": "8f30eb20b29af8bf3119488b98968fdf961fcdde88bd70efe876002409817051",
+      "bytes": 14890
+    },
+    {
+      "path": "test_foundation_diagnostic_wrapper_r3.py",
+      "sha256": "9f6dea78a5bf83668fe4d3e53b0f535cc4353b828ecbbedeb6886a4ff7292fc7",
+      "bytes": 24470
+    },
+    {
+      "path": "test_return_continuation_r3_v2.py",
+      "sha256": "d94819c6186d7c0c8b206589b91ca5ade1c09c7eca1ab59d6e3f09f6ee0846cb",
+      "bytes": 9648
+    },
+    {
+      "path": "test_execution_foundation_r3.py",
+      "sha256": "8e2b32dcbd4e34e3df838c9d82a31cde082450b600be4ab7749316ea1ee4458a",
+      "bytes": 28880
+    },
+    {
+      "path": "stage_aetherdesk_427_payloads.ps1",
+      "sha256": "0300b82731c0fddb9fad3e2ddb6a20b8368cfa91faf7aceb821752c65b5f6e0b",
+      "bytes": 12591
+    }
+  ],
+  "tests": [
+    {
+      "path": "execution-foundation-r3-v2-tests-final.xml",
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_seconds": "2.740",
+      "sha256": "45414d097cdca1c3bdb0cab40a6360cde42856de31f774c7fbbdf0d50095f4a9"
+    },
+    {
+      "path": "foundation-continuation-wrapper-tests-final.xml",
+      "passed": 45,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_seconds": "21.973",
+      "sha256": "56e1c8e697e1946553534640270e1f66aeace019554f6f47289825033a3cc832"
+    },
+    {
+      "path": "return-continuation-r3-v2-tests-final.xml",
+      "passed": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "junit_seconds": "7.180",
+      "sha256": "037c28cd4f84e013595ae54d495e7c7932c5f3a2b24dab399bf0e1d1570b3535"
+    }
+  ],
+  "ordinary_preparation_tests_passed": 108,
+  "independent_reviews": [
+    "return-continuation-r3-v2-independent-review.json",
+    "foundation-continuation-r3-v2-install-repairs-review.json"
+  ],
+  "actual_system_diagnostic": {
+    "receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+    "status": "FOUNDATION_READ_ONLY_DIAGNOSTIC_VERIFIED",
+    "trace_events": 18,
+    "read_only_docker_commands_returned": 4,
+    "provisioning_performed": false,
+    "archived_evidence": "../execution-foundation-diagnostic-system-2026-10-07/summary.json"
+  },
+  "authority": {
+    "preserved_original_failed_foundation": "bf1237fa1d435985b16e9faf61c8e51afcc0eaadbab31e9ad43bff9e11716336",
+    "original_failure_cause_established": false
+  },
+  "default_preview": {
+    "foundation_holds": [],
+    "project_holds": [
+      "Data-parent custody requires the owner Administrator token."
+    ],
+    "prior_task_receipt_checks_deferred_to_administrator": true,
+    "current_state_and_provisioning_deferred_to_system": true
+  },
+  "proposed_write_set": [
+    "one fresh protected v2 helper/input/receipt root and no-trigger SYSTEM task",
+    "seven new scoped RAM directories, ACL/no-content-index flags, only missing six Defender exclusions",
+    "new private adopted-R ledger and empty four-slot container registry",
+    "separate new private disposable bare Git project from frozen bundle"
+  ],
+  "capacity": {
+    "worker_identities": 6,
+    "shared_slots": 4,
+    "chapter06_routes_unchanged": true
+  },
+  "apply_performed": false,
+  "pipeline_started": false,
+  "activation_ready": false,
+  "automatic_retry_allowed": false,
+  "owner_command": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\run-return-continuation-r3-v2.ps1\" -Apply",
+  "limitations": [
+    "Preparation tests replace native boundaries; they are not privileged deployment acceptance.",
+    "Current historical task state is rechecked by the future Administrator wrapper, not inferred from an ordinary process.",
+    "No Docker physical acceptance, provider sign-in/model calls, budget reconciliation or sustained monitoring completed here.",
+    "Historical Linux results remain separate."
+  ],
+  "guide_before_sha256": "3829e4b413188a01261c80920933e7d098c435d47a45700c0967bc0fc4f29b3f"
+}

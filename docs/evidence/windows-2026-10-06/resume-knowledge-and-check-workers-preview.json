@@ -1,0 +1,79 @@
+{
+    "schema":  "cochem-knowledge-recovery-and-worker-boundaries/1",
+    "mode":  "READ_ONLY_PLAN",
+    "plans":  [
+                  {
+                      "phase":  "knowledge_resume",
+                      "report":  {
+                                     "schema":  "cochem-private-knowledge-resume-plan/1",
+                                     "mode":  "READ_ONLY_PLAN",
+                                     "source_sha256":  "780daf29270b0c89cbbc98608eb9ca816543e36e8332323d944410658e665a7b",
+                                     "runtime_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r2",
+                                     "install_receipt_sha256":  "d92260ee2c0fc7df300c8aeafaa7cac4293e581d69f7a02bea98260b743244b4",
+                                     "source_manifest_sha256":  "df473b21f027a711c41a7c9436fbdcfd424a6e24ae3556de37e23bb40220f4e8",
+                                     "source_files":  166,
+                                     "target_root":  "C:\\Program Files\\CoChem\\KnowledgeResume4.2.7-windows-20261007-r2",
+                                     "task_name":  "CoChem-4.2.7-KnowledgeResume-20261007-r2",
+                                     "diagnostic_receipt_sha256":  "18ceba4394b92bb6e1d320f49226359902af0084a72195a8139f699594bc0307",
+                                     "original_receipt_sha256":  "2cf8f1f4cafbb0537900af98349f6a3f4faec135a4061dd153f0cce78c1488dd",
+                                     "state_gate":  "Exact diagnosed root plus 1-byte writer.lock=0, rechecked under real production writer lock",
+                                     "corpus_files_reverified":  138,
+                                     "corpus_acl_changes":  false,
+                                     "old_evidence_preserved":  true,
+                                     "index_resume_executed":  false,
+                                     "activation_ready":  false,
+                                     "admin_system_checks_deferred":  [
+                                                                          "full r2/base tree custody and held source166",
+                                                                          "private original+diagnostic receipt/task binding",
+                                                                          "exact diagnosed SYSTEM state metadata and authorized one-byte lock read"
+                                                                      ],
+                                     "holds":  [
+
+                                               ]
+                                 }
+                  },
+                  {
+                      "phase":  "six_host_boundary_checks",
+                      "report":  {
+                                     "schema":  "cochem-six-worker-denials-plan/1",
+                                     "mode":  "READ_ONLY_PLAN",
+                                     "slots":  [
+                                                   "slot1",
+                                                   "slot2",
+                                                   "slot3",
+                                                   "slot4",
+                                                   "slot5",
+                                                   "slot6"
+                                               ],
+                                     "parallel_workers":  1,
+                                     "stop_on_first_failure":  true,
+                                     "wrapper_sha256":  "1576882fe655d27894aa6f9da25a14ae4ddd08540c865d51cc43b26fa3dd6f9d",
+                                     "source_sha256":  "78c0006a225fa98211f038c380552d9651a86c9198b518603e989747f315bb45",
+                                     "all_six_targets_checked":  true,
+                                     "holds":  [
+
+                                               ],
+                                     "worker_processes_executed":  0,
+                                     "activation_ready":  false
+                                 }
+                  }
+              ],
+    "results":  [
+
+                ],
+    "holds":  [
+
+              ],
+    "max_execution_slots":  4,
+    "worker_identities":  6,
+    "knowledge_runtime":  "r2",
+    "worker_boundary_runtime":  "preserved original 20261006 with unchanged launch/boundary bindings",
+    "new_ram_or_docker_acceptance":  false,
+    "stop_on_first_failure":  true,
+    "automatic_retry":  false,
+    "models_executed":  0,
+    "logins_executed":  0,
+    "repair_budgets_modified":  false,
+    "pipeline_started":  false,
+    "activation_ready":  false
+}

@@ -1,0 +1,39 @@
+{
+  "schema": "cochem-stopped-setup-continuation-review/1",
+  "reviewed_utc": "2026-10-07T11:34:24Z",
+  "host": "AETHERDESK",
+  "preparation_evidence": "stopped-setup-continuation-preparation.json",
+  "entrypoint_sha256": "0f536acb274b194b8bd28e36d44c8c4e379a12103a184372433800a55f2e287b",
+  "root_source_review": "NO_REMAINING_CONCRETE_FINDING",
+  "independent_source_review": "NO_REMAINING_CONCRETE_FINDING",
+  "scope_reviewed": [
+    "Eleven pinned helper/config/manifest file streams acquired before preflight and retained through all phases",
+    "All prerequisite plans must pass before the first applied phase",
+    "Exact ordered knowledge and six worker denial results required before fresh runtime build",
+    "Fresh runtime source/config commitments, installed revision, parsed configuration and scoped workspace validation",
+    "Failure stops continuation and preserves completed or partial artifacts"
+  ],
+  "windows_control_tests": {
+    "passed": 25,
+    "failed": 0,
+    "skipped": 0,
+    "junit_sha256": "6214c319d19e6598e56bb432ae02c0674ac333f1535788ea62a3981633a2db4b"
+  },
+  "actual_default_preview": {
+    "schema": "cochem-stopped-setup-continuation/1",
+    "mode": "READ_ONLY_PLAN",
+    "reviewed_phases": 3,
+    "plan_groups": 2,
+    "holds": [],
+    "applied_results": 0,
+    "sha256": "2ec4f6d31951047127f5da977ae30c51caf6834d0ead468b9c04718f47d7cbf9"
+  },
+  "morning_guide_updated": true,
+  "morning_text_sha256": "da92087a46280a205a0ebda81e716220cc2f80ef33da2f3fc49d5281b8be941f",
+  "max_execution_slots": 4,
+  "worker_identities": 6,
+  "applied": false,
+  "actual_system_or_worker_acceptance_inferred": false,
+  "pipeline_started": false,
+  "activation_ready": false
+}

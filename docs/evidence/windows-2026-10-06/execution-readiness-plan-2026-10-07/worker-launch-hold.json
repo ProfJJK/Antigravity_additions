@@ -1,0 +1,20 @@
+{
+  "cleanup_verified": false,
+  "failure": {
+    "error_type": "ResourcePolicyError",
+    "phase": "worker_launch",
+    "winerror": null
+  },
+  "operational_helper_created": false,
+  "plan_sha256": "2b3dec9f7ea91e76434383a1dd78e2bc857417bbf8c63e6f6e607d1b29be321c",
+  "protected_state_modified": false,
+  "readiness_executed": false,
+  "receipt_path": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261006-slot1\\worker-denial-acceptance.json",
+  "receipt_sha256": "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+  "receipt_status": "DENIAL_CHECK_FAILED",
+  "schema": "cochem-readiness-plan-worker-launch-hold/1",
+  "slot": "slot1",
+  "status": "BLOCKED_BEFORE_READINESS_IMPLEMENTATION",
+  "superseding_constraint": "Resolve the actual slot1 worker_launch ResourcePolicyError and prove terminal cleanup before any readiness implementation or old-task retry. A changed protected runtime would require fresh source/config/receipt bindings; current r2 inventory remains historical evidence, not automatic approval for future r3.",
+  "worker_released": false
+}

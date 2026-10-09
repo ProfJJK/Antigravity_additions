@@ -16,6 +16,8 @@ import time
 from typing import Any, Iterator
 import uuid
 
+from . import budget_authority
+
 
 _TERMINAL = {"SUCCEEDED", "FAILED", "BLOCKED", "ROLLED_BACK"}
 
@@ -132,7 +134,16 @@ class Ledger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with self._connection() as connection:
             connection.execute("PRAGMA journal_mode=WAL")
-            connection.executescript(SCHEMA)
+            connection.executescript(SCHEMA + budget_authority.SCHEMA + budget_authority.SUPERVISOR_TRIGGERS)
+
+    def hold_legacy_budget_authority(self, evidence: dict, *, now=None) -> dict:
+        """Persist uncertainty without creating paid attempts or allowing a reset."""
+        with self._write() as connection:
+            return budget_authority.record(connection, evidence, now=now)
+
+    def budget_authority_status(self) -> dict:
+        with self._connection() as connection:
+            return budget_authority.status(connection)
 
     @contextmanager
     def _connection(self) -> Iterator[sqlite3.Connection]:
@@ -253,6 +264,8 @@ class Ledger:
         lease, timestamp = _duration(lease_seconds, "lease_seconds"), _timestamp(now)
         day = datetime.fromtimestamp(timestamp, timezone.utc).date().isoformat()
         with self._write() as connection:
+            if budget_authority.blocked(connection):
+                return None
             self._recover(connection, timestamp)
             incident = self._incident(connection, fingerprint)
             if incident["status"] in {"RESOLVED", "EXHAUSTED", "REPAIRING", "BLOCKED"}:
@@ -300,6 +313,8 @@ class Ledger:
         timestamp=_timestamp(now)
         day=datetime.fromtimestamp(timestamp,timezone.utc).date().isoformat()
         with self._write() as connection:
+            if budget_authority.blocked(connection):
+                return None
             self._recover(connection,timestamp)
             attempt=self._attempt(connection,attempt_id)
             if attempt['status']!='RUNNING' or attempt['lease_expires_at']<=timestamp:
@@ -362,6 +377,7 @@ class Ledger:
             raise ValueError('Review lease continuation requires verified physical cleanup')
         timestamp=_timestamp(now);duration=_duration(lease_seconds,'lease_seconds')
         with self._write() as connection:
+            budget_authority.require_unheld(connection)
             attempt=self._attempt(connection,attempt_id)
             checkpoint=connection.execute("SELECT 1 FROM supervisor_review_checkpoints WHERE attempt_id=? AND status='PENDING'",(attempt_id,)).fetchone()
             if checkpoint is None or attempt['status']!='RUNNING':
@@ -392,6 +408,8 @@ class Ledger:
         _text(attempt_id, "attempt_id")
         duration, timestamp = _duration(lease_seconds, "lease_seconds"), _timestamp(now)
         with self._write() as connection:
+            if budget_authority.blocked(connection):
+                return False
             self._recover(connection, timestamp)
             row = connection.execute("SELECT status,lease_expires_at FROM supervisor_attempts WHERE attempt_id=?", (attempt_id,)).fetchone()
             if row is None or row["status"] != "RUNNING" or row["lease_expires_at"] <= timestamp:
@@ -441,6 +459,7 @@ class Ledger:
         fingerprint, reason = _text(fingerprint, "fingerprint"), _text(reason, "reason")
         timestamp = _timestamp(now)
         with self._write() as connection:
+            budget_authority.require_unheld(connection)
             incident = self._incident(connection, fingerprint)
             if incident["status"] != "BLOCKED":
                 raise ValueError("Only BLOCKED incidents can be unblocked")

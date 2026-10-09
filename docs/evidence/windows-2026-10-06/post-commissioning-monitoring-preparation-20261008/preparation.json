@@ -1,0 +1,195 @@
+{
+  "schema": "cochem-post-commissioning-monitoring-preparation/1",
+  "recorded_utc": "2026-10-08T22:57:53.744350+00:00",
+  "status": "PREPARED_NOT_APPLIED",
+  "files": [
+    {
+      "path": "run-post-commissioning-setup-r3-v1.ps1",
+      "bytes": 33156,
+      "sha256": "6b1c7c7eb0a9f70d24abb9a778400b43917bb44007f2fa61bdf66c16e29b4ec7"
+    },
+    {
+      "path": "install-resource-observer-r3-v3.ps1",
+      "bytes": 34924,
+      "sha256": "04f5d032fb56404e3031fa3137416126734d45d6ebbb7ed74f5bbc5c7149db6b"
+    },
+    {
+      "path": "resource-observer-r3-v3/source-manifest.json",
+      "bytes": 1229,
+      "sha256": "f44a356bd0bdd4d27aff35e3f3d204509b608f3b72e31a39698003803681ee59"
+    },
+    {
+      "path": "install-independent-supervisor-staging-r3-v2.ps1",
+      "bytes": 22673,
+      "sha256": "00412dfa8d7d6668713f9fb850c6fc4a2dd4df4dcc1527c65106ce7497be893d"
+    },
+    {
+      "path": "install-held-supervisor-observation-r3-v2.ps1",
+      "bytes": 30079,
+      "sha256": "9fb90f828ff3b0a7776af9bc48acd99eb2a520508a80271a1e87b785a2ce7313"
+    },
+    {
+      "path": "resource-observer-r3-v2-dependencies.json",
+      "bytes": 477651,
+      "sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429"
+    },
+    {
+      "path": "protected-code-inspection-v4.ps1",
+      "bytes": 7687,
+      "sha256": "5c01543cbb8b8d64b2b9f1bab4a13f87f8ff9e1ab3e82dfb6fc547144c77b95d"
+    },
+    {
+      "path": "resource-observer-r3-v3/observe_resources.py",
+      "bytes": 17414,
+      "sha256": "fd7f074ed980686676ca1e8e4903ff3bf5579f8191c39bd1058550656af06c62"
+    },
+    {
+      "path": "resource-observer-r3-v3/detector_bootstrap.py",
+      "bytes": 2971,
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5"
+    },
+    {
+      "path": "resource-observer-r3-v3/cochem_supervisor/__init__.py",
+      "bytes": 77,
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17"
+    },
+    {
+      "path": "resource-observer-r3-v3/cochem_supervisor/windows.py",
+      "bytes": 7788,
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b"
+    },
+    {
+      "path": "resource-observer-r3-v3/cochem_supervisor/resource_observation.py",
+      "bytes": 14510,
+      "sha256": "7704a7d25530a8352167fa3204567ea529b62a7a6a0ff29d39b070af260bd2df"
+    },
+    {
+      "path": "resource-observer-r3-v3/cochem_supervisor/performance_acceptance.py",
+      "bytes": 18919,
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c"
+    },
+    {
+      "path": "resource-observer-r3-v3/cochem_supervisor/shared_io.py",
+      "bytes": 2061,
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0"
+    },
+    {
+      "path": "resource-observer-r3-v3-tests.xml",
+      "bytes": 27261,
+      "sha256": "25eedbc6a3887793aa73aca8173ced0338bb3c832d797834597c59ef53a103e4"
+    },
+    {
+      "path": "supervisor-scanner-successors-r3-v2-tests-final.xml",
+      "bytes": 9376,
+      "sha256": "18cac84307a786cba7063ab2b8f98b1fe698a85ed89b15dc061241bbc0a60b56"
+    },
+    {
+      "path": "post-commissioning-setup-r3-v1-tests-final.xml",
+      "bytes": 11994,
+      "sha256": "73fa407a3324fc4ca4279a9118b5020faa1a326ac73424a735ae476d1659bb1e"
+    },
+    {
+      "path": "POST_COMMISSIONING_SETUP_R3.txt",
+      "bytes": 1912,
+      "sha256": "5a640988f7dbabda68841679a784adaffa7a21764a9b334eae6b9bcdd29b4ee0"
+    },
+    {
+      "path": "prepare-post-commissioning-setup-r3-v1.py",
+      "bytes": 4663,
+      "sha256": "649fba7e0511145644df8dd85d4e6d0721e1e342a3d3b92fd4686e8c423b674c"
+    },
+    {
+      "path": "test_post_commissioning_setup_r3_v1.py",
+      "bytes": 5678,
+      "sha256": "c99eb92caf698c0d2cb27eabdd88b89ec4241abafff758a67a752acbbb77f37b"
+    },
+    {
+      "path": "test_resource_observer_r3_v3.py",
+      "bytes": 34601,
+      "sha256": "213ccf9a98cd859f42a0cc29bac4b5e226e1d707b9f44ec1341c9218102c61a6"
+    },
+    {
+      "path": "test_resource_observer_installer_r3_v3.py",
+      "bytes": 26495,
+      "sha256": "7248306345f2cf266284d5bdef6539a488b31e0470e4fb939da7bcd1d2cf8d29"
+    },
+    {
+      "path": "test_supervisor_scanner_successors_r3_v2.py",
+      "bytes": 13144,
+      "sha256": "d86f5cc4f06f784faa391a891a4d45ecd7d6ec3a6e2111010aed71923741b06a"
+    },
+    {
+      "path": "post-commissioning-setup-r3-v1-preview-final.json",
+      "bytes": 4864,
+      "sha256": "aa84d9e930c3b550e386cdbac2797a30769c30ef00474b407d12a15e8d4603b0"
+    },
+    {
+      "path": "archive-post-commissioning-setup-r3-v1.py",
+      "bytes": 4921,
+      "sha256": "55ef5d3b5f27ee21f36b96db16cf90d77b9c4acff94eaba0f43017de1dd34ce9"
+    }
+  ],
+  "ordinary_windows_tests": [
+    {
+      "path": "resource-observer-r3-v3-tests.xml",
+      "sha256": "25eedbc6a3887793aa73aca8173ced0338bb3c832d797834597c59ef53a103e4",
+      "tests": 163,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "supervisor-scanner-successors-r3-v2-tests-final.xml",
+      "sha256": "18cac84307a786cba7063ab2b8f98b1fe698a85ed89b15dc061241bbc0a60b56",
+      "tests": 61,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "post-commissioning-setup-r3-v1-tests-final.xml",
+      "sha256": "73fa407a3324fc4ca4279a9118b5020faa1a326ac73424a735ae476d1659bb1e",
+      "tests": 59,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "distinct_tests_for_successors": 283,
+  "actual_preview_holds": [
+    {
+      "phase": "preflight",
+      "code": "COMMISSIONING_REQUIRED_NO_AUTHENTICATION_OR_STARTUP_IN_THIS_BATCH"
+    },
+    {
+      "phase": "held_observation",
+      "code": "PHASE_PREFLIGHT_HOLD",
+      "detail": "COMMISSIONING_NOT_COMPLETE"
+    },
+    {
+      "phase": "resource_observation",
+      "code": "PHASE_PREFLIGHT_HOLD",
+      "detail": "Successful first-instance commissioning receipt is required."
+    }
+  ],
+  "current_controller_required_before_apply": true,
+  "authentication_or_first_start_replayed": false,
+  "source_review": "Producer receipt fields and constrained diffs reviewed; native scanner bounds and seven-file dependency closure retained.",
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "shared_slots": 4,
+  "worker_identities": 6,
+  "chapter06_routing_changed": false,
+  "credentials_or_databases_copied": false,
+  "repair_budgets_modified": false,
+  "ram_or_startup_task_modified": false,
+  "privileged_tasks_registered_or_started": false,
+  "observer_installed": false,
+  "observer_started": false,
+  "actual_48h_complete": false,
+  "genuine_desktop_heap_available": false,
+  "independent_recovery_timing_available": false,
+  "paid_repair_enabled": false,
+  "full_srs_acceptance": false,
+  "linux_results_counted_as_windows": false,
+  "current_owner_action": "Complete the existing v4 sign-in/startup command; this future batch does not add a current step."
+}

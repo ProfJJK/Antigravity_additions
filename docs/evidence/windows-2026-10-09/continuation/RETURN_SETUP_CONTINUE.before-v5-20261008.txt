@@ -1,0 +1,82 @@
+WINDOWS PIPELINE: CONTINUE THE REMAINING SIGN-INS
+8 October 2026 - AETHERDESK
+
+The v3 run stopped in a protected-file inspection before any login prompt.
+The v4 command repairs that scanner and preserves all earlier evidence.
+It checks CURRENT sign-in status and reuses valid sessions. Your successful
+sign-ins remain saved; do not reuse an old device code.
+
+RUN THIS COMMAND IN ADMINISTRATOR WINDOWS POWERSHELL
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-pipeline-commissioning-r3-v4.ps1" -Apply -Interactive
+
+Leave the console open during file/status checks. They can take a few minutes
+per profile without printing anything. No login code expires while the command
+is inspecting files or waiting for READY; a new code is issued after READY.
+
+WHEN PROMPTED
+
+1. Type READY only when you can finish that profile's browser approval now.
+   A code has not been issued while it waits at this prompt.
+2. For Codex, manually open https://auth.openai.com/codex/device, enter the
+   NEW code shown by the running console, and complete browser approval.
+   The device flow does not open a browser window automatically.
+3. Leave PowerShell open. Follow the next prompt when it appears. For Claude,
+   follow its own provider instructions after typing READY.
+4. Type PAUSE at a readiness prompt if you need to step away. It stops before
+   starting that login, preserves the completed sign-ins and emits paused JSON.
+5. Return the final JSON. Remove login codes from any error you paste into chat.
+
+CONTINUING LATER
+
+After PAUSE, the same v4 command can be run again when ready. If you miss a
+Codex code again and the command exits during native_authentication, wait for
+it to exit fully, then use the same v4 command. Each deliberate invocation
+checks saved sessions again and creates new evidence; no old attempt is
+overwritten and there is no automatic retry.
+
+For any other failure, return its error and leave all files/tasks in place.
+In particular, an earlier failed Claude session still requires review, and
+any existing controller-start artifact blocks another startup. Do not force
+these holds, delete files, or rerun an older v1/v2/v3 command.
+
+WHAT HAPPENS AFTER SIGN-IN
+
+Both configured providers are checked in the six existing isolated profiles.
+Only explicitly logged-out profiles request browser consent. After all pass,
+the command performs the prepared controller start once. It does not rerun
+the completed Docker, knowledge, CPU or worker-isolation acceptance tests.
+Codex can then perform the prepared ordinary-process MCP/workflow checks.
+
+The command preserves credentials and existing sign-ins, databases/history,
+repair budgets, the 8 GiB R: drive and Mount_CoChem_RAMDisk. Capacity remains
+four shared slots across six identities and routing stays on Chapter 06.
+It does not change Agy's sign-in or submit model jobs. Automatic repair stays
+held. Full workflow, recovery and stability acceptance remain separate.
+
+Administrator access is needed to create protected SYSTEM status/startup
+tasks. This chat process is ordinary. Browser authorization must be yours.
+
+PREPARATION EVIDENCE
+
+The replacement scanner passed actual ordinary Windows PowerShell 5.1 scans
+of all installed code roots: runtime 15,026 entries in 80.91 seconds, base
+Python 3,727 in 20.04 seconds, and native executables 6 in 0.05 seconds.
+This is read-only Windows evidence, not an elevated/SYSTEM acceptance result.
+The earlier scanner passed a separate runtime scan in 115.62 seconds; your
+four-minute timeout was not reproduced under the later measurement load.
+The new scanner retains ownership/writer permissions, reparse-point and
+hardlink/handle checks, the 50,000-entry cap and a bounded monotonic timer.
+
+148 ordinary Windows authentication and commissioning/continuation checks
+passed. The final source bindings passed independent read-only review.
+32 additional scanner fixture checks passed, including hardlink/junction
+denials, all writer-mask bits, handle lifetime and the 50,000-entry boundary.
+Tests include readiness/pause, fresh-attempt binding, preservation, source
+pins, single-start fencing, a real ordinary-process mutex fixture and actual
+read-only previews. No new provider login, SYSTEM task execution, controller
+start, database migration or model job occurred during this preparation.
+Linux results are not counted as Windows deployment evidence.
+
+Official device-login instructions:
+https://learn.chatgpt.com/docs/auth#login-on-headless-devices

@@ -1,0 +1,9 @@
+{
+  "isolated": true,
+  "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "source_modules": {
+    "cochem_mcp": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_mcp\\__init__.py",
+    "cochem_pipeline": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_pipeline\\__init__.py",
+    "cochem_supervisor": "C:\\Users\\ansac\\source\\repos\\Pipeline-Mix-Model-Concurrent\\src\\cochem_supervisor\\__init__.py"
+  }
+}

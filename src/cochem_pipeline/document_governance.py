@@ -8,6 +8,16 @@ from __future__ import annotations
 from copy import deepcopy
 
 from .planning_governance import SPECIFICATION_ID, digest
+from .failures import ProviderFailure
+
+
+class DocumentCommitmentHold(ProviderFailure):
+    """Retain pre-repair accepted plans instead of inventing missing WBS pins."""
+    def __init__(self):
+        super().__init__('compatibility', hold_scope='job')
+        self.summary = ('Historical document planning lacks required WBS/output commitments; '
+                        'explicit operator reconciliation is required, preserving accepted outputs and budgets')
+        self.args = (self.summary,)
 
 
 def execution_contract(workflow_type='document_plan'):
@@ -29,14 +39,19 @@ def execution_contract(workflow_type='document_plan'):
                                  {'kind': 'SYNTHESIS', 'status': 'BLOCKED'}],
             'manifest_completion': {'creates': 'CHAPTER_DRAFT', 'transactional_scatter': True,
                 'requirements': ['declared-chapter-count', 'unique-chapter-identities',
-                    'nonempty-assigned-requirements', 'complete-requested-requirement-coverage']},
+                    'nonempty-assigned-requirements', 'complete-requested-requirement-coverage',
+                    'bounded-owned-wbs-declarations', 'unique-owned-wbs-task-identities']},
             'chapter_completion': {'requirements': ['assigned-chapter-ownership',
-                'assigned-requirement-tracing', 'structured-wbs', 'exact-artifact-uri', 'nonempty-artifact-bytes']},
+                'assigned-requirement-tracing', 'structured-wbs', 'preserved-manifest-wbs',
+                'exact-artifact-uri', 'nonempty-artifact-bytes']},
             'synthesis_release': {'from_status': 'BLOCKED', 'to_status': 'PENDING',
                 'requirements': ['all-declared-chapters-completed', 'immutable-chapter-hashes',
+                    'complete-accepted-structured-outputs', 'immutable-output-hashes',
                     'deterministic-coverage-report', 'no-unresolved-coverage-gaps']},
             'workflow_completion': {'accepted_kind': 'SYNTHESIS',
-                'requirements': ['all-exact-chapter-hashes', 'nonempty-master-artifact', 'current-native-receipt']}}
+                'requirements': ['all-exact-chapter-hashes', 'all-exact-output-hashes',
+                    'exact-coverage-report-hash', 'preserved-accepted-wbs-by-chapter',
+                    'nonempty-master-artifact', 'current-native-receipt']}}
     if workflow_type == 'provider_preflight':
         return {**common, 'schema': 'cochem-preflight/4.2.7',
             'specification_path': '4.2.7_SRS.md#chapter-12-native-cli-and-mcp-interfaces',

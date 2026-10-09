@@ -1,0 +1,73 @@
+{
+  "schema": "cochem-ram-parent-read-only-acl/1",
+  "captured_utc": "2026-10-07T15:29:44.7825438Z",
+  "host": "AETHERDESK",
+  "path": "R:\\",
+  "scope": "Ordinary non-administrator metadata observation; not SYSTEM RAM backing/adoption acceptance",
+  "owner_sid": "S-1-5-18",
+  "sddl": "O:SYG:SYD:(A;OICIIO;SDGXGWGR;;;AU)(A;;0x1301bf;;;AU)(A;;FA;;;SY)(A;OICIIO;GA;;;SY)(A;OICIIO;GA;;;BA)(A;;FA;;;BA)(A;;0x1200a9;;;BU)(A;OICIIO;GXGR;;;BU)",
+  "dacl_protected": false,
+  "attributes": 22,
+  "rules": [
+    {
+      "sid": "S-1-5-11",
+      "type": "Allow",
+      "rights": -536805376,
+      "inheritance": "ContainerInherit, ObjectInherit",
+      "propagation": "InheritOnly"
+    },
+    {
+      "sid": "S-1-5-11",
+      "type": "Allow",
+      "rights": 1245631,
+      "inheritance": "None",
+      "propagation": "None"
+    },
+    {
+      "sid": "S-1-5-18",
+      "type": "Allow",
+      "rights": 2032127,
+      "inheritance": "None",
+      "propagation": "None"
+    },
+    {
+      "sid": "S-1-5-18",
+      "type": "Allow",
+      "rights": 268435456,
+      "inheritance": "ContainerInherit, ObjectInherit",
+      "propagation": "InheritOnly"
+    },
+    {
+      "sid": "S-1-5-32-544",
+      "type": "Allow",
+      "rights": 268435456,
+      "inheritance": "ContainerInherit, ObjectInherit",
+      "propagation": "InheritOnly"
+    },
+    {
+      "sid": "S-1-5-32-544",
+      "type": "Allow",
+      "rights": 2032127,
+      "inheritance": "None",
+      "propagation": "None"
+    },
+    {
+      "sid": "S-1-5-32-545",
+      "type": "Allow",
+      "rights": 1179817,
+      "inheritance": "None",
+      "propagation": "None"
+    },
+    {
+      "sid": "S-1-5-32-545",
+      "type": "Allow",
+      "rights": -1610612736,
+      "inheritance": "ContainerInherit, ObjectInherit",
+      "propagation": "InheritOnly"
+    }
+  ],
+  "acl_modified": false,
+  "volume_modified": false,
+  "task_inspected_or_changed": false,
+  "system_acceptance": false
+}

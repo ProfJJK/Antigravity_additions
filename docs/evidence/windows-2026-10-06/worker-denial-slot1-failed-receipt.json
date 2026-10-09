@@ -1,0 +1,56 @@
+{
+  "base_interpreter_sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+  "cleanup_verified": false,
+  "config_sha256": "2c7c1d781a74b5e110c36b9fae79eb90dfaae5a0249aa60a23d1db40749b62f6",
+  "device": "\\\\?\\GLOBALROOT\\Device\\PawnIO",
+  "device_acl": {
+    "acceptable": true,
+    "aces": [
+      {
+        "flags": 0,
+        "mask": 2032127,
+        "sid": "S-1-5-18",
+        "type": "allow"
+      },
+      {
+        "flags": 0,
+        "mask": 2032127,
+        "sid": "S-1-5-32-544",
+        "type": "allow"
+      }
+    ],
+    "dacl_present": true,
+    "owner_sid": "S-1-5-32-544",
+    "protected": true,
+    "query": "READ_CONTROL/GetKernelObjectSecurity owner+DACL; no SACL/IOCTL",
+    "sddl": "O:BAD:P(A;;FA;;;SY)(A;;FA;;;BA)",
+    "sddl_sha256": "26dfcb19fa10ac8405c8542ec100ce1ac91a836e9937b50b1a7b32acb58ce074"
+  },
+  "docker_denial_tested": false,
+  "failure": {
+    "error_type": "ResourcePolicyError",
+    "phase": "worker_launch",
+    "winerror": null
+  },
+  "failure_kind": "verification_failed",
+  "finished_at_unix_ms": 1791384828507,
+  "helper_sha256": "78c0006a225fa98211f038c380552d9651a86c9198b518603e989747f315bb45",
+  "installed_driver_file_sha256": "f92de04e5a02256e86ffa1b4252fe669282198b7329227f40e51bca9267d133d",
+  "ioctls_sent": 0,
+  "layout_sha256": "8430fdf1109c63c4a89479f03da8a465dfebf5566c7791c64f868202170672c4",
+  "logon_uses_existing_system_worker_credential": true,
+  "nonce": "06478e2f265546cd8257aa09111373f4",
+  "operator_review_required": true,
+  "pipeline_started": false,
+  "repair_identity_tested": false,
+  "runtime_custody_verified": true,
+  "schema": "cochem-worker-denial-acceptance/1",
+  "slot": "slot1",
+  "started_at_unix_ms": 1791384827431,
+  "status": "DENIAL_CHECK_FAILED",
+  "system_sid": "S-1-5-18",
+  "tested_target_contents_read": 0,
+  "windows_runtime_sha256": "ca07b3bba2b22d0eb095c1f05b9a6c0969207bf7d8b25741adbaee184f4618ba",
+  "worker_dispatch_attempted": true,
+  "worker_released": false
+}

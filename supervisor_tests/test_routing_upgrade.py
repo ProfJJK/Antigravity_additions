@@ -219,11 +219,14 @@ def test_legacy_accepted_artifact_survives_routing_adoption_for_pending_sibling(
     manifest = legacy.claim("legacy-controller")
     assert manifest["routing"] is None
     _legacy_complete(legacy, manifest, {"chapters": [
-        {"chapter_id": f"chapter-{index}", "title": f"Chapter {index}", "requirements": ["REQ-1"]}
+        {"chapter_id": f"chapter-{index}", "title": f"Chapter {index}", "requirements": ["REQ-1"],
+         'wbs_tasks_defined': [{'id': f'chapter-{index}-task',
+             'description': 'Deterministic integration fixture task', 'requirements': ['REQ-1']}]}
         for index in range(2)]}, "codex")
     first = legacy.claim("legacy-controller", worker_slot="slot1")
     old_output = {"chapter_id": first["chapter_id"], "requirements_traced": ["REQ-1"],
-        "wbs_tasks_defined": [{"task_id": "legacy-fixture-task", "description": "Preserved historical acceptance"}],
+        "wbs_tasks_defined": first['payload']['wbs_tasks_defined'] + [
+            {'id': 'legacy-fixture-task', 'description': 'Preserved historical acceptance', 'requirements': ['REQ-1']}],
         "artifact_uri": f"db://{workflow['workflow_id']}/{first['chapter_id']}",
         "artifact_text": "Immutable artifact accepted before routing adoption."}
     accepted = _legacy_complete(legacy, first, old_output, "claude")

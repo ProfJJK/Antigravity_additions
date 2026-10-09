@@ -1,0 +1,50 @@
+Prepared attended login series — AETHERDESK, r3
+
+This is preparation for the owner's return, not an instruction to run now.
+Use these only when the deployment handoff reaches the human-login phase.
+Open an Administrator Windows PowerShell console as AETHERDESK\ansac and stay
+at the computer. Do not redirect or record the console. The wrapper uses the
+existing six worker identities; it does not copy the owner's credentials.
+
+Each command performs six sequential browser logins for its selected provider,
+then checks authentication in all six isolated worker profiles. It stops at
+the first failed login or status check. A login command exiting successfully
+does not itself establish authentication. No model job or daemon is started.
+
+Codex, one attended series:
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\login-six-workers-attended-r3.ps1" -Provider codex -Apply -Interactive
+
+Follow the device-auth URL/code displayed for each slot, finishing slot1 before
+slot2 and so on. The unchanged reviewed Codex helper is explicitly given the
+r3 installation. Its historical login path does not use ResourceLimits; its
+temporary scheduled task is removed by that helper. The new series keeps a
+separate private attempt record even if that leaf task is removed.
+
+Claude, one attended series:
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\login-six-workers-attended-r3.ps1" -Provider claude -Apply -Interactive
+
+For each Claude slot, follow the displayed browser link. If Claude requests
+the returned authorization code, press P at the reviewed helper's prompt and
+paste the single code into its masked input. This sends one bounded line to
+that slot's worker and closes that input; do not paste codes into PowerShell
+commands, chat, a file, or a different slot. Q requests cancellation through
+the helper's cleanup path. Keep the console open until the helper finishes.
+
+A prior Claude session, any existing selected-provider status target, or a
+previous provider series root stops a new series before login. All six targets
+are checked before a private CreateNew marker is created. Administrator-only
+worker-directory checks must pass first; ordinary preview reports those six
+directories as inaccessible rather than assuming they are absent.
+
+If either command stops, preserve its entire private series root and every
+leaf receipt; do not delete markers, rerun the command, or skip ahead manually.
+Share the final sanitized status/error with the deployment task for review.
+Do not share browser codes, provider output, or credential files. The fixed
+per-provider marker intentionally rejects automatic repeat after partial or
+successful runs. Successful authentication still does not attest the exact
+provider account identity, paid plan, serving model, or inference readiness.
+
+The owner confirmed Agy is signed in and working. Its remaining hold is scoped
+to the isolated pipeline integration contract; this series does not run Agy.
+All model routing, six identities, four shared slots, repair budgets, R: and
+the existing startup task remain unchanged.

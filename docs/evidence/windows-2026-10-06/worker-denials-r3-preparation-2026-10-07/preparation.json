@@ -1,0 +1,97 @@
+{
+  "schema": "cochem-worker-denials-r3-preparation/1",
+  "recorded_utc": "2026-10-07T15:25:03.4377618Z",
+  "scope": "Frozen preparation only; no Apply, SYSTEM task registration, worker dispatch, device handle, credential read, model job, old-task change or activation by this preparation.",
+  "authoring_directory": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next",
+  "artifact_sha256": {
+    "worker-denial-acceptance-r3.py": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+    "check-worker-denials-r3.ps1": "5f645c51e090eab289b74013391d71c69a53da20e542a1a6ee65823cacd5de2d",
+    "check-all-worker-denials-r3.ps1": "b14130d52b390da1d92bc982b0a17969fe3b7b4ecfed185dfaf6c4b24c35e0fc",
+    "worker-denials-r3-tests.xml": "033fdc64af4cf9bc020dd0cd30dfc8d58e635d4839829856d56e5a612753cf6d",
+    "worker-denials-r3-readonly-preview.json": "e3e156afbe082d02367c1e2b590e2e9907fd2037b764fcbf2fd9b9143824d74a",
+    "stopped-runtime-r3-source-manifest.json": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "test_worker_denials_r3.py": "904573377e0026b6e7b9128a13954aaad7e700067fe87d8556f526b280607277",
+    "test_all_worker_denials_r3.py": "e0be07f393ab0d4b9eaffcd2607f5d7d9e74b8599499c898a400134cf113c14b",
+    "test_worker_denials_r3_controls.py": "8fbb0e23f3a944fe12bd3a2966d0033732bce1007d8ae23a55e3357870bb4be9"
+  },
+  "reviews": [
+    "Root read batch/leaf and reported no immediate finding.",
+    "Independent native_next final source/custody/control-flow review passed at the exact archived hashes."
+  ],
+  "tests": {
+    "passed": 101,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xml_seconds": 21.156,
+    "pytest_display_seconds": 21.55,
+    "runtime": "Windows Python3.12.13 and Windows PowerShell5.1",
+    "scope": [
+      "Inherited handle/token/Job/cleanup and six-slot stop-first-failure fixtures.",
+      "Actual frozen166source and109installedasset bytes in ordinary-user disposable binding fixtures; source/asset/manifest/receipt/venv drift refusal.",
+      "Actual exclusive helper copy through complete Apply body to simulated SYSTEM TASK_CREATE registration; no actual privileged task.",
+      "Exact original failed task action/nonce/terminal exit2/no-instance gate fixtures.",
+      "Real native PowerShell stderr and success/failure exit transport with caller preference restoration."
+    ],
+    "not_acceptance": "Tests are inert launch/task/device fixtures; they do not establish actual six-worker denials."
+  },
+  "default_preview": {
+    "mode": "READ_ONLY_PLAN",
+    "all_six_fresh_namespaces": true,
+    "holds": [
+      "The reviewed fresh r3 runtime is not installed."
+    ],
+    "old_terminal_task_check_deferred": true,
+    "worker_processes_executed": 0
+  },
+  "required_runtime": {
+    "root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "source_files": 166,
+    "installed_assets": 109,
+    "installed_revision_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "resource_limits_sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+    "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "install_receipt_binding": "Full semantic/source/revision checks; actual bytes hashed and held before dispatch; digest supplied to child for independent source/revision verification."
+  },
+  "preserved_failure": {
+    "receipt_sha256": "691c70560436f948464c529b9d2d6a3e33ce240749642af86ca79c748791461d",
+    "nonce": "06478e2f265546cd8257aa09111373f4",
+    "task": "CoChem-4.2.7-WorkerDenial-slot1",
+    "required_last_task_result": 2,
+    "required_instances": 0,
+    "cleanup_verified_in_original_receipt": false,
+    "old_task_or_receipt_modified": false
+  },
+  "new_namespaces": {
+    "root_pattern": "C:\\Program Files\\CoChem\\WorkerDenial4.2.7-windows-20261007-r3-slotN",
+    "task_pattern": "CoChem-4.2.7-WorkerDenial-r3-slotN",
+    "slots": [
+      "slot1",
+      "slot2",
+      "slot3",
+      "slot4",
+      "slot5",
+      "slot6"
+    ],
+    "parallel_workers": 1,
+    "stop_on_first_failure": true,
+    "automatic_retry": false
+  },
+  "preservation": {
+    "old_helpers_unchanged": true,
+    "four_shared_slots_unchanged": true,
+    "chapter06_routing_unchanged": true,
+    "existing_R_drive_and_startup_task_unchanged": true,
+    "legacy_databases_and_budgets_unchanged": true
+  },
+  "owner_command_after_verified_r3_install": "powershell.exe -NoProfile -File \"C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-denials-r3.ps1\" -Apply",
+  "not_covered": [
+    "RAM provisioning/adoption",
+    "Docker pipe denial",
+    "repair identity",
+    "native authentication/model workflows",
+    "soak or activation"
+  ],
+  "activation_ready": false
+}

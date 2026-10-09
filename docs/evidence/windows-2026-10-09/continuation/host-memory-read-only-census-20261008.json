@@ -1,0 +1,82 @@
+{
+  "schema": "cochem-host-memory-read-only-census/1",
+  "recorded_utc": "2026-10-09T02:45:02.5271056Z",
+  "physical_total_mib": 65292.0,
+  "physical_free_mib": 10509.5,
+  "virtual_total_mib": 76607.2,
+  "virtual_free_mib": 2779.7,
+  "automatically_managed_pagefile": true,
+  "pagefiles": [
+    {
+      "Name": "C:\\pagefile.sys",
+      "AllocatedBaseSize": 11315,
+      "CurrentUsage": 143,
+      "PeakUsage": 143
+    }
+  ],
+  "largest_private_processes": [
+    {
+      "name": "vmmemWSL",
+      "Id": 29896,
+      "private_mib": 39856.2,
+      "working_set_mib": 34593.8
+    },
+    {
+      "name": "System",
+      "Id": 4,
+      "private_mib": 8208.1,
+      "working_set_mib": 25.7
+    },
+    {
+      "name": "ChatGPT",
+      "Id": 24156,
+      "private_mib": 892.9,
+      "working_set_mib": 777.4
+    },
+    {
+      "name": "nordsec-threatprotection-service",
+      "Id": 30476,
+      "private_mib": 822.7,
+      "working_set_mib": 302.3
+    },
+    {
+      "name": "MsMpEng",
+      "Id": 6108,
+      "private_mib": 776.0,
+      "working_set_mib": 688.2
+    },
+    {
+      "name": "codex",
+      "Id": 24424,
+      "private_mib": 730.7,
+      "working_set_mib": 706.5
+    },
+    {
+      "name": "language_server",
+      "Id": 21152,
+      "private_mib": 476.4,
+      "working_set_mib": 332.0
+    },
+    {
+      "name": "explorer",
+      "Id": 13064,
+      "private_mib": 455.8,
+      "working_set_mib": 362.8
+    },
+    {
+      "name": "ChatGPT",
+      "Id": 24148,
+      "private_mib": 414.6,
+      "working_set_mib": 347.3
+    },
+    {
+      "name": "dwm",
+      "Id": 2308,
+      "private_mib": 387.9,
+      "working_set_mib": 86.7
+    }
+  ],
+  "processes_stopped": 0,
+  "settings_changed": 0,
+  "model_jobs_submitted": 0
+}

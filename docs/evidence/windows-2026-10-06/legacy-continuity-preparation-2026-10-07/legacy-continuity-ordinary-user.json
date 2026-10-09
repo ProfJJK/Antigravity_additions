@@ -1,0 +1,1571 @@
+{
+  "schema": "cochem-legacy-continuity-metadata/1",
+  "captured_utc": "2026-10-07T18:13:03.6191050Z",
+  "host": "AETHERDESK",
+  "administrator": false,
+  "system": false,
+  "source_sha256": "91ce79837b6ef316ed22ee7d1719ef44607c464afd93d4ca7ce49111b1071ebb",
+  "source_hash_scope": "This diagnostic script only",
+  "discovery": {
+    "status": "COMPLETE",
+    "root": "C:\\ProgramData",
+    "matching_roots": [
+      "C:\\ProgramData\\CoChem",
+      "C:\\ProgramData\\CoChemPipeline427"
+    ],
+    "maximum_roots": 32
+  },
+  "metadata": [
+    {
+      "path": "C:\\ProgramData\\CoChem",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-09-30T08:00:09.5103323Z",
+      "write_utc": "2026-09-30T08:00:09.5103323Z",
+      "attributes": 8208,
+      "content_read": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-09-30T08:00:09.5103323Z",
+      "write_utc": "2026-09-30T08:01:35.0334637Z",
+      "attributes": 8208,
+      "content_read": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChem\\warden\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-10-07T05:23:16.8028730Z",
+      "write_utc": "2026-10-07T05:23:16.8038763Z",
+      "attributes": 8208,
+      "content_read": false
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\active-release.json",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\budget-upgrade.json",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\budget-upgrade-preserved.json",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\component-recovery.db",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\component-recovery.db-shm",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\component-recovery.db-wal",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\release-journal.json",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\repair-quarantine.json",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\supervisor.db",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\supervisor.db-shm",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\private\\supervisor.db-wal",
+      "status": "INACCESSIBLE",
+      "error_type": "UnauthorizedAccessException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemPipeline427\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor423\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor424\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor425\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor426\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "C:\\ProgramData\\CoChemSupervisor427-windows-20261006\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-09-29T01:36:05.1631563Z",
+      "write_utc": "2026-10-07T02:28:46.9800483Z",
+      "attributes": 16,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\job_board.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 1740800,
+      "creation_utc": "2026-09-29T02:03:18.4964894Z",
+      "write_utc": "2026-10-04T04:58:02.0821924Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\knowledge_index.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 1949696,
+      "creation_utc": "2026-09-30T19:45:56.0640444Z",
+      "write_utc": "2026-10-01T11:37:21.7832265Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.1.2\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-10-04T01:08:47.4634577Z",
+      "write_utc": "2026-10-07T06:02:22.8133793Z",
+      "attributes": 16,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db",
+      "status": "PRESENT",
+      "kind": "directory",
+      "bytes": null,
+      "creation_utc": "2026-10-04T03:13:18.1138848Z",
+      "write_utc": "2026-10-07T02:28:46.9871405Z",
+      "attributes": 16,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\job_board.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 45056,
+      "creation_utc": "2026-10-04T03:13:18.1138848Z",
+      "write_utc": "2026-10-05T03:28:56.8430978Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\oracle_tracking.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 12288,
+      "creation_utc": "2026-10-05T12:23:38.0233549Z",
+      "write_utc": "2026-10-05T13:32:48.9840284Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\db\\wikirag.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 8192,
+      "creation_utc": "2026-10-05T11:44:13.5396403Z",
+      "write_utc": "2026-10-05T11:44:13.5790990Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\job_board.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 2416640,
+      "creation_utc": "2026-10-04T01:08:48.9050157Z",
+      "write_utc": "2026-10-06T02:22:21.0684122Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\knowledge_index.db",
+      "status": "PRESENT",
+      "kind": "file",
+      "bytes": 1949696,
+      "creation_utc": "2026-10-04T01:08:48.9092061Z",
+      "write_utc": "2026-10-01T11:37:21.7832265Z",
+      "attributes": 32,
+      "content_read": false
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\active-release.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\budget-upgrade.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\budget-upgrade-preserved.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\component-recovery.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\component-recovery.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\component-recovery.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\private\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\release-journal.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\repair-quarantine.json",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\supervisor.db",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\supervisor.db-shm",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    },
+    {
+      "path": "D:\\__CoChem\\__agentic\\v4.2.0\\supervisor.db-wal",
+      "status": "ABSENT",
+      "error_type": "ItemNotFoundException"
+    }
+  ],
+  "tasks": [
+    {
+      "name": "CoChemHostWarden_V412",
+      "status": "PRESENT",
+      "state": 4,
+      "enabled": true,
+      "instances": 1,
+      "last_result": 267009,
+      "principal": "ansac",
+      "logon_type": 2,
+      "run_level": 1,
+      "triggers": 1,
+      "actions": 1,
+      "definition_sha256": "8b693748138a8ebe899bdb09087a8b032f8657200dfbee1c8f5150319273656e",
+      "definition_text_published": false,
+      "modified": false
+    },
+    {
+      "name": "CoChem-4.2.3-Supervisor",
+      "status": "ABSENT",
+      "error_type": "FileNotFoundException"
+    },
+    {
+      "name": "CoChem-4.2.2-Warden",
+      "status": "ABSENT",
+      "error_type": "FileNotFoundException"
+    },
+    {
+      "name": "CoChem-4.2.7-Supervisor",
+      "status": "ABSENT",
+      "error_type": "FileNotFoundException"
+    },
+    {
+      "name": "CoChem-4.2.7-Warden",
+      "status": "ABSENT",
+      "error_type": "FileNotFoundException"
+    }
+  ],
+  "processes": {
+    "status": "CAPTURED_CANDIDATE_METADATA",
+    "candidates": 41,
+    "unreadable_command_lines": 2,
+    "matched": [
+      {
+        "pid": 6728,
+        "parent_pid": 24308,
+        "created_utc": "2026-10-06T00:09:45.4713820Z",
+        "executable": "C:\\Python314\\python.exe",
+        "classification": "LEGACY_V420_MCP_INGRESS",
+        "command_line_sha256": "5d9ab0d845f2eb0a3b581adc20b2e9e1c8d9e84f29d9581e40eb41ddf0375723",
+        "command_line_published": false
+      }
+    ],
+    "visibility_incomplete": true,
+    "live_database_writer_proven": false,
+    "scope": "Fixed python/pythonw/cmd image names and known-root string classification only; no handles, process memory, credentials, database connections or open-file queries."
+  },
+  "database_contents_opened": false,
+  "original_file_contents_read": false,
+  "original_files_written": false,
+  "tasks_changed": false,
+  "processes_changed": false,
+  "credential_stores_read": false,
+  "limitations": [
+    "Only fixed known roots and immediate discovered ProgramData CoChem roots, at root/private control locations; no recursive disk scan.",
+    "Absence is location-specific, never zero spend or proof of no other ledger.",
+    "Process command-line classification is not proof of current database handles, quiescence or cross-database consistency.",
+    "Metadata cannot reconstruct paid generation/review charges or release an unresolved authority hold."
+  ],
+  "remaining_legacy_allowance": null,
+  "activation_ready": false
+}

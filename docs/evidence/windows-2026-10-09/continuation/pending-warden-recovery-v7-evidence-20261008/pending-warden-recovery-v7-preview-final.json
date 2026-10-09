@@ -1,0 +1,21 @@
+{
+    "schema":  "cochem-pending-warden-recovery-plan/1",
+    "mode":  "READ_ONLY_PLAN",
+    "authentication_attempt":  "8ba7ce50d32c4a96a3c3fd5947a6cd4b",
+    "runtime_verified":  true,
+    "runtime_root":  "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+    "original_commissioning_root":  "C:\\Program Files\\CoChem\\WardenCommissioning4.2.7-windows-20261007-r3-v1",
+    "recovery_root":  "C:\\Program Files\\CoChem\\TaskAclRecovery4.2.7-windows-20261008-r3-v1",
+    "identity_count":  6,
+    "shared_capacity":  4,
+    "login_commands_executed":  0,
+    "model_jobs_submitted":  0,
+    "tasks_changed":  0,
+    "python_executed":  false,
+    "automatic_repair_enabled":  false,
+    "automatic_retry_allowed":  false,
+    "full_srs_acceptance":  false,
+    "holds":  [
+                  "Elevated owner must verify saved private authentication, exact original files and never-run task before recovery."
+              ]
+}

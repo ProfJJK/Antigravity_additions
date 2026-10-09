@@ -31,16 +31,19 @@ def _synthetic_worker(channel):
             time.sleep(delay)
             if node["kind"] == "MANIFEST_GENERATOR":
                 output = {"chapters": [{"chapter_id": f"ch-{index}", "title": f"Chapter {index}",
-                    "requirements": node["payload"]["requirements"]}
+                    "requirements": node["payload"]["requirements"], 'wbs_tasks_defined': [
+                        {'id': f'ch-{index}-task', 'description': 'Synthetic queue workload',
+                         'requirements': node['payload']['requirements']}]}
                     for index in range(node["payload"]["chapter_count"])]}
             elif node["kind"] == "CHAPTER_DRAFT":
                 output = {"chapter_id": node["chapter_id"],
                     "requirements_traced": node["payload"]["requirements"],
-                    "wbs_tasks_defined": [{"task_id": "queue-storage-fixture", "description": "Synthetic queue workload"}],
+                    "wbs_tasks_defined": node['payload']['wbs_tasks_defined'],
                     "artifact_uri": f"db://{node['workflow_id']}/{node['chapter_id']}",
                     "artifact_text": "Synthetic storage measurement.\n" + "x" * artifact_size}
             else:
-                output = {"chapter_hashes": node["payload"]["chapter_hashes"],
+                output = {**{key: node['payload'][key] for key in ('chapter_hashes', 'chapter_output_hashes',
+                            'coverage_report_sha256', 'wbs_tasks_by_chapter')},
                           "artifact_text": "Synthetic synthesis.\n" + "x" * artifact_size}
             route = node["route"]
             receipt = {"provider": route["provider"], "requested_model": route["model"],

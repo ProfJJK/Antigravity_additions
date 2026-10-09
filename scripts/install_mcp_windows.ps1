@@ -3,6 +3,7 @@
 param(
     [string]$Python = 'py.exe',
     [string[]]$PythonArgs = @('-3.12'),
+    [string]$Uv = 'uv.exe',
     [Parameter(Mandatory=$true)][string]$PipelineClientConfig,
     [string]$ProjectId,
     [string]$Workspace
@@ -17,6 +18,16 @@ function Invoke-NativeChecked {
     if ($LASTEXITCODE -ne 0) {
         throw "$Executable exited with code $LASTEXITCODE. Installation stopped."
     }
+}
+
+function Install-FrozenEnvironment {
+    param([string]$PythonPath)
+    $savedEnvironment = $env:UV_PROJECT_ENVIRONMENT
+    try {
+        $env:UV_PROJECT_ENVIRONMENT = $venv
+        Invoke-NativeChecked -Executable $Uv -Arguments @('sync','--project',$repo,'--frozen','--no-editable','--link-mode','copy','--extra','mcp','--python',$PythonPath,'--no-python-downloads')
+    }
+    finally { $env:UV_PROJECT_ENVIRONMENT = $savedEnvironment }
 }
 
 function Write-NewJson {
@@ -72,6 +83,10 @@ $examplePath = Join-Path $repo 'config\bridge.windows.example.json'
 if (-not (Test-Path -LiteralPath $examplePath -PathType Leaf)) {
     throw "Bridge example is missing: $examplePath"
 }
+if (-not (Test-Path -LiteralPath (Join-Path $repo 'uv.lock') -PathType Leaf)) {
+    throw 'The release uv.lock is required; refusing an unfrozen dependency installation.'
+}
+$Uv = (Get-Command -Name $Uv -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
 
 Push-Location -LiteralPath $repo
 try {
@@ -82,11 +97,14 @@ try {
         $bootstrap = (Get-Command -Name $Python -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
         Write-Host 'Checking for Python 3.12 or newer.'
         Invoke-NativeChecked -Executable $bootstrap -Arguments ($PythonArgs + @('-c', 'import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))'))
-        Invoke-NativeChecked -Executable $bootstrap -Arguments ($PythonArgs + @('-m', 'venv', $venv))
+        $pythonPath = & $bootstrap @PythonArgs -c 'import sys; print(sys.executable)'
+        if ($LASTEXITCODE -ne 0 -or -not (Test-Path -LiteralPath $pythonPath -PathType Leaf)) { throw 'Could not resolve the selected Windows Python executable.' }
     }
+    else { $pythonPath = $venvPython }
+    Invoke-NativeChecked -Executable $pythonPath -Arguments @('-c', 'import sys; sys.exit(sys.version_info < (3, 12))')
+    Install-FrozenEnvironment -PythonPath $pythonPath
     Write-Host 'Checking the environment uses Python 3.12 or newer.'
     Invoke-NativeChecked -Executable $venvPython -Arguments @('-c', 'import sys; print(sys.version); sys.exit(sys.version_info < (3, 12))')
-    Invoke-NativeChecked -Executable $venvPython -Arguments @('-m', 'pip', 'install', '-e', '.[mcp]')
     Invoke-NativeChecked -Executable $venvPython -Arguments @('-m', 'cochem_mcp', '--version')
 
     # The primary client carries no native execution authority. Optional old

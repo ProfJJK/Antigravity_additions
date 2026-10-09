@@ -1,0 +1,34 @@
+{
+  "schema": "cochem-ordinary-controller-task-census/1",
+  "observed_utc": "2026-10-08T01:54:32.6962266Z",
+  "identity": "AETHERDESK\\ansac",
+  "administrator": false,
+  "tasks": [
+    {
+      "name": "CoChem-4.2.7-Warden",
+      "present": false,
+      "observation": "TASK_NOT_FOUND"
+    },
+    {
+      "name": "CoChem-4.2.7-Supervisor",
+      "present": false,
+      "observation": "TASK_NOT_FOUND"
+    },
+    {
+      "name": "CoChem-4.2.2-Warden",
+      "present": false,
+      "observation": "TASK_NOT_FOUND"
+    },
+    {
+      "name": "CoChem-4.2.3-Supervisor",
+      "present": false,
+      "observation": "TASK_NOT_FOUND"
+    }
+  ],
+  "task_actions_read": false,
+  "task_changes": 0,
+  "credentials_accessed": false,
+  "databases_opened": false,
+  "model_jobs_submitted": 0,
+  "linux_evidence": false
+}

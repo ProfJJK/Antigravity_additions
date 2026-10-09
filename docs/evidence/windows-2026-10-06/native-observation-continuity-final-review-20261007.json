@@ -1,0 +1,27 @@
+{
+  "schema": "cochem-native-observation-continuity-final-review/1",
+  "captured_at_utc": "2026-10-08T01:26:06.7130339Z",
+  "status": "SOURCE_REPAIR_TESTED_NOT_PHYSICAL_ACCEPTANCE",
+  "prior_report": "desktop-heap-monitoring-followup-2026-10-07.json",
+  "prior_sha256": "d1fda445b9ffe5e48df0aa8844e6fe68c2f3f67bf960f22028f80852ce08942e",
+  "source_sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+  "test_sha256": "ade36294bdfd845680c55b9eb87ae9471cd4995f6d2b19b1caa1f00b03e4beee",
+  "review_xml": "native-observation-continuity-root-review-20261007.xml",
+  "review_xml_sha256": "a676ee19390b78ab5d0f5ba583a004fc72ecb9c27e8bb1aa58d74e6f1b1cd222",
+  "tests": 34,
+  "passed": 32,
+  "skipped": 2,
+  "failures": 0,
+  "errors": 0,
+  "junit_seconds": 2.108,
+  "final_review_delta": [
+    "Zero accepted observations now report desktop_heap.available=false rather than an initialized true value. The long-initial-pause fixture checks this.",
+    "The new maximum ten-second gap is explicitly a conservative harness continuity policy using the existing freshness window. It is not claimed as an SRS-prescribed sampling rate. Default cadence remains one second."
+  ],
+  "scope": "Root independently reviewed the source and ran the ordinary Windows focused suite. Native calls, clocks and SYSTEM validation in observer fixtures are simulated; no real 48-hour run or heap collection occurred.",
+  "installed_r3_modified": false,
+  "collector_available": false,
+  "heap_samples_measured": 0,
+  "native_acceptance_complete": false,
+  "next_release_required": true
+}

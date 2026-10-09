@@ -1,0 +1,193 @@
+"""Offline incident replay: bounded redacted evidence, no model or process calls."""
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+from contextlib import contextmanager
+import shutil
+import sqlite3
+import tempfile
+import time
+from datetime import datetime, timezone
+
+from .job_board import canonical, digest
+from .monitor import classify_error, redact_diagnostic
+from .probes import configured_routing_policy, score_routing_task
+
+_ALLOWED = {'fingerprint', 'category', 'repairable', 'summary', 'evidence', 'objective'}
+_SECRET = {'password', 'access_token', 'refresh_token', 'api_key', 'controller_token',
+           'fencing_token', 'credential_blob', 'client_secret', 'prompt', 'payload', 'artifact_text'}
+
+
+def redacted_evidence(value, *, depth=0):
+    if depth>12:
+        raise ValueError('Replay evidence nesting exceeds its bound')
+    if isinstance(value, dict):
+        return {str(key):('[REDACTED]' if str(key).casefold() in _SECRET else redacted_evidence(child,depth=depth+1))
+                for key,child in value.items()}
+    if isinstance(value, list):
+        return [redacted_evidence(child,depth=depth+1) for child in value[:256]]
+    if isinstance(value,str):
+        return redact_diagnostic(value,2048)
+    if value is None or type(value) in (bool,int,float):
+        canonical(value)  # rejects NaN/Infinity
+        return value
+    raise ValueError('Replay input must be finite JSON data')
+
+
+def repair_scoring_payload(incident):
+    return {'objective':incident.get('objective',incident.get('summary','Repair demonstrated failure')),
+        'requirements':['Preserve subscription authentication and permissions',
+            'Preserve stored workflow data and transaction invariants',
+            'Pass protected acceptance checks and independent rollback validation',
+            'Respect existing concurrency and source path constraints'],
+        'description':redact_diagnostic(json.dumps(incident.get('evidence',{})),2048)}
+
+
+@contextmanager
+def _read_snapshot(source):
+    """Query a stable DB/WAL copy; never create WAL/SHM files beside the source.
+
+    SQLite mode=ro alone can create shared-memory files beside a WAL database.
+    Copy both files, require their full bytes to remain unchanged throughout
+    capture, then let SQLite reconcile only the disposable copy.
+    """
+    def checksum(path):
+        if path.is_symlink() or not path.is_file():
+            raise ValueError('Ledger snapshot requires ordinary files')
+        with path.open('rb') as stream:
+            return hashlib.file_digest(stream,'sha256').hexdigest()
+    wal=source.with_name(source.name+'-wal')
+    with tempfile.TemporaryDirectory(prefix='cochem-replay-') as directory:
+        snapshot=Path(directory)/'supervisor.db'
+        paths=[source]+([wal] if wal.exists() else [])
+        before={path:checksum(path) for path in paths}
+        for path in paths:
+            target=snapshot if path==source else snapshot.with_name(snapshot.name+'-wal')
+            shutil.copyfile(path,target)
+            if checksum(target)!=before[path]:
+                raise ValueError('Ledger changed during read-only replay snapshot')
+        if wal.exists()!=(wal in paths) or any(checksum(path)!=before[path] for path in paths):
+            raise ValueError('Ledger changed during read-only replay snapshot')
+        connection=sqlite3.connect(snapshot.as_uri()+'?mode=ro',uri=True,timeout=5,isolation_level=None)
+        try:
+            connection.row_factory=sqlite3.Row
+            connection.execute('PRAGMA query_only=ON')
+            connection.execute('BEGIN')
+            if connection.execute('PRAGMA quick_check').fetchone()[0]!='ok':
+                raise ValueError('Ledger snapshot integrity could not be verified')
+            yield connection
+        finally:
+            connection.close()
+
+
+def project_budget(fingerprint, *, config=None, ledger_path=None, now=None):
+    """Read a consistent existing ledger snapshot without schema or budget writes.
+
+    Missing evidence stays unknown. Expired leases are reported for recovery,
+    never silently completed or refunded by this diagnostic path.
+    """
+    from .config import DEFAULTS
+    timestamp=time.time() if now is None else now
+    if type(timestamp) not in (int,float) or not 0<=timestamp<float('inf'):
+        raise ValueError('Replay time must be a finite nonnegative epoch')
+    policy={key:(config or {}).get(key,DEFAULTS[key]) for key in ('max_per_incident','max_per_day','cooldown_seconds')}
+    if (type(policy['max_per_incident']) is not int or not 1<=policy['max_per_incident']<=2 or
+            type(policy['max_per_day']) is not int or not 1<=policy['max_per_day']<=4 or
+            type(policy['cooldown_seconds']) is not int or policy['cooldown_seconds']<1800):
+        raise ValueError('Replay requires canonical production repair budget limits')
+    result={'known':False,'read_only':True,'observed_at':timestamp,
+        'scope':'repair generation and asymmetric review; deployment smoke has a separate three-dispatch limit',
+        'configured_limits':policy,'effective_limits':None,'charged_model_calls':None,
+        'remaining_model_calls':None,'eligible_to_reserve':None,'blockers':[],
+        'next_successful_repair_requires_at_least_model_calls':2}
+    if ledger_path is None or not isinstance(fingerprint,str) or not fingerprint:
+        result['blockers']=['current ledger and incident fingerprint are required for a budget decision']
+        return result
+    source=Path(ledger_path)
+    if source.is_symlink() or not source.is_file():
+        result['blockers']=['current ledger is absent or is not an ordinary file']
+        return result
+    day=datetime.fromtimestamp(timestamp,timezone.utc).date().isoformat()
+    try:
+        with _read_snapshot(source) as connection:
+            names={row[0] for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if not {'supervisor_incidents','supervisor_attempts'}<=names:
+                raise ValueError('Current ledger schema is unavailable')
+            status=connection.execute('SELECT status FROM supervisor_incidents WHERE fingerprint=?',(fingerprint,)).fetchone()
+            incident_count,incident_limit=connection.execute(
+                'SELECT count(*),min(max_per_incident) FROM supervisor_attempts WHERE fingerprint=?',(fingerprint,)).fetchone()
+            day_count,day_limit=connection.execute(
+                'SELECT count(*),min(max_per_day) FROM supervisor_attempts WHERE budget_day=?',(day,)).fetchone()
+            extra_incident=extra_day=0;extra_limit=None
+            if 'supervisor_model_calls' in names:
+                extra_incident=connection.execute('SELECT count(*) FROM supervisor_model_calls WHERE fingerprint=?',(fingerprint,)).fetchone()[0]
+                extra_day,extra_limit=connection.execute(
+                    'SELECT count(*),min(max_per_day) FROM supervisor_model_calls WHERE budget_day=?',(day,)).fetchone()
+            latest=connection.execute('SELECT started_at,cooldown_seconds FROM supervisor_attempts ORDER BY started_at DESC,attempt_id DESC LIMIT 1').fetchone()
+            active=connection.execute("SELECT lease_expires_at FROM supervisor_attempts WHERE status='RUNNING'").fetchall()
+    except (sqlite3.DatabaseError,ValueError,OSError) as exc:
+        result['blockers']=['current ledger cannot be verified: '+type(exc).__name__]
+        return result
+    limits={'max_per_incident':min(value for value in (policy['max_per_incident'],incident_limit) if value is not None),
+        'max_per_day':min(value for value in (policy['max_per_day'],day_limit,extra_limit) if value is not None),
+        'cooldown_seconds':max(policy['cooldown_seconds'],latest['cooldown_seconds'] if latest else 0)}
+    spent={'incident':incident_count+extra_incident,'utc_day':day_count+extra_day,
+        'incident_generations':incident_count,'incident_reviews':extra_incident}
+    remaining={'incident':max(0,limits['max_per_incident']-spent['incident']),
+        'utc_day':max(0,limits['max_per_day']-spent['utc_day'])}
+    cooldown_until=latest['started_at']+limits['cooldown_seconds'] if latest else timestamp
+    blockers=[]
+    if status is not None and status['status'] in {'RESOLVED','EXHAUSTED','REPAIRING','BLOCKED'}:
+        blockers.append('incident status '+status['status'])
+    if not remaining['incident']: blockers.append('incident model-call budget exhausted')
+    if not remaining['utc_day']: blockers.append('UTC-day model-call budget exhausted')
+    if active: blockers.append('active or expired reservation requires fenced completion/recovery')
+    if timestamp<cooldown_until: blockers.append('repair cooldown has not elapsed')
+    result.update(known=True,utc_day=day,incident_recorded=status is not None,
+        effective_limits=limits,charged_model_calls=spent,remaining_model_calls=remaining,
+        cooldown_until=cooldown_until,active_reservations=len(active),
+        expired_reservations=sum(row['lease_expires_at']<=timestamp for row in active),
+        eligible_to_reserve=not blockers,blockers=blockers,
+        sufficient_calls_for_generation_and_review=min(remaining.values())>=2)
+    return result
+
+
+def replay_incident(incident, policy=None, *, config=None, ledger_path=None, now=None):
+    if not isinstance(incident,dict) or set(incident)-_ALLOWED or not isinstance(incident.get('summary'),str):
+        raise ValueError('Replay requires one structured saved incident with a summary')
+    if len(canonical(incident).encode())>1024*1024:
+        raise ValueError('Replay evidence exceeds one MiB')
+    safe=redacted_evidence(incident)
+    normalized=configured_routing_policy(policy)
+    diagnostic=safe['summary']+' '+canonical(safe.get('evidence',{}))
+    classification=classify_error(diagnostic)
+    if safe.get('category')=='update':
+        # Saved update requests are previews only, never fresh authorization.
+        classification={'category':'update','repairable':True,'diagnostic':'Saved operator update preview'}
+    payload=repair_scoring_payload(safe)
+    scoring=score_routing_task('REPAIR_REQUEST',payload)
+    budget=project_budget(safe.get('fingerprint'),config=config,ledger_path=ledger_path,now=now)
+    action=('hold_external_prerequisite' if not classification.get('repairable') else
+        'hold_budget_evidence_unknown' if not budget['known'] else
+        'hold_budget_or_incident' if not budget['eligible_to_reserve'] else 'would_queue_bounded_repair')
+    return {'schema':'cochem-incident-replay/4.2.7','dry_run':True,
+        'model_calls':0,'process_calls':0,'state_mutations':0,
+        'evidence':safe,'evidence_sha256':digest(safe),'classification':classification,
+        'recorded_category':safe.get('category'),
+        'classification_matches_recorded':classification['category']==safe.get('category'),
+        'scoring':scoring,'policy_digest':digest(normalized),
+        'ordered_candidates':normalized['tiers'][scoring['tier']],
+        'budget_projection':budget,'action':action,
+        'execution_authorized':False}
+
+
+def replay_file(path, policy=None, *, config=None, ledger_path=None, now=None):
+    source=Path(path)
+    if source.is_symlink() or not source.is_file() or source.stat().st_size>1024*1024:
+        raise ValueError('Replay input must be a bounded regular JSON incident file')
+    data=source.read_bytes()
+    result=replay_incident(json.loads(data),policy,config=config,ledger_path=ledger_path,now=now)
+    result['input_sha256']=hashlib.sha256(data).hexdigest()
+    return result

@@ -1,0 +1,186 @@
+{
+  "schema": "cochem-native-r3-preparation/1",
+  "recorded_utc": "2026-10-07T16:19:33.919894+00:00",
+  "state": "PREPARED_REVIEWED_NOT_ISSUED_OR_APPLIED",
+  "original_helpers_preserved": true,
+  "original_source_hashes": [
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\HUMAN_NATIVE_LOGIN.txt",
+      "bytes": 3433,
+      "sha256": "9b4411c43a67cb1e4bd50dff4341823d4667c3110d5c9dd587c1a2ce92689ec1",
+      "last_write_utc": "2026-10-07T11:25:08.388992+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\worker-native-status.py",
+      "bytes": 21908,
+      "sha256": "8b19d224effd975423b6d9fb02f79fa949d92e73a131d710ac95de55c8580a52",
+      "last_write_utc": "2026-10-07T05:55:12.878386+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-worker-native-status.ps1",
+      "bytes": 13162,
+      "sha256": "fa9568207019c554b2f3246e50f414e94901f0f5a5f6f843771610c21e95e60c",
+      "last_write_utc": "2026-10-07T05:57:07.037290+00:00"
+    },
+    {
+      "path": "C:\\Users\\ansac\\Documents\\Codex\\2026-10-06\\the-github-repository-is-located-at\\windows-deployment-next\\check-all-worker-native-status.ps1",
+      "bytes": 7547,
+      "sha256": "71ccffb11b7cff16acd1306cf73f0ff2440cca28c72643f5d1d009bede83bf8b",
+      "last_write_utc": "2026-10-07T06:03:06.855849+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\worker_claude_login_bridge.py",
+      "bytes": 15881,
+      "sha256": "39a163887514ab0153cd14c036dc60151c0f4752f90df15de31dc7076f1b5e59",
+      "last_write_utc": "2026-10-07T11:23:34.348128+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker_interactive.ps1",
+      "bytes": 15366,
+      "sha256": "904ba27a9ad6dfe096fd29b7206cc41e8bd8556367cb457a522c710eda156fe6",
+      "last_write_utc": "2026-10-07T11:23:34.894919+00:00"
+    },
+    {
+      "path": "D:\\Gdrive\\__CoChem\\GitHub-Repo\\Antigravity_additions\\scripts\\login_pipeline_worker.ps1",
+      "bytes": 6858,
+      "sha256": "e3d4d93f58446e05e4d585ac9215410527f8d1ec2a884153dbf69feb4ee7b32a",
+      "last_write_utc": "2026-10-07T05:01:07.809912+00:00"
+    },
+    {
+      "path": "C:\\Program Files\\CoChem\\InstallGuard4.2.7-windows-20261006\\repository\\scripts\\login_pipeline_worker.ps1",
+      "bytes": 6858,
+      "sha256": "e3d4d93f58446e05e4d585ac9215410527f8d1ec2a884153dbf69feb4ee7b32a",
+      "last_write_utc": "2026-10-07T05:10:00.142992+00:00"
+    }
+  ],
+  "runtime_root": "C:\\Program Files\\CoChem\\Pipeline4.2.7-windows-20261007-r3",
+  "runtime_pins": {
+    "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+    "source_manifest_sha256": "6c33a1434df2e5c3c32697bda5f828fe010f366550beeedde65636de982bbcd1",
+    "installed_109_asset_revision_sha256": "309eb48d9b1c43179ae1f0784d0139357168314f8312a64fb84dbd8380d44eb4",
+    "resource_limits_sha256": "de7fac91e32cef2f854bd53487037352bbc0915f95aaf987ee8a4a543317915f",
+    "config_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+    "pyvenv_sha256": "0c2b1a15dcdfe67436882fcf0f8d567d79442bcac41f3b744153c17c21df727d"
+  },
+  "changes": [
+    "Separate r3 status helper/leaf/batch and Claude bridge/wrapper use actual installed r3 receipt, full166source/109asset checks, exact config/layout and six-key uv schema.",
+    "Provider arguments/status classification/private bounded Claude input protocol unchanged. Native executable pins unchanged.",
+    "Fresh r3 task/root namespaces preserve prior scripts/evidence. Status task results retain bounded sanitized failure receipt metadata without raw provider output.",
+    "New attended guide explicitly selects r3 for the frozen generic Codex login helper; its login path does not request ResourceLimits. The historical helper lifecycle is retained.",
+    "Owner-confirmed Agy availability/sign-in/functioning remains distinct from its held isolated pipeline integration contract."
+  ],
+  "tests": {
+    "platform": "Actual Windows AETHERDESK ordinary-user execution",
+    "tests": 156,
+    "passed": 156,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "junit_seconds": 18.25,
+    "scope": [
+      "Retained native-status parser, private input channel, pipe bounds, cleanup, daemon guard and batch sequencing tests.",
+      "Exact public installed r3 manifest/module/config and actual uv format read checks, plus malformed/drift refusal fixtures.",
+      "Actual Windows PowerShell5.1 Apply-tail fixtures perform disposable helper copies/hashes and simulated task registration/completion; scheduler/auth/privileged ownership boundaries are substituted explicitly.",
+      "Actual PowerShell child stderr/nonzero transport and sanitized failure metadata tests. No provider binaries invoked."
+    ],
+    "not_claimed": [
+      "SYSTEM login/status acceptance",
+      "provider authentication",
+      "serving model or effort routing acceptance",
+      "paid entitlement",
+      "daemon activation"
+    ]
+  },
+  "actual_readonly_previews": {
+    "status_slot1_codex_holds": [],
+    "claude_login_slot1_holds": [],
+    "status_six_slot_batch_codex_holds": [],
+    "native_commands_executed": 0,
+    "privileged_apply": false
+  },
+  "independent_review": {
+    "reviewer": "host_inspection",
+    "result": "No remaining concrete finding at the final source pins; verified final XML and default preview bindings."
+  },
+  "actions_performed": {
+    "provider_logins": 0,
+    "provider_status_commands": 0,
+    "model_jobs": 0,
+    "privileged_apply": 0,
+    "new_tasks_registered": 0,
+    "credential_changes": 0
+  },
+  "linux_results_used": false,
+  "assets": [
+    {
+      "name": "worker-native-status-r3.py",
+      "bytes": 27080,
+      "sha256": "c3c3069f097040442777ea30a6296abc506783968e381611fce26e20c7c4aed5"
+    },
+    {
+      "name": "check-worker-native-status-r3.ps1",
+      "bytes": 21643,
+      "sha256": "18f58ebb448d8a0c6329dd187d4a9a27fa9cbe942cd05e906bb7aabc67e787a7"
+    },
+    {
+      "name": "check-all-worker-native-status-r3.ps1",
+      "bytes": 11127,
+      "sha256": "d96ab0928d7b1f61035eb6423a8877878d76899f52604f5448d860c02da2a713"
+    },
+    {
+      "name": "worker_claude_login_bridge_r3.py",
+      "bytes": 16296,
+      "sha256": "b5bbede85ceb099460c6d6634f09a361a9b6617740eb082ab8d3bf5931260c73"
+    },
+    {
+      "name": "login_pipeline_worker_interactive_r3.ps1",
+      "bytes": 16470,
+      "sha256": "1ec70cd0beeacde2d11df1948ac009be92fbdd5e5cdb8cf78b3f7f6346920109"
+    },
+    {
+      "name": "HUMAN_NATIVE_LOGIN_R3.txt",
+      "bytes": 3674,
+      "sha256": "4dbfd7f3ec30e454c8404c4c45bd25300a38a6a95bc419041f9689a445325a2e"
+    },
+    {
+      "name": "test_worker_native_status_r3.py",
+      "bytes": 17430,
+      "sha256": "b9f3cd28d24952e48e787c224dcbabc82a061cbfc4eee535e60a4bd639a5b33c"
+    },
+    {
+      "name": "test_all_worker_native_status_r3.py",
+      "bytes": 4827,
+      "sha256": "87d01d8fa6fb0476574527074adc347ff249cc81fb466de9a565315c8e497fff"
+    },
+    {
+      "name": "test_claude_login_bridge_r3.py",
+      "bytes": 11749,
+      "sha256": "a967430d5c3339ab49168111b1bcc924b5b096707ddf49d01030b095873a21be"
+    },
+    {
+      "name": "test_native_r3_bindings_and_flows.py",
+      "bytes": 14541,
+      "sha256": "80de562fa427c0fd30d2803e856755b77d7e23362cb8d4793315ba5170a32a2b"
+    },
+    {
+      "name": "native-r3-inherited-tests-initial.xml",
+      "bytes": 26877,
+      "sha256": "af392172789aef668d207ad96dde0a9b00ade75468bf0fff7395a885f68f7d01"
+    },
+    {
+      "name": "native-r3-binding-flow-tests-initial.xml",
+      "bytes": 2908,
+      "sha256": "f9de0a934af059f307fcbeaa4f74e5961875c2f4683365a68ba53a43091c266b"
+    },
+    {
+      "name": "native-r3-tests-final.xml",
+      "bytes": 30670,
+      "sha256": "709ce65756f988cfd8173e18ce228c9bf08a80a29d7b128409cf0784219e49dc"
+    },
+    {
+      "name": "native-r3-readonly-preview.json",
+      "bytes": 4074,
+      "sha256": "1912eb86da59551fcceefbd3597ebcbccf06248b642ddd83df813f7466c1e452"
+    }
+  ]
+}

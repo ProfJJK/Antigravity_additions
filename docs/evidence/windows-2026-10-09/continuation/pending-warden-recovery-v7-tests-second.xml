@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="2.514" timestamp="2026-10-08T21:04:56.386033-05:00" hostname="AetherDesk"><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_success_reuses_original_auth_packet_repairs_once_and_runs_only_commission" time="0.922" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[extra_file]" time="0.542" /><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[changed_input]" time="0.006"><failure message="FileNotFoundError: [WinError 206] The filename or extension is too long">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/pending-recovery-fixtures-20261008-a4eb9b0d/test_preflight_failures_preced1')
+mutation = 'changed_input'
+
+    @pytest.mark.parametrize("mutation", [
+        "extra_file", "changed_input", "wrong_auth", "active_task", "previously_run", "commission_collision", "outside_acl", "backing_acl", "control_custody", "runtime_custody", "runtime_binding", "auth_drift", "recovery_exists",
+    ])
+    def test_preflight_failures_precede_every_mutation(tmp_path, mutation):
+        code, originals = setup(tmp_path)
+        mutations = {
+            "extra_file": "[IO.File]::WriteAllText((Join-Path $targetRoot 'extra.keep'),'preserve')",
+            "changed_input": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.model_jobs_submitted=1;[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "wrong_auth": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.auth_attempt=('0'*32);[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "active_task": "$warden.Instances=1",
+            "previously_run": "$warden.LastTaskResult=0;$warden.LastRunTime=[DateTime]::UtcNow",
+            "commission_collision": "$folder.Tasks[$commissionTask]=New-InertTask (New-InertDefinition) $commissionTask 'O:BAG:BAD:P(A;;FA;;;SY)(A;;FA;;;BA)'",
+            "outside_acl": "$warden.Sddl='O:BAG:BAD:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FR;;;WD)'",
+            "backing_acl": "$backingFailure=$true",
+            "control_custody": "$controlFailure=$true",
+            "runtime_custody": "$treeFailure=$true",
+            "runtime_binding": "$bindingFailure=$true",
+            "auth_drift": "$authDrift=$true",
+            "recovery_exists": "$null=[IO.Directory]::CreateDirectory($recoveryRoot);[IO.File]::WriteAllText((Join-Path $recoveryRoot 'partial.keep'),'preserve')",
+        }
+&gt;       result = run_ps(code + mutations[mutation] + "\n" + COLLECT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_pending_warden_recovery_v7.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+windows-deployment-next\test_pending_warden_recovery_v7.py:43: in run_ps
+    result = subprocess.run(
+C:\Python314\Lib\subprocess.py:555: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python314\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Popen: returncode: None args: ['C:\\Windows\\System32\\WindowsPowerShell\\v...&gt;
+args = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand CgA...IAZQBhAGMAaAAoACQAcwB0AHIAZQBhAG0AIABpAG4AIAAkAGgAZQBsAGQAKQB7ACQAcwB0AHIAZQBhAG0ALgBEAGkAcwBwAG8AcwBlACgAKQB9AH0ACgA='
+executable = None, preexec_fn = None, close_fds = False, pass_fds = ()
+cwd = None, env = None
+startupinfo = &lt;subprocess.STARTUPINFO object at 0x000001DD3A96FB10&gt;
+creationflags = 0, shell = False, p2cread = Handle(536), p2cwrite = -1
+c2pread = 11, c2pwrite = Handle(12), errread = 12, errwrite = Handle(672)
+unused_restore_signals = True, unused_gid = None, unused_gids = None
+unused_uid = None, unused_umask = -1, unused_start_new_session = False
+unused_process_group = -1
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       unused_restore_signals,
+                       unused_gid, unused_gids, unused_uid,
+                       unused_umask,
+                       unused_start_new_session, unused_process_group):
+        """Execute program (MS Windows version)"""
+    
+        assert not pass_fds, "pass_fds not supported on Windows."
+    
+        if isinstance(args, str):
+            pass
+        elif isinstance(args, bytes):
+            if shell:
+                raise TypeError('bytes args is not allowed on Windows')
+            args = list2cmdline([args])
+        elif isinstance(args, os.PathLike):
+            if shell:
+                raise TypeError('path-like args is not allowed when '
+                                'shell is true')
+            args = list2cmdline([args])
+        else:
+            args = list2cmdline(args)
+    
+        if executable is not None:
+            executable = os.fsdecode(executable)
+    
+        # Process startup details
+        if startupinfo is None:
+            startupinfo = STARTUPINFO()
+        else:
+            # bpo-34044: Copy STARTUPINFO since it is modified above,
+            # so the caller can reuse it multiple times.
+            startupinfo = startupinfo.copy()
+    
+        use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
+        if use_std_handles:
+            startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
+            startupinfo.hStdInput = p2cread
+            startupinfo.hStdOutput = c2pwrite
+            startupinfo.hStdError = errwrite
+    
+        attribute_list = startupinfo.lpAttributeList
+        have_handle_list = bool(attribute_list and
+                                "handle_list" in attribute_list and
+                                attribute_list["handle_list"])
+    
+        # If we were given an handle_list or need to create one
+        if have_handle_list or (use_std_handles and close_fds):
+            if attribute_list is None:
+                attribute_list = startupinfo.lpAttributeList = {}
+            handle_list = attribute_list["handle_list"] = \
+                list(attribute_list.get("handle_list", []))
+    
+            if use_std_handles:
+                handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
+    
+            handle_list[:] = self._filter_handle_list(handle_list)
+    
+            if handle_list:
+                if not close_fds:
+                    warnings.warn("startupinfo.lpAttributeList['handle_list'] "
+                                  "overriding close_fds", RuntimeWarning)
+    
+                # When using the handle_list we always request to inherit
+                # handles but the only handles that will be inherited are
+                # the ones in the handle_list
+                close_fds = False
+    
+        if shell:
+            startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = _winapi.SW_HIDE
+            if not executable:
+                # gh-101283: without a fully-qualified path, before Windows
+                # checks the system directories, it first looks in the
+                # application directory, and also the current directory if
+                # NeedCurrentDirectoryForExePathW(ExeName) is true, so try
+                # to avoid executing unqualified "cmd.exe".
+                comspec = os.environ.get('ComSpec')
+                if not comspec:
+                    system_root = os.environ.get('SystemRoot', '')
+                    comspec = os.path.join(system_root, 'System32', 'cmd.exe')
+                    if not os.path.isabs(comspec):
+                        raise FileNotFoundError('shell not found: neither %ComSpec% nor %SystemRoot% is set')
+                if os.path.isabs(comspec):
+                    executable = comspec
+            else:
+                comspec = executable
+    
+            args = '{} /c "{}"'.format (comspec, args)
+    
+        if cwd is not None:
+            cwd = os.fsdecode(cwd)
+    
+        sys.audit("subprocess.Popen", executable, args, cwd, env)
+    
+        # Start the process
+        try:
+&gt;           hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                                     # no special security
+                                     None, None,
+                                     int(not close_fds),
+                                     creationflags,
+                                     env,
+                                     cwd,
+                                     startupinfo)
+E                                    FileNotFoundError: [WinError 206] The filename or extension is too long
+
+C:\Python314\Lib\subprocess.py:1553: FileNotFoundError</failure></testcase><testcase classname="windows-deployment-next.test_pending_warden_recovery_v7" name="test_preflight_failures_precede_every_mutation[wrong_auth]" time="0.007"><failure message="FileNotFoundError: [WinError 206] The filename or extension is too long">tmp_path = WindowsPath('C:/Users/ansac/Documents/Codex/2026-10-06/the-github-repository-is-located-at/windows-deployment-next/pending-recovery-fixtures-20261008-a4eb9b0d/test_preflight_failures_preced2')
+mutation = 'wrong_auth'
+
+    @pytest.mark.parametrize("mutation", [
+        "extra_file", "changed_input", "wrong_auth", "active_task", "previously_run", "commission_collision", "outside_acl", "backing_acl", "control_custody", "runtime_custody", "runtime_binding", "auth_drift", "recovery_exists",
+    ])
+    def test_preflight_failures_precede_every_mutation(tmp_path, mutation):
+        code, originals = setup(tmp_path)
+        mutations = {
+            "extra_file": "[IO.File]::WriteAllText((Join-Path $targetRoot 'extra.keep'),'preserve')",
+            "changed_input": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.model_jobs_submitted=1;[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "wrong_auth": "$p=[IO.File]::ReadAllText((Join-Path $targetRoot 'inputs.json'))|ConvertFrom-Json;$p.auth_attempt=('0'*32);[IO.File]::WriteAllText((Join-Path $targetRoot 'inputs.json'),($p|ConvertTo-Json))",
+            "active_task": "$warden.Instances=1",
+            "previously_run": "$warden.LastTaskResult=0;$warden.LastRunTime=[DateTime]::UtcNow",
+            "commission_collision": "$folder.Tasks[$commissionTask]=New-InertTask (New-InertDefinition) $commissionTask 'O:BAG:BAD:P(A;;FA;;;SY)(A;;FA;;;BA)'",
+            "outside_acl": "$warden.Sddl='O:BAG:BAD:(A;;FA;;;SY)(A;;FA;;;BA)(A;;FR;;;WD)'",
+            "backing_acl": "$backingFailure=$true",
+            "control_custody": "$controlFailure=$true",
+            "runtime_custody": "$treeFailure=$true",
+            "runtime_binding": "$bindingFailure=$true",
+            "auth_drift": "$authDrift=$true",
+            "recovery_exists": "$null=[IO.Directory]::CreateDirectory($recoveryRoot);[IO.File]::WriteAllText((Join-Path $recoveryRoot 'partial.keep'),'preserve')",
+        }
+&gt;       result = run_ps(code + mutations[mutation] + "\n" + COLLECT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+windows-deployment-next\test_pending_warden_recovery_v7.py:253: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+windows-deployment-next\test_pending_warden_recovery_v7.py:43: in run_ps
+    result = subprocess.run(
+C:\Python314\Lib\subprocess.py:555: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Python314\Lib\subprocess.py:1039: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Popen: returncode: None args: ['C:\\Windows\\System32\\WindowsPowerShell\\v...&gt;
+args = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand CgA...ByAGUAYQBjAGgAKAAkAHMAdAByAGUAYQBtACAAaQBuACAAJABoAGUAbABkACkAewAkAHMAdAByAGUAYQBtAC4ARABpAHMAcABvAHMAZQAoACkAfQB9AAoA'
+executable = None, preexec_fn = None, close_fds = False, pass_fds = ()
+cwd = None, env = None
+startupinfo = &lt;subprocess.STARTUPINFO object at 0x000001DD3AAD5350&gt;
+creationflags = 0, shell = False, p2cread = Handle(652), p2cwrite = -1
+c2pread = 11, c2pwrite = Handle(728), errread = 12, errwrite = Handle(608)
+unused_restore_signals = True, unused_gid = None, unused_gids = None
+unused_uid = None, unused_umask = -1, unused_start_new_session = False
+unused_process_group = -1
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       unused_restore_signals,
+                       unused_gid, unused_gids, unused_uid,
+                       unused_umask,
+                       unused_start_new_session, unused_process_group):
+        """Execute program (MS Windows version)"""
+    
+        assert not pass_fds, "pass_fds not supported on Windows."
+    
+        if isinstance(args, str):
+            pass
+        elif isinstance(args, bytes):
+            if shell:
+                raise TypeError('bytes args is not allowed on Windows')
+            args = list2cmdline([args])
+        elif isinstance(args, os.PathLike):
+            if shell:
+                raise TypeError('path-like args is not allowed when '
+                                'shell is true')
+            args = list2cmdline([args])
+        else:
+            args = list2cmdline(args)
+    
+        if executable is not None:
+            executable = os.fsdecode(executable)
+    
+        # Process startup details
+        if startupinfo is None:
+            startupinfo = STARTUPINFO()
+        else:
+            # bpo-34044: Copy STARTUPINFO since it is modified above,
+            # so the caller can reuse it multiple times.
+            startupinfo = startupinfo.copy()
+    
+        use_std_handles = -1 not in (p2cread, c2pwrite, errwrite)
+        if use_std_handles:
+            startupinfo.dwFlags |= _winapi.STARTF_USESTDHANDLES
+            startupinfo.hStdInput = p2cread
+            startupinfo.hStdOutput = c2pwrite
+            startupinfo.hStdError = errwrite
+    
+        attribute_list = startupinfo.lpAttributeList
+        have_handle_list = bool(attribute_list and
+                                "handle_list" in attribute_list and
+                                attribute_list["handle_list"])
+    
+        # If we were given an handle_list or need to create one
+        if have_handle_list or (use_std_handles and close_fds):
+            if attribute_list is None:
+                attribute_list = startupinfo.lpAttributeList = {}
+            handle_list = attribute_list["handle_list"] = \
+                list(attribute_list.get("handle_list", []))
+    
+            if use_std_handles:
+                handle_list += [int(p2cread), int(c2pwrite), int(errwrite)]
+    
+            handle_list[:] = self._filter_handle_list(handle_list)
+    
+            if handle_list:
+                if not close_fds:
+                    warnings.warn("startupinfo.lpAttributeList['handle_list'] "
+                                  "overriding close_fds", RuntimeWarning)
+    
+                # When using the handle_list we always request to inherit
+                # handles but the only handles that will be inherited are
+                # the ones in the handle_list
+                close_fds = False
+    
+        if shell:
+            startupinfo.dwFlags |= _winapi.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = _winapi.SW_HIDE
+            if not executable:
+                # gh-101283: without a fully-qualified path, before Windows
+                # checks the system directories, it first looks in the
+                # application directory, and also the current directory if
+                # NeedCurrentDirectoryForExePathW(ExeName) is true, so try
+                # to avoid executing unqualified "cmd.exe".
+                comspec = os.environ.get('ComSpec')
+                if not comspec:
+                    system_root = os.environ.get('SystemRoot', '')
+                    comspec = os.path.join(system_root, 'System32', 'cmd.exe')
+                    if not os.path.isabs(comspec):
+                        raise FileNotFoundError('shell not found: neither %ComSpec% nor %SystemRoot% is set')
+                if os.path.isabs(comspec):
+                    executable = comspec
+            else:
+                comspec = executable
+    
+            args = '{} /c "{}"'.format (comspec, args)
+    
+        if cwd is not None:
+            cwd = os.fsdecode(cwd)
+    
+        sys.audit("subprocess.Popen", executable, args, cwd, env)
+    
+        # Start the process
+        try:
+&gt;           hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                                     # no special security
+                                     None, None,
+                                     int(not close_fds),
+                                     creationflags,
+                                     env,
+                                     cwd,
+                                     startupinfo)
+E                                    FileNotFoundError: [WinError 206] The filename or extension is too long
+
+C:\Python314\Lib\subprocess.py:1553: FileNotFoundError</failure></testcase></testsuite></testsuites>

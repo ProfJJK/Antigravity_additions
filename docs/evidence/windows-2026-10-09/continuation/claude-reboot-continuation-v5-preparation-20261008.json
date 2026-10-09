@@ -1,0 +1,275 @@
+{
+  "schema": "cochem-claude-reboot-continuation-preparation/1",
+  "prepared_utc": "2026-10-09T00:19:52.612856+00:00",
+  "host": "AETHERDESK",
+  "status": "PREPARED_NOT_APPLIED",
+  "reported_failures": [
+    "Claude login stopped by a directory-only earlier-session guard before new login",
+    "Owner-reported crash/reboot removed the volatile dedicated RAM workspace"
+  ],
+  "repairs": [
+    "Both Claude guards review protected terminal task/receipt evidence before READY and again before login",
+    "Proved new-boot recovery retains original ledger bytes and a durable intent before one production ADOPT",
+    "Future resource observer accepts the reviewed new first-start helper without replaying authentication or startup",
+    "A hash-held attended launcher starts monitoring setup only after commissioning exits successfully; PAUSE and failures prevent later phases"
+  ],
+  "configuration_sha256": "135cd9eccf9efcdbc910679bde83b571913e731a4041ece62f60e42442f1709c",
+  "configured_worker_identities": 6,
+  "shared_execution_slots": 4,
+  "model_routing": "Chapter 06 unchanged",
+  "archive_scope": "Changed sources, selected pinned dependencies and test evidence; older baseline dependencies remain preserved in the workspace",
+  "sources": [
+    {
+      "name": "claude-session-history-v5.ps1",
+      "sha256": "82f66a4c135454ad406ad47cc8b6abce25fdad55951dbd6dc70f30a0c68634d4",
+      "bytes": 20390
+    },
+    {
+      "name": "commission-first-warden-r3-v5.py",
+      "sha256": "8ae682483caff2c178ab096b481699a5fea12c62519c5002bb75cbedad9e8c9e",
+      "bytes": 46590
+    },
+    {
+      "name": "login_pipeline_worker_interactive_r3_v5.ps1",
+      "sha256": "8e3545109c2bbef9a53763f8af8575ac1ff7376d3bea6c27a5ecd8454af182ec",
+      "bytes": 17782
+    },
+    {
+      "name": "login-six-workers-status-first-r3-v5.ps1",
+      "sha256": "6e18cf7d8a816dc36464593fdb9eaed51c7bd45963accb16481befa67df10d58",
+      "bytes": 24518
+    },
+    {
+      "name": "authenticate-native-profiles-status-first-r3-v5.ps1",
+      "sha256": "89e6efcad31ff05f94aea905abb15db73b5c85e69eb9ac3508b2b33d03c91d04",
+      "bytes": 17993
+    },
+    {
+      "name": "commission-first-warden-r3-v5.ps1",
+      "sha256": "a40e093839f8482937a814a236b4a50775e741f30f2514c3ae9715fab371363e",
+      "bytes": 19877
+    },
+    {
+      "name": "run-pipeline-commissioning-r3-v5.ps1",
+      "sha256": "46f2f8ce1d2f30ccf25bb37e9b6f97decd34a45e07ecdd3cc3f61c6544e210c0",
+      "bytes": 31659
+    },
+    {
+      "name": "run-reboot-setup-r3-v5.ps1",
+      "sha256": "99c3a415bf3f2b1acb1a7103aae5bec440fb9b2c6549f7590a1626e3c5b693cc",
+      "bytes": 4824
+    },
+    {
+      "name": "install-resource-observer-r3-v4.ps1",
+      "sha256": "106d95dd5b22613cb871f3649d4376dc0a75745b6fce38469ddf94d2fcb9ec65",
+      "bytes": 34924
+    },
+    {
+      "name": "run-post-commissioning-setup-r3-v2.ps1",
+      "sha256": "dd2b8119f8f1c7a206c8ef12e6c2ef45634695fd83fe36bc8b361154044125f2",
+      "bytes": 33156
+    },
+    {
+      "name": "resource-observer-r3-v4/source-manifest.json",
+      "sha256": "88d4248e1a2dcdc8c460fd1b325a87cc7925263f4ba7d101e5f73f0043287b49",
+      "bytes": 1229
+    },
+    {
+      "name": "protected-code-inspection-v4.ps1",
+      "sha256": "5c01543cbb8b8d64b2b9f1bab4a13f87f8ff9e1ab3e82dfb6fc547144c77b95d",
+      "bytes": 7687
+    },
+    {
+      "name": "check-worker-native-auth-status-six-r3-v4.ps1",
+      "sha256": "4448e76eaeb30f2d2905f5aa6d3e14f0cc29b3d7e703321bb3df55afcba58e81",
+      "bytes": 23906
+    },
+    {
+      "name": "worker-native-auth-status-six-r3-v3.py",
+      "sha256": "7efa8d272fcd96701157e381036f7e4ec763551857f4c57091d7bf61977fcfc1",
+      "bytes": 28454
+    },
+    {
+      "name": "worker_claude_login_bridge_r3.py",
+      "sha256": "b5bbede85ceb099460c6d6634f09a361a9b6617740eb082ab8d3bf5931260c73",
+      "bytes": 16296
+    },
+    {
+      "name": "resource-observer-r3-v2-dependencies.json",
+      "sha256": "ca32f0703edfb1091201b3f37101091145d09c16452b5b3f0145ab0b6755d429",
+      "bytes": 477651
+    },
+    {
+      "name": "prepare-claude-continuation-v5.py",
+      "sha256": "b91028df9e6cf2d80c0a30e7a807ff2aae98abe8abe3757095cefd0500c0a2d5",
+      "bytes": 7132
+    },
+    {
+      "name": "prepare-first-start-reboot-r3-v5.py",
+      "sha256": "642ead1d4b9d106444bbb34e419fed3b8682ecb114352a1c7d3a58993ba54e35",
+      "bytes": 16112
+    },
+    {
+      "name": "prepare-post-reboot-observation-v4.py",
+      "sha256": "9ac06f8db371f20ca4b733dbcca54d4a24879a7c602b3bfa6c14d1fc0e2d8fe2",
+      "bytes": 6596
+    },
+    {
+      "name": "test_claude_session_history_v5.py",
+      "sha256": "b86217a70a194556da58a1b56482cb0ff70a116d25d76b175553e0adce853975",
+      "bytes": 20666
+    },
+    {
+      "name": "test_first_start_reboot_r3_v5.py",
+      "sha256": "4493a0126c19feb7792993e26200eb03f589a568e7ba8ddf7ebf0275b25b0653",
+      "bytes": 31290
+    },
+    {
+      "name": "test_claude_continuation_v5.py",
+      "sha256": "36559d7235f3550d34f3c90d5731926ed12e4476a1bcee57ecbb27a3588fff02",
+      "bytes": 14446
+    },
+    {
+      "name": "test_post_reboot_observation_v4.py",
+      "sha256": "8489ac8e5e8746804bd7a29aef92a62abd27938a34852d9e2e795868fa9ee450",
+      "bytes": 11311
+    },
+    {
+      "name": "test_reboot_setup_launcher_v5.py",
+      "sha256": "9f50935a1c384e4fda020ca80bf54fea47cd7e8afe8e5076099ce015eb34428f",
+      "bytes": 13280
+    },
+    {
+      "name": "RETURN_SETUP_AFTER_REBOOT_V5.txt",
+      "sha256": "050fd95cb3ea8c74e6e29adcfe2577603e146ba24b265d33e8127e051dfc453a",
+      "bytes": 4788
+    },
+    {
+      "name": "record-claude-reboot-continuation-v5.py",
+      "sha256": "bc147c5f7576905af0844caddc7f1aa57172f03d212a49bdfc14e264cae60c3f",
+      "bytes": 8483
+    },
+    {
+      "name": "resource-observer-r3-v4/observe_resources.py",
+      "sha256": "77384c52d36c6e2b46d38e0ab9cb265daf5ef1f98459353822f4761cf6f6688f",
+      "bytes": 17414
+    },
+    {
+      "name": "resource-observer-r3-v4/detector_bootstrap.py",
+      "sha256": "227f4b1ecd3f88b45b53cc53f99f29e359350fb10b7f653314f12043f100b3b5",
+      "bytes": 2971
+    },
+    {
+      "name": "resource-observer-r3-v4/cochem_supervisor/__init__.py",
+      "sha256": "b1b2879314ee557f5b4e0f946a66da5307870ce67cfb986aec474e884d7e8f17",
+      "bytes": 77
+    },
+    {
+      "name": "resource-observer-r3-v4/cochem_supervisor/windows.py",
+      "sha256": "d784fad19be42fd84aab237455308d26e2626755de413da2fe84e1ecbbbb0c4b",
+      "bytes": 7788
+    },
+    {
+      "name": "resource-observer-r3-v4/cochem_supervisor/resource_observation.py",
+      "sha256": "ec3fa5a9c8e20228b6f43b15c5c4b5c332e1d7191ca563afbd8507baa5e5a3d7",
+      "bytes": 14510
+    },
+    {
+      "name": "resource-observer-r3-v4/cochem_supervisor/performance_acceptance.py",
+      "sha256": "8164ca69e6f31ad1e1912d1396df086b2590c103fd3c9a64d7a6031872c56e4c",
+      "bytes": 18919
+    },
+    {
+      "name": "resource-observer-r3-v4/cochem_supervisor/shared_io.py",
+      "sha256": "4bbf84d5f55a2656e2f3e6e72f85a9564a404330e15bea3977648b0930805fb0",
+      "bytes": 2061
+    }
+  ],
+  "ordinary_windows_tests": [
+    {
+      "name": "claude-session-history-v5-tests-final.xml",
+      "sha256": "8372bdd969dc02bff348a50498b3ae842886c17a2c5947bf8124b2021dd6cb98",
+      "bytes": 25385,
+      "passed": 121,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scope": "ordinary Windows fixtures; no real provisioning or provider login"
+    },
+    {
+      "name": "first-start-reboot-r3-v5-tests-final.xml",
+      "sha256": "3b7e0607dfbea5884bb2010b214b37bd9a3942bcc8f386db97820d81bbc274cc",
+      "bytes": 9875,
+      "passed": 58,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scope": "ordinary Windows fixtures; no real provisioning or provider login"
+    },
+    {
+      "name": "claude-continuation-v5-tests-final.xml",
+      "sha256": "beeed5828e8e46714034ac1bbaac83e30896c92309348d320a90a0e0cec5c424",
+      "bytes": 32626,
+      "passed": 169,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scope": "ordinary Windows fixtures; no real provisioning or provider login"
+    },
+    {
+      "name": "post-reboot-observation-v4-tests-final.xml",
+      "sha256": "0571e8f2276da0578b3c2da33fb4ad24be1b6351b42eba8db346d6011fd73acc",
+      "bytes": 10072,
+      "passed": 50,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scope": "ordinary Windows fixtures; no real provisioning or provider login"
+    },
+    {
+      "name": "reboot-setup-launcher-v5-tests-final.xml",
+      "sha256": "ad35023cde5109b9b2e86d50a9adf5636074c2fe6f9db150a9144bb50b07a0cd",
+      "bytes": 4746,
+      "passed": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "scope": "ordinary Windows fixtures; no real provisioning or provider login"
+    }
+  ],
+  "windows_evidence": [
+    {
+      "name": "post-crash-observation-20261008.json",
+      "sha256": "642136806a9e7ae34be78eb72285f788f0597701b80666396830bfd91addf361",
+      "bytes": 2479
+    },
+    {
+      "name": "claude-continuation-v5-preview-final.json",
+      "sha256": "7c117deeac6eb8c462fe90aa6d9482329a47f95a5b90ed18b36070af2eda84ee",
+      "bytes": 7477
+    },
+    {
+      "name": "reboot-setup-launcher-v5-preview-final.json",
+      "sha256": "515f41834c6e88b39b360dff8e292908d0a6ccc1d1f70d61de734b22f5adc005",
+      "bytes": 669
+    }
+  ],
+  "independent_reboot_source_review": "PASS_NO_CONCRETE_FINDINGS",
+  "independent_launcher_source_review": "PASS_NO_CONCRETE_FINDINGS",
+  "claude_prior_private_receipt_read_by_this_preparation": false,
+  "current_boot_system_provisioning_verified": false,
+  "current_boot_docker_physical_acceptance_verified": false,
+  "linux_results_counted_as_windows_evidence": false,
+  "administrator_or_system_execution_during_preparation": false,
+  "deployment_tasks_changed": 0,
+  "provider_logins_executed": 0,
+  "model_jobs_submitted": 0,
+  "controller_started": false,
+  "credentials_modified": false,
+  "databases_modified": false,
+  "repair_budgets_modified": false,
+  "ram_or_startup_task_modified": false,
+  "full_srs_acceptance": false,
+  "owner_next_step": "Run run-reboot-setup-r3-v5.ps1 once in Administrator Windows PowerShell with -Apply -Interactive; complete only requested provider browser approvals; monitoring setup follows verified startup in the same console",
+  "after_success": "Codex performs prepared ordinary MCP/workflow checks; completed resource/stability observation and remaining acceptance evidence are still required"
+}

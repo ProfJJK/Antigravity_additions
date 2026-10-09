@@ -1,0 +1,26 @@
+{
+  "schema": "cochem-owner-continuation-release-check/1",
+  "status": "PREPARED_AWAITING_OWNER_ADMINISTRATOR_EXECUTION",
+  "checked_at_utc": "2026-10-07T23:45:06.828971+00:00",
+  "source_sha256": {
+    "provision-execution-foundation-r3-v2.py": "620c43db688bac8fca2c7870197c92a7cb4b54f0a1c6b81bc3453ab6b2a3ff0c",
+    "provision-execution-foundation-r3-v2.ps1": "0df813342fa8070d1f2f6041ccbc24a7d8ec0d5c94baa269eec02c243e043ca0",
+    "run-return-continuation-r3-v2.ps1": "a4e402081761ae01386ced7538e321d7dd766a7092c2c7b84afa6d8f0e621ad3",
+    "accept-docker-execution-r3-v2.py": "157549c5806e5486085d0d941ca619c5218e668653309ce6bd55dc75eb4a944f",
+    "accept-docker-execution-r3-v2.ps1": "725d98487322166740f67c0911f3d12aab62f344c4518290caaf1450f0d6a9eb"
+  },
+  "current_guide_sha256": "9029bb62ddd4d43b4506afaba31ce03687de11294e47a47c8b77e1a4fe5bfe57",
+  "ordinary_windows_preparation_tests": {
+    "foundation_and_series": 108,
+    "docker_successor": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "actual_system_diagnostic_receipt_sha256": "cccd0f32d8a15f92d9b9a6bdca8688ea48ea22920fdf89c293839d6d3452bae9",
+  "linux_evidence_separate": true,
+  "apply_performed_this_turn": false,
+  "pipeline_started_this_turn": false,
+  "activation_ready": false,
+  "four_shared_slots_and_chapter06_unchanged": true
+}

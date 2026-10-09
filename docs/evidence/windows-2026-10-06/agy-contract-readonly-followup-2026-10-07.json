@@ -1,0 +1,123 @@
+{
+  "schema": "cochem-agy-contract-readonly-followup/1",
+  "status": "verification_pending",
+  "scope": "isolated_pipeline_integration",
+  "owner_status": "Owner confirms Agy is available, signed in and functioning. This review establishes no provider outage or owner authentication failure.",
+  "actions": {
+    "agy_commands_executed": [],
+    "model_jobs_executed": 0,
+    "owner_profile_or_credentials_read": false,
+    "settings_or_installation_changes": false,
+    "network_scope": "Read-only public official documentation; no prompts, project data or credentials submitted.",
+    "local_scope": "Canonical repository requirements, prior captured help/evidence, current contract validator source, and top-level installation bin metadata only."
+  },
+  "reused_windows_evidence": {
+    "version": "1.3.1",
+    "capture_utc": "2026-10-07T04:38:28.814214Z",
+    "executable_sha256": "38f30c7dd1ed808f5cf98fe2014de3d30903035a4f0df02d3eb72a9ff8993741",
+    "help_stderr_sha256": "337622c6dcdcb204312277570c4173dda83f3cbf006629f0eabe657069071e7c",
+    "followup_evidence_sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5",
+    "candidate_review_sha256": "259caa6c0eb46c5e8b195318faadd3b7b195344dfc2c2a06f273339ed1faa89c",
+    "freshness_limit": "Reused capture, not a new installed-version, authentication or quota observation."
+  },
+  "new_local_metadata": {
+    "directory": "C:\\Users\\ansac\\AppData\\Local\\agy\\bin",
+    "top_level_entries": [
+      {
+        "name": "agy.exe",
+        "bytes": 190286488,
+        "attributes": "Archive"
+      }
+    ],
+    "assessment": "No adjacent documentation or schema file exists in this inspected directory. This is not a claim that no schema exists elsewhere. Owner configuration directories were not enumerated."
+  },
+  "official_documentation_review": [
+    {
+      "url": "https://www.antigravity.google/docs/settings?tab=cli",
+      "finding": "CLI settings document useG1Credits for external builds: enabling it permits personal AI credits after plan quota exhaustion. Settings persistence stores nondefault values only. Documented settings do not establish a global hooks/tools/subagents suppression contract.",
+      "implication": "Future isolated policy must bind effective credits disabled, including inherited configuration. Do not assume an absent key proves the setting is disabled, or conflate credit use with model fallback. This documents a candidate setting, not version-bound validation of the captured 1.3.1 binary."
+    },
+    {
+      "url": "https://antigravity.google/docs/changelog?tab=cli",
+      "finding": "The changelog describes inheritance of global use_ai_credits and past fixes for model/effort flags being applied too late or against a default model. It also describes effort-dependent model variants and custom-agent discovery fixes.",
+      "implication": "Per-build effective-policy and model-selection evidence is needed. These historical entries do not prove the captured 1.3.1 binary has a current defect; no upgrade, setting key alias or precedence assumption is made."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/subagents/",
+      "finding": "Custom primary agents support a tool whitelist, mainAgent, subagent, inherited model selection and optional MCP/skill/plugin dependencies. Discovery includes workspace, global and plugin locations. subagent=false restricts whether that custom agent can be invoked by another agent.",
+      "implication": "A protected primary agent with tools=[] is a credible candidate for removing tools, including the delegation tool. Empty dependency arrays alone do not establish global hook/plugin/MCP suppression or deterministic discovery. This remains a candidate, not an accepted inference-only contract."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/cli/headless/",
+      "finding": "The documented init event describes configuration and includes model only when overridden. No independent backend-serving identifier or effective effort field is specified in the documented terminal envelope. Unknown model names fail in headless mode; quota/service-failure fallback behavior is not established. Examples use effort-suffixed Gemini slugs; the flag table lists low/medium/high, while captured 1.3.1 help also lists xhigh/max.",
+      "implication": "Do not promote requested init.model to observed serving identity, silently alias canonical model IDs, or assume every accepted effort token has supported model-specific semantics. Default permission approval behavior also does not mean tools are disabled."
+    },
+    {
+      "url": "https://www.antigravity.google/docs/agent-settings/",
+      "finding": "The page explicitly distinguishes Windows permission behavior from the newer macOS/Linux permission system. Windows controls concern shell execution, outside-workspace access and sandboxing.",
+      "implication": "These controls do not establish inference-only operation. Linux permission results cannot discharge the Windows native admission requirements."
+    }
+  ],
+  "implementation_assessment": {
+    "inference_policy": "The existing exact contract accepts binary/version/arguments/provenance plus five true isolation declarations. It does not yet bind a custom-agent file, discovery closure or effective policy inventory. Setting those declarations true without new evidence would be invalid.",
+    "agy_protocol": "The current serving-model admission guard rejects agy-stream-json. Parser output correctly retains requested selection separately and leaves reported_model null. Do not weaken this guard to admit init.model.",
+    "effort": "The required Gemini Extended/default/high profiles require evidenced native mapping for each exact canonical model. The generic effort token list does not resolve unsupported model/profile behavior or effective effort reporting.",
+    "authentication": "Owner availability remains established by owner confirmation. A bounded native subscription-mode predicate for each isolated account is still required; historical model/usage status is not that predicate."
+  },
+  "precise_remaining_contract_questions": [
+    "For the captured binary, which supported mechanism selects exactly one protected custom primary agent and suppresses every global/workspace/plugin hook, MCP server, skill and built-in delegation path before the first invocation? What discovery precedence and effective-policy readback proves this?",
+    "Which native field identifies the backend model that actually served a completed response, independently of requested configuration? Does explicit model selection fail closed for quota exhaustion and service errors without changing model/provider?",
+    "What exact native model/effort pair represents canonical gemini-3.8-flash default and Extended, and gemini-3.1-pro-preview high? Does an unsupported effort fail before inference instead of being ignored or clamped? Do not infer alias equivalence from display names or suffixed slugs.",
+    "How does this exact build resolve CLI useG1Credits against inherited global use_ai_credits, and what safe native status confirms subscription-only mode with credit fallback disabled for each isolated worker?"
+  ],
+  "actionable_next_path": [
+    "Obtain or verify the four native contracts above through version-specific official material and safe non-inference capability/status evidence; no repeated owner login or status command is needed for the facts already captured.",
+    "If supported, implement a separately reviewed protected policy/agent manifest that commits exact bytes, discovery locations and absence constraints, trusted ACLs, immutable launch-time verification and effective policy. Add collision, inheritance and mutation tests before registration.",
+    "Register only model/profile contracts actually supported by native evidence. Keep unsupported profiles held and use ordinary durable Chapter 06 spillover; retain four shared slots.",
+    "Only after the prelaunch contracts are satisfied, perform native acceptance as an ordinary Chapter 06 pipeline job with routing and budget receipts. This research does not authorize a model probe, profile mutation, API/SDK substitution or hold removal."
+  ],
+  "conclusion": "Fresh documentation identifies a concrete credit-policy requirement and reinforces the feasible custom-primary-agent direction. It does not resolve serving-model identity, complete inference-only isolation or exact unsupported-effort semantics. The isolated integration hold remains accurately scoped; Agy itself is available.",
+  "reviewed_at_utc": "2026-10-07T15:32:21.2121518Z",
+  "repository_commitments": [
+    {
+      "relative_path": "docs\\WINDOWS_CODEX_HANDOFF_4.2.7.md",
+      "bytes": 13353,
+      "sha256": "204e378cfeae0a111fce6b7f85339b10f59ba0c3a936df2d07dc6a2a67e7cead"
+    },
+    {
+      "relative_path": "4.2.7_SRS.md",
+      "bytes": 76701,
+      "sha256": "724428cabba182bfcc7328200a454c806df45ebe4dcc9289c863b56975db3074"
+    },
+    {
+      "relative_path": "docs\\SRS_ADDENDUM_4.2.7.md",
+      "bytes": 8893,
+      "sha256": "96273ff4b31aeac47024b7acc4572e7b85636d110007b2a30f3c50c7d39669e9"
+    },
+    {
+      "relative_path": "docs\\NATIVE_EFFORT_4.2.7.md",
+      "bytes": 17838,
+      "sha256": "27bf783c69508d9836cca6221efe683c65338d3647546780fe793a85a1eca04c"
+    },
+    {
+      "relative_path": "docs\\AGY_STATUS_WINDOWS_4.2.7_2026-10-07.md",
+      "bytes": 6848,
+      "sha256": "b99e252dd335325b4261b156beddb8699d1ca2c5381324e5eee2a9d3efb65cf3"
+    },
+    {
+      "relative_path": "docs\\evidence\\windows-2026-10-06\\native-contract-agy-1.3.1-followup.json",
+      "bytes": 6736,
+      "sha256": "82db0ae4d4f42c40d4265a2116a68b7f27947f5718bd35ca375e2ad87e89d3f5"
+    },
+    {
+      "relative_path": "src\\cochem_pipeline\\inference_policy.py",
+      "bytes": 8380,
+      "sha256": "0bdd0cb37ee225504d6df4e754c5d0b12722f0e21506b6e013487f3c08176ed7"
+    },
+    {
+      "relative_path": "src\\cochem_pipeline\\agy_protocol.py",
+      "bytes": 6653,
+      "sha256": "78d7bd0ee5cc73c9fc29bc983ef91a8e356cb59303a537948491d5f82efa9dda"
+    }
+  ]
+}

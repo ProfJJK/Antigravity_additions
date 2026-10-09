@@ -680,6 +680,7 @@ class JobStore(CodingStoreMixin):
             raise ValueError("Manifest must contain the configured chapter count")
         assigned: set[str] = set()
         identifiers: set[str] = set()
+        task_ids: set[str] = set()
         required = set(job["payload"]["requirements"])
         for chapter in chapters:
             if not isinstance(chapter, dict):
@@ -694,20 +695,52 @@ class JobStore(CodingStoreMixin):
             if not traced <= required:
                 raise ValueError("Manifest includes an unknown requirement")
             assigned.update(traced)
+            tasks = self._wbs(chapter.get('wbs_tasks_defined'), traced)
+            current_ids = {task['id'] for task in tasks}
+            if current_ids & task_ids:
+                raise ValueError('Manifest WBS task IDs must have exactly one owning chapter')
+            task_ids.update(current_ids)
         if assigned != required:
             raise ValueError("Manifest must cover every required requirement")
         return chapters
 
     @staticmethod
+    def _wbs(tasks, requirements):
+        if not isinstance(tasks, list) or not 1 <= len(tasks) <= 256:
+            raise ValueError('wbs_tasks_defined must be a bounded nonempty structured list')
+        identifiers, traced = set(), set()
+        for task in tasks:
+            if not isinstance(task, dict) or len(canonical_json(task).encode('utf-8')) > 16384:
+                raise ValueError('Each WBS task must be a bounded structured object')
+            task_id = _identifier(task.get('id'), 'WBS task id')
+            if task_id in identifiers:
+                raise ValueError('WBS task IDs must be unique within their owning chapter')
+            identifiers.add(task_id)
+            if not isinstance(task.get('description'), str) or not task['description'].strip():
+                raise ValueError('Each WBS task requires an implementable description')
+            owned = set(_strings(task.get('requirements'), 'WBS requirements'))
+            if not owned <= set(requirements):
+                raise ValueError('WBS tasks may trace only their owning chapter requirements')
+            traced.update(owned)
+        if traced != set(requirements):
+            raise ValueError('WBS tasks must cover every owning chapter requirement')
+        return tasks
+
+    @staticmethod
     def _chapter(job: dict, output: dict) -> None:
+        if not isinstance(job['payload'].get('wbs_tasks_defined'), list) or not job['payload']['wbs_tasks_defined']:
+            from .document_governance import DocumentCommitmentHold
+            raise DocumentCommitmentHold()
         if output.get("chapter_id") != job["chapter_id"]:
             raise ValueError("Chapter ownership mismatch")
         traced = set(_strings(output.get("requirements_traced"), "requirements_traced"))
         if not set(job["payload"]["requirements"]) <= traced:
             raise ValueError("Chapter must trace every assigned requirement")
-        tasks = output.get("wbs_tasks_defined")
-        if not isinstance(tasks, list) or not tasks or not all(isinstance(x, dict) and x for x in tasks):
-            raise ValueError("wbs_tasks_defined must be a nonempty structured list")
+        tasks = JobStore._wbs(output.get('wbs_tasks_defined'), job['payload']['requirements'])
+        declared = JobStore._wbs(job['payload'].get('wbs_tasks_defined'), job['payload']['requirements'])
+        accepted = {task['id']: task for task in tasks}
+        if any(accepted.get(task['id']) != task for task in declared):
+            raise ValueError('Chapter WBS must preserve every owned manifest declaration exactly')
         expected = f"db://{job['workflow_id']}/{job['chapter_id']}"
         if output.get("artifact_uri") != expected:
             raise ValueError(f"Chapter artifact_uri must be {expected}")
@@ -764,11 +797,17 @@ class JobStore(CodingStoreMixin):
             elif job["kind"] == "CHAPTER_DRAFT":
                 self._chapter(job, output)
             elif job["kind"] == "SYNTHESIS":
-                expected = {row["chapter_id"]: row["sha256"] for row in conn.execute(
-                    "SELECT chapter_id,sha256 FROM pipeline_artifacts WHERE workflow_id=? AND chapter_id<>'synthesis'", (job["workflow_id"],))}
-                count = self._get(conn, job["workflow_id"])["payload"]["chapter_count"]
-                if len(expected) != count or self._hashes(output) != expected:
+                if any(key not in job['payload'] for key in ('chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter')):
+                    from .document_governance import DocumentCommitmentHold
+                    raise DocumentCommitmentHold()
+                expected = self._synthesis_payload(conn, job['workflow_id'])
+                if expected is None or job['payload'] != expected:
+                    raise ValueError('Synthesis input commitments no longer match accepted chapter outputs')
+                if self._hashes(output) != expected['chapter_hashes']:
                     raise ValueError("Synthesis chapter hashes must exactly match every immutable chapter")
+                for key in ('chapter_output_hashes', 'coverage_report_sha256', 'wbs_tasks_by_chapter'):
+                    if output.get(key) != expected[key]:
+                        raise ValueError('Synthesis must preserve exact accepted ' + key + ' commitments')
             else:
                 raise ValueError("Root jobs cannot be completed by workers")
             if job["kind"] in {"CHAPTER_DRAFT", "SYNTHESIS"}:
@@ -790,7 +829,9 @@ class JobStore(CodingStoreMixin):
             if chapters is not None:
                 for chapter_index, chapter in enumerate(chapters):
                     payload = {"objective": job["payload"]["objective"], "chapter_id": chapter["chapter_id"],
-                               "chapter_index": chapter_index, "title": chapter["title"], "requirements": chapter["requirements"]}
+                               "chapter_index": chapter_index, "title": chapter["title"], "requirements": chapter["requirements"],
+                               'wbs_tasks_defined': chapter['wbs_tasks_defined'],
+                               'manifest_output_sha256': output_digest(output)}
                     self._insert(conn, uuid.uuid4().hex, job["workflow_id"], job["workflow_id"],
                                  "CHAPTER_DRAFT", "PENDING", payload, chapter["chapter_id"], job["max_attempts"])
                 self._event(conn, job, "CHAPTERS_SCATTERED", count=len(chapters))
@@ -803,17 +844,50 @@ class JobStore(CodingStoreMixin):
             return self._get(conn, job_id)
 
     def _release_synthesis(self, conn: sqlite3.Connection, workflow_id: str) -> None:
+        payload = self._synthesis_payload(conn, workflow_id)
+        if payload is None:
+            return
+        changed = conn.execute("""UPDATE pipeline_jobs SET status='PENDING',payload_json=?,updated_at=?
+            WHERE workflow_id=? AND kind='SYNTHESIS' AND status='BLOCKED'""", (canonical_json(payload), time.time(), workflow_id)).rowcount
+        if changed:
+            self._event(conn, self._get(conn, workflow_id), "SYNTHESIS_RELEASED", chapter_hashes=payload["chapter_hashes"],
+                        chapter_output_hashes=payload['chapter_output_hashes'],
+                        coverage_report=payload['coverage_report'], coverage_report_sha256=payload["coverage_report_sha256"])
+
+    def _synthesis_payload(self, conn: sqlite3.Connection, workflow_id: str) -> dict | None:
         root = self._get(conn, workflow_id)
         rows = conn.execute("""SELECT job_id,status FROM pipeline_jobs WHERE workflow_id=? AND kind='CHAPTER_DRAFT'
             ORDER BY json_extract(payload_json,'$.chapter_index'),chapter_id""", (workflow_id,)).fetchall()
         if root["status"] != "IN_PROGRESS" or len(rows) != root["payload"]["chapter_count"] or any(row["status"] != "COMPLETED" for row in rows):
-            return
+            return None
+        manifest_row = conn.execute("SELECT job_id FROM pipeline_jobs WHERE workflow_id=? AND kind='MANIFEST_GENERATOR'",
+                                    (workflow_id,)).fetchone()
+        manifest_job = self._get(conn, manifest_row['job_id'])
+        if any(not isinstance(chapter.get('wbs_tasks_defined'), list) or not chapter['wbs_tasks_defined']
+               for chapter in manifest_job['output']['chapters']):
+            from .document_governance import DocumentCommitmentHold
+            raise DocumentCommitmentHold()
+        declarations = {chapter['chapter_id']: chapter for chapter in self._manifest(manifest_job, manifest_job['output'])}
+        if output_digest(manifest_job['output']) != manifest_job['output_sha256']:
+            raise ValueError('Accepted manifest output commitment mismatch')
         chapters, completed = [], []
+        task_ids = set()
         for row in rows:
             job = self._get(conn, row["job_id"])
+            self._chapter(job, job['output'])
+            if (job['payload']['wbs_tasks_defined'] != declarations[job['chapter_id']]['wbs_tasks_defined']
+                    or job['payload'].get('manifest_output_sha256') != manifest_job['output_sha256']
+                    or output_digest(job['output']) != job['output_sha256']
+                    or artifact_digest(job['output']['artifact_text']) != job['artifact_sha256']):
+                raise ValueError('Accepted chapter output or WBS commitment mismatch')
+            current_ids = {task['id'] for task in job['output']['wbs_tasks_defined']}
+            if task_ids & current_ids:
+                raise ValueError('Accepted WBS task IDs must retain exactly one owning chapter')
+            task_ids.update(current_ids)
             completed.append(job)
             chapters.append({**job["payload"], "artifact_uri": job["output"]["artifact_uri"],
-                             "artifact_text": job["output"]["artifact_text"], "sha256": job["artifact_sha256"]})
+                             "artifact_text": job["output"]["artifact_text"], "sha256": job["artifact_sha256"],
+                             'accepted_output': job['output'], 'output_sha256': job['output_sha256']})
         coverage_rows = []
         for requirement in root['payload']['requirements']:
             owners = [job['chapter_id'] for job in completed if requirement in job['payload']['requirements']]
@@ -827,17 +901,17 @@ class JobStore(CodingStoreMixin):
                     'gaps': [row['requirement'] for row in coverage_rows if row['gap']],
                     'overlaps': [row['requirement'] for row in coverage_rows if row['overlap']],
                     'chapter_hashes': {chapter['chapter_id']: chapter['sha256'] for chapter in chapters},
+                    'chapter_output_hashes': {chapter['chapter_id']: chapter['output_sha256'] for chapter in chapters},
+                    'manifest_output_sha256': manifest_job['output_sha256'],
                     'complete': all(not row['gap'] for row in coverage_rows)}
         if not coverage['complete']:
             raise ValueError('Synthesis coverage report contains uncovered required chapter ownership')
         payload = {**root["payload"], "chapters": chapters,
                    "chapter_hashes": coverage['chapter_hashes'],
+                   'chapter_output_hashes': coverage['chapter_output_hashes'],
+                   'wbs_tasks_by_chapter': {job['chapter_id']: job['output']['wbs_tasks_defined'] for job in completed},
                    'coverage_report': coverage, 'coverage_report_sha256': output_digest(coverage)}
-        changed = conn.execute("""UPDATE pipeline_jobs SET status='PENDING',payload_json=?,updated_at=?
-            WHERE workflow_id=? AND kind='SYNTHESIS' AND status='BLOCKED'""", (canonical_json(payload), time.time(), workflow_id)).rowcount
-        if changed:
-            self._event(conn, root, "SYNTHESIS_RELEASED", chapter_hashes=payload["chapter_hashes"],
-                        coverage_report=coverage, coverage_report_sha256=payload["coverage_report_sha256"])
+        return payload
 
     def fail(self, job_id: str, attempt_id: str, fencing_token: int, error: str, retry: bool = False,
              *, category: str = 'code', retry_after_seconds: float | None = None,

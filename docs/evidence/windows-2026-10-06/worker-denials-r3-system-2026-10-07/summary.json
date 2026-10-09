@@ -1,0 +1,86 @@
+{
+  "schema": "cochem-six-worker-r3-receipt-observation/1",
+  "captured_utc": "2026-10-07T15:51:56.127446+00:00",
+  "host": "AETHERDESK",
+  "status": "SIX_SYSTEM_RECEIPTS_AND_CHILD_RESULTS_VERIFIED",
+  "scope": "Ordinary-user read-only archival of actual SYSTEM receipts; frozen child-result validator reused without invoking its entrypoint",
+  "install_receipt_sha256": "3b613128192ac44a0a3d9c4b4476fb4c47541edb7563541b9bbf18f84f9a90f6",
+  "helper_sha256": "b48fe231d0b2f51d211ceea7adafd580d29d8c0bba222c0e5c55c686a2f4af77",
+  "slots_verified": 6,
+  "receipts": [
+    {
+      "slot": "slot1",
+      "receipt_sha256": "b9e9fd56c77ac54f97f136b562881a554ed18f6f4f216ccacc0fdf43c51f2c85",
+      "nonce": "0eaa9f58988641fdb102bc1a02b26a3d",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1006",
+      "pid": 3912,
+      "creation_time_filetime": 134358613399258249,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    },
+    {
+      "slot": "slot2",
+      "receipt_sha256": "7ebac1cedc48cf60c52af7c9b5ff4e883b4325c8d92a6826c935a9e5f7b5322d",
+      "nonce": "fe9124fc9f9842c7abc95749b478a020",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1007",
+      "pid": 42988,
+      "creation_time_filetime": 134358613605810043,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    },
+    {
+      "slot": "slot3",
+      "receipt_sha256": "c8518fb7c3f126c1c550e36072441eb520a3e76d91f75735d5f3ac832af954ee",
+      "nonce": "7adb4973bab74861b5b3995c61a6a46e",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1008",
+      "pid": 17200,
+      "creation_time_filetime": 134358613814369491,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    },
+    {
+      "slot": "slot4",
+      "receipt_sha256": "f81613cb152f9b5369908f796f55572e3f5779d2253515233b98aafc9e2b1344",
+      "nonce": "035e012f49a74902a78232791b47e565",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1009",
+      "pid": 20584,
+      "creation_time_filetime": 134358614021744617,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    },
+    {
+      "slot": "slot5",
+      "receipt_sha256": "84d7043f2044d52e2cfd31bdd373d424821ed3e3a234cef74590b2cfb427283b",
+      "nonce": "ce475a4762ad402f9688017bcc9041e3",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1010",
+      "pid": 30360,
+      "creation_time_filetime": 134358614232400056,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    },
+    {
+      "slot": "slot6",
+      "receipt_sha256": "5f987ba0f47d27417c0724277d70c52105dd1a96f04dd0a102fe7175d55f2970",
+      "nonce": "cf1e6bd21f8c4b9c9e8b10f142e98cba",
+      "status": "HANDLE_DENIALS_VERIFIED",
+      "worker_sid": "S-1-5-21-4108184938-3023548017-2507294638-1011",
+      "pid": 38772,
+      "creation_time_filetime": 134358614441522132,
+      "cleanup_verified": true,
+      "child_handle_results_verified": true
+    }
+  ],
+  "protected_task_terminal_state_read_by_this_collector": false,
+  "owner_batch_summary_pending_at_capture": true,
+  "workers_reexecuted": 0,
+  "tested_targets_opened": 0,
+  "credentials_accessed": false,
+  "pipeline_started": false,
+  "linux_results_used": false,
+  "activation_ready": false
+}

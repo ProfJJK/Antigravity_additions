@@ -18,7 +18,7 @@ import time
 import uuid
 
 from cochem_pipeline.service import ControlClient
-from cochem_pipeline.store import artifact_digest, output_digest
+from cochem_pipeline.store import JobStore, artifact_digest, output_digest
 from cochem_supervisor.probes import configured_tiers, verify_routing_assignment
 
 
@@ -67,11 +67,19 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
             and all(isinstance(item, dict) for item in manifest_chapters), "Manifest did not define six chapters")
     require({item.get("chapter_id") for item in manifest_chapters} == chapter_ids, "Manifest and executed chapter ownership differ")
     covered = set()
+    manifest_task_ids = set()
     for job in chapters:
         assigned = manifest_chapters[job["payload"]["chapter_index"]]
         require(assigned.get("chapter_id") == job["chapter_id"]
                 and assigned.get("requirements") == job["payload"].get("requirements"), "Manifest assignment changed before drafting")
         covered.update(assigned["requirements"])
+        tasks = JobStore._wbs(assigned.get('wbs_tasks_defined'), assigned['requirements'])
+        ids = {task['id'] for task in tasks}
+        require(not ids & manifest_task_ids, 'Manifest WBS ownership is duplicated')
+        manifest_task_ids.update(ids)
+        require(job['payload'].get('wbs_tasks_defined') == tasks
+                and job['payload'].get('manifest_output_sha256') == manifests[0].get('output_sha256'),
+                'Manifest WBS/output commitment changed before drafting')
     require(covered == set(root.get("payload", {}).get("requirements", [])), "Manifest did not cover the requested requirements")
     identities = [job.get("worker_slot") for job in chapters]
     require(all(isinstance(item, str) and item for item in identities) and len(set(identities)) == 6, "Six distinct persistent chapter identities are required")
@@ -135,7 +143,7 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
             require(output.get("chapter_id") == job["chapter_id"], f"Job {job_id} submitted a sibling chapter")
             require(set(job["payload"]["requirements"]) <= set(output.get("requirements_traced", [])), f"Job {job_id} is missing requirement tracing")
             tasks = output.get("wbs_tasks_defined")
-            require(isinstance(tasks, list) and tasks and all(isinstance(task, dict) and task for task in tasks), f"Job {job_id} lacks structured WBS tasks")
+            JobStore._chapter({**job, 'workflow_id': workflow['workflow_id']}, output)
             intervals.append((started, finished))
             accounts.append(receipt.get("worker_account"))
     require(len(set(sessions)) == 8, "Native sessions were reused across independent jobs")
@@ -149,9 +157,45 @@ def validate_workflow(workflow: dict, providers: dict, routing_policy: dict | No
         require(len(converted) == len(synthesis_hashes), "Duplicate synthesis chapter hashes")
         synthesis_hashes = converted
     require(synthesis_hashes == expected_hashes, "Synthesis did not bind exactly all accepted chapter hashes")
+    output_hashes = {job['chapter_id']: output_digest(job['output']) for job in chapters}
+    accepted_wbs = {job['chapter_id']: job['output']['wbs_tasks_defined'] for job in chapters}
+    coverage_rows = []
+    for requirement in root['payload']['requirements']:
+        owners = [job['chapter_id'] for job in sorted(chapters, key=lambda job: job['payload']['chapter_index'])
+                  if requirement in job['payload']['requirements']]
+        traced = [job['chapter_id'] for job in sorted(chapters, key=lambda job: job['payload']['chapter_index'])
+                  if requirement in job['output']['requirements_traced']]
+        coverage_rows.append({'requirement': requirement, 'owning_chapters': owners,
+            'traced_by_chapters': traced, 'overlap': len(owners) > 1,
+            'gap': not owners or any(owner not in traced for owner in owners)})
+    coverage = {'schema': 'cochem-document-coverage/4.2.7', 'requirements': coverage_rows,
+        'gaps': [row['requirement'] for row in coverage_rows if row['gap']],
+        'overlaps': [row['requirement'] for row in coverage_rows if row['overlap']],
+        'chapter_hashes': expected_hashes, 'chapter_output_hashes': output_hashes,
+        'manifest_output_sha256': manifests[0]['output_sha256'],
+        'complete': all(not row['gap'] for row in coverage_rows)}
+    require(coverage['complete'], 'Accepted chapter coverage has gaps')
+    synthesis = syntheses[0]
+    for key, expected in {'chapter_output_hashes': output_hashes, 'wbs_tasks_by_chapter': accepted_wbs,
+                           'coverage_report_sha256': output_digest(coverage)}.items():
+        require(synthesis['payload'].get(key) == expected and synthesis['output'].get(key) == expected,
+                'Synthesis did not preserve exact accepted ' + key + ' commitments')
+    require(synthesis['payload'].get('coverage_report') == coverage, 'Synthesis coverage differs from accepted outputs')
+    gathered = synthesis['payload'].get('chapters')
+    require(isinstance(gathered, list) and len(gathered) == len(chapters), 'Missing accepted structured chapters in synthesis')
+    for accepted, supplied in zip(sorted(chapters, key=lambda job: job['payload']['chapter_index']), gathered):
+        require(supplied.get('chapter_id') == accepted['chapter_id']
+                and supplied.get('accepted_output') == accepted['output']
+                and supplied.get('output_sha256') == accepted['output_sha256']
+                and supplied.get('sha256') == accepted['artifact_sha256'],
+                'Synthesis input lost accepted structured chapter commitments')
     releases = [event for event in events if event.get("event") == "SYNTHESIS_RELEASED"]
     require(len(releases) == 1, "Expected exactly one synthesis barrier release")
     require(releases[0].get("details", {}).get("chapter_hashes") == expected_hashes, "Barrier release hash set differs from accepted artifacts")
+    require(releases[0]['details'].get('chapter_output_hashes') == output_hashes
+            and releases[0]['details'].get('coverage_report') == coverage
+            and releases[0]['details'].get('coverage_report_sha256') == output_digest(coverage),
+            'Barrier release does not bind complete accepted outputs and coverage')
     require(syntheses[0]["receipt"]["started_at"] >= max(end for _, end in intervals), "Synthesis started before every chapter finished")
     # End events sort first at an equal timestamp: touching intervals do not overlap.
     sweep = sorted([(start, 1) for start, _ in intervals] + [(end, -1) for _, end in intervals])

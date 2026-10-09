@@ -89,6 +89,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_response(code)
         self.send_header('Content-Type','application/json; charset=utf-8')
         self.send_header('Content-Length',str(len(payload)))
+        if self.close_connection:
+            self.send_header('Connection','close')
         self.end_headers()
         self.wfile.write(payload)
         objectives=getattr(self.server.runtime,'objectives',None)
@@ -103,6 +105,35 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         self.dispatch()
 
+    def _discard_rejected_body(self):
+        # Closing an unread POST can reset TCP on Windows before the caller
+        # receives its 401. Send the rejection first, then discard only a bounded
+        # declared body. Never parse it or reuse this unauthorized connection.
+        try:
+            remaining=int(self.headers.get('Content-Length','0'))
+        except ValueError:
+            return
+        if not 1<=remaining<=4*1024*1024:
+            return
+        deadline=time.monotonic()+1.0
+        previous_timeout=self.connection.gettimeout()
+        try:
+            while remaining:
+                timeout=deadline-time.monotonic()
+                if timeout<=0:
+                    return
+                self.connection.settimeout(timeout)
+                chunk=self.rfile.read1(min(65536,remaining))
+                if not chunk:
+                    return
+                remaining-=len(chunk)
+        except OSError:
+            # A peer may stop sending or close after reading its 401. The
+            # response is already sent; this connection is always discarded.
+            pass
+        finally:
+            self.connection.settimeout(previous_timeout)
+
     def dispatch(self):
         started=time.monotonic()
         self._observed_started=None
@@ -110,6 +141,7 @@ class Handler(BaseHTTPRequestHandler):
         if not hmac.compare_digest(supplied.encode('utf-8'),('Bearer '+self.server.token).encode('utf-8')):
             self.close_connection=True
             self.reply(401,{'error':'Unauthorized'})
+            self._discard_rejected_body()
             return
         runtime=self.server.runtime
         path=urlsplit(self.path).path

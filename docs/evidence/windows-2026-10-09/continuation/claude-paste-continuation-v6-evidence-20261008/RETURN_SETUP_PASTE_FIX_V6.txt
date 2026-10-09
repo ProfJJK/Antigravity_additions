@@ -1,0 +1,64 @@
+WINDOWS PIPELINE: PASTE-SAFE CLAUDE SIGN-IN
+8 October 2026 - AETHERDESK
+
+The previous command reused all six Codex sign-ins. Claude stopped because
+the wrapper interpreted a Q in the pasted browser code as a cancel shortcut.
+That was a wrapper bug. The v6 command removes the P/Q shortcuts entirely.
+
+ONE COMMAND IN ADMINISTRATOR WINDOWS POWERSHELL
+
+Open Start, type Windows PowerShell, select Run as administrator, accept UAC,
+then paste this single line and press Enter:
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\run-reboot-setup-r3-v6.ps1" -Apply -Interactive
+
+Leave the console open. File and profile checks can take a few minutes without
+output. Existing valid sign-ins are reused. Only a logged-out profile requests
+browser consent; no code has been issued while it waits for READY.
+
+AT A CLAUDE SIGN-IN
+
+1. Type READY when you can complete browser approval now.
+2. Open the NEW browser URL printed by this running command if no browser opens.
+   Complete the provider's approval. Do not reuse the previous URL or code.
+3. Copy the complete browser-returned code. At the console's
+   "Code (masked; Enter submits, Escape cancels):" prompt, paste it and press
+   Enter. It appears as stars. P and Q are ordinary code characters; do not
+   press P first. Backspace edits the code; Escape explicitly cancels.
+4. Wait for the native login and cleanup, then follow the next profile prompt.
+   Successful sign-ins remain saved. Type PAUSE at a READY prompt to step away.
+
+If Codex requests a new sign-in, manually open https://auth.openai.com/codex/device
+and enter the NEW code printed by its running console. Its device flow does not
+open a browser automatically. The previous run verified all six saved sessions.
+
+AFTER SIGN-IN
+
+The same command performs the prepared first controller start. On verified
+success it runs monitoring setup automatically in the same elevated console.
+It retains the reviewed reboot recovery for only the pipeline's temporary R:
+subtree and never formats, resizes or replaces the existing drive/startup task.
+It does not repeat the completed Docker, CPU, knowledge or isolation tests.
+
+Return the final JSON, or the first printed failure, with codes removed. Do not
+share private login logs. Preserve all tasks, roots and receipts if it fails;
+do not rerun after a controller-start or monitoring-setup failure. The v6 command
+reviews the cancelled session's saved cleanup proof before allowing another login.
+Missing or unverified cleanup still stops it; no old task or channel is reopened.
+
+Credentials, databases, repair budgets, the 8 GiB R: drive and Mount_CoChem_RAMDisk
+are preserved. Capacity stays four shared slots across six isolated identities,
+with Chapter 06 routing. Agy's sign-in is preserved. Paid repair and component
+recovery remain disabled while budget history is unresolved.
+
+Administrator access is needed for protected SYSTEM tasks/private prior receipts;
+this chat's process is ordinary. Browser consent must be completed by you.
+After successful setup, Codex can perform the prepared live MCP/workflow checks.
+Completed stability observation and remaining acceptance evidence are still
+required before full SRS acceptance; setup success does not itself prove it.
+
+Preparation evidence is recorded separately in
+claude-paste-continuation-v6-preparation-20261008.json.
+Ordinary Windows fixtures and the isolated console check are preparation evidence,
+not elevated/SYSTEM deployment acceptance. Linux results are not counted as
+Windows evidence. Earlier commands and evidence remain preserved.

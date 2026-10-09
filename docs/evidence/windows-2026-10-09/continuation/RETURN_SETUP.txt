@@ -1,0 +1,55 @@
+WINDOWS PIPELINE: FINISH THE EXISTING RESOURCE RECORDER
+9 October 2026 - AETHERDESK
+
+The controller and held supervisor are running. The supervisor activation was
+successfully recorded. Provider sign-ins are preserved.
+
+The recorder was copied and its task registered in the disabled state. The
+verification stopped before its registration receipt was written or its first
+start requested. Do not replay the prior v8 setup batch.
+
+ONE COMMAND IN YOUR ADMINISTRATOR WINDOWS POWERSHELL WINDOW
+
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -File "C:\Users\ansac\Documents\Codex\2026-10-06\the-github-repository-is-located-at\windows-deployment-next\resume-partial-resource-observer-r3-v1.ps1" -Apply
+
+Let it finish. The first JSON prints the actual task metadata checks; it is not
+the final completion report. No browser sign-in or code paste is expected.
+
+This command verifies the preserved task, original failure and successful
+activation receipts, unchanged payloads, empty recorder state, and the same
+running SYSTEM controller/supervisor. The duration check accepts an equivalent
+49-hour Windows duration representation. That is the limit for the required
+48-hour observation, not a startup-speed optimization. Every other task field
+must still match exactly. If any preflight check fails, it stops before publishing
+registration evidence or starting the task.
+
+If the complete preflight passes, it records the missing registration evidence
+and requests the recorder's first start once. It preserves the task action,
+timing settings and permissions, copied files, controller and supervisor processes.
+Administrator access is required because the task and empty private state are
+inaccessible to this chat's ordinary Windows process, and the receipts are
+protected. No permission-setting change is needed.
+
+Return the final JSON or first error. Preserve all artifacts if it fails; do
+not rerun the new command or earlier setup batches. The observation runs
+unattended after a successful start. Starting it does not establish completed
+48-hour observation, desktop-heap, recovery or full SRS acceptance.
+
+The 8 GiB R: drive and Mount_CoChem_RAMDisk startup task, credentials, databases
+and repair budgets remain preserved. Six identities share a maximum of four
+slots. All model jobs remain on canonical Chapter 06 routing. Agy's existing
+installation and owner sign-in remain preserved.
+
+LIVE MODEL TEST APPROVAL IS SEPARATE
+
+The two prepared acceptance workflows use synthetic study-note requirements
+and the disposable calculator project. Their prompts also include canonical
+pipeline requirements and test diagnostics, sent through the existing Codex
+or eligible Claude subscription CLI. Exact scope is saved in
+LIVE_WORKFLOW_TEST_SCOPE_20261009.json.
+
+Automatic approval review rejected these external model calls before process
+creation because it requires explicit approval of that data and its OpenAI /
+Anthropic destinations. The chat's approval question covers these two tests.
+No model jobs or submission fences were created by either rejected command.
+The recorder command itself does not submit model jobs.
